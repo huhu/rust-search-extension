@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Rust Search Extension",
+  "description": "A handy browser extension to search crates and official docs in address bar (omnibox)",
+  "version": "0.1",
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "omnibox": {
+    "keyword": "rs"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "permissions": [
+    "tabs"
+  ]
+}

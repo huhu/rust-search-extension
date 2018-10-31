@@ -1,0 +1,6 @@
+.idea
+.DS_Store
+*.crx
+*.pem
+
+node_modules
