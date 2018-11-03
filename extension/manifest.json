@@ -13,8 +13,8 @@
   },
   "background": {
     "scripts": [
-      "search-index.js",
       "search.js",
+      "search-index.js",
       "main.js"
     ],
     "persistent": true
