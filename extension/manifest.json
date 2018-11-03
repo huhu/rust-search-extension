@@ -13,7 +13,9 @@
   },
   "background": {
     "scripts": [
-      "background.js"
+      "search-index.js",
+      "search.js",
+      "main.js"
     ],
     "persistent": true
   },
