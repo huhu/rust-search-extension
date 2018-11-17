@@ -28,8 +28,8 @@ var itemTypes = [
     "derive"
 ];
 
-// Search words.
-var index = [];
+// The list of search words to query against.
+var searchWords = [];
 var searchIndex = [];
 // Max levenshtein distance.
 var MAX_LEV_DISTANCE = 2;
@@ -41,7 +41,7 @@ var levenshtein_row2 = [];
 
 
 function initSearch(rawSearchIndex) {
-    index = buildIndex(rawSearchIndex);
+    searchWords = buildIndex(rawSearchIndex);
 }
 
 function buildIndex(rawSearchIndex) {
@@ -109,6 +109,28 @@ function buildIndex(rawSearchIndex) {
 }
 
 function search(query) {
+    return execQuery(buildQuery(query));
+}
+
+function buildQuery(raw) {
+    var matches, type, query;
+    query = raw;
+
+    matches = query.match(/^(fn|mod|struct|enum|trait|type|const|macro)\s*:\s*/i);
+    if (matches) {
+        type = matches[1].replace(/^const$/, 'constant');
+        query = query.substring(matches[0].length);
+    }
+
+    return {
+        raw: raw,
+        query: query,
+        type: type,
+        id: query + type
+    };
+}
+
+function execQuery(query) {
 
 }
 
