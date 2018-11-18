@@ -1,3 +1,4 @@
+var rootPath = "https://doc.rust-lang.org/";
 // This mapping table should match the discriminants of
 // `rustdoc::html::item_type::ItemType` type in Rust.
 var itemTypes = [
@@ -27,17 +28,26 @@ var itemTypes = [
     "attr",
     "derive"
 ];
+// used for special search precedence
+var TY_PRIMITIVE = itemTypes.indexOf("primitive");
+var TY_KEYWORD = itemTypes.indexOf("keyword");
 
 // The list of search words to query against.
 var searchWords = [];
 var searchIndex = [];
 // Max levenshtein distance.
 var MAX_LEV_DISTANCE = 2;
+var MAX_RESULTS = 200;
 /**
  * Global levenshtein_row2 array which used in function levenshtein().
  * @type {Array}
  */
 var levenshtein_row2 = [];
+/**
+ * Current query lowercase keyword.
+ */
+var valLower;
+var split;
 
 
 function initSearch(rawSearchIndex) {
@@ -131,7 +141,395 @@ function buildQuery(raw) {
 }
 
 function execQuery(query) {
+    function itemTypeFromName(typename) {
+        for (var i = 0; i < itemTypes.length; ++i) {
+            if (itemTypes[i] === typename) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
+    function checkPath(contains, lastElem, ty) {
+        if (contains.length === 0) {
+            return 0;
+        }
+        var ret_lev = MAX_LEV_DISTANCE + 1;
+        var path = ty.path.split("::");
+
+        if (ty.parent && ty.parent.name) {
+            path.push(ty.parent.name.toLowerCase());
+        }
+
+        if (contains.length > path.length) {
+            return MAX_LEV_DISTANCE + 1;
+        }
+        for (var i = 0; i < path.length; ++i) {
+            if (i + contains.length > path.length) {
+                break;
+            }
+            var lev_total = 0;
+            var aborted = false;
+            for (var x = 0; x < contains.length; ++x) {
+                var lev = levenshtein(path[i + x], contains[x]);
+                if (lev > MAX_LEV_DISTANCE) {
+                    aborted = true;
+                    break;
+                }
+                lev_total += lev;
+            }
+            if (aborted === false) {
+                ret_lev = Math.min(ret_lev, Math.round(lev_total / contains.length));
+            }
+        }
+        return ret_lev;
+    }
+
+    function typePassesFilter(filter, type) {
+        // No filter
+        if (filter < 0) return true;
+
+        // Exact match
+        if (filter === type) return true;
+
+        // Match related items
+        var name = itemTypes[type];
+        switch (itemTypes[filter]) {
+            case "constant":
+                return (name === "associatedconstant");
+            case "fn":
+                return (name === "method" || name === "tymethod");
+            case "type":
+                return (name === "primitive" || name === "keyword");
+        }
+
+        // No match
+        return false;
+    }
+
+    function generateId(ty) {
+        if (ty.parent && ty.parent.name) {
+            return itemTypes[ty.ty] + ty.path + ty.parent.name + ty.name;
+        }
+        return itemTypes[ty.ty] + ty.path + ty.name;
+    }
+
+    valLower = query.query.toLowerCase();
+    split = valLower.split("::");
+
+    var val = valLower,
+        typeFilter = itemTypeFromName(query.type),
+        results = {};
+
+    for (var z = 0; z < split.length; ++z) {
+        if (split[z] === "") {
+            split.splice(z, 1);
+            z -= 1;
+        }
+    }
+
+    var nSearchWords = searchWords.length;
+    query.inputs = [val];
+    query.output = val;
+    query.search = val;
+    // gather matching search results up to a certain maximum
+    // val = val.replace(/\_/g, "");
+
+    // var valGenerics = extractGenerics(val);
+
+    var paths = valLower.split("::");
+    var j;
+    // "std::option::".split("::") => ["std", "option", ""]
+    for (j = 0; j < paths.length; ++j) {
+        if (paths[j] === "") {
+            paths.splice(j, 1);
+            j -= 1;
+        }
+    }
+    val = paths[paths.length - 1];
+    var contains = paths.slice(0, paths.length > 1 ? paths.length - 1 : 1);
+
+    for (j = 0; j < nSearchWords; ++j) {
+        var lev_distance;
+        var ty = searchIndex[j];
+        if (!ty) {
+            continue;
+        }
+        var lev_add = 0;
+        if (paths.length > 1) {
+            var lev = checkPath(contains, paths[paths.length - 1], ty);
+            if (lev > MAX_LEV_DISTANCE) {
+                continue;
+            } else if (lev > 0) {
+                lev_add = 1;
+            }
+        }
+
+        var index = -1;
+        // we want lev results to go lower than others
+        var lev = MAX_LEV_DISTANCE + 1;
+        var fullId = generateId(ty);
+
+        if (/*searchWords[j].indexOf(split[i]) > -1 ||*/
+            searchWords[j].indexOf(val) > -1 ||
+            searchWords[j].replace(/_/g, "").indexOf(val) > -1) {
+            // filter type: ... queries
+            if (typePassesFilter(typeFilter, ty.ty) && results[fullId] === undefined) {
+                index = searchWords[j].replace(/_/g, "").indexOf(val);
+            }
+        }
+        if ((lev = levenshtein(searchWords[j], val)) <= MAX_LEV_DISTANCE) {
+            if (typePassesFilter(typeFilter, ty.ty) === false) {
+                lev = MAX_LEV_DISTANCE + 1;
+            } else {
+                lev += 1;
+            }
+        }
+
+        lev += lev_add;
+        if (lev > 0 && val.length > 3 && searchWords[j].indexOf(val) > -1) {
+            if (val.length < 6) {
+                lev -= 1;
+            } else {
+                lev = 0;
+            }
+        }
+
+        if (index !== -1 || lev <= MAX_LEV_DISTANCE) {
+            if (index !== -1 && paths.length < 2) {
+                lev = 0;
+            }
+            if (results[fullId] === undefined) {
+                results[fullId] = {
+                    id: j,
+                    index: index,
+                    lev: lev,
+                };
+            }
+            results[fullId].lev = Math.min(results[fullId].lev, lev);
+        }
+    }
+
+    return sortResults(results);
+}
+
+function sortResults(results) {
+    var ar = [];
+    for (var entry in results) {
+        if (results.hasOwnProperty(entry)) {
+            ar.push(results[entry]);
+        }
+    }
+    results = ar;
+    var nresults = results.length;
+    for (var i = 0; i < nresults; ++i) {
+        results[i].word = searchWords[results[i].id];
+        results[i].item = searchIndex[results[i].id] || {};
+    }
+    // if there are no results then return to default and fail
+    if (results.length === 0) {
+        return [];
+    }
+
+    results.sort(function(aaa, bbb) {
+        var a, b;
+
+        // Sort by non levenshtein results and then levenshtein results by the distance
+        // (less changes required to match means higher rankings)
+        a = (aaa.lev);
+        b = (bbb.lev);
+        if (a !== b) {
+            return a - b;
+        }
+
+        // sort by crate (non-current crate goes later)
+        // a = (aaa.item.crate !== window.currentCrate);
+        // b = (bbb.item.crate !== window.currentCrate);
+        // if (a !== b) { return a - b; }
+
+        // sort by exact match (mismatch goes later)
+        a = (aaa.word !== valLower);
+        b = (bbb.word !== valLower);
+        if (a !== b) {
+            return a - b;
+        }
+
+        // sort by item name length (longer goes later)
+        a = aaa.word.length;
+        b = bbb.word.length;
+        if (a !== b) {
+            return a - b;
+        }
+
+        // sort by item name (lexicographically larger goes later)
+        a = aaa.word;
+        b = bbb.word;
+        if (a !== b) {
+            return (a > b ? +1 : -1);
+        }
+
+        // sort by index of keyword in item name (no literal occurrence goes later)
+        a = (aaa.index < 0);
+        b = (bbb.index < 0);
+        if (a !== b) {
+            return a - b;
+        }
+        // (later literal occurrence, if any, goes later)
+        a = aaa.index;
+        b = bbb.index;
+        if (a !== b) {
+            return a - b;
+        }
+
+        // special precedence for primitive and keyword pages
+        if ((aaa.item.ty === TY_PRIMITIVE && bbb.item.ty !== TY_KEYWORD) ||
+            (aaa.item.ty === TY_KEYWORD && bbb.item.ty !== TY_PRIMITIVE)) {
+            return -1;
+        }
+        if ((bbb.item.ty === TY_PRIMITIVE && aaa.item.ty !== TY_PRIMITIVE) ||
+            (bbb.item.ty === TY_KEYWORD && aaa.item.ty !== TY_KEYWORD)) {
+            return 1;
+        }
+
+        // sort by description (no description goes later)
+        a = (aaa.item.desc === '');
+        b = (bbb.item.desc === '');
+        if (a !== b) {
+            return a - b;
+        }
+
+        // sort by type (later occurrence in `itemTypes` goes later)
+        a = aaa.item.ty;
+        b = bbb.item.ty;
+        if (a !== b) {
+            return a - b;
+        }
+
+        // sort by path (lexicographically larger goes later)
+        a = aaa.item.path;
+        b = bbb.item.path;
+        if (a !== b) {
+            return (a > b ? +1 : -1);
+        }
+
+        // que sera, sera
+        return 0;
+    });
+
+    for (var i = 0; i < results.length; ++i) {
+        var result = results[i];
+
+        // this validation does not make sense when searching by types
+        if (result.dontValidate) {
+            continue;
+        }
+        var name = result.item.name.toLowerCase(),
+            path = result.item.path.toLowerCase(),
+            parent = result.item.parent;
+
+        if (/* isType !== true &&*/
+            validateResult(name, path, split, parent) === false) {
+            result.id = -1;
+        }
+    }
+    return transformResults(results);
+}
+
+function transformResults(results, isType) {
+    var out = [];
+    for (i = 0; i < results.length; ++i) {
+        if (results[i].id > -1) {
+            var obj = searchIndex[results[i].id];
+            obj.lev = results[i].lev;
+            if (isType !== true || obj.type) {
+                var res = buildHrefAndPath(obj);
+                // obj.displayPath = pathSplitter(res[0]);
+                obj.displayPath = res[0];
+                obj.fullPath = obj.displayPath + obj.name;
+                // To be sure than it some items aren't considered as duplicate.
+                // obj.fullPath += '|' + obj.ty;
+                obj.href = res[1];
+                out.push(obj);
+                if (out.length >= MAX_RESULTS) {
+                    break;
+                }
+            }
+        }
+    }
+    return out;
+}
+
+function buildHrefAndPath(item) {
+    var displayPath;
+    var href;
+    var type = itemTypes[item.ty];
+    var name = item.name;
+
+    if (type === 'mod') {
+        displayPath = item.path + '::';
+        href = rootPath + item.path.replace(/::/g, '/') + '/' +
+            name + '/index.html';
+    } else if (type === "primitive" || type === "keyword") {
+        displayPath = "";
+        href = rootPath + item.path.replace(/::/g, '/') +
+            '/' + type + '.' + name + '.html';
+    } else if (type === "externcrate") {
+        displayPath = "";
+        href = rootPath + name + '/index.html';
+    } else if (item.parent !== undefined) {
+        var myparent = item.parent;
+        var anchor = '#' + type + '.' + name;
+        var parentType = itemTypes[myparent.ty];
+        if (parentType === "primitive") {
+            displayPath = myparent.name + '::';
+        } else {
+            displayPath = item.path + '::' + myparent.name + '::';
+        }
+        href = rootPath + item.path.replace(/::/g, '/') +
+            '/' + parentType +
+            '.' + myparent.name +
+            '.html' + anchor;
+    } else {
+        displayPath = item.path + '::';
+        href = rootPath + item.path.replace(/::/g, '/') +
+            '/' + type + '.' + name + '.html';
+    }
+    return [displayPath, href];
+}
+
+
+/**
+ * Validate performs the following boolean logic. For example:
+ * "File::open" will give IF A PARENT EXISTS => ("file" && "open")
+ * exists in (name || path || parent) OR => ("file" && "open") exists in
+ * (name || path )
+ *
+ * This could be written functionally, but I wanted to minimise
+ * functions on stack.
+ *
+ * @param  {[string]} name   [The name of the result]
+ * @param  {[string]} path   [The path of the result]
+ * @param  {[string]} keys   [The keys to be used (["file", "open"])]
+ * @param  {[object]} parent [The parent of the result]
+ * @return {[boolean]}       [Whether the result is valid or not]
+ */
+function validateResult(name, path, keys, parent) {
+    for (var i = 0; i < keys.length; ++i) {
+        // each check is for validation so we negate the conditions and invalidate
+        if (!(
+            // check for an exact name match
+            name.indexOf(keys[i]) > -1 ||
+            // then an exact path match
+            path.indexOf(keys[i]) > -1 ||
+            // next if there is a parent, check for exact parent match
+            (parent !== undefined &&
+                parent.name.toLowerCase().indexOf(keys[i]) > -1) ||
+            // lastly check to see if the name was a levenshtein match
+            levenshtein(name, keys[i]) <= MAX_LEV_DISTANCE)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 /**
