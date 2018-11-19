@@ -37,7 +37,7 @@ var searchWords = [];
 var searchIndex = [];
 // Max levenshtein distance.
 var MAX_LEV_DISTANCE = 2;
-var MAX_RESULTS = 200;
+var MAX_RESULTS = 20;
 /**
  * Global levenshtein_row2 array which used in function levenshtein().
  * @type {Array}
@@ -566,5 +566,6 @@ function levenshtein(s1, s2) {
     return s1_len + s2_len;
 }
 
+window.rootPath = rootPath;
 window.initSearch = initSearch;
 window.search = search;
