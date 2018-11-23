@@ -84,8 +84,7 @@ function buildIndex(rawSearchIndex) {
         var paths = rawSearchIndex[crate].paths;
 
         // convert `paths` into an object form
-        var len = paths.length;
-        for (var i = 0; i < len; ++i) {
+        for (var i = 0; i < paths.length; ++i) {
             paths[i] = {ty: paths[i][0], name: paths[i][1]};
         }
 
@@ -250,7 +249,6 @@ function execQuery(query) {
     var contains = paths.slice(0, paths.length > 1 ? paths.length - 1 : 1);
 
     for (j = 0; j < nSearchWords; ++j) {
-        var lev_distance;
         var ty = searchIndex[j];
         if (!ty) {
             continue;
@@ -270,8 +268,7 @@ function execQuery(query) {
         var lev = MAX_LEV_DISTANCE + 1;
         var fullId = generateId(ty);
 
-        if (/*searchWords[j].indexOf(split[i]) > -1 ||*/
-            searchWords[j].indexOf(val) > -1 ||
+        if (searchWords[j].indexOf(val) > -1 ||
             searchWords[j].replace(/_/g, "").indexOf(val) > -1) {
             // filter type: ... queries
             if (typePassesFilter(typeFilter, ty.ty) && results[fullId] === undefined) {
@@ -341,11 +338,6 @@ function sortResults(results) {
         if (a !== b) {
             return a - b;
         }
-
-        // sort by crate (non-current crate goes later)
-        // a = (aaa.item.crate !== window.currentCrate);
-        // b = (bbb.item.crate !== window.currentCrate);
-        // if (a !== b) { return a - b; }
 
         // sort by exact match (mismatch goes later)
         a = (aaa.word !== valLower);
@@ -427,8 +419,7 @@ function sortResults(results) {
             path = result.item.path.toLowerCase(),
             parent = result.item.parent;
 
-        if (/* isType !== true &&*/
-            validateResult(name, path, split, parent) === false) {
+        if (validateResult(name, path, split, parent) === false) {
             result.id = -1;
         }
     }

@@ -12,10 +12,7 @@ function setup() {
         var suggestResults = [];
         for (var i = 0; i < searchResults.length; i++) {
             var result = searchResults[i];
-            suggestResults.push({
-                content: result.href,
-                description: buildDescription(result)
-            })
+            suggestResults.push(buildSuggestResultItem(result));
         }
 
         if (suggestResults.length === 0) {
@@ -24,7 +21,7 @@ function setup() {
                     content: "https://doc.rust-lang.org/stable/std/?search=" + query,
                     description: "Sorry, no Rust official documentation result about <match>" + query
                     + "</match> found, click here to search on <dim>doc.rust-lang.org</dim>"
-                }
+                },
             ]
         }
 
@@ -46,10 +43,24 @@ function navigateToUrl(url) {
     });
 }
 
-function buildDescription(item) {
-    if (item) {
-        return item.displayPath + "<match>" + item.name + "</match>" + "  <dim>" + item.desc + "</dim>";
-    } else {
-        return "";
+// Escape the five predefined entities to display them as text.
+function escape(text) {
+    text = text || "";
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function buildSuggestResultItem(item) {
+    var description = item.displayPath + "<match>" + item.name + "</match>";
+    if (item.desc) {
+        description += "    <dim>" + escape(item.desc) + "</dim>";
+    }
+    return {
+        content: item.href,
+        description: description,
     }
 }
