@@ -10,6 +10,8 @@
         body {
             scroll-behavior: smooth;
             overflow-x: hidden;
+            width: 280px;
+            padding: 0.5rem 2rem;
         }
 
         p {
@@ -21,6 +23,15 @@
 <div>
     <img src="./icon.png" alt="rust-search-extension">
     <h2>Rust Search Extension</h2>
+    <div>
+        <label>
+            Open search result in
+            <select name="open-type">
+                <option value="current-tab">current tab</option>
+                <option value="new-tab">new tab</option>
+            </select>
+        </label>
+    </div>
 </div>
 </body>
 <script src="popup.js"></script>

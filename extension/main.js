@@ -37,10 +37,20 @@ function setup() {
     });
 }
 
+
 function navigateToUrl(url) {
-    chrome.tabs.getSelected(null, function(tab) {
-        chrome.tabs.update(tab.id, {url: url});
-    });
+    function nullOrDefault(value, defaultValue) {
+        return value === null ? defaultValue : value;
+    }
+
+    var openType = nullOrDefault(localStorage.getItem("open-type"), "current-tab");
+    if (openType === "current-tab") {
+        chrome.tabs.getSelected(null, function(tab) {
+            chrome.tabs.update(tab.id, {url: url});
+        });
+    } else {
+        chrome.tabs.create({url: url});
+    }
 }
 
 // Escape the five predefined entities to display them as text.
