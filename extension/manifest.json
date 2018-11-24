@@ -8,6 +8,15 @@
     "48": "icon.png",
     "128": "icon.png"
   },
+  "browser_action": {
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    },
+    "default_popup": "popup.html",
+    "default_title": "A handy browser extension to search crates and official docs in address bar (omnibox)"
+  },
   "omnibox": {
     "keyword": "rs"
   },
@@ -16,8 +25,7 @@
       "search.js",
       "search-index.js",
       "main.js"
-    ],
-    "persistent": true
+    ]
   },
   "permissions": [
     "tabs"
