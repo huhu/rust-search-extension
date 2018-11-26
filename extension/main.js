@@ -2,7 +2,7 @@ setup();
 
 function setup() {
     chrome.omnibox.setDefaultSuggestion({
-        description: "Search Rust crates for <match>%s</match>"
+        description: "Search Rust docs for <match>%s</match> on https://doc.rust-lang.org"
     });
 
     chrome.omnibox.onInputChanged.addListener(function(query, suggestFn) {
@@ -18,9 +18,8 @@ function setup() {
         if (suggestResults.length === 0) {
             suggestResults = [
                 {
-                    content: "https://doc.rust-lang.org/stable/std/?search=" + query,
-                    description: "Sorry, no Rust official documentation result about <match>" + query
-                    + "</match> found, click here to search on <dim>doc.rust-lang.org</dim>"
+                    content: "https://crates.io/search?q=" + encodeURIComponent(query),
+                    description: "Search Rust crates for <match>" + query + "</match> on https://crates.io"
                 },
             ]
         }
@@ -29,10 +28,11 @@ function setup() {
     });
 
     chrome.omnibox.onInputEntered.addListener(function(text) {
-        if (text && text.startsWith(window.rootPath)) {
+        if (text && text.startsWith(window.rootPath)
+            || text.startsWith("https://crates.io")) {
             navigateToUrl(text);
         } else {
-            navigateToUrl('https://crates.io/search?q=' + encodeURIComponent(text));
+            navigateToUrl('https://doc.rust-lang.org/stable/std/?search=' + encodeURIComponent(text));
         }
     });
 }
@@ -67,7 +67,7 @@ function escape(text) {
 function buildSuggestResultItem(item) {
     var description = item.displayPath + "<match>" + item.name + "</match>";
     if (item.desc) {
-        description += "    <dim>" + escape(item.desc) + "</dim>";
+        description += " - <dim>" + escape(item.desc) + "</dim>";
     }
     return {
         content: item.href,
