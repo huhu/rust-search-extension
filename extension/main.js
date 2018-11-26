@@ -15,13 +15,11 @@ function setup() {
             suggestResults.push(buildSuggestResultItem(result));
         }
 
-        if (suggestResults.length === 0) {
-            suggestResults = [
-                {
-                    content: "https://crates.io/search?q=" + encodeURIComponent(query),
-                    description: "Search Rust crates for <match>" + query + "</match> on https://crates.io"
-                },
-            ]
+        if (suggestResults.length <= 4) {
+            suggestResults.push({
+                content: "https://crates.io/search?q=" + encodeURIComponent(query),
+                description: "Search Rust crates for <match>" + query + "</match> on https://crates.io"
+            })
         }
 
         suggestFn(suggestResults);
