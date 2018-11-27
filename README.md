@@ -74,8 +74,34 @@ var searchWords = [
 ]
 ```
 
-#### 3. Search keyword in *search words array* by *Levenshtein distance*, mapping the *search word* and *search index* to generate the *search result*
+#### 3. Search keyword in *search words array*
 
-#### 4. Sort *search result* according to *Levenshtein distance* and others metrics
+Using *Levenshtein distance* algorithm to search matched words, the max Levenshtein distance is 2.
+
+```js
+// Max levenshtein distance.
+var MAX_LEV_DISTANCE = 2;
+```
+
+#### 4. Sort *search result* 
+
+Sort search result according to *Levenshtein distance*, lexicographical and others metrics.
 
 #### 5. Transform *search result* to *suggestion result* to show in the address bar
+
+Mapping the *search word* and *search index* to generate the *search result*, build Rust doc link for each result item.
+
+```js
+var suggestResults = [
+    {
+        content: "https://doc.rust-lang.org/std/ops/trait.Deref.html",
+        description: "std::ops::<match>Deref</match> - <dim>Used for immutable dereferencing operations, like `*v`.</dim>"
+    },
+    {
+        content: "https://doc.rust-lang.org/std/ops/trait.Deref.html#tymethod.deref",
+        description: "std::ops::Deref::<match>deref</match> - <dim>Dereferences the value.</dim>"
+    }
+    ...
+];
+```
+
