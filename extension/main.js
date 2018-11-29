@@ -1,8 +1,18 @@
+
+const isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
+
+// Firefox doesn't support tags in search suggestion.
+const tagged = isChrome ?
+    (tag, str) => `<${tag}>${str}</${tag}>` :
+    (_, str) => str;
+
 setup();
 
 function setup() {
     chrome.omnibox.setDefaultSuggestion({
-        description: "Search Rust docs for <match>%s</match> on https://doc.rust-lang.org"
+        description: "Search Rust docs" +
+            (isChrome ? " for <match>%s</match>" : "") +
+            " on https://doc.rust-lang.org"
     });
 
     chrome.omnibox.onInputChanged.addListener(function(query, suggestFn) {
@@ -18,7 +28,7 @@ function setup() {
         if (suggestResults.length <= 4) {
             suggestResults.push({
                 content: "https://crates.io/search?q=" + encodeURIComponent(query),
-                description: "Search Rust crates for <match>" + query + "</match> on https://crates.io"
+                description: "Search Rust crates for " + tagged("match", query) + " on https://crates.io"
             })
         }
 
@@ -43,7 +53,7 @@ function navigateToUrl(url) {
 
     var openType = nullOrDefault(localStorage.getItem("open-type"), "current-tab");
     if (openType === "current-tab") {
-        chrome.tabs.getSelected(null, function(tab) {
+        chrome.tabs.query({active: true}, function(tab) {
             chrome.tabs.update(tab.id, {url: url});
         });
     } else {
@@ -63,9 +73,9 @@ function escape(text) {
 }
 
 function buildSuggestResultItem(item) {
-    var description = item.displayPath + "<match>" + item.name + "</match>";
+    var description = item.displayPath + tagged("match", item.name);
     if (item.desc) {
-        description += " - <dim>" + escape(item.desc) + "</dim>";
+        description += " - " + tagged("dim", item.desc);
     }
     return {
         content: item.href,
