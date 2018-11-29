@@ -11,19 +11,27 @@
             scroll-behavior: smooth;
             overflow-x: hidden;
             width: 280px;
-            padding: 0.5rem 2rem;
+            padding: 1rem 2rem;
         }
 
         p {
             margin: 0 auto;
         }
+
+        .logo {
+            width: 180px;
+        }
     </style>
 </head>
 <body>
-<div>
-    <img src="./icon.png" alt="rust-search-extension">
+<div style="text-align: center;">
+    <img class="logo" src="icon.png" alt="rust-search-extension">
     <h2>Rust Search Extension</h2>
     <div>
+        <span><img src="https://img.shields.io/badge/stable-1.31.0-yellow.svg" alt="stable-docs"></span>
+        <span><img src="https://img.shields.io/badge/nightly-comming-%23000000.svg" alt="stable-docs"></span>
+    </div>
+    <div style="margin-top: 20px">
         <label>
             Open search result in
             <select name="open-type">

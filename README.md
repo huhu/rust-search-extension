@@ -4,6 +4,8 @@
 # Rust Search Extension
 
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/)
+![](https://img.shields.io/badge/stable-1.31.0-yellow.svg)
+![](https://img.shields.io/badge/nightly-comming-%23000000.svg)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
 
