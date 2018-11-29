@@ -3,13 +3,23 @@
 
 # Rust Search Extension
 
-![Chrome Web Store](https://img.shields.io/chrome-web-store/v/)
+![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)
 ![](https://img.shields.io/badge/stable-1.31.0-yellow.svg)
 ![](https://img.shields.io/badge/nightly-comming-%23000000.svg)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
 
 🦀 A handy browser extension to search crates and docs in address bar (omnibox).
+
+### Installation
+
+- Chrome Web Store
+
+https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh
+
+- Mannually
+
+Git clone to your computer, open `chrome://extension` page, and enable developer mode, then click `load unpakced` button, select the `extension` directory.
 
 ### Features
 
