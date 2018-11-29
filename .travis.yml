@@ -1,0 +1,30 @@
+language: generic
+
+
+before_install:
+  - npm install -g web-ext
+
+# Do some testings ...
+script: true
+
+before_deploy:
+  - web-ext build -s extension -o
+
+deploy:
+  provider: releases
+  api_key:
+    # Generate secure token with travis encrypt --pro
+    secure: ""
+  file_glob: true
+  file: web-ext-artifacts/*.zip
+  skip_cleanup: true
+  on:
+    tags: true
+
+branches:
+  only:
+  - "/^v\\d+\\.\\d+\\.\\d+.*$/"
+
+notifications:
+  email:
+    on_success: never

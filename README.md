@@ -7,7 +7,7 @@
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
 
-A handy browser extension to search crates and docs in address bar (omnibox).
+🦀 A handy browser extension to search crates and docs in address bar (omnibox).
 
 ### Features
 
