@@ -17,6 +17,9 @@
 - Search Structs, Traits and Enums
 - Search Functions, Methods and Macros
 - Search crates on https://crates.io
+- Both Chrome and Firefox are supported
+- [ ] Search local Rust docs (`rustup docs --std`) 
+- [ ] Search stable and nightly docs
 
 ### Usages
 
@@ -46,16 +49,16 @@ var searchIndex = [
       type: null
     },
     {
-        crate: "std",
-        desc: "Applies function to the elements of iterator and returns the first non-none result.",
-        name: "find_map",
-        parent: {ty: 8, name: "Iterator"},
-        path: "std::iter",
-        ty: 11,
-        type: [["self"],["f"]]
+      crate: "std",
+      desc: "Applies function to the elements of iterator and returns the first non-none result.",
+      name: "find_map",
+      parent: {ty: 8, name: "Iterator"},
+      path: "std::iter",
+      ty: 11,
+      type: [["self"],["f"]]
     }
     ...
-]
+];
 ```
  
 #### 2. Build *search words array* based on *search index*
@@ -73,7 +76,7 @@ var searchWords = [
     "display", 
     "debug"
     ...
-]
+];
 ```
 
 #### 3. Search keyword in *search words array*
@@ -96,12 +99,12 @@ Mapping the *search word* and *search index* to generate the *search result*, bu
 ```js
 var suggestResults = [
     {
-        content: "https://doc.rust-lang.org/std/ops/trait.Deref.html",
-        description: "std::ops::<match>Deref</match> - <dim>Used for immutable dereferencing operations, like `*v`.</dim>"
+      content: "https://doc.rust-lang.org/std/ops/trait.Deref.html",
+      description: "std::ops::<match>Deref</match> - <dim>Used for immutable dereferencing operations, like `*v`.</dim>"
     },
     {
-        content: "https://doc.rust-lang.org/std/ops/trait.Deref.html#tymethod.deref",
-        description: "std::ops::Deref::<match>deref</match> - <dim>Dereferences the value.</dim>"
+      content: "https://doc.rust-lang.org/std/ops/trait.Deref.html#tymethod.deref",
+      description: "std::ops::Deref::<match>deref</match> - <dim>Dereferences the value.</dim>"
     }
     ...
 ];
