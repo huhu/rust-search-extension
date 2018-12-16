@@ -75,7 +75,7 @@ function escape(text) {
 function buildSuggestResultItem(item) {
     var description = item.displayPath + tagged("match", item.name);
     if (item.desc) {
-        description += " - " + tagged("dim", item.desc);
+        description += " - " + tagged("dim", escape(item.desc));
     }
     return {
         content: item.href,
