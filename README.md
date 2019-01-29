@@ -5,7 +5,6 @@
 
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)
 ![](https://img.shields.io/badge/stable-1.31.0-yellow.svg)
-![](https://img.shields.io/badge/nightly-comming-%23000000.svg)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
 
@@ -29,7 +28,6 @@ Git clone to your computer, open `chrome://extension` page, and enable developer
 - Search crates on https://crates.io
 - Both Chrome and Firefox are supported
 - [ ] Search local Rust docs (`rustup docs --std`) 
-- [ ] Search stable and nightly docs
 
 ### Usages
 
