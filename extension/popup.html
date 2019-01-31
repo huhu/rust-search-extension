@@ -21,6 +21,22 @@
         .logo {
             width: 180px;
         }
+
+        .disable {
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .flex-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .offline-doc-path {
+            width: 100%;
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -28,23 +44,23 @@
     <img class="logo" src="icon.png" alt="rust-search-extension">
     <h2>Rust Search Extension</h2>
     <div>
-        <img src="https://img.shields.io/badge/stable-1.31.0-yellow.svg" alt="stable-docs">
+        <img src="https://img.shields.io/badge/stable-1.32.0-yellow.svg" alt="stable-docs">
     </div>
-    <div style="margin-top: 20px">
-        <label>
-            Open search result in
-            <select name="open-type">
-                <option value="current-tab">current tab</option>
-                <option value="new-tab">new tab</option>
-            </select>
-        </label>
-    </div>
-    <div style="margin-top: 10px">
-        <label>
-            Enable offline mode <input type="checkbox">
-        </label>
-        <input type="text" class="offline-doc-path">
-    </div>
+</div>
+<div style="margin-top: 20px">
+    <label>
+        Open search result in
+        <select name="open-type">
+            <option value="current-tab">current tab</option>
+            <option value="new-tab">new tab</option>
+        </select>
+    </label>
+</div>
+<div style="margin-top: 10px" class="flex-vertical">
+    <label>
+        Enable offline mode <input type="checkbox">
+    </label>
+    <input type="text" class="offline-doc-path" placeholder="Input the local std doc path">
 </div>
 </body>
 <script src="popup.js"></script>
