@@ -1,3 +1,4 @@
+// The official documentation is default.
 var rootPath = "https://doc.rust-lang.org/";
 // This mapping table should match the discriminants of
 // `rustdoc::html::item_type::ItemType` type in Rust.
@@ -118,6 +119,7 @@ function buildIndex(rawSearchIndex) {
 }
 
 function search(query) {
+    prepareRootPath();
     return execQuery(buildQuery(query));
 }
 
@@ -555,6 +557,21 @@ function levenshtein(s1, s2) {
         return b;
     }
     return s1_len + s2_len;
+}
+
+/**
+ * Prepare root path before execute query.
+ */
+function prepareRootPath() {
+    var checkedState = nullOrDefault(JSON.parse(localStorage.getItem('offline-mode')), false);
+    if (checkedState) {
+        var offlineDocPath = localStorage.getItem("offline-path");
+        if (offlineDocPath) {
+            rootPath = offlineDocPath;
+        }
+    } else {
+        rootPath = "https://doc.rust-lang.org/";
+    }
 }
 
 window.rootPath = rootPath;

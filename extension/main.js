@@ -47,10 +47,6 @@ function setup() {
 
 
 function navigateToUrl(url) {
-    function nullOrDefault(value, defaultValue) {
-        return value === null ? defaultValue : value;
-    }
-
     var openType = nullOrDefault(localStorage.getItem("open-type"), "current-tab");
     if (openType === "current-tab") {
         chrome.tabs.query({active: true}, function(tab) {
@@ -82,3 +78,9 @@ function buildSuggestResultItem(item) {
         description: description,
     }
 }
+
+function nullOrDefault(value, defaultValue) {
+    return value === null ? defaultValue : value;
+}
+
+window.nullOrDefault = nullOrDefault;
