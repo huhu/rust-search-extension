@@ -1,4 +1,3 @@
-
 const isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
 
 // Firefox doesn't support tags in search suggestion.
@@ -18,14 +17,27 @@ function setup() {
     chrome.omnibox.onInputChanged.addListener(function(query, suggestFn) {
         if (!query) return;
 
-        var searchResults = window.search(query);
-        var suggestResults = [];
-        for (var i = 0; i < searchResults.length; i++) {
-            var result = searchResults[i];
+        const searchResults = window.search(query);
+        const suggestResults = [];
+        for (let i = 0; i < searchResults.length; i++) {
+            const result = searchResults[i];
             suggestResults.push(buildSuggestResultItem(result));
         }
 
-        if (suggestResults.length <= 4) {
+        if (suggestResults.length < 5 && /e\d{2,4}$/ig.test(query)) {
+            suggestErrorIndexResult(
+                query,
+                5 - suggestResults.length,
+                errorIndex => {
+                    suggestResults.push({
+                        content: "https://doc.rust-lang.org/error-index.html#" + errorIndex.toUpperCase(),
+                        description: "Search Rust error index for " + tagged("match", errorIndex.toUpperCase())
+                        + " on https://doc.rust-lang.org/error-index.html"
+                    });
+                });
+        }
+
+        if (suggestResults.length < 5) {
             suggestResults.push({
                 content: "https://crates.io/search?q=" + encodeURIComponent(query),
                 description: "Search Rust crates for " + tagged("match", query) + " on https://crates.io"
@@ -36,8 +48,7 @@ function setup() {
     });
 
     chrome.omnibox.onInputEntered.addListener(function(text) {
-        if (text && text.startsWith(window.rootPath)
-            || text.startsWith("https://crates.io")) {
+        if (text && text.startsWith("https://")) {
             navigateToUrl(text);
         } else {
             navigateToUrl('https://doc.rust-lang.org/stable/std/?search=' + encodeURIComponent(text));
@@ -45,9 +56,17 @@ function setup() {
     });
 }
 
+function suggestErrorIndexResult(query, length, callback) {
+    let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
+    for (let i = 1; i <= length; i++) {
+        let errorIndex = 'E' + String(baseIndex++).padStart(4, "0");
+        callback && callback(errorIndex);
+        console.log(errorIndex);
+    }
+}
 
 function navigateToUrl(url) {
-    var openType = nullOrDefault(localStorage.getItem("open-type"), "current-tab");
+    const openType = nullOrDefault(localStorage.getItem("open-type"), "current-tab");
     if (openType === "current-tab") {
         chrome.tabs.query({active: true}, function(tab) {
             chrome.tabs.update(tab.id, {url: url});
@@ -69,7 +88,7 @@ function escape(text) {
 }
 
 function buildSuggestResultItem(item) {
-    var description = item.displayPath + tagged("match", item.name);
+    let description = item.displayPath + tagged("match", item.name);
     if (item.desc) {
         description += " - " + tagged("dim", escape(item.desc));
     }
