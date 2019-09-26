@@ -26,6 +26,7 @@ Git clone to your computer, open `chrome://extension` page, and enable developer
 - Search Structs, Traits and Enums
 - Search Functions, Methods and Macros
 - Search crates on https://crates.io
+- Search compiler Error Index
 - Offline mode, search local Rust docs (`rustup docs --std`) 
 - Both Chrome and Firefox are supported
 
