@@ -61,7 +61,6 @@ function suggestErrorIndexResult(query, length, callback) {
     for (let i = 1; i <= length; i++) {
         let errorIndex = 'E' + String(baseIndex++).padStart(4, "0");
         callback && callback(errorIndex);
-        console.log(errorIndex);
     }
 }
 
