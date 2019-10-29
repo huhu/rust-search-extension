@@ -12,6 +12,11 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v1
 
+      # https://stackoverflow.com/questions/58177786/get-the-current-pushed-tag-in-github-actions
+      - name: "Set output"
+        id: vars
+        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+
       - name: "web-ext build"
         id: web-ext-build
         uses: kewisch/action-web-ext@v1
@@ -22,5 +27,5 @@ jobs:
       - name: "Upload Artifact"
         uses: actions/upload-artifact@master
         with:
-          name: target
+          name: rust-search-extension-${{ steps.vars.outputs.tag }}
           path: ${{ steps.web-ext-build.outputs.target }}
