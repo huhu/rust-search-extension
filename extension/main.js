@@ -1,5 +1,5 @@
 const isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
-
+const browser = isChrome ? window.chrome : window.browser;
 // Firefox doesn't support tags in search suggestion.
 const tagged = isChrome ?
     (tag, str) => `<${tag}>${str}</${tag}>` :
@@ -8,13 +8,13 @@ const tagged = isChrome ?
 setup();
 
 function setup() {
-    chrome.omnibox.setDefaultSuggestion({
+    browser.omnibox.setDefaultSuggestion({
         description: "Search Rust docs" +
             (isChrome ? " for <match>%s</match>" : "") +
             " on https://doc.rust-lang.org"
     });
 
-    chrome.omnibox.onInputChanged.addListener(function(query, suggestFn) {
+    browser.omnibox.onInputChanged.addListener(function(query, suggestFn) {
         if (!query) return;
 
         const searchResults = window.search(query);
@@ -47,7 +47,7 @@ function setup() {
         suggestFn(suggestResults);
     });
 
-    chrome.omnibox.onInputEntered.addListener(function(text) {
+    browser.omnibox.onInputEntered.addListener(function(text) {
         if (text && text.startsWith("https://")) {
             navigateToUrl(text);
         } else {
@@ -67,11 +67,11 @@ function suggestErrorIndexResult(query, length, callback) {
 function navigateToUrl(url) {
     const openType = nullOrDefault(localStorage.getItem("open-type"), "current-tab");
     if (openType === "current-tab") {
-        chrome.tabs.query({active: true}, function(tab) {
-            chrome.tabs.update(tab.id, {url: url});
+        browser.tabs.query({active: true}, function(tab) {
+            browser.tabs.update(tab.id, {url: url});
         });
     } else {
-        chrome.tabs.create({url: url});
+        browser.tabs.create({url: url});
     }
 }
 
