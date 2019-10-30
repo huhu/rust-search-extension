@@ -1,3 +1,5 @@
+const omnibox = new Omnibox();
+
 document.addEventListener('DOMContentLoaded', function() {
     const openTypeSelect = document.querySelector('select[name="open-type"]');
     if (localStorage.getItem("open-type")) {
@@ -26,6 +28,7 @@ function onOfflineModeChange(event) {
     const enable = event.target.checked;
     localStorage.setItem('offline-mode', enable);
     toggleOfflinePathEnableState(enable);
+    omnibox.setupDefaultSuggestion();
 }
 
 function toggleOfflinePathEnableState(enable) {
