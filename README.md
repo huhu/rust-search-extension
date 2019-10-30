@@ -4,6 +4,7 @@
 # Rust Search Extension
 
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)
+![Mozilla Add-on](https://img.shields.io/amo/v/rust-search-extension?color=%2320123A)
 [![rust-doc](https://img.shields.io/badge/stable-1.38.0-yellow.svg)](https://doc.rust-lang.org/1.38.0/std/)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
@@ -12,13 +13,9 @@
 
 ### Installation
 
-- Chrome Web Store
+- [Chrome Web Store](https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh)
 
-https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh
-
-- Mannually
-
-Git clone to your computer, open `chrome://extension` page, and enable developer mode, then click `load unpakced` button, select the `extension` directory.
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/rust-search-extension/)
 
 ### Features
 
@@ -65,7 +62,7 @@ var searchIndex = [
       path: "std::iter",
       ty: 11,
       type: [["self"],["f"]]
-    }
+    },
     ...
 ];
 ```
