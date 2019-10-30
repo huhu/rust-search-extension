@@ -48,10 +48,10 @@ function setup() {
     });
 
     browser.omnibox.onInputEntered.addListener(function(text) {
-        if (text && text.startsWith("https://")) {
+        if (text) {
             navigateToUrl(text);
         } else {
-            navigateToUrl('https://doc.rust-lang.org/stable/std/?search=' + encodeURIComponent(text));
+            navigateToUrl(`${window.rootPath}?search=` + encodeURIComponent(text));
         }
     });
 }
@@ -65,7 +65,7 @@ function suggestErrorIndexResult(query, length, callback) {
 }
 
 function navigateToUrl(url) {
-    const openType = nullOrDefault(localStorage.getItem("open-type"), "current-tab");
+    const openType = localStorage.getItem("open-type") || "current-tab";
     if (openType === "current-tab") {
         browser.tabs.query({active: true}, function(tab) {
             browser.tabs.update(tab.id, {url: url});
