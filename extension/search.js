@@ -563,9 +563,8 @@ function levenshtein(s1, s2) {
  * Prepare root path before execute query.
  */
 function prepareRootPath() {
-    var checkedState = nullOrDefault(JSON.parse(localStorage.getItem('offline-mode')), false);
-    if (checkedState) {
-        var offlineDocPath = localStorage.getItem("offline-path");
+    if (settings.isOfflineMode) {
+        var offlineDocPath = settings.offlineDocPath;
         if (offlineDocPath) {
             rootPath = offlineDocPath;
         }

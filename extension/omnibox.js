@@ -9,10 +9,8 @@ function Omnibox() {
 }
 
 Omnibox.prototype.setupDefaultSuggestion = function() {
-    let offlineMode = JSON.parse(localStorage.getItem('offline-mode'));
-    offlineMode = (offlineMode === null) ? false : offlineMode;
     this.browser.omnibox.setDefaultSuggestion({
-        description: `Search Rust docs ${ this.isChrome ? " for <match>%s</match>" : "" } on ${ offlineMode ? "offline mode" : "https://doc.rust-lang.org"}`
+        description: `Search Rust docs ${ this.isChrome ? " for <match>%s</match>" : "" } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`
     });
 };
 
@@ -80,8 +78,7 @@ Omnibox.prototype.appendCratesResult = function(query) {
 };
 
 Omnibox.prototype.navigateToUrl = function(url) {
-    const openType = localStorage.getItem("open-type") || "current-tab";
-    if (openType === "current-tab") {
+    if (settings.openType === "current-tab") {
         this.browser.tabs.query({active: true}, tab => {
             this.browser.tabs.update(tab.id, {url: url});
         });
