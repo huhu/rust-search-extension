@@ -24,7 +24,7 @@
 - Search Functions, Methods and Macros
 - Search crates on https://crates.io
 - Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error code
-- Offline mode, search local Rust docs (`rustup docs --std`) 
+- Offline mode, search local Rust docs (`rustup docs --std`) (Some limitation on Firefox, see [Caveats](#caveats))
 - Both Chrome and Firefox are supported
 
 ### Usages
@@ -116,3 +116,21 @@ var suggestResults = [
 ];
 ```
 
+### Caveats
+
+#### 1. Why local `file:` rust doc not work properly on Firefox?
+
+For security reasons, in Firefox, `file:` URLs is an unprivileged URL, accessing to those unprivileged URLs are prohibited. 
+See the [MDN documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/create) for more detail.
+
+#### 2. Any workaround to support offline mode on Firefox?
+
+Sure. A good choice is use http server! For example using python **SimpleHTTPServer** module:
+
+```sh
+$ cd your-rust-doc-directory
+$ python -m SimpleHTTPServer 8000
+Serving HTTP on localhost port 8000 ...
+```
+
+Then set `http://localhost:8000` as your local doc path.
