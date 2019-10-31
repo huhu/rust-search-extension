@@ -30,13 +30,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let path = event.target.value;
         let message = document.querySelector('.offline-doc-message');
         // Check the std doc path validity
-        if (/^file:\/\/.*\/doc\/rust\/html\//ig.test(path)) {
+        if (settings.checkDocPathValidity(path)) {
             settings.offlineDocPath = path;
 
-            message.textContent = "Great! Your std doc path is valid!";
+            message.textContent = "Great! Your local doc path is valid!";
             message.style.color = "green";
         } else {
-            message.textContent = "Local std doc path should match regex ^file://.*/doc/rust/html/";
+            message.textContent = "Local doc path should match regex ^file://.*/doc/rust/html/ or ^https?://.*:\\d{2,6}/";
             message.style.color = "red";
         }
     };

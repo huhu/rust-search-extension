@@ -1,3 +1,8 @@
+// Don't use /g mode, otherwise regex.test() would return an alternating result.
+// See https://stackoverflow.com/a/2630538/2220110
+const REGEX_DOC_PATH_FILE = /(^file:\/\/.*\/doc\/rust\/html\/)(.*)/i;
+const REGEX_DOC_PATH_HTTP = /(^https?:\/\/.*:\d{2,6}\/)(.*)/i;
+
 const settings = {
     get openType() {
         return localStorage.getItem("open-type") || "current-tab";
@@ -15,8 +20,21 @@ const settings = {
         return localStorage.getItem('offline-path');
     },
     set offlineDocPath(path) {
-        // Use regex match rule to eliminate the tail path
-        path = path.replace(/(^file:\/\/.*\/doc\/rust\/html\/)(.*)/ig, "$1");
-        localStorage.setItem('offline-path', path);
+        for (let regex of [REGEX_DOC_PATH_FILE, REGEX_DOC_PATH_HTTP]) {
+            if (regex.test(path)) {
+                // Use regex match rule to eliminate the tail path
+                path = path.replace(regex, "$1");
+                localStorage.setItem('offline-path', path);
+                return;
+            }
+        }
     },
+    /**
+     * Use regex patterns to check user local doc path validity.
+     * @param path
+     * @returns {boolean}
+     */
+    checkDocPathValidity(path) {
+        return REGEX_DOC_PATH_FILE.test(path) || REGEX_DOC_PATH_HTTP.test(path);
+    }
 };
