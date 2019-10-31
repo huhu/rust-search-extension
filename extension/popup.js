@@ -1,35 +1,47 @@
 const omnibox = new Omnibox();
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Open type
     const openTypeSelect = document.querySelector('select[name="open-type"]');
-    if (localStorage.getItem("open-type")) {
-        openTypeSelect.value = localStorage.getItem("open-type");
+    if (settings.openType) {
+        openTypeSelect.value = settings.openType;
         openTypeSelect.selected = true;
     }
-    openTypeSelect.onchange = onOpenTypeChange;
+    openTypeSelect.onchange = function(event) {
+        settings.openType = event.target.value;
+    };
 
+    // Offline mode checkbox
     const offlineModeCheckbox = document.querySelector('input[type="checkbox"]');
-    offlineModeCheckbox.onchange = onOfflineModeChange;
-    // JSON parse 'true' or 'false' string to boolean value
-    const checkedState = nullOrDefault(JSON.parse(localStorage.getItem('offline-mode')), false);
+    const checkedState = settings.isOfflineMode;
     offlineModeCheckbox.checked = checkedState;
     toggleOfflinePathEnableState(checkedState);
+    offlineModeCheckbox.onchange = function(event) {
+        const checked = event.target.checked;
+        settings.isOfflineMode = checked;
+        toggleOfflinePathEnableState(checked);
+        omnibox.setupDefaultSuggestion();
+    };
 
+    // Offline doc path
     const offlineDocPath = document.querySelector('.offline-doc-path');
-    offlineDocPath.onchange = onOfflinePathChange;
-    offlineDocPath.value = localStorage.getItem('offline-path');
+    offlineDocPath.value = settings.offlineDocPath;
+    offlineDocPath.onchange = function(event) {
+        let path = event.target.value;
+        let message = document.querySelector('.offline-doc-message');
+        // Check the std doc path validity
+        if (/^file:\/\/.*\/doc\/rust\/html\//ig.test(path)) {
+            settings.offlineDocPath = path;
+
+            message.textContent = "Great! Your std doc path is valid!";
+            message.style.color = "green";
+        } else {
+            message.textContent = "Local std doc path should match regex ^file://.*/doc/rust/html/";
+            message.style.color = "red";
+        }
+    };
 }, false);
 
-function onOpenTypeChange(event) {
-    localStorage.setItem("open-type", event.target.value);
-}
-
-function onOfflineModeChange(event) {
-    const enable = event.target.checked;
-    localStorage.setItem('offline-mode', enable);
-    toggleOfflinePathEnableState(enable);
-    omnibox.setupDefaultSuggestion();
-}
 
 function toggleOfflinePathEnableState(enable) {
     const offlineDocPath = document.querySelector('.offline-doc-path');
@@ -40,25 +52,4 @@ function toggleOfflinePathEnableState(enable) {
         offlineDocPath.classList.remove('enable');
         offlineDocPath.classList.add('disable');
     }
-}
-
-function onOfflinePathChange(event) {
-    let path = event.target.value;
-    let message = document.querySelector('.offline-doc-message');
-    // Check the std doc path validity
-    if (/^file:\/\/.*\/doc\/rust\/html\//ig.test(path)) {
-        // Use regex match rule to eliminate the tail path
-        path = path.replace(/(^file:\/\/.*\/doc\/rust\/html\/)(.*)/ig, "$1");
-        localStorage.setItem('offline-path', path);
-
-        message.textContent = "Great! Your std doc path is valid!";
-        message.style.color = "green";
-    } else {
-        message.textContent = "Local std doc path should match regex ^file://.*/doc/rust/html/";
-        message.style.color = "red";
-    }
-}
-
-function nullOrDefault(value, default_value) {
-    return value === null ? default_value : value;
 }
