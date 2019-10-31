@@ -43,8 +43,20 @@ function toggleOfflinePathEnableState(enable) {
 }
 
 function onOfflinePathChange(event) {
-    const offlineDocPath = document.querySelector('.offline-doc-path');
-    localStorage.setItem("offline-path", offlineDocPath.value);
+    let path = event.target.value;
+    let message = document.querySelector('.offline-doc-message');
+    // Check the std doc path validity
+    if (/^file:\/\/.*\/doc\/rust\/html\//ig.test(path)) {
+        // Use regex match rule to eliminate the tail path
+        path = path.replace(/(^file:\/\/.*\/doc\/rust\/html\/)(.*)/ig, "$1");
+        localStorage.setItem('offline-path', path);
+
+        message.textContent = "Great! Your std doc path is valid!";
+        message.style.color = "green";
+    } else {
+        message.textContent = "Local std doc path should match regex ^file://.*/doc/rust/html/";
+        message.style.color = "red";
+    }
 }
 
 function nullOrDefault(value, default_value) {
