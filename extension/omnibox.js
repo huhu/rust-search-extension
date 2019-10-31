@@ -39,7 +39,7 @@ Omnibox.prototype.bootstrap = function() {
     });
 
     this.browser.omnibox.onInputEntered.addListener(text => {
-        if (text.startsWith("https://") || text.startsWith("file://")) {
+        if (/^https?:\/\//i.test(text) || /^file:\/\//i.test(text)) {
             this.navigateToUrl(text);
         } else {
             this.navigateToUrl(`${window.rootPath}std/index.html?search=` + encodeURIComponent(text));
