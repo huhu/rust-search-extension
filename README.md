@@ -8,6 +8,7 @@
 [![rust-doc](https://img.shields.io/badge/stable-1.38.0-yellow.svg)](https://doc.rust-lang.org/1.38.0/std/)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
+![Build Status](https://github.com/folyd/rust-search-extension/workflows/build/badge.svg)
 
 🦀 A handy browser extension to search crates and docs in address bar (omnibox).
 
