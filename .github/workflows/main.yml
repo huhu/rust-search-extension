@@ -1,4 +1,4 @@
-name: "Release the web extension artifacts"
+name: "build"
 on:
   create:
     tags:
