@@ -129,8 +129,8 @@ Sure. A good choice is use http server! For example using python **SimpleHTTPSer
 
 ```sh
 $ cd your-rust-doc-directory
-$ python -m SimpleHTTPServer 8000
-Serving HTTP on localhost port 8000 ...
+$ python -m http.server
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 ```
 
-Then set `http://localhost:8000` as your local doc path.
+Then set `http://0.0.0.0:8000` as your local doc path.
