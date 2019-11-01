@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -12,6 +13,12 @@
             overflow-x: hidden;
             width: 280px;
             padding: 1rem 2rem;
+        }
+
+        .title {
+            font-family: "Alfa Slab One", serif;
+            font-weight: 400;
+            padding-bottom: 10px;
         }
 
         p {
@@ -42,7 +49,7 @@
 <body>
 <div style="text-align: center;">
     <img class="logo" src="icon.png" alt="rust-search-extension">
-    <h2>Rust Search Extension</h2>
+    <h2 class="title">Rust Search Extension</h2>
     <div>
         <a href="https://doc.rust-lang.org/1.38.0/std/">
             <img src="https://img.shields.io/badge/stable-1.38.0-yellow.svg" alt="stable-docs">
