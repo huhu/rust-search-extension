@@ -5,7 +5,7 @@
 
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)
 ![Mozilla Add-on](https://img.shields.io/amo/v/rust-search-extension?color=%2320123A)
-[![rust-doc](https://img.shields.io/badge/stable-1.38.0-yellow.svg)](https://doc.rust-lang.org/1.38.0/std/)
+[![rust-doc](https://img.shields.io/badge/stable-1.39.0-yellow.svg)](https://doc.rust-lang.org/1.39.0/std/)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
 ![Build Status](https://github.com/folyd/rust-search-extension/workflows/build/badge.svg)
