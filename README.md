@@ -10,7 +10,7 @@
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
 ![Build Status](https://github.com/folyd/rust-search-extension/workflows/build/badge.svg)
 
-🦀 A handy browser extension to search crates and docs in address bar (omnibox).
+🦀 A handy browser extension to search crates and docs in the address bar (omnibox).
 
 ### Installation
 
