@@ -50,7 +50,7 @@ Omnibox.prototype.bootstrap = function() {
 Omnibox.prototype.appendSuggestResult = function(item) {
     let description = item.displayPath + this.tagged("match", item.name);
     if (item.desc) {
-        description += " - " + this.tagged("dim", escape(item.desc));
+        description += " - " + this.tagged("dim", this.escape(item.desc));
     }
     this.suggestResults.push({
         content: item.href,
@@ -88,12 +88,13 @@ Omnibox.prototype.navigateToUrl = function(url) {
 };
 
 // Escape the five predefined entities to display them as text.
-function escape(text) {
+Omnibox.prototype.escape = function(text) {
     text = text || "";
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+    return this.isChrome ? text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;")
+        : text;
+};
