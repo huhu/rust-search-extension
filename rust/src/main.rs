@@ -3,12 +3,29 @@ use std::fs;
 use std::path::Path;
 
 use futures::future::join_all;
+use serde::ser::Serialize;
+use serde::Serializer;
 use serde_derive::{Deserialize, Serialize};
 use serde_json;
 use tokio;
 
 const API: &'static str = "https://crates.io/api/v1/crates?page={}&per_page=100&sort=downloads";
 const CRATES_INDEX_PATH: &'static str = "../extension/crates-index.js";
+
+#[derive(Deserialize, Debug)]
+struct MinifiedUrl(String);
+
+impl Serialize for MinifiedUrl {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+        let url = self.0
+            .replace("http://", "")
+            .replace("https://", "")
+            .replace("docs.rs", "D")
+            .replace("crates.io", "C")
+            .replace("github.com", "G");
+        serializer.serialize_str(&url)
+    }
+}
 
 #[derive(Serialize, Deserialize, Debug)]
 struct CrateApiResponse {
@@ -22,11 +39,11 @@ struct Crate {
     #[serde(rename(serialize = "d"))]
     description: String,
     #[serde(rename(serialize = "h"))]
-    homepage: Option<String>,
+    homepage: Option<MinifiedUrl>,
     #[serde(rename(serialize = "o"))]
-    documentation: Option<String>,
+    documentation: Option<MinifiedUrl>,
     #[serde(rename(serialize = "r"))]
-    repository: Option<String>,
+    repository: Option<MinifiedUrl>,
     #[serde(rename(serialize = "x"))]
     downloads: u32,
     #[serde(rename(serialize = "v"))]
