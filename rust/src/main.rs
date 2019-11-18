@@ -60,7 +60,7 @@ async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error
 async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result<()> {
     let mut contents = String::from("var N=null;");
     let crates_map: HashMap<String, Crate> = crates.into_iter()
-        .map(|item| (item.id.clone(), item))
+        .map(|item| (item.id.to_lowercase(), item))
         .collect();
     let mut crate_index = format!("var crateIndex={};", serde_json::to_string(&crates_map).unwrap());
     crate_index = crate_index.replace("null", "N");
