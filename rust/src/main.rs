@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 
@@ -22,6 +22,7 @@ impl Serialize for MinifiedUrl {
             .replace("https://", "")
             .replace("docs.rs", "D")
             .replace("crates.io", "C")
+            .replace("github.io", "O")
             .replace("github.com", "G");
         serializer.serialize_str(&url)
     }
@@ -58,12 +59,12 @@ async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error
 
 async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result<()> {
     let mut contents = String::from("var N=null;");
-    let mut crate_index = format!("var crateIndex={};\n", serde_json::to_string(&crates).unwrap());
+    let crates_map: HashMap<String, Crate> = crates.into_iter()
+        .map(|item| (item.id.clone(), item))
+        .collect();
+    let mut crate_index = format!("var crateIndex={};", serde_json::to_string(&crates_map).unwrap());
     crate_index = crate_index.replace("null", "N");
     contents.push_str(&crate_index);
-
-    let crate_ids = crates.into_iter().map(|krate| krate.id).collect::<HashSet<String>>();
-    contents.push_str(&format!("var crateIds={};\n", serde_json::to_string(&crate_ids).unwrap()));
 
     let path = Path::new(CRATES_INDEX_PATH);
     fs::write(path, &contents)?;
@@ -73,7 +74,7 @@ async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result
 #[tokio::main]
 async fn main() {
     let mut futures = vec![];
-    for page in 1..10 {
+    for page in 1..=10 {
         futures.push(fetch_crates(page));
     }
     let crates: Vec<Crate> = join_all(futures).await
