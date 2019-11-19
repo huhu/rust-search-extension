@@ -127,6 +127,8 @@ function buildQuery(raw) {
     var matches, type, query;
     query = raw;
 
+    // let query = "fn:unwrap";
+    // then the matches is ["fn:", "fn", index: 0, input: "fn:unwrap", groups: undefined]
     matches = query.match(/^(fn|mod|struct|enum|trait|type|const|macro)\s*:\s*/i);
     if (matches) {
         type = matches[1].replace(/^const$/, 'constant');
