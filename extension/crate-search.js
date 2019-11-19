@@ -46,18 +46,19 @@ function cleanMinifiedUrl(rawUrl) {
         .replace("D/", "docs.rs/")
         .replace("C/", "crates.io/")
         .replace("O/", "github.io/")
-        .replace("G/", "github.com/");
+        .replace("G/", "github.com/")
+        .replace("/I", "/index.html");
 }
 
 // Clean the raw crate index.
 function cleanCrateIndex(rawCrateIndex) {
     let crateIndex = {};
-    for (let [crateId, crate] of Object.entries(rawCrateIndex)) {
+    for (let [crateId, [description, documentation, version]] of Object.entries(rawCrateIndex)) {
         crateIndex[crateId] = {
-            id: crate.i,
-            description: crate.d,
-            documentation: cleanMinifiedUrl(crate.o),
-            version: crate.v,
+            id: crateId,
+            description: description,
+            documentation: cleanMinifiedUrl(documentation),
+            version: version,
         }
     }
     return crateIndex;

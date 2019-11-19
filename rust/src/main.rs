@@ -18,6 +18,7 @@ impl MinifiedUrl for Option<String> {
     fn minify_url(&self) -> Self {
         match self {
             Some(value) => Some(value
+                .to_lowercase()
                 .replace("http://", "")
                 .replace("https://", "")
                 .replace("docs.rs", "D")
