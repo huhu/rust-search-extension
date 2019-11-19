@@ -39,14 +39,8 @@ struct Crate {
     id: String,
     #[serde(rename(serialize = "d"))]
     description: String,
-    #[serde(rename(serialize = "h"))]
-    homepage: Option<MinifiedUrl>,
     #[serde(rename(serialize = "o"))]
     documentation: Option<MinifiedUrl>,
-    #[serde(rename(serialize = "r"))]
-    repository: Option<MinifiedUrl>,
-    #[serde(rename(serialize = "x"))]
-    downloads: u32,
     #[serde(rename(serialize = "v"))]
     max_version: String,
 }
@@ -65,6 +59,7 @@ async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result
     let mut crate_index = format!("var crateIndex={};", serde_json::to_string(&crates_map).unwrap());
     crate_index = crate_index.replace("null", "N");
     contents.push_str(&crate_index);
+    contents.push_str("let crateSearcher=new CrateSearch(crateIndex);");
 
     let path = Path::new(CRATES_INDEX_PATH);
     fs::write(path, &contents)?;

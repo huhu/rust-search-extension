@@ -57,9 +57,6 @@ function cleanCrateIndex(rawCrateIndex) {
             id: crate.i,
             description: crate.d,
             documentation: cleanMinifiedUrl(crate.o),
-            homepage: cleanMinifiedUrl(crate.h),
-            repository: cleanMinifiedUrl(crate.r),
-            downloads: crate.x,
             version: crate.v,
         }
     }
@@ -109,5 +106,3 @@ CrateSearch.prototype.search = function(keyword, limit = 5) {
             return this.crateIndex[item.id];
         });
 };
-
-const crateSearcher = new CrateSearch(crateIndex);
