@@ -109,3 +109,5 @@ CrateSearch.prototype.search = function(keyword, limit = 5) {
             return this.crateIndex[item.id];
         });
 };
+
+const crateSearcher = new CrateSearch(crateIndex);
