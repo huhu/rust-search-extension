@@ -3,12 +3,12 @@ use std::fs;
 use std::path::Path;
 
 use futures::future::join_all;
-use serde_derive::{Deserialize, Serialize};
+use serde_derive::Deserialize;
 use serde_json;
 use tokio;
 
-const API: &'static str = "https://crates.io/api/v1/crates?page={}&per_page=100&sort=downloads";
-const CRATES_INDEX_PATH: &'static str = "../extension/crates-index.js";
+const API: &str = "https://crates.io/api/v1/crates?page={}&per_page=100&sort=downloads";
+const CRATES_INDEX_PATH: &str = "../extension/crates-index.js";
 
 trait MinifiedUrl: Sized {
     fn minify_url(&self) -> Self;
@@ -29,12 +29,12 @@ impl MinifiedUrl for Option<String> {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 struct CrateApiResponse {
     crates: Vec<Crate>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 struct Crate {
     id: String,
     description: Option<String>,
