@@ -16,18 +16,16 @@ trait MinifiedUrl: Sized {
 
 impl MinifiedUrl for Option<String> {
     fn minify_url(&self) -> Self {
-        match self {
-            Some(value) => Some(value
-                .to_lowercase()
+        self.as_ref().map(|value| {
+            value.to_lowercase()
                 .replace("http://", "")
                 .replace("https://", "")
                 .replace("docs.rs", "D")
                 .replace("crates.io", "C")
                 .replace("github.io", "O")
                 .replace("github.com", "G")
-                .replace("index.html", "I")),
-            None => None
-        }
+                .replace("index.html", "I")
+        })
     }
 }
 

@@ -91,11 +91,11 @@ CrateSearch.prototype.search = function(keyword, limit = 5) {
         } else if (keyword.length >= 3 && crateId.levenshteinContains(keyword)) {
             result.push({
                 id: rawCrateId,
-                matchIndex: 999, // Levenshtein contain result always has lowest matchIndex.
+                matchIndex: 999, // Levenshtein contain result always has highest matchIndex.
             });
         }
     }
-    // Sort the result, the lower matchIndex and length, the higher rank.
+    // Sort the result, the lower matchIndex, the shorter length, the higher rank.
     return result.sort((a, b) => {
         if (a.matchIndex === b.matchIndex) {
             return a.id.length - b.id.length;
