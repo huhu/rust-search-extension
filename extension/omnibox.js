@@ -20,11 +20,12 @@ Omnibox.prototype.bootstrap = function() {
     this.browser.omnibox.onInputChanged.addListener((query, suggestFn) => {
         if (!query) return;
 
-        const searchResults = window.search(query);
         this.suggestResults = [];
-
-        for (let result of searchResults) {
-            this.appendSuggestResult(result);
+        if (!query.startsWith("!")) {
+            const searchResults = window.search(query);
+            for (let result of searchResults) {
+                this.appendSuggestResult(result);
+            }
         }
 
         if (this.suggestResults.length < 5 && /e\d{2,4}$/ig.test(query)) {

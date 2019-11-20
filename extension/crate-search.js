@@ -62,7 +62,7 @@ function CrateSearch(crateIndex) {
  * @returns
  */
 CrateSearch.prototype.search = function(keyword, limit = 10) {
-    keyword = keyword.replace(/[-_\s]/ig, "");
+    keyword = keyword.replace(/[-_\s!]/ig, "");
     let result = [];
     for (let rawCrateId of this.crateIds) {
         let crateId = rawCrateId.replace(/[-_\s]/ig, "");
