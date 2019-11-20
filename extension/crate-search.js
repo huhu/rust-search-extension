@@ -76,10 +76,10 @@ function CrateSearch(crateIndex) {
  * @returns
  */
 CrateSearch.prototype.search = function(keyword, limit = 5) {
-    keyword = keyword.replace(/[-_]/ig, "");
+    keyword = keyword.replace(/[-_\s]/ig, "");
     let result = [];
     for (let rawCrateId of this.crateIds) {
-        let crateId = rawCrateId.replace(/[-_]/ig, "");
+        let crateId = rawCrateId.replace(/[-_\s]/ig, "");
         if (crateId.length < keyword.length) continue;
 
         let index = crateId.indexOf(keyword);
@@ -88,7 +88,7 @@ CrateSearch.prototype.search = function(keyword, limit = 5) {
                 id: rawCrateId,
                 matchIndex: index,
             });
-        } else if (keyword.length >= 3 && crateId.levenshteinContains(keyword)) {
+        } else if (keyword.length >= 4 && crateId.levenshteinContains(keyword)) {
             result.push({
                 id: rawCrateId,
                 matchIndex: 999, // Levenshtein contain result always has highest matchIndex.
