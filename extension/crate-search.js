@@ -50,32 +50,18 @@ function cleanMinifiedUrl(rawUrl) {
         .replace("/I", "/index.html");
 }
 
-// Clean the raw crate index.
-function cleanCrateIndex(rawCrateIndex) {
-    let crateIndex = {};
-    for (let [crateId, [description, documentation, version]] of Object.entries(rawCrateIndex)) {
-        crateIndex[crateId] = {
-            id: crateId,
-            description: description,
-            documentation: cleanMinifiedUrl(documentation),
-            version: version,
-        }
-    }
-    return crateIndex;
-}
-
 function CrateSearch(crateIndex) {
-    this.crateIndex = cleanCrateIndex(crateIndex);
+    this.crateIndex = crateIndex;
     this.crateIds = Object.keys(crateIndex).sort();
 }
 
 /**
  * Perform prefix levenshtein search.
  * @param keyword the keyword to search against.
- * @param limit the max result length, default is 5.
+ * @param limit the max result length, default is 10.
  * @returns
  */
-CrateSearch.prototype.search = function(keyword, limit = 5) {
+CrateSearch.prototype.search = function(keyword, limit = 10) {
     keyword = keyword.replace(/[-_\s]/ig, "");
     let result = [];
     for (let rawCrateId of this.crateIds) {
@@ -104,6 +90,12 @@ CrateSearch.prototype.search = function(keyword, limit = 5) {
     })
         .slice(0, limit)
         .map(item => {
-            return this.crateIndex[item.id];
+            let [description, documentation, version] = this.crateIndex[item.id];
+            return {
+                id: item.id,
+                description: description,
+                documentation: cleanMinifiedUrl(documentation),
+                version: version,
+            }
         });
 };
