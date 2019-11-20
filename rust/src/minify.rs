@@ -1,4 +1,6 @@
-use minifier::js::{simple_minify, Keyword, Token, Tokens};
+use minifier::js::{
+    aggregate_strings_into_array_filter, simple_minify, Keyword, ReservedChar, Token, Tokens,
+};
 
 pub(crate) fn minify_url(url: String) -> String {
     url.to_lowercase()
@@ -20,5 +22,9 @@ pub(crate) fn minify_json(json: String) -> String {
         })
         .collect::<Vec<_>>()
         .into();
-    tokens.to_string()
+    aggregate_strings_into_array_filter(tokens, "C", |tokens, position| {
+        // Ignore the key of json (AKA, the crate id).
+        position > 5 && !tokens[position + 1].eq_char(ReservedChar::Colon)
+    })
+    .to_string()
 }
