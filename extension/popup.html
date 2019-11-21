@@ -15,36 +15,11 @@
             padding: 1rem 2rem;
         }
 
-        .title {
-            font-family: "Alfa Slab One", serif;
-            font-weight: 400;
-            padding-bottom: 10px;
-        }
-
         p {
             margin: 0 auto;
         }
-
-        .logo {
-            width: 180px;
-        }
-
-        .disable {
-            pointer-events: none;
-            opacity: 0.3;
-        }
-
-        .flex-vertical {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-        }
-
-        .offline-doc-path {
-            width: 100%;
-            margin: 5px 0;
-        }
     </style>
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
 <div style="text-align: center;">
@@ -66,9 +41,13 @@
     </label>
 </div>
 <div style="margin-top: 10px" class="flex-vertical">
-    <label>
-        Enable offline mode <input type="checkbox">
-    </label>
+    <div>
+        Enable offline mode
+        <label class="toggle">
+            <input type="checkbox" id="offline-mode">
+            <span class="slider"></span>
+        </label>
+    </div>
     <input type="text" class="offline-doc-path" placeholder="Input the local doc path">
     <small class="offline-doc-message"></small>
 </div>

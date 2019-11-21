@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Offline mode checkbox
-    const offlineModeCheckbox = document.querySelector('input[type="checkbox"]');
+    const offlineModeCheckbox = document.getElementById('offline-mode');
     const checkedState = settings.isOfflineMode;
     offlineModeCheckbox.checked = checkedState;
     toggleOfflinePathEnableState(checkedState);
