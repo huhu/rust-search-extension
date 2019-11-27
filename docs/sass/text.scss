@@ -1,0 +1,38 @@
+@import "_variables.scss";
+
+.heading-text {
+  font-family: "Fira Sans", sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  padding: 15px 0;
+  color: $primary-text-color;
+}
+
+h1, .title-text {
+  font-family: "Fira Sans", sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: $primary-text-color;
+}
+
+h2, .subtitle-text {
+  font-family: "Fira Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: $primary-text-color;
+}
+
+.text {
+  font-family: "Fira Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0.2px;
+}
+
+.subtext {
+  font-family: "Fira Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+}

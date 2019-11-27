@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+
+{% block title %}{{ page.title }} | {{ super() }} {% endblock title %}
+
+{% block header %}
+<header class="box-shadow">
+    <a href="/" style="text-decoration: none">
+        <div class="logo">
+            <img src="/logo.png" alt="rust-search-extension-logo">
+            Rust Search Extension
+        </div>
+    </a>
+    <nav>
+        <a class="nav-item subtitle-text" href="/">Home</a>
+        <a class="nav-item subtitle-text" href="/how-it-works">How it works</a>
+        <a class="nav-item subtitle-text" href="/release-history">Release History</a>
+        <a class="nav-item subtitle-text" href="https://github.com/Folyd/rust-search-extension">Github</a>
+    </nav>
+</header>
+{% endblock header %}
+
+{% block content %}
+<h1>{{ page.title }}</h1>
+{{ page.content | safe }}
+{% endblock content %}
