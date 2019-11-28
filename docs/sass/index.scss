@@ -1,6 +1,7 @@
 @import "_variables";
 @import "_ultility.scss";
 @import "text.scss";
+@import "markdown.scss";
 
 body {
   padding: 0;
@@ -121,12 +122,6 @@ main {
     color: $secondary-text-color;
   }
 
-  .content {
-    padding: 0 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
 }
 
 footer {
