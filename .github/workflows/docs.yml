@@ -8,10 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Checkout docs directory
-      run: cd docs
     - name: shalzz/zola-deploy-action
       uses: shalzz/zola-deploy-action@master
       env:
         PAGES_BRANCH: gh-pages
+        BUILD_DIR: docs 
         TOKEN: ${{ secrets.TOKEN }}
