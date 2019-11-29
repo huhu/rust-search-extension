@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "https://example.com"
+base_url = "https://folyd.github.io/rust-search-extension/"
 
 title = "Rust Search Extension"
 
