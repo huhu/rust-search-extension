@@ -1,6 +1,6 @@
 {% macro render_header() %}
 {% set section = get_section(path="_index.md") %}
-<a href="/">
+<a href="{{ section.permalink }}">
     <div class="logo">
         <img src="{{ get_url(path="logo.png") }}" alt="rust-search-extension-logo">
         Rust Search Extension
@@ -8,7 +8,7 @@
 </a>
 
 <nav>
-    <a class="nav-item subtitle-text" href="/">Home</a>
+    <a class="nav-item subtitle-text" href="{{ section.permalink }}">Home</a>
     {% for page in section.pages %}
     <a class="nav-item subtitle-text" href="{{ page.permalink }}">{{ page.title }}</a>
     {% endfor %}
