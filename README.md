@@ -12,6 +12,8 @@
 
 🦀 A handy browser extension to search crates and docs in the address bar (omnibox).
 
+[https://folyd.github.io/rust-search-extension](https://folyd.github.io/rust-search-extension)
+
 ### Installation
 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh)
@@ -35,7 +37,7 @@ you want to search, the extension will response the related search results insta
 
 ![demonstration.gif](assets/demonstration.gif)
 
-### How the extension works
+### [How the extension works](https://folyd.github.io/rust-search-extension/how-it-works/)
 
 #### 1. Build *search index*
 
@@ -126,7 +128,7 @@ See the [MDN documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add
 
 #### 2. Any workaround to support offline mode on Firefox?
 
-Sure. A good choice is use http server! For example using python **SimpleHTTPServer** module:
+Sure. A good choice is use http server! For example using python **http.server** module:
 
 ```sh
 $ cd your-rust-doc-directory
