@@ -41,10 +41,7 @@ async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result
             (
                 item.id.to_lowercase(),
                 [
-                    item.description.map(|mut value| {
-                        value.truncate(100);
-                        value
-                    }),
+                    item.description.map(minify::minify_description),
                     item.documentation.map(minify::minify_url),
                     item.max_version,
                 ],
@@ -56,7 +53,6 @@ async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result
         serde_json::to_string(&crates_map).unwrap()
     );
     contents.push_str(&minify::minify_json(crate_index));
-    contents.push_str("let crateSearcher=new CrateSearch(crateIndex);");
 
     let path = Path::new(CRATES_INDEX_PATH);
     fs::write(path, &contents)?;
@@ -72,7 +68,10 @@ async fn main() {
     let crates: Vec<Crate> = join_all(futures)
         .await
         .into_iter()
-        .flat_map(|item| item.unwrap())
+        .flat_map(|item| item.unwrap_or_else(|error| {
+            println!("{:?}", error);
+            vec![]
+        }))
         .collect();
     match generate_javascript_crates_index(crates).await {
         Ok(_) => println!("\nGenerate javascript crates index successful!"),

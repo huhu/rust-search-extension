@@ -2,6 +2,20 @@ use minifier::js::{
     aggregate_strings_into_array_filter, simple_minify, Keyword, ReservedChar, Token, Tokens,
 };
 
+pub(crate) fn minify_description(mut value: String) -> String {
+    value.truncate(100);
+    value
+        .replace("Rust", "$R")
+        .replace("rust", "$r")
+        .replace("library", "$l")
+        .replace("Library", "$L")
+        .replace("Google", "$G")
+        .replace("implementation", "$i")
+        .replace("binding", "$b")
+        .replace("support", "$s")
+        .replace("crate", "$c")
+}
+
 pub(crate) fn minify_url(url: String) -> String {
     url.to_lowercase()
         .replace("http://", "")
