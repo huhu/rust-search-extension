@@ -17,7 +17,7 @@ Omnibox.prototype.setupDefaultSuggestion = function() {
 Omnibox.prototype.bootstrap = function() {
     this.setupDefaultSuggestion();
 
-    this.browser.omnibox.onInputChanged.addListener((query, suggestFn) => {
+    this.browser.omnibox.onInputChanged.addListener(async (query, suggestFn) => {
         if (!query) return;
 
         this.suggestResults = [];
@@ -33,7 +33,7 @@ Omnibox.prototype.bootstrap = function() {
         }
 
         if (this.suggestResults.length < 5) {
-            this.appendCratesResult(query);
+            await this.appendCratesResult(query);
         }
 
         suggestFn(this.suggestResults);
@@ -71,8 +71,8 @@ Omnibox.prototype.appendErrorIndexResult = function(query, length) {
     }
 };
 
-Omnibox.prototype.appendCratesResult = function(query) {
-    let crates = crateSearcher.search(query);
+Omnibox.prototype.appendCratesResult = async function(query) {
+    let crates = await crateSearcher.search(query);
     for (let crate of crates) {
         this.suggestResults.push({
             content: `https://crates.io/crates/${crate.id}`,

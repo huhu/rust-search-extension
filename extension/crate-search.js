@@ -51,9 +51,21 @@ function cleanMinifiedUrl(rawUrl) {
 }
 
 function CrateSearch(crateIndex) {
+    this.crateIndexVersion = CrateSearch.latestIndexVersion() || 1;
     this.crateIndex = crateIndex;
     this.crateIds = Object.keys(crateIndex).sort();
 }
+
+CrateSearch.latestIndexVersion = function() {
+    return parseInt(localStorage.getItem("crate-index-version"));
+};
+
+CrateSearch.prototype.ensureLatestCrateIndex = async function() {
+    if (CrateSearch.latestIndexVersion() > this.crateIndexVersion) {
+        this.crateIndex = JSON.parse(localStorage.getItem("crate-index")) || this.crateIndex;
+        this.crateIds = Object.keys(crateIndex).sort();
+    }
+};
 
 /**
  * Perform prefix levenshtein search.
@@ -61,9 +73,11 @@ function CrateSearch(crateIndex) {
  * @param limit the max result length, default is 10.
  * @returns
  */
-CrateSearch.prototype.search = function(keyword, limit = 10) {
+CrateSearch.prototype.search = async function(keyword, limit = 10) {
     keyword = keyword.replace(/[-_\s!]/ig, "");
     let result = [];
+
+    await this.ensureLatestCrateIndex();
     for (let rawCrateId of this.crateIds) {
         let crateId = rawCrateId.replace(/[-_\s]/ig, "");
         if (crateId.length < keyword.length) continue;
