@@ -64,19 +64,23 @@ function cleanMinifiedDescription(rawDescription) {
         .replace("$c", "crate")
 }
 
-function CrateSearch(crateIndex) {
-    this.crateIndexVersion = CrateSearch.latestIndexVersion() || 1;
+function CrateSearch(crateIndex, crateIndexVersion = 1) {
+    this.crateIndexVersion = crateIndexVersion;
     this.crateIndex = crateIndex;
     this.crateIds = Object.keys(crateIndex).sort();
 }
 
-CrateSearch.latestIndexVersion = function() {
-    return parseInt(localStorage.getItem("crate-index-version"));
+CrateSearch.getLatestIndexVersion = function() {
+    return parseInt(localStorage.getItem("crate-index-version") || 1);
+};
+
+CrateSearch.getLatestCrateIndex = function() {
+    return JSON.parse(localStorage.getItem("crate-index") || null);
 };
 
 CrateSearch.prototype.ensureLatestCrateIndex = async function() {
-    if (CrateSearch.latestIndexVersion() > this.crateIndexVersion) {
-        this.crateIndex = JSON.parse(localStorage.getItem("crate-index")) || this.crateIndex;
+    if (CrateSearch.getLatestCrateIndex() > this.crateIndexVersion) {
+        this.crateIndex = CrateSearch.getLatestCrateIndex() || this.crateIndex;
         this.crateIds = Object.keys(crateIndex).sort();
     }
 };

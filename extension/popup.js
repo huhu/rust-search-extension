@@ -1,4 +1,30 @@
 const omnibox = new Omnibox();
+const CRATES_INDEX_ENDPOINT = "chrome-extension://hlpbdelgppbbhoilofpcfjebkbdgkgma";
+
+async function checkLatestCratesIndex() {
+    let response = await fetch(`${CRATES_INDEX_ENDPOINT}/crate-index-version.json`, {
+        mode: "no-cors",
+    });
+    console.log(response);
+    let {version} = await response.json();
+    if (parseInt(localStorage.getItem("crate-index-version") || 1) < version) {
+        await loadLatestCratesIndex(version);
+
+        localStorage.setItem('crate-index', JSON.stringify(window.crateIndex));
+        localStorage.setItem('crate-index-version', version);
+    }
+}
+
+async function loadLatestCratesIndex(version) {
+    return new Promise((resolve, reject) => {
+        let script = document.createElement('script');
+        script.src = `${CRATES_INDEX_ENDPOINT}/crates-index.js?${version}`;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+    });
+
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // Open type
@@ -53,3 +79,7 @@ function toggleOfflinePathEnableState(enable) {
         offlineDocPath.classList.add('disable');
     }
 }
+
+(async () => {
+    await checkLatestCratesIndex();
+})();
