@@ -1,3 +1,5 @@
+let MAX_SUGGEST_SIZE = 7;
+
 function Omnibox() {
     this.isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
     // Firefox doesn't support tags in search suggestion.
@@ -28,11 +30,11 @@ Omnibox.prototype.bootstrap = function() {
             }
         }
 
-        if (this.suggestResults.length < 5 && /e\d{2,4}$/ig.test(query)) {
-            this.appendErrorIndexResult(query, 5 - this.suggestResults.length);
+        if (this.suggestResults.length < MAX_SUGGEST_SIZE && /e\d{2,4}$/ig.test(query)) {
+            this.appendErrorIndexResult(query, MAX_SUGGEST_SIZE - this.suggestResults.length);
         }
 
-        if (this.suggestResults.length < 5) {
+        if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
             await this.appendCratesResult(query);
         }
 
