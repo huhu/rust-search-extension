@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::fs;
+use std::env;
 use std::path::Path;
 
 use futures::future::join_all;
@@ -33,7 +34,7 @@ async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error
     Ok(resp.crates)
 }
 
-async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result<()> {
+async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result<String> {
     let mut contents = String::from("var N=null;");
     let crates_map: HashMap<String, [Option<String>; 3]> = crates
         .into_iter()
@@ -53,14 +54,18 @@ async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result
         serde_json::to_string(&crates_map).unwrap()
     );
     contents.push_str(&minify::minify_json(crate_index));
-
-    let path = Path::new(CRATES_INDEX_PATH);
-    fs::write(path, &contents)?;
-    Ok(())
+    Ok(contents)
 }
 
 #[tokio::main]
-async fn main() {
+async fn main() -> std::io::Result<()> {
+    let args: Vec<String> = env::args().collect();
+    let path_name = match args.get(1) {
+        Some(path_name) => path_name,
+        None => CRATES_INDEX_PATH,
+    };
+    let path = Path::new(path_name);
+
     let mut futures = vec![];
     for page in 1..=100 {
         futures.push(fetch_crates(page));
@@ -73,8 +78,8 @@ async fn main() {
             vec![]
         }))
         .collect();
-    match generate_javascript_crates_index(crates).await {
-        Ok(_) => println!("\nGenerate javascript crates index successful!"),
-        Err(error) => println!("{:?}", error),
-    }
+    let contents = generate_javascript_crates_index(crates).await?;
+    fs::write(path, &contents)?;
+    println!("\nGenerate javascript crates index successful!");
+    Ok(())
 }
