@@ -1,10 +1,8 @@
 const omnibox = new Omnibox();
-const CRATES_INDEX_ENDPOINT = "chrome-extension://hlpbdelgppbbhoilofpcfjebkbdgkgma";
+const CRATES_INDEX_BASE_URL = "https://folyd.github.io/rust-search-extension/crates";
 
 async function checkLatestCratesIndex() {
-    let response = await fetch(`${CRATES_INDEX_ENDPOINT}/crate-index-version.json`, {
-        mode: "no-cors",
-    });
+    let response = await fetch(`${CRATES_INDEX_BASE_URL}/version.json`);
     console.log(response);
     let {version} = await response.json();
     if (parseInt(localStorage.getItem("crate-index-version") || 1) < version) {
@@ -18,7 +16,7 @@ async function checkLatestCratesIndex() {
 async function loadLatestCratesIndex(version) {
     return new Promise((resolve, reject) => {
         let script = document.createElement('script');
-        script.src = `${CRATES_INDEX_ENDPOINT}/crates-index.js?${version}`;
+        script.src = `${CRATES_INDEX_BASE_URL}/crates-index.js?${version}`;
         script.onload = resolve;
         script.onerror = reject;
         document.body.appendChild(script);

@@ -17,6 +17,7 @@
     "default_popup": "popup.html",
     "default_title": "A handy browser extension to search crates and official docs in the address bar (omnibox)"
   },
+  "content_security_policy": "script-src-elem 'self' https://folyd.github.io/rust-search-extension/crates/crates-index.js; script-src 'self'; object-src 'self'",
   "omnibox": {
     "keyword": "rs"
   },
