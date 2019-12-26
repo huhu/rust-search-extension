@@ -15,6 +15,8 @@ build() {
 
 deploy() {
   echo "Starting deploying..."
+  git config --global url."https://".insteadOf git://
+  git config --global url."https://github.com/".insteadOf git@github.com:
 
   git checkout ${BRANCH}
   mv /tmp/public public/
@@ -22,7 +24,8 @@ deploy() {
   git config user.email "github-actions-bot@users.noreply.github.com"
   git add public/
   git commit -m "Deploy new version to Github Pages"
-  git push origin ${BRANCH}
+  git pull --rebase
+  git push "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ${BRANCH}:${BRANCH}
 
   echo "Deploy complete"
 }

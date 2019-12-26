@@ -7,6 +7,8 @@ jobs:
     name: Deploy to Github Pages
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
+    - run: |
+        git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
     - name: Deloy docs
       run: ./scripts/deploy-docs.sh
