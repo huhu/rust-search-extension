@@ -1,25 +1,23 @@
 #!/usr/bin/env bash
 set -e
-# Add binary and script file to bin directory for crates-index build
+
 CRATES_INDEX_PATH="/tmp/crates-index.js"
 BRANCH="gh-pages"
 
 build() {
-  # rustup target add x86_64-unknown-linux-gnu
-  # cargo build --release --target x86_64-unknown-linux-gnu
-
   echo "Starting building crates-index..."
   cd rust
-  cargo run $CRATES_INDEX_PATH
+  cargo run ${CRATES_INDEX_PATH}
   cd ..
   echo "{\"version\": $(date +%s)}" > /tmp/version.json
 }
 
 upload() {
   echo "Starting uploading crates-index..."
-  git checkout $BRANCH
+  git checkout ${BRANCH}
+  git pull --rebase
 
-  if [ ! -d "crates" ]
+  if [[ ! -d "crates" ]]
   then
     mkdir crates
   fi
