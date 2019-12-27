@@ -1,0 +1,17 @@
+name: Crates-index
+
+on:
+  schedule:
+  - cron: "*/30 * * * *"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+    - name: Deloy crates index
+      run: ./scripts/deploy-crates-index.sh

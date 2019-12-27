@@ -14,9 +14,10 @@ build() {
 
 upload() {
   echo "Starting uploading crates-index..."
-  git checkout ${BRANCH}
-  git pull --rebase
+  git config --global url."https://".insteadOf git://
+  git config --global url."https://github.com/".insteadOf git@github.com:
 
+  git checkout ${BRANCH}
   if [[ ! -d "crates" ]]
   then
     mkdir crates
@@ -26,8 +27,8 @@ upload() {
   git config user.name "GitHub Actions"
   git config user.email "github-actions-bot@users.noreply.github.com"
   git add crates/
-  git commit -m "Upload latest crates index"
-  git push origin $BRANCH
+  git commit --amend -m "Upload latest crates index"
+  git push "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ${BRANCH}:${BRANCH} -f
 
   echo "Upload complete"
 }
