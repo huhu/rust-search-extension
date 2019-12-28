@@ -12,7 +12,8 @@
             scroll-behavior: smooth;
             overflow-x: hidden;
             width: 280px;
-            padding: 1rem 2rem;
+            padding: 0;
+            margin: 0;
         }
 
         p {
@@ -27,38 +28,41 @@
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-<div style="text-align: center;">
-    <img class="logo" src="icon.png" alt="rust-search-extension">
-    <h2 class="title">Rust Search Extension</h2>
-    <div>
-        <a href="https://doc.rust-lang.org/1.40.0/std/">
-            <img src="https://img.shields.io/badge/stable-1.40.0-yellow.svg" alt="stable-docs">
-        </a>
+<div class="toast"></div>
+<div class="main">
+    <div style="text-align: center;">
+        <img class="logo" src="icon.png" alt="rust-search-extension">
+        <h2 class="title">Rust Search Extension</h2>
+        <div>
+            <a href="https://doc.rust-lang.org/1.40.0/std/">
+                <img src="https://img.shields.io/badge/stable-1.40.0-yellow.svg" alt="stable-docs">
+            </a>
+        </div>
     </div>
-</div>
-<div style="margin-top: 20px">
-    <label>
-        Open search result in
-        <select name="open-type">
-            <option value="current-tab">current tab</option>
-            <option value="new-tab">new tab</option>
-        </select>
-    </label>
-</div>
-<div style="margin-top: 10px" class="flex-vertical">
-    <div>
-        Enable offline mode
-        <label class="toggle">
-            <input type="checkbox" id="offline-mode">
-            <span class="slider"></span>
+    <div style="margin-top: 20px">
+        <label>
+            Open search result in
+            <select name="open-type">
+                <option value="current-tab">current tab</option>
+                <option value="new-tab">new tab</option>
+            </select>
         </label>
     </div>
-    <input type="text" class="offline-doc-path" placeholder="Input the local doc path">
-    <small class="offline-doc-message"></small>
-</div>
-<div style="margin-top: 30px; font-size: 11px;text-align: center">
-    <a href="https://folyd.github.io/rust-search-extension" target="_blank">Website</a>
-    <a href="https://github.com/folyd/rust-search-extension" target="_blank">Github</a>
+    <div style="margin-top: 10px" class="flex-vertical">
+        <div>
+            Enable offline mode
+            <label class="toggle">
+                <input type="checkbox" id="offline-mode">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <input type="text" class="offline-doc-path" placeholder="Input the local doc path">
+        <small class="offline-doc-message"></small>
+    </div>
+    <div style="margin-top: 30px; font-size: 11px;text-align: center">
+        <a href="https://folyd.github.io/rust-search-extension" target="_blank">Website</a>
+        <a href="https://github.com/folyd/rust-search-extension" target="_blank">Github</a>
+    </div>
 </div>
 </body>
 <script src="settings.js"></script>

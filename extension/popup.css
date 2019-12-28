@@ -1,3 +1,17 @@
+.main {
+    padding: 1rem 2rem;
+}
+
+.toast {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    z-index: 9;
+    text-align: center;
+    padding: 8px;
+    display: none;
+}
+
 .title {
     font-family: "Alfa Slab One", serif;
     font-weight: 300;

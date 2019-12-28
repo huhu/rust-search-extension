@@ -1,22 +1,70 @@
 const omnibox = new Omnibox();
 const CRATES_INDEX_BASE_URL = "https://folyd.github.io/rust-search-extension/crates";
 
+function Toast() {
+    this.element = document.querySelector(".toast");
+    this.dismissTimeoutId = null;
+    this.element.addEventListener("mouseover", () => {
+        if (this.dismissTimeoutId) {
+            clearTimeout(this.dismissTimeoutId);
+        }
+    });
+    this.element.addEventListener("mouseleave", () => {
+        this.dismiss();
+    });
+}
+
+Toast.prototype.info = function(message) {
+    this.element.style.display = "block";
+    this.element.style.background = "#fbeca0dd";
+    this.element.textContent = message;
+};
+
+Toast.prototype.success = function(message) {
+    this.element.style.display = "block";
+    this.element.style.background = "#357911dd";
+    this.element.textContent = message;
+};
+
+Toast.prototype.error = function(message) {
+    this.element.style.display = "block";
+    this.element.style.background = "#ff0000dd";
+    this.element.textContent = message;
+};
+
+Toast.prototype.dismiss = function(delay = 2000) {
+    this.dismissTimeoutId = setTimeout(() => this.element.style.display = "none", delay);
+};
+
+const toast = new Toast();
+
 async function checkLatestCratesIndex() {
-    let response = await fetch(`${CRATES_INDEX_BASE_URL}/version.json`);
-    console.log(response);
+    toast.info("Checking latest crates index...");
+
+    let response = await fetch(`${CRATES_INDEX_BASE_URL}/version.json?${Date.now()}`);
     let {version} = await response.json();
     if (parseInt(localStorage.getItem("crate-index-version") || 1) < version) {
-        await loadLatestCratesIndex(version);
+        try {
+            toast.info("Updating latest crates index, wait in seconds...");
+            await loadLatestCratesIndex(version);
+        } catch (error) {
+            toast.error("Update failed, please try again :(")
+        }
+
+        toast.success("Updated to latest crates index.");
 
         localStorage.setItem('crate-index', JSON.stringify(window.crateIndex));
         localStorage.setItem('crate-index-version', version);
+    } else {
+        toast.success("You already the latest crates index.");
     }
+    toast.dismiss();
 }
 
 async function loadLatestCratesIndex(version) {
     return new Promise((resolve, reject) => {
         let script = document.createElement('script');
-        script.src = `${CRATES_INDEX_BASE_URL}/crates-index.js?${version}`;
+        script.src = `${CRATES_INDEX_BASE_URL}/crates-indexs.js?${version}`;
         script.onload = resolve;
         script.onerror = reject;
         document.body.appendChild(script);
@@ -52,17 +100,15 @@ document.addEventListener('DOMContentLoaded', function() {
     offlineDocPath.value = settings.offlineDocPath;
     offlineDocPath.onchange = function(event) {
         let path = event.target.value;
-        let message = document.querySelector('.offline-doc-message');
         // Check the std doc path validity
         if (settings.checkDocPathValidity(path)) {
             settings.offlineDocPath = path;
 
-            message.textContent = "Great! Your local doc path is valid!";
-            message.style.color = "green";
+            toast.success("Great! Your local doc path is valid!");
         } else {
-            message.textContent = "Local doc path should match regex ^file://.*/doc/rust/html/ or ^https?://.*:\\d{2,6}/";
-            message.style.color = "red";
+            toast.error("Local doc path should match regex ^file://.*/doc/rust/html/ or ^https?://.*:\\d{2,6}/");
         }
+        toast.dismiss(3000);
     };
 }, false);
 
