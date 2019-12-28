@@ -16,7 +16,7 @@ Omnibox.prototype.setupDefaultSuggestion = function() {
     });
 };
 
-Omnibox.prototype.bootstrap = function() {
+Omnibox.prototype.bootstrap = async function() {
     this.setupDefaultSuggestion();
 
     this.browser.omnibox.onInputChanged.addListener(async (query, suggestFn) => {
