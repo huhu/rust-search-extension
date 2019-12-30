@@ -3,12 +3,41 @@ set -e
 
 trigger() {
     event_type=$1
+    client_payload=$2
+    data="{\"event_type\": \"${event_type}\", \"client_payload\": ${client_payload:-"{}"}}"
+    echo ${data}
     echo "Triggering action of ${event_type}..."
     curl -H "Accept: application/vnd.github.everest-preview+json" \
         -H "Authorization: token ${ACCESS_TOKEN}" \
         --request POST \
-        --data "{\"event_type\": \"${event_type}\"}" \
+        --data "${data}" \
         https://api.github.com/repos/folyd/rust-search-extension/dispatches
+    echo "Trigger action of ${event_type} success!"
 }
 
-trigger deploy-docs
+main() {
+    echo "Notice: ACCESS_TOKEN environment is required!"
+    echo ""
+
+    event_types=(0 deploy-docs build-binary)
+    echo "Please select trigger type:"
+    echo "1) ${event_types[1]}"
+    echo "2) ${event_types[2]}"
+
+    read event_index
+    case "$event_index" in
+        1)
+            trigger ${event_types[event_index]}
+        ;;
+        2)
+            bins=(0 crates-index)
+            echo "Please select crate binary name:"
+            echo "1) ${bins[1]}"
+            read bin_index
+            trigger ${event_types[event_index]} "{\"bin\": \"${bins[bin_index]}\"}"
+        ;;
+        *) echo "Invalid options\n";;
+    esac
+}
+
+main

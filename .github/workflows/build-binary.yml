@@ -1,0 +1,22 @@
+name: build-binary
+
+on:
+  repository_dispatch:
+    types: build-binary
+
+jobs:
+  build:
+    name: Build release binary
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: "Build release binary"
+      run: |
+        cd rust
+        cargo build --release
+    - name: "Upload Artifact"
+      uses: actions/upload-artifact@master
+      with:
+        name: ${{ github.event.client_payload.bin }}
+        path: rust/target/release/${{ github.event.client_payload.bin }}
+
