@@ -6,9 +6,7 @@ BRANCH="gh-pages"
 
 build() {
   echo "Starting building crates-index..."
-  cd rust
-  cargo run ${CRATES_INDEX_PATH}
-  cd ..
+  ./scripts/crates-index ${CRATES_INDEX_PATH}
   echo "{\"version\": $(date +%s)}" > /tmp/version.json
 }
 

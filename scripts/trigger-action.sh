@@ -16,8 +16,11 @@ trigger() {
 }
 
 main() {
-    echo "Notice: ACCESS_TOKEN environment is required!"
-    echo ""
+    if [[ -z "${ACCESS_TOKEN}" ]]
+    then
+        echo "Notice: ACCESS_TOKEN environment is required!"
+        exit 0
+    fi
 
     event_types=(0 deploy-docs build-binary)
     echo "Please select trigger type:"
