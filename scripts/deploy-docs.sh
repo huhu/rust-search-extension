@@ -19,12 +19,12 @@ deploy() {
   git config --global url."https://github.com/".insteadOf git@github.com:
 
   git checkout ${BRANCH}
-  rm -rf public/ && mv /tmp/public .
+  cp -vr /tmp/public/* .
   git config user.name "GitHub Actions"
   git config user.email "github-actions-bot@users.noreply.github.com"
-  git add public/
+  git add .
   git commit -m "Deploy new version to Github Pages"
-  git push "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ${BRANCH}:${BRANCH}
+  git push --force "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ${BRANCH}
 
   echo "Deploy complete"
 }
