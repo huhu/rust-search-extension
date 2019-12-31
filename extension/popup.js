@@ -47,14 +47,13 @@ async function checkLatestCratesIndex() {
         try {
             toast.info("Updating latest crates index, wait in seconds...");
             await loadLatestCratesIndex(version);
+
+            localStorage.setItem('crate-index', JSON.stringify(window.crateIndex));
+            localStorage.setItem('crate-index-version', version);
+            toast.success("Updated to latest crates index.");
         } catch (error) {
-            toast.error("Update failed, please try again :(")
+            toast.error("Update failed, please try again :(");
         }
-
-        toast.success("Updated to latest crates index.");
-
-        localStorage.setItem('crate-index', JSON.stringify(window.crateIndex));
-        localStorage.setItem('crate-index-version', version);
     } else {
         toast.success("You already the latest crates index.");
     }
