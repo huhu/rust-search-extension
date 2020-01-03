@@ -1,5 +1,5 @@
 const omnibox = new Omnibox();
-const CRATES_INDEX_BASE_URL = "https://folyd.github.io/rust-search-extension/crates";
+const CRATES_INDEX_BASE_URL = "https://rust-search-extension.now.sh/crates";
 
 function Toast() {
     this.element = document.querySelector(".toast");

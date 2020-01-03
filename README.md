@@ -12,7 +12,7 @@
 
 🦀 A handy browser extension to search crates and docs in the address bar (omnibox).
 
-[https://folyd.github.io/rust-search-extension](https://folyd.github.io/rust-search-extension)
+[https://rust-search-extension.now.sh/](https://rust-search-extension.now.sh/)
 
 ### Installation
 
@@ -37,7 +37,7 @@ you want to search, the extension will response the related search results insta
 
 ![demonstration.gif](assets/demonstration.gif)
 
-### [How the extension works](https://folyd.github.io/rust-search-extension/how-it-works/)
+### [How the extension works](https://rust-search-extension.now.sh/how-it-works/)
 
 #### 1. Build *search index*
 
