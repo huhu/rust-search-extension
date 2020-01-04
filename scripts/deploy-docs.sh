@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-BRANCH="gh-pages"
+BRANCH="now"
 
 build() {
   echo "Starting building..."
@@ -23,7 +23,7 @@ deploy() {
   git config user.name "GitHub Actions"
   git config user.email "github-actions-bot@users.noreply.github.com"
   git add .
-  git commit -m "Deploy new version to Github Pages"
+  git commit -m "Deploy new version docs"
   git push --force "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ${BRANCH}
 
   echo "Deploy complete"

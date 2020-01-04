@@ -2,7 +2,7 @@
 set -e
 
 CRATES_INDEX_PATH="/tmp/crates-index.js"
-BRANCH="gh-pages"
+BRANCH="now"
 
 build() {
   echo "Starting building crates-index..."
