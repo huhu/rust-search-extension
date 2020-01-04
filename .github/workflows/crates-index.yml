@@ -1,8 +1,8 @@
-name: Crates-index
+name: crates-index
 
-on:
-  schedule:
-  - cron: "*/30 * * * *"
+#on:
+#  schedule:
+#  - cron: "*/30 * * * *"
 
 jobs:
   build:
