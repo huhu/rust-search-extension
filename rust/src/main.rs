@@ -1,17 +1,20 @@
 use std::collections::HashMap;
-use std::fs;
 use std::env;
+use std::fs;
 use std::path::Path;
 
 use futures::future::join_all;
+use reqwest;
 use serde_derive::Deserialize;
 use serde_json;
 use tokio;
+use tokio::time::Duration;
 
 mod minify;
 
 const API: &str = "https://crates.io/api/v1/crates?page={}&per_page=100&sort=downloads";
 const CRATES_INDEX_PATH: &str = "../extension/crates-index.js";
+const USER_AGENT: &str = "Rust Search Extension Bot (lyshuhow@gmail.com)";
 
 #[derive(Deserialize, Debug)]
 struct CrateApiResponse {
@@ -27,7 +30,11 @@ struct Crate {
 }
 
 async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error>> {
-    let resp: CrateApiResponse = reqwest::get(&API.replace("{}", &page.to_string()))
+    // Keep 1 second sleep interval to comply crates.io crawler policy.
+    tokio::time::delay_for(Duration::from_secs((1 * (page - 1)) as u64)).await;
+    let client = reqwest::Client::builder().user_agent(USER_AGENT).build()?;
+    let resp: CrateApiResponse = client.get(&API.replace("{}", &page.to_string()))
+        .send()
         .await?
         .json()
         .await?;
