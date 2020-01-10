@@ -66,6 +66,13 @@ impl MappingMinifier {
             .map(|item| self.mapping.get(item).map(Deref::deref).unwrap_or(item))
             .collect()
     }
+
+    pub fn get_mapping(&self) -> HashMap<String, String> {
+        self.mapping
+            .iter()
+            .map(|(key, value)| (value.to_owned(), key.to_owned()))
+            .collect()
+    }
 }
 
 pub(crate) fn minify_url(url: String) -> String {

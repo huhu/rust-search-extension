@@ -116,8 +116,9 @@ async fn main() -> std::io::Result<()> {
         .collect();
     // Extract frequency word mapping
     let mapping_minifier = MappingMinifier::new(&STRING_VEC.read().unwrap(), 25);
-    println!("{:?}", mapping_minifier);
-    let contents = generate_javascript_crates_index(crates, &mapping_minifier).await?;
+    let mapping = mapping_minifier.get_mapping();
+    let mut contents = format!("var M={};", serde_json::to_string(&mapping).unwrap());
+    contents.push_str(&generate_javascript_crates_index(crates, &mapping_minifier).await?);
     fs::write(path, &contents)?;
     println!("\nGenerate javascript crates index successful!");
     Ok(())
