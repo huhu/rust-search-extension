@@ -20,7 +20,7 @@ pub(crate) struct Minifier {
 impl Minifier {
     const UPPERCASE_LETTERS: &'static str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    pub fn new(words: &Vec<String>, top: usize) -> Minifier {
+    pub fn new(words: &[String], top: usize) -> Minifier {
         assert!(top < Self::UPPERCASE_LETTERS.len());
         let mut mapping: HashMap<String, usize> = HashMap::new();
         words
@@ -28,7 +28,6 @@ impl Minifier {
             .flat_map(|sentence| {
                 sentence
                     .unicode_words()
-                    .into_iter()
                     .filter(|word| word.len() >= 5)
                     .collect::<Vec<&str>>()
             })
@@ -69,7 +68,6 @@ impl Minifier {
     pub fn mapping_minify(&self, value: String) -> String {
         value
             .split_word_bounds()
-            .into_iter()
             .map(|item| self.mapping.get(item).map(Deref::deref).unwrap_or(item))
             .collect()
     }

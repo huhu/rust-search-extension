@@ -54,7 +54,7 @@ where
 
 async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error>> {
     // Keep 1 second sleep interval to comply crates.io crawler policy.
-    tokio::time::delay_for(Duration::from_secs((1 * (page - 1)) as u64)).await;
+    tokio::time::delay_for(Duration::from_secs((page - 1) as u64)).await;
     let client = reqwest::Client::builder().user_agent(USER_AGENT).build()?;
     let resp: CrateApiResponse = client
         .get(&API.replace("{}", &page.to_string()))
