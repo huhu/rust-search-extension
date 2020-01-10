@@ -13,7 +13,7 @@ use tokio;
 use tokio::time::Duration;
 
 use lazy_static::lazy_static;
-use minify::MappingMinifier;
+use minify::Minifier;
 
 mod minify;
 
@@ -67,7 +67,7 @@ async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error
 
 async fn generate_javascript_crates_index(
     crates: Vec<Crate>,
-    mapping_minifier: &MappingMinifier,
+    minifier: &Minifier,
 ) -> std::io::Result<String> {
     let mut contents = String::from("var N=null;");
     let crates_map: HashMap<String, [Option<String>; 3]> = crates
@@ -76,8 +76,8 @@ async fn generate_javascript_crates_index(
             (
                 item.id.to_lowercase(),
                 [
-                    item.description.map(|value| mapping_minifier.minify(value)),
-                    item.documentation.map(minify::minify_url),
+                    item.description.map(|value| minifier.mapping_minify(value)),
+                    item.documentation.map(Minifier::minify_url),
                     item.max_version,
                 ],
             )
@@ -87,7 +87,7 @@ async fn generate_javascript_crates_index(
         "var crateIndex={};",
         serde_json::to_string(&crates_map).unwrap()
     );
-    contents.push_str(&minify::minify_json(crate_index));
+    contents.push_str(&Minifier::minify_json(crate_index));
     Ok(contents)
 }
 
@@ -115,10 +115,10 @@ async fn main() -> std::io::Result<()> {
         })
         .collect();
     // Extract frequency word mapping
-    let mapping_minifier = MappingMinifier::new(&STRING_VEC.read().unwrap(), 25);
-    let mapping = mapping_minifier.get_mapping();
+    let minifier = Minifier::new(&STRING_VEC.read().unwrap(), 25);
+    let mapping = minifier.get_mapping();
     let mut contents = format!("var M={};", serde_json::to_string(&mapping).unwrap());
-    contents.push_str(&generate_javascript_crates_index(crates, &mapping_minifier).await?);
+    contents.push_str(&generate_javascript_crates_index(crates, &minifier).await?);
     fs::write(path, &contents)?;
     println!("\nGenerate javascript crates index successful!");
     Ok(())

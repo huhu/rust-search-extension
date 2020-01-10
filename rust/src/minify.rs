@@ -13,14 +13,14 @@ struct FrequencyWord {
 }
 
 #[derive(Debug)]
-pub(crate) struct MappingMinifier {
+pub(crate) struct Minifier {
     mapping: HashMap<String, String>,
 }
 
-impl MappingMinifier {
+impl Minifier {
     const UPPERCASE_LETTERS: &'static str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    pub fn new(words: &Vec<String>, top: usize) -> MappingMinifier {
+    pub fn new(words: &Vec<String>, top: usize) -> Minifier {
         assert!(top < Self::UPPERCASE_LETTERS.len());
         let mut mapping: HashMap<String, usize> = HashMap::new();
         words
@@ -45,7 +45,7 @@ impl MappingMinifier {
             .drain(0..=top)
             .collect::<Vec<FrequencyWord>>();
 
-        MappingMinifier {
+        Minifier {
             mapping: words
                 .iter()
                 .enumerate()
@@ -59,7 +59,14 @@ impl MappingMinifier {
         }
     }
 
-    pub fn minify(&self, value: String) -> String {
+    pub fn get_mapping(&self) -> HashMap<String, String> {
+        self.mapping
+            .iter()
+            .map(|(key, value)| (value.to_owned(), key.to_owned()))
+            .collect()
+    }
+
+    pub fn mapping_minify(&self, value: String) -> String {
         value
             .split_word_bounds()
             .into_iter()
@@ -67,37 +74,30 @@ impl MappingMinifier {
             .collect()
     }
 
-    pub fn get_mapping(&self) -> HashMap<String, String> {
-        self.mapping
-            .iter()
-            .map(|(key, value)| (value.to_owned(), key.to_owned()))
-            .collect()
+    pub fn minify_url(url: String) -> String {
+        url.to_lowercase()
+            .replace("http://", "")
+            .replace("https://", "")
+            .replace("docs.rs", "D")
+            .replace("crates.io", "C")
+            .replace("github.io", "O")
+            .replace("github.com", "G")
+            .replace("index.html", "I")
     }
-}
 
-pub(crate) fn minify_url(url: String) -> String {
-    url.to_lowercase()
-        .replace("http://", "")
-        .replace("https://", "")
-        .replace("docs.rs", "D")
-        .replace("crates.io", "C")
-        .replace("github.io", "O")
-        .replace("github.com", "G")
-        .replace("index.html", "I")
-}
-
-pub(crate) fn minify_json(json: String) -> String {
-    let tokens: Tokens = simple_minify(&json)
-        .into_iter()
-        .map(|(token, _)| match token {
-            Token::Keyword(Keyword::Null) => Token::Other("N"),
-            _ => token,
+    pub fn minify_json(json: String) -> String {
+        let tokens: Tokens = simple_minify(&json)
+            .into_iter()
+            .map(|(token, _)| match token {
+                Token::Keyword(Keyword::Null) => Token::Other("N"),
+                _ => token,
+            })
+            .collect::<Vec<_>>()
+            .into();
+        aggregate_strings_into_array_filter(tokens, "C", |tokens, position| {
+            // Ignore the key of json (AKA, the crate id).
+            position > 5 && !tokens[position + 1].eq_char(ReservedChar::Colon)
         })
-        .collect::<Vec<_>>()
-        .into();
-    aggregate_strings_into_array_filter(tokens, "C", |tokens, position| {
-        // Ignore the key of json (AKA, the crate id).
-        position > 5 && !tokens[position + 1].eq_char(ReservedChar::Colon)
-    })
-    .to_string()
+        .to_string()
+    }
 }
