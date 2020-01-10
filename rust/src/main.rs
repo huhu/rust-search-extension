@@ -11,9 +11,9 @@ use serde_derive::Deserialize;
 use serde_json;
 use tokio;
 use tokio::time::Duration;
-use unicode_segmentation::UnicodeSegmentation;
 
 use lazy_static::lazy_static;
+use minify::MappingMinifier;
 
 mod minify;
 
@@ -52,60 +52,6 @@ where
     }))
 }
 
-#[derive(Debug)]
-struct FrequencyWord {
-    word: String,
-    frequency: usize,
-}
-
-struct MappingGenerator {
-    words: Vec<FrequencyWord>,
-}
-
-impl MappingGenerator {
-    const UPPERCASE_LETTERS: &'static str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    fn new(words: &Vec<String>, top: usize) -> MappingGenerator {
-        assert!(top < Self::UPPERCASE_LETTERS.len());
-        let mut mapping: HashMap<String, usize> = HashMap::new();
-        words
-            .iter()
-            .flat_map(|sentence| {
-                sentence
-                    .unicode_words()
-                    .into_iter()
-                    .filter(|word| word.len() >= 5)
-                    .collect::<Vec<&str>>()
-            })
-            .for_each(|word| {
-                let count = mapping.entry(word.to_string()).or_insert(0);
-                *count += 1;
-            });
-        let mut frequency_words = mapping
-            .into_iter()
-            .map(|(word, frequency)| FrequencyWord { word, frequency })
-            .collect::<Vec<FrequencyWord>>();
-        frequency_words.sort_by(|a, b| b.frequency.cmp(&a.frequency));
-        MappingGenerator {
-            words: frequency_words.drain(0..=top).collect(),
-        }
-    }
-
-    fn generate_mapping(&self) -> HashMap<String, String> {
-        println!("words {:?}", self.words);
-        self.words
-            .iter()
-            .enumerate()
-            .map(|(index, fw)| {
-                (
-                    format!("${}", Self::UPPERCASE_LETTERS.chars().nth(index).unwrap()),
-                    fw.word.clone(),
-                )
-            })
-            .collect()
-    }
-}
-
 async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error>> {
     // Keep 1 second sleep interval to comply crates.io crawler policy.
     tokio::time::delay_for(Duration::from_secs((1 * (page - 1)) as u64)).await;
@@ -119,7 +65,10 @@ async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error
     Ok(resp.crates)
 }
 
-async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result<String> {
+async fn generate_javascript_crates_index(
+    crates: Vec<Crate>,
+    mapping_minifier: &MappingMinifier,
+) -> std::io::Result<String> {
     let mut contents = String::from("var N=null;");
     let crates_map: HashMap<String, [Option<String>; 3]> = crates
         .into_iter()
@@ -127,7 +76,7 @@ async fn generate_javascript_crates_index(crates: Vec<Crate>) -> std::io::Result
             (
                 item.id.to_lowercase(),
                 [
-                    item.description.map(minify::minify_description),
+                    item.description.map(|value| mapping_minifier.minify(value)),
                     item.documentation.map(minify::minify_url),
                     item.max_version,
                 ],
@@ -166,9 +115,9 @@ async fn main() -> std::io::Result<()> {
         })
         .collect();
     // Extract frequency word mapping
-    let mapping = MappingGenerator::new(&STRING_VEC.read().unwrap(), 25).generate_mapping();
-    println!("{:?}", mapping);
-    let contents = generate_javascript_crates_index(crates).await?;
+    let mapping_minifier = MappingMinifier::new(&STRING_VEC.read().unwrap(), 25);
+    println!("{:?}", mapping_minifier);
+    let contents = generate_javascript_crates_index(crates, &mapping_minifier).await?;
     fs::write(path, &contents)?;
     println!("\nGenerate javascript crates index successful!");
     Ok(())

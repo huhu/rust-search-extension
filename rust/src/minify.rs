@@ -1,19 +1,71 @@
+use std::collections::HashMap;
+use std::ops::Deref;
+
 use minifier::js::{
     aggregate_strings_into_array_filter, simple_minify, Keyword, ReservedChar, Token, Tokens,
 };
+use unicode_segmentation::UnicodeSegmentation;
 
-pub(crate) fn minify_description(mut value: String) -> String {
-    value.truncate(100);
-    value
-        .replace("Rust", "$R")
-        .replace("rust", "$r")
-        .replace("library", "$l")
-        .replace("Library", "$L")
-        .replace("Google", "$G")
-        .replace("implementation", "$i")
-        .replace("binding", "$b")
-        .replace("support", "$s")
-        .replace("crate", "$c")
+#[derive(Debug)]
+struct FrequencyWord {
+    word: String,
+    frequency: usize,
+}
+
+#[derive(Debug)]
+pub(crate) struct MappingMinifier {
+    mapping: HashMap<String, String>,
+}
+
+impl MappingMinifier {
+    const UPPERCASE_LETTERS: &'static str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    pub fn new(words: &Vec<String>, top: usize) -> MappingMinifier {
+        assert!(top < Self::UPPERCASE_LETTERS.len());
+        let mut mapping: HashMap<String, usize> = HashMap::new();
+        words
+            .iter()
+            .flat_map(|sentence| {
+                sentence
+                    .unicode_words()
+                    .into_iter()
+                    .filter(|word| word.len() >= 5)
+                    .collect::<Vec<&str>>()
+            })
+            .for_each(|word| {
+                let count = mapping.entry(word.to_string()).or_insert(0);
+                *count += 1;
+            });
+        let mut frequency_words = mapping
+            .into_iter()
+            .map(|(word, frequency)| FrequencyWord { word, frequency })
+            .collect::<Vec<FrequencyWord>>();
+        frequency_words.sort_by(|a, b| b.frequency.cmp(&a.frequency));
+        let words = frequency_words
+            .drain(0..=top)
+            .collect::<Vec<FrequencyWord>>();
+
+        MappingMinifier {
+            mapping: words
+                .iter()
+                .enumerate()
+                .map(|(index, fw)| {
+                    (
+                        fw.word.clone(),
+                        format!("${}", Self::UPPERCASE_LETTERS.chars().nth(index).unwrap()),
+                    )
+                })
+                .collect(),
+        }
+    }
+
+    pub fn minify(&self, value: String) -> String {
+        value
+            .split_word_bounds()
+            .into_iter()
+            .map(|item| self.mapping.get(item).map(Deref::deref).unwrap_or(item))
+            .collect()
+    }
 }
 
 pub(crate) fn minify_url(url: String) -> String {
