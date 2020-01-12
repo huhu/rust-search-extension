@@ -24,10 +24,9 @@ pub(crate) struct Minifier {
 }
 
 impl Minifier {
-    const UPPERCASE_LETTERS: &'static str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const MINIFY_LETTERS: &'static str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    pub fn new(words: &[String], top: usize) -> Minifier {
-        assert!(top < Self::UPPERCASE_LETTERS.len());
+    pub fn new(words: &[String]) -> Minifier {
         let mut mapping: HashMap<String, usize> = HashMap::new();
         words
             .iter()
@@ -47,7 +46,7 @@ impl Minifier {
             .collect::<Vec<FrequencyWord>>();
         frequency_words.sort_by(|a, b| b.score().cmp(&a.score()));
         let words = frequency_words
-            .drain(0..=top)
+            .drain(0..Self::MINIFY_LETTERS.len())
             .collect::<Vec<FrequencyWord>>();
 
         Minifier {
@@ -57,7 +56,7 @@ impl Minifier {
                 .map(|(index, fw)| {
                     (
                         fw.word.clone(),
-                        format!("${}", Self::UPPERCASE_LETTERS.chars().nth(index).unwrap()),
+                        format!("${}", Self::MINIFY_LETTERS.chars().nth(index).unwrap()),
                     )
                 })
                 .collect(),

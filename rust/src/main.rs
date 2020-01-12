@@ -115,7 +115,7 @@ async fn main() -> std::io::Result<()> {
         })
         .collect();
     // Extract frequency word mapping
-    let minifier = Minifier::new(&CRATE_DESCRIPTIONS.read().unwrap(), 25);
+    let minifier = Minifier::new(&CRATE_DESCRIPTIONS.read().unwrap());
     let mapping = minifier.get_mapping();
     let mut contents = format!("var mapping={};", serde_json::to_string(&mapping).unwrap());
     contents.push_str(&generate_javascript_crates_index(crates, &minifier).await?);
