@@ -26,6 +26,7 @@
       "settings.js",
       "search.js",
       "search-index.js",
+      "deminifier.js",
       "crate-search.js",
       "crates-index.js",
       "omnibox.js",

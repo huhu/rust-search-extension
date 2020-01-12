@@ -40,30 +40,6 @@ String.prototype.levenshteinContains = function(keyword) {
     return false;
 };
 
-function cleanMinifiedUrl(rawUrl) {
-    if (rawUrl === null) return null;
-    return "https://" + rawUrl
-        .replace("D/", "docs.rs/")
-        .replace("C/", "crates.io/")
-        .replace("O/", "github.io/")
-        .replace("G/", "github.com/")
-        .replace("/I", "/index.html");
-}
-
-function cleanMinifiedDescription(rawDescription) {
-    if (rawDescription === null) return null;
-    return rawDescription
-        .replace("$R", "Rust")
-        .replace("$r", "rust")
-        .replace("$l", "library")
-        .replace("$L", "Library")
-        .replace("$G", "Google")
-        .replace("$i", "implementation")
-        .replace("$b", "binding")
-        .replace("$s", "support")
-        .replace("$c", "crate")
-}
-
 function CrateSearch(crateIndex, crateIndexVersion = 1) {
     this.crateIndexVersion = crateIndexVersion;
     this.crateIndex = crateIndex;
@@ -125,8 +101,8 @@ CrateSearch.prototype.search = async function(keyword, limit = 10) {
             let [description, documentation, version] = this.crateIndex[item.id];
             return {
                 id: item.id,
-                description: cleanMinifiedDescription(description),
-                documentation: cleanMinifiedUrl(documentation),
+                description: deminifier.cleanMinifiedDescription(description),
+                documentation: deminifier.cleanMinifiedUrl(documentation),
                 version: version,
             }
         });

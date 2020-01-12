@@ -1,3 +1,4 @@
+const deminifier = new Deminifier(mapping);
 const crateSearcher = new CrateSearch(crateIndex);
 const omnibox = new Omnibox();
 
