@@ -12,6 +12,12 @@ struct FrequencyWord {
     frequency: usize,
 }
 
+impl FrequencyWord {
+    fn score(&self) -> usize {
+        self.word.len() * self.frequency
+    }
+}
+
 #[derive(Debug)]
 pub(crate) struct Minifier {
     mapping: HashMap<String, String>,
@@ -28,7 +34,7 @@ impl Minifier {
             .flat_map(|sentence| {
                 sentence
                     .unicode_words()
-                    .filter(|word| word.len() >= 5)
+                    .filter(|word| word.len() >= 4)
                     .collect::<Vec<&str>>()
             })
             .for_each(|word| {
@@ -39,7 +45,7 @@ impl Minifier {
             .into_iter()
             .map(|(word, frequency)| FrequencyWord { word, frequency })
             .collect::<Vec<FrequencyWord>>();
-        frequency_words.sort_by(|a, b| b.frequency.cmp(&a.frequency));
+        frequency_words.sort_by(|a, b| b.score().cmp(&a.score()));
         let words = frequency_words
             .drain(0..=top)
             .collect::<Vec<FrequencyWord>>();

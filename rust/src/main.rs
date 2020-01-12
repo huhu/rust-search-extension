@@ -23,7 +23,7 @@ const USER_AGENT: &str = "Rust Search Extension Bot (lyshuhow@gmail.com)";
 
 lazy_static! {
     // A Vec to store all crate's description.
-    static ref STRING_VEC: RwLock<Vec<String>> = RwLock::new(vec![]);
+    static ref CRATE_DESCRIPTIONS: RwLock<Vec<String>> = RwLock::new(vec![]);
 }
 
 #[derive(Deserialize, Debug)]
@@ -47,7 +47,7 @@ where
     Ok(Option::<String>::deserialize(d)?.map(|mut value| {
         value = value.trim().to_string();
         value.truncate(100);
-        STRING_VEC.write().unwrap().push(value.clone());
+        CRATE_DESCRIPTIONS.write().unwrap().push(value.clone());
         value
     }))
 }
@@ -115,9 +115,9 @@ async fn main() -> std::io::Result<()> {
         })
         .collect();
     // Extract frequency word mapping
-    let minifier = Minifier::new(&STRING_VEC.read().unwrap(), 25);
+    let minifier = Minifier::new(&CRATE_DESCRIPTIONS.read().unwrap(), 25);
     let mapping = minifier.get_mapping();
-    let mut contents = format!("var M={};", serde_json::to_string(&mapping).unwrap());
+    let mut contents = format!("var mapping={};", serde_json::to_string(&mapping).unwrap());
     contents.push_str(&generate_javascript_crates_index(crates, &minifier).await?);
     fs::write(path, &contents)?;
     println!("\nGenerate javascript crates index successful!");
