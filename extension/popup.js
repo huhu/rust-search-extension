@@ -45,7 +45,7 @@ async function checkLatestCratesIndex() {
     let {version} = await response.json();
     if (parseInt(localStorage.getItem("crate-index-version") || 1) < version) {
         try {
-            toast.info("Updating latest crates index, wait in seconds...");
+            toast.info("Updating latest crates index, wait a seconds...");
             await loadLatestCratesIndex(version);
 
             localStorage.setItem('crate-index', JSON.stringify(window.crateIndex));
@@ -124,5 +124,8 @@ function toggleOfflinePathEnableState(enable) {
 }
 
 (async () => {
-    await checkLatestCratesIndex();
+    if (omnibox.isChrome) {
+        // Only Chrome browser supports 'script-src-elem' Content Security Policy to load script.
+        await checkLatestCratesIndex();
+    }
 })();
