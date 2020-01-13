@@ -24,7 +24,8 @@ pub(crate) struct Minifier {
 }
 
 impl Minifier {
-    const MINIFY_LETTERS: &'static str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const MINIFY_LETTERS: &'static str =
+        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     pub fn new(words: &[String]) -> Minifier {
         let mut mapping: HashMap<String, usize> = HashMap::new();
