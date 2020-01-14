@@ -137,3 +137,42 @@ footer {
     text-decoration: underline;
   }
 }
+
+@media screen and (max-width: 768px) {
+  header {
+    padding: 10px 30px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    font-size: 16px;
+    margin: 10px;
+
+    img {
+      width: 25px;
+      margin: 0 10px 0 0;
+    }
+  }
+
+  .nav-item {
+    margin: 0 5px;
+    font-size: 14px;
+  }
+  .hero {
+    padding: 40px 30px;
+  }
+
+  main {
+    padding: 30px;
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .explore-more, .toc, .demonstration-gif {
+    display: none;
+  }
+}
