@@ -12,10 +12,16 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v1
 
+      - name: Install Jsonnet
+        run: pip install jsonnet
+
       # https://stackoverflow.com/questions/58177786/get-the-current-pushed-tag-in-github-actions
       - name: "Set output"
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+
+      - name: Generate Chrome manifest.json
+        run: jsonnet manifest.jsonnet --ext-str browser=chrome -o extension/manifest.json
 
       - name: "web-ext build"
         id: web-ext-build
@@ -27,5 +33,21 @@ jobs:
       - name: "Upload Artifact"
         uses: actions/upload-artifact@master
         with:
-          name: rust-search-extension-${{ steps.vars.outputs.tag }}
+          name: chrome-rust-search-extension-${{ steps.vars.outputs.tag }}
+          path: ${{ steps.web-ext-build.outputs.target }}
+
+      - name: Generate Firefox manifest.json
+        run: jsonnet manifest.jsonnet --ext-str browser=firefox -o extension/manifest.json
+
+      - name: "web-ext build"
+        id: web-ext-build
+        uses: kewisch/action-web-ext@v1
+        with:
+          cmd: build
+          source: extension
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@master
+        with:
+          name: firefox-rust-search-extension-${{ steps.vars.outputs.tag }}
           path: ${{ steps.web-ext-build.outputs.target }}
