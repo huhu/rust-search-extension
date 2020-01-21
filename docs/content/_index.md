@@ -3,12 +3,32 @@ title = "Rust Search Extension"
 +++
 
 
-## Search Primitive Types and Modules
-## Search Structs, Traits and Enums
-## Search Functions, Methods and Macros
-## Search doc with type
-## Search top 10K crates
-## Prefix ! to search crates exclusively
-## Search Compiler Error Index
-## Offline mode, search local Rust docs
+# Search Primitive Types and Modules
 
+![GIF](/primary-module.gif)
+
+# Search Structs, Traits and Enums
+
+![GIF](/struct-traits.gif)
+
+# Search Functions, Methods and Macros
+
+![GIF](/function-macros.gif)
+
+# Search doc with type mode
+
+![GIF](/type-mode.gif)
+
+# Search top 10K crates
+
+What more, you can prefix **!** *(Exclamation mark)* to search crates exclusively!
+
+![GIF](/search-crates.gif)
+
+# Search Compiler Error Index
+
+![GIF](/error-index.gif)
+
+# Offline mode, search local Rust docs
+
+![GIF](/offline-mode.gif)

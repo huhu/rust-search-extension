@@ -2,26 +2,28 @@
 title = "Release History"
 +++
 
-# v0.6
+# v0.6 - 2020-01-20
 
-Upcoming...
+- Bump search-index to version **v1.40.0**
+- Support search top 10K crates instantly.
+- Support update the latest crates index on popup page automatically. (Chrome only)
 
-# v0.5
+# v0.5 - 2019-11-08
 
-The version **v0.5** was released at `2019-11-8`.
+The version **v0.5** was released at `2019-11-08`.
 
 - Bump search-index to version **v1.39.0**
 - Fix escape bug on Firefox
 
 
-# v0.4
+# v0.4 - 2019-11-01
 
-**v0.4** was a minor bug fix version released at `2019-11-1`.
+**v0.4** was a minor bug fix version released at `2019-11-01`.
 
 - Fix offline mode search bug
 - Offline doc path support `file://` and `http://` 
 
-# v0.3
+# v0.3 - 2019-10-29
 
 After long time inactivity. The **v0.3** gets released at `2019-10-29` with an announcing on [Reddit post](https://www.reddit.com/r/rust/comments/dp1ru6/i_published_a_handy_chromefirefox_extension_to/).  
 
@@ -29,14 +31,14 @@ After long time inactivity. The **v0.3** gets released at `2019-10-29` with an a
 - Support search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error code
 - Published to Firefox [AMO](https://addons.mozilla.org/en-US/firefox/addon/rust-search-extension/)
 
-# v0.2
+# v0.2 - 2019-02-03
 
-The version **v0.2** was released at `2019-2-3`.
+The version **v0.2** was released at `2019-02-03`.
 
 - Update search-index to version **v1.32.0**
 - Support configure offline doc path
 
-# v0.1
+# v0.1 - 2018-11-29
 
 The first version **v0.1** was released at `2018-11-29` with a debut show on [Rust Internals Forum](https://internals.rust-lang.org/t/a-handy-browser-extension-to-search-crates-and-official-docs-in-address-bar-omnibox/8920).
 
