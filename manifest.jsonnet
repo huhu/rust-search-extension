@@ -7,7 +7,7 @@ local manifest = {
       manifest_version: 2,
       name: "Rust Search Extension",
       description: "A handy browser extension to search crates and official docs in the address bar (omnibox)",
-      version: "0.6",
+      version: "0.7",
       icons: icons(),
       browser_action: {
         default_icon: icons(),
@@ -26,6 +26,7 @@ local manifest = {
           "deminifier.js",
           "crate-search.js",
           "crates-index.js",
+          "rust-attributes.js",
           "omnibox.js",
           "main.js"
         ]

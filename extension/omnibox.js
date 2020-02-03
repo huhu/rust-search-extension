@@ -23,19 +23,27 @@ Omnibox.prototype.bootstrap = async function() {
         if (!query) return;
 
         this.suggestResults = [];
-        if (!query.startsWith("!")) {
+        if (query.startsWith("#")) {
+            this.appendAttributesResult(query);
+        } else if (query.startsWith("!")) {
+            await this.appendCratesResult(query);
+        } else {
             const searchResults = window.search(query);
             for (let result of searchResults) {
                 this.appendSuggestResult(result);
             }
-        }
 
-        if (this.suggestResults.length < MAX_SUGGEST_SIZE && /e\d{2,4}$/ig.test(query)) {
-            this.appendErrorIndexResult(query, MAX_SUGGEST_SIZE - this.suggestResults.length);
-        }
+            if (this.suggestResults.length < MAX_SUGGEST_SIZE && /e\d{2,4}$/ig.test(query)) {
+                this.appendErrorIndexResult(query, MAX_SUGGEST_SIZE - this.suggestResults.length);
+            }
 
-        if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
-            await this.appendCratesResult(query);
+            if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
+                await this.appendAttributesResult(query);
+            }
+
+            if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
+                await this.appendCratesResult(query);
+            }
         }
 
         suggestFn(this.suggestResults);
@@ -85,6 +93,16 @@ Omnibox.prototype.appendCratesResult = async function(query) {
         content: "https://crates.io/search?q=" + encodeURIComponent(query),
         description: "Search Rust crates for " + this.tagged("match", query) + " on https://crates.io"
     });
+};
+
+Omnibox.prototype.appendAttributesResult = function(query) {
+    let attributes = attributeSearcher.search(query);
+    for (let attr of attributes) {
+        this.suggestResults.push({
+            content: attr.href,
+            description: `Attribute: ${this.tagged("match", "#[" + attr.name + "]")} ${attr.description}`,
+        });
+    }
 };
 
 Omnibox.prototype.navigateToUrl = function(url) {
