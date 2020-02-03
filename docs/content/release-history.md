@@ -2,6 +2,11 @@
 title = "Release History"
 +++
 
+# v0.7 - 2020-02-04
+
+- Bump search-index to version **v1.41.0**
+- Support search rust builtin attributes instantly.
+
 # v0.6 - 2020-01-20
 
 - Bump search-index to version **v1.40.0**
