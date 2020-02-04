@@ -26,7 +26,7 @@ local manifest = {
           "deminifier.js",
           "crate-search.js",
           "crates-index.js",
-          "rust-attributes.js",
+          "attribute-search.js",
           "omnibox.js",
           "main.js"
         ]
