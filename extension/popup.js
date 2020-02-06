@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const checked = event.target.checked;
         settings.isOfflineMode = checked;
         toggleOfflinePathEnableState(checked);
-        omnibox.setupDefaultSuggestion();
+        omnibox.setDefaultSuggestion();
     };
 
     // Offline doc path

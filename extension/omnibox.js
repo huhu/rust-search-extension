@@ -1,4 +1,5 @@
-let MAX_SUGGEST_SIZE = 7;
+let MAX_SUGGEST_SIZE = 8;
+const DEFAULT_SUGGESTION = "Search std docs, crates (!), builtin attributes (#), error codes in your address bar instantly!";
 
 function Omnibox() {
     this.isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
@@ -8,34 +9,38 @@ function Omnibox() {
         (_, str) => str;
 
     this.browser = this.isChrome ? window.chrome : window.browser;
+    this.defaultSuggestionContent = null;
 }
 
-Omnibox.prototype.setupDefaultSuggestion = function() {
+Omnibox.prototype.setDefaultSuggestion = function(description, content) {
     this.browser.omnibox.setDefaultSuggestion({
-        description: `Search Rust docs ${ this.isChrome ? " for <match>%s</match>" : "" } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`
+        description: description
     });
+
+    if (content) {
+        this.defaultSuggestionContent = content;
+    }
 };
 
 Omnibox.prototype.bootstrap = async function() {
-    this.setupDefaultSuggestion();
+    this.setDefaultSuggestion(DEFAULT_SUGGESTION);
 
     this.browser.omnibox.onInputChanged.addListener(async (query, suggestFn) => {
-        if (!query) return;
+        this.defaultSuggestionContent = null;
+        if (!query) {
+            this.setDefaultSuggestion(DEFAULT_SUGGESTION);
+            return;
+        }
 
         this.suggestResults = [];
         if (query.startsWith("#")) {
             this.appendAttributesResult(query);
         } else if (query.startsWith("!")) {
             await this.appendCratesResult(query);
+        } else if (/e\d{2,4}$/ig.test(query)) {
+            this.appendErrorIndexResult(query);
         } else {
-            const searchResults = window.search(query);
-            for (let result of searchResults) {
-                this.appendSuggestResult(result);
-            }
-
-            if (this.suggestResults.length < MAX_SUGGEST_SIZE && /e\d{2,4}$/ig.test(query)) {
-                this.appendErrorIndexResult(query, MAX_SUGGEST_SIZE - this.suggestResults.length);
-            }
+            this.appendDocumentationResult(query);
 
             if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
                 await this.appendAttributesResult(query);
@@ -44,32 +49,55 @@ Omnibox.prototype.bootstrap = async function() {
             if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
                 await this.appendCratesResult(query);
             }
+
+            this.suggestResults.push({
+                content: `${window.rootPath}std/index.html?search=` + encodeURIComponent(query),
+                description: `Search Rust docs ${ this.isChrome ? ` for <match>${query}</match>` : "" } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
+            });
         }
 
         suggestFn(this.suggestResults);
     });
 
-    this.browser.omnibox.onInputEntered.addListener(text => {
-        if (/^https?:\/\//i.test(text) || /^file:\/\//i.test(text)) {
-            this.navigateToUrl(text);
+    this.browser.omnibox.onInputEntered.addListener(content => {
+        if (/^https?:\/\//i.test(content) || /^file:\/\//i.test(content)) {
+            this.navigateToUrl(content);
         } else {
-            this.navigateToUrl(`${window.rootPath}std/index.html?search=` + encodeURIComponent(text));
+            this.navigateToUrl(this.defaultSuggestionContent);
         }
+
+        this.setDefaultSuggestion(DEFAULT_SUGGESTION);
     });
 };
 
-Omnibox.prototype.appendSuggestResult = function(item) {
-    let description = item.displayPath + this.tagged("match", item.name);
-    if (item.desc) {
-        description += " - " + this.tagged("dim", this.escape(item.desc));
+Omnibox.prototype.appendDocumentationResult = function(query) {
+    const docs = window.search(query);
+
+    if (!this.defaultSuggestionContent && docs.length > 0) {
+        let doc = docs.shift();
+        let description = doc.displayPath + this.tagged("match", doc.name);
+        if (doc.desc) {
+            description += " - " + this.tagged("dim", this.escape(doc.desc));
+        }
+        this.setDefaultSuggestion(
+            description,
+            doc.href,
+        );
     }
-    this.suggestResults.push({
-        content: item.href,
-        description: description,
-    });
+
+    for (let doc of docs) {
+        let description = doc.displayPath + this.tagged("match", doc.name);
+        if (doc.desc) {
+            description += " - " + this.tagged("dim", this.escape(doc.desc));
+        }
+        this.suggestResults.push({
+            content: doc.href,
+            description: description,
+        });
+    }
 };
 
-Omnibox.prototype.appendErrorIndexResult = function(query, length) {
+Omnibox.prototype.appendErrorIndexResult = function(query, length = 10) {
     let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
     for (let i = 1; i <= length; i++) {
         let errorIndex = 'E' + String(baseIndex++).padStart(4, "0");
@@ -83,6 +111,15 @@ Omnibox.prototype.appendErrorIndexResult = function(query, length) {
 
 Omnibox.prototype.appendCratesResult = async function(query) {
     let crates = await crateSearcher.search(query);
+
+    if (!this.defaultSuggestionContent && crates.length > 0) {
+        let crate = crates.shift();
+        this.setDefaultSuggestion(
+            `[crate] ${this.tagged("match", crate.id)} v${crate.version} - ${this.tagged("dim", this.escape(crate.description))}`,
+            `https://crates.io/crates/${crate.id}`,
+        );
+    }
+
     for (let crate of crates) {
         this.suggestResults.push({
             content: `https://crates.io/crates/${crate.id}`,
@@ -97,6 +134,14 @@ Omnibox.prototype.appendCratesResult = async function(query) {
 
 Omnibox.prototype.appendAttributesResult = function(query) {
     let attributes = attributeSearcher.search(query);
+    if (!this.defaultSuggestionContent && attributes.length > 0) {
+        let attr = attributes.shift();
+        this.setDefaultSuggestion(
+            `Attribute: ${this.tagged("match", "#[" + attr.name + "]")} ${attr.description}`,
+            attr.href,
+        );
+    }
+
     for (let attr of attributes) {
         this.suggestResults.push({
             content: attr.href,
