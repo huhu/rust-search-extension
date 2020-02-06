@@ -68,7 +68,6 @@ CrateSearch.prototype.ensureLatestCrateIndex = async function() {
  * @returns
  */
 CrateSearch.prototype.search = async function(keyword, limit = 10) {
-    keyword = keyword.replace(/[-_\s!]/ig, "");
     let result = [];
 
     await this.ensureLatestCrateIndex();

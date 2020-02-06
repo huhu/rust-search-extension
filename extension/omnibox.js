@@ -52,17 +52,18 @@ Omnibox.prototype.bootstrap = async function() {
             this.appendDocumentationResult(query);
 
             if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
-                await this.appendAttributesResult(query);
+                this.appendAttributesResult(query);
             }
 
             if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
                 await this.appendCratesResult(query);
             }
 
-            this.suggestResults.push({
-                content: `${window.rootPath}std/index.html?search=` + encodeURIComponent(query),
-                description: `Search Rust docs ${ this.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
-            });
+            this.appendResult(
+                this.suggestResults.length,
+                `${window.rootPath}std/index.html?search=` + encodeURIComponent(query),
+                `Search Rust docs ${ this.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
+            );
         }
 
         suggestFn(this.suggestResults);
@@ -105,6 +106,7 @@ Omnibox.prototype.appendErrorIndexResult = function(query, length = 10) {
 };
 
 Omnibox.prototype.appendCratesResult = async function(query) {
+    query = query.replace(/[-_\s!]/ig, "");
     let crates = await crateSearcher.search(query);
 
     for (let [index, crate] of crates.entries()) {
@@ -114,10 +116,12 @@ Omnibox.prototype.appendCratesResult = async function(query) {
         ];
         this.appendResult(index, content, description);
     }
-    this.suggestResults.push({
-        content: "https://crates.io/search?q=" + encodeURIComponent(query),
-        description: "Search Rust crates for " + this.match(query) + " on https://crates.io"
-    });
+
+    this.appendResult(
+        this.suggestResults.length,
+        "https://crates.io/search?q=" + encodeURIComponent(query),
+        "Search Rust crates for " + this.match(query) + " on https://crates.io"
+    );
 };
 
 Omnibox.prototype.appendAttributesResult = function(query) {
