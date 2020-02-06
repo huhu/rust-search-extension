@@ -1,5 +1,4 @@
 let MAX_SUGGEST_SIZE = 8;
-const DEFAULT_SUGGESTION = "Search std docs, crates (!), builtin attributes (#), error codes in your address bar instantly!";
 
 function Omnibox() {
     this.isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
@@ -7,8 +6,11 @@ function Omnibox() {
     this.tagged = this.isChrome ?
         (tag, str) => `<${tag}>${str}</${tag}>` :
         (_, str) => str;
+    this.match = (str) => this.tagged("match", str);
+    this.dim = (str) => this.tagged("dim", str);
 
     this.browser = this.isChrome ? window.chrome : window.browser;
+    this.defaultSuggestionDescription = `Search ${this.match("std docs")}, ${this.match("crates")} (!), ${this.match("builtin attributes")} (#), ${this.match("error codes")} in your address bar instantly!`;
     this.defaultSuggestionContent = null;
 }
 
@@ -23,12 +25,12 @@ Omnibox.prototype.setDefaultSuggestion = function(description, content) {
 };
 
 Omnibox.prototype.bootstrap = async function() {
-    this.setDefaultSuggestion(DEFAULT_SUGGESTION);
+    this.setDefaultSuggestion(this.defaultSuggestionDescription);
 
     this.browser.omnibox.onInputChanged.addListener(async (query, suggestFn) => {
         this.defaultSuggestionContent = null;
         if (!query) {
-            this.setDefaultSuggestion(DEFAULT_SUGGESTION);
+            this.setDefaultSuggestion(this.defaultSuggestionDescription);
             return;
         }
 
@@ -52,7 +54,7 @@ Omnibox.prototype.bootstrap = async function() {
 
             this.suggestResults.push({
                 content: `${window.rootPath}std/index.html?search=` + encodeURIComponent(query),
-                description: `Search Rust docs ${ this.isChrome ? ` for <match>${query}</match>` : "" } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
+                description: `Search Rust docs ${ this.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
             });
         }
 
@@ -66,7 +68,7 @@ Omnibox.prototype.bootstrap = async function() {
             this.navigateToUrl(this.defaultSuggestionContent);
         }
 
-        this.setDefaultSuggestion(DEFAULT_SUGGESTION);
+        this.setDefaultSuggestion(this.defaultSuggestionDescription);
     });
 };
 
@@ -75,9 +77,9 @@ Omnibox.prototype.appendDocumentationResult = function(query) {
 
     if (!this.defaultSuggestionContent && docs.length > 0) {
         let doc = docs.shift();
-        let description = doc.displayPath + this.tagged("match", doc.name);
+        let description = doc.displayPath + this.match(doc.name);
         if (doc.desc) {
-            description += " - " + this.tagged("dim", this.escape(doc.desc));
+            description += " - " + this.dim(this.escape(doc.desc));
         }
         this.setDefaultSuggestion(
             description,
@@ -86,9 +88,9 @@ Omnibox.prototype.appendDocumentationResult = function(query) {
     }
 
     for (let doc of docs) {
-        let description = doc.displayPath + this.tagged("match", doc.name);
+        let description = doc.displayPath + this.match(doc.name);
         if (doc.desc) {
-            description += " - " + this.tagged("dim", this.escape(doc.desc));
+            description += " - " + this.dim(this.escape(doc.desc));
         }
         this.suggestResults.push({
             content: doc.href,
@@ -103,7 +105,7 @@ Omnibox.prototype.appendErrorIndexResult = function(query, length = 10) {
         let errorIndex = 'E' + String(baseIndex++).padStart(4, "0");
         this.suggestResults.push({
             content: "https://doc.rust-lang.org/error-index.html#" + errorIndex.toUpperCase(),
-            description: "Search Rust error index for " + this.tagged("match", errorIndex.toUpperCase())
+            description: "Search Rust error index for " + this.match(errorIndex.toUpperCase())
             + " on https://doc.rust-lang.org/error-index.html"
         });
     }
@@ -115,7 +117,7 @@ Omnibox.prototype.appendCratesResult = async function(query) {
     if (!this.defaultSuggestionContent && crates.length > 0) {
         let crate = crates.shift();
         this.setDefaultSuggestion(
-            `[crate] ${this.tagged("match", crate.id)} v${crate.version} - ${this.tagged("dim", this.escape(crate.description))}`,
+            `Crate: ${this.match(crate.id)} v${crate.version} - ${this.dim(this.escape(crate.description))}`,
             `https://crates.io/crates/${crate.id}`,
         );
     }
@@ -123,12 +125,12 @@ Omnibox.prototype.appendCratesResult = async function(query) {
     for (let crate of crates) {
         this.suggestResults.push({
             content: `https://crates.io/crates/${crate.id}`,
-            description: `[crate] ${this.tagged("match", crate.id)} v${crate.version} - ${this.tagged("dim", this.escape(crate.description))}`,
+            description: `Crate: ${this.match(crate.id)} v${crate.version} - ${this.dim(this.escape(crate.description))}`,
         });
     }
     this.suggestResults.push({
         content: "https://crates.io/search?q=" + encodeURIComponent(query),
-        description: "Search Rust crates for " + this.tagged("match", query) + " on https://crates.io"
+        description: "Search Rust crates for " + this.match(query) + " on https://crates.io"
     });
 };
 
@@ -137,7 +139,7 @@ Omnibox.prototype.appendAttributesResult = function(query) {
     if (!this.defaultSuggestionContent && attributes.length > 0) {
         let attr = attributes.shift();
         this.setDefaultSuggestion(
-            `Attribute: ${this.tagged("match", "#[" + attr.name + "]")} ${attr.description}`,
+            `Attribute: ${this.match("#[" + attr.name + "]")} ${attr.description}`,
             attr.href,
         );
     }
@@ -145,7 +147,7 @@ Omnibox.prototype.appendAttributesResult = function(query) {
     for (let attr of attributes) {
         this.suggestResults.push({
             content: attr.href,
-            description: `Attribute: ${this.tagged("match", "#[" + attr.name + "]")} ${attr.description}`,
+            description: `Attribute: ${this.match("#[" + attr.name + "]")} ${attr.description}`,
         });
     }
 };
