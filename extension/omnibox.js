@@ -8,10 +8,17 @@ function Omnibox() {
         (_, str) => str;
     this.match = (str) => this.tagged("match", str);
     this.dim = (str) => this.tagged("dim", str);
-
     this.browser = this.isChrome ? window.chrome : window.browser;
+
     this.defaultSuggestionDescription = `Search ${this.match("std docs")}, ${this.match("crates")} (!), ${this.match("builtin attributes")} (#), ${this.match("error codes")} in your address bar instantly!`;
     this.defaultSuggestionContent = null;
+    this.appendResult = (index, content, description) => {
+        if (index === 0 && !this.defaultSuggestionContent) {
+            this.setDefaultSuggestion(description, content)
+        } else {
+            this.suggestResults.push({content, description});
+        }
+    }
 }
 
 Omnibox.prototype.setDefaultSuggestion = function(description, content) {
@@ -75,58 +82,37 @@ Omnibox.prototype.bootstrap = async function() {
 Omnibox.prototype.appendDocumentationResult = function(query) {
     const docs = window.search(query);
 
-    if (!this.defaultSuggestionContent && docs.length > 0) {
-        let doc = docs.shift();
+    for (let [index, doc] of docs.entries()) {
         let description = doc.displayPath + this.match(doc.name);
         if (doc.desc) {
             description += " - " + this.dim(this.escape(doc.desc));
         }
-        this.setDefaultSuggestion(
-            description,
-            doc.href,
-        );
-    }
-
-    for (let doc of docs) {
-        let description = doc.displayPath + this.match(doc.name);
-        if (doc.desc) {
-            description += " - " + this.dim(this.escape(doc.desc));
-        }
-        this.suggestResults.push({
-            content: doc.href,
-            description: description,
-        });
+        this.appendResult(index, doc.href, description);
     }
 };
 
 Omnibox.prototype.appendErrorIndexResult = function(query, length = 10) {
     let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
-    for (let i = 1; i <= length; i++) {
+
+    for (let index = 0; index < length; index++) {
         let errorIndex = 'E' + String(baseIndex++).padStart(4, "0");
-        this.suggestResults.push({
-            content: "https://doc.rust-lang.org/error-index.html#" + errorIndex.toUpperCase(),
-            description: "Search Rust error index for " + this.match(errorIndex.toUpperCase())
-            + " on https://doc.rust-lang.org/error-index.html"
-        });
+        let [content, description] = [
+            "https://doc.rust-lang.org/error-index.html#" + errorIndex.toUpperCase(),
+            `Search Rust error index for ${this.match(errorIndex.toUpperCase())} on https://doc.rust-lang.org/error-index.html`,
+        ];
+        this.appendResult(index, content, description);
     }
 };
 
 Omnibox.prototype.appendCratesResult = async function(query) {
     let crates = await crateSearcher.search(query);
 
-    if (!this.defaultSuggestionContent && crates.length > 0) {
-        let crate = crates.shift();
-        this.setDefaultSuggestion(
-            `Crate: ${this.match(crate.id)} v${crate.version} - ${this.dim(this.escape(crate.description))}`,
+    for (let [index, crate] of crates.entries()) {
+        let [content, description] = [
             `https://crates.io/crates/${crate.id}`,
-        );
-    }
-
-    for (let crate of crates) {
-        this.suggestResults.push({
-            content: `https://crates.io/crates/${crate.id}`,
-            description: `Crate: ${this.match(crate.id)} v${crate.version} - ${this.dim(this.escape(crate.description))}`,
-        });
+            `Crate: ${this.match(crate.id)} v${crate.version} - ${this.dim(this.escape(crate.description))}`,
+        ];
+        this.appendResult(index, content, description);
     }
     this.suggestResults.push({
         content: "https://crates.io/search?q=" + encodeURIComponent(query),
@@ -136,19 +122,13 @@ Omnibox.prototype.appendCratesResult = async function(query) {
 
 Omnibox.prototype.appendAttributesResult = function(query) {
     let attributes = attributeSearcher.search(query);
-    if (!this.defaultSuggestionContent && attributes.length > 0) {
-        let attr = attributes.shift();
-        this.setDefaultSuggestion(
-            `Attribute: ${this.match("#[" + attr.name + "]")} ${attr.description}`,
-            attr.href,
-        );
-    }
 
-    for (let attr of attributes) {
-        this.suggestResults.push({
-            content: attr.href,
-            description: `Attribute: ${this.match("#[" + attr.name + "]")} ${attr.description}`,
-        });
+    for (let [index, attr] of attributes.entries()) {
+        let [content, description] = [
+            attr.href,
+            `Attribute: ${this.match("#[" + attr.name + "]")} ${attr.description}`,
+        ];
+        this.appendResult(index, content, description);
     }
 };
 
