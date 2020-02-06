@@ -2,6 +2,10 @@
 title = "Rust Search Extension"
 +++
 
+Currently，we only support search documentation of those official crates:
+- **std**
+- **proc_macro**
+- **test**
 
 # Search Primitive Types and Modules
 
@@ -44,7 +48,8 @@ For example, `fn:asref` to search function or `trait:iterator` to search trait.
 # Search top 10K crates
 
 We build top 10K crates (35+k in total on crates.io) index hourly to help you search crates instantly. 
-You can open the popup page to sync the latest crates index automatically. 
+You can open the popup page to sync the latest crates index automatically. ([Some caveats](/how-it-works/#caveats) 
+for Firefox users.)
 
 What more, you can prefix an **!** (exclamation mark) before the keyword to search crates exclusively!
 
