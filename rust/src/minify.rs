@@ -13,6 +13,7 @@ struct FrequencyWord {
 }
 
 impl FrequencyWord {
+    #[inline]
     fn score(&self) -> usize {
         self.word.len() * self.frequency
     }
@@ -34,7 +35,7 @@ impl Minifier {
             .flat_map(|sentence| {
                 sentence
                     .unicode_words()
-                    .filter(|word| word.len() >= 4)
+                    .filter(|word| word.len() >= 3)
                     .collect::<Vec<&str>>()
             })
             .for_each(|word| {
@@ -71,6 +72,7 @@ impl Minifier {
             .collect()
     }
 
+    #[inline]
     pub fn mapping_minify(&self, value: String) -> String {
         value
             .split_word_bounds()

@@ -54,7 +54,10 @@ where
 async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error>> {
     // Keep 1 second sleep interval to comply crates.io crawler policy.
     tokio::time::delay_for(Duration::from_secs((page - 1) as u64)).await;
-    let client = reqwest::Client::builder().user_agent(USER_AGENT).build()?;
+    let client = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(10))
+        .user_agent(USER_AGENT)
+        .build()?;
     let resp: CrateApiResponse = client
         .get(&API.replace("{}", &page.to_string()))
         .send()
@@ -99,7 +102,7 @@ async fn main() -> std::io::Result<()> {
     let path = Path::new(path_name);
 
     let mut futures = vec![];
-    for page in 1..=100 {
+    for page in 1..=150 {
         futures.push(fetch_crates(page));
     }
     let crates: Vec<Crate> = join_all(futures)
