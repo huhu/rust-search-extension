@@ -78,6 +78,7 @@ impl Minifier {
             .collect()
     }
 
+    #[allow(unused)]
     pub fn minify_url(url: String) -> String {
         url.to_lowercase()
             .replace("http://", "")

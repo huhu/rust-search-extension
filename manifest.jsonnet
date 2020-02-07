@@ -42,4 +42,4 @@ local manifest = {
 if std.extVar("browser") == "firefox" then
   manifest
 else
-  manifest.appendContentSecurityPolicy(" script-src-elem 'self' https://rust-search-extension.now.sh/crates/crates-index.js;")
+  manifest.appendContentSecurityPolicy(" script-src-elem 'self' https://rust-search-extension.now.sh/crates/index.js;")

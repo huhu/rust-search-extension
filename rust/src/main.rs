@@ -36,7 +36,6 @@ struct Crate {
     id: String,
     #[serde(deserialize_with = "deserialize_crate_description")]
     description: Option<String>,
-    documentation: Option<String>,
     max_version: Option<String>,
 }
 
@@ -70,14 +69,13 @@ async fn generate_javascript_crates_index(
     minifier: &Minifier,
 ) -> std::io::Result<String> {
     let mut contents = String::from("var N=null;");
-    let crates_map: HashMap<String, [Option<String>; 3]> = crates
+    let crates_map: HashMap<String, [Option<String>; 2]> = crates
         .into_iter()
         .map(|item| {
             (
                 item.id.to_lowercase(),
                 [
                     item.description.map(|value| minifier.mapping_minify(value)),
-                    item.documentation.map(Minifier::minify_url),
                     item.max_version,
                 ],
             )

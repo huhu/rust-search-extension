@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CRATES_INDEX_PATH="/tmp/crates-index.js"
+CRATES_INDEX_PATH="/tmp/index.js"
 BRANCH="now"
 
 build() {

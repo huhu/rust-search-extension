@@ -63,7 +63,7 @@ async function checkLatestCratesIndex() {
 async function loadLatestCratesIndex(version) {
     return new Promise((resolve, reject) => {
         let script = document.createElement('script');
-        script.src = `${CRATES_INDEX_BASE_URL}/crates-index.js?${version}`;
+        script.src = `${CRATES_INDEX_BASE_URL}/index.js?${version}`;
         script.onload = resolve;
         script.onerror = reject;
         document.body.appendChild(script);
