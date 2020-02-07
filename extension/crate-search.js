@@ -97,11 +97,10 @@ CrateSearch.prototype.search = async function(keyword, limit = 10) {
     })
         .slice(0, limit)
         .map(item => {
-            let [description, documentation, version] = this.crateIndex[item.id];
+            let [description, version] = this.crateIndex[item.id];
             return {
                 id: item.id,
                 description: deminifier.cleanMinifiedDescription(description),
-                documentation: deminifier.cleanMinifiedUrl(documentation),
                 version: version,
             }
         });

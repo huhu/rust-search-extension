@@ -106,12 +106,13 @@ Omnibox.prototype.appendErrorIndexResult = function(query, length = 10) {
 };
 
 Omnibox.prototype.appendCratesResult = async function(query) {
-    query = query.replace(/[-_\s!]/ig, "");
+    let jumpToDocs = query.startsWith("!!");
+    query = query.replace(/[-_\s!]*/ig, "");
     let crates = await crateSearcher.search(query);
 
     for (let [index, crate] of crates.entries()) {
         let [content, description] = [
-            `https://crates.io/crates/${crate.id}`,
+            jumpToDocs ? `https://docs.rs/${crate.id}` : `https://crates.io/crates/${crate.id}`,
             `Crate: ${this.match(crate.id)} v${crate.version} - ${this.dim(this.escape(crate.description))}`,
         ];
         this.appendResult(index, content, description);
