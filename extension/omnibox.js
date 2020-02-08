@@ -118,7 +118,8 @@ Omnibox.prototype.appendErrorIndexResult = function(query, length = 10) {
 
 Omnibox.prototype.appendCratesResult = async function(query) {
     let docMode = query.startsWith("!!");
-    query = query.replace(/[-_\s!]*/ig, "");
+    let rawQuery = query.replace(/[!\s]/g, "");
+    query = rawQuery.replace(/[-_]*/ig, "");
     let crates = await crateSearcher.search(query);
 
     for (let [index, crate] of crates.entries()) {
@@ -131,8 +132,8 @@ Omnibox.prototype.appendCratesResult = async function(query) {
 
     this.appendResult(
         this.suggestResults.length,
-        "https://crates.io/search?q=" + encodeURIComponent(query),
-        "Search Rust crates for " + this.match(query) + " on https://crates.io"
+        "https://crates.io/search?q=" + encodeURIComponent(rawQuery),
+        "Search Rust crates for " + this.match(rawQuery) + " on https://crates.io"
     );
 };
 
