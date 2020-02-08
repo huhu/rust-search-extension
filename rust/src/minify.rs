@@ -73,6 +73,15 @@ impl Minifier {
     }
 
     #[inline]
+    pub fn mapping_minify_crate_id(&self, value: String) -> String {
+        let vec: Vec<&str> = value
+            .split(|c| c == '_')
+            .map(|item| self.mapping.get(item).map(Deref::deref).unwrap_or(item))
+            .collect();
+        vec.join("_")
+    }
+
+    #[inline]
     pub fn mapping_minify(&self, value: String) -> String {
         value
             .split_word_bounds()
