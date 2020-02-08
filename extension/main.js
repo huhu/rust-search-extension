@@ -4,6 +4,8 @@ const attributeSearcher = new AttributeSearch();
 const omnibox = new Omnibox();
 
 (async () => {
-    await crateSearcher.ensureLatestCrateIndex();
     await omnibox.bootstrap();
 })();
+
+window.crateSearcher = crateSearcher;
+window.deminifier = deminifier;

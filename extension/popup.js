@@ -1,4 +1,5 @@
-const omnibox = new Omnibox();
+// Get extension background page.
+const background = window.browser.extension.getBackgroundPage();
 const CRATES_INDEX_BASE_URL = "https://rust-search-extension.now.sh/crates";
 
 const toast = new Toast(".toast");
@@ -8,13 +9,14 @@ async function checkLatestCratesIndex() {
 
     let response = await fetch(`${CRATES_INDEX_BASE_URL}/version.json?${Date.now()}`);
     let {version} = await response.json();
-    if (parseInt(localStorage.getItem("crate-index-version") || 1) < version) {
+    if (background.crateSearcher.getCrateIndexVersion() < version) {
         try {
             toast.info("Updating latest crates index, wait a seconds...");
             await loadLatestCratesIndex(version);
 
-            localStorage.setItem('crate-index', JSON.stringify(window.crateIndex));
-            localStorage.setItem('crate-index-version', version);
+            // Update the latest crates index and mapping.
+            background.crateSearcher.setCrateIndex(window.crateIndex, version);
+            background.deminifier.setMapping(window.mapping);
             toast.success("Updated to latest crates index.");
         } catch (error) {
             toast.error("Update failed, please try again :(");
@@ -56,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const checked = event.target.checked;
         settings.isOfflineMode = checked;
         toggleOfflinePathEnableState(checked);
-        omnibox.setDefaultSuggestion();
     };
 
     // Offline doc path
@@ -89,7 +90,7 @@ function toggleOfflinePathEnableState(enable) {
 }
 
 (async () => {
-    if (omnibox.isChrome) {
+    if (window.isChrome) {
         // Only Chrome browser supports 'script-src-elem' Content Security Policy to load script.
         await checkLatestCratesIndex();
     }

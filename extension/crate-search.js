@@ -42,23 +42,20 @@ String.prototype.levenshteinContains = function(keyword) {
 
 function CrateSearch(crateIndex, crateIndexVersion = 1) {
     this.crateIndexVersion = crateIndexVersion;
-    this.crateIndex = crateIndex;
-    this.crateIds = Object.keys(crateIndex).sort();
+    this.setCrateIndex(crateIndex);
 }
 
-CrateSearch.getLatestIndexVersion = function() {
-    return parseInt(localStorage.getItem("crate-index-version") || 1);
-};
-
-CrateSearch.getLatestCrateIndex = function() {
-    return JSON.parse(localStorage.getItem("crate-index") || null);
-};
-
-CrateSearch.prototype.ensureLatestCrateIndex = async function() {
-    if (CrateSearch.getLatestCrateIndex() > this.crateIndexVersion) {
-        this.crateIndex = CrateSearch.getLatestCrateIndex() || this.crateIndex;
-        this.crateIds = Object.keys(crateIndex).sort();
+CrateSearch.prototype.setCrateIndex = function(rawCrateIndex, crateIndexVersion) {
+    this.crateIndexVersion = crateIndexVersion;
+    this.crateIndex = {};
+    for (let [key, value] of Object.entries(rawCrateIndex)) {
+        this.crateIndex[deminifier.deminify(key)] = value;
     }
+    this.crateIds = Object.keys(this.crateIndex);
+};
+
+CrateSearch.prototype.getCrateIndexVersion = function() {
+    return this.crateIndexVersion || 1;
 };
 
 /**
@@ -70,7 +67,6 @@ CrateSearch.prototype.ensureLatestCrateIndex = async function() {
 CrateSearch.prototype.search = async function(keyword, limit = 10) {
     let result = [];
 
-    await this.ensureLatestCrateIndex();
     for (let rawCrateId of this.crateIds) {
         let crateId = rawCrateId.replace(/[-_\s]/ig, "");
         if (crateId.length < keyword.length) continue;
@@ -100,7 +96,7 @@ CrateSearch.prototype.search = async function(keyword, limit = 10) {
             let [description, version] = this.crateIndex[item.id];
             return {
                 id: item.id,
-                description: deminifier.cleanMinifiedDescription(description),
+                description: deminifier.deminify(description),
                 version: version,
             }
         });
