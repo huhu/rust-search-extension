@@ -1,14 +1,25 @@
 let MAX_SUGGEST_SIZE = 8;
 
 function Omnibox() {
-    this.isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
+    this.isChrome = window.isChrome;
+    this.browser = window.browser;
     // Firefox doesn't support tags in search suggestion.
     this.tagged = this.isChrome ?
         (tag, str) => `<${tag}>${str}</${tag}>` :
         (_, str) => str;
     this.match = (str) => this.tagged("match", str);
     this.dim = (str) => this.tagged("dim", str);
-    this.browser = this.isChrome ? window.chrome : window.browser;
+    // Escape the five predefined entities to display them as text.
+    this.escape = (str) => {
+        str = str || "";
+        return this.isChrome ? str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;")
+            : str;
+    };
 
     this.defaultSuggestionDescription = `Search ${this.match("std docs")}, ${this.match("crates")} (!), ${this.match("builtin attributes")} (#), ${this.match("error codes")} in your address bar instantly!`;
     this.defaultSuggestionContent = null;
@@ -145,16 +156,4 @@ Omnibox.prototype.navigateToUrl = function(url) {
     } else {
         this.browser.tabs.create({url: url});
     }
-};
-
-// Escape the five predefined entities to display them as text.
-Omnibox.prototype.escape = function(text) {
-    text = text || "";
-    return this.isChrome ? text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;")
-        : text;
 };

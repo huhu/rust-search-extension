@@ -20,6 +20,7 @@ local manifest = {
       },
       background: {
         scripts: [
+          "compat.js",
           "settings.js",
           "search.js",
           "search-index.js",
