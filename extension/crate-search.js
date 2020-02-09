@@ -64,7 +64,7 @@ CrateSearch.prototype.getCrateIndexVersion = function() {
  * @param limit the max result length, default is 10.
  * @returns
  */
-CrateSearch.prototype.search = async function(keyword, limit = 10) {
+CrateSearch.prototype.search = function(keyword, limit = 10) {
     let result = [];
 
     for (let rawCrateId of this.crateIds) {

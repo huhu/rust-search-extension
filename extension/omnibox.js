@@ -23,13 +23,8 @@ function Omnibox() {
 
     this.defaultSuggestionDescription = `Search ${this.match("std docs")}, ${this.match("crates")} (!), ${this.match("builtin attributes")} (#), ${this.match("error codes")} in your address bar instantly!`;
     this.defaultSuggestionContent = null;
-    this.appendResult = (index, content, description) => {
-        if (index === 0 && !this.defaultSuggestionContent) {
-            this.setDefaultSuggestion(description, content)
-        } else {
-            this.suggestResults.push({content, description});
-        }
-    }
+
+    this.queryEvents = [];
 }
 
 Omnibox.prototype.setDefaultSuggestion = function(description, content) {
@@ -42,7 +37,21 @@ Omnibox.prototype.setDefaultSuggestion = function(description, content) {
     }
 };
 
-Omnibox.prototype.bootstrap = async function() {
+Omnibox.prototype.appendResult = function(result, formatter) {
+    for (let [index, item] of result.entries()) {
+        if (formatter) {
+            item = formatter(index, item);
+        }
+        let {content, description} = item;
+        if (index === 0 && !this.defaultSuggestionContent) {
+            this.setDefaultSuggestion(description, content);
+        } else {
+            this.suggestResults.push({content, description});
+        }
+    }
+};
+
+Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
 
     this.browser.omnibox.onInputChanged.addListener(async (query, suggestFn) => {
@@ -53,28 +62,27 @@ Omnibox.prototype.bootstrap = async function() {
         }
 
         this.suggestResults = [];
-        if (query.startsWith("#")) {
-            this.appendAttributesResult(query);
-        } else if (query.startsWith("!")) {
-            await this.appendCratesResult(query);
-        } else if (/e\d{2,4}$/ig.test(query)) {
-            this.appendErrorIndexResult(query);
+        let matchedEvent = this.queryEvents.find(event => {
+            return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
+        });
+
+        if (matchedEvent) {
+            this.appendResult(matchedEvent.onSearch(query), matchedEvent.onFormat);
+            if (matchedEvent.onAppend) {
+                this.appendResult(matchedEvent.onAppend(query));
+            }
         } else {
-            this.appendDocumentationResult(query);
+            this.appendResult(onSearch(query), onFormat);
 
-            if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
-                this.appendAttributesResult(query);
+            let defaultSearchEvents = this.queryEvents
+                .filter(event => event.defaultSearch)
+                .sort((a, b) => b.searchPriority - a.searchPriority);
+            for (let event of defaultSearchEvents) {
+                if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
+                    this.appendResult(event.onSearch(query), event.onFormat);
+                }
             }
-
-            if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
-                await this.appendCratesResult(query);
-            }
-
-            this.appendResult(
-                this.suggestResults.length,
-                `${window.rootPath}std/index.html?search=` + encodeURIComponent(query),
-                `Search Rust docs ${ this.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
-            );
+            this.appendResult(onAppend(query));
         }
 
         suggestFn(this.suggestResults);
@@ -91,62 +99,26 @@ Omnibox.prototype.bootstrap = async function() {
     });
 };
 
-Omnibox.prototype.appendDocumentationResult = function(query) {
-    const docs = window.search(query);
-
-    for (let [index, doc] of docs.entries()) {
-        let description = doc.displayPath + this.match(doc.name);
-        if (doc.desc) {
-            description += " - " + this.dim(this.escape(doc.desc));
-        }
-        this.appendResult(index, doc.href, description);
-    }
+Omnibox.prototype.addPrefixQueryEvent = function(prefix, event) {
+    this.addQueryEvent({prefix, ...event,});
 };
 
-Omnibox.prototype.appendErrorIndexResult = function(query, length = 10) {
-    let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
-
-    for (let index = 0; index < length; index++) {
-        let errorIndex = 'E' + String(baseIndex++).padStart(4, "0");
-        let [content, description] = [
-            "https://doc.rust-lang.org/error-index.html#" + errorIndex.toUpperCase(),
-            `Search Rust error index for ${this.match(errorIndex.toUpperCase())} on https://doc.rust-lang.org/error-index.html`,
-        ];
-        this.appendResult(index, content, description);
-    }
+Omnibox.prototype.addRegexQueryEvent = function(regex, event) {
+    this.addQueryEvent({regex, ...event,});
 };
 
-Omnibox.prototype.appendCratesResult = async function(query) {
-    let docMode = query.startsWith("!!");
-    let rawQuery = query.replace(/[!\s]/g, "");
-    query = rawQuery.replace(/[-_]*/ig, "");
-    let crates = await crateSearcher.search(query);
-
-    for (let [index, crate] of crates.entries()) {
-        let [content, description] = [
-            docMode ? `https://docs.rs/${crate.id}` : `https://crates.io/crates/${crate.id}`,
-            `${docMode ? "Docs" : "Crate"}: ${this.match(crate.id)} v${crate.version} - ${this.dim(this.escape(crate.description))}`,
-        ];
-        this.appendResult(index, content, description);
-    }
-
-    this.appendResult(
-        this.suggestResults.length,
-        "https://crates.io/search?q=" + encodeURIComponent(rawQuery),
-        "Search Rust crates for " + this.match(rawQuery) + " on https://crates.io"
-    );
-};
-
-Omnibox.prototype.appendAttributesResult = function(query) {
-    let attributes = attributeSearcher.search(query);
-
-    for (let [index, attr] of attributes.entries()) {
-        let [content, description] = [
-            attr.href,
-            `Attribute: ${this.match("#[" + attr.name + "]")} ${attr.description}`,
-        ];
-        this.appendResult(index, content, description);
-    }
+Omnibox.prototype.addQueryEvent = function(
+    {onSearch, onFormat, onAppend, prefix = undefined, regex = undefined, defaultSearch = false, searchPriority = 0}
+) {
+    this.queryEvents.push({
+        prefix,
+        regex,
+        defaultSearch,
+        searchPriority,
+        onSearch,
+        onFormat,
+        onAppend,
+    });
 };
 
 Omnibox.prototype.navigateToUrl = function(url) {
