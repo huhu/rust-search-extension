@@ -28,6 +28,7 @@ local manifest = {
           "crate-search.js",
           "crates-index.js",
           "attribute-search.js",
+          "command.js",
           "omnibox.js",
           "main.js"
         ]

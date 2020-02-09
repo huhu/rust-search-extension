@@ -1,6 +1,7 @@
 const deminifier = new Deminifier(mapping);
 const crateSearcher = new CrateSearch(crateIndex);
 const attributeSearcher = new AttributeSearch();
+const command = new Command();
 const omnibox = new Omnibox();
 
 omnibox.bootstrap({
@@ -35,7 +36,7 @@ omnibox.addPrefixQueryEvent("!", {
         return {
             // Dash and underscore is unequivalent on docs.rs right now.
             // See issue https://github.com/rust-lang/docs.rs/issues/105
-            content: this.docMode ? `https://docs.rs/${crate.id.replace("_","-")}` : `https://crates.io/crates/${crate.id}`,
+            content: this.docMode ? `https://docs.rs/${crate.id.replace("_", "-")}` : `https://crates.io/crates/${crate.id}`,
             description: `${this.docMode ? "Docs" : "Crate"}: ${omnibox.match(crate.id)} v${crate.version} - ${omnibox.dim(omnibox.escape(crate.description))}`,
         };
     },
@@ -77,6 +78,12 @@ omnibox.addRegexQueryEvent(/e\d{2,4}$/i, {
             description: `Search Rust error index for ${omnibox.match(errorCode)} on https://doc.rust-lang.org/error-index.html`,
         }
     }
+});
+
+omnibox.addPrefixQueryEvent(":", {
+    onSearch: (query) => {
+        return command.execute(query);
+    },
 });
 
 window.crateSearcher = crateSearcher;
