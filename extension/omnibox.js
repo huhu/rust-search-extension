@@ -69,10 +69,12 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
     });
 
     this.browser.omnibox.onInputEntered.addListener(content => {
-        if (/^https?:\/\//i.test(content) || /^file:\/\//i.test(content)) {
+        if (/^(https?|file):\/\//i.test(content)) {
             this.navigateToUrl(content);
         } else {
-            this.navigateToUrl(this.defaultSuggestionContent);
+            if (/^(https?|file):\/\//i.test(this.defaultSuggestionContent)) {
+                this.navigateToUrl(this.defaultSuggestionContent);
+            }
         }
 
         this.setDefaultSuggestion(this.defaultSuggestionDescription);
