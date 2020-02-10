@@ -1,29 +1,46 @@
-function Command() {}
+const c = new Compat();
+
+function Command() {
+    this.cmds = {
+        "help": "Show the help messages.",
+        "yet": "Show all the Are We X Yet websites.",
+    };
+}
 
 Command.prototype.execute = function(query) {
     query = query.replace(":", "").trim();
     let [cmd, arg] = query.split(" ");
-    switch (cmd) {
-        case "yet": {
-            return this.yet();
-        }
-        case "help": {
-            return this.help();
-        }
+    if (cmd in this.cmds) {
+        return this[cmd]();
+    } else {
+        return this.wrap([
+            `Not command found ${c.match(":" + cmd)}, try following commands?`,
+            ...Object.entries(this.cmds).map(([name, description]) => {
+                return `${c.match(":" + name)} - ${c.dim(description)}`
+            }),
+        ]);
     }
 };
 
+// Wrap the result array with the default content,
+// as the content is required by omnibox api.
+Command.prototype.wrap = function(result) {
+    return result.map((description, index) => {
+        return {content: `help${index + 1}`, description};
+    });
+};
+
 Command.prototype.help = function() {
-    return [
-        {content: "help", description: "Prefix : to execute command (:help, :yet)"},
-        {content: "help1", description: "Prefix ! to search crates, prefix !! to search crates's docs url"},
-        {content: "help2", description: "Prefix # to search builtin attributes"},
-        {content: "help7", description: "[WIP] Prefix @ and crate name to that crate's doc"},
-        {content: "help3", description: "[WIP] Prefix / to search official Rust project (rust-lang, rust-lang-nursery)"},
-        {content: "help4", description: "[WIP] Prefix ? to search tracking issues"},
-        {content: "help5", description: "[WIP] Prefix > to search clippy lints"},
-        {content: "help6", description: "[WIP] Prefix % to search Rust book chapters"},
-    ]
+    return this.wrap([
+        `Prefix ${c.match(":")} to execute command (:help, :yet)`,
+        `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs url`,
+        `Prefix ${c.match("#")} to search builtin attributes`,
+        `[WIP] Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search the dedicated crate's doc`,
+        `[WIP] Prefix ${c.match("/")} to search official Rust project (rust-lang, rust-lang-nursery)`,
+        `[WIP] Prefix ${c.match("?")} to search Rust tracking issues`,
+        `[WIP] Prefix ${c.match(">")} to search Rust clippy lints`,
+        `[WIP] Prefix ${c.match("%")} to search Rust book chapters`,
+    ]);
 };
 
 Command.prototype.yet = function() {
@@ -38,12 +55,10 @@ Command.prototype.yet = function() {
         ["Are we web yet?", "Rust libraries for web development", "http://arewewebyet.org"],
         ["Are we podcast yet?", "Rust Are We Podcast Yet", "https://soundcloud.com/arewepodcastyet"],
     ];
-    let result = [];
-    for (let [title, description, content] of areweyet) {
-        result.push({
+    return areweyet.map(([title, description, content]) => {
+        return {
             content,
-            description: title + description,
-        });
-    }
-    return result;
+            description: `${title} - ${c.dim(description)}`,
+        }
+    });
 };
