@@ -1,5 +1,5 @@
 // Get extension background page.
-const background = window.browser.extension.getBackgroundPage();
+const background = new Compat().getBackgroundPage();
 const CRATES_INDEX_BASE_URL = "https://rust-search-extension.now.sh/crates";
 
 const toast = new Toast(".toast");

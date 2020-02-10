@@ -1,24 +1,27 @@
+const compat = new Compat();
 const deminifier = new Deminifier(mapping);
 const crateSearcher = new CrateSearch(crateIndex);
 const attributeSearcher = new AttributeSearch();
 const command = new Command();
-const omnibox = new Omnibox();
+
+const defaultSuggestion = `Search ${compat.match("std docs")}, ${compat.match("crates")} (!), ${compat.match("builtin attributes")} (#), ${compat.match("error codes")} in your address bar instantly!`;
+const omnibox = new Omnibox(compat.browser, defaultSuggestion);
 
 omnibox.bootstrap({
     onSearch: (query) => {
         return window.search(query);
     },
     onFormat: (index, doc) => {
-        let description = doc.displayPath + omnibox.match(doc.name);
+        let description = doc.displayPath + compat.match(doc.name);
         if (doc.desc) {
-            description += " - " + omnibox.dim(omnibox.escape(doc.desc));
+            description += " - " + compat.dim(compat.escape(doc.desc));
         }
         return {content: doc.href, description};
     },
     onAppend: (query) => {
         return [{
             content: `${window.rootPath}std/index.html?search=` + encodeURIComponent(query),
-            description: `Search Rust docs ${ omnibox.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
+            description: `Search Rust docs ${ compat.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
         }]
     },
 });
@@ -37,13 +40,13 @@ omnibox.addPrefixQueryEvent("!", {
             // Dash and underscore is unequivalent on docs.rs right now.
             // See issue https://github.com/rust-lang/docs.rs/issues/105
             content: this.docMode ? `https://docs.rs/${crate.id.replace("_", "-")}` : `https://crates.io/crates/${crate.id}`,
-            description: `${this.docMode ? "Docs" : "Crate"}: ${omnibox.match(crate.id)} v${crate.version} - ${omnibox.dim(omnibox.escape(crate.description))}`,
+            description: `${this.docMode ? "Docs" : "Crate"}: ${compat.match(crate.id)} v${crate.version} - ${compat.dim(compat.escape(crate.description))}`,
         };
     },
     onAppend: () => {
         return [{
             content: "https://crates.io/search?q=" + encodeURIComponent(this.rawQuery),
-            description: "Search Rust crates for " + omnibox.match(this.rawQuery) + " on https://crates.io",
+            description: "Search Rust crates for " + compat.match(this.rawQuery) + " on https://crates.io",
         }];
     }
 });
@@ -57,7 +60,7 @@ omnibox.addPrefixQueryEvent("#", {
     onFormat: (index, attribute) => {
         return {
             content: attribute.href,
-            description: `Attribute: ${omnibox.match("#[" + attribute.name + "]")} ${attribute.description}`,
+            description: `Attribute: ${compat.match("#[" + attribute.name + "]")} ${attribute.description}`,
         }
     }
 });
@@ -75,8 +78,8 @@ omnibox.addRegexQueryEvent(/e\d{2,4}$/i, {
     onFormat: (index, errorCode) => {
         return {
             content: "https://doc.rust-lang.org/error-index.html#" + errorCode,
-            description: `Search Rust error index for ${omnibox.match(errorCode)} on https://doc.rust-lang.org/error-index.html`,
-        }
+            description: `Search Rust error index for ${compat.match(errorCode)} on https://doc.rust-lang.org/error-index.html`,
+        };
     }
 });
 
