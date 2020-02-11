@@ -4,6 +4,7 @@ function Command() {
     this.cmds = {
         "help": "Show the help messages.",
         "yet": "Show all the Are We X Yet websites.",
+        "book": "Show all the Rust official books.",
     };
 }
 
@@ -32,7 +33,7 @@ Command.prototype.wrap = function(result) {
 
 Command.prototype.help = function() {
     return this.wrap([
-        `Prefix ${c.match(":")} to execute command (:help, :yet)`,
+        `Prefix ${c.match(":")} to execute command (:help, :yet, :book)`,
         `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs url`,
         `Prefix ${c.match("#")} to search builtin attributes`,
         `[WIP] Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search the dedicated crate's doc`,
@@ -59,6 +60,33 @@ Command.prototype.yet = function() {
         return {
             content,
             description: `${title} - ${c.dim(description)}`,
+        }
+    });
+};
+
+Command.prototype.book = function() {
+    const books = [
+        ["The Rust Programming Language", "https://doc.rust-lang.org/stable/book/"],
+        ["Rust Async Book", "https://rust-lang.github.io/async-book/"],
+        ["Rust Edition Guide Book", "https://doc.rust-lang.org/stable/edition-guide/"],
+        ["The Cargo Book", "https://doc.rust-lang.org/cargo/index.html"],
+        ["Rust and WebAssembly Book", "https://rustwasm.github.io/docs/book/"],
+        ["The Embedded Rust Book", "https://rust-embedded.github.io/book/"],
+        ["The Rust Cookbook", "https://rust-lang-nursery.github.io/rust-cookbook/"],
+        ["Command line apps in Rust", "https://rust-cli.github.io/book/index.html"],
+        ["Rust by Example", "https://doc.rust-lang.org/stable/rust-by-example/"],
+        ["Rust RFC", "https://rust-lang.github.io/rfcs/"],
+        ["The Rust Doc Book", "https://doc.rust-lang.org/rustdoc/index.html"],
+        ["The rustc Book", "https://doc.rust-lang.org/rustc/index.html"],
+        ["The Rust Reference", "https://doc.rust-lang.org/reference/index.html"],
+        ["The Rustonomicon", "https://doc.rust-lang.org/nomicon/index.html"],
+        ["The Unstable Book", "https://doc.rust-lang.org/unstable-book/index.html"],
+        ["Rust API Guidelines", "https://rust-lang.github.io/api-guidelines/"],
+    ];
+    return books.map(([name, url]) => {
+        return {
+            content: url,
+            description: `${c.match(name)} - ${c.dim(url)}`,
         }
     });
 };
