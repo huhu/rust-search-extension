@@ -1,12 +1,8 @@
 [package]
-name = "rust"
+name = "rust-search-extension"
 version = "0.1.0"
 authors = ["Folyd <lyshuhow@gmail.com>"]
 edition = "2018"
-
-[[bin]]
-name = "crates-index"
-path = "src/main.rs"
 
 [dependencies]
 serde = "1.0.102"
@@ -18,3 +14,4 @@ futures = "0.3.1"
 minifier = "0.0.33"
 lazy_static = "1.4.0"
 unicode-segmentation = "1.6.0"
+select = "0.4.3"

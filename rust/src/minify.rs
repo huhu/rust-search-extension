@@ -20,7 +20,7 @@ impl FrequencyWord {
 }
 
 #[derive(Debug)]
-pub(crate) struct Minifier {
+pub struct Minifier {
     mapping: HashMap<String, String>,
 }
 

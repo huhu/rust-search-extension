@@ -13,9 +13,7 @@ use tokio;
 use tokio::time::Duration;
 
 use lazy_static::lazy_static;
-use minify::Minifier;
-
-mod minify;
+use rust_search_extension::minify::Minifier;
 
 const MAX_PAGE: u32 = 150;
 const API: &str = "https://crates.io/api/v1/crates?page={}&per_page=100&sort=downloads";
@@ -138,8 +136,7 @@ async fn main() -> std::io::Result<()> {
                 // Extract frequency word mapping
                 let minifier = Minifier::new(&SPLITTED_WORDS.read().unwrap());
                 let mapping = minifier.get_mapping();
-                let mut contents =
-                    format!("var mapping={};", serde_json::to_string(&mapping).unwrap());
+                let mut contents = format!("var mapping={};", serde_json::to_string(&mapping)?);
                 contents.push_str(&generate_javascript_crates_index(crates, &minifier).await?);
                 fs::write(path, &contents)?;
                 println!("\nGenerate javascript crates index successful!");

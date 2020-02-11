@@ -1,0 +1,30 @@
+[
+  {
+    "name": "The Rust Programming Language",
+    "url": "https://doc.rust-lang.org/stable/book/"
+  },
+  {
+    "name": "Rust Async Book",
+    "url": "https://rust-lang.github.io/async-book/"
+  },
+  {
+    "name": "Rust Edition Guide Book",
+    "url": "https://doc.rust-lang.org/stable/edition-guide/"
+  },
+  {
+    "name": "The Cargo Book",
+    "url": "https://doc.rust-lang.org/cargo/index.html"
+  },
+  {
+    "name": "Rust and WebAssembly Book",
+    "url": "https://rustwasm.github.io/docs/book/"
+  },
+  {
+    "name": "The Embedded Rust Book",
+    "url": "https://rust-embedded.github.io/book/"
+  },
+  {
+    "name": "The Rust Cookbook",
+    "url": "https://rust-lang-nursery.github.io/rust-cookbook/"
+  }
+]
