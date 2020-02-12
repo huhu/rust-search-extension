@@ -23,13 +23,14 @@ local manifest = {
           "compat.js",
           "settings.js",
           "search.js",
-          "search-index.js",
           "deminifier.js",
           "crate-search.js",
-          "crates-index.js",
           "attribute-search.js",
           "command.js",
           "omnibox.js",
+          "index/books.js",
+          "index/crates.js",
+          "index/std-docs.js",
           "main.js"
         ]
       },

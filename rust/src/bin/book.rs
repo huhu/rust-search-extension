@@ -9,7 +9,7 @@ use serde_derive::{Deserialize, Serialize};
 use serde_json;
 use tokio;
 
-const BOOKS_INDEX_PATH: &str = "../extension/books-index.js";
+const BOOKS_INDEX_PATH: &str = "../extension/index/books.js";
 
 // [title, path]
 type Chapter = [String; 2];
