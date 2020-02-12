@@ -1,3 +1,4 @@
+let MAX_SUGGRST_PAGE = 10;
 let MAX_SUGGEST_SIZE = 8;
 
 function Omnibox(browser, defaultSuggestion) {
@@ -23,24 +24,44 @@ Omnibox.prototype.appendResult = function(result, formatter) {
             item = formatter(index, item);
         }
         let {content, description} = item;
-        if (index === 0 && !this.defaultSuggestionContent) {
-            this.setDefaultSuggestion(description, content);
-        } else {
-            this.suggestResults.push({content, description});
-        }
+        this.suggestResults.push({content, description});
     }
+};
+
+Omnibox.prototype.parse = function(input) {
+    let parsePage = (arg) => {
+        return [...arg].filter(c => c === "+").length + 1;
+    };
+    let args = input.toLowerCase().trim().split(" ");
+    let scope = undefined, query = undefined, page = 1;
+    if (args.length === 1) {
+        query = args[0];
+    } else if (args.length === 2) {
+        if (args[1].startsWith("+")) {
+            query = args[0];
+            page = parsePage(args[1]);
+        } else {
+            scope = args[0];
+            query = args[1];
+        }
+    } else if (args.length > 2) {
+        scope = args[0];
+        query = args[1];
+        page = parsePage(args[1]);
+    }
+    return {scope, query, page};
 };
 
 Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
 
-    this.browser.omnibox.onInputChanged.addListener(async (query, suggestFn) => {
+    this.browser.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
         this.defaultSuggestionContent = null;
-        if (!query) {
+        if (!input) {
             this.setDefaultSuggestion(this.defaultSuggestionDescription);
             return;
         }
-
+        let {scope, query, page} = this.parse(input);
         this.suggestResults = [];
         let matchedEvent = this.queryEvents.find(event => {
             return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
@@ -58,14 +79,18 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
                 .filter(event => event.defaultSearch)
                 .sort((a, b) => b.searchPriority - a.searchPriority);
             for (let event of defaultSearchEvents) {
-                if (this.suggestResults.length < MAX_SUGGEST_SIZE) {
+                if (this.suggestResults.length < MAX_SUGGEST_SIZE * MAX_SUGGRST_PAGE) {
                     this.appendResult(event.onSearch(query), event.onFormat);
                 }
             }
             this.appendResult(onAppend(query));
         }
-
-        suggestFn(this.suggestResults);
+        let result = this.suggestResults.slice(MAX_SUGGEST_SIZE * (page - 1), MAX_SUGGEST_SIZE * page);
+        if (result.length > 0) {
+            let {content, description} = result.shift();
+            this.setDefaultSuggestion(description, content);
+        }
+        suggestFn(result);
     });
 
     this.browser.omnibox.onInputEntered.addListener(content => {
