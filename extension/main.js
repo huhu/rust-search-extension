@@ -59,7 +59,7 @@ omnibox.addPrefixQueryEvent("#", {
     },
     onFormat: (index, attribute) => {
         return {
-            content: attribute.href,
+            content: attribute.href + `?${index}`,
             description: `Attribute: ${compat.match("#[" + attribute.name + "]")} ${compat.dim(attribute.description)}`,
         }
     }
