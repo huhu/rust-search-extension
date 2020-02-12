@@ -61,10 +61,9 @@ CrateSearch.prototype.getCrateIndexVersion = function() {
 /**
  * Perform prefix levenshtein search.
  * @param keyword the keyword to search against.
- * @param limit the max result length, default is 10.
  * @returns
  */
-CrateSearch.prototype.search = function(keyword, limit = 10) {
+CrateSearch.prototype.search = function(keyword) {
     let result = [];
 
     for (let rawCrateId of this.crateIds) {
@@ -90,14 +89,12 @@ CrateSearch.prototype.search = function(keyword, limit = 10) {
             return a.id.length - b.id.length;
         }
         return a.matchIndex - b.matchIndex;
-    })
-        .slice(0, limit)
-        .map(item => {
-            let [description, version] = this.crateIndex[item.id];
-            return {
-                id: item.id,
-                description: deminifier.deminify(description),
-                version: version,
-            }
-        });
+    }).map(item => {
+        let [description, version] = this.crateIndex[item.id];
+        return {
+            id: item.id,
+            description: deminifier.deminify(description),
+            version,
+        }
+    });
 };
