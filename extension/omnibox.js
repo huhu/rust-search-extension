@@ -33,23 +33,22 @@ Omnibox.prototype.parse = function(input) {
         return [...arg].filter(c => c === "+").length + 1;
     };
     let args = input.toLowerCase().trim().split(" ");
-    let scope = undefined, query = undefined, page = 1;
+    let query = undefined, page = 1;
     if (args.length === 1) {
-        query = args[0];
-    } else if (args.length === 2) {
-        if (args[1].startsWith("+")) {
-            query = args[0];
-            page = parsePage(args[1]);
-        } else {
-            scope = args[0];
-            query = args[1];
-        }
-    } else if (args.length > 2) {
-        scope = args[0];
-        query = args[1];
+        // Case: {keyword}
+        query = [args[0]];
+    } else if (args.length === 2 && args[1].startsWith("+")) {
+        // Case: {keyword} ++
+        query = [args[0]];
         page = parsePage(args[1]);
+    } else if (args.length >= 2) {
+        // Case: {keyword} {keyword} [++]
+        query = [args[0], args[1]];
+        if (args[2] && args[2].startsWith("+")) {
+            page = parsePage(args[2]);
+        }
     }
-    return {scope, query, page};
+    return {query: query.join(" "), page};
 };
 
 Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
@@ -61,7 +60,7 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
             this.setDefaultSuggestion(this.defaultSuggestionDescription);
             return;
         }
-        let {scope, query, page} = this.parse(input);
+        let {query, page} = this.parse(input);
         this.suggestResults = [];
         let matchedEvent = this.queryEvents.find(event => {
             return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
