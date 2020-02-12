@@ -84,9 +84,11 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
             }
             this.appendResult(onAppend(query));
         }
+        let totalPage = Math.ceil(this.suggestResults.length / MAX_SUGGEST_SIZE);
         let result = this.suggestResults.slice(MAX_SUGGEST_SIZE * (page - 1), MAX_SUGGEST_SIZE * page);
         if (result.length > 0) {
             let {content, description} = result.shift();
+            description += ` | Page [${page}/${totalPage}], append '+' to page down`;
             this.setDefaultSuggestion(description, content);
         }
         suggestFn(result);
