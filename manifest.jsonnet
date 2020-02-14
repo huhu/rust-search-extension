@@ -18,6 +18,15 @@ local manifest = {
       omnibox: {
         keyword: "rs"
       },
+      content_scripts: [{
+            matches: [
+              "*://docs.rs/*"
+            ],
+            js: [
+              "script/docs-rs.js"
+            ],
+            run_at: "document_start"
+      }],
       background: {
         scripts: [
           "compat.js",

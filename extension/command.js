@@ -81,6 +81,7 @@ Command.prototype.book = function() {
         ["The Rust Reference", "https://doc.rust-lang.org/reference/index.html"],
         ["The Rustonomicon", "https://doc.rust-lang.org/nomicon/index.html"],
         ["The Unstable Book", "https://doc.rust-lang.org/unstable-book/index.html"],
+        ["Rust bindgen User Guide", "https://rust-lang.github.io/rust-bindgen/"],
         ["Rust API Guidelines", "https://rust-lang.github.io/api-guidelines/"],
     ];
     return books.map(([name, url]) => {
