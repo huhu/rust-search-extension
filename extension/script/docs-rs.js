@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               <a href="#" class="pure-menu-link" aria-label="Feature flags" aria-haspopup="menu">
                 <i class="fa fa-fw fa-flag" ></i><span class="title"> Feature flags</span>
               </a>
-              <div class="pure-menu-children" role="menu">
+              <div class="pure-menu-children" role="menu" style="color:#333;max-height: 600px;overflow: scroll">
                 ${html}
               </div>
           </li>`);
