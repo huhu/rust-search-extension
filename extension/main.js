@@ -5,7 +5,7 @@ const attributeSearcher = new AttributeSearch();
 const command = new Command();
 
 const defaultSuggestion = `Search ${compat.match("std docs")}, ${compat.match("crates")} (!), ${compat.match("builtin attributes")} (#), ${compat.match("error codes")} in your address bar instantly!`;
-const omnibox = new Omnibox(compat.browser, defaultSuggestion);
+const omnibox = new Omnibox(compat.browser, defaultSuggestion, compat.isChrome ? 8 : 6);
 
 omnibox.bootstrap({
     onSearch: (query) => {
