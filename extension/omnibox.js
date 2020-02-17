@@ -59,7 +59,6 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
             this.setDefaultSuggestion(this.defaultSuggestionDescription);
             return;
         }
-        console.log(input);
         let {query, page} = this.parse(input);
         this.suggestResults = [];
         let matchedEvent = this.queryEvents.find(event => {

@@ -44,7 +44,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .map(|book| fetch_book(book))
         .collect();
     let books: Vec<Book> = join_all(futures).await.into_iter().flatten().collect();
-    let contents = serde_json::to_string(&books)?;
+    let contents = format!("var booksIndex={};", serde_json::to_string(&books)?);
     let path = Path::new(BOOKS_INDEX_PATH);
     fs::write(path, &contents)?;
     Ok(())

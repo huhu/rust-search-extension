@@ -2,6 +2,7 @@ const compat = new Compat();
 const deminifier = new Deminifier(mapping);
 const crateSearcher = new CrateSearch(crateIndex);
 const attributeSearcher = new AttributeSearch();
+const bookSearcher = new BookSearch(booksIndex);
 const command = new Command();
 
 const defaultSuggestion = `Search ${compat.match("std docs")}, ${compat.match("crates")} (!), ${compat.match("builtin attributes")} (#), ${compat.match("error codes")} in your address bar instantly!`;
@@ -87,6 +88,18 @@ omnibox.addPrefixQueryEvent(":", {
     onSearch: (query) => {
         return command.execute(query);
     },
+});
+
+omnibox.addPrefixQueryEvent("%", {
+    onSearch: (query) => {
+        return bookSearcher.search(query);
+    },
+    onFormat: (index, chapter) => {
+        return {
+            content: chapter.url,
+            description: `${chapter.title} - ${compat.dim(chapter.name)}`
+        }
+    }
 });
 
 window.crateSearcher = crateSearcher;

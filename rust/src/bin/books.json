@@ -13,7 +13,7 @@
   },
   {
     "name": "The Cargo Book",
-    "url": "https://doc.rust-lang.org/cargo/index.html"
+    "url": "https://doc.rust-lang.org/cargo/"
   },
   {
     "name": "Rust and WebAssembly Book",

@@ -35,6 +35,7 @@ local manifest = {
           "deminifier.js",
           "crate-search.js",
           "attribute-search.js",
+          "book-search.js",
           "command.js",
           "omnibox.js",
           "index/books.js",
