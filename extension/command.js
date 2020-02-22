@@ -34,7 +34,7 @@ Command.prototype.wrap = function(result) {
 
 Command.prototype.help = function() {
     return this.wrap([
-        `Prefix ${c.match(":")} to execute command (:help, :yet, :book)`,
+        `Prefix ${c.match(":")} to execute command (${Object.keys(this.cmds).map(c => ":" + c).join(", ")})`,
         `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs url`,
         `Prefix ${c.match("#")} to search builtin attributes`,
         `Prefix ${c.match("%")} to search Rust book chapters`,
