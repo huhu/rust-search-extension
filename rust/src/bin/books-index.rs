@@ -6,13 +6,15 @@ use reqwest;
 use select::document::Document;
 use select::node::Node;
 use select::predicate::{Class, Name};
+use serde::ser::SerializeTuple;
+use serde::{Serialize, Serializer};
 use serde_derive::{Deserialize, Serialize};
 use serde_json;
 use tokio;
 
 const BOOKS_INDEX_PATH: &str = "../extension/index/books.js";
 
-#[derive(Serialize, Debug)]
+#[derive(Debug)]
 struct Page {
     title: String,
     path: String,
@@ -25,6 +27,19 @@ struct Book {
     url: String,
     #[serde(skip_deserializing)]
     pages: Vec<Page>,
+}
+
+impl Serialize for Page {
+    fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
+    where
+        S: Serializer,
+    {
+        let mut ser = serializer.serialize_tuple(3)?;
+        ser.serialize_element(&self.title)?;
+        ser.serialize_element(&self.path)?;
+        ser.serialize_element(&self.parent_titles)?;
+        ser.end()
+    }
 }
 
 fn parse_page(node: &Node) -> Page {
