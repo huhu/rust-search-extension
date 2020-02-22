@@ -5,7 +5,7 @@ use futures::future::try_join_all;
 use reqwest;
 use select::document::Document;
 use select::node::Node;
-use select::predicate::Class;
+use select::predicate::{Class, Name};
 use serde_derive::{Deserialize, Serialize};
 use serde_json;
 use tokio;
@@ -45,7 +45,9 @@ fn parse_page(node: &Node) -> Page {
 fn parse_node(node: &Node, parent_titles: Option<Vec<String>>) -> Vec<Page> {
     let mut pages = vec![];
     for child in node.children() {
-        if child.is(Class("expanded")) {
+        if child.is(Class("expanded"))
+            || (child.first_child().is_some() && child.first_child().unwrap().is(Name("a")))
+        {
             let mut page = parse_page(&child);
             page.parent_titles = parent_titles.clone();
             pages.push(page);
