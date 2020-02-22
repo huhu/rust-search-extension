@@ -12,6 +12,8 @@ use serde_derive::{Deserialize, Serialize};
 use serde_json;
 use tokio;
 
+use rust_search_extension::minify::Minifier;
+
 const BOOKS_INDEX_PATH: &str = "../extension/index/books.js";
 
 #[derive(Debug)]
@@ -96,9 +98,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     match try_join_all(futures).await {
         Ok(result) => {
             let books: Vec<_> = result.into_iter().collect();
-            let contents = format!("var booksIndex={};", serde_json::to_string(&books)?);
+            let contents = format!(
+                "var N=null;var booksIndex={};",
+                serde_json::to_string(&books)?
+            );
             let path = Path::new(BOOKS_INDEX_PATH);
-            fs::write(path, &contents)?;
+            fs::write(path, &Minifier::minify_json(contents))?;
         }
         Err(error) => {
             println!("{:?}", error);
