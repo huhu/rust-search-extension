@@ -94,10 +94,11 @@ omnibox.addPrefixQueryEvent("%", {
     onSearch: (query) => {
         return bookSearcher.search(query);
     },
-    onFormat: (index, chapter) => {
+    onFormat: (index, page) => {
+        let parentTitles = page.parentTitles || [];
         return {
-            content: chapter.url,
-            description: `${chapter.title} - ${compat.dim(chapter.name)}`
+            content: page.url,
+            description: `${ [...parentTitles, compat.match(page.title)].join(" > ") } - ${compat.dim(page.name)}`
         }
     }
 });
