@@ -36,11 +36,11 @@ Command.prototype.help = function() {
         `Prefix ${c.match(":")} to execute command (:help, :yet, :book)`,
         `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs url`,
         `Prefix ${c.match("#")} to search builtin attributes`,
+        `Prefix ${c.match("%")} to search Rust book chapters`,
         `[WIP] Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search the dedicated crate's doc`,
         `[WIP] Prefix ${c.match("/")} to search official Rust project (rust-lang, rust-lang-nursery)`,
         `[WIP] Prefix ${c.match("?")} to search Rust tracking issues`,
         `[WIP] Prefix ${c.match(">")} to search Rust clippy lints`,
-        `[WIP] Prefix ${c.match("%")} to search Rust book chapters`,
     ]);
 };
 
