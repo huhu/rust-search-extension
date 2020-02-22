@@ -26,3 +26,10 @@ Compat.prototype.escape = function(str) {
 Compat.prototype.getBackgroundPage = function() {
     return this.browser.extension.getBackgroundPage();
 };
+
+Compat.prototype.normalizeDate = function(date) {
+    let month = '' + (date.getMonth() + 1),
+        day = '' + date.getDate(),
+        year = date.getFullYear();
+    return [year, month.padStart(2, "0"), day.padStart(2, "0")].join('-');
+};

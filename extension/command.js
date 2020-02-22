@@ -5,6 +5,7 @@ function Command() {
         "help": "Show the help messages.",
         "yet": "Show all the Are We X Yet websites.",
         "book": "Show all the Rust official books.",
+        "stable": "Show stable Rust scheduled release date in the next year.",
     };
 }
 
@@ -27,7 +28,7 @@ Command.prototype.execute = function(query) {
 // as the content is required by omnibox api.
 Command.prototype.wrap = function(result) {
     return result.map((description, index) => {
-        return {content: `help${index + 1}`, description};
+        return {content: `${index + 1}`, description};
     });
 };
 
@@ -90,4 +91,20 @@ Command.prototype.book = function() {
             description: `${c.match(name)} - ${c.dim(url)}`,
         }
     });
+};
+
+Command.prototype.stable = function() {
+    let dates = [];
+    let startVersion = 42;
+    let end = new Date();
+    end.setFullYear(end.getFullYear() + 1);
+    for (let n = 0, v = 0; ; v++) {
+        let date = new Date("2020-01-30");
+        date.setDate(date.getDate() + v * 42);
+        if (date >= end) break;
+        if (date >= new Date()) {
+            dates.push(`Version ${c.match("1." + (startVersion + n++) + ".0")} scheduled release on ${c.match(c.normalizeDate(date))}`);
+        }
+    }
+    return this.wrap(dates);
 };
