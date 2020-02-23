@@ -39,6 +39,31 @@ struct Crate {
     max_version: Option<String>,
 }
 
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub enum TryTruncateError {
+    #[non_exhaustive]
+    NotInCharBoundary,
+}
+
+pub trait TryTruncate {
+    fn try_truncate(&mut self, new_len: usize) -> Result<(), TryTruncateError>;
+}
+
+impl TryTruncate for String {
+    fn try_truncate(&mut self, new_len: usize) -> Result<(), TryTruncateError> {
+        let mut i = new_len;
+        while !self.is_char_boundary(i) && i > 0 {
+            i -= 1;
+        }
+        if i > 0 {
+            self.truncate(i);
+            Ok(())
+        } else {
+            Err(TryTruncateError::NotInCharBoundary)
+        }
+    }
+}
+
 #[inline]
 fn deserialize_crate_id<'de, D>(d: D) -> Result<String, D::Error>
 where
@@ -64,7 +89,7 @@ where
 {
     Ok(Option::<String>::deserialize(d)?.map(|mut value| {
         value = value.trim().to_string();
-        value.truncate(100);
+        value.try_truncate(100).unwrap();
         SPLITTED_WORDS.write().unwrap().push(value.clone());
         value
     }))
