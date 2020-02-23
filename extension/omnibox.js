@@ -23,7 +23,7 @@ Omnibox.prototype.appendResult = function(result, formatter) {
             item = formatter(index, item);
         }
         let {content, description} = item;
-        this.suggestResults.push({content, description});
+        this.suggestResults.push({content: content + `?${index}`, description});
     }
 };
 
@@ -129,6 +129,7 @@ Omnibox.prototype.addQueryEvent = function(
 };
 
 Omnibox.prototype.navigateToUrl = function(url) {
+    url = url.replace(/\?\d$/ig, "");
     if (settings.openType === "current-tab") {
         this.browser.tabs.query({active: true}, tab => {
             this.browser.tabs.update(tab.id, {url: url});

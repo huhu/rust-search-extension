@@ -3,8 +3,8 @@ const c = new Compat();
 function Command() {
     this.cmds = {
         "help": "Show the help messages.",
-        "yet": "Show all the Are We X Yet websites.",
-        "book": "Show all the Rust official books.",
+        "yet": "Show all Are We X Yet websites.",
+        "book": "Show all Rust official books.",
         "stable": "Show stable Rust scheduled release date in the next year.",
     };
 }
@@ -37,7 +37,7 @@ Command.prototype.help = function() {
         `Prefix ${c.match(":")} to execute command (${Object.keys(this.cmds).map(c => ":" + c).join(", ")})`,
         `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs url`,
         `Prefix ${c.match("#")} to search builtin attributes`,
-        `Prefix ${c.match("%")} to search Rust book chapters`,
+        `Prefix ${c.match("%")} to search Rust official book chapters`,
         `[WIP] Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search the dedicated crate's doc`,
         `[WIP] Prefix ${c.match("/")} to search official Rust project (rust-lang, rust-lang-nursery)`,
         `[WIP] Prefix ${c.match("?")} to search Rust tracking issues`,
