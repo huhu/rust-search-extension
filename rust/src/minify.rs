@@ -25,8 +25,8 @@ pub struct Minifier {
 }
 
 impl Minifier {
-    const MINIFY_LETTERS: &'static str =
-        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const PREFIX: &'static str = "@$^&";
+    const SUFFIX: &'static str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     pub fn new(words: &[String]) -> Minifier {
         let mut mapping: HashMap<String, usize> = HashMap::new();
@@ -47,20 +47,25 @@ impl Minifier {
             .map(|(word, frequency)| FrequencyWord { word, frequency })
             .collect::<Vec<FrequencyWord>>();
         frequency_words.sort_by(|a, b| b.score().cmp(&a.score()));
+
+        let keys: Vec<String> = Self::PREFIX
+            .chars()
+            .flat_map(|prefix| {
+                Self::SUFFIX
+                    .chars()
+                    .map(|suffix| format!("{}{}", prefix, suffix))
+                    .collect::<Vec<String>>()
+            })
+            .collect();
         let words = frequency_words
-            .drain(0..Self::MINIFY_LETTERS.len())
+            .drain(0..keys.len())
             .collect::<Vec<FrequencyWord>>();
 
         Minifier {
             mapping: words
                 .iter()
                 .enumerate()
-                .map(|(index, fw)| {
-                    (
-                        fw.word.clone(),
-                        format!("${}", Self::MINIFY_LETTERS.chars().nth(index).unwrap()),
-                    )
-                })
+                .map(|(index, fw)| (fw.word.clone(), keys.get(index).unwrap().to_owned()))
                 .collect(),
         }
     }
