@@ -17,13 +17,17 @@ Omnibox.prototype.setDefaultSuggestion = function(description, content) {
     }
 };
 
-Omnibox.prototype.appendResult = function(result, formatter) {
+Omnibox.prototype.appendResult = function(result, formatter = undefined, deduplicate = false) {
     for (let [index, item] of result.entries()) {
         if (formatter) {
             item = formatter(index, item);
         }
         let {content, description} = item;
-        this.suggestResults.push({content: content + `?${index}`, description});
+        if (deduplicate) {
+            // Deduplicate content
+            content += `?${index}`
+        }
+        this.suggestResults.push({content, description});
     }
 };
 
@@ -66,9 +70,10 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
         });
 
         if (matchedEvent) {
-            this.appendResult(matchedEvent.onSearch(query), matchedEvent.onFormat);
-            if (matchedEvent.onAppend) {
-                this.appendResult(matchedEvent.onAppend(query));
+            let event = matchedEvent;
+            this.appendResult(event.onSearch(query), event.onFormat, event.deduplicate);
+            if (event.onAppend) {
+                this.appendResult(event.onAppend(query), null, event.deduplicate);
             }
         } else {
             this.appendResult(onSearch(query), onFormat);
@@ -78,7 +83,7 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
                 .sort((a, b) => b.searchPriority - a.searchPriority);
             for (let event of defaultSearchEvents) {
                 if (this.suggestResults.length < this.maxSuggestionSize * MAX_SUGGEST_PAGE) {
-                    this.appendResult(event.onSearch(query), event.onFormat);
+                    this.appendResult(event.onSearch(query), event.onFormat, event.deduplicate);
                 }
             }
             this.appendResult(onAppend(query));
@@ -115,13 +120,18 @@ Omnibox.prototype.addRegexQueryEvent = function(regex, event) {
 };
 
 Omnibox.prototype.addQueryEvent = function(
-    {onSearch, onFormat, onAppend, prefix = undefined, regex = undefined, defaultSearch = false, searchPriority = 0}
+    {
+        onSearch, onFormat, onAppend,
+        prefix = undefined, regex = undefined,
+        defaultSearch = false, searchPriority = 0, deduplicate = false
+    }
 ) {
     this.queryEvents.push({
         prefix,
         regex,
         defaultSearch,
         searchPriority,
+        deduplicate,
         onSearch,
         onFormat,
         onAppend,
