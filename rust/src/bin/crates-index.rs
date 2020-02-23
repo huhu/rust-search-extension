@@ -15,7 +15,7 @@ use tokio::time::Duration;
 use lazy_static::lazy_static;
 use rust_search_extension::minify::Minifier;
 
-const MAX_PAGE: u32 = 150;
+const MAX_PAGE: u32 = 200;
 const API: &str = "https://crates.io/api/v1/crates?page={}&per_page=100&sort=downloads";
 const CRATES_INDEX_PATH: &str = "../extension/index/crates.js";
 const USER_AGENT: &str = "Rust Search Extension Bot (lyshuhow@gmail.com)";
