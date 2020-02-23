@@ -25,19 +25,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (features.length > 0) {
             let tbody = features.map(([name, flags]) => {
                 return `<tr class="module-item">
-                        <td class="docblock-short"><span class="stab portability"><code>${name}</code></span>
+                        <td class="docblock-short">
+                        <span class="stab portability"><code style="white-space: nowrap;">${name}</code></span>
+                        </td>
                         <td>=</td>
                         <td>${flags}</td>
                     </tr>`
             }).join("");
-            html = `<table style="margin: 0.5rem;border-collapse: separate;border-spacing: 0.5rem;"><tbody>${tbody}</tbody></table>`;
+            html = `<table style="margin: 0.5rem;border-collapse: separate;border-spacing: 0.5rem;">
+                        <tbody>${tbody}</tbody>
+                    </table>`;
         }
         sourceLink.parentElement.insertAdjacentHTML("beforebegin",
             `<li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
               <a href="#" class="pure-menu-link" aria-label="Feature flags" aria-haspopup="menu">
                 <i class="fa fa-fw fa-flag" ></i><span class="title"> Feature flags</span>
               </a>
-              <div class="pure-menu-children" role="menu" style="color:#333;max-height: 600px;overflow: scroll">
+              <div class="pure-menu-children" role="menu" 
+                   style="color:#333;max-height: 600px;overflow: scroll;max-width: 60rem;">
                 ${html}
               </div>
           </li>`);

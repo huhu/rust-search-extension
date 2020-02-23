@@ -14,6 +14,19 @@ a {
   text-decoration: none;
 }
 
+ul {
+  margin-top: 0.5rem;
+}
+
+ul > li {
+  padding: 0.3rem 0;
+}
+
+p > img {
+  width: 100%;
+  height: auto;
+}
+
 header {
   background-color: #F9BB2D;
   color: black;
@@ -166,11 +179,6 @@ footer {
 
   main {
     padding: 30px;
-  }
-
-  p > img {
-    width: 100%;
-    height: auto;
   }
 
   .content {
