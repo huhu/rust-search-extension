@@ -3,7 +3,7 @@ const c = new Compat();
 function Command() {
     this.cmds = {
         "help": "Show the help messages.",
-        "yet": "Show all Are We X Yet websites.",
+        "yet": "Show all Are We Yet websites.",
         "book": "Show all Rust official books.",
         "stable": "Show stable Rust scheduled release date in the next year.",
     };
@@ -84,6 +84,7 @@ Command.prototype.book = function() {
         ["The Unstable Book", "https://doc.rust-lang.org/unstable-book/index.html"],
         ["Rust bindgen User Guide", "https://rust-lang.github.io/rust-bindgen/"],
         ["Rust API Guidelines", "https://rust-lang.github.io/api-guidelines/"],
+        ["Rust Fuzz Book", "https://rust-fuzz.github.io/book/"],
     ];
     return books.map(([name, url]) => {
         return {
