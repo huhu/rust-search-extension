@@ -40,12 +40,12 @@ struct Crate {
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]
-pub enum TryTruncateError {
+enum TryTruncateError {
     #[non_exhaustive]
-    NotInCharBoundary,
+    NotInCharBoundary(String),
 }
 
-pub trait TryTruncate {
+trait TryTruncate {
     fn try_truncate(&mut self, new_len: usize) -> Result<(), TryTruncateError>;
 }
 
@@ -59,7 +59,7 @@ impl TryTruncate for String {
             self.truncate(i);
             Ok(())
         } else {
-            Err(TryTruncateError::NotInCharBoundary)
+            Err(TryTruncateError::NotInCharBoundary(self.clone()))
         }
     }
 }
@@ -89,7 +89,9 @@ where
 {
     Ok(Option::<String>::deserialize(d)?.map(|mut value| {
         value = value.trim().to_string();
-        value.try_truncate(100).unwrap();
+        if let Err(error) = value.try_truncate(100) {
+            println!("{:?}", error)
+        }
         SPLITTED_WORDS.write().unwrap().push(value.clone());
         value
     }))
