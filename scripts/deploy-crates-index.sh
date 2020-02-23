@@ -6,7 +6,7 @@ BRANCH="now"
 
 build() {
   echo "Starting building crates-index..."
-  ./scripts/crates-index ${CRATES_INDEX_PATH}
+  RUST_BACKTRACE=full ./scripts/crates-index ${CRATES_INDEX_PATH}
   echo "{\"version\": $(date +%s)}" > /tmp/version.json
 }
 
