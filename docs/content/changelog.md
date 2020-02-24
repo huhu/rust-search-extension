@@ -1,16 +1,32 @@
 +++
-title = "Release History"
+title = "Changelog"
+weight = 2
 +++
+
+# v0.8 - 2020-02-25
+
+- Bump crates index number from top 10K to top 20K
+- Display crate's **Features flags** in [docs.rs](https://docs.rs) page
+- Support prefix **!!** (double exclamation mark) to search crates with [docs.rs](https://docs.rs) url
+- Support prefix **%** (percent mark) to search Rust official book chapters
+- Add nice features by introducing the command system
+    - Add `:help` command to show all help messages
+    - Add `:book` command to show all Rust official books
+    - Add `:stable` command to show stable Rust scheduled release date in the next year
+    - Add `:yet` command to show all **Are We X Yet** websites
+- Support page down the result with page-tuner **-** (hyphen or minus)
 
 # v0.7 - 2020-02-04
 
 - Bump search-index to version **v1.41.0**
-- Support search rust builtin attributes instantly.
+- Support search rust builtin attributes instantly
+- Announcing on [Reddit post](https://www.reddit.com/r/rust/comments/eymfxu/announcing_rustsearchextension_v07_search_std/), get 200+ upvotes!
+- Be included in [This Week in Rust 324](https://this-week-in-rust.org/blog/2020/02/04/this-week-in-rust-324/)
 
 # v0.6 - 2020-01-20
 
 - Bump search-index to version **v1.40.0**
-- Support search top 10K crates instantly.
+- Support search top 10K crates instantly
 - Support update the latest crates index on popup page automatically. (Chrome only)
 
 # v0.5 - 2019-11-08

@@ -3,6 +3,8 @@
 
 # Rust Search Extension
 
+### The ultimate search extension for Rust 
+
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)
 ![Mozilla Add-on](https://img.shields.io/amo/v/rust-search-extension?color=%2320123A)
 [![rust-doc](https://img.shields.io/badge/stable-1.41.0-yellow.svg)](https://doc.rust-lang.org/1.41.0/std/)
@@ -10,7 +12,7 @@
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
 ![Build Status](https://github.com/folyd/rust-search-extension/workflows/build/badge.svg)
 
-🦀 A handy browser extension to search crates and docs in the address bar (omnibox).
+Search std **docs**, top 20K **crates**, builtin **attributes**, official **books**, **error codes**, etc in your address bar instantly. 
 
 [https://rust-search-extension.now.sh/](https://rust-search-extension.now.sh/)
 
@@ -28,7 +30,9 @@
 - Search builtin attributes 
 - Search crates on https://crates.io
 - Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error code
+- Search Rust official book chapters
 - Offline mode, search local Rust docs (`rustup docs --std`) (Some limitation on Firefox, see [Caveats](#caveats))
+- A handy set of builtin commands
 - Both Chrome and Firefox are supported
 
 ### Usages
@@ -40,5 +44,5 @@ you want to search, the extension will response the related search results insta
 
 # [Features overview](https://rust-search-extension.now.sh/)
 # [How it works](https://rust-search-extension.now.sh/how-it-works/)
-# [Release history](https://rust-search-extension.now.sh/release-history/)
+# [Changelog](https://rust-search-extension.now.sh/changelog/)
 # [Caveats](https://rust-search-extension.now.sh/how-it-works/#caveats)

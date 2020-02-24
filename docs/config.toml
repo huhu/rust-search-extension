@@ -1,7 +1,7 @@
 # The URL the site will be built for
 base_url = "https://rust-search-extension.now.sh/"
 
-title = "Rust Search Extension"
+title = "Rust Search Extension - The ultimate search extension for Rust"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true

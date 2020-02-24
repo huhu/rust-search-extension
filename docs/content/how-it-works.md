@@ -1,5 +1,6 @@
 +++
 title = "How it works"
+weight = 1
 +++
 
 # Search std docs

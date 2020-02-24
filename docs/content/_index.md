@@ -1,5 +1,6 @@
 +++
 title = "Rust Search Extension"
+sort_by = "weight"
 +++
 
 Currently，we only support search documentation of those official crates:
@@ -45,19 +46,24 @@ For example, `fn:asref` to search function or `trait:iterator` to search trait.
 
 ![GIF](/type-mode.gif)
 
-# Search top 10K crates
+# Search top 20K crates
 
-We build top 10K crates (35+k in total on crates.io) index hourly to help you search crates instantly. 
+We build top 20K crates (35+k in total on crates.io) index every 12 hours to help you search crates instantly. 
 You can open the popup page to sync the latest crates index automatically. ([Some caveats](/how-it-works/#caveats) 
 for Firefox users.)
 
-What more, you can prefix an **!** (exclamation mark) before the keyword to search crates exclusively!
+What more, you can prefix an **!** (exclamation mark) before the keyword to search crates exclusively, 
+prefix one more **!** to open [docs.rs](https://docs.rs) page instead [crates.io](https://crates.io) page!
 
 ![GIF](/search-crates.gif)
 
 # Search Compiler Error Index
 
 ![GIF](/error-index.gif)
+
+# Search Rust official book chapters
+
+![IMG](/search-book.png)
 
 # Offline mode, search local Rust docs
 
@@ -66,3 +72,20 @@ To enable the offline mode, you should check the checkbox and input the offline 
 However, please check the [Caveats](/how-it-works/#caveats) if you are a Firefox user.  
 
 ![GIF](/offline-mode.gif)
+
+# Display Features flag on docs.rs
+
+![IMG](/feature-flags.png)
+
+# Command system
+
+The command system brings a handy set of useful and convenient commands to you. 
+Each command starts with a **:** (colon), followed by the name, and function differently in individual.
+Those commands including but not limited to:
+
+- **:help** - Show the help messages. 
+- **:yet** - Show all Are We Yet websites. 
+- **:book** - Show all Rust official books. 
+- **:stable** - Show stable Rust scheduled release date in the next year. 
+
+![IMG](/command-system.gif)
