@@ -2,7 +2,7 @@ name: crates-index
 
 on:
   schedule:
-  - cron: "0 */1 * * *"
+  - cron: "0 */12 * * *"
 
 jobs:
   build:
