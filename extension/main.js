@@ -1,28 +1,28 @@
-const compat = new Compat();
+const c = new Compat();
 const deminifier = new Deminifier(mapping);
 const crateSearcher = new CrateSearch(crateIndex);
 const attributeSearcher = new AttributeSearch();
 const bookSearcher = new BookSearch(booksIndex);
 const command = new Command();
 
-const defaultSuggestion = `Search ${compat.match("std docs")}, ${compat.match("crates")} (!), ${compat.match("builtin attributes")} (#), ${compat.match("error codes")} in your address bar instantly!`;
-const omnibox = new Omnibox(compat.browser, defaultSuggestion, compat.isChrome ? 8 : 6);
+const defaultSuggestion = `Search ${c.match("std docs")}, ${c.match("crates")} (!), ${c.match("builtin attributes")} (#), ${c.match("error codes")} in your address bar instantly!`;
+const omnibox = new Omnibox(c.browser, defaultSuggestion, c.isChrome ? 8 : 6);
 
 omnibox.bootstrap({
     onSearch: (query) => {
         return window.search(query);
     },
     onFormat: (index, doc) => {
-        let description = doc.displayPath + compat.match(doc.name);
+        let description = doc.displayPath + c.match(doc.name);
         if (doc.desc) {
-            description += " - " + compat.dim(compat.escape(doc.desc));
+            description += " - " + c.dim(c.escape(doc.desc));
         }
         return {content: doc.href, description};
     },
     onAppend: (query) => {
         return [{
             content: `${window.rootPath}std/index.html?search=` + encodeURIComponent(query),
-            description: `Search Rust docs ${ compat.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
+            description: `Search Rust docs ${ c.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
         }]
     },
 });
@@ -41,13 +41,13 @@ omnibox.addPrefixQueryEvent("!", {
             // Dash and underscore is unequivalent on docs.rs right now.
             // See issue https://github.com/rust-lang/docs.rs/issues/105
             content: this.docMode ? `https://docs.rs/${crate.id.replace("_", "-")}` : `https://crates.io/crates/${crate.id}`,
-            description: `${this.docMode ? "Docs" : "Crate"}: ${compat.match(crate.id)} v${crate.version} - ${compat.dim(compat.escape(crate.description))}`,
+            description: `${this.docMode ? "Docs" : "Crate"}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
         };
     },
     onAppend: () => {
         return [{
             content: "https://crates.io/search?q=" + encodeURIComponent(this.rawQuery),
-            description: "Search Rust crates for " + compat.match(this.rawQuery) + " on https://crates.io",
+            description: "Search Rust crates for " + c.match(this.rawQuery) + " on https://crates.io",
         }];
     }
 });
@@ -62,7 +62,7 @@ omnibox.addPrefixQueryEvent("#", {
     onFormat: (index, attribute) => {
         return {
             content: attribute.href,
-            description: `Attribute: ${compat.match("#[" + attribute.name + "]")} ${compat.dim(attribute.description)}`,
+            description: `Attribute: ${c.match("#[" + attribute.name + "]")} ${c.dim(attribute.description)}`,
         }
     }
 });
@@ -80,7 +80,7 @@ omnibox.addRegexQueryEvent(/e\d{2,4}$/i, {
     onFormat: (index, errorCode) => {
         return {
             content: "https://doc.rust-lang.org/error-index.html#" + errorCode,
-            description: `Search Rust error index for ${compat.match(errorCode)} on https://doc.rust-lang.org/error-index.html`,
+            description: `Search Rust error index for ${c.match(errorCode)} on https://doc.rust-lang.org/error-index.html`,
         };
     }
 });
@@ -99,7 +99,7 @@ omnibox.addPrefixQueryEvent("%", {
         let parentTitles = page.parentTitles || [];
         return {
             content: page.url,
-            description: `${ [...parentTitles, compat.match(page.title)].join(" > ") } - ${compat.dim(page.name)}`
+            description: `${ [...parentTitles.map(t=>c.escape(t)), c.match(c.escape(page.title))].join(" > ") } - ${c.dim(page.name)}`
         }
     }
 });

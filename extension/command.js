@@ -1,5 +1,3 @@
-const c = new Compat();
-
 function Command() {
     this.cmds = {
         "help": "Show the help messages.",
