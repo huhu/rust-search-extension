@@ -6,7 +6,7 @@ Deminifier.prototype.deminify = function(rawDescription) {
     if (rawDescription === null) return null;
     // Regex to globally, case-sensitively match words.
     return rawDescription
-        .replace(/(?<![\1\2])([@$^&])([0-9a-zA-Z])(?![\1\2])/g, (value) => {
+        .replace(/[@$^&][0-9a-zA-Z]/g, (value) => {
             return this.mapping[value];
         });
 };
