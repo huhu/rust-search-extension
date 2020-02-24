@@ -53,6 +53,11 @@
 <main>
     {% block toc %}
     <div class="toc">
+        {% if section.toc %}
+            {% set toc = section.toc %}
+        {% elif page.toc %}
+            {% set toc = page.toc %}
+        {% endif %}
         {% for h in toc %}
         <div class="toc-item">
             <a class="subtext" href="{{h.permalink | safe}}">{{ h.title }}</a>

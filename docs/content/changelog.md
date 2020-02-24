@@ -13,7 +13,7 @@ weight = 2
     - Add `:help` command to show all help messages
     - Add `:book` command to show all Rust official books
     - Add `:stable` command to show stable Rust scheduled release date in the next year
-    - Add `:yet` command to show all **Are We X Yet** websites
+    - Add `:yet` command to show all **Are We Yet** websites
 - Support page down the result with page-tuner **-** (hyphen or minus)
 
 # v0.7 - 2020-02-04
