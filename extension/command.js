@@ -11,7 +11,7 @@ Command.prototype.execute = function(query) {
     query = query.replace(":", "").trim();
     let [cmd, arg] = query.split(" ");
     if (cmd in this.cmds) {
-        return this[cmd]();
+        return this[cmd](arg);
     } else {
         return this.wrap([
             `Not command found ${c.match(":" + cmd)}, try following commands?`,
@@ -43,7 +43,7 @@ Command.prototype.help = function() {
     ]);
 };
 
-Command.prototype.yet = function() {
+Command.prototype.yet = function(arg) {
     // https://wiki.mozilla.org/Areweyet
     const areweyet = [
         ["Are we async yet?", "Asynchronous I/O in Rust", "https://areweasyncyet.rs"],
@@ -55,15 +55,17 @@ Command.prototype.yet = function() {
         ["Are we web yet?", "Rust libraries for web development", "http://arewewebyet.org"],
         ["Are we podcast yet?", "Rust Are We Podcast Yet", "https://soundcloud.com/arewepodcastyet"],
     ];
-    return areweyet.map(([title, description, content]) => {
-        return {
-            content,
-            description: `${title} - ${c.dim(description)}`,
-        }
-    });
+    return areweyet
+        .filter(item => !arg || item[0].toLowerCase().indexOf(arg) > -1)
+        .map(([title, description, content]) => {
+            return {
+                content,
+                description: `${title} - ${c.dim(description)}`,
+            }
+        });
 };
 
-Command.prototype.book = function() {
+Command.prototype.book = function(arg) {
     const books = [
         ["The Rust Programming Language", "https://doc.rust-lang.org/stable/book/"],
         ["Rust Async Book", "https://rust-lang.github.io/async-book/"],
@@ -84,12 +86,14 @@ Command.prototype.book = function() {
         ["Rust API Guidelines", "https://rust-lang.github.io/api-guidelines/"],
         ["Rust Fuzz Book", "https://rust-fuzz.github.io/book/"],
     ];
-    return books.map(([name, url]) => {
-        return {
-            content: url,
-            description: `${c.match(name)} - ${c.dim(url)}`,
-        }
-    });
+    return books
+        .filter(item => !arg || item[0].toLowerCase().indexOf(arg) > -1)
+        .map(([name, url]) => {
+            return {
+                content: url,
+                description: `${c.match(name)} - ${c.dim(url)}`,
+            }
+        });
 };
 
 Command.prototype.stable = function() {
