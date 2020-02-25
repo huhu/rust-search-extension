@@ -1,5 +1,6 @@
+const c = new Compat();
 // Get extension background page.
-const background = new Compat().getBackgroundPage();
+const background = c.getBackgroundPage();
 const CRATES_INDEX_BASE_URL = "https://rust-search-extension.now.sh/crates";
 
 const toast = new Toast(".toast");
@@ -15,8 +16,8 @@ async function checkLatestCratesIndex() {
             await loadLatestCratesIndex(version);
 
             // Update the latest crates index and mapping.
-            background.crateSearcher.setCrateIndex(window.crateIndex, version);
-            background.deminifier.setMapping(window.mapping);
+            background.crateSearcher.setCrateIndex(crateIndex, version);
+            background.deminifier.setMapping(mapping);
             toast.success("Updated to latest crates index.");
         } catch (error) {
             toast.error("Update failed, please try again :(");
@@ -90,7 +91,7 @@ function toggleOfflinePathEnableState(enable) {
 }
 
 (async () => {
-    if (window.isChrome) {
+    if (c.isChrome) {
         // Only Chrome browser supports 'script-src-elem' Content Security Policy to load script.
         await checkLatestCratesIndex();
     }
