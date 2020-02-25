@@ -6,8 +6,10 @@ BRANCH="now"
 
 build() {
   echo "Starting building crates-index..."
-  RUST_BACKTRACE=full ./scripts/crates-index ${CRATES_INDEX_PATH}
+  cd rust
+  RUST_BACKTRACE=full cargo run --release --bin crates-index ${CRATES_INDEX_PATH}
   echo "{\"version\": $(date +%s)}" > /tmp/version.json
+  cd ..
 }
 
 upload() {
