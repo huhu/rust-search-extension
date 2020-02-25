@@ -7,6 +7,9 @@ function Omnibox(browser, defaultSuggestion, maxSuggestionSize = 8) {
     this.defaultSuggestionDescription = defaultSuggestion;
     this.defaultSuggestionContent = null;
     this.queryEvents = [];
+    // Cache the last query and result to speed up the page down.
+    this.cachedQuery = null;
+    this.cachedResult = null;
 }
 
 Omnibox.prototype.setDefaultSuggestion = function(description, content) {
@@ -41,7 +44,7 @@ Omnibox.prototype.parse = function(input) {
 };
 
 Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
-    const globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
+    this.globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
 
     this.browser.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
@@ -52,27 +55,14 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
         }
         let {query, page} = this.parse(input);
         let result;
-        let matchedEvent = this.queryEvents.find(event => {
-            return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
-        });
-
-        if (matchedEvent) {
-            result = matchedEvent.performSearch(query);
-            if (matchedEvent.onAppend) {
-                result.push(...matchedEvent.onAppend(query));
-            }
+        if (this.cachedQuery === query) {
+            result = this.cachedResult;
         } else {
-            result = globalEvent.performSearch(query);
-            let defaultSearchEvents = this.queryEvents
-                .filter(event => event.defaultSearch)
-                .sort((a, b) => b.searchPriority - a.searchPriority);
-            for (let event of defaultSearchEvents) {
-                if (result.length < this.maxSuggestionSize * MAX_SUGGEST_PAGE) {
-                    result.push(...event.performSearch(query));
-                }
-            }
-            result.push(...globalEvent.onAppend(query));
+            result = this.performSearch(query);
+            this.cachedQuery = query;
+            this.cachedResult = result;
         }
+
         let totalPage = Math.ceil(result.length / this.maxSuggestionSize);
         result = result.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
         if (result.length > 0) {
@@ -94,6 +84,32 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
 
         this.setDefaultSuggestion(this.defaultSuggestionDescription);
     });
+};
+
+Omnibox.prototype.performSearch = function(query) {
+    let result;
+    let matchedEvent = this.queryEvents.find(event => {
+        return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
+    });
+
+    if (matchedEvent) {
+        result = matchedEvent.performSearch(query);
+        if (matchedEvent.onAppend) {
+            result.push(...matchedEvent.onAppend(query));
+        }
+    } else {
+        result = this.globalEvent.performSearch(query);
+        let defaultSearchEvents = this.queryEvents
+            .filter(event => event.defaultSearch)
+            .sort((a, b) => b.searchPriority - a.searchPriority);
+        for (let event of defaultSearchEvents) {
+            if (result.length < this.maxSuggestionSize * MAX_SUGGEST_PAGE) {
+                result.push(...event.performSearch(query));
+            }
+        }
+        result.push(...this.globalEvent.onAppend(query));
+    }
+    return result;
 };
 
 Omnibox.prototype.addPrefixQueryEvent = function(prefix, event) {
