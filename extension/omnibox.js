@@ -17,20 +17,6 @@ Omnibox.prototype.setDefaultSuggestion = function(description, content) {
     }
 };
 
-Omnibox.prototype.appendResult = function(result, formatter = undefined, deduplicate = false) {
-    for (let [index, item] of result.entries()) {
-        if (formatter) {
-            item = formatter(index, item);
-        }
-        let {content, description} = item;
-        if (deduplicate) {
-            // Deduplicate content
-            content += `?${index}`
-        }
-        this.suggestResults.push({content, description});
-    }
-};
-
 Omnibox.prototype.parse = function(input) {
     let parsePage = (arg) => {
         return [...arg].filter(c => c === PAGE_TURNER).length + 1;
@@ -55,6 +41,7 @@ Omnibox.prototype.parse = function(input) {
 };
 
 Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
+    const globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
 
     this.browser.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
@@ -64,32 +51,30 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
             return;
         }
         let {query, page} = this.parse(input);
-        this.suggestResults = [];
+        let result;
         let matchedEvent = this.queryEvents.find(event => {
             return (event.prefix && query.startsWith(event.prefix)) || (event.regex && event.regex.test(query));
         });
 
         if (matchedEvent) {
-            let event = matchedEvent;
-            this.appendResult(event.onSearch(query), event.onFormat, event.deduplicate);
-            if (event.onAppend) {
-                this.appendResult(event.onAppend(query), null, event.deduplicate);
+            result = matchedEvent.performSearch(query);
+            if (matchedEvent.onAppend) {
+                result.push(...matchedEvent.onAppend(query));
             }
         } else {
-            this.appendResult(onSearch(query), onFormat);
-
+            result = globalEvent.performSearch(query);
             let defaultSearchEvents = this.queryEvents
                 .filter(event => event.defaultSearch)
                 .sort((a, b) => b.searchPriority - a.searchPriority);
             for (let event of defaultSearchEvents) {
-                if (this.suggestResults.length < this.maxSuggestionSize * MAX_SUGGEST_PAGE) {
-                    this.appendResult(event.onSearch(query), event.onFormat, event.deduplicate);
+                if (result.length < this.maxSuggestionSize * MAX_SUGGEST_PAGE) {
+                    result.push(...event.performSearch(query));
                 }
             }
-            this.appendResult(onAppend(query));
+            result.push(...globalEvent.onAppend(query));
         }
-        let totalPage = Math.ceil(this.suggestResults.length / this.maxSuggestionSize);
-        let result = this.suggestResults.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
+        let totalPage = Math.ceil(result.length / this.maxSuggestionSize);
+        result = result.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
         if (result.length > 0) {
             let {content, description} = result.shift();
             description += ` | Page [${page}/${totalPage}], append '${PAGE_TURNER}' to page down`;
@@ -112,30 +97,17 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
 };
 
 Omnibox.prototype.addPrefixQueryEvent = function(prefix, event) {
-    this.addQueryEvent({prefix, ...event,});
+    this.queryEvents.push(new QueryEvent({
+        prefix,
+        ...event,
+    }));
 };
 
 Omnibox.prototype.addRegexQueryEvent = function(regex, event) {
-    this.addQueryEvent({regex, ...event,});
-};
-
-Omnibox.prototype.addQueryEvent = function(
-    {
-        onSearch, onFormat, onAppend,
-        prefix = undefined, regex = undefined,
-        defaultSearch = false, searchPriority = 0, deduplicate = false
-    }
-) {
-    this.queryEvents.push({
-        prefix,
+    this.queryEvents.push(new QueryEvent({
         regex,
-        defaultSearch,
-        searchPriority,
-        deduplicate,
-        onSearch,
-        onFormat,
-        onAppend,
-    });
+        ...event,
+    }));
 };
 
 Omnibox.prototype.navigateToUrl = function(url) {
@@ -148,3 +120,35 @@ Omnibox.prototype.navigateToUrl = function(url) {
         this.browser.tabs.create({url: url});
     }
 };
+
+class QueryEvent {
+    constructor({
+                    onSearch, onFormat, onAppend,
+                    prefix = undefined, regex = undefined,
+                    defaultSearch = false, searchPriority = 0, deduplicate = false
+                }) {
+        this.onSearch = onSearch;
+        this.onFormat = onFormat;
+        this.onAppend = onAppend;
+        this.prefix = prefix;
+        this.regex = regex;
+        this.defaultSearch = defaultSearch;
+        this.searchPriority = searchPriority;
+        this.deduplicate = deduplicate;
+    }
+
+    performSearch(input) {
+        let result = this.onSearch(input);
+        return result.map((item, index) => {
+            if (this.onFormat) {
+                item = this.onFormat(index, item);
+            }
+            let {content, description} = item;
+            if (this.deduplicate) {
+                // Deduplicate content
+                content += `?${index}`
+            }
+            return {content, description};
+        });
+    }
+}
