@@ -20,15 +20,6 @@ Currently，we only support search documentation of those official crates:
 
 ![GIF](/function-macros.gif)
 
-# Search builtin attributes
-
-Search builtin attributes (such as `derive`, `non_exhaustive`) are also supported, 
-by default, the result is mixed with other related docs or crates though. 
-
-If you prefer to search attribute exclusively, prefix a **#** (pound sign) before the keyword to narrow the result.
-
-![GIF](/search-attributes.gif)
-
 # Search doc with type mode
 
 You can prefix a type to get the exclusive search result. Those type keywords including:
@@ -46,14 +37,23 @@ For example, `fn:asref` to search function or `trait:iterator` to search trait.
 
 ![GIF](/type-mode.gif)
 
+# Search builtin attributes
+
+Search builtin attributes (such as `derive`, `non_exhaustive`) are also supported, 
+by default, the result is mixed with other related docs or crates though. 
+
+If you prefer to search attribute exclusively, prefix a **#** (pound sign) before the keyword to narrow the result.
+
+![GIF](/search-attributes.gif)
+
 # Search top 20K crates
 
-We build top 20K crates (35+k in total on crates.io) index every 12 hours to help you search crates instantly. 
+We build top 20K crates index (more than 35K in total on crates.io) every 12 hours to help you search crates instantly. 
 You can open the popup page to sync the latest crates index automatically. ([Some caveats](/how-it-works/#caveats) 
 for Firefox users.)
 
 What more, you can prefix an **!** (exclamation mark) before the keyword to search crates exclusively, 
-prefix one more **!** to open [docs.rs](https://docs.rs) page instead [crates.io](https://crates.io) page!
+prefix one more **!** (double exclamation mark) to open [docs.rs](https://docs.rs) page instead [crates.io](https://crates.io) page!
 
 ![GIF](/search-crates.gif)
 
@@ -63,8 +63,8 @@ prefix one more **!** to open [docs.rs](https://docs.rs) page instead [crates.io
 
 # Search Rust official book chapters
 
-You can search all of Rust book chapters on your address bar too! 
-The result will show the title of the related page, parent chapter, and grandparent chapter.
+You can search all of Rust book chapters too! The result will show the title of the related page, 
+parent chapter, and grandparent chapter.
 
 ![IMG](/search-book.png)
 

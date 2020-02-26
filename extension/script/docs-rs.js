@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <i class="fa fa-fw fa-flag" ></i><span class="title"> Feature flags</span>
               </a>
               <div class="pure-menu-children" role="menu" 
-                   style="color:#333;max-height: 600px;overflow: scroll;max-width: 60rem;">
+                   style="color:#333;max-height: 600px;overflow: auto;max-width: 60rem;">
                 ${html}
               </div>
           </li>`);
