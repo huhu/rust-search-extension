@@ -63,6 +63,9 @@ prefix one more **!** to open [docs.rs](https://docs.rs) page instead [crates.io
 
 # Search Rust official book chapters
 
+You can search all of Rust book chapters on your address bar too! 
+The result will show the title of the related page, parent chapter, and grandparent chapter.
+
 ![IMG](/search-book.png)
 
 # Offline mode, search local Rust docs
@@ -73,7 +76,11 @@ However, please check the [Caveats](/how-it-works/#caveats) if you are a Firefox
 
 ![GIF](/offline-mode.gif)
 
-# Display Features flag on docs.rs
+# Display Feature Flags in docs.rs page
+
+Feature flags are such a kind of crucial property we would involve in when we gain insight into a crate. 
+However, docs.rs don't display the crate's feature flags, which is inconvenient. 
+So Rust Search Extension fills the gap.
 
 ![IMG](/feature-flags.png)
 
@@ -89,3 +96,7 @@ Those commands including but not limited to:
 - **:stable** - Show stable Rust scheduled release date in the next year. 
 
 ![IMG](/command-system.gif)
+
+# Page down/up easily
+
+You can press `space` after the keyword, then increase or decrease the number of **-** (hyphen) to page down or page up.

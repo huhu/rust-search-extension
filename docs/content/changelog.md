@@ -6,7 +6,7 @@ weight = 2
 # v0.8 - 2020-02-25
 
 - Bump crates index number from top 10K to top 20K
-- Display crate's **Features flags** in [docs.rs](https://docs.rs) page
+- Support display crate's **Feature flags** in [docs.rs](https://docs.rs) page
 - Support prefix **!!** (double exclamation mark) to search crates with [docs.rs](https://docs.rs) url
 - Support prefix **%** (percent mark) to search Rust official book chapters
 - Add nice features by introducing the command system
@@ -14,7 +14,7 @@ weight = 2
     - Add `:book` command to show all Rust official books
     - Add `:stable` command to show stable Rust scheduled release date in the next year
     - Add `:yet` command to show all **Are We Yet** websites
-- Support page down the result with page-tuner **-** (hyphen or minus)
+- Support page down the result with page-tuner **-** (hyphen)
 
 # v0.7 - 2020-02-04
 
