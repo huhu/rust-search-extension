@@ -1,3 +1,4 @@
+use std::cmp;
 use std::collections::HashMap;
 use std::ops::Deref;
 
@@ -58,7 +59,8 @@ impl Minifier {
             })
             .collect();
         let words = frequency_words
-            .drain(0..keys.len())
+            // Get the min value to prevent drain method panic
+            .drain(0..cmp::min(keys.len(), words.len()))
             .collect::<Vec<FrequencyWord>>();
 
         Minifier {

@@ -1,108 +1,100 @@
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::env;
 use std::fs;
 use std::path::Path;
-use std::sync::RwLock;
 
-use futures::future::try_join_all;
-use reqwest;
-use serde::{Deserialize, Deserializer};
+use csv::ReaderBuilder;
+use semver::Version;
+use serde::de::DeserializeOwned;
 use serde_derive::Deserialize;
-use serde_json;
-use tokio;
-use tokio::time::Duration;
 
-use lazy_static::lazy_static;
 use rust_search_extension::minify::Minifier;
 
-const MAX_PAGE: u32 = 200;
-const API: &str = "https://crates.io/api/v1/crates?page={}&per_page=100&sort=downloads";
+const MAX_CRATE_SIZE: usize = 20 * 1000;
 const CRATES_INDEX_PATH: &str = "../extension/index/crates.js";
-const USER_AGENT: &str = "Rust Search Extension Bot (lyshuhow@gmail.com)";
 
-lazy_static! {
-    // A Vec to store all crate's id and description.
-    static ref SPLITTED_WORDS: RwLock<Vec<String>> = RwLock::new(vec![]);
-}
-
-#[derive(Deserialize, Debug)]
-struct CrateApiResponse {
-    crates: Vec<Crate>,
-}
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 #[derive(Deserialize, Debug)]
 struct Crate {
-    #[serde(deserialize_with = "deserialize_crate_id")]
-    id: String,
-    #[serde(deserialize_with = "deserialize_crate_description")]
+    id: u64,
+    name: String,
+    downloads: u64,
     description: Option<String>,
-    max_version: Option<String>,
+    #[serde(skip_deserializing, default = "default_version")]
+    version: Version,
 }
 
-#[inline]
-fn deserialize_crate_id<'de, D>(d: D) -> Result<String, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let mut id = String::deserialize(d)?;
-    id = id.replace("-", "_");
-    for word in id
-        .to_lowercase()
-        .split(|c| c == '_')
-        .filter(|c| c.len() >= 3)
-        .collect::<Vec<_>>()
-    {
-        SPLITTED_WORDS.write().unwrap().push(word.to_string());
+#[derive(Deserialize, Debug)]
+struct CrateVersion {
+    crate_id: u64,
+    num: Version,
+}
+
+#[derive(Debug)]
+struct WordCollector {
+    words: Vec<String>,
+}
+
+impl WordCollector {
+    fn new() -> Self {
+        WordCollector { words: vec![] }
     }
-    Ok(id)
-}
 
-#[inline]
-fn deserialize_crate_description<'de, D>(d: D) -> Result<Option<String>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    Ok(Option::<String>::deserialize(d)?.map(|mut value| {
-        value = value.trim().to_string();
-        // Check char boundary to prevent panic
-        if value.is_char_boundary(100) {
-            value.truncate(100);
+    #[inline]
+    fn collect_crate_id(&mut self, value: &str) {
+        let id = value.replace("-", "_");
+        for word in id
+            .to_lowercase()
+            .split(|c| c == '_')
+            .filter(|c| c.len() >= 3)
+            .collect::<Vec<_>>()
+        {
+            self.words.push(word.to_string());
         }
-        SPLITTED_WORDS.write().unwrap().push(value.clone());
-        value
-    }))
+    }
+
+    #[inline]
+    fn collect_crate_description(&mut self, value: &str) {
+        let mut description = value.trim().to_string();
+        // Check char boundary to prevent panic
+        if description.is_char_boundary(100) {
+            description.truncate(100);
+        }
+        self.words.push(description);
+    }
 }
 
-async fn fetch_crates(page: u32) -> Result<Vec<Crate>, Box<dyn std::error::Error>> {
-    // Keep 1 second sleep interval to comply crates.io crawler policy.
-    tokio::time::delay_for(Duration::from_secs((page - 1) as u64)).await;
-    let client = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(30))
-        .user_agent(USER_AGENT)
-        .build()?;
-    let resp: CrateApiResponse = client
-        .get(&API.replace("{}", &page.to_string()))
-        .send()
-        .await?
-        .json()
-        .await?;
-    Ok(resp.crates)
+fn default_version() -> Version {
+    Version::parse("0.0.0").unwrap()
 }
 
-async fn generate_javascript_crates_index(
+fn read_csv<D: DeserializeOwned>(path: &str) -> Result<Vec<D>> {
+    let mut records: Vec<D> = vec![];
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_path(Path::new(path))?;
+    for record in reader.deserialize() {
+        records.push(record?);
+    }
+    Ok(records)
+}
+
+fn generate_javascript_crates_index(
     crates: Vec<Crate>,
     minifier: &Minifier,
 ) -> std::io::Result<String> {
     let mut contents = String::from("var N=null;");
-    let crates_map: HashMap<String, [Option<String>; 2]> = crates
+    let crates_map: HashMap<String, (Option<String>, Version)> = crates
         .into_iter()
         .map(|item| {
             (
-                minifier.mapping_minify_crate_id(item.id),
-                [
+                minifier.mapping_minify_crate_id(item.name),
+                (
                     item.description.map(|value| minifier.mapping_minify(value)),
-                    item.max_version,
-                ],
+                    item.version,
+                ),
             )
         })
         .collect();
@@ -114,46 +106,51 @@ async fn generate_javascript_crates_index(
     Ok(contents)
 }
 
-async fn try_fetch_all_crates() -> Result<Vec<Vec<Crate>>, Box<dyn std::error::Error>> {
-    let mut futures = vec![];
-    for page in 1..=MAX_PAGE {
-        futures.push(fetch_crates(page));
-    }
-
-    try_join_all(futures).await
-}
-
-#[tokio::main]
-async fn main() -> std::io::Result<()> {
+fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
-    let path_name = match args.get(1) {
-        Some(path_name) => path_name,
-        None => CRATES_INDEX_PATH,
-    };
-    let path = Path::new(path_name);
-    let mut retry = 0;
-    loop {
-        match try_fetch_all_crates().await {
-            Ok(result) => {
-                let crates = result.into_iter().flatten().collect();
-                // Extract frequency word mapping
-                let minifier = Minifier::new(&SPLITTED_WORDS.read().unwrap());
-                let mapping = minifier.get_mapping();
-                let mut contents = format!("var mapping={};", serde_json::to_string(&mapping)?);
-                contents.push_str(&generate_javascript_crates_index(crates, &minifier).await?);
-                fs::write(path, &contents)?;
-                println!("\nGenerate javascript crates index successful!");
-                break;
+    let csv_path = args.get(1).expect("Path is required...");
+
+    let mut crates: Vec<Crate> = read_csv(&format!("{}{}", csv_path, "crates.csv"))?;
+    crates.sort_unstable_by(|a, b| b.downloads.cmp(&a.downloads));
+    crates = crates.drain(0..=MAX_CRATE_SIZE).collect();
+    let mut versions: Vec<CrateVersion> = read_csv(&format!("{}{}", csv_path, "versions.csv"))?;
+    versions.sort_unstable_by(|a, b| b.num.cmp(&a.num));
+
+    // Filter out duplicated version to speed up find in the later.
+    let mut unique_crate_ids: HashSet<u64> = HashSet::with_capacity(2 * MAX_CRATE_SIZE);
+    versions = versions
+        .into_iter()
+        .filter(|v| {
+            if unique_crate_ids.contains(&v.crate_id) {
+                return false;
             }
-            Err(error) => {
-                retry += 1;
-                println!("{} Error: {:?}", retry, error);
-                if retry > 5 {
-                    println!("Failed: exceed the max retry times...");
-                    break;
-                }
-            }
+            unique_crate_ids.insert(v.crate_id);
+            false
+        })
+        .collect();
+    let mut collector = WordCollector::new();
+    crates.iter_mut().for_each(|item: &mut Crate| {
+        if let Some(version) = versions.iter().find(|&v| v.crate_id == item.id) {
+            item.version = version.num.to_owned();
         }
-    }
+
+        if let Some(description) = &item.description {
+            collector.collect_crate_description(description);
+        }
+        collector.collect_crate_id(&item.name);
+    });
+
+    // Extract frequency word mapping
+    let minifier = Minifier::new(&collector.words);
+    let mapping = minifier.get_mapping();
+    let mut contents = format!("var mapping={};", serde_json::to_string(&mapping)?);
+    contents.push_str(&generate_javascript_crates_index(crates, &minifier)?);
+    let path = Path::new(
+        args.get(2)
+            .map(|path| path.as_str())
+            .unwrap_or(CRATES_INDEX_PATH),
+    );
+    fs::write(path, &contents)?;
+    println!("\nGenerate javascript crates index successful!");
     Ok(())
 }
