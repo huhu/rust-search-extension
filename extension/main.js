@@ -5,7 +5,7 @@ const attributeSearcher = new AttributeSearch();
 const bookSearcher = new BookSearch(booksIndex);
 const command = new Command();
 
-const defaultSuggestion = `Search ${c.match("std docs")}, ${c.match("crates")} (!), ${c.match("builtin attributes")} (#), ${c.match("error codes")} in your address bar instantly!`;
+const defaultSuggestion = `Search std ${c.match("docs")}, ${c.match("crates")} (!), builtin ${c.match("attributes")} (#), official ${c.match("books")} (%), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(c.browser, defaultSuggestion, c.isChrome ? 8 : 6);
 
 omnibox.bootstrap({
@@ -48,6 +48,9 @@ omnibox.addPrefixQueryEvent("!", {
         return [{
             content: "https://crates.io/search?q=" + encodeURIComponent(this.rawQuery),
             description: "Search Rust crates for " + c.match(this.rawQuery) + " on https://crates.io",
+        }, {
+            content: "remind",
+            description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,
         }];
     }
 });
@@ -99,7 +102,7 @@ omnibox.addPrefixQueryEvent("%", {
         let parentTitles = page.parentTitles || [];
         return {
             content: page.url,
-            description: `${ [...parentTitles.map(t=>c.escape(t)), c.match(c.escape(page.title))].join(" > ") } - ${c.dim(page.name)}`
+            description: `${ [...parentTitles.map(t => c.escape(t)), c.match(c.escape(page.title))].join(" > ") } - ${c.dim(page.name)}`
         }
     }
 });

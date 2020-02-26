@@ -12,7 +12,7 @@
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
 ![Build Status](https://github.com/folyd/rust-search-extension/workflows/build/badge.svg)
 
-Search std **docs**, top 20K **crates**, builtin **attributes**, official **books**, **error codes**, etc in your address bar instantly. 
+Search std **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly. 
 
 [https://rust-search-extension.now.sh/](https://rust-search-extension.now.sh/)
 
@@ -33,6 +33,7 @@ Search std **docs**, top 20K **crates**, builtin **attributes**, official **book
 - Search Rust official book chapters
 - Offline mode, search local Rust docs (`rustup docs --std`) (Some limitation on Firefox, see [Caveats](#caveats))
 - A handy set of builtin commands
+- Docs.rs enhancement (display Feature flags)
 - Both Chrome and Firefox are supported
 
 ### Usages
