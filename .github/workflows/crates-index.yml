@@ -13,5 +13,8 @@ jobs:
     - uses: actions/checkout@v2
     - run: |
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+    - name: Download crates.io dumped database
+    - run: |
+        wget -v https://static.crates.io/db-dump.tar.gz -O /data/db-dump.tar.gz
     - name: Deloy crates index
       run: ./scripts/deploy-crates-index.sh

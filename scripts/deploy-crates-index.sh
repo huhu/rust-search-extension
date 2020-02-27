@@ -2,12 +2,13 @@
 set -e
 
 CRATES_INDEX_PATH="/tmp/index.js"
+CRATES_DATABASE_PATH="/data/db-dump.tar.gz"
 BRANCH="now"
 
 build() {
   echo "Starting building crates-index..."
   cd rust
-  RUST_BACKTRACE=full cargo run --release --bin crates-index ${CRATES_INDEX_PATH}
+  RUST_BACKTRACE=full cargo run --release --bin crates-index ${CRATES_DATABASE_PATH} ${CRATES_INDEX_PATH}
   echo "{\"version\": $(date +%s)}" > /tmp/version.json
   cd ..
 }
