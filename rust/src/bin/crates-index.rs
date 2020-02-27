@@ -1,13 +1,16 @@
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::env;
-use std::fs;
+use std::fs::{self, File};
+use std::io::{BufReader, Read};
 use std::path::Path;
 
 use csv::ReaderBuilder;
+use libflate::gzip::Decoder;
 use semver::Version;
 use serde::de::DeserializeOwned;
 use serde_derive::Deserialize;
+use tar::Archive;
 
 use rust_search_extension::minify::Minifier;
 
@@ -70,11 +73,9 @@ fn default_version() -> Version {
     Version::parse("0.0.0").unwrap()
 }
 
-fn read_csv<D: DeserializeOwned>(path: &str) -> Result<Vec<D>> {
+fn read_csv<D: DeserializeOwned>(file: impl Read) -> Result<Vec<D>> {
     let mut records: Vec<D> = vec![];
-    let mut reader = ReaderBuilder::new()
-        .has_headers(true)
-        .from_path(Path::new(path))?;
+    let mut reader = ReaderBuilder::new().has_headers(true).from_reader(file);
     for record in reader.deserialize() {
         records.push(record?);
     }
@@ -109,11 +110,40 @@ fn generate_javascript_crates_index(
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
     let csv_path = args.get(1).expect("CSV path is required...");
+    let mut crates: Vec<Crate> = Vec::with_capacity(0);
+    let mut versions: Vec<CrateVersion> = Vec::with_capacity(0);
 
-    let mut crates: Vec<Crate> = read_csv(&format!("{}{}", csv_path, "crates.csv"))?;
+    let mut archive = Archive::new(Decoder::new(BufReader::new(File::open(csv_path)?))?);
+    let entries = archive.entries()?.filter(|entry| {
+        // Only filter the file we needed.
+        entry
+            .as_ref()
+            .unwrap()
+            .path()
+            .unwrap()
+            .file_name()
+            .and_then(|f| f.to_str())
+            .map(|f| ["crates.csv", "versions.csv"].contains(&f))
+            .unwrap()
+    });
+    for file in entries {
+        let file = file?;
+        println!("{:?}", file.path()?);
+
+        if let Some(filename) = file.path()?.file_name().and_then(|f| f.to_str()) {
+            match filename {
+                "crates.csv" => {
+                    crates = read_csv(file)?;
+                }
+                "versions.csv" => {
+                    versions = read_csv(file)?;
+                }
+                _ => {}
+            }
+        }
+    }
     crates.sort_unstable_by(|a, b| b.downloads.cmp(&a.downloads));
     crates = crates.drain(0..MAX_CRATE_SIZE).collect();
-    let mut versions: Vec<CrateVersion> = read_csv(&format!("{}{}", csv_path, "versions.csv"))?;
     versions.sort_unstable_by(|a, b| b.num.cmp(&a.num));
     // Filter out duplicated version to speed up find in the later.
     let mut unique_crate_ids: HashSet<u64> = HashSet::with_capacity(2 * MAX_CRATE_SIZE);
