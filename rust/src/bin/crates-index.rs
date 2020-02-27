@@ -1,3 +1,5 @@
+#![cfg(feature = "crates-index")]
+
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::env;

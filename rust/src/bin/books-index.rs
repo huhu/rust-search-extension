@@ -1,3 +1,5 @@
+#![cfg(feature = "books-index")]
+
 use std::fs;
 use std::path::Path;
 

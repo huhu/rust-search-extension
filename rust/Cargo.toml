@@ -4,18 +4,24 @@ version = "0.1.0"
 authors = ["Folyd <lyshuhow@gmail.com>"]
 edition = "2018"
 
+[features]
+crates-index = ["csv","semver","tar","libflate"]
+books-index = ["futures","tokio","reqwest","select"]
+default = ["crates-index"]
+
 [dependencies]
 serde = "1.0.102"
-tokio = { version="0.2", features=["macros", "time"] }
-reqwest = { version="0.10" , features=["json"] }
 serde_json = "1.0.41"
 serde_derive = "1.0.102"
-futures = "0.3.1"
 minifier = "0.0.33"
-lazy_static = "1.4.0"
 unicode-segmentation = "1.6.0"
-select = "0.4.3"
-csv = "1.1.3"
-semver = { version="0.9.0", features=["ci"] }
-tar = "0.4.26"
-libflate = "0.1.27"
+# books-index
+futures = { version = "0.3.1", optional=true }
+tokio = { version="0.2", features=["macros", "time"], optional=true }
+reqwest = { version="0.10" , features=["json"], optional=true }
+select = { version= "0.4.3", optional=true }
+# crates-index
+csv = { version = "1.1.3", optional=true }
+semver = { version="0.9.0", features=["ci"], optional=true }
+tar = { version = "0.4.26", optional=true }
+libflate = { version="0.1.27", optional=true }
