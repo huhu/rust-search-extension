@@ -2,7 +2,7 @@
 set -e
 
 CRATES_INDEX_PATH="/tmp/index.js"
-CRATES_DATABASE_PATH="/data/db-dump.tar.gz"
+CRATES_DATABASE_PATH="/tmp/db-dump.tar.gz"
 BRANCH="now"
 
 build() {
