@@ -108,30 +108,28 @@ fn generate_javascript_crates_index(
 
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
-    let csv_path = args.get(1).expect("Path is required...");
+    let csv_path = args.get(1).expect("CSV path is required...");
 
     let mut crates: Vec<Crate> = read_csv(&format!("{}{}", csv_path, "crates.csv"))?;
     crates.sort_unstable_by(|a, b| b.downloads.cmp(&a.downloads));
-    crates = crates.drain(0..=MAX_CRATE_SIZE).collect();
+    crates = crates.drain(0..MAX_CRATE_SIZE).collect();
     let mut versions: Vec<CrateVersion> = read_csv(&format!("{}{}", csv_path, "versions.csv"))?;
     versions.sort_unstable_by(|a, b| b.num.cmp(&a.num));
-
     // Filter out duplicated version to speed up find in the later.
     let mut unique_crate_ids: HashSet<u64> = HashSet::with_capacity(2 * MAX_CRATE_SIZE);
-    versions = versions
-        .into_iter()
-        .filter(|v| {
-            if unique_crate_ids.contains(&v.crate_id) {
-                return false;
-            }
-            unique_crate_ids.insert(v.crate_id);
-            false
-        })
-        .collect();
+    // retain() faster than iterator's filter().
+    versions.retain(|v| {
+        if unique_crate_ids.contains(&v.crate_id) {
+            return false;
+        }
+        unique_crate_ids.insert(v.crate_id);
+        true
+    });
     let mut collector = WordCollector::new();
     crates.iter_mut().for_each(|item: &mut Crate| {
-        if let Some(version) = versions.iter().find(|&v| v.crate_id == item.id) {
-            item.version = version.num.to_owned();
+        // Call position() then to remove() the item could be faster than find().
+        if let Some(position) = versions.iter().position(|v| v.crate_id == item.id) {
+            item.version = versions.remove(position).num;
         }
 
         if let Some(description) = &item.description {
