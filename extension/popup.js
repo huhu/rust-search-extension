@@ -40,16 +40,6 @@ async function loadLatestCratesIndex(version) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Open type
-    const openTypeSelect = document.querySelector('select[name="open-type"]');
-    if (settings.openType) {
-        openTypeSelect.value = settings.openType;
-        openTypeSelect.selected = true;
-    }
-    openTypeSelect.onchange = function(event) {
-        settings.openType = event.target.value;
-    };
-
     // Offline mode checkbox
     const offlineModeCheckbox = document.getElementById('offline-mode');
     const checkedState = settings.isOfflineMode;

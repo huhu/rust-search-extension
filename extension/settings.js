@@ -4,12 +4,6 @@ const REGEX_DOC_PATH_FILE = /(^file:\/\/.*\/doc\/rust\/html\/)(.*)/i;
 const REGEX_DOC_PATH_HTTP = /(^https?:\/\/.*:\d{2,6}\/)(.*)/i;
 
 const settings = {
-    get openType() {
-        return localStorage.getItem("open-type") || "current-tab";
-    },
-    set openType(type) {
-        localStorage.setItem("open-type", type);
-    },
     get isOfflineMode() {
         return JSON.parse(localStorage.getItem('offline-mode')) || false;
     },

@@ -73,12 +73,12 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
         suggestFn(result);
     });
 
-    this.browser.omnibox.onInputEntered.addListener(content => {
+    this.browser.omnibox.onInputEntered.addListener((content, disposition) => {
         if (/^(https?|file):\/\//i.test(content)) {
-            this.navigateToUrl(content);
+            this.navigateToUrl(content, disposition);
         } else {
             if (/^(https?|file):\/\//i.test(this.defaultSuggestionContent)) {
-                this.navigateToUrl(this.defaultSuggestionContent);
+                this.navigateToUrl(this.defaultSuggestionContent, disposition);
             }
         }
 
@@ -126,13 +126,18 @@ Omnibox.prototype.addRegexQueryEvent = function(regex, event) {
     }));
 };
 
-Omnibox.prototype.navigateToUrl = function(url) {
+// Disposition rules:
+// - currentTab: enter (default)
+// - newForegroundTab: alt + enter
+// - newBackgroundTab: meta + enter
+Omnibox.prototype.navigateToUrl = function(url, disposition) {
     url = url.replace(/\?\d$/ig, "");
-    if (settings.openType === "current-tab") {
+    if (disposition === "currentTab") {
         this.browser.tabs.query({active: true}, tab => {
             this.browser.tabs.update(tab.id, {url: url});
         });
     } else {
+        // newForegroundTab, newBackgroundTab
         this.browser.tabs.create({url: url});
     }
 };
