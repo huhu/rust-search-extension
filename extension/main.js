@@ -5,7 +5,6 @@ const attributeSearcher = new AttributeSearch();
 const bookSearcher = new BookSearch(booksIndex);
 
 const commandManager = new CommandManager();
-commandManager.addCommand(new HistoryCommand());
 
 const defaultSuggestion = `Search std ${c.match("docs")}, ${c.match("crates")} (!), builtin ${c.match("attributes")} (#), official ${c.match("books")} (%), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(c.browser, defaultSuggestion, c.isChrome ? 8 : 6);

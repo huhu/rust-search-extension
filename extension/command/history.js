@@ -16,10 +16,16 @@ class HistoryCommand extends Command {
             });
     }
 
+    onBlankResult(arg) {
+        return [{
+            content: "no history",
+            description: "No history right now, let's search something!"
+        }];
+    }
 
     static record(query, result) {
         // Ignore the command history
-        if (query.startsWith(":")) return;
+        if (query.startsWith(":") || !result) return;
         let history = JSON.parse(localStorage.getItem("history")) || [];
         history.push({query, ...result, time: Date.now()});
         localStorage.setItem("history", JSON.stringify(history));

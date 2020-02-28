@@ -5,6 +5,7 @@ function CommandManager() {
         "book": "Show all Rust official books.",
         "stable": "Show stable Rust scheduled release date in the next year.",
     };
+    [new HistoryCommand()].forEach(cmd => this.addCommand(cmd));
 }
 
 CommandManager.prototype.execute = function(query) {
@@ -121,6 +122,10 @@ CommandManager.prototype.addCommand = function(command) {
     Object.defineProperty(CommandManager.prototype, command.name, {
         value: (arg) => {
             let result = command.onExecute(arg);
+            if (!result || result.length < 1) {
+                result = command.onBlankResult(arg);
+            }
+
             if (command.wrap) {
                 result = this.wrap(result);
             }
