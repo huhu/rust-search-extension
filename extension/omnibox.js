@@ -43,9 +43,10 @@ Omnibox.prototype.parse = function(input) {
     return {query: query.join(" "), page};
 };
 
-Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
+Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, onSelected}) {
     this.globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
+    let results;
 
     this.browser.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
         this.defaultSuggestionContent = null;
@@ -54,32 +55,41 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend}) {
             return;
         }
         let {query, page} = this.parse(input);
-        let result;
         if (this.cachedQuery === query) {
-            result = this.cachedResult;
+            results = this.cachedResult;
         } else {
-            result = this.performSearch(query);
+            results = this.performSearch(query);
             this.cachedQuery = query;
-            this.cachedResult = result;
+            this.cachedResult = results;
         }
 
-        let totalPage = Math.ceil(result.length / this.maxSuggestionSize);
-        result = result.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
-        if (result.length > 0) {
-            let {content, description} = result.shift();
+        let totalPage = Math.ceil(results.length / this.maxSuggestionSize);
+        results = results.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
+        if (results.length > 0) {
+            let {content, description} = results.shift();
             description += ` | Page [${page}/${totalPage}], append '${PAGE_TURNER}' to page down`;
             this.setDefaultSuggestion(description, content);
         }
-        suggestFn(result);
+        suggestFn(results);
     });
 
     this.browser.omnibox.onInputEntered.addListener((content, disposition) => {
+        let result;
         if (/^(https?|file):\/\//i.test(content)) {
             this.navigateToUrl(content, disposition);
+            result = results.find(item => item.content === content);
         } else {
             if (/^(https?|file):\/\//i.test(this.defaultSuggestionContent)) {
                 this.navigateToUrl(this.defaultSuggestionContent, disposition);
+                result = {
+                    content: this.defaultSuggestionContent,
+                    description: this.defaultSuggestionDescription
+                };
             }
+        }
+
+        if (onSelected) {
+            onSelected(this.cachedQuery, result);
         }
 
         this.setDefaultSuggestion(this.defaultSuggestionDescription);
