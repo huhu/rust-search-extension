@@ -47,6 +47,7 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, onSelected
     this.globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
     let results;
+    let defaultDescription;
 
     this.browser.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
         this.defaultSuggestionContent = null;
@@ -67,6 +68,8 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, onSelected
         results = results.slice(this.maxSuggestionSize * (page - 1), this.maxSuggestionSize * page);
         if (results.length > 0) {
             let {content, description} = results.shift();
+            // Store the default description temporary.
+            defaultDescription = description;
             description += ` | Page [${page}/${totalPage}], append '${PAGE_TURNER}' to page down`;
             this.setDefaultSuggestion(description, content);
         }
@@ -83,7 +86,7 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, onSelected
                 this.navigateToUrl(this.defaultSuggestionContent, disposition);
                 result = {
                     content: this.defaultSuggestionContent,
-                    description: this.defaultSuggestionDescription
+                    description: defaultDescription,
                 };
             }
         }

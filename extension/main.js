@@ -3,7 +3,9 @@ const deminifier = new Deminifier(mapping);
 const crateSearcher = new CrateSearch(crateIndex);
 const attributeSearcher = new AttributeSearch();
 const bookSearcher = new BookSearch(booksIndex);
-const command = new Command();
+
+const commandManager = new CommandManager();
+commandManager.addCommand(new HistoryCommand());
 
 const defaultSuggestion = `Search std ${c.match("docs")}, ${c.match("crates")} (!), builtin ${c.match("attributes")} (#), official ${c.match("books")} (%), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(c.browser, defaultSuggestion, c.isChrome ? 8 : 6);
@@ -25,6 +27,9 @@ omnibox.bootstrap({
             description: `Search Rust docs ${ c.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
         }]
     },
+    onSelected: (query, result) => {
+        HistoryCommand.record(query, result);
+    }
 });
 
 omnibox.addPrefixQueryEvent("!", {
@@ -90,7 +95,7 @@ omnibox.addRegexQueryEvent(/e\d{2,4}$/i, {
 
 omnibox.addPrefixQueryEvent(":", {
     onSearch: (query) => {
-        return command.execute(query);
+        return commandManager.execute(query);
     },
 });
 

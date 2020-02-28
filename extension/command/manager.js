@@ -1,4 +1,4 @@
-function Command() {
+function CommandManager() {
     this.cmds = {
         "help": "Show the help messages.",
         "yet": "Show all Are We Yet websites.",
@@ -7,7 +7,7 @@ function Command() {
     };
 }
 
-Command.prototype.execute = function(query) {
+CommandManager.prototype.execute = function(query) {
     query = query.replace(":", "").trim();
     let [cmd, arg] = query.split(" ");
     if (cmd in this.cmds) {
@@ -24,13 +24,13 @@ Command.prototype.execute = function(query) {
 
 // Wrap the result array with the default content,
 // as the content is required by omnibox api.
-Command.prototype.wrap = function(result) {
+CommandManager.prototype.wrap = function(result) {
     return result.map((description, index) => {
         return {content: `${index + 1}`, description};
     });
 };
 
-Command.prototype.help = function() {
+CommandManager.prototype.help = function() {
     return this.wrap([
         `Prefix ${c.match(":")} to execute command (${Object.keys(this.cmds).map(c => ":" + c).join(", ")})`,
         `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs url`,
@@ -43,7 +43,7 @@ Command.prototype.help = function() {
     ]);
 };
 
-Command.prototype.yet = function(arg) {
+CommandManager.prototype.yet = function(arg) {
     // https://wiki.mozilla.org/Areweyet
     const areweyet = [
         ["Are we async yet?", "Asynchronous I/O in Rust", "https://areweasyncyet.rs"],
@@ -65,7 +65,7 @@ Command.prototype.yet = function(arg) {
         });
 };
 
-Command.prototype.book = function(arg) {
+CommandManager.prototype.book = function(arg) {
     const books = [
         ["The Rust Programming Language", "https://doc.rust-lang.org/stable/book/"],
         ["Rust Async Book", "https://rust-lang.github.io/async-book/"],
@@ -96,7 +96,7 @@ Command.prototype.book = function(arg) {
         });
 };
 
-Command.prototype.stable = function() {
+CommandManager.prototype.stable = function() {
     let dates = [];
     let startVersion = 42;
     let end = new Date();
@@ -110,4 +110,21 @@ Command.prototype.stable = function() {
         }
     }
     return this.wrap(dates);
+};
+
+CommandManager.prototype.addCommand = function(command) {
+    if (command.name in this.cmds) {
+        return false;
+    }
+
+    this.cmds[command.name] = command.description;
+    Object.defineProperty(CommandManager.prototype, command.name, {
+        value: (arg) => {
+            let result = command.onExecute(arg);
+            if (command.wrap) {
+                result = this.wrap(result);
+            }
+            return result;
+        }
+    });
 };
