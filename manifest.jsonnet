@@ -3,16 +3,17 @@ local icons() = {
     [size]: "icon.png"
     for size in ["16","48","128"]
 };
+local js_files(name, files) = ["%s/%s.js" % [name, file] for file in files];
 local manifest = {
       manifest_version: 2,
       name: "Rust Search Extension",
-      description: "A handy browser extension to search crates and official docs in the address bar (omnibox)",
+      description: "The ultimate search extension for Rust",
       version: "0.8",
       icons: icons(),
       browser_action: {
-        default_icon: icons(),
+        default_icon: $.icons,
         default_popup: "popup/index.html",
-        default_title: "A handy browser extension to search crates and official docs in the address bar (omnibox)"
+        default_title: $.description,
       },
       content_security_policy: "script-src 'self'; object-src 'self';",
       omnibox: {
@@ -22,30 +23,15 @@ local manifest = {
             matches: [
               "*://docs.rs/*"
             ],
-            js: [
-              "script/docs-rs.js"
-            ],
+            js: js_files("script", ["docs-rs"]),
             run_at: "document_start"
       }],
       background: {
-        scripts: [
-          "compat.js",
-          "settings.js",
-          "deminifier.js",
-          "search/doc.js",
-          "search/book.js",
-          "search/crate.js",
-          "search/attribute.js",
-          "index/books.js",
-          "index/crates.js",
-          "index/std-docs.js",
-          "command/base.js",
-          "command/history.js",
-          "command/manager.js",
-          "omnibox.js",
-          "main.js",
-          "app.js",
-        ]
+        scripts: ["compat.js", "settings.js", "deminifier.js",] +
+                 js_files("search" ,["book", "doc", "crate", "attribute"]) +
+                 js_files("index" ,["books", "crates", "std-docs"]) +
+                 js_files("command" ,["base", "history", "manager"]) +
+                 ["omnibox.js", "main.js","app.js",]
       },
       permissions: [
         "tabs"
