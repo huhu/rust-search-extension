@@ -11,7 +11,7 @@ local manifest = {
       icons: icons(),
       browser_action: {
         default_icon: icons(),
-        default_popup: "popup.html",
+        default_popup: "popup/index.html",
         default_title: "A handy browser extension to search crates and official docs in the address bar (omnibox)"
       },
       content_security_policy: "script-src 'self'; object-src 'self';",

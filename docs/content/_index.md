@@ -78,9 +78,7 @@ However, please check the [Caveats](/how-it-works/#caveats) if you are a Firefox
 
 # Display Feature Flags in docs.rs page
 
-Feature flags are such a kind of crucial property we would involve in when we gain insight into a crate. 
-However, docs.rs don't display the crate's feature flags, which is inconvenient. 
-So Rust Search Extension fills the gap.
+Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust Search Extension fills the gap.
 
 ![IMG](/feature-flags.png)
 
@@ -94,6 +92,7 @@ Those commands including but not limited to:
 - **:yet** - Show all Are We Yet websites. 
 - **:book** - Show all Rust official books. 
 - **:stable** - Show stable Rust scheduled release date in the next year. 
+- **:history** - Show your local search history
 
 ![IMG](/command-system.gif)
 

@@ -3,7 +3,7 @@ title = "Changelog"
 weight = 2
 +++
 
-# v0.8 - 2020-02-25
+# v0.8 - 2020-03-02
 
 - Bump crates index number from top 10K to top 20K
 - Support display crate's **Feature flags** in [docs.rs](https://docs.rs) page
@@ -14,7 +14,9 @@ weight = 2
     - Add `:book` command to show all Rust official books
     - Add `:stable` command to show stable Rust scheduled release date in the next year
     - Add `:yet` command to show all **Are We Yet** websites
+    - Add `:history` command to show your local search history
 - Support page down the result with page-tuner **-** (hyphen)
+- Support open in new tab by using `Cmd`/`Alt` + `Enter`
 
 # v0.7 - 2020-02-04
 
