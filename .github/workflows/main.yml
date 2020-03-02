@@ -21,7 +21,7 @@ jobs:
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
 
       - name: Generate Chrome manifest.json
-        run: jsonnet manifest.jsonnet --ext-str browser=chrome -o extension/manifest.json
+        run: make manifest browser=chrome
 
       - name: "web-ext build"
         id: web-ext-build-chrome
@@ -37,7 +37,7 @@ jobs:
           path: ${{ steps.web-ext-build-chrome.outputs.target }}
 
       - name: Generate Firefox manifest.json
-        run: jsonnet manifest.jsonnet --ext-str browser=firefox -o extension/manifest.json
+        run: make manifest browser=firefox
 
       - name: "web-ext build"
         id: web-ext-build-firefox

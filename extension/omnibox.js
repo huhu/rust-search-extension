@@ -30,11 +30,11 @@ Omnibox.prototype.parse = function(input) {
         // Case: {keyword}
         query = [args[0]];
     } else if (args.length === 2 && args[1].startsWith(PAGE_TURNER)) {
-        // Case: {keyword} {page-tuner}
+        // Case: {keyword} {page-turner}
         query = [args[0]];
         page = parsePage(args[1]);
     } else if (args.length >= 2) {
-        // Case: {keyword} {keyword} {page-tuner}
+        // Case: {keyword} {keyword} {page-turner}
         query = [args[0], args[1]];
         if (args[2] && args[2].startsWith(PAGE_TURNER)) {
             page = parsePage(args[2]);

@@ -10,12 +10,12 @@ weight = 2
 - Support prefix **!!** (double exclamation mark) to search crates with [docs.rs](https://docs.rs) url
 - Support prefix **%** (percent mark) to search Rust official book chapters
 - Add nice features by introducing the command system
-    - Add `:help` command to show all help messages
-    - Add `:book` command to show all Rust official books
-    - Add `:stable` command to show stable Rust scheduled release date in the next year
-    - Add `:yet` command to show all **Are We Yet** websites
-    - Add `:history` command to show your local search history
-- Support page down the result with page-tuner **-** (hyphen)
+    - `:help` command to show all help messages
+    - `:book` command to show all Rust official books
+    - `:stable` command to show stable Rust scheduled release date in the next year
+    - `:yet` command to show all **Are We Yet** websites
+    - `:history` command to show your local search history
+- Support page down the result with page-turner **-** (hyphen)
 - Support open in new tab by using `Cmd`/`Alt` + `Enter`
 
 # v0.7 - 2020-02-04
