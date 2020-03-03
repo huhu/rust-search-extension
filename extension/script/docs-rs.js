@@ -17,8 +17,9 @@ async function parseCargoFeatures(url) {
 
 document.addEventListener("DOMContentLoaded", async () => {
     let ul = document.querySelector(".landing-search-form-nav>ul");
-    if (ul.children.length === 3) {
-        let sourceLink = document.querySelector(".landing-search-form-nav>ul>li:nth-child(2)>a");
+    let childrenNumber = ul.children.length;
+    if (childrenNumber >= 3) {
+        let sourceLink = document.querySelector(`.landing-search-form-nav>ul>li:nth-child(${childrenNumber - 1})>a`);
 
         let features = await parseCargoFeatures(sourceLink.href + "Cargo.toml");
         let html = `<div style="padding: 1rem"><p>This crate has no feature flag.</p></div>`;
