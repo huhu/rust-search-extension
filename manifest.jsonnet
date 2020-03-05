@@ -28,8 +28,8 @@ local manifest = {
       }],
       background: {
         scripts: ["compat.js", "settings.js", "deminifier.js",] +
-                 js_files("search" ,["book", "doc", "crate", "attribute"]) +
-                 js_files("index" ,["books", "crates", "std-docs"]) +
+                 js_files("search" ,["book", "doc", "crate", "attribute", "lint"]) +
+                 js_files("index" ,["books", "crates", "std-docs", "lints"]) +
                  js_files("command" ,["base", "history", "manager"]) +
                  ["omnibox.js", "main.js","app.js",]
       },

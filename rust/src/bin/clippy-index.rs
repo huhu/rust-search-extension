@@ -9,7 +9,7 @@ use tokio;
 
 use rust_search_extension::minify::Minifier;
 
-const CLIPPY_URL: &'static str = "https://rust-lang.github.io/rust-clippy/master/";
+const LINT_URL: &'static str = "https://rust-lang.github.io/rust-clippy/master/lints.json";
 const LINTS_INDEX_PATH: &'static str = "../extension/index/lints.js";
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -47,7 +47,7 @@ struct Lint {
 }
 
 async fn fetch_clippy_lints() -> Result<Vec<Lint>> {
-    let lints = reqwest::get(&format!("{}/lints.json", CLIPPY_URL))
+    let lints = reqwest::get(LINT_URL)
         .await?
         .json()
         .await?;
@@ -61,7 +61,8 @@ async fn main() -> Result<()> {
         .iter()
         .map(|lint| {
             let mut desc = lint.docs.desc.to_string();
-            desc.truncate(60);
+            desc = desc.replace("`", "");
+            desc.truncate(100);
             (lint.id.clone(), [lint.level.to_string(), desc])
         })
         .collect();

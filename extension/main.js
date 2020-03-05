@@ -3,6 +3,7 @@ const deminifier = new Deminifier(mapping);
 const crateSearcher = new CrateSearch(crateIndex);
 const attributeSearcher = new AttributeSearch();
 const bookSearcher = new BookSearch(booksIndex);
+const lintSearcher = new LintSearch(lintsIndex);
 
 const commandManager = new CommandManager();
 
@@ -92,12 +93,6 @@ omnibox.addRegexQueryEvent(/e\d{2,4}$/i, {
     }
 });
 
-omnibox.addPrefixQueryEvent(":", {
-    onSearch: (query) => {
-        return commandManager.execute(query);
-    },
-});
-
 omnibox.addPrefixQueryEvent("%", {
     onSearch: (query) => {
         return bookSearcher.search(query);
@@ -109,6 +104,25 @@ omnibox.addPrefixQueryEvent("%", {
             description: `${ [...parentTitles.map(t => c.escape(t)), c.match(c.escape(page.title))].join(" > ") } - ${c.dim(page.name)}`
         }
     }
+});
+
+const LINT_URL = "https://rust-lang.github.io/rust-clippy/master/";
+omnibox.addPrefixQueryEvent(">", {
+    onSearch: (query) => {
+        return lintSearcher.search(query);
+    },
+    onFormat: (index, lint) => {
+        return {
+            content: `${LINT_URL}#${lint.name}`,
+            description: `Clippy lint: [${lint.level}] ${c.match(lint.name)} - ${c.dim(c.escape(lint.description))}`,
+        }
+    },
+});
+
+omnibox.addPrefixQueryEvent(":", {
+    onSearch: (query) => {
+        return commandManager.execute(query);
+    },
 });
 
 window.crateSearcher = crateSearcher;
