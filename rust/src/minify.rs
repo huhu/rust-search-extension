@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use std::ops::Deref;
 
 use minifier::js::{
-    aggregate_strings_into_array_filter, simple_minify, Keyword, ReservedChar, Token, Tokens,
+    aggregate_strings_into_array, clean_tokens, simple_minify, Keyword, Token, Tokens,
 };
 use unicode_segmentation::UnicodeSegmentation;
 
@@ -96,7 +96,7 @@ impl Minifier {
             .collect()
     }
 
-    pub fn minify_json(json: String) -> String {
+    pub fn minify_js(json: String) -> String {
         let tokens: Tokens = simple_minify(&json)
             .into_iter()
             .map(|(token, _)| match token {
@@ -105,10 +105,9 @@ impl Minifier {
             })
             .collect::<Vec<_>>()
             .into();
-        aggregate_strings_into_array_filter(tokens, "C", |tokens, position| {
-            // Ignore the key of json (AKA, the crate id).
-            position > 5 && !tokens[position + 1].eq_char(ReservedChar::Colon)
-        })
-        .to_string()
+        tokens
+            .apply(|t| aggregate_strings_into_array(t, "C"))
+            .apply(clean_tokens)
+            .to_string()
     }
 }

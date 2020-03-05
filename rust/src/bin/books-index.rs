@@ -110,7 +110,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 serde_json::to_string(&books)?
             );
             let path = Path::new(BOOKS_INDEX_PATH);
-            fs::write(path, &Minifier::minify_json(contents))?;
+            fs::write(path, &Minifier::minify_js(contents))?;
         }
         Err(error) => {
             println!("{:?}", error);

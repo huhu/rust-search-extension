@@ -47,10 +47,7 @@ struct Lint {
 }
 
 async fn fetch_clippy_lints() -> Result<Vec<Lint>> {
-    let lints = reqwest::get(LINT_URL)
-        .await?
-        .json()
-        .await?;
+    let lints = reqwest::get(LINT_URL).await?.json().await?;
     Ok(lints)
 }
 
@@ -69,7 +66,7 @@ async fn main() -> Result<()> {
 
     let contents = format!("var lintsIndex={};", serde_json::to_string(&lints)?);
     let path = Path::new(LINTS_INDEX_PATH);
-    fs::write(path, &Minifier::minify_json(contents))?;
+    fs::write(path, &Minifier::minify_js(contents))?;
     println!("\nGenerate javascript lints index successful!");
     Ok(())
 }
