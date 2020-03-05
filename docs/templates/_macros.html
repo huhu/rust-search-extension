@@ -8,7 +8,6 @@
 </a>
 
 <nav>
-    <a class="nav-item subtitle-text" href="{{ section.permalink }}">Home</a>
     {% for page in section.pages %}
     <a class="nav-item subtitle-text" href="{{ page.permalink }}">{{ page.title }}</a>
     {% endfor %}

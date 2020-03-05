@@ -58,11 +58,13 @@
         {% elif page.toc %}
             {% set toc = page.toc %}
         {% endif %}
-        {% for h in toc %}
-        <div class="toc-item">
-            <a class="subtext" href="{{h.permalink | safe}}">{{ h.title }}</a>
-        </div>
-        {% endfor %}
+        {% if toc %}
+            {% for h in toc %}
+            <div class="toc-item">
+                <a class="subtext" href="{{h.permalink | safe}}">{{ h.title }}</a>
+            </div>
+            {% endfor %}
+        {% endif %}
     </div>
     {% endblock toc %}
 
