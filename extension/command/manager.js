@@ -84,6 +84,7 @@ CommandManager.prototype.book = function(arg) {
         ["The Rustonomicon", "https://doc.rust-lang.org/nomicon/index.html"],
         ["The Unstable Book", "https://doc.rust-lang.org/unstable-book/index.html"],
         ["Rust bindgen User Guide", "https://rust-lang.github.io/rust-bindgen/"],
+        ["The wasm-bindgen Guide", "https://rustwasm.github.io/docs/wasm-bindgen/"],
         ["Rust API Guidelines", "https://rust-lang.github.io/api-guidelines/"],
         ["Rust Fuzz Book", "https://rust-fuzz.github.io/book/"],
     ];
