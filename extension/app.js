@@ -9,3 +9,20 @@ let fileNewIssue = "title=Have you found a bug? Did you feel something was missi
 c.browser.runtime.setUninstallURL(
     `https://github.com/Folyd/rust-search-extension/issues/new?${encodeURI(fileNewIssue)}`
 );
+
+c.browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.check) {
+        let crateName = request.crateName;
+        let index = localStorage.getItem(`${crateName}`);
+        sendResponse({added: !!index});
+    }
+    return true;
+});
+
+c.browser.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+    let crateName = request.crateName;
+    localStorage.setItem(crateName, JSON.stringify(request.searchIndex[crateName]));
+    console.log(request);
+    sendResponse("ok");
+    return true;
+});

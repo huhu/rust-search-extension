@@ -1,0 +1,29 @@
+
+.feature-flags-content {
+    color: #333;
+    max-height: 600px;
+    overflow: auto;
+    max-width: 60rem;
+}
+
+.feature-flags-table {
+    margin: 0.5rem;
+    border-collapse: separate;
+    border-spacing: 0.5rem;
+}
+
+.add-to-extension {
+    font-size: 0.8em;
+    color: #121212bb;
+    background-color: #F9BB2Daa;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.2rem;
+    border-radius: 3px;
+    margin-left: 5px;
+}
+
+.add-to-extension:hover {
+    color: #121212;
+    background-color: #F9BB2D;
+}
