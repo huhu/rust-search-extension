@@ -49,6 +49,7 @@ class DocSearch {
     }
 
     search(query) {
+        if (!query) return [];
         return this.execQuery(this.buildQuery(query));
     }
 
@@ -83,7 +84,9 @@ class DocSearch {
 
             // convert `paths` into an object form
             for (var i = 0; i < paths.length; ++i) {
-                paths[i] = {ty: paths[i][0], name: paths[i][1]};
+                if (Array.isArray(paths[i])) {
+                    paths[i] = {ty: paths[i][0], name: paths[i][1]};
+                }
             }
 
             // convert `items` into an object form, and construct word indices.
@@ -454,38 +457,51 @@ class DocSearch {
         var href;
         var type = itemTypes[item.ty];
         var name = item.name;
+        var path = item.path;
 
-        if (type === 'mod') {
-            displayPath = item.path + '::';
-            href = rootPath + item.path.replace(/::/g, '/') + '/' +
-                name + '/index.html';
+        if (type === "mod") {
+            displayPath = path + "::";
+            href = rootPath + path.replace(/::/g, "/") + "/" +
+                name + "/index.html";
         } else if (type === "primitive" || type === "keyword") {
             displayPath = "";
-            href = rootPath + item.path.replace(/::/g, '/') +
-                '/' + type + '.' + name + '.html';
+            href = rootPath + path.replace(/::/g, "/") +
+                "/" + type + "." + name + ".html";
         } else if (type === "externcrate") {
             displayPath = "";
-            href = rootPath + name + '/index.html';
+            href = rootPath + name + "/index.html";
         } else if (item.parent !== undefined) {
             var myparent = item.parent;
-            var anchor = '#' + type + '.' + name;
+            var anchor = "#" + type + "." + name;
             var parentType = itemTypes[myparent.ty];
+            var pageType = parentType;
+            var pageName = myparent.name;
+
             if (parentType === "primitive") {
-                displayPath = myparent.name + '::';
+                displayPath = myparent.name + "::";
+            } else if (type === "structfield" && parentType === "variant") {
+                // Structfields belonging to variants are special: the
+                // final path element is the enum name.
+                var splitPath = item.path.split("::");
+                var enumName = splitPath.pop();
+                path = splitPath.join("::");
+                displayPath = path + "::" + enumName + "::" + myparent.name + "::";
+                anchor = "#variant." + myparent.name + ".field." + name;
+                pageType = "enum";
+                pageName = enumName;
             } else {
-                displayPath = item.path + '::' + myparent.name + '::';
+                displayPath = path + "::" + myparent.name + "::";
             }
-            href = rootPath + item.path.replace(/::/g, '/') +
-                '/' + parentType +
-                '.' + myparent.name +
-                '.html' + anchor;
+            href = rootPath + path.replace(/::/g, "/") +
+                "/" + pageType +
+                "." + pageName +
+                ".html" + anchor;
         } else {
-            displayPath = item.path + '::';
-            href = rootPath + item.path.replace(/::/g, '/') +
-                '/' + type + '.' + name + '.html';
+            displayPath = item.path + "::";
+            href = rootPath + item.path.replace(/::/g, "/") +
+                "/" + type + "." + name + ".html";
         }
-        return [displayPath, href];
-    }
+        return [displayPath, href];    }
 
 
     /**
@@ -513,6 +529,7 @@ class DocSearch {
                 path.indexOf(keys[i]) > -1 ||
                 // next if there is a parent, check for exact parent match
                 (parent !== undefined &&
+                    parent.name !== undefined &&
                     parent.name.toLowerCase().indexOf(keys[i]) > -1) ||
                 // lastly check to see if the name was a levenshtein match
                 levenshtein(name, keys[i]) <= MAX_LEV_DISTANCE)) {
