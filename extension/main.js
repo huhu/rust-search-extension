@@ -4,7 +4,7 @@ const crateSearcher = new CrateSearch(crateIndex);
 const attributeSearcher = new AttributeSearch();
 const bookSearcher = new BookSearch(booksIndex);
 const lintSearcher = new LintSearch(lintsIndex);
-
+const stdSearcher = new StdSearch(searchIndex);
 const commandManager = new CommandManager();
 
 const defaultSuggestion = `Search std ${c.match("docs")}, ${c.match("crates")} (!), builtin ${c.match("attributes")} (#), official ${c.match("books")} (%), and ${c.match("error codes")}, etc in your address bar instantly!`;
@@ -12,7 +12,7 @@ const omnibox = new Omnibox(c.browser, defaultSuggestion, c.isChrome ? 8 : 6);
 
 omnibox.bootstrap({
     onSearch: (query) => {
-        return window.search(query);
+        return stdSearcher.search(query);
     },
     onFormat: (index, doc) => {
         let description = doc.displayPath + c.match(doc.name);
@@ -23,8 +23,8 @@ omnibox.bootstrap({
     },
     onAppend: (query) => {
         return [{
-            content: `${window.rootPath}std/index.html?search=` + encodeURIComponent(query),
-            description: `Search Rust docs ${ c.match(query) } on ${ settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
+            content: `${stdSearcher.rootPath}std/index.html?search=` + encodeURIComponent(query),
+            description: `Search Rust docs ${c.match(query)} on ${settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
         }]
     },
     onSelected: (query, result) => {
@@ -101,7 +101,7 @@ omnibox.addPrefixQueryEvent("%", {
         let parentTitles = page.parentTitles || [];
         return {
             content: page.url,
-            description: `${ [...parentTitles.map(t => c.escape(t)), c.match(c.escape(page.title))].join(" > ") } - ${c.dim(page.name)}`
+            description: `${[...parentTitles.map(t => c.escape(t)), c.match(c.escape(page.title))].join(" > ")} - ${c.dim(page.name)}`
         }
     }
 });
