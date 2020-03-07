@@ -69,7 +69,7 @@ function insertAddToExtensionElement(added) {
 
     let platformElement = document.querySelector(`.landing-search-form-nav>ul>li:last-child`);
     let li = document.createElement("li");
-    li.classList.add("pure-menu-item");
+    li.classList.add("pure-menu-item", "pure-menu-has-children", "pure-menu-allow-hover");
     li.onclick = () => {
         // Toggle search index added state
         if (added) {
@@ -81,14 +81,21 @@ function insertAddToExtensionElement(added) {
             insertAddToExtensionElement(true);
         }
     };
+    let content = `<p>Add this crate to Rust Search Extension then you can search it in the address bar.</p>`;
     let iconAttributes = `class="fa fa-fw fa-plus-circle" style="color:#121212"`;
     if (added) {
+        content = `<p>You already added this crate. Click again to remove it.</p>`;
         iconAttributes = `class="fa fa-fw fa-check-circle" style="color:green"`;
     }
     li.innerHTML = `<div class="add-to-extension"
-                         title="Add this crate's doc to Rust Search Extension, then you can search in the address bar"
+                         title="Add this crate to Rust Search Extension then you can search it in the address bar."
                          aria-label="Add to Rust Search Extension">
                          <i ${iconAttributes}></i><span class="title"> to Rust Search Extension</span>
+                    </div>
+                    <div class="pure-menu-children" role="menu">
+                        <div class="add-to-extension-content" onclick="event.stopPropagation()">
+                            ${content}
+                        </div>
                     </div>`;
     platformElement.insertAdjacentElement("afterend", li);
 }

@@ -1,4 +1,3 @@
-
 .feature-flags-content {
     color: #333;
     max-height: 600px;
@@ -26,4 +25,14 @@
 .add-to-extension:hover {
     color: #121212;
     background-color: #F9BB2D;
+}
+
+.add-to-extension-content {
+    max-width: 20rem;
+    padding: 1rem;
+    position: relative;
+    display: block;
+    white-space: normal;
+    font-size: 13px;
+    color: #555;
 }
