@@ -11,10 +11,19 @@ c.browser.runtime.setUninstallURL(
 );
 
 c.browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.check) {
-        let crateName = request.crateName;
-        let index = localStorage.getItem(`${crateName}`);
-        sendResponse({added: !!index});
+    switch (request.action) {
+        case "check": {
+            let crateName = request.crateName;
+            let index = localStorage.getItem(`${crateName}`);
+            sendResponse({added: !!index});
+            break;
+        }
+        case "remove": {
+            let crateName = request.crateName;
+            let index = localStorage.removeItem(`${crateName}`);
+            sendResponse(true);
+            break;
+        }
     }
     return true;
 });

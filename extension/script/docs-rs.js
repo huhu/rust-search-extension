@@ -1,4 +1,5 @@
 let c = new Compat();
+let crateName = location.pathname.match(/[0-9a-z_-]+/i)[0];
 
 async function parseCargoFeatures(url) {
     let response = await fetch(url);
@@ -21,8 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let ul = document.querySelector(".landing-search-form-nav>ul");
     let childrenNumber = ul.children.length;
     if (childrenNumber >= 3) {
-        let crateName = location.pathname.match(/[0-9a-z_-]+/i)[0];
-        c.browser.runtime.sendMessage({crateName, check: true}, response => {
+        c.sendMessage({crateName, action: "check"}, response => {
             insertAddToExtensionElement(response && response.added);
         });
 
@@ -61,21 +61,29 @@ async function insertFeatureFlagsElement(number) {
 }
 
 function insertAddToExtensionElement(added) {
+    // Remove previous element.
+    let el = document.querySelector(".add-to-extension");
+    if (el) {
+        el.remove();
+    }
+
     let platformElement = document.querySelector(`.landing-search-form-nav>ul>li:last-child`);
     let li = document.createElement("li");
     li.classList.add("pure-menu-item");
     li.onclick = () => {
-        injectScripts(["compat.js", "script/crate-docs.js"]);
-        // Remove previous element.
-        let el = document.querySelector(".add-to-extension");
-        if (el) {
-            el.remove();
+        // Toggle search index added state
+        if (added) {
+            c.sendMessage({crateName, action: "remove"}, response => {
+                insertAddToExtensionElement(false);
+            });
+        } else {
+            injectScripts(["compat.js", "script/crate-docs.js"]);
+            insertAddToExtensionElement(true);
         }
-        insertAddToExtensionElement(true);
     };
-    let iconAttributes = `class="fa fa-fw fa-plus" style="color:#121212"`;
+    let iconAttributes = `class="fa fa-fw fa-plus-circle" style="color:#121212"`;
     if (added) {
-        iconAttributes = `class="fa fa-fw fa-check" style="color:green"`;
+        iconAttributes = `class="fa fa-fw fa-check-circle" style="color:green"`;
     }
     li.innerHTML = `<div class="add-to-extension"
                          title="Add this crate's doc to Rust Search Extension, then you can search in the address bar"
@@ -89,6 +97,10 @@ function injectScripts(paths) {
     paths.map(path => {
         let script = document.createElement("script");
         script.src = c.browser.runtime.getURL(path);
+        script.onload = () => {
+            // Remove self after loaded
+            script.remove();
+        };
         return script;
     }).forEach(script => {
         document.body.insertAdjacentElement('beforeBegin', script);
