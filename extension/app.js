@@ -13,14 +13,11 @@ c.browser.runtime.setUninstallURL(
 c.browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
         case "check": {
-            let crateName = request.crateName;
-            let index = localStorage.getItem(`${crateName}`);
-            sendResponse({added: !!index});
+            sendResponse({added: !!CrateDocSearchManager.checkCrate(request.crateName)});
             break;
         }
         case "remove": {
-            let crateName = request.crateName;
-            let index = localStorage.removeItem(`${crateName}`);
+            CrateDocSearchManager.removeCrate(request.crateName);
             sendResponse(true);
             break;
         }
@@ -29,8 +26,7 @@ c.browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 c.browser.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
-    let crateName = request.crateName;
-    localStorage.setItem(crateName, JSON.stringify(request.searchIndex[crateName]));
+    CrateDocSearchManager.addCrate(request.crateName, request.crateVersion, request.searchIndex);
     console.log(request);
     sendResponse("ok");
     return true;
