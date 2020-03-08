@@ -26,7 +26,7 @@ omnibox.bootstrap({
     onFormat: formatDoc,
     onAppend: (query) => {
         return [{
-            content: `${stdSearcher.rootPath}std/index.html?search=` + encodeURIComponent(query),
+            content: stdSearcher.getSearchUrl(query),
             description: `Search Rust docs ${c.match(query)} on ${settings.isOfflineMode ? "offline mode" : stdSearcher.rootPath}`,
         }];
     },
@@ -40,14 +40,14 @@ omnibox.addPrefixQueryEvent("@", {
         return crateDocSearchManager.search(query);
     },
     onFormat: (index, item) => {
-        if (item.hasOwnProperty("href")) {
+        if (item.hasOwnProperty("content")) {
+            // 1. Crate list header.
+            // 2. Crate result footer
+            return item;
+        } else if (item.hasOwnProperty("href")) {
             return formatDoc(index, item);
         } else {
-            if (item.hasOwnProperty("content")) {
-                return item;
-            }
-
-            // Format crate name list
+            // Crate name list.
             let content = `@${item.name}`;
             return {
                 content,
@@ -62,8 +62,6 @@ omnibox.addPrefixQueryEvent("!", {
     searchPriority: 1,
     onSearch: (query) => {
         this.docMode = query.startsWith("!!");
-        this.rawQuery = query.replace(/[!\s]/g, "");
-        query = this.rawQuery.replace(/[-_]*/ig, "");
         return crateSearcher.search(query);
     },
     onFormat: (index, crate) => {
@@ -74,10 +72,11 @@ omnibox.addPrefixQueryEvent("!", {
             description: `${this.docMode ? "Docs" : "Crate"}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
         };
     },
-    onAppend: () => {
+    onAppend: (query) => {
+        let keyword = query.replace(/[!\s]/g, "");
         return [{
-            content: "https://crates.io/search?q=" + encodeURIComponent(this.rawQuery),
-            description: "Search Rust crates for " + c.match(this.rawQuery) + " on https://crates.io",
+            content: "https://crates.io/search?q=" + encodeURIComponent(keyword),
+            description: "Search Rust crates for " + c.match(keyword) + " on https://crates.io",
         }, {
             content: "remind",
             description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,

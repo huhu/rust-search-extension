@@ -1,6 +1,6 @@
 class CrateDocSearch extends DocSearch {
     constructor(name, version, searchIndex) {
-        super(searchIndex, `https://docs.rs/${name}/${version}/`);
+        super(name, searchIndex, `https://docs.rs/${name}/${version}/`);
     }
 }
 
@@ -36,14 +36,20 @@ class CrateDocSearchManager {
                 list = list.filter(item => !crateName || item.name.toLowerCase().indexOf(crateName) > -1)
                     .sort((a, b) => a.name.localeCompare(b.name));
                 list.unshift({
-                    content: "",
+                    content: crateName, // Non-empty value is required for content, so maybe give it a crate name.
                     description: `Following ${len} crate(s) were added by you, select one to search their docs exclusively.`
                 });
                 return list;
             }
         }
 
-        return searcher.search(keyword);
+        let results = searcher.search(keyword);
+        // Push result footer.
+        results.push({
+            content: searcher.getSearchUrl(keyword),
+            description: `Input keyword to search ${c.match(crateName)}'s docs...`,
+        });
+        return results;
     }
 
     static getCrates() {

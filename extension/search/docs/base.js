@@ -37,7 +37,8 @@ var MAX_RESULTS = 10;
 
 class DocSearch {
 
-    constructor(searchIndex, rootPath) {
+    constructor(name, searchIndex, rootPath) {
+        this.name = name;
         // The list of search words to query against.
         this.searchWords = [];
         this.searchIndex = this.buildIndex(searchIndex);
@@ -46,6 +47,14 @@ class DocSearch {
         // Current query lowercase keyword.
         this.valLower = null;
         this.split = null;
+    }
+
+    getSearchUrl(keyword) {
+        let url = `${this.rootPath}${this.name}/index.html`;
+        if (keyword) {
+            url += `?search=${encodeURIComponent(keyword)}`;
+        }
+        return url;
     }
 
     search(query) {
@@ -502,7 +511,8 @@ class DocSearch {
             href = rootPath + item.path.replace(/::/g, "/") +
                 "/" + type + "." + name + ".html";
         }
-        return [displayPath, href];    }
+        return [displayPath, href];
+    }
 
 
     /**

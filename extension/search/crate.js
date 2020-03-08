@@ -65,7 +65,7 @@ CrateSearch.prototype.getCrateIndexVersion = function() {
  */
 CrateSearch.prototype.search = function(keyword) {
     let result = [];
-
+    keyword = keyword.replace(/[-_!\s]/g, "");
     for (let rawCrateId of this.crateIds) {
         let crateId = rawCrateId.replace(/[-_\s]/ig, "");
         if (crateId.length < keyword.length) continue;
