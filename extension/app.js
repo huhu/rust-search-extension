@@ -13,7 +13,7 @@ c.browser.runtime.setUninstallURL(
 c.browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
         case "check": {
-            sendResponse({added: !!CrateDocSearchManager.checkCrate(request.crateName)});
+            sendResponse({added: request.crateName in CrateDocSearchManager.getCrates()});
             break;
         }
         case "remove": {

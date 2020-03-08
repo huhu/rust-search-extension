@@ -1,5 +1,5 @@
 class CrateDocSearch extends DocSearch {
-    constructor({name, version, searchIndex}) {
+    constructor(name, version, searchIndex) {
         super(searchIndex, `https://docs.rs/${name}/${version}/`);
     }
 }
@@ -14,13 +14,15 @@ class CrateDocSearchManager {
         query = query.replace("@", "").trim();
         let [crateName, keyword] = query.split(" ");
 
+        let crates = CrateDocSearchManager.getCrates();
         let searcher = null;
         if (this.cachedCrate === crateName) {
             searcher = this.cachedCrateSearcher;
         } else {
-            let crate = CrateDocSearchManager.getCrate(crateName);
+            let crate = crates[crateName];
             if (crate) {
-                searcher = new CrateDocSearch(crate);
+                let searchIndex = CrateDocSearchManager.getCrateSearchIndex(crateName);
+                searcher = new CrateDocSearch(crateName, crate.version, searchIndex);
                 this.cachedCrate = crate;
                 this.cachedCrateSearcher = searcher;
                 return searcher.search(keyword);
@@ -33,37 +35,23 @@ class CrateDocSearchManager {
     }
 
     static getCrates() {
-        return JSON.parse(localStorage.getItem("crates") || "[]");
+        return JSON.parse(localStorage.getItem("crates") || "{}");
     }
 
-    static checkCrate(name) {
-        let crates = CrateDocSearchManager.getCrates();
-        return crates.find(item => item.name === name);
-    }
-
-    static getCrate(name) {
-        let crate = CrateDocSearchManager.checkCrate(name);
-        if (crate) {
-            crate["searchIndex"] = JSON.parse(localStorage.getItem(`${name}`));
-            return crate;
-        } else {
-            return null;
-        }
+    static getCrateSearchIndex(name) {
+        return JSON.parse(localStorage.getItem(`${name}`));
     }
 
     static addCrate(name, version, searchIndex) {
         localStorage.setItem(name, JSON.stringify(searchIndex));
         let crates = CrateDocSearchManager.getCrates();
-        crates.push({name, version});
+        crates[name] = {version, time: Date.now()};
         localStorage.setItem("crates", JSON.stringify(crates));
     }
 
     static removeCrate(name) {
         let crates = CrateDocSearchManager.getCrates();
-        let index = crates.findIndex(item => item.name === name);
-        if (index > -1) {
-            crates.splice(index);
-        }
+        delete crates[name];
         localStorage.setItem("crates", JSON.stringify(crates));
         localStorage.removeItem(`${name}`);
     }
