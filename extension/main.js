@@ -11,7 +11,7 @@ const commandManager = new CommandManager();
 const defaultSuggestion = `Search std ${c.match("docs")}, ${c.match("crates")} (!), builtin ${c.match("attributes")} (#), official ${c.match("books")} (%), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(c.browser, defaultSuggestion, c.isChrome ? 8 : 6);
 
-let onDocFormat = (index, doc) => {
+let formatDoc = (index, doc) => {
     let description = doc.displayPath + c.match(doc.name);
     if (doc.desc) {
         description += " - " + c.dim(c.escape(doc.desc));
@@ -23,7 +23,7 @@ omnibox.bootstrap({
     onSearch: (query) => {
         return stdSearcher.search(query);
     },
-    onFormat: onDocFormat,
+    onFormat: formatDoc,
     onAppend: (query) => {
         return [{
             content: `${stdSearcher.rootPath}std/index.html?search=` + encodeURIComponent(query),
@@ -39,7 +39,18 @@ omnibox.addPrefixQueryEvent("@", {
     onSearch: (query) => {
         return crateDocSearchManager.search(query);
     },
-    onFormat: onDocFormat,
+    onFormat: (index, item) => {
+        if (item.hasOwnProperty("href")) {
+            return formatDoc(index, item);
+        } else {
+            // Format crate name list
+            let content = `@${item.name}`;
+            return {
+                content,
+                description: `${c.match(content)} - ${c.dim(item.doc)}`,
+            }
+        }
+    },
 });
 
 omnibox.addPrefixQueryEvent("!", {

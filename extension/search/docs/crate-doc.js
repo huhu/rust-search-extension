@@ -14,20 +14,24 @@ class CrateDocSearchManager {
         query = query.replace("@", "").trim();
         let [crateName, keyword] = query.split(" ");
 
-        let crates = CrateDocSearchManager.getCrates();
         let searcher = null;
         if (this.cachedCrate === crateName) {
             searcher = this.cachedCrateSearcher;
         } else {
+            let crates = CrateDocSearchManager.getCrates();
             let crate = crates[crateName];
             if (crate) {
                 let searchIndex = CrateDocSearchManager.getCrateSearchIndex(crateName);
                 searcher = new CrateDocSearch(crateName, crate.version, searchIndex);
                 this.cachedCrate = crate;
                 this.cachedCrateSearcher = searcher;
-                return searcher.search(keyword);
             } else {
-                return [];
+                return Object.entries(crates).map(([name, crate]) => {
+                    crate["name"] = name;
+                    return crate;
+                })
+                    .filter(item => !crateName || item.name.toLowerCase().indexOf(crateName) > -1)
+                    .sort((a, b) => a.name.localeCompare(b.name));
             }
         }
 
