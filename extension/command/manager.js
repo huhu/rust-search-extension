@@ -15,7 +15,7 @@ CommandManager.prototype.execute = function(query) {
         return this[cmd](arg);
     } else {
         return [
-            `Not command found ${c.match(":" + cmd)}, try following commands?`,
+            {content: "", description: `Not command found ${c.match(":" + cmd)}, try following commands?`},
             ...Object.entries(this.cmds).map(([name, description]) => {
                 return {
                     content: `:${name}`,
@@ -37,12 +37,12 @@ CommandManager.prototype.help = function() {
     return this.wrap([
         `Prefix ${c.match(":")} to execute command (${Object.keys(this.cmds).map(c => ":" + c).join(", ")})`,
         `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs url`,
+        `Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search that crate's doc exclusively`,
         `Prefix ${c.match("#")} to search builtin attributes`,
         `Prefix ${c.match("%")} to search Rust official book chapters`,
-        `[WIP] Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search the dedicated crate's doc`,
+        `Prefix ${c.match(">")} to search Rust clippy lints`,
         `[WIP] Prefix ${c.match("/")} to search official Rust project (rust-lang, rust-lang-nursery)`,
         `[WIP] Prefix ${c.match("?")} to search Rust tracking issues`,
-        `[WIP] Prefix ${c.match(">")} to search Rust clippy lints`,
     ]);
 };
 
