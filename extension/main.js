@@ -43,6 +43,10 @@ omnibox.addPrefixQueryEvent("@", {
         if (item.hasOwnProperty("href")) {
             return formatDoc(index, item);
         } else {
+            if (item.hasOwnProperty("content")) {
+                return item;
+            }
+
             // Format crate name list
             let content = `@${item.name}`;
             return {

@@ -15,7 +15,7 @@ class CrateDocSearchManager {
         let [crateName, keyword] = query.split(" ");
 
         let searcher = null;
-        if (this.cachedCrate === crateName) {
+        if (crateName && this.cachedCrate === crateName) {
             searcher = this.cachedCrateSearcher;
         } else {
             let crates = CrateDocSearchManager.getCrates();
@@ -23,15 +23,23 @@ class CrateDocSearchManager {
             if (crate) {
                 let searchIndex = CrateDocSearchManager.getCrateSearchIndex(crateName);
                 searcher = new CrateDocSearch(crateName, crate.version, searchIndex);
+
                 this.cachedCrate = crate;
                 this.cachedCrateSearcher = searcher;
             } else {
-                return Object.entries(crates).map(([name, crate]) => {
+                let list = Object.entries(crates).map(([name, crate]) => {
                     crate["name"] = name;
                     return crate;
-                })
-                    .filter(item => !crateName || item.name.toLowerCase().indexOf(crateName) > -1)
+                });
+
+                let len = list.length;
+                list = list.filter(item => !crateName || item.name.toLowerCase().indexOf(crateName) > -1)
                     .sort((a, b) => a.name.localeCompare(b.name));
+                list.unshift({
+                    content: "",
+                    description: `Following ${len} crate(s) were added by you, select one to search their docs exclusively.`
+                });
+                return list;
             }
         }
 
