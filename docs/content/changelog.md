@@ -17,6 +17,7 @@ weight = 2
     - `:history` command to show your local search history
 - Support page down the result with page-turner **-** (hyphen)
 - Support open in new tab by using `Cmd`/`Alt` + `Enter`
+- Add [Privacy Policy](/privacy/)
 
 # v0.7 - 2020-02-04
 
