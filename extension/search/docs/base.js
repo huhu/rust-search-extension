@@ -77,10 +77,11 @@ class DocSearch {
             //              (String) description,
             //              (Number | null) the parent path index to `paths`]
             //              (Object | null) the type of the function (if any)
-            var items = rawSearchIndex[crate].i;
+            // Compat old style (items, paths) and new style (i, p)
+            var items = rawSearchIndex[crate].items || rawSearchIndex[crate].i;
             // an array of [(Number) item type,
             //              (String) name]
-            var paths = rawSearchIndex[crate].p;
+            var paths = rawSearchIndex[crate].paths || rawSearchIndex[crate].p;
 
             // convert `paths` into an object form
             for (var i = 0; i < paths.length; ++i) {
