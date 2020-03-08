@@ -14,12 +14,14 @@ CommandManager.prototype.execute = function(query) {
     if (cmd in this.cmds) {
         return this[cmd](arg);
     } else {
-        return this.wrap([
+        return [
             `Not command found ${c.match(":" + cmd)}, try following commands?`,
             ...Object.entries(this.cmds).map(([name, description]) => {
-                return `${c.match(":" + name)} - ${c.dim(description)}`
-            }),
-        ]);
+                return {
+                    content: `:${name}`,
+                    description: `${c.match(":" + name)} - ${c.dim(description)}`
+                }
+            })];
     }
 };
 

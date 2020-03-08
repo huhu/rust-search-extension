@@ -1,5 +1,5 @@
 let c = new Compat();
-let crateName = location.pathname.match(/[0-9a-z_-]+/i)[0];
+let [_, _crateVersion, crateName] = location.pathname.slice(1).split("/");
 
 async function parseCargoFeatures(url) {
     let response = await fetch(url);
