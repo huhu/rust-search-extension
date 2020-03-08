@@ -5,31 +5,41 @@ const attributeSearcher = new AttributeSearch();
 const bookSearcher = new BookSearch(booksIndex);
 const lintSearcher = new LintSearch(lintsIndex);
 const stdSearcher = new StdSearch(searchIndex);
+const crateDocSearchManager = new CrateDocSearchManager();
 const commandManager = new CommandManager();
 
 const defaultSuggestion = `Search std ${c.match("docs")}, ${c.match("crates")} (!), builtin ${c.match("attributes")} (#), official ${c.match("books")} (%), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(c.browser, defaultSuggestion, c.isChrome ? 8 : 6);
 
+let onDocFormat = (index, doc) => {
+    let description = doc.displayPath + c.match(doc.name);
+    if (doc.desc) {
+        description += " - " + c.dim(c.escape(doc.desc));
+    }
+    return {content: doc.href, description};
+};
+
 omnibox.bootstrap({
     onSearch: (query) => {
         return stdSearcher.search(query);
     },
-    onFormat: (index, doc) => {
-        let description = doc.displayPath + c.match(doc.name);
-        if (doc.desc) {
-            description += " - " + c.dim(c.escape(doc.desc));
-        }
-        return {content: doc.href, description};
-    },
+    onFormat: onDocFormat,
     onAppend: (query) => {
         return [{
             content: `${stdSearcher.rootPath}std/index.html?search=` + encodeURIComponent(query),
-            description: `Search Rust docs ${c.match(query)} on ${settings.isOfflineMode ? "offline mode" : "https://doc.rust-lang.org"}`,
-        }]
+            description: `Search Rust docs ${c.match(query)} on ${settings.isOfflineMode ? "offline mode" : stdSearcher.rootPath}`,
+        }];
     },
     onSelected: (query, result) => {
         HistoryCommand.record(query, result);
     }
+});
+
+omnibox.addPrefixQueryEvent("@", {
+    onSearch: (query) => {
+        return crateDocSearchManager.search(query);
+    },
+    onFormat: onDocFormat,
 });
 
 omnibox.addPrefixQueryEvent("!", {
