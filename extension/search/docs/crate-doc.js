@@ -6,7 +6,6 @@ class CrateDocSearch extends DocSearch {
 
 class CrateDocSearchManager {
     constructor() {
-        this.cachedCrate = null;
         this.cachedCrateSearcher = null;
     }
 
@@ -15,7 +14,7 @@ class CrateDocSearchManager {
         let [crateName, keyword] = query.split(" ");
 
         let searcher = null;
-        if (crateName && this.cachedCrate === crateName) {
+        if (this.cachedCrateSearcher && this.cachedCrateSearcher.name === crateName) {
             searcher = this.cachedCrateSearcher;
         } else {
             let crates = CrateDocSearchManager.getCrates();
@@ -24,7 +23,6 @@ class CrateDocSearchManager {
                 let searchIndex = CrateDocSearchManager.getCrateSearchIndex(crateName);
                 searcher = new CrateDocSearch(crateName, crate.version, searchIndex);
 
-                this.cachedCrate = crate;
                 this.cachedCrateSearcher = searcher;
             } else {
                 let list = Object.entries(crates).map(([name, crate]) => {
@@ -72,6 +70,6 @@ class CrateDocSearchManager {
         let crates = CrateDocSearchManager.getCrates();
         delete crates[name];
         localStorage.setItem("crates", JSON.stringify(crates));
-        localStorage.removeItem(`${name}`);
+        localStorage.removeItem(`@${name}`);
     }
 }
