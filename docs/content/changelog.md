@@ -1,6 +1,7 @@
 +++
 title = "Changelog"
-weight = 2
+description = "Changelog"
+weight = 3
 +++
 
 # v0.8 - 2020-03-02
@@ -9,7 +10,7 @@ weight = 2
 - Support display crate's **Feature flags** in [docs.rs](https://docs.rs) page
 - Support prefix **!!** (double exclamation mark) to search crates with [docs.rs](https://docs.rs) url
 - Support prefix **%** (percent mark) to search Rust official book chapters
-- Add nice features by introducing the command system
+- Builtin command system
     - `:help` command to show all help messages
     - `:book` command to show all Rust official books
     - `:stable` command to show stable Rust scheduled release date in the next year

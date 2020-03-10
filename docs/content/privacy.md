@@ -1,5 +1,6 @@
 +++
-title = "Privacy policy"
+title = "Privacy"
+description = "Privacy Policy"
 weight = 3
 +++
 
