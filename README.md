@@ -32,13 +32,13 @@ Search std **docs**, **crates**, builtin **attributes**, official **books**, and
 - Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error code
 - Search Rust official book chapters
 - Offline mode, search local Rust docs (`rustup docs --std`) (Some limitation on Firefox, see [Caveats](#caveats))
-- A handy set of builtin commands
+- Builtin commands (`:yet`, `book`, `stable` and `history` etc)
 - Docs.rs enhancement (display Feature flags)
 - Both Chrome and Firefox are supported
 
-### Usages
+### How to use it
 
-Input keyword **rs** in the address bar, press `Tab` or `Space` to activate the search bar. Then enter any word 
+Input keyword **rs** in the address bar, press `Space` to activate the search bar. Then enter any word 
 you want to search, the extension will response the related search results instantly.
 
 ![demonstration.gif](assets/demonstration.gif)
@@ -46,4 +46,4 @@ you want to search, the extension will response the related search results insta
 # [Features overview](https://rust-search-extension.now.sh/)
 # [How it works](https://rust-search-extension.now.sh/how-it-works/)
 # [Changelog](https://rust-search-extension.now.sh/changelog/)
-# [Caveats](https://rust-search-extension.now.sh/how-it-works/#caveats)
+# [FAQ](https://rust-search-extension.now.sh/faq/)
