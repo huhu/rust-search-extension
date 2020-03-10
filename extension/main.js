@@ -42,9 +42,7 @@ omnibox.addPrefixQueryEvent("!", {
     },
     onFormat: (index, crate) => {
         return {
-            // Dash and underscore is unequivalent on docs.rs right now.
-            // See issue https://github.com/rust-lang/docs.rs/issues/105
-            content: this.docMode ? `https://docs.rs/${crate.id.replace("_", "-")}` : `https://crates.io/crates/${crate.id}`,
+            content: this.docMode ? `https://docs.rs/${crate.id}` : `https://crates.io/crates/${crate.id}`,
             description: `${this.docMode ? "Docs" : "Crate"}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
         };
     },
