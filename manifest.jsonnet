@@ -20,11 +20,6 @@ local manifest = {
         keyword: "rs"
       },
       web_accessible_resources:["compat.js"] + js_files("script", ["crate-docs"]),
-      externally_connectable: {
-          matches: [
-            "*://docs.rs/*"
-          ]
-      },
       content_scripts: [{
             matches: [
               "*://docs.rs/*"
@@ -44,8 +39,6 @@ local manifest = {
       permissions: [
         "tabs"
       ],
-      // The production extension public key to get the constant extension id during development.
-      key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxOX+QfzcFnxPwwmzXDhuU59XGCSMZq+FGo0vOx/ufg/Vw7HfKEPVb9TKzrGtqW38kafWkjxOxGhF7VyyX2ymi55W0xqf8BedePbvMtV6H1tY5bscJ0dLKGH/ZG4T4f645LgvOWOBgyv8s3NDWXzwOMS57ER1y+EtHjDsWD1M0nfe0VCCLW18QlAsNTHfLZk6lUeEeGXZrl6+jK+pZxwhQFmc8cJvOyw7uAq6IJ9lnGDvxFVjGUepA0lKbLuIZjN3p70mgVUIuBYzKE6R8HDk4oBbKAK0HyyKfnuAYbfwVYotHw4def+OW9uADSlZEDC10wwIpU9NoP3szh+vWSnk0QIDAQAB",
       appendContentSecurityPolicy(policy)::self + {
             content_security_policy +: policy,
       }
@@ -55,3 +48,10 @@ if std.extVar("browser") == "firefox" then
   manifest
 else
   manifest.appendContentSecurityPolicy(" script-src-elem 'self' https://rust-search-extension.now.sh/crates/index.js;")
+  + {
+      externally_connectable : {
+          matches: ["*://docs.rs/*"]
+      }
+  }
+  // The production extension public key to get the constant extension id during development.
+  + { key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxOX+QfzcFnxPwwmzXDhuU59XGCSMZq+FGo0vOx/ufg/Vw7HfKEPVb9TKzrGtqW38kafWkjxOxGhF7VyyX2ymi55W0xqf8BedePbvMtV6H1tY5bscJ0dLKGH/ZG4T4f645LgvOWOBgyv8s3NDWXzwOMS57ER1y+EtHjDsWD1M0nfe0VCCLW18QlAsNTHfLZk6lUeEeGXZrl6+jK+pZxwhQFmc8cJvOyw7uAq6IJ9lnGDvxFVjGUepA0lKbLuIZjN3p70mgVUIuBYzKE6R8HDk4oBbKAK0HyyKfnuAYbfwVYotHw4def+OW9uADSlZEDC10wwIpU9NoP3szh+vWSnk0QIDAQAB"}
