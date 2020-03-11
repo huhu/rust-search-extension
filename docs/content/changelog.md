@@ -4,6 +4,12 @@ description = "Changelog"
 weight = 3
 +++
 
+# v0.9 - Upcoming
+
+- Support search external crate's docs
+- Support search cargo clippy lints
+- ... 
+
 # v0.8 - 2020-03-02
 
 - Bump crates index number from top 10K to top 20K
@@ -19,6 +25,12 @@ weight = 3
 - Support page down the result with page-turner **-** (hyphen)
 - Support open in new tab by using `Cmd`/`Alt` + `Enter`
 - Add [Privacy Policy](/privacy/)
+
+## v0.8.1 - 2020-03-12
+
+- Fix crate search name unnecessary replacement issue
+- Fix sync latest crates index bug
+- Bump std search index to **v1.42.0**
 
 # v0.7 - 2020-02-04
 
