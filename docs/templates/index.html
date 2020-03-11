@@ -68,7 +68,14 @@
             <div class="toc-item">
                 <a class="subtext" href="{{h.permalink | safe}}">{{ h.title }}</a>
             </div>
-            {% endfor %}
+                {% if h.children %}
+                {% for h2 in h.children %}
+                <div class="toc-item-child">
+                    <a class="subtext" href="{{h2.permalink | safe}}"><small>- {{ h2.title }}</small></a>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
         {% endif %}
     </div>
     {% endblock toc %}

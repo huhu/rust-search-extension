@@ -124,6 +124,10 @@ main {
   .toc-item {
     padding: 10px 20px;
     color: #424242;
+  }
+
+  .toc-item a,.toc-item-child a {
+    color: $secondary-text-color;
 
     &:hover {
       cursor: pointer;
@@ -131,8 +135,9 @@ main {
     }
   }
 
-  .toc-item a {
-    color: $secondary-text-color;
+  .toc-item-child {
+    padding: 0 30px 5px;
+    color: #424242;
   }
 
 }
