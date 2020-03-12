@@ -107,7 +107,6 @@ impl Minifier {
             .into();
         tokens
             .apply(|t| aggregate_strings_into_array(t, "C"))
-            .apply(clean_tokens)
             .to_string()
     }
 }
