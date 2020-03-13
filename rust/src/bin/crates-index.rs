@@ -161,7 +161,7 @@ fn main() -> Result<()> {
     crates.iter_mut().for_each(|item: &mut Crate| {
         // Skip when crate name equals description, otherwise will
         // cause `Unexpected token '['` error.
-        if item.name == item.description {
+        if item.description.is_some() && item.description.as_ref().unwrap() == &item.name {
             return;
         }
         // Call position() then to remove() the item could be faster than find().
