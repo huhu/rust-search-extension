@@ -7,8 +7,8 @@ local js_files(name, files) = ["%s/%s.js" % [name, file] for file in files];
 local manifest = {
       manifest_version: 2,
       name: "Rust Search Extension",
-      description: "Search std docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.",
-      version: "0.8",
+      description: "The ultimate search extension for Rust",
+      version: "0.8.1",
       icons: icons(),
       browser_action: {
         default_icon: $.icons,
