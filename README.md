@@ -7,7 +7,7 @@
 
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)
 ![Mozilla Add-on](https://img.shields.io/amo/v/rust-search-extension?color=%2320123A)
-[![rust-doc](https://img.shields.io/badge/stable-1.41.0-yellow.svg)](https://doc.rust-lang.org/1.41.0/std/)
+[![rust-doc](https://img.shields.io/badge/stable-1.42.0-yellow.svg)](https://doc.rust-lang.org/1.42.0/std/)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
 ![Build Status](https://github.com/folyd/rust-search-extension/workflows/build/badge.svg)
@@ -32,7 +32,7 @@ Search std **docs**, **crates**, builtin **attributes**, official **books**, and
 - Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error code
 - Search Rust official book chapters
 - Offline mode, search local Rust docs (`rustup docs --std`) (Some limitation on Firefox, see [Caveats](#caveats))
-- A handy set of builtin commands
+- Builtin command system
 - Docs.rs enhancement (display Feature flags)
 - Both Chrome and Firefox are supported
 
