@@ -159,6 +159,11 @@ fn main() -> Result<()> {
     });
     let mut collector = WordCollector::new();
     crates.iter_mut().for_each(|item: &mut Crate| {
+        // Skip when crate name equals description, otherwise will
+        // cause `Unexpected token '['` error.
+        if item.name == item.description {
+            return;
+        }
         // Call position() then to remove() the item could be faster than find().
         if let Some(position) = versions.iter().position(|v| v.crate_id == item.id) {
             item.version = versions.remove(position).num;
