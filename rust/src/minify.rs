@@ -2,9 +2,7 @@ use std::cmp;
 use std::collections::HashMap;
 use std::ops::Deref;
 
-use minifier::js::{
-    aggregate_strings_into_array, clean_tokens, simple_minify, Keyword, Token, Tokens,
-};
+use minifier::js::{aggregate_strings_into_array, simple_minify, Keyword, Token, Tokens};
 use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Debug)]
