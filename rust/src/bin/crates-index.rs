@@ -105,7 +105,7 @@ fn generate_javascript_crates_index(
         "var crateIndex={};",
         serde_json::to_string(&crates_map).unwrap()
     );
-    contents.push_str(&Minifier::minify_json(crate_index));
+    contents.push_str(&Minifier::minify_js(crate_index));
     Ok(contents)
 }
 

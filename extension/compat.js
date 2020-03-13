@@ -33,3 +33,7 @@ Compat.prototype.normalizeDate = function(date) {
         year = date.getFullYear();
     return [year, month.padStart(2, "0"), day.padStart(2, "0")].join('-');
 };
+
+Compat.prototype.sendMessage = function(message, response) {
+    c.browser.runtime.sendMessage(message, response);
+};

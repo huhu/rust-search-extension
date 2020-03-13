@@ -23,11 +23,7 @@ const settings = {
             }
         }
     },
-    /**
-     * Use regex patterns to check user local doc path validity.
-     * @param path
-     * @returns {boolean}
-     */
+    // Use regex patterns to check user local doc path validity.
     checkDocPathValidity(path) {
         return REGEX_DOC_PATH_FILE.test(path) || REGEX_DOC_PATH_HTTP.test(path);
     }

@@ -147,11 +147,11 @@ Omnibox.prototype.navigateToUrl = function(url, disposition) {
     url = url.replace(/\?\d$/ig, "");
     if (disposition === "currentTab") {
         this.browser.tabs.query({active: true}, tab => {
-            this.browser.tabs.update(tab.id, {url: url});
+            this.browser.tabs.update(tab.id, {url});
         });
     } else {
         // newForegroundTab, newBackgroundTab
-        this.browser.tabs.create({url: url});
+        this.browser.tabs.create({url});
     }
 };
 
