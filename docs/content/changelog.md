@@ -1,7 +1,14 @@
 +++
 title = "Changelog"
-weight = 2
+description = "Changelog"
+weight = 3
 +++
+
+# v0.9 - Upcoming
+
+- Support search external crate's docs
+- Support search cargo clippy lints
+- ... 
 
 # v0.8 - 2020-03-02
 
@@ -9,7 +16,7 @@ weight = 2
 - Support display crate's **Feature flags** in [docs.rs](https://docs.rs) page
 - Support prefix **!!** (double exclamation mark) to search crates with [docs.rs](https://docs.rs) url
 - Support prefix **%** (percent mark) to search Rust official book chapters
-- Add nice features by introducing the command system
+- Builtin command system
     - `:help` command to show all help messages
     - `:book` command to show all Rust official books
     - `:stable` command to show stable Rust scheduled release date in the next year
@@ -17,6 +24,13 @@ weight = 2
     - `:history` command to show your local search history
 - Support page down the result with page-turner **-** (hyphen)
 - Support open in new tab by using `Cmd`/`Alt` + `Enter`
+- Add [Privacy Policy](/privacy/)
+
+## v0.8.1 - 2020-03-12
+
+- Fix crate search name unnecessary replacement issue
+- Fix sync latest crates index bug
+- Bump std search index to **v1.42.0**
 
 # v0.7 - 2020-02-04
 

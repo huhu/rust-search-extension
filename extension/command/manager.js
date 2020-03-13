@@ -14,12 +14,14 @@ CommandManager.prototype.execute = function(query) {
     if (cmd in this.cmds) {
         return this[cmd](arg);
     } else {
-        return this.wrap([
-            `Not command found ${c.match(":" + cmd)}, try following commands?`,
+        return [
+            {content: "", description: `Not command found ${c.match(":" + cmd)}, try following commands?`},
             ...Object.entries(this.cmds).map(([name, description]) => {
-                return `${c.match(":" + name)} - ${c.dim(description)}`
-            }),
-        ]);
+                return {
+                    content: `:${name}`,
+                    description: `${c.match(":" + name)} - ${c.dim(description)}`
+                }
+            })];
     }
 };
 
@@ -35,12 +37,12 @@ CommandManager.prototype.help = function() {
     return this.wrap([
         `Prefix ${c.match(":")} to execute command (${Object.keys(this.cmds).map(c => ":" + c).join(", ")})`,
         `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs url`,
+        `Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search that crate's doc exclusively`,
         `Prefix ${c.match("#")} to search builtin attributes`,
         `Prefix ${c.match("%")} to search Rust official book chapters`,
-        `[WIP] Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search the dedicated crate's doc`,
+        `Prefix ${c.match(">")} to search Rust clippy lints`,
         `[WIP] Prefix ${c.match("/")} to search official Rust project (rust-lang, rust-lang-nursery)`,
         `[WIP] Prefix ${c.match("?")} to search Rust tracking issues`,
-        `[WIP] Prefix ${c.match(">")} to search Rust clippy lints`,
     ]);
 };
 
@@ -84,6 +86,7 @@ CommandManager.prototype.book = function(arg) {
         ["The Rustonomicon", "https://doc.rust-lang.org/nomicon/index.html"],
         ["The Unstable Book", "https://doc.rust-lang.org/unstable-book/index.html"],
         ["Rust bindgen User Guide", "https://rust-lang.github.io/rust-bindgen/"],
+        ["The wasm-bindgen Guide", "https://rustwasm.github.io/docs/wasm-bindgen/"],
         ["Rust API Guidelines", "https://rust-lang.github.io/api-guidelines/"],
         ["Rust Fuzz Book", "https://rust-fuzz.github.io/book/"],
     ];

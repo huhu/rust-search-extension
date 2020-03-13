@@ -19,17 +19,20 @@ local manifest = {
       omnibox: {
         keyword: "rs"
       },
+      web_accessible_resources:["compat.js"] + js_files("script", ["crate-docs"]),
       content_scripts: [{
             matches: [
               "*://docs.rs/*"
             ],
-            js: js_files("script", ["docs-rs"]),
+            js: ["compat.js"] + js_files("script", ["docs-rs"]),
+            css: ["script/docs-rs.css"],
             run_at: "document_start"
       }],
       background: {
         scripts: ["compat.js", "settings.js", "deminifier.js",] +
-                 js_files("search" ,["book", "doc", "crate", "attribute"]) +
-                 js_files("index" ,["books", "crates", "std-docs"]) +
+                 js_files("search" ,["book", "crate", "attribute", "lint"]) +
+                 js_files("search/docs" ,["base", "std", "crate-doc"]) +
+                 js_files("index" ,["books", "crates", "std-docs", "lints"]) +
                  js_files("command" ,["base", "history", "manager"]) +
                  ["omnibox.js", "main.js","app.js",]
       },
@@ -45,3 +48,10 @@ if std.extVar("browser") == "firefox" then
   manifest
 else
   manifest.appendContentSecurityPolicy(" script-src-elem 'self' https://rust-search-extension.now.sh/crates/index.js;")
+  + {
+      externally_connectable : {
+          matches: ["*://docs.rs/*"]
+      }
+  }
+  // The production extension public key to get the constant extension id during development.
+  + { key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxOX+QfzcFnxPwwmzXDhuU59XGCSMZq+FGo0vOx/ufg/Vw7HfKEPVb9TKzrGtqW38kafWkjxOxGhF7VyyX2ymi55W0xqf8BedePbvMtV6H1tY5bscJ0dLKGH/ZG4T4f645LgvOWOBgyv8s3NDWXzwOMS57ER1y+EtHjDsWD1M0nfe0VCCLW18QlAsNTHfLZk6lUeEeGXZrl6+jK+pZxwhQFmc8cJvOyw7uAq6IJ9lnGDvxFVjGUepA0lKbLuIZjN3p70mgVUIuBYzKE6R8HDk4oBbKAK0HyyKfnuAYbfwVYotHw4def+OW9uADSlZEDC10wwIpU9NoP3szh+vWSnk0QIDAQAB"}

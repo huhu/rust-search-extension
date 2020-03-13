@@ -6,9 +6,10 @@
     <title>Rust Search Extension Testing</title>
     <script src="../extension/compat.js"></script>
     <script src="../extension/deminifier.js"></script>
-    <script src="../extension/crate-search.js"></script>
     <script src="../extension/omnibox.js"></script>
     <script src="../extension/index/crates.js"></script>
+    <script src="../extension/search/docs/base.js"></script>
+    <script src="../extension/search/docs/crate-doc.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/7.0.1/mocha.min.css"
           integrity="sha256-zX6KvfdhTfwaVsK5hogXY+wWW9Nf3wyloswn7WLZ9dg=" crossorigin="anonymous"/>
@@ -22,9 +23,11 @@
 <script>
     mocha.setup('bdd');
     chai.should();
+    const c = new Compat();
 </script>
 <script src="deminifier.spec.js"></script>
 <script src="omnibox.spec.js"></script>
+<script src="crate-doc.spec.js"></script>
 <script>
     mocha.run();
 </script>

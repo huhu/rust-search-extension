@@ -48,7 +48,7 @@ If you prefer to search attribute exclusively, prefix a **#** (pound sign) befor
 
 # Search top 20K crates
 
-We build top 20K crates index (more than 35K in total on crates.io) every 12 hours to help you search crates instantly. 
+We build top 20K crates index (more than 35K in total on crates.io) once a day to help you search crates instantly. 
 You can open the popup page to sync the latest crates index automatically. ([Some caveats](/how-it-works/#caveats) 
 for Firefox users.)
 
