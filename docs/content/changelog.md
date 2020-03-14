@@ -28,9 +28,10 @@ weight = 3
 
 ## v0.8.1 - 2020-03-12
 
-- Fix crate search name unnecessary replacement issue
-- Fix sync latest crates index bug
 - Bump std search index to **v1.42.0**
+- Fix crate search name unnecessary replacement issue
+- Fix `:stable` command version calculation bug
+- Fix sync latest crates index bug
 
 # v0.7 - 2020-02-04
 
