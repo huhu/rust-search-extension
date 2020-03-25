@@ -32,8 +32,8 @@ local manifest = {
         scripts: ["compat.js", "settings.js", "deminifier.js",] +
                  js_files("search" ,["book", "crate", "attribute", "lint"]) +
                  js_files("search/docs" ,["base", "std", "crate-doc"]) +
-                 js_files("index" ,["books", "crates", "std-docs", "lints"]) +
-                 js_files("command" ,["base", "history", "manager"]) +
+                 js_files("index" ,["books", "crates", "std-docs", "lints", "labels"]) +
+                 js_files("command" ,["base", "history", "label", "manager"]) +
                  ["omnibox.js", "main.js","app.js",]
       },
       permissions: [
