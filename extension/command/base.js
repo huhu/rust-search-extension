@@ -10,5 +10,6 @@ class Command {
 
     // A hook method called when the onExecute()'s result is empty.
     onBlankResult(arg) {
+        return [];
     }
 }
