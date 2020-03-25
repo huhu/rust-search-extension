@@ -5,7 +5,7 @@ function CommandManager() {
         "book": "Show all Rust official books.",
         "stable": "Show stable Rust scheduled release date in the next year.",
     };
-    [new HistoryCommand()].forEach(cmd => this.addCommand(cmd));
+    [new HistoryCommand(), new LabelCommand(labelsIndex)].forEach(cmd => this.addCommand(cmd));
 }
 
 CommandManager.prototype.execute = function(query) {
