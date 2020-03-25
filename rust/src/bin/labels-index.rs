@@ -1,9 +1,8 @@
-#![cfg(feature = "books-index")]
+#![cfg(feature = "labels-index")]
 
 use std::env;
 use std::fs;
 use std::path::Path;
-use std::time::Duration;
 
 use reqwest;
 use serde::ser::SerializeTuple;
@@ -19,7 +18,7 @@ const USER_AGENT: &str = "Rust Search Extension (lyshuhow@gmail.com)";
 #[derive(Deserialize, Debug)]
 struct Label {
     name: String,
-    description: String,
+    description: Option<String>,
 }
 
 impl Serialize for Label {
@@ -30,23 +29,21 @@ impl Serialize for Label {
     {
         let mut ser = serializer.serialize_tuple(2)?;
         ser.serialize_element(&self.name)?;
-        ser.serialize_element(&self.description)?;
+        ser.serialize_element(&self.description.as_ref().unwrap_or(&"".to_string()))?;
         ser.end()
     }
 }
 
 async fn fetch_labels(page: u32) -> Result<Vec<Label>, Box<dyn std::error::Error>> {
-    tokio::time::delay_for(Duration::from_secs((page - 1) as u64 * 3)).await;
     let client = reqwest::Client::builder()
         .timeout(std::time::Duration::from_secs(30))
         .user_agent(USER_AGENT)
         .build()?;
-    Ok(client
+    let response = client
         .get(&API.replace("{}", &page.to_string()))
         .send()
-        .await?
-        .json()
-        .await?)
+        .await?;
+    Ok(response.json().await?)
 }
 
 #[tokio::main]
@@ -57,7 +54,7 @@ async fn main() -> std::io::Result<()> {
         None => LABELS_INDEX_PATH,
     };
 
-    let mut labels: Vec<Label> = vec![];
+    let mut labels = vec![];
     for page in 1..=MAX_PAGE {
         labels.extend(fetch_labels(page).await.unwrap());
     }
