@@ -96,6 +96,7 @@ impl Minifier {
             .collect()
     }
 
+    #[inline]
     pub fn minify_js(json: String) -> String {
         let tokens: Tokens = simple_minify(&json)
             .into_iter()
