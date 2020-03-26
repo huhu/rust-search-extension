@@ -34,20 +34,8 @@ impl Serialize for Label {
     }
 }
 
-async fn fetch_labels(page: u32) -> Result<Vec<Label>, Box<dyn std::error::Error>> {
-    let client = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(30))
-        .user_agent(USER_AGENT)
-        .build()?;
-    let response = client
-        .get(&API.replace("{}", &page.to_string()))
-        .send()
-        .await?;
-    Ok(response.json().await?)
-}
-
 #[tokio::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
     let path_name = match args.get(1) {
         Some(path_name) => path_name,
@@ -55,8 +43,19 @@ async fn main() -> std::io::Result<()> {
     };
 
     let mut labels = vec![];
+    let client = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(30))
+        .user_agent(USER_AGENT)
+        .build()?;
     for page in 1..=MAX_PAGE {
-        labels.extend(fetch_labels(page).await.unwrap());
+        labels.extend(
+            client
+                .get(&API.replace("{}", &page.to_string()))
+                .send()
+                .await?
+                .json::<Vec<Label>>()
+                .await?,
+        );
     }
     fs::write(
         Path::new(path_name),
