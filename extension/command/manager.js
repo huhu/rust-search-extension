@@ -82,6 +82,7 @@ CommandManager.prototype.book = function(arg) {
         ["Rust RFC", "https://rust-lang.github.io/rfcs/"],
         ["The Rust Doc Book", "https://doc.rust-lang.org/rustdoc/index.html"],
         ["The rustc Book", "https://doc.rust-lang.org/rustc/index.html"],
+        ["Guide to Rustc Development", "https://rustc-dev-guide.rust-lang.org/"],
         ["The Rust Reference", "https://doc.rust-lang.org/reference/index.html"],
         ["The Rustonomicon", "https://doc.rust-lang.org/nomicon/index.html"],
         ["The Unstable Book", "https://doc.rust-lang.org/unstable-book/index.html"],

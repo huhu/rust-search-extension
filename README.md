@@ -31,8 +31,8 @@ Search std **docs**, **crates**, builtin **attributes**, official **books**, and
 - Search crates on https://crates.io
 - Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error code
 - Search Rust official book chapters
-- Offline mode, search local Rust docs (`rustup docs --std`) (Some limitation on Firefox, see [Caveats](#caveats))
-- Builtin commands (`:yet`, `book`, `stable` and `history` etc)
+- Offline mode, search local Rust docs (`rustup docs --std`)
+- Builtin commands (`:yet`, `:book`, `:stable`, `:book` and `:history` etc)
 - Docs.rs enhancement (display Feature flags)
 - Both Chrome and Firefox are supported
 
