@@ -14,14 +14,27 @@ CommandManager.prototype.execute = function(query) {
     if (cmd in this.cmds) {
         return this[cmd](arg);
     } else {
-        return [
-            {content: "", description: `Not command found ${c.match(":" + cmd)}, try following commands?`},
-            ...Object.entries(this.cmds).map(([name, description]) => {
+        let list = Object.entries(this.cmds)
+            .map(([name, description]) => {
                 return {
                     content: `:${name}`,
                     description: `${c.match(":" + name)} - ${c.dim(description)}`
                 }
-            })];
+            });
+
+        let result = list.filter((item) => cmd && item.content.indexOf(cmd) > -1);
+        if (result.length > 0) {
+            // Filter commands with prefix
+            return [
+                {content: "", description: `Found following commands, press Tab to select.`},
+                ...result
+            ];
+        } else {
+            return [
+                {content: "", description: `Not command found ${c.match(":" + cmd)}, try following commands?`},
+                ...list
+            ];
+        }
     }
 };
 
