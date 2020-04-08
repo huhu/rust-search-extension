@@ -8,7 +8,7 @@ const stdSearcher = new StdSearch(searchIndex);
 const crateDocSearchManager = new CrateDocSearchManager();
 const commandManager = new CommandManager();
 
-const defaultSuggestion = `Search std ${c.match("docs")}, ${c.match("crates")} (!), builtin ${c.match("attributes")} (#), official ${c.match("books")} (%), and ${c.match("error codes")}, etc in your address bar instantly!`;
+const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(c.browser, defaultSuggestion, c.isChrome ? 8 : 6);
 
 let formatDoc = (index, doc) => {
@@ -67,7 +67,7 @@ omnibox.addPrefixQueryEvent("!", {
     onFormat: (index, crate) => {
         return {
             content: this.docMode ? `https://docs.rs/${crate.id}` : `https://crates.io/crates/${crate.id}`,
-            description: `${this.docMode ? "Docs" : "Crate"}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+            description: `${this.docMode ? "Docs.rs" : "Crate.io"}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
         };
     },
     onAppend: (query) => {
