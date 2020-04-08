@@ -1,23 +1,25 @@
 const homepage = "https://rust-search-extension.now.sh";
-c.browser.runtime.onInstalled.addListener((installReason) => {
+chrome.runtime.onInstalled.addListener((installReason) => {
     if (installReason.reason === 'update') {
-        c.browser.tabs.create({url: `${homepage}/changelog/`});
+        chrome.tabs.create({url: `${homepage}/changelog/`});
     }
 });
 
 let fileNewIssue = "title=Have you found a bug? Did you feel something was missing?&body=Whatever it was, we'd love to hear from you.";
-c.browser.runtime.setUninstallURL(
+chrome.runtime.setUninstallURL(
     `https://github.com/Folyd/rust-search-extension/issues/new?${encodeURI(fileNewIssue)}`
 );
 
-c.browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    switch (request.action) {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("message :", message);
+    switch (message.action) {
         case "check": {
-            sendResponse({added: request.crateName in CrateDocSearchManager.getCrates()});
+            console.log("message check");
+            sendResponse({added: message.crateName in CrateDocSearchManager.getCrates()});
             break;
         }
         case "remove": {
-            CrateDocSearchManager.removeCrate(request.crateName);
+            CrateDocSearchManager.removeCrate(message.crateName);
             sendResponse(true);
             break;
         }
@@ -25,7 +27,7 @@ c.browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
 });
 
-c.browser.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
     CrateDocSearchManager.addCrate(request.crateName, request.crateVersion, request.searchIndex);
     console.log(request);
     sendResponse("ok");

@@ -9,7 +9,7 @@ const crateDocSearchManager = new CrateDocSearchManager();
 const commandManager = new CommandManager();
 
 const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
-const omnibox = new Omnibox(c.browser, defaultSuggestion, c.isChrome ? 8 : 6);
+const omnibox = new Omnibox(defaultSuggestion, c.isChrome ? 8 : 6);
 
 let formatDoc = (index, doc) => {
     let description = doc.displayPath + c.match(doc.name);

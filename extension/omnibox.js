@@ -1,8 +1,7 @@
 let MAX_SUGGEST_PAGE = 10;
 let PAGE_TURNER = "-";
 
-function Omnibox(browser, defaultSuggestion, maxSuggestionSize = 8) {
-    this.browser = browser;
+function Omnibox(defaultSuggestion, maxSuggestionSize = 8) {
     this.maxSuggestionSize = maxSuggestionSize;
     this.defaultSuggestionDescription = defaultSuggestion;
     this.defaultSuggestionContent = null;
@@ -13,7 +12,7 @@ function Omnibox(browser, defaultSuggestion, maxSuggestionSize = 8) {
 }
 
 Omnibox.prototype.setDefaultSuggestion = function(description, content) {
-    this.browser.omnibox.setDefaultSuggestion({description});
+    chrome.omnibox.setDefaultSuggestion({description});
 
     if (content) {
         this.defaultSuggestionContent = content;
@@ -49,7 +48,7 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, onSelected
     let results;
     let defaultDescription;
 
-    this.browser.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
+    chrome.omnibox.onInputChanged.addListener(async (input, suggestFn) => {
         this.defaultSuggestionContent = null;
         if (!input) {
             this.setDefaultSuggestion(this.defaultSuggestionDescription);
@@ -76,7 +75,7 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, onSelected
         suggestFn(results);
     });
 
-    this.browser.omnibox.onInputEntered.addListener((content, disposition) => {
+    chrome.omnibox.onInputEntered.addListener((content, disposition) => {
         let result;
         if (/^(https?|file):\/\//i.test(content)) {
             this.navigateToUrl(content, disposition);
@@ -146,12 +145,12 @@ Omnibox.prototype.addRegexQueryEvent = function(regex, event) {
 Omnibox.prototype.navigateToUrl = function(url, disposition) {
     url = url.replace(/\?\d$/ig, "");
     if (disposition === "currentTab") {
-        this.browser.tabs.query({active: true}, tab => {
-            this.browser.tabs.update(tab.id, {url});
+        chrome.tabs.query({active: true}, tab => {
+            chrome.tabs.update(tab.id, {url});
         });
     } else {
         // newForegroundTab, newBackgroundTab
-        this.browser.tabs.create({url});
+        chrome.tabs.create({url});
     }
 };
 
