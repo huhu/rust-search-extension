@@ -2,7 +2,7 @@
     // Parse crate info from location pathname.
     let [_, crateVersion, crateName] = location.pathname.slice(1).split("/");
 
-    new Compat().browser.runtime.sendMessage("ennpfpdlaclocpomkiablnmbppdnlhoh", {
+    chrome.runtime.sendMessage({
             crateName,
             crateVersion,
             searchIndex: window.searchIndex,

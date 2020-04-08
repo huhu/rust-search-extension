@@ -1,4 +1,3 @@
-let c = new Compat();
 let [_, _crateVersion, crateName] = location.pathname.slice(1).split("/");
 
 async function parseCargoFeatures(url) {
@@ -22,11 +21,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     let ul = document.querySelector(".landing-search-form-nav>ul");
     let childrenNumber = ul.children.length;
     if (childrenNumber >= 3) {
-        c.sendMessage({crateName, action: "check"}, response => {
+        await insertFeatureFlagsElement(childrenNumber);
+        chrome.runtime.sendMessage({crateName, action: "check"}, response => {
             insertAddToExtensionElement(response && response.added);
         });
-
-        await insertFeatureFlagsElement(childrenNumber);
     }
 });
 
@@ -73,7 +71,7 @@ function insertAddToExtensionElement(added) {
     li.onclick = () => {
         // Toggle search index added state
         if (added) {
-            c.sendMessage({crateName, action: "remove"}, response => {
+            chrome.runtime.sendMessage({crateName, action: "remove"}, response => {
                 insertAddToExtensionElement(false);
             });
         } else {
@@ -103,7 +101,7 @@ function insertAddToExtensionElement(added) {
 function injectScripts(paths) {
     paths.map(path => {
         let script = document.createElement("script");
-        script.src = c.browser.runtime.getURL(path);
+        script.src = chrome.runtime.getURL(path);
         script.onload = () => {
             // Remove self after loaded
             script.remove();

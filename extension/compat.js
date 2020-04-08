@@ -1,6 +1,5 @@
 function Compat() {
     this.isChrome = navigator.userAgent.toLowerCase().indexOf("chrome") !== -1;
-    this.browser = this.isChrome ? window.chrome : window.browser;
 
     // Firefox doesn't support tags in search suggestion.
     this.tagged = this.isChrome ?
@@ -24,7 +23,7 @@ Compat.prototype.escape = function(str) {
 
 // Compatibly get extension's background page.
 Compat.prototype.getBackgroundPage = function() {
-    return this.browser.extension.getBackgroundPage();
+    return chrome.extension.getBackgroundPage();
 };
 
 Compat.prototype.normalizeDate = function(date) {
@@ -32,8 +31,4 @@ Compat.prototype.normalizeDate = function(date) {
         day = '' + date.getDate(),
         year = date.getFullYear();
     return [year, month.padStart(2, "0"), day.padStart(2, "0")].join('-');
-};
-
-Compat.prototype.sendMessage = function(message, response) {
-    c.browser.runtime.sendMessage(message, response);
 };

@@ -24,7 +24,7 @@ local manifest = {
             matches: [
               "*://docs.rs/*"
             ],
-            js: ["compat.js"] + js_files("script", ["docs-rs"]),
+            js: js_files("script", ["docs-rs"]),
             css: ["script/docs-rs.css"],
             run_at: "document_start"
       }],
