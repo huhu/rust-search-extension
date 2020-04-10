@@ -117,7 +117,6 @@ window.addEventListener("message", function(event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension") {
-        console.log(event.data.message);
         chrome.runtime.sendMessage({action: "add", ...event.data.message},
             (response) => {
                 console.log(response);
