@@ -1,0 +1,37 @@
+name: "Firefox Version"
+on:
+  create:
+    tags:
+      - v*
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v1
+
+      - name: Install Jsonnet
+        run: sudo snap install jsonnet
+
+      # https://stackoverflow.com/questions/58177786/get-the-current-pushed-tag-in-github-actions
+      - name: "Set output"
+        id: vars
+        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+
+      - name: Generate Firefox manifest.json
+        run: make manifest browser=firefox
+
+      - name: "web-ext build"
+        id: web-ext-build-firefox
+        uses: kewisch/action-web-ext@v1
+        with:
+          cmd: build
+          source: extension
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@master
+        with:
+          name: firefox-rust-search-extension-${{ steps.vars.outputs.tag }}
+          path: ${{ steps.web-ext-build-firefox.outputs.target }}

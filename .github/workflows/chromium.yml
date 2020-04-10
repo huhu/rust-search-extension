@@ -1,4 +1,4 @@
-name: "build"
+name: "Chromium Version"
 on:
   create:
     tags:
@@ -35,19 +35,3 @@ jobs:
         with:
           name: chrome-rust-search-extension-${{ steps.vars.outputs.tag }}
           path: ${{ steps.web-ext-build-chrome.outputs.target }}
-
-      - name: Generate Firefox manifest.json
-        run: make manifest browser=firefox
-
-      - name: "web-ext build"
-        id: web-ext-build-firefox
-        uses: kewisch/action-web-ext@v1
-        with:
-          cmd: build
-          source: extension
-
-      - name: "Upload Artifact"
-        uses: actions/upload-artifact@master
-        with:
-          name: firefox-rust-search-extension-${{ steps.vars.outputs.tag }}
-          path: ${{ steps.web-ext-build-firefox.outputs.target }}
