@@ -18,18 +18,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             sendResponse({added: message.crateName in CrateDocSearchManager.getCrates()});
             break;
         }
+        case "add": {
+            CrateDocSearchManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
+            console.log(message);
+            sendResponse(true);
+            break;
+        }
         case "remove": {
             CrateDocSearchManager.removeCrate(message.crateName);
             sendResponse(true);
             break;
         }
     }
-    return true;
-});
-
-chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
-    CrateDocSearchManager.addCrate(request.crateName, request.crateVersion, request.searchIndex);
-    console.log(request);
-    sendResponse("ok");
     return true;
 });
