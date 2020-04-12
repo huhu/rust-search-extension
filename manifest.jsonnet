@@ -1,6 +1,6 @@
 // jsonnet manifest.jsonnet --ext-str browser=chrome|firefox -o extension/manifest.json
 local icons() = {
-    [size]: "icon.png"
+    [size]: "rust.png"
     for size in ["16","48","128"]
 };
 local js_files(name, files) = ["%s/%s.js" % [name, file] for file in files];
