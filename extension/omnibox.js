@@ -140,7 +140,7 @@ Omnibox.prototype.addRegexQueryEvent = function(regex, event) {
 // - newForegroundTab: alt + enter
 // - newBackgroundTab: meta + enter
 Omnibox.prototype.navigateToUrl = function(url, disposition) {
-    url = url.replace(/\?\d$/ig, "");
+    url = url.replace(/\?\d+$/ig, "");
     if (disposition === "currentTab") {
         chrome.tabs.query({active: true}, tab => {
             chrome.tabs.update(tab.id, {url});
