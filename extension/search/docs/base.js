@@ -33,7 +33,6 @@ var TY_KEYWORD = itemTypes.indexOf("keyword");
 
 // Max levenshtein distance.
 var MAX_LEV_DISTANCE = 2;
-var MAX_RESULTS = 10;
 
 class DocSearch {
 
@@ -452,9 +451,6 @@ class DocSearch {
                     // obj.fullPath += '|' + obj.ty;
                     obj.href = res[1];
                     out.push(obj);
-                    if (out.length >= MAX_RESULTS) {
-                        break;
-                    }
                 }
             }
         }
