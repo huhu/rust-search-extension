@@ -1,4 +1,3 @@
-let MAX_SUGGEST_PAGE = 10;
 let PAGE_TURNER = "-";
 
 function Omnibox(defaultSuggestion, maxSuggestionSize = 8) {
@@ -115,9 +114,7 @@ Omnibox.prototype.performSearch = function(query) {
             .filter(event => event.defaultSearch)
             .sort((a, b) => b.searchPriority - a.searchPriority);
         for (let event of defaultSearchEvents) {
-            if (result.length < this.maxSuggestionSize * MAX_SUGGEST_PAGE) {
-                result.push(...event.performSearch(query));
-            }
+            result.push(...event.performSearch(query));
         }
         result.push(...this.globalEvent.onAppend(query));
     }
