@@ -3,10 +3,11 @@ let [_, _crateVersion, crateName] = location.pathname.slice(1).split("/");
 async function parseCargoFeatures(url) {
     let response = await fetch(url);
     let page = await response.text();
-    let start = page.lastIndexOf("[features]");
-    if (start !== -1) {
-        let section = page.slice(start + "[features]".length).split("\n[");
-        let features = section[0].trim().replace(/&quot;/ig, "\"").split("\n");
+    let matches = page.match(/<code>(.*?)<\/code>/g);
+    if (page.lastIndexOf("[features]") !== -1 && matches && matches.length > 0) {
+        let features = matches.map(function(item) {
+            return item.replace(/<\/?b>/g, '');
+        })[0].trim().replace(/&quot;/ig, "\"").split("\n");
         return features.map((item) => {
             let [name, flags] = item.split("=");
             flags = flags.trim().replace(/"/ig, "");
