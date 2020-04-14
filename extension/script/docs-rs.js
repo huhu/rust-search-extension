@@ -1,25 +1,5 @@
 let [_, _crateVersion, crateName] = location.pathname.slice(1).split("/");
 
-async function parseCargoFeatures(url) {
-    let features = [];
-    let response = await fetch(url);
-    let page = await response.text();
-    let start = page.lastIndexOf("[features]");
-    if (start !== -1) {
-        let lines = page.slice(start + "[features]\n".length).split("\n");
-        for (let line of lines) {
-            if (/.* = \[.*]/g.test(line)) {
-                let [name, flags] = line.split("=");
-                flags = flags.trim().replace(/"/ig, "");
-                features.push([name, flags]);
-            } else {
-                break;
-            }
-        }
-    }
-    return features;
-}
-
 document.addEventListener("DOMContentLoaded", async () => {
     let ul = document.querySelector(".landing-search-form-nav>ul");
     let childrenNumber = ul.children.length;
@@ -34,7 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function insertFeatureFlagsElement(number) {
     let sourceLink = document.querySelector(`.landing-search-form-nav>ul>li:nth-child(${number - 1})>a`);
 
-    let features = await parseCargoFeatures(sourceLink.href + "Cargo.toml");
+    let response = await fetch(sourceLink.href + "Cargo.toml");
+    let features = await parseCargoFeatures(await response.text());
     let html = `<div style="padding: 1rem"><p>This crate has no feature flag.</p></div>`;
     if (features.length > 0) {
         let tbody = features.map(([name, flags]) => {
@@ -100,21 +81,6 @@ function insertAddToExtensionElement(added) {
                     </div>`;
     platformElement.insertAdjacentElement("afterend", li);
 }
-
-function injectScripts(paths) {
-    paths.map(path => {
-        let script = document.createElement("script");
-        script.src = chrome.runtime.getURL(path);
-        script.onload = () => {
-            // Remove self after loaded
-            script.remove();
-        };
-        return script;
-    }).forEach(script => {
-        document.body.insertAdjacentElement('beforeBegin', script);
-    });
-}
-
 
 window.addEventListener("message", function(event) {
     if (event.source === window &&
