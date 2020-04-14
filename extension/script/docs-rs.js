@@ -1,20 +1,23 @@
 let [_, _crateVersion, crateName] = location.pathname.slice(1).split("/");
 
 async function parseCargoFeatures(url) {
+    let features = [];
     let response = await fetch(url);
     let page = await response.text();
     let start = page.lastIndexOf("[features]");
     if (start !== -1) {
-        let section = page.slice(start + "[features]".length).split("\n[");
-        let features = section[0].trim().replace(/&quot;/ig, "\"").split("\n");
-        return features.map((item) => {
-            let [name, flags] = item.split("=");
-            flags = flags.trim().replace(/"/ig, "");
-            return [name, flags];
-        });
-    } else {
-        return [];
+        let lines = page.slice(start + "[features]\n".length).split("\n");
+        for (let line of lines) {
+            if (/.* = \[.*]/g.test(line)) {
+                let [name, flags] = line.split("=");
+                flags = flags.trim().replace(/"/ig, "");
+                features.push([name, flags]);
+            } else {
+                break;
+            }
+        }
     }
+    return features;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
