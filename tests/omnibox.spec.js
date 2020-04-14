@@ -1,6 +1,6 @@
 describe("Omnibox", function() {
     before(function() {
-        this.omnibox = new Omnibox(new Compat());
+        this.omnibox = new Omnibox();
     });
     describe(".parse()", function() {
         let inputs = [

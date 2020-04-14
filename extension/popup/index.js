@@ -17,7 +17,7 @@ async function checkLatestCratesIndex() {
 
             // Update the latest crates index and mapping.
             background.crateSearcher.setCrateIndex(crateIndex, version);
-            background.deminifier.setMapping(mapping);
+            background.crateSearcher.updateMapping(mapping);
             toast.success("Updated to latest crates index.");
         } catch (error) {
             toast.error("Update failed, please try again :(");
