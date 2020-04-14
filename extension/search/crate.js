@@ -40,8 +40,9 @@ String.prototype.levenshteinContains = function(keyword) {
     return false;
 };
 
-function CrateSearch(crateIndex, crateIndexVersion = 1) {
+function CrateSearch(mapping, crateIndex, crateIndexVersion = 1) {
     this.crateIndexVersion = crateIndexVersion;
+    this.deminifier = new Deminifier(mapping);
     this.setCrateIndex(crateIndex);
 }
 
@@ -49,13 +50,17 @@ CrateSearch.prototype.setCrateIndex = function(rawCrateIndex, crateIndexVersion)
     this.crateIndexVersion = crateIndexVersion;
     this.crateIndex = {};
     for (let [key, value] of Object.entries(rawCrateIndex)) {
-        this.crateIndex[deminifier.deminify(key)] = value;
+        this.crateIndex[this.deminifier.deminify(key)] = value;
     }
     this.crateIds = Object.keys(this.crateIndex);
 };
 
 CrateSearch.prototype.getCrateIndexVersion = function() {
     return this.crateIndexVersion || 1;
+};
+
+CrateSearch.prototype.updateMapping = function(mapping) {
+    this.deminifier.setMapping(mapping);
 };
 
 /**
@@ -93,7 +98,7 @@ CrateSearch.prototype.search = function(keyword) {
         let [description, version] = this.crateIndex[item.id];
         return {
             id: item.id,
-            description: deminifier.deminify(description),
+            description: this.deminifier.deminify(description),
             version,
         }
     });

@@ -1,6 +1,5 @@
 const c = new Compat();
-const deminifier = new Deminifier(mapping);
-const crateSearcher = new CrateSearch(crateIndex);
+const crateSearcher = new CrateSearch(mapping, crateIndex);
 const attributeSearcher = new AttributeSearch();
 const bookSearcher = new BookSearch(booksIndex);
 const lintSearcher = new LintSearch(lintsIndex);
@@ -148,4 +147,3 @@ omnibox.addPrefixQueryEvent(":", {
 });
 
 window.crateSearcher = crateSearcher;
-window.deminifier = deminifier;
