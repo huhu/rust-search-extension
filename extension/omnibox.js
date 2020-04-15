@@ -8,6 +8,8 @@ function Omnibox(defaultSuggestion, maxSuggestionSize = 8) {
     // Cache the last query and result to speed up the page down.
     this.cachedQuery = null;
     this.cachedResult = null;
+    // A set of query which should not be cached.
+    this.noCacheQueries = new Set();
 }
 
 Omnibox.prototype.setDefaultSuggestion = function(description, content) {
@@ -58,8 +60,10 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, onSelected
             results = this.cachedResult;
         } else {
             results = this.performSearch(query);
-            this.cachedQuery = query;
-            this.cachedResult = results;
+            if (!this.noCacheQueries.has(query)) {
+                this.cachedQuery = query;
+                this.cachedResult = results;
+            }
         }
 
         let totalPage = Math.ceil(results.length / this.maxSuggestionSize);
@@ -149,6 +153,10 @@ Omnibox.prototype.navigateToUrl = function(url, disposition) {
         // newForegroundTab, newBackgroundTab
         chrome.tabs.create({url});
     }
+};
+
+Omnibox.prototype.addNoCacheQueries = function(...queries) {
+    queries.forEach(query => this.noCacheQueries.add(query));
 };
 
 class QueryEvent {
