@@ -30,12 +30,11 @@ class CrateDocSearchManager {
                     return crate;
                 });
 
-                let len = list.length;
                 list = list.filter(item => !crateName || item.name.toLowerCase().indexOf(crateName) > -1)
                     .sort((a, b) => a.name.localeCompare(b.name));
                 list.unshift({
                     content: crateName, // Non-empty value is required for content, so maybe give it a crate name.
-                    description: `Following ${len} crate(s) were added by you, select one to search their docs exclusively.`
+                    description: `Following ${list.length} crate(s) were added by you, select one to search their docs exclusively.`
                 });
                 return list;
             }
