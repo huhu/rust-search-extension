@@ -146,4 +146,6 @@ omnibox.addPrefixQueryEvent(":", {
     },
 });
 
+omnibox.addNoCacheQueries("@", ":");
+
 window.crateSearcher = crateSearcher;
