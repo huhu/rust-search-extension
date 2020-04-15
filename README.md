@@ -7,6 +7,7 @@
 
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)
 ![Mozilla Add-on](https://img.shields.io/amo/v/rust-search-extension?color=%2320123A)
+![Microsoft Edge](https://img.shields.io/badge/microsoft--edge-0.8.1-1D4F8C)
 [![rust-doc](https://img.shields.io/badge/stable-1.42.0-yellow.svg)](https://doc.rust-lang.org/1.42.0/std/)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
@@ -22,6 +23,8 @@ Search std **docs**, **crates**, builtin **attributes**, official **books**, and
 
 - [Firefox](https://addons.mozilla.org/en-US/firefox/addon/rust-search-extension/)
 
+- [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe)
+
 ### Features
 
 - Search Primitive Types and Modules
@@ -34,7 +37,6 @@ Search std **docs**, **crates**, builtin **attributes**, official **books**, and
 - Offline mode, search local Rust docs (`rustup docs --std`)
 - Builtin commands (`:yet`, `:book`, `:stable`, `:book` and `:history` etc)
 - Docs.rs enhancement (display Feature flags)
-- Both Chrome and Firefox are supported
 
 ### How to use it
 
