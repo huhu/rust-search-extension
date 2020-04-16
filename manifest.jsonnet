@@ -8,7 +8,7 @@ local manifest = {
       manifest_version: 2,
       name: "Rust Search Extension",
       description: "The ultimate search extension for Rust",
-      version: "0.8.1",
+      version: "0.9.0",
       icons: icons(),
       browser_action: {
         default_icon: $.icons,
