@@ -43,7 +43,7 @@ Omnibox.prototype.parse = function(input) {
     return {query: query.join(" "), page};
 };
 
-Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, onSelected}) {
+Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavigate, onSelected}) {
     this.globalEvent = new QueryEvent({onSearch, onFormat, onAppend});
     this.setDefaultSuggestion(this.defaultSuggestionDescription);
     let results;
@@ -80,6 +80,7 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, onSelected
 
     chrome.omnibox.onInputEntered.addListener((content, disposition) => {
         let result;
+        content = beforeNavigate(content);
         if (/^(https?|file):\/\//i.test(content)) {
             this.navigateToUrl(content, disposition);
             result = results.find(item => item.content === content);

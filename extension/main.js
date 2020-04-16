@@ -29,6 +29,13 @@ omnibox.bootstrap({
             description: `Search Rust docs ${c.match(query)} on ${settings.isOfflineMode ? "offline mode" : stdSearcher.rootPath}`,
         }];
     },
+    beforeNavigate: (content) => {
+        if (content && content.trim().startsWith("@")) {
+            return `https://docs.rs/${content.replace("@", "")}`;
+        } else {
+            return content;
+        }
+    },
     onSelected: (query, result) => {
         HistoryCommand.record(query, result);
     }
