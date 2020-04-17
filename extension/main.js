@@ -36,7 +36,7 @@ omnibox.bootstrap({
             return content;
         }
     },
-    onSelected: (query, result) => {
+    afterNavigated: (query, result) => {
         HistoryCommand.record(query, result);
     }
 });
