@@ -59,7 +59,7 @@ function insertAddToExtensionElement(added) {
                 insertAddToExtensionElement(false);
             });
         } else {
-            injectScripts(["compat.js", "script/crate-docs.js"]);
+            injectScripts(["script/add-search-index.js"]);
             insertAddToExtensionElement(true);
         }
     };

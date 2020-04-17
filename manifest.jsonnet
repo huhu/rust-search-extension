@@ -19,7 +19,7 @@ local manifest = {
       omnibox: {
         keyword: "rs"
       },
-      web_accessible_resources:["compat.js"] + js_files("script", ["crate-docs"]),
+      web_accessible_resources: js_files("script", ["add-search-index"]),
       content_scripts: [{
             matches: [
               "*://docs.rs/*"
