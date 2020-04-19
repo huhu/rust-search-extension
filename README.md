@@ -9,9 +9,9 @@
 ![Mozilla Add-on](https://img.shields.io/amo/v/rust-search-extension?color=%2320123A)
 ![Microsoft Edge](https://img.shields.io/badge/microsoft--edge-0.8.1-1D4F8C)
 [![rust-doc](https://img.shields.io/badge/stable-1.42.0-yellow.svg)](https://doc.rust-lang.org/1.42.0/std/)
-[![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
-[![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE)
-![Build Status](https://github.com/folyd/rust-search-extension/workflows/build/badge.svg)
+[![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-MIT)
+[![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
+![Build Status](https://github.com/huhu/rust-search-extension/workflows/build/badge.svg)
 
 Search std **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly. 
 

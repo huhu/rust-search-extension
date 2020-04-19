@@ -12,8 +12,8 @@ give us the chance to discuss any potential changes first.
 
 ## Important links
 
-  * [Open issues](https://github.com/Folyd/rust-search-extension/issues)
-  * [Open pull requests](https://github.com/Folyd/rust-search-extension/pulls)
-  * [Read README](https://github.com/Folyd/rust-search-extension/blob/master/README.md)
-  * [LICENSE-APACHE](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-APACHE) and [LICENSE-MIT](https://github.com/Folyd/rust-search-extension/blob/master/LICENSE-MIT)
+  * [Open issues](https://github.com/huhu/rust-search-extension/issues)
+  * [Open pull requests](https://github.com/huhu/rust-search-extension/pulls)
+  * [Read README](https://github.com/huhu/rust-search-extension/blob/master/README.md)
+  * [LICENSE-APACHE](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE) and [LICENSE-MIT](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-MIT)
   

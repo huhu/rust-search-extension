@@ -5,9 +5,9 @@ weight = 3
 +++
 
 
--- Last updated: 2020-03-05
+-- Last updated: 2020-04-19
 
-[Folyd](https://github.com/folyd) and [the contributors](https://github.com/folyd/rust-search-extension/graphs/contributors), ("we",or "us") operates the **Rust Search Extension** (including Chrome and Firefox versions) and the website [https://rust-search-extension.now.sh](/) (collectively, the “Service” or “Products”). 
+[Huhu.io](https://huhu.io), ("we",or "us") operates the **Rust Search Extension** (including Chrome and Firefox versions) and the website [https://rust-search-extension.now.sh](/) (collectively, the “Service” or “Products”). 
 We believe that your privacy is a fundamental right. This page informs you of our policies and practices regarding the collection, use and disclosure of information which personally identifies you ("Personal Information") when you use our Service.
 
 # Information collection
@@ -26,4 +26,4 @@ The "Last updated" legend at the top of this Privacy Policy indicates when this 
 
 # Contact us
 
-If You have any questions about this Privacy Policy, please contact us at [lyshuhow@gmail.com](mailto:lyshuhow@gmail.com).
+If You have any questions about this Privacy Policy, please contact us at [legal@huhu.io](mailto:legal@huhu.io).
