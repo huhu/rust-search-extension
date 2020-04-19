@@ -11,7 +11,7 @@ trigger() {
         -H "Authorization: token ${ACCESS_TOKEN}" \
         --request POST \
         --data "${data}" \
-        https://api.github.com/repos/folyd/rust-search-extension/dispatches
+        https://api.github.com/repos/huhu/rust-search-extension/dispatches
     echo "Trigger action of ${event_type} success!"
 }
 
