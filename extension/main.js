@@ -57,7 +57,7 @@ omnibox.addPrefixQueryEvent("@", {
             let content = `@${item.name}`;
             return {
                 content,
-                description: `${c.match(content)} - ${c.dim(item.doc)}`,
+                description: `${c.match(content)} v${item.version} - ${c.dim(item.doc)}`,
             }
         }
     },
