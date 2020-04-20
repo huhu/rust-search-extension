@@ -13,7 +13,7 @@
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
 ![Build Status](https://github.com/huhu/rust-search-extension/workflows/build/badge.svg)
 
-Search std **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly. 
+Search **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly. 
 
 [https://rust-search-extension.now.sh/](https://rust-search-extension.now.sh/)
 
@@ -32,10 +32,12 @@ Search std **docs**, **crates**, builtin **attributes**, official **books**, and
 - Search Functions, Methods and Macros
 - Search builtin attributes 
 - Search crates on https://crates.io
+- Search crate's docs on docs.rs
 - Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error code
 - Search Rust official book chapters
+- Search Cargo Clippy lints
 - Offline mode, search local Rust docs (`rustup docs --std`)
-- Builtin commands (`:yet`, `:book`, `:stable`, `:book` and `:history` etc)
+- Builtin commands (`:yet`, `:book`, `:stable`, `:book`, `:label` and `:history` etc)
 - Docs.rs enhancement (display Feature flags)
 
 ### How to use it
