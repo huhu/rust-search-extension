@@ -118,11 +118,8 @@ main {
   padding: 50px 100px;
 
   .toc {
-    padding: 10px 0;
     max-width: 260px;
-    background-color: white;
     min-width: 240px;
-    border-top: 5px solid $primary-color;
   }
 
   .toc-item {
@@ -130,7 +127,7 @@ main {
     color: #424242;
   }
 
-  .toc-item a,.toc-item-child a {
+  .toc-item a, .toc-item-child a {
     color: $secondary-text-color;
 
     &:hover {
@@ -144,6 +141,19 @@ main {
     color: #424242;
   }
 
+}
+
+.toc-sticky {
+  border-radius: 3px;
+  border-top: 5px solid $primary-color;
+  background-color: white;
+  position: sticky;
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+  top: 10px;
+  padding: 10px 0;
 }
 
 footer {
