@@ -6,9 +6,14 @@ weight = 3
 
 # v0.9 - Upcoming
 
-- Support search external crate's docs
-- Support search cargo clippy lints
-- ... 
+- Bump std search index version to **v1.43.0**
+- Support add crates to Rust Search Extension in docs.rs page，then you can prefix **@** to search that crate's docs. 
+- Support prefix **>** to search [Cargo Clippy lints](https://rust-lang.github.io/rust-clippy/master/)
+- New commands:
+    - `:label`: search rust-lang issue label
+- Dark mode supported
+- [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe) version is available
+
 
 # v0.8 - 2020-03-02
 

@@ -3,24 +3,24 @@ title = "Rust Search Extension"
 sort_by = "weight"
 +++
 
-Currently，we only support search documentation of those official crates:
-- **std**
-- **proc_macro**
-- **test**
+# Search std and external crate docs
 
-# Search Primitive Types and Modules
+We support search documentation of official crates (including **std**, **proc_macro**, **test**) 
+and any external crates on [docs.rs](https://docs.rs).
+
+## Search Primitive Types and Modules
 
 ![GIF](/primary-module.gif)
 
-# Search Structs, Traits and Enums
+## Search Structs, Traits and Enums
 
 ![GIF](/struct-traits.gif)
 
-# Search Functions, Methods and Macros
+## Search Functions, Methods and Macros
 
 ![GIF](/function-macros.gif)
 
-# Search doc with type mode
+## Search with type mode
 
 You can prefix a type to get the exclusive search result. Those type keywords including:
 - mod
@@ -37,6 +37,23 @@ For example, `fn:asref` to search function or `trait:iterator` to search trait.
 
 ![GIF](/type-mode.gif)
 
+## Offline mode, search local Rust docs
+
+You can run command `rustup doc --std` to open the offline std docs. 
+To enable the offline mode, you should check the checkbox and input the offline docs path on the popup page. 
+However, please check the [Caveats](/faq/#caveats) if you are a Firefox user.
+
+![GIF](/offline-mode.gif)
+
+## Search external crate's docs
+
+After you [add the crate to extension](#add-crate-to-extension), you can prefix **@crate-name** to search the docs 
+exclusive to that crate.
+
+For example, input `@tokio spawn` to search docs of **tokio**.
+
+![GIF](/search-crate-docs.gif)
+
 # Search builtin attributes
 
 Search builtin attributes (such as `derive`, `non_exhaustive`) are also supported, 
@@ -49,7 +66,7 @@ If you prefer to search attribute exclusively, prefix a **#** (pound sign) befor
 # Search top 20K crates
 
 We build top 20K crates index (more than 35K in total on crates.io) once a day to help you search crates instantly. 
-You can open the popup page to sync the latest crates index automatically. ([Some caveats](/how-it-works/#caveats) 
+You can open the popup page to sync the latest crates index automatically. ([Some caveats](/faq/#caveats) 
 for Firefox users.)
 
 What more, you can prefix an **!** (exclamation mark) before the keyword to search crates exclusively, 
@@ -57,7 +74,7 @@ prefix one more **!** (double exclamation mark) to open [docs.rs](https://docs.r
 
 ![GIF](/search-crates.gif)
 
-# Search Compiler Error Index
+# Search compiler error code
 
 ![GIF](/error-index.gif)
 
@@ -68,21 +85,11 @@ parent chapter, and grandparent chapter.
 
 ![IMG](/search-book.png)
 
-# Offline mode, search local Rust docs
+# Search Cargo Clippy lints
 
-You can run command `rustup doc --std` to open the offline std docs. 
-To enable the offline mode, you should check the checkbox and input the offline docs path on the popup page. 
-However, please check the [Caveats](/how-it-works/#caveats) if you are a Firefox user.  
+![GIF](/search-clippy-lints.gif)
 
-![GIF](/offline-mode.gif)
-
-# Display Feature Flags in docs.rs page
-
-Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust Search Extension fills the gap.
-
-![IMG](/feature-flags.png)
-
-# Command system
+# Commands system
 
 The command system brings a handy set of useful and convenient commands to you. 
 Each command starts with a **:** (colon), followed by the name, and function differently in individual.
@@ -92,10 +99,28 @@ Those commands including but not limited to:
 - **:yet** - Show all Are We Yet websites. 
 - **:book** - Show all Rust official books. 
 - **:stable** - Show stable Rust scheduled release date in the next year. 
+- **:label** - Show all issue labels of rust-lang repository. 
 - **:history** - Show your local search history
 
 ![IMG](/command-system.gif)
 
-# Page down/up easily
+# Docs.rs enhancement
+
+## Display Feature Flags
+
+Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust Search Extension fills the gap.
+
+![IMG](/feature-flags.png)
+
+## Add crate to extension
+
+By clicking the `+ to Rust Search Extension` button, you can add the crate to the extension, which brings the 
+search capability for this crate on the address bar.
+
+![GIF](/add-crate-to-extension.gif)
+
+# Miscellaneous
+
+## Page down/up easily
 
 You can press `space` after the keyword, then increase or decrease the number of **-** (hyphen) to page down or page up.
