@@ -1,12 +1,18 @@
-let [_, _crateVersion, crateName] = location.pathname.slice(1).split("/");
+let [_, crateVersion, crateName] = location.pathname.slice(1).split("/");
+// A crate version which added to the extension.
+let currentCrateVersion = undefined;
 
 document.addEventListener("DOMContentLoaded", async () => {
     let ul = document.querySelector(".landing-search-form-nav>ul");
     let childrenNumber = ul.children.length;
     if (childrenNumber >= 3) {
         await insertFeatureFlagsElement(childrenNumber);
-        chrome.runtime.sendMessage({crateName, action: "check"}, response => {
-            insertAddToExtensionElement(response && response.added);
+        chrome.runtime.sendMessage({crateName, action: "check"}, crate => {
+            if (crate) {
+                currentCrateVersion = crate.version;
+            }
+
+            insertAddToExtensionElement();
         });
     }
 });
@@ -42,7 +48,12 @@ async function insertFeatureFlagsElement(number) {
           </li>`);
 }
 
-function insertAddToExtensionElement(added) {
+function insertAddToExtensionElement() {
+    let state;
+    if (currentCrateVersion) {
+        state = window.compareVersions(currentCrateVersion, crateVersion) === -1 ? "outdated" : "latest";
+    }
+
     // Remove previous element.
     let el = document.querySelector(".add-to-extension");
     if (el) {
@@ -54,20 +65,25 @@ function insertAddToExtensionElement(added) {
     li.classList.add("pure-menu-item", "pure-menu-has-children", "pure-menu-allow-hover");
     li.onclick = () => {
         // Toggle search index added state
-        if (added) {
+        if (state === "latest") {
             chrome.runtime.sendMessage({crateName, action: "remove"}, response => {
-                insertAddToExtensionElement(false);
+                currentCrateVersion = undefined;
+                insertAddToExtensionElement();
             });
         } else {
+            currentCrateVersion = crateVersion;
             injectScripts(["script/add-search-index.js"]);
-            insertAddToExtensionElement(true);
+            insertAddToExtensionElement();
         }
     };
     let content = `<p>Add this crate to Rust Search Extension then you can search it in the address bar.</p>`;
     let iconAttributes = `class="fa fa-fw fa-plus-circle" style="color:#121212"`;
-    if (added) {
-        content = `<p>You already added this crate. Click again to remove it.</p>`;
+    if (state === "latest") {
+        content = `<p>You already added this crate (v${currentCrateVersion}). Click again to remove it.</p>`;
         iconAttributes = `class="fa fa-fw fa-check-circle" style="color:green"`;
+    } else if (state === "outdated") {
+        content = `<p>You current version v${currentCrateVersion} is outdated. Click to update to the v${crateVersion}.</p>`;
+        iconAttributes = `class="fa fa-fw fa-arrow-circle-up" style="color:#e57300"`;
     }
     li.innerHTML = `<div class="add-to-extension"
                          title="Add this crate to Rust Search Extension then you can search it in the address bar."

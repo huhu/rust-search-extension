@@ -14,7 +14,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log("message :", message);
     switch (message.action) {
         case "check": {
-            sendResponse({added: message.crateName in CrateDocSearchManager.getCrates()});
+            let crates = CrateDocSearchManager.getCrates();
+            sendResponse(crates[message.crateName]);
             break;
         }
         case "add": {
