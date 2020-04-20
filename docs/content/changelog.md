@@ -4,10 +4,10 @@ description = "Changelog"
 weight = 3
 +++
 
-# v0.9 - Upcoming
+# v0.9 - 2020-04-24
 
 - Bump std search index version to **v1.43.0**
-- Support add crates to Rust Search Extension in docs.rs page，then you can prefix **@** to search that crate's docs. 
+- Support add crates to Rust Search Extension in docs.rs page，then you can use **@crate-name** to search that crate's docs. 
 - Support prefix **>** to search [Cargo Clippy lints](https://rust-lang.github.io/rust-clippy/master/)
 - New commands:
     - `:label`: search rust-lang issue label
