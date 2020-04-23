@@ -1,7 +1,7 @@
 use std::clone::Clone;
 use std::collections::HashMap;
-use std::fs;
 use std::path::Path;
+use std::{env, fs};
 
 use reqwest;
 use serde_derive::Deserialize;
@@ -53,6 +53,11 @@ async fn fetch_clippy_lints() -> Result<Vec<Lint>> {
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    let args: Vec<String> = env::args().collect();
+    let path_name = match args.get(1) {
+        Some(path_name) => path_name,
+        None => LINTS_INDEX_PATH,
+    };
     let lints: HashMap<String, [String; 2]> = fetch_clippy_lints()
         .await?
         .iter()
@@ -65,7 +70,7 @@ async fn main() -> Result<()> {
         .collect();
 
     let contents = format!("var lintsIndex={};", serde_json::to_string(&lints)?);
-    let path = Path::new(LINTS_INDEX_PATH);
+    let path = Path::new(path_name);
     fs::write(path, &Minifier::minify_js(contents))?;
     println!("\nGenerate javascript lints index successful!");
     Ok(())
