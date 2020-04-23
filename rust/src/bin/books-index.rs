@@ -1,7 +1,7 @@
 #![cfg(feature = "books-index")]
 
-use std::fs;
 use std::path::Path;
+use std::{env, fs};
 
 use futures::future::try_join_all;
 use reqwest;
@@ -98,6 +98,11 @@ async fn fetch_book(mut book: Book) -> Result<Book, Box<dyn std::error::Error>> 
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let args: Vec<String> = env::args().collect();
+    let path_name = match args.get(1) {
+        Some(path_name) => path_name,
+        None => BOOKS_INDEX_PATH,
+    };
     let futures: Vec<_> = serde_json::from_str::<Vec<Book>>(include_str!("books.json"))?
         .into_iter()
         .map(fetch_book)
@@ -109,8 +114,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 "var N=null;var booksIndex={};",
                 serde_json::to_string(&books)?
             );
-            let path = Path::new(BOOKS_INDEX_PATH);
-            fs::write(path, &Minifier::minify_js(contents))?;
+            let path = Path::new(path_name);
+            fs::write(path, &Minifier::minify_js(contents)).unwrap();
         }
         Err(error) => {
             println!("{:?}", error);
