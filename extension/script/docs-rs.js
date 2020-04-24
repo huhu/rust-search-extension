@@ -51,7 +51,7 @@ async function insertFeatureFlagsElement(number) {
 function insertAddToExtensionElement() {
     let state;
     if (currentCrateVersion) {
-        state = window.compareVersions(currentCrateVersion, crateVersion) === -1 ? "outdated" : "latest";
+        state = Semver.compareVersion(currentCrateVersion, crateVersion) === -1 ? "outdated" : "latest";
     }
 
     // Remove previous element.
