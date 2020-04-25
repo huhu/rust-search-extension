@@ -87,7 +87,7 @@ parent chapter, and grandparent chapter.
 
 # Search Cargo Clippy lints
 
-![GIF](/search-clippy-lints.gif)
+![GIF](/search-clippy-lints.png)
 
 # Commands system
 
@@ -116,8 +116,6 @@ Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust 
 
 By clicking the `+ to Rust Search Extension` button, you can add the crate to the extension, which brings the 
 search capability for this crate on the address bar.
-
-![GIF](/add-crate-to-extension.gif)
 
 # Miscellaneous
 
