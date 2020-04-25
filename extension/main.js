@@ -30,7 +30,8 @@ omnibox.bootstrap({
         }];
     },
     beforeNavigate: (content) => {
-        if (content && content.trim().startsWith("@")) {
+        if (content && /^@.\w+$/i.test(content.trim())) {
+            // Case: @crate, redirect to that crate's docs.rs page
             return `https://docs.rs/${content.replace("@", "")}`;
         } else {
             return content;
