@@ -36,7 +36,6 @@ async function loadLatestCratesIndex(version) {
         script.onerror = reject;
         document.body.appendChild(script);
     });
-
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -81,7 +80,7 @@ function toggleOfflinePathEnableState(enable) {
 }
 
 (async () => {
-    if (c.isChrome) {
+    if (c.browserType() !== "firefox") {
         // Only Chrome browser supports 'script-src-elem' Content Security Policy to load script.
         await checkLatestCratesIndex();
     }
