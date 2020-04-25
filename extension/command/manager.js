@@ -119,12 +119,13 @@ CommandManager.prototype.stable = function() {
     let startVersion = 42;
     let end = new Date();
     end.setFullYear(end.getFullYear() + 1);
-    for (let n = 1, v = 0; ; v++) {
-        let date = new Date("2020-01-30");
-        date.setDate(date.getDate() + v * 42);
+    let date = new Date("2020-03-12");
+    let now = new Date();
+    for (let v = 1; ; v++) {
+        date.setDate(date.getDate() + 42);
         if (date > end) break;
-        if (date >= new Date()) {
-            dates.push(`Version ${c.match("1." + (startVersion + n++) + ".0")} scheduled release on ${c.match(c.normalizeDate(date))}`);
+        if (date >= now) {
+            dates.push(`Version ${c.match("1." + (startVersion + v) + ".0")} scheduled release on ${c.match(c.normalizeDate(date))}`);
         }
     }
     return this.wrap(dates);
