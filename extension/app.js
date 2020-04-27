@@ -1,10 +1,3 @@
-const homepage = "https://rust-search-extension.now.sh";
-chrome.runtime.onInstalled.addListener((installReason) => {
-    if (installReason.reason === 'update') {
-        chrome.tabs.create({url: `${homepage}/changelog/`});
-    }
-});
-
 let fileNewIssue = "title=Have you found a bug? Did you feel something was missing?&body=Whatever it was, we'd love to hear from you.";
 chrome.runtime.setUninstallURL(
     `https://github.com/huhu/rust-search-extension/issues/new?${encodeURI(fileNewIssue)}`
