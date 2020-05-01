@@ -65,6 +65,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         toast.dismiss(3000);
     };
+
+    let crateRegistry = document.querySelector("select[name='crate-registry']");
+    crateRegistry.value = settings.crateRegistry;
+    crateRegistry.onchange = function () {
+        settings.crateRegistry = crateRegistry.value;
+    };
 }, false);
 
 

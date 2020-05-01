@@ -72,9 +72,9 @@ omnibox.addPrefixQueryEvent("!", {
         return crateSearcher.search(query);
     },
     onFormat: (index, crate) => {
-        return {
-            content: this.docMode ? `https://docs.rs/${crate.id}` : `https://crates.io/crates/${crate.id}`,
-            description: `${this.docMode ? "Docs.rs" : "Crate.io"}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+        return { 
+            content: this.docMode ? `https://docs.rs/${crate.id}` : `https://${settings.crateRegistry}/crates/${crate.id}`,
+            description: `${c.capitalize(this.docMode ? "docs.rs" : settings.crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
         };
     },
     onAppend: (query) => {
@@ -154,6 +154,6 @@ omnibox.addPrefixQueryEvent(":", {
     },
 });
 
-omnibox.addNoCacheQueries("@", ":");
+omnibox.addNoCacheQueries("!", "@", ":");
 
 window.crateSearcher = crateSearcher;

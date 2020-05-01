@@ -23,6 +23,12 @@ const settings = {
             }
         }
     },
+    get crateRegistry() {
+        return localStorage.getItem("crate-registry") || "crates.io";
+    },
+    set crateRegistry(value) {
+        localStorage.setItem("crate-registry",value);
+    },
     // Use regex patterns to check user local doc path validity.
     checkDocPathValidity(path) {
         return REGEX_DOC_PATH_FILE.test(path) || REGEX_DOC_PATH_HTTP.test(path);

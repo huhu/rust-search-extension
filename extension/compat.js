@@ -42,3 +42,10 @@ Compat.prototype.normalizeDate = function(date) {
         year = date.getFullYear();
     return [year, month.padStart(2, "0"), day.padStart(2, "0")].join('-');
 };
+
+Compat.prototype.capitalize = function (value) {
+    if (value) {
+        return value.charAt(0).toUpperCase() + value.slice(1);
+    };
+    return "";
+}
