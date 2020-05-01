@@ -85,10 +85,11 @@ Omnibox.prototype.bootstrap = function({onSearch, onFormat, onAppend, beforeNavi
             this.navigateToUrl(content, disposition);
             result = results.find(item => item.content === content);
         } else {
-            if (/^(https?|file):\/\//i.test(this.defaultSuggestionContent)) {
-                this.navigateToUrl(this.defaultSuggestionContent, disposition);
+            content = beforeNavigate(this.defaultSuggestionContent);
+            if (/^(https?|file):\/\//i.test(content)) {
+                this.navigateToUrl(content, disposition);
                 result = {
-                    content: this.defaultSuggestionContent,
+                    content,
                     description: defaultDescription,
                 };
             }

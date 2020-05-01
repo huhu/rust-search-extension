@@ -7,6 +7,15 @@ class CrateDocSearch extends DocSearch {
 class CrateDocSearchManager {
     constructor() {
         this.cachedCrateSearcher = null;
+        this.allCrateSearcher = null;
+    }
+
+    initAllCrateSearcher() {
+        let searchIndex = {};
+        Object.keys(CrateDocSearchManager.getCrates()).forEach(crateName => {
+            searchIndex = Object.assign(searchIndex, CrateDocSearchManager.getCrateSearchIndex(crateName));
+        });
+        this.allCrateSearcher = new CrateDocSearch("~", "*", searchIndex);
     }
 
     search(query) {
@@ -47,6 +56,15 @@ class CrateDocSearchManager {
             description: `Input keyword to search ${c.match(crateName)}'s docs...`,
         });
         return results;
+    }
+
+    // Search all saved crates docs collectively.
+    searchAll(query) {
+        if (!this.allCrateSearcher) {
+            this.initAllCrateSearcher();
+        }
+        let keyword = query.replace("~", "").trim();
+        return this.allCrateSearcher.search(keyword);
     }
 
     static getCrates() {

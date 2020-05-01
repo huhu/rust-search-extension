@@ -33,6 +33,12 @@ omnibox.bootstrap({
         if (content && /^@.\w+$/i.test(content.trim())) {
             // Case: @crate, redirect to that crate's docs.rs page
             return `https://docs.rs/${content.replace("@", "")}`;
+        } else if (content && /^https?.*\/~\/\*\/.*/ig.test(content)) {
+            // Sanitize docs url which from all crates doc search mode. (Prefix with "~")
+            // Here is the url instance: https://docs.rs/~/*/reqwest/fn.get.html
+            let [_, __, crateName] = new URL(content).pathname.slice(1).split("/");
+            let crateVersion = CrateDocSearchManager.getCrates()[crateName].version;
+            return content.replace("/~/", `/${crateName}/`).replace("/*/", `/${crateVersion}/`);
         } else {
             return content;
         }
@@ -40,6 +46,13 @@ omnibox.bootstrap({
     afterNavigated: (query, result) => {
         HistoryCommand.record(query, result);
     }
+});
+
+omnibox.addPrefixQueryEvent("~", {
+    onSearch: (query) => {
+        return crateDocSearchManager.searchAll(query);
+    },
+    onFormat: formatDoc,
 });
 
 omnibox.addPrefixQueryEvent("@", {
@@ -72,7 +85,7 @@ omnibox.addPrefixQueryEvent("!", {
         return crateSearcher.search(query);
     },
     onFormat: (index, crate) => {
-        return { 
+        return {
             content: this.docMode ? `https://docs.rs/${crate.id}` : `https://${settings.crateRegistry}/crates/${crate.id}`,
             description: `${c.capitalize(this.docMode ? "docs.rs" : settings.crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
         };
