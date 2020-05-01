@@ -40,6 +40,10 @@ async function loadLatestCratesIndex(version) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Offline mode checkbox
+    if (!settings.offlineDocPath) {
+        // If the offline doc path not exists, turn off the offline mode.
+        settings.isOfflineMode = false;
+    }
     const offlineModeCheckbox = document.getElementById('offline-mode');
     const checkedState = settings.isOfflineMode;
     offlineModeCheckbox.checked = checkedState;
@@ -61,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             toast.success("Great! Your local doc path is valid!");
         } else {
+            // If the offline doc path is invalid, turn off the offline mode.
+            offlineModeCheckbox.checked = false;
             toast.error("Local doc path should match regex ^file://.*/doc/rust/html/ or ^https?://.*:\\d{2,6}/");
         }
         toast.dismiss(3000);
@@ -68,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let crateRegistry = document.querySelector("select[name='crate-registry']");
     crateRegistry.value = settings.crateRegistry;
-    crateRegistry.onchange = function () {
+    crateRegistry.onchange = function() {
         settings.crateRegistry = crateRegistry.value;
     };
 }, false);
