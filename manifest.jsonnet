@@ -34,7 +34,7 @@ local manifest = {
                  js_files("search/docs" ,["base", "std", "crate-doc"]) +
                  js_files("index" ,["books", "crates", "std-docs", "lints", "labels"]) +
                  js_files("command" ,["base", "history", "label", "manager"]) +
-                 ["omnibox.js", "main.js","app.js",]
+                 ["omnibox.js", "main.js"]
       },
       permissions: [
         "tabs"
