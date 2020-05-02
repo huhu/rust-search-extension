@@ -4,6 +4,7 @@ function CommandManager() {
         "yet": "Show all Are We Yet websites.",
         "book": "Show all Rust official books.",
         "stable": "Show stable Rust scheduled release date in the next year.",
+        "tool": "Show some most useful Rust tools.",
     };
     [new HistoryCommand(), new LabelCommand(labelsIndex)].forEach(cmd => this.addCommand(cmd));
 }
@@ -58,6 +59,23 @@ CommandManager.prototype.help = function() {
         `[WIP] Prefix ${c.match("?")} to search Rust tracking issues`,
     ]);
 };
+
+CommandManager.prototype.tool = function(arg) {
+    const tools = [
+        ["Rust Playground", "https://play.rust-lang.org/"],
+        ["cheats.rs", "https://cheats.rs/"],
+        ["caniuse.rs", "https://caniuse.rs/"],
+        ["Macro Railroad ", "https://lukaslueg.github.io/macro_railroad_wasm_demo/"],
+    ];
+    return tools
+           .filter(item => !arg || item[0].toLowerCase().indexOf(arg) > -1)
+           .map(([name,url]) => {
+               return {
+                   content: url,
+                   description: `${c.match(name)} - ${c.dim(url)}`
+               }
+           })
+}
 
 CommandManager.prototype.yet = function(arg) {
     // https://wiki.mozilla.org/Areweyet
