@@ -1,7 +1,8 @@
+var tooltip;
 function histogram({ selector, width, height, data, color, margin }) {
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y))//.ticks(null, data.format))
+        .call(d3.axisLeft(y))
         .call(g => g.append("text")
             .attr("x", -margin.left)
             .attr("y", 10)
@@ -21,24 +22,37 @@ function histogram({ selector, width, height, data, color, margin }) {
 
     const svg = d3.select(selector)
         .append("svg")
-        // .attr("viewBox", [0, 0, width, height]);
-        .attr("width",width)
-        .attr("height",height);
+        .attr("width", width)
+        .attr("height", height);
     svg.append("g")
         .attr("fill", color)
         .selectAll("rect")
         .data(data)
-        .join("rect") 
-        .attr("x", (d, i) => x(i)+x.bandwidth()/4)
+        .join("rect")
+        .attr("x", (d, i) => x(i) + x.bandwidth() / 4)
         .attr("y", d => y(d.value))
         .attr("height", d => y(0) - y(d.value))
-        .attr("width", x.bandwidth()/2);
+        .attr("width", x.bandwidth() / 2)
+        .on('mouseover', function (d, i) {
+            let tooltipWidth = 36;
+            tooltip = d3.select(selector)
+                .append('div')
+                .attr('class', 'histogram-bar-tooltip')
+                .html(`<span>${d.value}</span>`)
+                .style('width', `${tooltipWidth}px`)
+                .style('left', () => {
+                    return x(i) + x.bandwidth() / 2 - tooltipWidth / 2 + "px";
+                })
+                .style('top', () => y(d.value) - 30 + "px")
+        })
+        .on("mouseout", function (d, i) {
+            tooltip.remove();
+        });
 
     svg.append("g")
         .call(xAxis);
 
     svg.append("g")
         .call(yAxis);
-
 
 }
