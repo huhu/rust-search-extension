@@ -1,6 +1,12 @@
 class CrateDocSearch extends DocSearch {
+
     constructor(name, version, searchIndex) {
-        super(name, searchIndex, `https://docs.rs/${name}/${version}/`);
+        super(name, searchIndex);
+        this._path = `https://docs.rs/${name}/${version}/`;
+    }
+
+    get rootPath() {
+        return this._path;
     }
 }
 

@@ -36,16 +36,20 @@ var MAX_LEV_DISTANCE = 3;
 
 class DocSearch {
 
-    constructor(name, searchIndex, rootPath) {
+    constructor(name, searchIndex) {
         this.name = name;
         // The list of search words to query against.
         this.searchWords = [];
         this.searchIndex = this.buildIndex(searchIndex);
-        this.rootPath = rootPath;
 
         // Current query lowercase keyword.
         this.valLower = null;
         this.split = null;
+    }
+
+    // A getter function for rootPath property.
+    // Child class should override this function.
+    get rootPath() {
     }
 
     getSearchUrl(keyword) {
