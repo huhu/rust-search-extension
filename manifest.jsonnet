@@ -1,53 +1,34 @@
-// jsonnet manifest.jsonnet --ext-str browser=chrome|firefox -o extension/manifest.json
+local manifest = import 'core/manifest.libsonnet';
 local icons() = {
   [size]: 'rust.png'
   for size in ['16', '48', '128']
 };
 local js_files(name, files) = ['%s/%s.js' % [name, file] for file in files];
-local manifest = {
-  manifest_version: 2,
-  name: 'Rust Search Extension',
-  description: 'The ultimate search extension for Rust',
-  version: '0.10.0',
-  icons: icons(),
-  browser_action: {
-    default_icon: $.icons,
-    default_popup: 'popup/index.html',
-    default_title: $.description,
-  },
-  content_security_policy: "script-src 'self'; object-src 'self';",
-  omnibox: {
-    keyword: 'rs',
-  },
-  web_accessible_resources: js_files('script', ['add-search-index']),
-  content_scripts: [{
-    matches: [
-      '*://docs.rs/*',
-    ],
-    js: js_files('script', ['lib', 'docs-rs']) + js_files('libs', ['semver']),
-    css: ['script/docs-rs.css'],
-    run_at: 'document_start',
-  }],
-  background: {
-    scripts: ['compat.js', 'settings.js', 'deminifier.js'] +
-             js_files('search', ['book', 'crate', 'attribute', 'lint']) +
-             js_files('search/docs', ['base', 'std', 'crate-doc']) +
-             js_files('index', ['books', 'crates', 'std-docs', 'lints', 'labels']) +
-             js_files('command', ['base', 'history', 'label', 'manager']) +
-             ['omnibox.js', 'main.js'],
-  },
-  permissions: [
-    'tabs',
-  ],
-  appendContentSecurityPolicy(policy):: self + {
-    content_security_policy+: policy,
-  },
-};
+
+local json = manifest.new(
+  name='Rust Search Extension',
+  version='0.10.0',
+  keyword='rs',
+  description='The ultimate search extension for Rust',
+)
+             .addIcons(icons())
+             .addWebAccessibleResources('script/add-search-index.js')
+             .addBackgroundScript(
+  js_files('search', ['book', 'crate', 'attribute', 'lint']) +
+  js_files('search/docs', ['base', 'std', 'crate-doc']) +
+  js_files('index', ['books', 'crates', 'std-docs', 'lints', 'labels']) +
+  js_files('command', ['label'])
+)
+             .addContentScript(
+  matches='*://docs.rs/*',
+  js=js_files('script', ['lib', 'docs-rs']) + js_files('libs', ['semver']),
+  css='script/docs-rs.css',
+);
 
 if std.extVar('browser') == 'firefox' then
-  manifest
+  json
 else
-  manifest.appendContentSecurityPolicy(" script-src-elem 'self' https://rust-search-extension.now.sh/crates/index.js;")
+  json.appendContentSecurityPolicy(" script-src-elem 'self' https://rust-search-extension.now.sh/crates/index.js;")
   + {
     description: 'A handy browser extension to search Rust docs and crates, etc in the address bar instantly!',
     // The production extension public key to get the constant extension id during development.
