@@ -2,7 +2,9 @@
     margin: 0;
     padding: 0;
 }
-
+li {
+    list-style: none;
+}
 .logo {
     padding: 40px;
     font-family: "Alfa Slab One", serif;
@@ -18,4 +20,36 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.show:not(:first-child) {
+    border-left: 1px solid #ffffff;
+}
+.lang-stats-graph {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+.show:first-child {
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+.show:last-child {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.color-block {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    /* background-color: black; */
+}
+.showText li {
+    display: flex;
+    align-items: center;
+}
+.showText span {
+    padding: 3px;
 }
