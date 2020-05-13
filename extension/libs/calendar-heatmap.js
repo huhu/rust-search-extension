@@ -2,8 +2,6 @@ function calendarHeatmap() {
   // defaults
   var width = 750;
   var height = 160;
-  var baseX = 15;
-  var baseY = 20;
   var legendWidth = 150;
   var selector = 'body';
   var SQUARE_LENGTH = 11;
@@ -145,10 +143,10 @@ function calendarHeatmap() {
         .attr('x', function (d, i) {
           var cellDate = moment(d);
           var result = cellDate.week() - firstDate.week() + (firstDate.weeksInYear() * (cellDate.weekYear() - firstDate.weekYear()));
-          return baseX + result * (SQUARE_LENGTH + SQUARE_PADDING);
+          return result * (SQUARE_LENGTH + SQUARE_PADDING);
         })
         .attr('y', function (d, i) {
-          return baseY + MONTH_LABEL_PADDING + formatWeekday(d.getDay()) * (SQUARE_LENGTH + SQUARE_PADDING);
+          return MONTH_LABEL_PADDING + formatWeekday(d.getDay()) * (SQUARE_LENGTH + SQUARE_PADDING);
         });
 
       if (typeof onClick === 'function') {
@@ -164,9 +162,9 @@ function calendarHeatmap() {
             .append('div')
             .attr('class', 'day-cell-tooltip')
             .html(tooltipHTMLForDate(d))
-            .style('left', function () { return baseX + Math.floor(i / 7) * SQUARE_LENGTH + 'px'; })
+            .style('left', function () { return Math.floor(i / 7) * SQUARE_LENGTH + 'px'; })
             .style('top', function () {
-              return baseY + formatWeekday(d.getDay()) * (SQUARE_LENGTH + SQUARE_PADDING) + MONTH_LABEL_PADDING * 2 + 'px';
+              return formatWeekday(d.getDay()) * (SQUARE_LENGTH + SQUARE_PADDING) + MONTH_LABEL_PADDING * 2 + 'px';
             });
         })
           .on('mouseout', function (d, i) {
@@ -220,18 +218,18 @@ function calendarHeatmap() {
             return moment(d).isSame(element, 'month') && moment(d).isSame(element, 'year');
           });
 
-          return baseX + Math.floor(matchIndex / 7) * (SQUARE_LENGTH + SQUARE_PADDING);
+          return Math.floor(matchIndex / 7) * (SQUARE_LENGTH + SQUARE_PADDING);
         })
-        .attr('y', baseY + 0);  // fix these to the top
+        .attr('y', 0);  // fix these to the top
 
       locale.days.forEach(function (day, index) {
         index = formatWeekday(index);
         if (index % 2) {
           svg.append('text')
             .attr('class', 'day-initial')
-            .attr('transform', 'translate(5,' + (SQUARE_LENGTH + SQUARE_PADDING) * (index + 1) + ')')
+            .attr('transform', 'translate(-10,' + (SQUARE_LENGTH + SQUARE_PADDING) * (index + 1) + ')')
             .style('text-anchor', 'middle')
-            .attr('dy', `${baseY + 2}`)
+            .attr('dy', "2")
             .text(day);
         }
       });

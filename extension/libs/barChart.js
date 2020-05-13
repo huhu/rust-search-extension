@@ -57,7 +57,7 @@ function barChart({ margin, height, width, data, selector,color,}) {
                 .style('top', y(i)+y.bandwidth() / 6 - tooltipWidth / 6 + "px")
         })
         .on("mouseout", function (d, i) {
-            // tooltip.remove();
+            tooltip.remove();
         });
 
     svg.append("g")
