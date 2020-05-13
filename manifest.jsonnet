@@ -14,15 +14,17 @@ local json = manifest.new(
              .addIcons(icons())
              .addWebAccessibleResources('script/add-search-index.js')
              .addBackgroundScript(
+  ['settings.js', 'deminifier.js'] +
   js_files('search', ['book', 'crate', 'attribute', 'lint']) +
   js_files('search/docs', ['base', 'std', 'crate-doc']) +
   js_files('index', ['books', 'crates', 'std-docs', 'lints', 'labels']) +
-  js_files('command', ['label'])
+  js_files('command', ['label']) +
+  ['main.js']
 )
              .addContentScript(
-  matches='*://docs.rs/*',
+  matches=['*://docs.rs/*'],
   js=js_files('script', ['lib', 'docs-rs']) + js_files('libs', ['semver']),
-  css='script/docs-rs.css',
+  css=['script/docs-rs.css'],
 );
 
 if std.extVar('browser') == 'firefox' then
