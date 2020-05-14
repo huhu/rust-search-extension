@@ -13,14 +13,14 @@ local json = manifest.new(
 )
              .addIcons(icons())
              .addWebAccessibleResources('script/add-search-index.js')
-             .addBackgroundScript(
-  ['settings.js', 'deminifier.js'] +
-  js_files('search', ['book', 'crate', 'attribute', 'lint']) +
-  js_files('search/docs', ['base', 'std', 'crate-doc']) +
-  js_files('index', ['books', 'crates', 'std-docs', 'lints', 'labels']) +
-  js_files('command', ['label']) +
-  ['main.js']
+             .addBackgroundScripts(
+  ['settings.js', 'deminifier.js']
 )
+             .addBackgroundScripts(js_files('search', ['book', 'crate', 'attribute', 'lint']))
+             .addBackgroundScripts(js_files('search/docs', ['base', 'std', 'crate-doc']))
+             .addBackgroundScripts(js_files('index', ['books', 'crates', 'std-docs', 'lints', 'labels']))
+             .addBackgroundScripts(js_files('command', ['label']))
+             .addBackgroundScripts('main.js')
              .addContentScript(
   matches=['*://docs.rs/*'],
   js=js_files('script', ['lib', 'docs-rs']) + js_files('libs', ['semver']),
