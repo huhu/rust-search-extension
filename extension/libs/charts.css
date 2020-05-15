@@ -10,7 +10,7 @@
     text-align: center;
   }
 
-  .char-histogram rect:hover {
+  #chart rect:hover {
     fill: rgb(255, 157, 0);
   }
 
