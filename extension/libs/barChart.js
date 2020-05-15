@@ -25,11 +25,6 @@ function barChart({ margin, height, width, data, selector,color,}) {
     let x = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.value)])
         .range([margin.left, width - margin.right])
-        // .domain(d3.range(data.length))
-        // .range([margin.left, width - margin.right])
-        // .padding(0.1);
-
-    // let format = x.tickFormat(20);
 
     const svg = d3.select(selector)
         .append("svg")
@@ -54,7 +49,7 @@ function barChart({ margin, height, width, data, selector,color,}) {
                 .html(`<span>${d.value}</span>`)
                 .style('width', `${tooltipWidth}px`)
                 .style('left',  x(d.value) + 5 + "px")
-                .style('top', y(i)+y.bandwidth() / 6 - tooltipWidth / 6 + "px")
+                .style('top', y(i)+y.bandwidth() / 2 - tooltipWidth / 3 + "px")
         })
         .on("mouseout", function (d, i) {
             tooltip.remove();
