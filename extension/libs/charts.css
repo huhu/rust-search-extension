@@ -10,10 +10,6 @@
     text-align: center;
   }
 
-  #chart rect:hover {
-    fill: rgb(255, 157, 0);
-  }
-
   svg:not(:root) {
     overflow: initial;
 }

@@ -1,9 +1,9 @@
 let history = JSON.parse(localStorage.getItem("history"));
 let chartColor = "#F9BB2D";
 let weeks = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
-let dates = num(1, 31);
-let hours = num(0, 23);
-function num(start, end, initial = 0) {
+let dates = makeNumericKeyObject(1, 31);
+let hours = makeNumericKeyObject(0, 23);
+function makeNumericKeyObject(start, end, initial = 0) {
     return Array.from({ length: end + 1 - start }).fill(initial)
         .reduce((obj, current, index) => {
             obj[start + index] = current;
@@ -22,7 +22,7 @@ let stats = [
     { name: "Std docs", prefix: "", value: 0, color: "#ffa600" },
 ];
 let calendarData = [];
-let barChartObj = {}; //bar-chart(url)
+let topCratesData = {}; //bar-chart(url)
 
 let w = Object.keys(weeks);
 let d = Object.keys(dates);
@@ -49,10 +49,10 @@ history.forEach(({ query, content, time }) => {
         let url = new URL(content);
         let pathname = url.pathname.replace("/crates/", "/").slice(1);
         let [crate, _] = pathname.split("/");
-        if (barChartObj[crate]) {
-            barChartObj[crate] += 1;
+        if (topCratesData[crate]) {
+            topCratesData[crate] += 1;
         } else {
-            barChartObj[crate] = 1;
+            topCratesData[crate] = 1;
         }
     }
 });
@@ -101,7 +101,7 @@ histogram({
     ...histogramConfig,
 });
 
-let spans = document.querySelector(".lang-stats-graph");
+let spans = document.querySelector(".searching-stats-graph");
 let showText = document.querySelector(".showText");
 let ol = showText.querySelector("ol");
 function byField(key) {
@@ -113,12 +113,11 @@ function byField(key) {
         }
     }
 }
-let sort = stats.sort(byField("value"));
-let sum = sort.reduce((item, { value }) => {
+let sum = stats.sort(byField("value")).reduce((item, { value }) => {
     return item + value
 }, 0);
 
-sort.forEach(({ name, color, value }) => {
+stats.forEach(({ name, color, value }) => {
     let li = document.createElement("li");
     li.innerHTML = `<span class="color-block" style="background-color:${color}"></span>
                             <span class="">${name}</span>
@@ -130,21 +129,20 @@ sort.forEach(({ name, color, value }) => {
     }
 })
 
-let barChartArr = [];
-Object.entries(barChartObj).map(([key, value]) => {
-    barChartArr.push({
+topCratesData = Object.entries(topCratesData).map(([key, value]) => {
+    return {
         name: key,
         value
-    });
+    };
 });
-let barChartData = barChartArr.sort(byField("value"));
-barChartData.splice(10);
+topCratesData.sort(byField("value"));
+topCratesData.splice(10);
 barChart({
     margin: ({ top: 30, right: 0, bottom: 10, left: 30 }),
     height: 320,
     barHeight: 25,
     width: 750,
-    data: barChartData,
+    data: topCratesData,
     selector: ".bar-chart",
     color: "#F9BB2D",
 });
