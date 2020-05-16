@@ -1,26 +1,21 @@
 var tooltip;
 function barChart({ margin, height, width, data, selector,color,}) {
     let barHeight = 25;
-    let number = [];
-    for(let i=0; i<10; i++){
-        number[i] = `#${i}`
-    }
-    
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).tickFormat(i => number[i]).tickSizeOuter(0));
+        .call(d3.axisLeft(y).tickFormat(i => data[i].label).tickSizeOuter(0))
+        .attr('font-size', 14);;
 
     let xAxis = g => g
         .attr("transform", `translate(0,${margin.top})`)
         .call(d3.axisTop(x).ticks(width / 80))
         .call(g => g.select(".domain"))
-        .selectAll("g")
-        // .attr("transform", (d,i) => `translate(${margin.top},0)`);
+        .attr('font-size', 14);;
 
     let y = d3.scaleBand()
         .domain(d3.range(data.length))
         .rangeRound([margin.top, height - margin.bottom])
-        .padding(0.1);
+        .padding(0.2);
 
     let x = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.value)])
@@ -38,15 +33,15 @@ function barChart({ margin, height, width, data, selector,color,}) {
         .data(data)
         .join("rect")
         .attr("x", x(0))
-        .attr("y", (d, i) => y(i))
+        .attr("y", (d, i) => y(i)+y.bandwidth()/4)
         .attr("width", d => x(d.value) - x(0))
-        .attr("height", y.bandwidth())
+        .attr("height", y.bandwidth()/2)
         .on('mouseover', function (d, i) {
             let tooltipWidth = 36;
             tooltip = d3.select(selector)
                 .append('div')
                 .attr('class', 'histogram-bar-tooltip')
-                .html(`<span>${d.value}</span>`)
+                .html(`<span style="color:#fff">${d.value}</span>`)
                 .style('width', `${tooltipWidth}px`)
                 .style('left',  x(d.value) + 5 + "px")
                 .style('top', y(i)+y.bandwidth() / 2 - tooltipWidth / 3 + "px")
@@ -56,16 +51,16 @@ function barChart({ margin, height, width, data, selector,color,}) {
         });
 
     svg.append("g")
-        .attr("fill", "white")
-        .attr("text-anchor", "end")
+        .attr("fill", "black")
+        .attr("text-anchor", "start")
         .attr("font-family", "sans-serif")
-        .attr("font-size", 12)
+        .attr("font-size", 14)
         .selectAll("text")
         .data(data)
         .join("text")
-        .attr("x", d => x(d.value) - 4)
-        .attr("y", (d, i) => y(i) + y.bandwidth() / 2)
-        .attr("dy", "0.35em")
+        .attr("x", d => x(0) + 5)
+        .attr("y", (d, i) => y(i) )
+        .attr("dy", "0.35em") 
         .text(d => d.name);
 
     svg.append("g")

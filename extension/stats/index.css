@@ -1,9 +1,14 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: "Fira Sans", sans-serif;
 }
-li {
-  list-style: none;
+a:visited {
+    color: initial;
+}
+h3 {
+    padding: 10px 0;
+    text-align: center;
 }
 .logo {
   padding: 40px;
@@ -45,12 +50,17 @@ li {
   height: 8px;
   border-radius: 50%;
 }
-.showText li {
+.searching-stats-text li {
   display: flex;
   align-items: center;
+  list-style: none;
 }
-.showText span {
+.searching-stats-text span {
   padding: 3px;
+}
+#chart rect {
+    stroke: #F9BB2D;
+    stroke-width: 2px;
 }
 #chart rect:hover {
   fill: rgb(255, 157, 0);

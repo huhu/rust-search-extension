@@ -1,5 +1,5 @@
 let history = JSON.parse(localStorage.getItem("history"));
-let chartColor = "#F9BB2D";
+let chartColor = "rgba(249, 188, 45, 0.5)";
 let weeks = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
 let dates = makeNumericKeyObject(1, 31);
 let hours = makeNumericKeyObject(0, 23);
@@ -49,6 +49,7 @@ history.forEach(({ query, content, time }) => {
         let url = new URL(content);
         let pathname = url.pathname.replace("/crates/", "/").slice(1);
         let [crate, _] = pathname.split("/");
+        crate = crate.replace(/-/gi,"_");
         if (topCratesData[crate]) {
             topCratesData[crate] += 1;
         } else {
@@ -65,7 +66,7 @@ let heatmap = calendarHeatmap()
     .data(calendarData)
     .selector('.chart-heatmap')
     .tooltipEnabled(true)
-    .colorRange(['#f4f7f7', chartColor])
+    .colorRange(['#f4f7f7', '#F9BB2D'])
     .tooltipUnit([
         { min: 0, unit: 'searching' },
         { min: 1, max: 1, unit: 'searching' },
@@ -78,8 +79,8 @@ let heatmap = calendarHeatmap()
 heatmap();
 
 let histogramConfig = {
-    width: 550,
-    height: 320,
+    width: 460,
+    height: 240,
     color: chartColor,
     margin: { top: 30, right: 0, bottom: 40, left: 40 }
 };
@@ -101,9 +102,9 @@ histogram({
     ...histogramConfig,
 });
 
-let spans = document.querySelector(".searching-stats-graph");
-let showText = document.querySelector(".showText");
-let ol = showText.querySelector("ol");
+let searchingStatsGraph = document.querySelector(".searching-stats-graph");
+let searchingStatsText = document.querySelector(".searching-stats-text");
+let ol = searchingStatsText.querySelector("ol");
 function byField(key) {
     return function (a, b) {
         if (b[key] > a[key]) {
@@ -124,25 +125,25 @@ stats.forEach(({ name, color, value }) => {
                             <span class="">${(value / sum * 100).toFixed(1)}%<span>`;
     ol.append(li);
     if (value > 0) {
-        spans.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / sum * 100}%;
+        searchingStatsGraph.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / sum * 100}%;
                                                         background-color:${color}"></span>`);
     }
-})
+});
 
-topCratesData = Object.entries(topCratesData).map(([key, value]) => {
+topCratesData = Object.entries(topCratesData).sort((a,b) => b[1] - a[1]).map(([key, value],index) => {
     return {
+        label: `#${index+1}`,
         name: key,
         value
     };
 });
-topCratesData.sort(byField("value"));
-topCratesData.splice(10);
+topCratesData.splice(15);
 barChart({
     margin: ({ top: 30, right: 0, bottom: 10, left: 30 }),
-    height: 320,
+    height: 830,
     barHeight: 25,
-    width: 750,
+    width: 460,
     data: topCratesData,
-    selector: ".bar-chart",
-    color: "#F9BB2D",
+    selector: ".topCratesData",
+    color: chartColor,
 });

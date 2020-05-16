@@ -8,10 +8,12 @@ function histogram({ selector, width, height, data, color, margin }) {
             .attr("y", 10)
             .attr("fill", "currentColor")
             .attr("text-anchor", "start")
-            .text("Times"));
+            .text("Times"))
+        .attr('font-size', 11);
     let xAxis = g => g
         .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x).tickFormat(i => data[i].name).tickSizeOuter(0));
+        .call(d3.axisBottom(x).tickFormat(i => data[i].name).tickSizeOuter(0))
+        .attr('font-size', 11);
     let y = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.value)]).nice()
         .range([height - margin.bottom, margin.top]);
@@ -38,7 +40,7 @@ function histogram({ selector, width, height, data, color, margin }) {
             tooltip = d3.select(selector)
                 .append('div')
                 .attr('class', 'histogram-bar-tooltip')
-                .html(`<span>${d.value}</span>`)
+                .html(`<span style="color:#fff">${d.value}</span>`)
                 .style('width', `${tooltipWidth}px`)
                 .style('left', () => {
                     return x(i) + x.bandwidth() / 2 - tooltipWidth / 2 + "px";
