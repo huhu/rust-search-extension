@@ -49,6 +49,7 @@ history.forEach(({ query, content, time }) => {
         let url = new URL(content);
         let pathname = url.pathname.replace("/crates/", "/").slice(1);
         let [crate, _] = pathname.split("/");
+        crate = crate.replace(/-/gi,"_");
         if (topCratesData[crate]) {
             topCratesData[crate] += 1;
         } else {
@@ -127,17 +128,16 @@ stats.forEach(({ name, color, value }) => {
         searchingStatsGraph.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / sum * 100}%;
                                                         background-color:${color}"></span>`);
     }
-})
+});
 
-topCratesData = Object.entries(topCratesData).map(([key, value]) => {
+topCratesData = Object.entries(topCratesData).sort((a,b) => b[1] - a[1]).map(([key, value],index) => {
     return {
+        label: `#${index+1}`,
         name: key,
         value
     };
 });
-topCratesData.sort(byField("value"));
 topCratesData.splice(15);
-topCratesData[0].value=9;
 barChart({
     margin: ({ top: 30, right: 0, bottom: 10, left: 30 }),
     height: 830,
