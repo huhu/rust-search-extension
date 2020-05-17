@@ -8,6 +8,7 @@ a:visited {
 }
 h3 {
     padding: 10px 0;
+    font-size: 18px;
     text-align: center;
 }
 .logo {
@@ -57,6 +58,7 @@ h3 {
 }
 .searching-stats-text span {
   padding: 3px;
+  font-size: 16px;
 }
 #chart rect {
     stroke: #F9BB2D;
@@ -64,4 +66,8 @@ h3 {
 }
 #chart rect:hover {
   fill: rgb(255, 157, 0);
+}
+.appendix {
+    color: #666;
+    padding: 5px;
 }

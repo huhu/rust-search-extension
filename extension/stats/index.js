@@ -1,4 +1,4 @@
-let history = JSON.parse(localStorage.getItem("history"));
+let history = JSON.parse(localStorage.getItem("history")) || [];
 let chartColor = "rgba(249, 188, 45, 0.5)";
 let weeks = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
 let dates = makeNumericKeyObject(1, 31);
