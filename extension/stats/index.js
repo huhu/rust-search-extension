@@ -102,6 +102,20 @@ histogram({
     ...histogramConfig,
 });
 
+let searchingTimes = document.querySelector(".searching-time");
+let frequency = searchingTimes.querySelectorAll("b");
+frequency[0].textContent = `${history.length}`;
+frequency[1].textContent = calculateSavedTime(history.length);
+function calculateSavedTime(times) {
+    if(times * 5 >3600){
+        return `${Math.round(times * 5 /3600)} hours.`;
+    } else if(times * 5 > 60) {
+        return `${Math.round(times * 5 /60)} minutes.`;
+    } else {
+        return `${Math.round(times * 5)} seconds.`;
+    }
+}
+
 let searchingStatsGraph = document.querySelector(".searching-stats-graph");
 let searchingStatsText = document.querySelector(".searching-stats-text");
 let ol = searchingStatsText.querySelector("ol");
@@ -117,7 +131,6 @@ function byField(key) {
 let sum = stats.sort(byField("value")).reduce((item, { value }) => {
     return item + value
 }, 0);
-
 stats.forEach(({ name, color, value }) => {
     let li = document.createElement("li");
     li.innerHTML = `<span class="color-block" style="background-color:${color}"></span>
