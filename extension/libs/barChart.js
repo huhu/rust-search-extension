@@ -1,6 +1,5 @@
 var tooltip;
-function barChart({ margin, height, width, data, selector,color,}) {
-    let barHeight = 25;
+function barChart({ margin, height, width, data, selector, color, }) {
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y).tickFormat(i => data[i].label).tickSizeOuter(0))
@@ -25,7 +24,7 @@ function barChart({ margin, height, width, data, selector,color,}) {
         .append("svg")
         .attr("width", width)
         .attr("height", height);
-        // .attr("viewBox", [0, 0, width, height]);
+    // .attr("viewBox", [0, 0, width, height]);
 
     svg.append("g")
         .attr("fill", color)
@@ -33,9 +32,9 @@ function barChart({ margin, height, width, data, selector,color,}) {
         .data(data)
         .join("rect")
         .attr("x", x(0))
-        .attr("y", (d, i) => y(i)+y.bandwidth()/4)
+        .attr("y", (d, i) => y(i) + y.bandwidth() / 4)
         .attr("width", d => x(d.value) - x(0))
-        .attr("height", y.bandwidth()/2)
+        .attr("height", y.bandwidth() / 2)
         .on('mouseover', function (d, i) {
             let tooltipWidth = 36;
             tooltip = d3.select(selector)
@@ -43,8 +42,8 @@ function barChart({ margin, height, width, data, selector,color,}) {
                 .attr('class', 'histogram-bar-tooltip')
                 .html(`<span style="color:#fff">${d.value}</span>`)
                 .style('width', `${tooltipWidth}px`)
-                .style('left',  x(d.value) + 5 + "px")
-                .style('top', y(i)+y.bandwidth() / 2 - tooltipWidth / 3 + "px")
+                .style('left', x(d.value) + 5 + "px")
+                .style('top', y(i) + y.bandwidth() / 2 - tooltipWidth / 3 + "px")
         })
         .on("mouseout", function (d, i) {
             tooltip.remove();
@@ -59,8 +58,8 @@ function barChart({ margin, height, width, data, selector,color,}) {
         .data(data)
         .join("text")
         .attr("x", d => x(0) + 5)
-        .attr("y", (d, i) => y(i) )
-        .attr("dy", "0.35em") 
+        .attr("y", (d, i) => y(i))
+        .attr("dy", "0.35em")
         .text(d => d.name);
 
     svg.append("g")
