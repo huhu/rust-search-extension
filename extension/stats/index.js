@@ -1,4 +1,4 @@
-let history = JSON.parse(localStorage.getItem("history"));
+let history = JSON.parse(localStorage.getItem("history")) || [];
 let chartColor = "rgba(249, 188, 45, 0.5)";
 let weeks = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
 let dates = makeNumericKeyObject(1, 31);
@@ -49,7 +49,7 @@ history.forEach(({ query, content, time }) => {
         let url = new URL(content);
         let pathname = url.pathname.replace("/crates/", "/").slice(1);
         let [crate, _] = pathname.split("/");
-        crate = crate.replace(/-/gi,"_");
+        crate = crate.replace(/-/gi, "_");
         if (topCratesData[crate]) {
             topCratesData[crate] += 1;
         } else {
@@ -102,6 +102,20 @@ histogram({
     ...histogramConfig,
 });
 
+let searchingTimes = document.querySelector(".searching-time");
+let frequency = searchingTimes.querySelectorAll("b");
+frequency[0].textContent = `${history.length}`;
+frequency[1].textContent = calculateSavedTime(history.length);
+function calculateSavedTime(times) {
+    if (times * 5 > 3600) {
+        return `${Math.round(times * 5 / 3600)} hours.`;
+    } else if (times * 5 > 60) {
+        return `${Math.round(times * 5 / 60)} minutes.`;
+    } else {
+        return `${Math.round(times * 5)} seconds.`;
+    }
+}
+
 let searchingStatsGraph = document.querySelector(".searching-stats-graph");
 let searchingStatsText = document.querySelector(".searching-stats-text");
 let ol = searchingStatsText.querySelector("ol");
@@ -117,7 +131,6 @@ function byField(key) {
 let sum = stats.sort(byField("value")).reduce((item, { value }) => {
     return item + value
 }, 0);
-
 stats.forEach(({ name, color, value }) => {
     let li = document.createElement("li");
     li.innerHTML = `<span class="color-block" style="background-color:${color}"></span>
@@ -130,9 +143,9 @@ stats.forEach(({ name, color, value }) => {
     }
 });
 
-topCratesData = Object.entries(topCratesData).sort((a,b) => b[1] - a[1]).map(([key, value],index) => {
+topCratesData = Object.entries(topCratesData).sort((a, b) => b[1] - a[1]).map(([key, value], index) => {
     return {
-        label: `#${index+1}`,
+        label: `#${index + 1}`,
         name: key,
         value
     };
@@ -140,7 +153,8 @@ topCratesData = Object.entries(topCratesData).sort((a,b) => b[1] - a[1]).map(([k
 topCratesData.splice(15);
 barChart({
     margin: ({ top: 30, right: 0, bottom: 10, left: 30 }),
-    height: 830,
+    // Calculate height dynamically to keep the bar with consistence width regardless of the topCratesData length.
+    height: 800 / 15 * topCratesData.length + 40,
     barHeight: 25,
     width: 460,
     data: topCratesData,
