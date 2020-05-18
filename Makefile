@@ -1,6 +1,6 @@
 .PHONY: manifest
 
-manifest:
+manifest: clean
 	@jsonnet -J core $@.jsonnet --ext-str browser=$(browser) -o extension/$@.json
 	@cp -R core/src extension/core
 
@@ -15,3 +15,6 @@ lints-index:
 
 labels-index:
 	RUST_BACKTRACE=full cargo run --bin labels-index --features labels-index --manifest-path=rust/Cargo.toml extension/index/labels.js
+
+clean:
+	@rm -rf extension/core manifest.json
