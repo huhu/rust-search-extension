@@ -9,20 +9,18 @@ function makeNumericKeyObject(start, end, initial = 0) {
             obj[start + index] = current;
             return obj;
         }, {});
-};
+}
 
 let stats = [
-    // { name: "Repository", prefix: "!!!", value: 0, color: "#f00" },
-    { name: "Docs", prefix: "!!", value: 0, color: "#ff00af" },
-    { name: "Crates", prefix: "!", value: 0, color: "#b600ff" },
-    { name: "Book", prefix: "%", value: 0, color: "#3400ff" },
-    { name: "Lint", prefix: ">", value: 0, color: "#0944ff" },
-    { name: "Crate docs", prefix: "@", value: 0, color: "#00f2ff" },
-    { name: "Attribute", prefix: "#", value: 0, color: "#00442d" },
-    { name: "Std docs", prefix: "", value: 0, color: "#ffa600" },
+    {name: "Std docs", pattern: null,value: 0, color: "#ffa600"},
+    {name: "External docs", pattern: /^[~@].*/i,value: 0, color: "#ff00af"},
+    {name: "Crates", pattern: /^!.*/i,value: 0, color: "#b600ff"},
+    {name: "Attribute", pattern: /^#.*/i,value: 0, color: "#00442d"},
+    {name: "Error code", pattern: /e\d{2,4}$/i,value: 0, color: "#dd4814"},
+    {name: "Others", pattern: /^[>%].*/i,value: 0, color: "#ededed"},
 ];
 let calendarData = [];
-let topCratesData = {}; //bar-chart(url)
+let topCratesData = {};
 
 let w = Object.keys(weeks);
 let d = Object.keys(dates);
@@ -38,13 +36,12 @@ history.forEach(({ query, content, time }) => {
     dates[d[date.getDate() - 1]] += 1;
     hours[h[date.getHours()]] += 1;
 
-    //chart-heatmap
-    let stat = stats.find(item => query.startsWith(item.prefix));
+    let stat = stats.find(item => item.pattern && item.pattern.test(query))
+        || stats.find(item => !item.pattern);
     if (stat) {
         stat.value += 1;
     }
 
-    // bar-chart(url)
     if (["https://docs.rs", "https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
         let url = new URL(content);
         let pathname = url.pathname.replace("/crates/", "/").slice(1);
@@ -119,26 +116,19 @@ function calculateSavedTime(times) {
 let searchingStatsGraph = document.querySelector(".searching-stats-graph");
 let searchingStatsText = document.querySelector(".searching-stats-text");
 let ol = searchingStatsText.querySelector("ol");
-function byField(key) {
-    return function (a, b) {
-        if (b[key] > a[key]) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-}
-let sum = stats.sort(byField("value")).reduce((item, { value }) => {
-    return item + value
-}, 0);
+stats.sort((a, b) => {
+    // Others always the last
+    if (a.name === "Others" || b.name === "Others") return 1;
+    return b.value - a.value;
+});
 stats.forEach(({ name, color, value }) => {
     let li = document.createElement("li");
     li.innerHTML = `<span class="color-block" style="background-color:${color}"></span>
                             <span class="">${name}</span>
-                            <span class="">${(value / sum * 100).toFixed(1)}%<span>`;
+                            <span class="">${(value / history.length * 100).toFixed(1)}%<span>`;
     ol.append(li);
     if (value > 0) {
-        searchingStatsGraph.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / sum * 100}%;
+        searchingStatsGraph.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / history.length * 100}%;
                                                         background-color:${color}"></span>`);
     }
 });
