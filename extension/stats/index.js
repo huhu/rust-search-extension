@@ -47,11 +47,8 @@ history.forEach(({ query, content, time }) => {
         let pathname = url.pathname.replace("/crates/", "/").slice(1);
         let [crate, _] = pathname.split("/");
         crate = crate.replace(/-/gi, "_");
-        if (topCratesData[crate]) {
-            topCratesData[crate] += 1;
-        } else {
-            topCratesData[crate] = 1;
-        }
+        let counter = topCratesData[crate] || 0;
+        topCratesData[crate] = counter + 1;
     }
 });
 
