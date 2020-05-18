@@ -26,7 +26,7 @@ let w = Object.keys(weeks);
 let d = Object.keys(dates);
 let h = Object.keys(hours);
 
-history.forEach(({ query, content, time }) => {
+history.forEach(({ query, content, description, time }) => {
     let date = new Date(time);
     calendarData.push({
         date,
@@ -36,10 +36,21 @@ history.forEach(({ query, content, time }) => {
     dates[d[date.getDate() - 1]] += 1;
     hours[h[date.getHours()]] += 1;
 
-    let stat = stats.find(item => item.pattern && item.pattern.test(query))
-        || stats.find(item => !item.pattern);
+    let stat = stats.find(item => item.pattern && item.pattern.test(query));
     if (stat) {
         stat.value += 1;
+    } else {
+        // Classify the default searching
+        if (["https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
+            // Crates
+            stats[2].value += 1;
+        } else if (description.startsWith("Attribute")) {
+            // Attribute
+            stats[3].value += 1;
+        } else {
+            // Std docs
+            stats[0].value += 1;
+        }
     }
 
     if (["https://docs.rs", "https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
