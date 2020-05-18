@@ -5,14 +5,15 @@ const bookSearcher = new BookSearch(booksIndex);
 const lintSearcher = new LintSearch(lintsIndex);
 const stdSearcher = new StdSearch(searchIndex);
 const crateDocSearchManager = new CrateDocSearchManager();
-const commandManager = new CommandManager([
+const commandManager = new CommandManager(
     new HelpCommand(),
     new BookCommand(),
     new YetCommand(),
     new StableCommand(),
     new ToolCommand(),
     new LabelCommand(labelsIndex),
-]);
+    new HistoryCommand(),
+);
 
 const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(defaultSuggestion, c.omniboxPageSize());
