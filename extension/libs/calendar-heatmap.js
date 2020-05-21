@@ -114,9 +114,22 @@ function calendarHeatmap() {
     }
 
     // color range
-    var color = ((d3.scale && d3.scale.linear) || d3.scaleLinear)()
-      .range(chart.colorRange())
-      .domain([0, max]);
+    // var color = ((d3.scale && d3.scale.linear) || d3.scaleLinear)()
+    //   .range(chart.colorRange())
+    //   .domain([0, max]);
+    let color = function(value) {
+      if(value == 0) {
+        return colorRange[0];
+      } else if(value == 1) {
+        return colorRange[1]
+      } else if(value == 2) {
+        return colorRange[2]
+      } else if(value == 3) {
+        return colorRange[3]
+      } else if(value >= 4) {
+        return colorRange[4]
+      }
+    }
 
     var tooltip;
     var dayRects;
@@ -174,9 +187,10 @@ function calendarHeatmap() {
 
       if (chart.legendEnabled()) {
         var colorRange = [color(0)];
-        for (var i = 3; i > 0; i--) {
-          colorRange.push(color(max / i));
+        for (var i = 1; i < 5; i++) {
+          colorRange.push(color(i / max));
         }
+
 
         var legendGroup = svg.append('g');
         legendGroup.selectAll('.calendar-heatmap-legend')
@@ -188,7 +202,7 @@ function calendarHeatmap() {
           .attr('height', SQUARE_LENGTH)
           .attr('x', function (d, i) { return (width - legendWidth) + (i + 1) * (SQUARE_LENGTH + SQUARE_PADDING); })
           .attr('y', height - 30 + SQUARE_PADDING)
-          .attr('fill', function (d) { return d; });
+          .attr('fill', function (d,i) { return color(i); });
 
         legendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-less')
