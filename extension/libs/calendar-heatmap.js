@@ -217,8 +217,13 @@ function calendarHeatmap() {
             matchIndex = index;
             return moment(d).isSame(element, 'month') && moment(d).isSame(element, 'year');
           });
-
-          return Math.floor(matchIndex / 7) * (SQUARE_LENGTH + SQUARE_PADDING);
+          if (matchIndex % 7 == 0) {
+            // The start at this column, we needn't move right.
+            return Math.floor(matchIndex / 7) * (SQUARE_LENGTH + SQUARE_PADDING);
+          } else {
+            // Move right a column to prevent label overlap.
+            return (Math.floor(matchIndex / 7) + 1) * (SQUARE_LENGTH + SQUARE_PADDING);
+          }
         })
         .attr('y', 0);  // fix these to the top
 
