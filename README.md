@@ -11,7 +11,7 @@
 [![rust-doc](https://img.shields.io/badge/stable-1.43.0-yellow.svg)](https://doc.rust-lang.org/1.43.0/std/)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
-![Build Status](https://github.com/huhu/rust-search-extension/workflows/build/badge.svg)
+[![Discord](https://img.shields.io/discord/711895914494558250?label=chat&logo=discord)](https://discord.com/invite/UAzW4A)
 
 Search **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly. 
 
@@ -47,7 +47,12 @@ you want to search, the extension will response the related search results insta
 
 ![demonstration.gif](assets/demonstration.gif)
 
-# [Features overview](https://rust-search-extension.now.sh/)
-# [How it works](https://rust-search-extension.now.sh/how-it-works/)
-# [Changelog](https://rust-search-extension.now.sh/changelog/)
-# [FAQ](https://rust-search-extension.now.sh/faq/)
+### Get involved
+
+- You can contact us on Discord Channel: https://discord.com/invite/UAzW4A
+- Or by adding the Wechat ID: `huhu_io`, we'll invite you to our Wechat group.
+
+### Miscellaneous
+
+- [Changelog](https://rust-search-extension.now.sh/changelog/)
+- [FAQ](https://rust-search-extension.now.sh/faq/)
