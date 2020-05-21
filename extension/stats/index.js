@@ -1,4 +1,4 @@
-let history = JSON.parse(localStorage.getItem("history")) || [];
+const history = JSON.parse(localStorage.getItem("history")) || [];
 let chartColor = "rgba(249, 188, 45, 0.5)";
 let weeks = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
 let dates = makeNumericKeyObject(1, 31);
@@ -126,7 +126,7 @@ let searchingStatsText = document.querySelector(".searching-stats-text");
 let ol = searchingStatsText.querySelector("ol");
 stats.sort((a, b) => {
     // Others always the last
-    if (a.name === "Others" || b.name === "Others") return 1;
+    if (a.name === "Others" || b.name === "Others") return 0;
     return b.value - a.value;
 });
 stats.forEach(({ name, color, value }) => {
