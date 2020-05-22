@@ -2,7 +2,7 @@ var tooltip;
 function histogram({ selector, width, height, data, color, margin }) {
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y))
+        .call(d3.axisLeft(y).ticks(Math.min(10, d3.max(data, d => d.value))))
         .call(g => g.append("text")
             .attr("x", -margin.left)
             .attr("y", 10)

@@ -7,7 +7,7 @@ function barChart({ margin, height, width, data, selector, color, }) {
 
     let xAxis = g => g
         .attr("transform", `translate(0,${margin.top})`)
-        .call(d3.axisTop(x).ticks(width / 80))
+        .call(d3.axisTop(x).ticks(Math.min(10, d3.max(data, d => d.value))))
         .call(g => g.select(".domain"))
         .attr('font-size', 14);;
 
