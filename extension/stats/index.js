@@ -71,7 +71,7 @@ let heatmap = calendarHeatmap()
     .data(calendarData)
     .selector('.chart-heatmap')
     .tooltipEnabled(true)
-    .colorRange(['#f4f7f7', '#F9BB2D'])
+    .colorRange(['#f4f7f7', '#F9BB2e', '#f67e04', '#f54303', '#f40703'])
     .tooltipUnit([
         { min: 0, unit: 'searching' },
         { min: 1, max: 1, unit: 'searching' },
