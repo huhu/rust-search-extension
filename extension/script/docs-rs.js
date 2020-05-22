@@ -1,4 +1,5 @@
-let [_, crateVersion, crateName] = location.pathname.slice(1).split("/");
+let [crateName, crateVersion] = location.pathname.slice(1).split("/");
+crateName = crateName.replace("-", "_");
 // A crate version which added to the extension.
 let currentCrateVersion = undefined;
 

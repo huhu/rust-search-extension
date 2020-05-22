@@ -1,6 +1,7 @@
 (function() {
     // Parse crate info from location pathname.
-    let [_, crateVersion, crateName] = location.pathname.slice(1).split("/");
+    let [crateName, crateVersion] = location.pathname.slice(1).split("/");
+    crateName = crateName.replace("-", "_");
     window.postMessage({
         direction: "rust-search-extension",
         message: {
