@@ -191,7 +191,6 @@ function calendarHeatmap() {
           colorRange.push(color(i / max));
         }
 
-
         var legendGroup = svg.append('g');
         legendGroup.selectAll('.calendar-heatmap-legend')
           .data(colorRange)
