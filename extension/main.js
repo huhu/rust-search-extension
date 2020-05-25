@@ -37,7 +37,7 @@ omnibox.bootstrap({
             description: `Search Rust docs ${c.match(query)} on ${settings.isOfflineMode ? "offline mode" : stdSearcher.rootPath}`,
         }];
     },
-    beforeNavigate: (content) => {
+    beforeNavigate: (query, content) => {
         if (content && /^@.\w+$/i.test(content.trim())) {
             // Case: @crate, redirect to that crate's docs.rs page
             return `https://docs.rs/${content.replace("@", "")}`;
@@ -89,13 +89,13 @@ omnibox.addPrefixQueryEvent("!", {
     defaultSearch: true,
     searchPriority: 1,
     onSearch: (query) => {
-        this.docMode = query.startsWith("!!");
         return crateSearcher.search(query);
     },
-    onFormat: (index, crate) => {
+    onFormat: (index, crate, query) => {
+        let docMode = query.startsWith("!!");
         return {
-            content: this.docMode ? `https://docs.rs/${crate.id}` : `https://${settings.crateRegistry}/crates/${crate.id}`,
-            description: `${c.capitalize(this.docMode ? "docs.rs" : settings.crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+            content: docMode ? `https://docs.rs/${crate.id}` : `https://${settings.crateRegistry}/crates/${crate.id}`,
+            description: `${c.capitalize(docMode ? "docs.rs" : settings.crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
         };
     },
     onAppend: (query) => {
