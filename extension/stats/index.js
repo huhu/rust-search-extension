@@ -56,7 +56,17 @@ history.forEach(({ query, content, description, time }) => {
     if (["https://docs.rs", "https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
         let url = new URL(content);
         let pathname = url.pathname.replace("/crates/", "/").slice(1);
-        let [crate, _] = pathname.split("/");
+        let result = pathname.split("/");
+        let crate;
+        if (result.length >= 3) {
+            // In this case, third element is the correct crate name.
+            // e.g. https://docs.rs/~/*/async_std/stream/trait.Stream.html
+            [_, __, crate] = result;
+        } else {
+            // In this case, the first element is the correct crate name.
+            // e.g. https://crates.io/crates/async_std
+            [crate] = result;
+        }
         crate = crate.replace(/-/gi, "_");
         let counter = topCratesData[crate] || 0;
         topCratesData[crate] = counter + 1;
