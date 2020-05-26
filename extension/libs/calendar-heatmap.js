@@ -13,7 +13,7 @@ function calendarHeatmap() {
   var counterMap = {};
   var data = [];
   var max = null;
-  var colorRange = ['#D8E6E7', '#218380'];
+  var colorRange = [];
   var tooltipEnabled = true;
   var tooltipUnit = 'contribution';
   var legendEnabled = true;
@@ -113,14 +113,16 @@ function calendarHeatmap() {
     } else if (max === null) {
       max = d3.max(chart.data(), function (d) { return d.count; }); // max data value
     }
-
-    // color range
-    // var color = ((d3.scale && d3.scale.linear) || d3.scaleLinear)()
-    //   .range(chart.colorRange())
-    //   .domain([0, max]);
-
-    let color = function(value) {
-      return colorRange[Math.min(value ,4)];
+    
+    let color = function (value) {
+        for(let i in colorRange) {
+          let item = colorRange[i]
+          var _max = item.max || item.min;
+          _max = item.max === 'Infinity' ? Infinity : _max;
+          if (item.min <= value && value <= _max) {
+            return item.color;
+          }
+        }
     }
 
     var tooltip;
@@ -178,11 +180,6 @@ function calendarHeatmap() {
       }
 
       if (chart.legendEnabled()) {
-        var colorRange = [color(0)];
-        for (var i = 1; i < 5; i++) {
-          colorRange.push(color(i / max));
-        }
-
         var legendGroup = svg.append('g');
         legendGroup.selectAll('.calendar-heatmap-legend')
           .data(colorRange)
@@ -193,7 +190,7 @@ function calendarHeatmap() {
           .attr('height', SQUARE_LENGTH)
           .attr('x', function (d, i) { return (width - legendWidth) + (i + 1) * (SQUARE_LENGTH + SQUARE_PADDING); })
           .attr('y', height - 30 + SQUARE_PADDING)
-          .attr('fill', function (d,i) { return color(i); });
+          .attr('fill', function (d, i) { return colorRange[i].color; });
 
         legendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-less')
@@ -224,7 +221,7 @@ function calendarHeatmap() {
           });
           if (matchIndex % 7 == 0) {
             // The start at this column, we needn't move right.
-            return Math.floor((matchIndex / 7)) * (SQUARE_LENGTH + SQUARE_PADDING);
+            return Math.floor(matchIndex / 7) * (SQUARE_LENGTH + SQUARE_PADDING);
           } else {
             // Move right a column to prevent label overlap.
             return (Math.floor(matchIndex / 7) + 1) * (SQUARE_LENGTH + SQUARE_PADDING);

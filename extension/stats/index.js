@@ -12,12 +12,12 @@ function makeNumericKeyObject(start, end, initial = 0) {
 }
 
 let stats = [
-    {name: "Std docs", pattern: null,value: 0, color: "#ffa600"},
-    {name: "External docs", pattern: /^[~@].*/i,value: 0, color: "#ff00af"},
-    {name: "Crates", pattern: /^!.*/i,value: 0, color: "#b600ff"},
-    {name: "Attribute", pattern: /^#.*/i,value: 0, color: "#00442d"},
-    {name: "Error code", pattern: /e\d{2,4}$/i,value: 0, color: "#dd4814"},
-    {name: "Others", pattern: /^[>%].*/i,value: 0, color: "#ededed"},
+    { name: "Std docs", pattern: null, value: 0, color: "#ffa600" },
+    { name: "External docs", pattern: /^[~@].*/i, value: 0, color: "#ff00af" },
+    { name: "Crates", pattern: /^!.*/i, value: 0, color: "#b600ff" },
+    { name: "Attribute", pattern: /^#.*/i, value: 0, color: "#00442d" },
+    { name: "Error code", pattern: /e\d{2,4}$/i, value: 0, color: "#dd4814" },
+    { name: "Others", pattern: /^[>%].*/i, value: 0, color: "#ededed" },
 ];
 let calendarData = [];
 let topCratesData = {};
@@ -71,7 +71,13 @@ let heatmap = calendarHeatmap()
     .data(calendarData)
     .selector('.chart-heatmap')
     .tooltipEnabled(true)
-    .colorRange(['#f4f7f7', '#F9BB2e', '#f67e04', '#f54303', '#f40703'])
+    .colorRange([
+        { min: 0, color: '#f4f7f7' },
+        { min: 1, max: 2, color: '#ffdd2b' },
+        { min: 3, max: 6, color: '#f6a405' },
+        { min: 7, max: 11, color: '#f56b04' },
+        { min: 12, max: 'Infinity', color: '#f40703' }
+    ])
     .tooltipUnit([
         { min: 0, unit: 'searching' },
         { min: 1, max: 1, unit: 'searching' },
