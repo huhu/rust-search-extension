@@ -23,7 +23,7 @@ let formatDoc = (index, doc) => {
     if (doc.desc) {
         description += " - " + c.dim(c.escape(doc.desc));
     }
-    return {content: doc.href, description};
+    return { content: doc.href, description };
 };
 
 omnibox.bootstrap({
@@ -94,8 +94,9 @@ omnibox.addPrefixQueryEvent("!", {
     onFormat: (index, crate, query) => {
         let docMode = query.startsWith("!!");
         return {
-            content: docMode ? `https://docs.rs/${crate.id}` : `https://${settings.crateRegistry}/crates/${crate.id}`,
-            description: `${c.capitalize(docMode ? "docs.rs" : settings.crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+            content: query.startsWith("!!!") ? `${chrome.runtime.getURL("redirect/redirect.html")}?crate=${crate.id}` : 
+            query.startsWith("!!") ? `https://docs.rs/${crate.id}` : `https://${settings.crateRegistry}/crates/${crate.id}`,
+            description: `${c.capitalize(this.docMode ? "docs.rs" : settings.crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
         };
     },
     onAppend: (query) => {
