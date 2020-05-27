@@ -56,3 +56,10 @@ you want to search, the extension will response the related search results insta
 
 - [Changelog](https://rust-search-extension.now.sh/changelog/)
 - [FAQ](https://rust-search-extension.now.sh/faq/)
+
+### Thanks
+
+Thanks for the sponsorship from these great companies.
+
+- [![](docs/static/vercel.svg)](https://vercel.com?utm_source=rust-search-extension)
+- [![](docs/static/jetbrains.svg)](https://www.jetbrains.com/?from=rust-search-extension)
