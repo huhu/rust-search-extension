@@ -77,6 +77,15 @@ document.addEventListener('DOMContentLoaded', function() {
     crateRegistry.onchange = function() {
         settings.crateRegistry = crateRegistry.value;
     };
+
+    let history = JSON.parse(localStorage.getItem("history"));
+    let statsPage = document.querySelector(".statistics-page");
+    let statsWeekCount = statsPage.querySelector("#stats-week-count");
+    if(history) {
+        statsWeekCount.textContent = `${history.length}`
+    } else {
+        statsPage.style.display = "none";
+    }
 }, false);
 
 

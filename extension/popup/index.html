@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
@@ -27,46 +28,52 @@
     </style>
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
-<div class="toast"></div>
-<div class="main">
-    <div style="text-align: center;">
-        <img class="logo" src="../icon.png" alt="rust-search-extension">
-        <h2 class="title">Rust Search Extension</h2>
-        <div>
-            <a href="https://doc.rust-lang.org/1.43.0/std/">
-                <img src="https://img.shields.io/badge/stable-1.43.0-yellow.svg" alt="stable-docs">
+    <div class="toast"></div>
+    <div class="main">
+        <div style="text-align: center;">
+            <img class="logo" src="../icon.png" alt="rust-search-extension">
+            <h2 class="title">Rust Search Extension</h2>
+            <div>
+                <a href="https://doc.rust-lang.org/1.43.0/std/">
+                    <img src="https://img.shields.io/badge/stable-1.43.0-yellow.svg" alt="stable-docs">
+                </a>
+            </div>
+        </div>
+        <div style="margin-top: 20px" class="flex-vertical">
+            <div>
+                Enable offline mode
+                <label class="toggle">
+                    <input type="checkbox" id="offline-mode">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <input type="text" class="offline-doc-path" placeholder="Input the local doc path">
+            <small class="offline-doc-message"></small>
+        </div>
+        <div style="margin-top: 10px">
+            <label for="crate-registry">Crate registry</label>
+            <select name="crate-registry">
+                <option value="crates.io">crates.io</option>
+                <option value="lib.rs">lib.rs</option>
+            </select>
+        </div>
+        <div class="statistics-page">
+            <a href="../stats/index.html" target="_blank" class="stats-link">
+                <b id="stats-week-count">0</b> searchings this week >
             </a>
         </div>
-    </div>
-    <div style="margin-top: 20px" class="flex-vertical">
-        <div>
-            Enable offline mode
-            <label class="toggle">
-                <input type="checkbox" id="offline-mode">
-                <span class="slider"></span>
-            </label>
+        <div style="margin-top: 30px; font-size: 11px;text-align: center">
+            <a href="https://rust-search-extension.now.sh" target="_blank">Website</a>
+            <a href="https://rust-search-extension.now.sh/changelog/" target="_blank">Changelog</a>
+            <a href="https://github.com/huhu/rust-search-extension" target="_blank">Github</a>
         </div>
-        <input type="text" class="offline-doc-path" placeholder="Input the local doc path">
-        <small class="offline-doc-message"></small>
     </div>
-    <div style="margin-top: 10px">
-        <label for="crate-registry">Crate registry</label>
-        <select name="crate-registry">
-            <option value="crates.io">crates.io</option>
-            <option value="lib.rs">lib.rs</option>
-        </select>
-    </div>
-    
-    <div style="margin-top: 30px; font-size: 11px;text-align: center">
-        <a href="https://rust-search-extension.now.sh" target="_blank">Website</a>
-        <a href="https://rust-search-extension.now.sh/changelog/" target="_blank">Changelog</a>
-        <a href="https://github.com/huhu/rust-search-extension" target="_blank">Github</a>
-    </div>
-</div>
 </body>
 <script src="../core/compat.js"></script>
 <script src="../settings.js"></script>
 <script src="toast.js"></script>
 <script src="index.js"></script>
+
 </html>
