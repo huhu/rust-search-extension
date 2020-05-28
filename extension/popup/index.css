@@ -1,5 +1,5 @@
 .main {
-    padding: 2rem;
+    padding: 2.2rem;
 }
 
 .toast {
@@ -103,7 +103,7 @@ input:checked + .slider:before {
 
 .stats-link {
     color:#121212;
-    font-size: 15px;
+    font-size: 14px;
     border-radius: 5px;
     padding: 0;
     text-decoration: none;
