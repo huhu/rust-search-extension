@@ -77,10 +77,16 @@ document.addEventListener('DOMContentLoaded', function() {
     crateRegistry.onchange = function() {
         settings.crateRegistry = crateRegistry.value;
     };
-
+    
     let history = JSON.parse(localStorage.getItem("history"));
     let statsPage = document.querySelector(".statistics-page");
     let statsWeekCount = statsPage.querySelector("#stats-week-count");
+    let now = new Date();
+    let weekAgo = now.setDate(now.getDate() - 7);
+    history = history.filter(({time}) => {
+        return weekAgo <= time;
+    });
+
     if(history) {
         statsWeekCount.textContent = `${history.length}`
     } else {
