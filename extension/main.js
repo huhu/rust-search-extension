@@ -85,6 +85,7 @@ omnibox.addPrefixQueryEvent("@", {
     },
 });
 
+const REDIRECT_URL = chrome.runtime.getURL("redirect/redirect.html");
 omnibox.addPrefixQueryEvent("!", {
     defaultSearch: true,
     searchPriority: 1,
@@ -92,11 +93,21 @@ omnibox.addPrefixQueryEvent("!", {
         return crateSearcher.search(query);
     },
     onFormat: (index, crate, query) => {
-        let docMode = query.startsWith("!!");
+        let content;
+        let description;
+        if (query.startsWith("!!!")){
+            content = `${REDIRECT_URL}?crate=${crate.id}`;
+            description = `${c.capitalize("repository")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`;
+        } else if(query.startsWith("!!")) {
+            content = `https://docs.rs/${crate.id}`;
+            description = `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
+        } else {
+            content = `https://${settings.crateRegistry}/crates/${crate.id}`;
+            description = `${c.capitalize(settings.crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
+        }
         return {
-            content: query.startsWith("!!!") ? `${chrome.runtime.getURL("redirect/redirect.html")}?crate=${crate.id}` : 
-            query.startsWith("!!") ? `https://docs.rs/${crate.id}` : `https://${settings.crateRegistry}/crates/${crate.id}`,
-            description: `${c.capitalize(this.docMode ? "docs.rs" : settings.crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+            content,
+            description
         };
     },
     onAppend: (query) => {
