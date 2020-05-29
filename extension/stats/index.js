@@ -53,8 +53,8 @@ history.forEach(({ query, content, description, time }) => {
         }
     }
 
+    let url = new URL(content);
     if (["https://docs.rs", "https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
-        let url = new URL(content);
         let pathname = url.pathname.replace("/crates/", "/").slice(1);
         let result = pathname.split("/");
         let crate;
@@ -68,6 +68,11 @@ history.forEach(({ query, content, description, time }) => {
             [crate] = result;
         }
         crate = crate.replace(/-/gi, "_");
+        let counter = topCratesData[crate] || 0;
+        topCratesData[crate] = counter + 1;
+    } else if(["chrome-extension", "moz-extension"].some(prefix => content.startsWith(prefix))){
+        let search = url.search.replace("?crate=", "");
+        let crate = search.replace(/-/gi, "_");
         let counter = topCratesData[crate] || 0;
         topCratesData[crate] = counter + 1;
     }
