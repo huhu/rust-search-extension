@@ -9,7 +9,7 @@ async function checkLatestCratesIndex() {
     toast.info("Checking latest crates index...");
 
     let response = await fetch(`${CRATES_INDEX_BASE_URL}/version.json?${Date.now()}`);
-    let {version} = await response.json();
+    let { version } = await response.json();
     if (background.crateSearcher.getCrateIndexVersion() < version) {
         try {
             toast.info("Updating latest crates index, wait a seconds...");
@@ -38,7 +38,7 @@ async function loadLatestCratesIndex(version) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Offline mode checkbox
     if (!settings.offlineDocPath) {
         // If the offline doc path not exists, turn off the offline mode.
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const checkedState = settings.isOfflineMode;
     offlineModeCheckbox.checked = checkedState;
     toggleOfflinePathEnableState(checkedState);
-    offlineModeCheckbox.onchange = function(event) {
+    offlineModeCheckbox.onchange = function (event) {
         const checked = event.target.checked;
         settings.isOfflineMode = checked;
         toggleOfflinePathEnableState(checked);
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Offline doc path
     const offlineDocPath = document.querySelector('.offline-doc-path');
     offlineDocPath.value = settings.offlineDocPath;
-    offlineDocPath.onchange = function(event) {
+    offlineDocPath.onchange = function (event) {
         let path = event.target.value;
         // Check the std doc path validity
         if (settings.checkDocPathValidity(path)) {
@@ -74,20 +74,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let crateRegistry = document.querySelector("select[name='crate-registry']");
     crateRegistry.value = settings.crateRegistry;
-    crateRegistry.onchange = function() {
+    crateRegistry.onchange = function () {
         settings.crateRegistry = crateRegistry.value;
     };
-    
-    let history = JSON.parse(localStorage.getItem("history"));
+
+    let history = JSON.parse(localStorage.getItem("history")) || [];
     let statsPage = document.querySelector(".statistics-page");
     let statsWeekCount = statsPage.querySelector("#stats-week-count");
     let now = new Date();
     let weekAgo = now.setDate(now.getDate() - 7);
-    history = history.filter(({time}) => {
-        return weekAgo <= time;
-    });
 
-    if(history) {
+    if (history.length > 0) {
+        history = history.filter(({ time }) => {
+            return weekAgo <= time;
+        });
         statsWeekCount.textContent = `${history.length}`
     } else {
         statsPage.style.display = "none";

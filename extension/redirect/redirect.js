@@ -3,7 +3,7 @@
     try {
         let response = await fetch(`https://crates.io/api/v1/crates/${crate}`, { mode: "cors" });
         let loading = document.querySelector(".loading");
-        if (response.status == 200) {
+        if (response.status === 200) {
             let json = await response.json();
 
             if (json.crate.repository) {
