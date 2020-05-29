@@ -15,7 +15,7 @@ const commandManager = new CommandManager(
     new HistoryCommand(),
 );
 
-const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
+const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(defaultSuggestion, c.omniboxPageSize());
 
 let formatDoc = (index, doc) => {

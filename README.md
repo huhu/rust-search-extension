@@ -17,7 +17,7 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 
 [https://rust-search-extension.now.sh/](https://rust-search-extension.now.sh/)
 
-### Installation
+## Installation
 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh)
 
@@ -25,7 +25,7 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe)
 
-### Features
+## Features
 
 - Search Primitive Types and Modules
 - Search Structs, Traits and Enums
@@ -33,33 +33,47 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 - Search builtin attributes 
 - Search crates on https://crates.io
 - Search crate's docs on docs.rs
-- Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error code
+- Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error codes
 - Search Rust official book chapters
 - Search Cargo Clippy lints
 - Offline mode, search local Rust docs (`rustup docs --std`)
-- Builtin commands (`:yet`, `:book`, `:stable`, `:book`, `:label` and `:history` etc)
+- Builtin commands (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool` and `:history` etc)
 - Docs.rs enhancement (display Feature flags)
 
-### How to use it
+## How to use it
 
 Input keyword **rs** in the address bar, press `Space` to activate the search bar. Then enter any word 
 you want to search, the extension will response the related search results instantly.
 
 ![demonstration.gif](assets/demonstration.gif)
 
-### Get involved
+## Contribution
+
+```bash
+$ git clone --recursive https://github.com/huhu/rust-search-extension
+Cloning into 'rust-search-extension'...
+$ cd rust-search-extension
+
+$ make chrome # For Chrome/Edge version
+
+$ make firefox # For Firefox version
+```
+
+## Get involved
 
 - You can contact us on Discord Channel: https://discord.com/invite/UAzW4A
 - Or by adding the Wechat ID: `huhu_io`, we'll invite you to our Wechat group.
 
-### Miscellaneous
+
+## Miscellaneous
 
 - [Changelog](https://rust-search-extension.now.sh/changelog/)
 - [FAQ](https://rust-search-extension.now.sh/faq/)
 
-### Thanks
+## Thanks
 
 Thanks for the sponsorship from these great companies.
 
-- [![](docs/static/vercel.svg)](https://vercel.com?utm_source=rust-search-extension)
-- [![](docs/static/jetbrains.svg)](https://www.jetbrains.com/?from=rust-search-extension)
+[![](docs/static/jetbrains.svg)](https://www.jetbrains.com/?from=rust-search-extension)
+
+[![](docs/static/vercel.svg)](https://vercel.com?utm_source=rust-search-extension)
