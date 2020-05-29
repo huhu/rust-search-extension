@@ -40,7 +40,7 @@ history.forEach(({ query, content, description, time }) => {
     if (stat) {
         stat.value += 1;
     } else {
-        // Classify the default searching
+        // Classify the default search cases
         if (["https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
             // Crates
             stats[2].value += 1;
@@ -73,6 +73,7 @@ history.forEach(({ query, content, description, time }) => {
             topCratesData[crate] = counter + 1;
         }
     } else if (["chrome-extension", "moz-extension"].some(prefix => content.startsWith(prefix))) {
+        // This is the repository redirection case
         let url = new URL(content);
         let search = url.search.replace("?crate=", "");
         let crate = search.replace(/-/gi, "_");
@@ -97,9 +98,9 @@ let heatmap = calendarHeatmap()
         { min: 12, max: 'Infinity', color: '#f40703' }
     ])
     .tooltipUnit([
-        { min: 0, unit: 'searching' },
-        { min: 1, max: 1, unit: 'searching' },
-        { min: 2, max: 'Infinity', unit: 'searchings' }
+        { min: 0, unit: 'search' },
+        { min: 1, max: 1, unit: 'searches' },
+        { min: 2, max: 'Infinity', unit: 'searches' }
     ])
     .legendEnabled(true)
     .onClick(function (data) {
@@ -131,8 +132,8 @@ histogram({
     ...histogramConfig,
 });
 
-let searchingTimes = document.querySelector(".searching-time");
-let frequency = searchingTimes.querySelectorAll("b");
+let searchTimes = document.querySelector(".search-time");
+let frequency = searchTimes.querySelectorAll("b");
 frequency[0].textContent = `${history.length}`;
 frequency[1].textContent = calculateSavedTime(history.length);
 function calculateSavedTime(times) {
@@ -145,9 +146,9 @@ function calculateSavedTime(times) {
     }
 }
 
-let searchingStatsGraph = document.querySelector(".searching-stats-graph");
-let searchingStatsText = document.querySelector(".searching-stats-text");
-let ol = searchingStatsText.querySelector("ol");
+let searchStatsGraph = document.querySelector(".search-stats-graph");
+let searchStatsText = document.querySelector(".search-stats-text");
+let ol = searchStatsText.querySelector("ol");
 stats.sort((a, b) => {
     // Others always the last
     if (a.name === "Others" || b.name === "Others") return 0;
@@ -160,7 +161,7 @@ stats.forEach(({ name, color, value }) => {
                             <span class="">${(value / history.length * 100).toFixed(1)}%<span>`;
     ol.append(li);
     if (value > 0) {
-        searchingStatsGraph.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / history.length * 100}%;
+        searchStatsGraph.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / history.length * 100}%;
                                                         background-color:${color}"></span>`);
     }
 });

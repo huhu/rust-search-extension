@@ -9,7 +9,7 @@ h3 {
 .show:not(:first-child) {
   border-left: 1px solid #ffffff;
 }
-.searching-stats-graph {
+.search-stats-graph {
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
   border-bottom-left-radius: 3px;
@@ -29,12 +29,12 @@ h3 {
   height: 8px;
   border-radius: 50%;
 }
-.searching-stats-text li {
+.search-stats-text li {
   display: flex;
   align-items: center;
   list-style: none;
 }
-.searching-stats-text span {
+.search-stats-text span {
   padding: 3px;
   font-size: 16px;
 }
