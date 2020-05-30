@@ -47,8 +47,3 @@ h3 {
 #chart rect:hover {
   fill: rgb(255, 157, 0);
 }
-.appendix {
-  font-size: 20px;
-  border: none;
-  outline: none;
-}
