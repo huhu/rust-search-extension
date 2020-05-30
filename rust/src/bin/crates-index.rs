@@ -95,7 +95,9 @@ fn generate_javascript_crates_index(
             (
                 minifier.mapping_minify_crate_id(item.name),
                 (
-                    item.description.map(|value| minifier.mapping_minify(value)),
+                    item.description
+                        .map(|value| value.replace("\n", "").trim().to_string())
+                        .map(|value| minifier.mapping_minify(value)),
                     item.version,
                 ),
             )
