@@ -13,7 +13,7 @@ jobs:
     - name: "Build release binary"
       run: |
         cd rust
-        cargo build --release
+        cargo build --release --all-features
     - name: "Upload Artifact"
       uses: actions/upload-artifact@master
       with:
