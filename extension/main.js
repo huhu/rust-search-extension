@@ -113,8 +113,8 @@ omnibox.addPrefixQueryEvent("!", {
     onAppend: (query) => {
         let keyword = query.replace(/[!\s]/g, "");
         return [{
-            content: "https://crates.io/search?q=" + encodeURIComponent(keyword),
-            description: "Search Rust crates for " + c.match(keyword) + " on https://crates.io",
+            content: `https://${settings.crateRegistry}/search?q=` + encodeURIComponent(keyword),
+            description: "Search Rust crates for " + c.match(keyword) + ` on https://${settings.crateRegistry}`,
         }, {
             content: "remind",
             description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,
