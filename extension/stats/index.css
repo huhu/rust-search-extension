@@ -30,9 +30,11 @@ h3 {
   border-radius: 50%;
 }
 .search-stats-text li {
+  list-style: none;
+}
+.search-stats-text div {
   display: flex;
   align-items: center;
-  list-style: none;
 }
 .search-stats-text span {
   padding: 3px;
@@ -44,8 +46,4 @@ h3 {
 }
 #chart rect:hover {
   fill: rgb(255, 157, 0);
-}
-.appendix {
-    color: #666;
-    padding: 5px;
 }

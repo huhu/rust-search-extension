@@ -12,12 +12,12 @@ function makeNumericKeyObject(start, end, initial = 0) {
 }
 
 let stats = [
-    { name: "Std docs", pattern: null, value: 0, color: "#ffa600" },
-    { name: "External docs", pattern: /^[~@].*/i, value: 0, color: "#ff00af" },
-    { name: "Crates", pattern: /^!.*/i, value: 0, color: "#b600ff" },
-    { name: "Attribute", pattern: /^#.*/i, value: 0, color: "#00442d" },
-    { name: "Error code", pattern: /e\d{2,4}$/i, value: 0, color: "#dd4814" },
-    { name: "Others", pattern: /^[>%].*/i, value: 0, color: "#ededed" },
+    { name: "Std docs", pattern: null, value: 0, color: "#ffa600", description: "Std docs!"},
+    { name: "External docs", pattern: /^[~@].*/i, value: 0, color: "#ff00af", description: "External docs"},
+    { name: "Crates", pattern: /^!.*/i, value: 0, color: "#b600ff", description: "Crates"},
+    { name: "Attribute", pattern: /^#.*/i, value: 0, color: "#00442d", description: "Attribute"},
+    { name: "Error code", pattern: /e\d{2,4}$/i, value: 0, color: "#dd4814", description: "Error code"},
+    { name: "Others", pattern: /^[>%].*/i, value: 0, color: "#ededed", description: "Others"},
 ];
 let calendarData = [];
 let topCratesData = {};
@@ -157,11 +157,13 @@ stats.sort((a, b) => {
     if (a.name === "Others" || b.name === "Others") return 0;
     return b.value - a.value;
 });
-stats.forEach(({ name, color, value }) => {
+stats.forEach(({ name, color, value, description }) => {
     let li = document.createElement("li");
-    li.innerHTML = `<span class="color-block" style="background-color:${color}"></span>
-                            <span class="">${name}</span>
-                            <span class="">${(value / history.length * 100).toFixed(1)}%<span>`;
+    li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up">
+                        <span class="color-block" style="background-color:${color}"></span>
+                        <span class="">${name}</span>
+                        <span class="">${(value / history.length * 100).toFixed(1)}%</span>
+                     </div>`;
     ol.append(li);
     if (value > 0) {
         searchStatsGraph.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / history.length * 100}%;

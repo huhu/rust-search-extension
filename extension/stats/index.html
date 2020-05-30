@@ -11,6 +11,7 @@
     <script type="text/javascript" src="../libs/charts.js"></script>
 
     <link rel="stylesheet" href="../libs/calendar-heatmap.css">
+    <link rel="stylesheet" href="../libs/balloon.min.css">
     <link rel="stylesheet" href="../libs/charts.css">
     <link rel="stylesheet" href="../generic.css">
     <link rel="stylesheet" href="index.css">
@@ -31,6 +32,8 @@
             </div>
             <div class="search-time" style="text-align: center;font-size: 20px;">
                 <b>0</b> searches in total since the first day, approximately saved <b>0 seconds.</b>
+                <b aria-label="We consider one search save 5 seconds in average, just an estimated value." data-balloon-pos="up" 
+                data-balloon-length="medium" style="vertical-align: middle"><img src="info.svg" alt="info"></b>
             </div>
             <div id="chart">
                 <div style="padding: 30px 0;">
@@ -41,7 +44,7 @@
                         </ol>
                     </div>
                 </div>
-                <div style="display: flex; flex-direction: row-reverse; align-items: flex-start; padding: 30px 0;">
+                <div style="display: flex; flex-direction: row-reverse; align-items: flex-start; padding-top: 30px;">
                     <div>
                         <div class="" style="padding-bottom: 20px;">
                             <h3>Searches per weekday</h3>
@@ -63,10 +66,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <hr>
-            <div class="appendix">
-                <div id="appendix1"><small>1. We consider one search save 5 seconds in average, just an estimated value.</small></div>
             </div>
         </div>
     </div>
