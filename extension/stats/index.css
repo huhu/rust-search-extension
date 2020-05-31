@@ -47,3 +47,6 @@ h3 {
 #chart rect:hover {
   fill: rgb(255, 157, 0);
 }
+.tooltip-color {
+  --balloon-color: rgba(0,0,0,0.7)
+}

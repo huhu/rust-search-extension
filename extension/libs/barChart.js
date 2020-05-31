@@ -40,7 +40,7 @@ function barChart({ margin, height, width, data, selector, color, }) {
             tooltip = d3.select(selector)
                 .append('div')
                 .attr('class', 'histogram-bar-tooltip')
-                .html(`<span style="color:#fff">${d.value}</span>`)
+                .html(`<span>${d.value}</span>`)
                 .style('width', `${tooltipWidth}px`)
                 .style('left', x(d.value) + 5 + "px")
                 .style('top', y(i) + y.bandwidth() / 2 - tooltipWidth / 3 + "px")

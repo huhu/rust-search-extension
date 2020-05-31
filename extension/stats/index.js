@@ -195,7 +195,7 @@ stats.sort((a, b) => {
 stats.forEach(({ name, color, value, description }) => {
     let li = document.createElement("li");
     li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up" data-balloon-length="large"
-                        style="text-align: center">
+                        style="text-align: center" class="tooltip-color">
                         <span class="color-block" style="background-color:${color}"></span>
                         <span class="">${name}</span>
                         <span class="">${(value / history.length * 100).toFixed(1)}%</span>
