@@ -40,7 +40,7 @@ function histogram({ selector, width, height, data, color, margin }) {
             tooltip = d3.select(selector)
                 .append('div')
                 .attr('class', 'histogram-bar-tooltip')
-                .html(`<span style="color:#fff">${d.value}</span>`)
+                .html(`<span>${d.value}</span>`)
                 .style('width', `${tooltipWidth}px`)
                 .style('left', () => {
                     return x(i) + x.bandwidth() / 2 - tooltipWidth / 2 + "px";
