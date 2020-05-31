@@ -112,9 +112,22 @@ omnibox.addPrefixQueryEvent("!", {
     },
     onAppend: (query) => {
         let keyword = query.replace(/[!\s]/g, "");
+        let encode = encodeURIComponent(keyword);
+        let content;
+        let description;
+        if(query.startsWith("!!!")) {
+            content = "https://github.com/search?q=" + encode;
+            description = "Search Rust crates for " + c.match(keyword) + " on https://github.com";
+        } else if(query.startsWith("!!")) {
+            content = "https://docs.rs/releases/search?query=" + encode;
+            description = "Search Rust crates for " + c.match(keyword) + " on https://docs.rs";
+        } else {
+            content = `https://${settings.crateRegistry}/search?q=` + encode;
+            description = "Search Rust crates for " + c.match(keyword) + ` on https://${settings.crateRegistry}`;
+        }   
         return [{
-            content: `https://${settings.crateRegistry}/search?q=` + encodeURIComponent(keyword),
-            description: "Search Rust crates for " + c.match(keyword) + ` on https://${settings.crateRegistry}`,
+            content,
+            description
         }, {
             content: "remind",
             description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,
