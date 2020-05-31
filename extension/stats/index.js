@@ -12,12 +12,47 @@ function makeNumericKeyObject(start, end, initial = 0) {
 }
 
 let stats = [
-    { name: "Std docs", pattern: null, value: 0, color: "#ffa600", description: "Std docs!"},
-    { name: "External docs", pattern: /^[~@].*/i, value: 0, color: "#ff00af", description: "External docs"},
-    { name: "Crates", pattern: /^!.*/i, value: 0, color: "#b600ff", description: "Crates"},
-    { name: "Attribute", pattern: /^#.*/i, value: 0, color: "#00442d", description: "Attribute"},
-    { name: "Error code", pattern: /e\d{2,4}$/i, value: 0, color: "#dd4814", description: "Error code"},
-    { name: "Others", pattern: /^[>%].*/i, value: 0, color: "#ededed", description: "Others"},
+    {name: "Std docs",
+        pattern: null,
+        value: 0,
+        color: "#FEC744",
+        description: "Std docs count the non-prefix std docs searches."
+    },
+    {
+        name: "External docs",
+        pattern: /^[~@].*/i,
+        value: 0,
+        color: "#ff00af",
+        description: `External docs count any ~ or @ prefix searches.`
+    },
+    {
+        name: "Crates",
+        pattern: /^!.*/i,
+        value: 0,
+        color: "#3D6739",
+        description: "Crates count any ! prefix searches, including !, !! and !!!."
+    },
+    {
+        name: "Attributes",
+        pattern: /^#.*/i,
+        value: 0,
+        color: "#030303",
+        description: "Attributes count any # prefix searches."
+    },
+    {
+        name: "Error codes",
+        pattern: /e\d{2,4}$/i,
+        value: 0,
+        color: "#f50707",
+        description: "Error codes count any error code searches. (regex: e\\d{2,4})"
+    },
+    {
+        name: "Others",
+        pattern: /^[>%].*/i,
+        value: 0,
+        color: "#ededed",
+        description: "Others count any Clippy lint (>) or book (%) prefix searches."
+    },
 ];
 let calendarData = [];
 let topCratesData = {};
@@ -159,7 +194,8 @@ stats.sort((a, b) => {
 });
 stats.forEach(({ name, color, value, description }) => {
     let li = document.createElement("li");
-    li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up">
+    li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up" data-balloon-length="large"
+                        style="text-align: center">
                         <span class="color-block" style="background-color:${color}"></span>
                         <span class="">${name}</span>
                         <span class="">${(value / history.length * 100).toFixed(1)}%</span>

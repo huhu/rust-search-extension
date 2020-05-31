@@ -6,7 +6,7 @@ class HelpCommand extends Command {
     onExecute() {
         const value = ([
             `Prefix ${c.match(":")} to execute command (:book, :yet, :stable, etc)`,
-            `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs url`,
+            `Prefix ${c.match("!")} to search crates, prefix ${c.match("!!")} to search crates's docs, prefix ${c.match("!!!")} can redirect to the repository`,
             `Prefix ${c.match("~")} to search external crate's docs`,
             `Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search that crate's doc exclusively`,
             `Prefix ${c.match("#")} to search builtin attributes`,
