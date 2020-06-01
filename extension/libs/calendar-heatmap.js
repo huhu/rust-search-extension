@@ -106,7 +106,9 @@ function calendarHeatmap() {
 
     var dateRange = ((d3.time && d3.time.days) || d3.timeDays)(yearAgo, now); // generates an array of date objects within the specified range
     var monthRange = ((d3.time && d3.time.months) || d3.timeMonths)(moment(yearAgo).startOf('month').toDate(), now); // it ignores the first month if the 1st date is after the start of the month
-    monthRange = monthRange.slice(-12);
+    if(now.getDate() >= 23) {
+      monthRange = monthRange.slice(-12);
+    }
     var firstDate = moment(dateRange[0]);
     if (chart.data().length == 0) {
       max = 0;
