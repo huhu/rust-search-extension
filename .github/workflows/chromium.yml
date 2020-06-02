@@ -21,7 +21,7 @@ jobs:
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
 
       - name: Generate Chrome manifest.json
-        run: make manifest browser=chrome
+        run: make chrome
 
       - name: "web-ext build"
         id: web-ext-build-chrome
