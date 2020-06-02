@@ -4,6 +4,19 @@ description = "Changelog"
 weight = 3
 +++
 
+# v0.10 - 2020-06-04
+
+- Bump std search index version to **v1.44.0**
+- Support prefix **~** to search all added crate's docs collectively
+- Support prefix triple ! (**!!!**) to open crate's repository quickly
+- Support customize [crates.io](https://crates.io)(default) or [lib.rs](https://lib.rs) for crates searching
+- Add search statistics page, including calendar heatmap, daily|weekly|hourly search bar charts, and top searched crates, etc
+- New commands:
+    - `:tool`: search rust tools
+- Bugfix:
+    - Fix std doc history bug
+    - Fix wrong Add button state in docs.rs's src page issue 
+
 # v0.9 - 2020-04-24
 
 - Bump std search index version to **v1.43.0**
