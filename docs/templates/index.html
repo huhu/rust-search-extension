@@ -16,10 +16,11 @@
 </head>
 <body>
 {% block header %}
-<header class="pos-absolute" style="background-color: transparent">
+<div class="top-header">
+    <header class="pos-absolute" style="background-color: transparent";>
     {{ macros::render_header() }}
-</header>
-<div class="hero">
+    </header>
+    <div class="hero">
     <section style="padding:10px">
         <h1 class="text-center heading-text">
             The ultimate search extension for Rust
@@ -44,7 +45,7 @@
                target="_blank">
                 Install to Firefox
             </a>
-            <a class="btn-download edge"
+            <a class="btn-download edg"
                href="https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe"
                target="_blank">
                 Install to Edge
@@ -57,7 +58,26 @@
          onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
         Explore More ⇩
     </div>
+    </div>
 </div>
+<script>
+    function mobilizeDownloadButton() {
+        let navigator = window.navigator.userAgent.toLocaleLowerCase();
+        if(window.innerWidth < 768) {
+            document.querySelectorAll('.btn-download').forEach((element)=>{
+                element.classList.add('hide');
+            });
+            let target = ['firefox', 'edg'].find(item => navigator.includes(item)) || 'chrome';
+            document.querySelector(`.${target}`).classList.remove('hide');
+        } else {
+            document.querySelectorAll('.btn-download').forEach((element)=>{
+                element.classList.remove('hide');
+            });
+        }        
+    }
+    mobilizeDownloadButton();
+    window.onresize = function(){ mobilizeDownloadButton()};
+</script>
 {% endblock header %}
 
 <main>
