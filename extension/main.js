@@ -21,7 +21,8 @@ const omnibox = new Omnibox(defaultSuggestion, c.omniboxPageSize());
 let formatDoc = (index, doc) => {
     let description = doc.displayPath + c.match(doc.name);
     if (doc.desc) {
-        description += " - " + c.dim(c.escape(doc.desc));
+        description += ` - ${c.dim(c.escape(doc.desc))}`;
+
     }
     return { content: doc.href, description };
 };
@@ -85,7 +86,7 @@ omnibox.addPrefixQueryEvent("@", {
     },
 });
 
-const REDIRECT_URL = chrome.runtime.getURL("redirect/redirect.html");
+const REDIRECT_URL = chrome.runtime.getURL("redirect.html");
 omnibox.addPrefixQueryEvent("!", {
     defaultSearch: true,
     searchPriority: 1,
@@ -102,8 +103,9 @@ omnibox.addPrefixQueryEvent("!", {
             content = `https://docs.rs/${crate.id}`;
             description = `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
         } else {
-            content = `https://${settings.crateRegistry}/crates/${crate.id}`;
-            description = `${c.capitalize(settings.crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
+            let registry = settings.crateRegistry;
+            content = `https://${registry}/crates/${crate.id}`;
+            description = `${c.capitalize(registry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
         }
         return {
             content,
@@ -122,9 +124,10 @@ omnibox.addPrefixQueryEvent("!", {
             content = "https://docs.rs/releases/search?query=" + encode;
             description = "Search Rust crates for " + c.match(keyword) + " on https://docs.rs";
         } else {
-            content = `https://${settings.crateRegistry}/search?q=` + encode;
-            description = "Search Rust crates for " + c.match(keyword) + ` on https://${settings.crateRegistry}`;
-        }   
+            let registry = settings.crateRegistry;
+            content = `https://${registry}/search?q=` + encode;
+            description = "Search Rust crates for " + c.match(keyword) + ` on https://${registry}`;
+        }
         return [{
             content,
             description
