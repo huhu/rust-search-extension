@@ -8,7 +8,7 @@ weight = 3
 
 - Bump std search index version to **v1.44.0**
 - Support prefix **~** to search all added crate's docs collectively
-- Support prefix triple ! (**!!!**) to open crate's repository quickly
+- Support prefix **!!!** (triple !) to open crate's repository effortlessly
 - Support customize [crates.io](https://crates.io)(default) or [lib.rs](https://lib.rs) for crates searching
 - Add search statistics page, including calendar heatmap, daily|weekly|hourly search bar charts, and top searched crates, etc
 - New commands:

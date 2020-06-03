@@ -112,12 +112,27 @@ Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust 
 
 ![IMG](/feature-flags.png)
 
-## Add crate to extension
+## Add your favorite crate to extension
 
 By clicking the `+ to Rust Search Extension` button, you can add the crate to the extension, which brings the 
 search capability for this crate on the address bar.
 
+# Searching statistics
+
+
+
 # Miscellaneous
+
+## Customize crates searching platform
+
+You can customize your preferred crates searching platform such as [crates.io](https://crates.io)(default) 
+or [lib.rs](https://lib.rs) on the popup page.
+
+## Open repository quickly
+
+You can prefix **!!!** (triple !) to open crate's repository quickly. 
+For example, input `!!!tokio` and enter, the extension will obtain the repository url then redirect to 
+the github repository page of **tokio** effortlessly.
 
 ## Page down/up easily
 
