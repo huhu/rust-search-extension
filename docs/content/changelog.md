@@ -11,10 +11,11 @@ weight = 3
 - Support prefix **!!!** (triple !) to open crate's repository effortlessly
 - Support customize [crates.io](https://crates.io)(default) or [lib.rs](https://lib.rs) for crates searching
 - Add search statistics page, including calendar heatmap, daily|weekly|hourly search bar charts, and top searched crates, etc
+- Improve searching speed, approximately 10% faster than the previous version
 - New commands:
     - `:tool`: search rust tools
 - Bugfix:
-    - Fix std doc history bug
+    - Fix std doc offline mode bug
     - Fix wrong Add button state in docs.rs's src page issue 
 
 # v0.9 - 2020-04-24

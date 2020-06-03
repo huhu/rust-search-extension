@@ -70,7 +70,8 @@ You can open the popup page to sync the latest crates index automatically. ([Som
 for Firefox users.)
 
 What more, you can prefix an **!** (exclamation mark) before the keyword to search crates exclusively, 
-prefix one more **!** (double exclamation mark) to open [docs.rs](https://docs.rs) page instead [crates.io](https://crates.io) page!
+prefix one more **!** (double exclamation mark) to open [docs.rs](https://docs.rs) page instead [crates.io](https://crates.io) page,
+prefix **!!!** (triple exclamation mark) to open crate's repository (See [Open repository quickly](/#open-repository-quickly)).
 
 ![GIF](/search-crates.gif)
 
@@ -100,6 +101,7 @@ Those commands including but not limited to:
 - **:book** - Show all Rust official books. 
 - **:stable** - Show stable Rust scheduled release date in the next year. 
 - **:label** - Show all issue labels of rust-lang repository. 
+- **:tool** - Show useful rust tools
 - **:history** - Show your local search history
 
 ![IMG](/command-system.gif)
@@ -119,7 +121,18 @@ search capability for this crate on the address bar.
 
 # Searching statistics
 
+Searching statistics page provides a set of useful charts to visualize your search history. This gives you a 
+powerful insight view on how frequency you search, how much valuable time you saved.
 
+These charts including:
+
+- A calendar heatmap represents your searching history in the last year
+- A percentage chart reflects each category weight you searched
+- Weekly, daily, and hourly bar chart tells you searching frequency in different time dimensionality
+- Top searched crates chart gives you the rank of personal crate searching
+
+![IMG](/statistic-1.png)
+![IMG](/statistic-2.png)
 
 # Miscellaneous
 
@@ -131,7 +144,7 @@ or [lib.rs](https://lib.rs) on the popup page.
 ## Open repository quickly
 
 You can prefix **!!!** (triple !) to open crate's repository quickly. 
-For example, input `!!!tokio` and enter, the extension will obtain the repository url then redirect to 
+For example, input `!!!tokio` then enter, the extension will obtain the repository url then redirect to 
 the github repository page of **tokio** effortlessly.
 
 ## Page down/up easily
