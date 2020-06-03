@@ -16,7 +16,7 @@
 </head>
 <body>
 {% block header %}
-<div class="top-header">
+
     <header class="pos-absolute" style="background-color: transparent";>
     {{ macros::render_header() }}
     </header>
@@ -25,7 +25,7 @@
         <h1 class="text-center heading-text">
             The ultimate search extension for Rust
         </h1>
-        <h3 class="text">
+        <h3 class="text" style="text-align: center;">
             Search <b>docs</b>, <b>crates</b>, builtin <b>attributes</b>, official <b>books</b>, and
             <b>error codes</b>, etc in your address bar instantly. Input keyword <b>rs</b> then press <code>Space</code>
             to get started. Just that easy!
@@ -59,7 +59,7 @@
         Explore More ⇩
     </div>
     </div>
-</div>
+
 <script>
     function mobilizeDownloadButton() {
         let navigator = window.navigator.userAgent.toLocaleLowerCase();
