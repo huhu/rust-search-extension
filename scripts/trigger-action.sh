@@ -22,15 +22,16 @@ main() {
         exit 0
     fi
 
-    event_types=(0 deploy-docs build-crates-index build-binary)
+    event_types=(0 deploy-docs build-crates-index build-binary build-index)
     echo "Please select trigger type:"
     echo "1) ${event_types[1]}"
     echo "2) ${event_types[2]}"
     echo "3) ${event_types[3]}"
+    echo "4) ${event_types[4]}"
 
     read event_index
     case "${event_index}" in
-        1|2)
+        1|2|4)
             trigger ${event_types[event_index]}
         ;;
         3)

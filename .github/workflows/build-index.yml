@@ -1,0 +1,24 @@
+name: Build index
+on:
+  repository_dispatch:
+    types: build-index
+
+jobs:
+  build:
+    name: Build index
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Build index"
+        run: |
+          cd rust
+          RUST_BACKTRACE=full cargo run --bin books-index --features books-index --manifest-path=Cargo.toml /tmp/books.js
+          RUST_BACKTRACE=full cargo run --bin lints-index --features books-index --manifest-path=Cargo.toml /tmp/lints.js
+          RUST_BACKTRACE=full cargo run --bin labels-index --features labels-index --manifest-path=Cargo.toml /tmp/labels.js
+          zip /tmp/index.zip /tmp/*.js
+      - name: "Upload Index Artifact"
+        uses: actions/upload-artifact@master
+        with:
+          name: index.zip
+          path: /tmp/index.zip
+
