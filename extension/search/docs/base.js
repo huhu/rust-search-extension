@@ -32,7 +32,7 @@ var TY_PRIMITIVE = itemTypes.indexOf("primitive");
 var TY_KEYWORD = itemTypes.indexOf("keyword");
 
 // Max levenshtein distance.
-var MAX_LEV_DISTANCE = 3;
+var MAX_LEV_DISTANCE = 2;
 
 class DocSearch {
 
