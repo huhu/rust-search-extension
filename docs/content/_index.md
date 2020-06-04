@@ -45,14 +45,20 @@ However, please check the [Caveats](/faq/#caveats) if you are a Firefox user.
 
 ![GIF](/offline-mode.gif)
 
-## Search external crate's docs
+## Search external crate docs
 
 After you [add the crate to extension](#add-crate-to-extension), you can prefix **@crate-name** to search the docs 
-exclusive to that crate.
-
-For example, input `@tokio spawn` to search docs of **tokio**.
+exclusive to that crate. For example, input `@tokio spawn` to search docs of **tokio**. 
 
 ![GIF](/search-crate-docs.gif)
+
+**~** is another pretty prefix to search the external crate docs. Unlike the **@** prefix, **~**
+gives you the power to search docs across all your favorite crates effortlessly. 
+
+For example, input `~spawn`, you can get results related to "spawn" from all your favorite crates 
+(e.g. **tokio**, **async_std**, **smol**, and **futures** ). 
+
+![IMG](/tide-search.png)
 
 # Search builtin attributes
 
