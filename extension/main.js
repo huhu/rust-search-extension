@@ -39,7 +39,7 @@ omnibox.bootstrap({
         }];
     },
     beforeNavigate: (query, content) => {
-        if (content && /^@.\w+$/i.test(content.trim())) {
+        if (content && /^@\w+$/i.test(content.trim())) {
             // Case: @crate, redirect to that crate's docs.rs page
             return `https://docs.rs/${content.replace("@", "")}`;
         } else if (content && /^https?.*\/~\/\*\/.*/ig.test(content)) {
