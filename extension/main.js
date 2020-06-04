@@ -161,14 +161,13 @@ omnibox.addRegexQueryEvent(/e\d{2,4}$/i, {
             let errorIndex = 'E' + String(baseIndex++).padStart(4, "0").toUpperCase();
             result.push(errorIndex);
         }
-        return result;
+        return result.map(errorCode => {
+            return {
+                content: "https://doc.rust-lang.org/error-index.html#" + errorCode,
+                description: `Search Rust error index for ${c.match(errorCode)} on https://doc.rust-lang.org/error-index.html`,
+            };
+        });
     },
-    onFormat: (index, errorCode) => {
-        return {
-            content: "https://doc.rust-lang.org/error-index.html#" + errorCode,
-            description: `Search Rust error index for ${c.match(errorCode)} on https://doc.rust-lang.org/error-index.html`,
-        };
-    }
 });
 
 omnibox.addPrefixQueryEvent("%", {
