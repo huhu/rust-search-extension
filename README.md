@@ -54,9 +54,11 @@ $ git clone --recursive https://github.com/huhu/rust-search-extension
 Cloning into 'rust-search-extension'...
 $ cd rust-search-extension
 
-$ make chrome # For Chrome/Edge version
+$ make chrome # For Chrome version
 
 $ make firefox # For Firefox version
+
+$ make edge # For Edge version
 ```
 
 ## Get involved
