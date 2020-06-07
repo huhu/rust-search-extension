@@ -1,139 +1,176 @@
 {% import "_macros.html" as macros %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{{ config.title }}{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#F9BB2D">
     <meta name="description"
-          content="Rust Search Extension is a handy browser plugin to help you search Rust docs, crates, builtin attributes, books and error codes, etc instantly.">
+        content="Rust Search Extension is a handy browser plugin to help you search Rust docs, crates, builtin attributes, books and error codes, etc instantly.">
     <meta name="keywords"
-          content="rust, rust-lang, chrome extension, firefox extension, docs, rust docs, crates, rust attributes, rust books, rust error codes, search">
+        content="rust, rust-lang, chrome extension, firefox extension, docs, rust docs, crates, rust attributes, rust books, rust error codes, search">
     <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ get_url(path="index.css") }}">
 </head>
-<body>
-{% block header %}
 
-    <header class="pos-absolute" style="background-color: transparent";>
-    {{ macros::render_header() }}
+<body>
+    {% block header %}
+
+    <header class="pos-absolute" style="background-color: transparent" ;>
+        {{ macros::render_header() }}
     </header>
     <div class="hero">
-    <section style="padding:10px">
-        <h1 class="text-center heading-text">
-            The ultimate search extension for Rust
-        </h1>
-        <h3 class="text" style="text-align: center;">
-            Search <b>docs</b>, <b>crates</b>, builtin <b>attributes</b>, official <b>books</b>, and
-            <b>error codes</b>, etc in your address bar instantly. Input keyword <b>rs</b> then press <code>Space</code>
-            to get started. Just that easy!
-        </h3>
-        <div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center">
-            <a class="subtitle-text" style="text-decoration: underline; margin: 10px"
-               href="https://github.com/huhu/rust-search-extension/releases">
-                Current version 0.10.0
-            </a>
-            <a class="btn-download chrome"
-               href="https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh"
-               target="_blank">
-                Install to Chrome
-            </a>
-            <a class="btn-download firefox"
-               href="https://addons.mozilla.org/firefox/addon/rust-search-extension/"
-               target="_blank">
-                Install to Firefox
-            </a>
-            <a class="btn-download edg"
-               href="https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe"
-               target="_blank">
-                Install to Edge
-            </a>
-        </div>
-    </section>
-    <img class="demonstration-gif" src="{{ get_url(path="demonstration.gif") }}" alt="demonstration-gif">
-
-    <div class="explore-more text"
-         onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
-        Explore More ⇩
-    </div>
-    </div>
-
-<script>
-    function mobilizeDownloadButton() {
-        let navigator = window.navigator.userAgent.toLocaleLowerCase();
-        if(window.innerWidth < 768) {
-            document.querySelectorAll('.btn-download').forEach((element)=>{
-                element.classList.add('hide');
-            });
-            let target = ['firefox', 'edg'].find(item => navigator.includes(item)) || 'chrome';
-            document.querySelector(`.${target}`).classList.remove('hide');
-        } else {
-            document.querySelectorAll('.btn-download').forEach((element)=>{
-                element.classList.remove('hide');
-            });
-        }        
-    }
-    mobilizeDownloadButton();
-    window.onresize = function(){ mobilizeDownloadButton()};
-</script>
-{% endblock header %}
-
-<main>
-    {% block toc %}
-    <div class="toc">
-        <div class="toc-sticky">
-        {% if section.toc %}
-            {% set toc = section.toc %}
-        {% elif page.toc %}
-            {% set toc = page.toc %}
-        {% endif %}
-        {% if toc %}
-            {% for h in toc %}
-            <div class="toc-item">
-                <a class="subtext" href="{{h.permalink | safe}}">{{ h.title }}</a>
+        <section style="padding:10px">
+            <h1 class="text-center heading-text">
+                The ultimate search extension for Rust
+            </h1>
+            <h3 class="text" style="text-align: center;">
+                Search <b>docs</b>, <b>crates</b>, builtin <b>attributes</b>, official <b>books</b>, and
+                <b>error codes</b>, etc in your address bar instantly. Input keyword <b>rs</b> then press
+                <code>Space</code>
+                to get started. Just that easy!
+            </h3>
+            <div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center">
+                <a class="subtitle-text" style="text-decoration: underline; margin: 10px"
+                    href="https://github.com/huhu/rust-search-extension/releases">
+                    Current version 0.10.0
+                </a>
+                <a class="btn-download chrome"
+                    href="https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh"
+                    target="_blank">
+                    Install to Chrome
+                </a>
+                <a class="btn-download firefox" href="https://addons.mozilla.org/firefox/addon/rust-search-extension/"
+                    target="_blank">
+                    Install to Firefox
+                </a>
+                <a class="btn-download edg"
+                    href="https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe"
+                    target="_blank">
+                    Install to Edge
+                </a>
             </div>
+        </section>
+        <img class="demonstration-gif" src="{{ get_url(path="demonstration.gif") }}" alt="demonstration-gif">
+
+        <div class="explore-more text"
+            onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+            Explore More ⇩
+        </div>
+    </div>
+
+    <script>
+        function mobilizeDownloadButton() {
+            let navigator = window.navigator.userAgent.toLocaleLowerCase();
+            if (window.innerWidth < 768) {
+                document.querySelectorAll('.btn-download').forEach((element) => {
+                    element.classList.add('hide');
+                });
+                let target = ['firefox', 'edg'].find(item => navigator.includes(item)) || 'chrome';
+                document.querySelector(`.${target}`).classList.remove('hide');
+            } else {
+                document.querySelectorAll('.btn-download').forEach((element) => {
+                    element.classList.remove('hide');
+                });
+            }
+        }
+        mobilizeDownloadButton();
+        window.onresize = function () { mobilizeDownloadButton() };
+    </script>
+    {% endblock header %}
+
+    <main>
+        {% block toc %}
+        <div class="toc">
+            <div class="toc-sticky">
+                {% if section.toc %}
+                {% set toc = section.toc %}
+                {% elif page.toc %}
+                {% set toc = page.toc %}
+                {% endif %}
+                {% if toc %}
+                {% for h in toc %}
+                <div class="toc-item">
+                    <a class="subtext" href="{{h.permalink | safe}}">{{ h.title }}</a>
+                </div>
                 {% if h.children %}
                 {% for h2 in h.children %}
                 <div class="toc-item-child">
                     <a class="subtext" href="{{h2.permalink | safe}}"><small>- {{ h2.title }}</small></a>
                 </div>
                 {% endfor %}
-            {% endif %}
-        {% endfor %}
-        {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
         </div>
-    </div>
-    {% endblock toc %}
+        {% endblock toc %}
 
-    <div class="content text">
-        {% block content %}
-        <div id="features" class="heading-text">Overview</div>
-        {{ section.content | safe }}
-        {% endblock content %}
-    </div>
+        <div class="content text">
+            {% block content %}
+            <div id="features" class="heading-text">Overview</div>
+            {{ section.content | safe }}
+            {% endblock content %}
+        </div>
 
-</main>
+    </main>
 
-<footer>
-    <div class="sponsorship text">
-        Thanks for the sponsorship from
-        <span>
-            <a target="_blank" href="https://www.jetbrains.com/?from=rust-search-extension">
-                <img style="height: 55px;" src="/jetbrains.svg" alt="jetbrains">
-            </a>
-        </span>
-        and
-        <span>
-            <a target="_blank" href="https://vercel.com?utm_source=rust-search-extension">
-                <img style="height: 40px;" src="/vercel-light.svg" alt="vercel">
-            </a>
-        </span>
-    </div>
-    <small class="subtext">
-        <a href="https://huhu.io">Huhu.io</a> © 2020
-    </small>
-</footer>
+    <footer>
+        <div class="sponsorship text">
+            Thanks for the sponsorship from
+            <span>
+                <a target="_blank" href="https://www.jetbrains.com/?from=rust-search-extension">
+                    <img style="height: 55px;" src="/jetbrains.svg" alt="jetbrains">
+                </a>
+            </span>
+            and
+            <span>
+                <a target="_blank" href="https://vercel.com?utm_source=rust-search-extension">
+                    <img style="height: 40px;" src="/vercel-light.svg" alt="vercel">
+                </a>
+            </span>
+        </div>
+        <small class="subtext">
+            <a href="https://huhu.io">Huhu.io</a> © 2020
+        </small>
+    </footer>
 </body>
+<script>
+    function highlightNav(heading) {
+        let pathname = location.pathname;
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active")
+        });
+        document.querySelector(".toc a[href='" + pathname + "#" + heading + "']").classList.add("active");
+    }
+
+    let currentHeading = "";
+    window.onscroll = function () {
+        let h = document.querySelectorAll("h1,h2,h3,h4,h5,h6");
+        let elementArr = [];
+
+        h.forEach(item => {
+            if (item.id !== "") {
+                elementArr[item.id] = item.getBoundingClientRect().top;
+            }
+        });
+        elementArr.sort();
+        for (let key in elementArr) {
+            if (!elementArr.hasOwnProperty(key)) {
+                continue;
+            }
+            if (elementArr[key] > 0 && elementArr[key] < 300) {
+                if (currentHeading !== key) {
+                    highlightNav(key);
+                    currentHeading = key;
+                }
+                break;
+            }
+        }
+    }
+</script>
+
 </html>

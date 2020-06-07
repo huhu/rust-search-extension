@@ -140,6 +140,10 @@ main {
     }
   }
 
+  .toc-item a.active, .toc-item-child a.active {
+    color: #d46e13;;
+  }
+
   .toc-item-child {
     padding: 0 30px 5px;
     color: #424242;
