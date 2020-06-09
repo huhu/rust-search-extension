@@ -47,6 +47,10 @@ you want to search, the extension will response the related search results insta
 
 ![demonstration.gif](assets/demonstration.gif)
 
+## Diagram
+
+![diagram](assets/diagram.jpg)
+
 ## Contribution
 
 ```bash
