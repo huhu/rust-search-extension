@@ -9,6 +9,7 @@ use std::path::Path;
 
 use csv::ReaderBuilder;
 use libflate::gzip::Decoder;
+use rayon::prelude::*;
 use semver::Version;
 use serde::de::DeserializeOwned;
 use serde_derive::Deserialize;
@@ -90,7 +91,7 @@ fn generate_javascript_crates_index(
 ) -> std::io::Result<String> {
     let mut contents = String::from("var N=null;");
     let crates_map: HashMap<String, (Option<String>, Version)> = crates
-        .into_iter()
+        .into_par_iter()
         .map(|item| {
             (
                 minifier.mapping_minify_crate_id(item.name),
@@ -162,7 +163,7 @@ fn main() -> Result<()> {
     let mut collector = WordCollector::new();
     crates.iter_mut().for_each(|item: &mut Crate| {
         // Call position() then to remove() the item could be faster than find().
-        if let Some(position) = versions.iter().position(|v| v.crate_id == item.id) {
+        if let Some(position) = versions.par_iter().position_any(|v| v.crate_id == item.id) {
             item.version = versions.remove(position).num;
         }
 
