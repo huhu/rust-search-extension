@@ -14,7 +14,7 @@ LintSearch.prototype.search = function(keyword) {
         if (index > -1) {
             result.push({
                 name: rawLint,
-                matchedIndex: index,
+                matchIndex: index,
             });
         }
     }
