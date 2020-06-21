@@ -7,10 +7,10 @@ const stdSearcher = new StdSearch(searchIndex);
 const crateDocSearchManager = new CrateDocSearchManager();
 const commandManager = new CommandManager(
     new HelpCommand(),
-    new BookCommand(),
-    new YetCommand(),
+    new SimpleCommand('book', 'Show all Rust official books.', commandsIndex['book']),
+    new SimpleCommand('yet', 'Show all Are We Yet websites.', commandsIndex['yet']),
+    new SimpleCommand('tool', 'Show some most useful Rust tools.', commandsIndex['tool']),
     new StableCommand(),
-    new ToolCommand(),
     new LabelCommand(labelsIndex),
     new HistoryCommand(),
 );
@@ -24,7 +24,7 @@ let formatDoc = (index, doc) => {
         description += ` - ${c.dim(c.escape(doc.desc))}`;
 
     }
-    return { content: doc.href, description };
+    return {content: doc.href, description};
 };
 
 omnibox.bootstrap({
@@ -96,10 +96,10 @@ omnibox.addPrefixQueryEvent("!", {
     onFormat: (index, crate, query) => {
         let content;
         let description;
-        if (query.startsWith("!!!")){
+        if (query.startsWith("!!!")) {
             content = `${REDIRECT_URL}?crate=${crate.id}`;
             description = `${c.capitalize("repository")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`;
-        } else if(query.startsWith("!!")) {
+        } else if (query.startsWith("!!")) {
             content = `https://docs.rs/${crate.id}`;
             description = `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
         } else {
@@ -117,10 +117,10 @@ omnibox.addPrefixQueryEvent("!", {
         let encode = encodeURIComponent(keyword);
         let content;
         let description;
-        if(query.startsWith("!!!")) {
+        if (query.startsWith("!!!")) {
             content = "https://github.com/search?q=" + encode;
             description = "Search Rust crates for " + c.match(keyword) + " on https://github.com";
-        } else if(query.startsWith("!!")) {
+        } else if (query.startsWith("!!")) {
             content = "https://docs.rs/releases/search?query=" + encode;
             description = "Search Rust crates for " + c.match(keyword) + " on https://docs.rs";
         } else {
