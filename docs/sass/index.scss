@@ -22,8 +22,8 @@ ul > li {
   padding: 0.3rem 0;
 }
 
-p > img {
-  width: 100%;
+.content img {
+  width: 75%;
   height: auto;
 }
 
@@ -221,6 +221,11 @@ footer {
 
   .content {
     padding: 0;
+  }
+
+  .content img {
+    width: 100%;
+    height: auto;
   }
 
   .explore-more, .toc, .demonstration-gif {
