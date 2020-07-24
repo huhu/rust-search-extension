@@ -25,6 +25,11 @@ local json = manifest.new(
   matches=['*://docs.rs/*'],
   js=js_files('script', ['lib', 'docs-rs']) + js_files('libs', ['semver']),
   css=['script/docs-rs.css'],
+)
+             .addContentScript(
+  matches=['*://doc.rust-lang.org/nightly/std/*'],
+  js=js_files('script', ['lib', 'nightly-std']),
+  css=[],
 );
 
 local browser = std.extVar('browser');
