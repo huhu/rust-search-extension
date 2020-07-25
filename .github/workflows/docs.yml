@@ -9,8 +9,10 @@ jobs:
     name: Deploy to now branch
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: |
-        git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        ref: 'master'
+        submodules: 'recursive'
     - name: Deloy docs
       run: ./scripts/deploy-docs.sh
