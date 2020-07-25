@@ -13,6 +13,12 @@ highlight_theme = "inspired-github"
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = false
+theme = "juice"
 
 [extra]
 # Put all your custom variables here
+juice_logo_name = "Rust Search Extension"
+juice_logo_path = "logo.png"
+juice_extra_menu = [
+    { title = "Github", link = "https://github.com/huhu/rust-search-extension"}
+]

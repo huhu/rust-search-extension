@@ -1,3 +1,6 @@
 [submodule "core"]
 	path = core
 	url = git@github.com:huhu/search-extension-core.git
+[submodule "docs/themes/juice"]
+	path = docs/themes/juice
+	url = https://github.com/huhu/juice
