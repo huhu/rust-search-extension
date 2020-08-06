@@ -26,5 +26,13 @@
   {
     "name": "The Rust Cookbook",
     "url": "https://rust-lang-nursery.github.io/rust-cookbook/"
+  },
+  {
+    "name": "The Rustonomicon",
+    "url": "https://doc.rust-lang.org/nomicon/"
+  },
+  {
+    "name": "Guide to Rustc Development",
+    "url": "https://rustc-dev-guide.rust-lang.org/"
   }
 ]
