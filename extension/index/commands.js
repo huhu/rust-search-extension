@@ -37,5 +37,14 @@ var commandsIndex = {
         ["cheats.rs", "https://cheats.rs/"],
         ["caniuse.rs", "https://caniuse.rs/"],
         ["Macro Railroad ", "https://lukaslueg.github.io/macro_railroad_wasm_demo/"],
+    ],
+    "mirror": [
+        ["[CN] 清华大学开源软件镜像站-Rust Crates源", "https://mirrors.tuna.tsinghua.edu.cn/help/crates.io-index.git/"],
+        ["[CN] 清华大学开源软件镜像站-Rustup源", "https://mirrors.tuna.tsinghua.edu.cn/help/rustup/"],
+        ["[CN] 中国科学技术大学开源软件镜像站-Rust Crates源", "http://mirrors.ustc.edu.cn/help/crates.io-index.html"],
+        ["[CN] 中国科学技术大学开源软件镜像站-Rust Toolchain源", "http://mirrors.ustc.edu.cn/help/rust-static.html"],
+        ["[CN] 南京大学开源镜像站-Rust Crates源", "https://nju-mirror-help.njuer.org/rust-crates.html"],
+        ["[CN] 上海交通大学开源镜像站-Rust Crates源", "https://mirrors.sjtug.sjtu.edu.cn/#/"],
+        ["[CN] Rustcc.com源", "https://rustcc.com/article?id=6baecc6f-29ed-40d2-870b-343606aa2e93"],
     ]
 };

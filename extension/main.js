@@ -10,6 +10,7 @@ const commandManager = new CommandManager(
     new SimpleCommand('book', 'Show all Rust official books.', commandsIndex['book']),
     new SimpleCommand('yet', 'Show all Are We Yet websites.', commandsIndex['yet']),
     new SimpleCommand('tool', 'Show some most useful Rust tools.', commandsIndex['tool']),
+    new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandsIndex['mirror']),
     new StableCommand(),
     new LabelCommand(labelsIndex),
     new HistoryCommand(),
