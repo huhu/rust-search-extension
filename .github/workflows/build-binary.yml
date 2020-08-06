@@ -1,8 +1,7 @@
 name: build-binary
 
 on:
-  repository_dispatch:
-    types: build-binary
+  workflow_dispatch:
 
 jobs:
   build:

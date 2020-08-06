@@ -1,7 +1,6 @@
 name: Build index
 on:
-  repository_dispatch:
-    types: build-index
+  workflow_dispatch:
 
 jobs:
   build:
