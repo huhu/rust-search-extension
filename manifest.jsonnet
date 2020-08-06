@@ -18,7 +18,7 @@ local json = manifest.new(
 )
              .addBackgroundScripts(js_files('search', ['book', 'crate', 'attribute', 'lint']))
              .addBackgroundScripts(js_files('search/docs', ['base', 'std', 'crate-doc']))
-             .addBackgroundScripts(js_files('index', ['books', 'crates', 'std-docs', 'lints', 'labels', 'commands']))
+             .addBackgroundScripts(js_files('index', ['attributes', 'books', 'crates', 'std-docs', 'lints', 'labels', 'commands']))
              .addBackgroundScripts(js_files('command', ['label', 'help', 'stable']))
              .addBackgroundScripts('main.js')
              .addContentScript(

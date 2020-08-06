@@ -1,6 +1,6 @@
 const c = new Compat();
 const crateSearcher = new CrateSearch(mapping, crateIndex);
-const attributeSearcher = new AttributeSearch();
+const attributeSearcher = new AttributeSearch(attributesIndex);
 const bookSearcher = new BookSearch(booksIndex);
 const lintSearcher = new LintSearch(lintsIndex);
 const stdSearcher = new StdSearch(searchIndex);
