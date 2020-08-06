@@ -44,7 +44,7 @@ weight = 1
 
 > Keep on improving it and adding new features! This extension is awesome!
 
-## From arthamys
+## From *arthamys*
 
 > This new version greatly improves productivity, and adds a lot of shorthands to 
 > make navigating the docs even more efficient
