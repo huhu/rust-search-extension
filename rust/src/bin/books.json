@@ -30,9 +30,5 @@
   {
     "name": "The Rustonomicon",
     "url": "https://doc.rust-lang.org/nomicon/"
-  },
-  {
-    "name": "Guide to Rustc Development",
-    "url": "https://rustc-dev-guide.rust-lang.org/"
   }
 ]
