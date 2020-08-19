@@ -1,7 +1,7 @@
 const c = new Compat();
 // Get extension background page.
 const background = c.getBackgroundPage();
-const CRATES_INDEX_BASE_URL = "https://rust-search-extension.now.sh/crates";
+const CRATES_INDEX_BASE_URL = "https://rust.extension.sh/crates";
 
 const toast = new Toast(".toast");
 

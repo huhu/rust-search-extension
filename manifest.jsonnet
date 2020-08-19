@@ -36,7 +36,7 @@ local browser = std.extVar('browser');
 if browser == 'firefox' then
   json
 else
-  json.appendContentSecurityPolicy(" script-src-elem 'self' https://rust-search-extension.now.sh/crates/index.js;")
+  json.appendContentSecurityPolicy(" script-src-elem 'self' https://rust.extension.sh/crates/index.js;")
   +
   if browser == 'chrome' then
     {

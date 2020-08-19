@@ -15,7 +15,7 @@
 
 Search **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly. 
 
-[https://rust-search-extension.now.sh/](https://rust-search-extension.now.sh/)
+[https://rust.extension.sh/](https://rust.extension.sh/)
 
 ## Installation
 
@@ -73,8 +73,8 @@ $ make edge # For Edge version
 
 ## Miscellaneous
 
-- [Changelog](https://rust-search-extension.now.sh/changelog/)
-- [FAQ](https://rust-search-extension.now.sh/faq/)
+- [Changelog](https://rust.extension.sh/changelog/)
+- [FAQ](https://rust.extension.sh/faq/)
 
 ## Thanks
 
