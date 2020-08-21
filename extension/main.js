@@ -154,8 +154,9 @@ omnibox.addPrefixQueryEvent("#", {
     }
 });
 
-omnibox.addRegexQueryEvent(/e\d{2,4}$/i, {
+omnibox.addRegexQueryEvent(/`?e\d{2,4}`?$/i, {
     onSearch: (query) => {
+        query = query.replace("`", "");
         let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
         let result = [];
         for (let index = 0; index < 10; index++) {

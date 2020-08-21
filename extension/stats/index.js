@@ -41,7 +41,7 @@ let stats = [
     },
     {
         name: "Error codes",
-        pattern: /e\d{2,4}$/i,
+        pattern: /`?e\d{2,4}`?$/i,
         value: 0,
         color: "#f50707",
         description: "Error codes count any error code searches. (regex: e\\d{2,4})"
