@@ -7,17 +7,17 @@ local js_files(name, files) = ['%s/%s.js' % [name, file] for file in files];
 
 local json = manifest.new(
   name='Rust Search Extension',
-  version='0.10.0',
+  version='0.11.0',
   keyword='rs',
   description='The ultimate search extension for Rust',
 )
              .addIcons(icons())
-             .addWebAccessibleResources('script/add-search-index.js')
+             .addWebAccessibleResources(['script/add-search-index.js', 'script/add-nightly-search-index.js'])
              .addBackgroundScripts(
   ['settings.js', 'deminifier.js']
 )
              .addBackgroundScripts(js_files('search', ['book', 'crate', 'attribute', 'lint']))
-             .addBackgroundScripts(js_files('search/docs', ['base', 'std', 'crate-doc']))
+             .addBackgroundScripts(js_files('search/docs', ['base', 'std', 'nightly', 'crate-doc']))
              .addBackgroundScripts(js_files('index', ['attributes', 'books', 'crates', 'std-docs', 'lints', 'labels', 'commands']))
              .addBackgroundScripts(js_files('command', ['label', 'help', 'stable']))
              .addBackgroundScripts('main.js')

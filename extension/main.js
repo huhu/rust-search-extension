@@ -212,6 +212,22 @@ chrome.runtime.setUninstallURL(
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
+        // Nightly:* action is exclusive to nightly docs event
+        case "nightly:check" : {
+            let currentNightlyVersion = NightlyDocManager.getNightlyVersion();
+            if (currentNightlyVersion && Date.parse(currentNightlyVersion) >= Date.parse(message.nightlyVersion)) {
+                sendResponse({state: 'latest'});
+            } else {
+                sendResponse({state: 'outdated'});
+            }
+            break;
+        }
+        case "nightly:add" : {
+            NightlyDocManager.setNightlyDocs(message.searchIndex);
+            NightlyDocManager.setNightlyVersion(message.nightlyVersion);
+            sendResponse(true);
+            break;
+        }
         case "check": {
             let crates = CrateDocSearchManager.getCrates();
             sendResponse(crates[message.crateName]);
