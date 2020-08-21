@@ -9,14 +9,6 @@ class NightlySearch extends DocSearch {
 }
 
 class NightlyDocManager {
-    static getNightlyVersion() {
-        return localStorage.getItem('nightly-version') || null;
-    }
-
-    static setNightlyVersion(version) {
-        localStorage.setItem('nightly-version', version);
-    }
-
     static getNightlyDocs() {
         return JSON.parse(localStorage.getItem('nightly-docs') || "{}");
     }

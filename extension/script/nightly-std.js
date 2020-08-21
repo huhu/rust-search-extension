@@ -1,14 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let p = document.querySelector('nav.sidebar>div.version>p');
-
-    let nightlyVersion = p.textContent.match(/\d{4}-\d{1,2}-\d{1,2}/)[0];
-
-    chrome.runtime.sendMessage({nightlyVersion, action: "nightly:check"}, response => {
-        console.log('response:', response);
-        if (response.state !== 'latest') {
-            injectScripts(["script/add-nightly-search-index.js"]);
-        }
-    });
+    injectScripts(["script/add-nightly-search-index.js"]);
 });
 
 window.addEventListener("message", function (event) {
