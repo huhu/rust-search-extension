@@ -47,32 +47,6 @@
   display: none;
 }
 
-footer {
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #202020;
-  color: #fcfcfc;
-
-  a {
-    color: #fcfcfc;
-    text-decoration: underline;
-  }
-
-  .sponsorship {
-    display: flex;
-    align-items: center;
-    margin-bottom: 50px;
-    color: white;
-  }
-
-  img {
-    padding: 10px;
-  }
-}
-
 @media screen and (max-width: 768px) {
   header {
     padding: 10px 30px;
@@ -114,12 +88,5 @@ footer {
 
   .explore-more, .toc, .demonstration-gif {
     display: none;
-  }
-
-  footer {
-    .sponsorship {
-      flex-direction: column;
-      margin-bottom: 60px;
-    }
   }
 }

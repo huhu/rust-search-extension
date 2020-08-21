@@ -59,30 +59,18 @@
     }
 
     mobilizeDownloadButton();
-    window.onresize = function() {
-        mobilizeDownloadButton()
+    window.onresize = function () {
+        mobilizeDownloadButton();
     };
 </script>
 {% endblock hero %}
 
 {% block footer %}
-<footer>
-    <div class="sponsorship text">
-        Thanks for the sponsorship from
-        <span>
-                <a target="_blank" href="https://www.jetbrains.com/?from=rust-search-extension">
-                    <img style="height: 55px;" src="/jetbrains.svg" alt="jetbrains">
-                </a>
-            </span>
-        and
-        <span>
-                <a target="_blank" href="https://vercel.com?utm_source=rust-search-extension">
-                    <img style="height: 40px;" src="/vercel-light.svg" alt="vercel">
-                </a>
-            </span>
-    </div>
-    <small class="subtext">
-        <a href="https://huhu.io">Huhu.io</a> © 2020
-    </small>
-</footer>
+<iframe id="footer" src="https://huhu.io/extension-footer.html"
+        style="display:block;width:100%;border:none;"></iframe>
+<script>
+    window.onmessage = e => {
+        e.data.hasOwnProperty("frameHeight") && (document.getElementById("footer").style.height = `${e.data.frameHeight}px`)
+    }
+</script>
 {% endblock footer %}
