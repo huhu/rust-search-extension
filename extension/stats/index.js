@@ -12,7 +12,8 @@ function makeNumericKeyObject(start, end, initial = 0) {
 }
 
 let stats = [
-    {name: "Std docs",
+    {
+        name: "Std docs",
         pattern: null,
         value: 0,
         color: "#FEC744",
@@ -83,7 +84,7 @@ history.forEach(({ query, content, description, time }) => {
             // Attribute
             stats[3].value += 1;
         } else {
-            // Std docs
+            // Std docs (stable or nightly)
             stats[0].value += 1;
         }
     }

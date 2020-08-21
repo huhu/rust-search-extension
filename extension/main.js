@@ -4,6 +4,7 @@ const attributeSearcher = new AttributeSearch(attributesIndex);
 const bookSearcher = new BookSearch(booksIndex);
 const lintSearcher = new LintSearch(lintsIndex);
 const stdSearcher = new StdSearch(searchIndex);
+let nightlySearcher = new NightlySearch(NightlyDocManager.getNightlyDocs());
 const crateDocSearchManager = new CrateDocSearchManager();
 const commandManager = new CommandManager(
     new HelpCommand(),
@@ -56,6 +57,20 @@ omnibox.bootstrap({
     afterNavigated: (query, result) => {
         HistoryCommand.record(query, result);
     }
+});
+
+omnibox.addPrefixQueryEvent("/", {
+    onSearch: (query) => {
+        query = query.replace("/", "").trim();
+        return nightlySearcher.search(query);
+    },
+    onFormat: formatDoc,
+    onAppend: (query) => {
+        return [{
+            content: nightlySearcher.getSearchUrl(query),
+            description: `Search nightly Rust docs ${c.match(query.replace("/", ""))} on ${nightlySearcher.rootPath}`,
+        }];
+    },
 });
 
 omnibox.addPrefixQueryEvent("~", {
@@ -204,7 +219,7 @@ omnibox.addPrefixQueryEvent(":", {
     },
 });
 
-omnibox.addNoCacheQueries("!", "@", ":");
+omnibox.addNoCacheQueries("/", "!", "@", ":");
 
 let fileNewIssue = "title=Have you found a bug? Did you feel something was missing?&body=Whatever it was, we'd love to hear from you.";
 chrome.runtime.setUninstallURL(
@@ -216,6 +231,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Nightly:* action is exclusive to nightly docs event
         case "nightly:add" : {
             NightlyDocManager.setNightlyDocs(message.searchIndex);
+            // New nightlySearcher instance after docs updated
+            nightlySearcher = new NightlySearch(message.searchIndex);
             sendResponse(true);
             break;
         }
