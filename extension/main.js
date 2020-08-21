@@ -64,7 +64,10 @@ omnibox.addPrefixQueryEvent("/", {
         query = query.replace("/", "").trim();
         return nightlySearcher.search(query);
     },
-    onFormat: formatDoc,
+    onFormat: (index, doc) => {
+        let {content, description} = formatDoc(index, doc);
+        return {content, description: '[Nightly] ' + description};
+    },
     onAppend: (query) => {
         return [{
             content: nightlySearcher.getSearchUrl(query),
