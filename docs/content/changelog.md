@@ -4,6 +4,15 @@ description = "Changelog"
 weight = 3
 +++
 
+# v0.11 - 2020-08-27
+
+- New domain: change rust-search-extension.now.sh to [rust.extension.sh](https://rust.extension.sh) 🎉🎉
+- Bump std search index version to **v1.46.0**
+- Support prefix **/** to search nightly docs
+- New commands:
+    - `:mirror`: show all rust mirror websites
+- Improve error code regex
+
 # v0.10 - 2020-06-04
 
 - Bump std search index version to **v1.44.0**
