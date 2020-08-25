@@ -37,7 +37,7 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 - Search Rust official book chapters
 - Search Cargo Clippy lints
 - Offline mode, search local Rust docs (`rustup docs --std`)
-- Builtin commands (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool` and `:history` etc)
+- Builtin commands (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool`, `:mirror` and `:history` etc)
 - Docs.rs enhancements (display Feature flags)
 
 ## How to use it
