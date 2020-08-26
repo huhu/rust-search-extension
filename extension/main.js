@@ -69,10 +69,17 @@ omnibox.addPrefixQueryEvent("/", {
         return {content, description: '[Nightly] ' + description};
     },
     onAppend: (query) => {
-        return [{
-            content: nightlySearcher.getSearchUrl(query),
-            description: `Search nightly Rust docs ${c.match(query.replace("/", ""))} on ${nightlySearcher.rootPath}`,
-        }];
+        if (nightlySearcher.searchIndex && nightlySearcher.searchIndex.length > 0) {
+            return [{
+                content: nightlySearcher.getSearchUrl(query),
+                description: `Search nightly Rust docs ${c.match(query.replace("/", ""))} on ${nightlySearcher.rootPath}`,
+            }];
+        } else {
+            return [{
+                content: "https://doc.rust-lang.org/nightly/std/",
+                description: "To search nightly docs, please press Enter to open the nightly docs page firstly.",
+            }]
+        }
     },
 });
 
