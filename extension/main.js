@@ -69,10 +69,11 @@ omnibox.addPrefixQueryEvent("/", {
         return {content, description: '[Nightly] ' + description};
     },
     onAppend: (query) => {
+        query = query.replace("/", "");
         if (nightlySearcher.searchIndex && nightlySearcher.searchIndex.length > 0) {
             return [{
                 content: nightlySearcher.getSearchUrl(query),
-                description: `Search nightly Rust docs ${c.match(query.replace("/", ""))} on ${nightlySearcher.rootPath}`,
+                description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.rootPath}`,
             }];
         } else {
             return [{
