@@ -20,6 +20,11 @@ and any external crates on [docs.rs](https://docs.rs).
 
 ![GIF](/function-macros.gif)
 
+## Search nightly docs
+
+You can prefix **/** before the keyword to search nightly docs. However, before your first nightly docs searching, 
+you need to open the nightly docs page, we'll sync the latest nightly docs search index.
+
 ## Search with type mode
 
 You can prefix a type to get the exclusive search result. Those type keywords including:
@@ -107,8 +112,9 @@ Those commands including but not limited to:
 - **:book** - Show all Rust official books. 
 - **:stable** - Show stable Rust scheduled release date in the next year. 
 - **:label** - Show all issue labels of rust-lang repository. 
-- **:tool** - Show useful rust tools
-- **:history** - Show your local search history
+- **:tool** - Show useful rust tools.
+- **:mirror** - Show all Rust mirror websites.
+- **:history** - Show your local search history.
 
 ![IMG](/command-system.gif)
 
