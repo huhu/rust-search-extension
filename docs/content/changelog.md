@@ -12,6 +12,7 @@ weight = 3
 - New commands:
     - `:mirror`: show all rust mirror websites
 - Improve error code regex
+- Update the latest attribute index
 
 # v0.10 - 2020-06-04
 

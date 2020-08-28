@@ -1,4 +1,5 @@
 // https://doc.rust-lang.org/reference/attributes.html
+// https://doc.rust-lang.org/nightly/reference/attributes.html
 const attributeMap = {
     doc: [
         "- Specifies documentation.",
