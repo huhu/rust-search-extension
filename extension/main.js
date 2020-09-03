@@ -168,7 +168,6 @@ omnibox.addPrefixQueryEvent("!", {
 omnibox.addPrefixQueryEvent("#", {
     defaultSearch: true,
     searchPriority: 2,
-    deduplicate: true,
     onSearch: (query) => {
         return attributeSearcher.search(query);
     },
