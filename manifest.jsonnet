@@ -1,9 +1,10 @@
 local manifest = import 'core/manifest.libsonnet';
+local utils = import 'core/utils.libsonnet';
+
 local icons() = {
   [size]: 'rust.png'
   for size in ['16', '48', '128']
 };
-local js_files(name, files) = ['%s/%s.js' % [name, file] for file in files];
 
 local json = manifest.new(
   name='Rust Search Extension',
@@ -16,19 +17,19 @@ local json = manifest.new(
              .addBackgroundScripts(
   ['settings.js', 'deminifier.js']
 )
-             .addBackgroundScripts(js_files('search', ['book', 'crate', 'attribute', 'lint']))
-             .addBackgroundScripts(js_files('search/docs', ['base', 'std', 'nightly', 'crate-doc']))
-             .addBackgroundScripts(js_files('index', ['attributes', 'books', 'crates', 'std-docs', 'lints', 'labels', 'commands']))
-             .addBackgroundScripts(js_files('command', ['label', 'help', 'stable']))
+             .addBackgroundScripts(utils.js_files('search', ['book', 'crate', 'attribute', 'lint']))
+             .addBackgroundScripts(utils.js_files('search/docs', ['base', 'std', 'nightly', 'crate-doc']))
+             .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'crates', 'std-docs', 'lints', 'labels', 'commands']))
+             .addBackgroundScripts(utils.js_files('command', ['label', 'help', 'stable']))
              .addBackgroundScripts('main.js')
              .addContentScript(
   matches=['*://docs.rs/*'],
-  js=js_files('script', ['lib', 'docs-rs']) + js_files('libs', ['semver']),
+  js=utils.js_files('script', ['lib', 'docs-rs']) + utils.js_files('libs', ['semver']),
   css=['script/docs-rs.css'],
 )
              .addContentScript(
   matches=['*://doc.rust-lang.org/nightly/std/*'],
-  js=js_files('script', ['lib', 'nightly-std']),
+  js=utils.js_files('script', ['lib', 'nightly-std']),
   css=[],
 );
 
