@@ -8,9 +8,8 @@
         return searchIndex;
     }
 
-    let target = location.pathname.includes("/nightly/") ? "nightly" : "stable";
     window.postMessage({
-        direction: `rust-search-extension:${target}`,
+        direction: `rust-search-extension:std`,
         message: {
             searchIndex: cleanSearchIndex(window.searchIndex),
         },
