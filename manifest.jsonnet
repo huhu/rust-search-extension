@@ -13,7 +13,7 @@ local json = manifest.new(
   description='The ultimate search extension for Rust',
 )
              .addIcons(icons())
-             .addWebAccessibleResources(['script/add-search-index.js', 'script/add-nightly-search-index.js'])
+             .addWebAccessibleResources(['script/add-search-index.js', 'script/add-std-search-index.js'])
              .addBackgroundScripts(
   ['settings.js', 'deminifier.js']
 )
@@ -29,7 +29,11 @@ local json = manifest.new(
 )
              .addContentScript(
   matches=['*://doc.rust-lang.org/nightly/std/*'],
-  js=utils.js_files('script', ['lib', 'nightly-std']),
+  js=utils.js_files('script', ['lib', 'doc-rust-lang-org']),
+  css=[],
+).addContentScript(
+  matches=['*://doc.rust-lang.org/std/*', '*://doc.rust-lang.org/stable/std/*'],
+  js=utils.js_files('script', ['lib', 'doc-rust-lang-org']),
   css=[],
 );
 
