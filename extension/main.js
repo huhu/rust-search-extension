@@ -3,8 +3,6 @@ const crateSearcher = new CrateSearch(mapping, crateIndex);
 const attributeSearcher = new AttributeSearch(attributesIndex);
 const bookSearcher = new BookSearch(booksIndex);
 const lintSearcher = new LintSearch(lintsIndex);
-const stdSearcher = new StdSearch(searchIndex);
-let nightlySearcher = new NightlySearch(NightlyDocManager.getNightlyDocs());
 const crateDocSearchManager = new CrateDocSearchManager();
 const commandManager = new CommandManager(
     new HelpCommand(),
@@ -16,6 +14,9 @@ const commandManager = new CommandManager(
     new LabelCommand(labelsIndex),
     new HistoryCommand(),
 );
+
+let stdSearcher = new StdSearch(DocManager.getStableDocs());
+let nightlySearcher = new NightlySearch(DocManager.getNightlyDocs());
 
 const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(defaultSuggestion, c.omniboxPageSize());
@@ -238,9 +239,17 @@ chrome.runtime.setUninstallURL(
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
+        // Stable:* action is exclusive to nightly docs event
+        case "stable:add" : {
+            DocManager.setStableDocs(message.searchIndex);
+            // New stdSearcher instance after docs updated
+            stdSearcher = new StdSearch(message.searchIndex);
+            sendResponse(true);
+            break;
+        }
         // Nightly:* action is exclusive to nightly docs event
         case "nightly:add" : {
-            NightlyDocManager.setNightlyDocs(message.searchIndex);
+            DocManager.setNightlyDocs(message.searchIndex);
             // New nightlySearcher instance after docs updated
             nightlySearcher = new NightlySearch(message.searchIndex);
             sendResponse(true);
