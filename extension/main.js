@@ -41,6 +41,9 @@ omnibox.bootstrap({
             description: `Search Rust docs ${c.match(query)} on ${settings.isOfflineMode ? "offline mode" : stdSearcher.rootPath}`,
         }];
     },
+    onEmptyNavigate: (content, disposition) => {
+        commandManager.handleCommandEnterEvent(content, disposition);
+    },
     beforeNavigate: (query, content) => {
         if (content && /^@\w+$/i.test(content.trim())) {
             // Case: @crate, redirect to that crate's docs.rs page
