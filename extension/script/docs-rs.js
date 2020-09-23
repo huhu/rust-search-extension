@@ -41,7 +41,7 @@ async function insertFeatureFlagsElement(number) {
     sourceLink.parentElement.insertAdjacentHTML("beforebegin",
         `<li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
               <a href="#" class="pure-menu-link" aria-label="Feature flags" aria-haspopup="menu">
-                <i class="fa fa-fw fa-flag" ></i><span class="title"> Feature flags</span>
+                <span class="fa-svg fa-svg-fw" >${SVG_FLAG}</span><span class="title"> Feature flags</span>
               </a>
               <div class="pure-menu-children feature-flags-content" role="menu">
                 ${html}
@@ -78,18 +78,21 @@ function insertAddToExtensionElement() {
         }
     };
     let content = `<p>Add this crate to Rust Search Extension then you can search it in the address bar.</p>`;
-    let iconAttributes = `class="fa fa-fw fa-plus-circle" style="color:#121212"`;
+    let iconAttributes = `class="fa-svg fa-svg-fw" style="color:#121212"`;
+    let iconFile = SVG_PLUS_CIRCLE;
     if (state === "latest") {
         content = `<p>You already added this crate (v${currentCrateVersion}). Click again to remove it.</p>`;
-        iconAttributes = `class="fa fa-fw fa-check-circle" style="color:green"`;
+        iconAttributes = `class="fa-svg fa-svg-fw" style="color:green"`;
+        iconFile = SVG_CHECK_CIRCLE;
     } else if (state === "outdated") {
         content = `<p>You current version v${currentCrateVersion} is outdated. Click to update to the v${crateVersion}.</p>`;
-        iconAttributes = `class="fa fa-fw fa-arrow-circle-up" style="color:#e57300"`;
+        iconAttributes = `class="fa-svg fa-svg-fw" style="color:#e57300"`;
+        iconFile = SVG_ARROW_UP_CIRCLE;
     }
     li.innerHTML = `<div class="add-to-extension"
                          title="Add this crate to Rust Search Extension then you can search it in the address bar."
                          aria-label="Add to Rust Search Extension">
-                         <i ${iconAttributes}></i><span class="title"> to Rust Search Extension</span>
+                         <span ${iconAttributes}>${iconFile}</span><span class="title"> to Rust Search Extension</span>
                     </div>
                     <div class="pure-menu-children" role="menu">
                         <div class="add-to-extension-content" onclick="event.stopPropagation()">

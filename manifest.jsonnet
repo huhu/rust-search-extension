@@ -24,7 +24,7 @@ local json = manifest.new(
              .addBackgroundScripts('main.js')
              .addContentScript(
   matches=['*://docs.rs/*'],
-  js=utils.js_files('script', ['lib', 'docs-rs']) + utils.js_files('libs', ['semver']),
+  js=utils.js_files('script', ['lib', 'docs-rs', 'svgs']) + utils.js_files('libs', ['semver']),
   css=['script/docs-rs.css'],
 )
              .addContentScript(
