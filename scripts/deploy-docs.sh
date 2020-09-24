@@ -10,10 +10,10 @@ build() {
   sudo snap install --edge zola
   zola build
   mv public /tmp/public
-  RUST_BACKTRACE=full cargo run --bin books-index --features books-index --manifest-path=../rust/Cargo.toml /tmp/public/index/books.js
-  RUST_BACKTRACE=full cargo run --bin lints-index --features books-index --manifest-path=../rust/Cargo.toml /tmp/public/index/lints.js
-  RUST_BACKTRACE=full cargo run --bin labels-index --features labels-index --manifest-path=../rust/Cargo.toml /tmp/public/index/labels.js
   cd ..
+  RUST_BACKTRACE=full cargo run --bin books-index --features books-index --manifest-path=rust/Cargo.toml /tmp/public/index/books.js
+  RUST_BACKTRACE=full cargo run --bin lints-index --features books-index --manifest-path=rust/Cargo.toml /tmp/public/index/lints.js
+  RUST_BACKTRACE=full cargo run --bin labels-index --features labels-index --manifest-path=rust/Cargo.toml /tmp/public/index/labels.js
 }
 
 deploy() {
