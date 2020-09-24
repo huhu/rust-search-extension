@@ -1,0 +1,17 @@
+{% extends "juice/templates/page.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ get_url(path="index.css") }}">
+{% endblock head %}
+{% block content %}
+<div class="heading-text">{{ page.description }}</div>
+
+{% endblock content %}
+{% block footer %}
+<iframe id="footer" src="https://huhu.io/extension-footer.html"
+        style="display:block;width:100%;border:none;"></iframe>
+<script>
+    window.onmessage = e => {
+        e.data.hasOwnProperty("frameHeight") && (document.getElementById("footer").style.height = `${e.data.frameHeight}px`)
+    }
+</script>
+{% endblock footer %}
