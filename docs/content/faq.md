@@ -9,7 +9,7 @@ weight = 2
 ### Why the extension requires read browsing history permission?
 
 The sole permission required by the extension is [tabs](https://developer.chrome.com/extensions/tabs), which gives accessing browser tabs information capability. 
-We use this permission to open the search result in the `current tab` or `new tab` for the sole purpose. Feel feel to check our [Privacy Policy](/privacy/) for more information. 
+We use this permission to open the search result in the `current tab` or `new tab` for the sole purpose. Feel free to check our [Privacy Policy](/privacy/) for more information. 
 
 # Caveats
 
