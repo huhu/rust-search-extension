@@ -1,6 +1,7 @@
 const c = new Compat();
 const crateSearcher = new CrateSearch(mapping, crateIndex);
 const attributeSearcher = new AttributeSearch(attributesIndex);
+const caniuseSearcher = new CaniuseSearch(caniuseIndex);
 const bookSearcher = new BookSearch(booksIndex);
 const lintSearcher = new LintSearch(lintsIndex);
 const crateDocSearchManager = new CrateDocSearchManager();
@@ -182,6 +183,29 @@ omnibox.addPrefixQueryEvent("#", {
             description: `Attribute: ${c.match("#[" + attribute.name + "]")} ${c.dim(attribute.description)}`,
         }
     }
+});
+
+omnibox.addPrefixQueryEvent("?", {
+    defaultSearch: true,
+    searchPriority: 3,
+    onSearch: (query) => {
+        return caniuseSearcher.search(query);
+    },
+    onFormat: (index, feat, query) => {
+        let content;
+        let description;
+        if (query.startsWith("??")) {
+            content = `https://github.com/rust-lang/rfcs/pull/${feat.rfc}`;
+            description = `RFC: ${c.match(feat.flag)} - ${feat.title}`
+        } else {
+            content = `https://caniuse.rs/features/${feat.flag}`;
+            description = `${c.capitalize("caniuse.rs")}: ${c.match(feat.flag)} - ${feat.title} - since ${feat.ver}`
+        }
+        return {
+            content,
+            description
+        };
+    },
 });
 
 omnibox.addRegexQueryEvent(/`?e\d{2,4}`?$/i, {
