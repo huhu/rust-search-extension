@@ -186,8 +186,6 @@ omnibox.addPrefixQueryEvent("#", {
 });
 
 omnibox.addPrefixQueryEvent("?", {
-    defaultSearch: true,
-    searchPriority: 3,
     onSearch: (query) => {
         return caniuseSearcher.search(query);
     },
