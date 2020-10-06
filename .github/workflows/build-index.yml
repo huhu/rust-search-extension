@@ -14,6 +14,8 @@ jobs:
           RUST_BACKTRACE=full cargo run --bin books-index --features books-index --manifest-path=Cargo.toml /tmp/books.js
           RUST_BACKTRACE=full cargo run --bin lints-index --features books-index --manifest-path=Cargo.toml /tmp/lints.js
           RUST_BACKTRACE=full cargo run --bin labels-index --features labels-index --manifest-path=Cargo.toml /tmp/labels.js
+          git clone https://github.com/jplatte/caniuse.rs.git
+          RUST_BACKTRACE=full cargo run --bin caniuse-index --features caniuse-index --manifest-path=Cargo.toml -- caniuse.rs /tmp/caniuse.js
           zip /tmp/index.zip /tmp/*.js
       - name: "Upload Index Artifact"
         uses: actions/upload-artifact@master

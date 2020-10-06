@@ -8,6 +8,7 @@ edition = "2018"
 crates-index = ["csv","semver","tar","libflate", "rayon"]
 books-index = ["futures","tokio","reqwest","select"]
 labels-index = ["tokio","reqwest"]
+caniuse-index = []
 default = ["crates-index"]
 
 [dependencies]
