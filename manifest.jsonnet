@@ -20,7 +20,7 @@ local json = manifest.new(
              .addBackgroundScripts(utils.js_files('search', ['book', 'crate', 'attribute', 'caniuse', 'lint']))
              .addBackgroundScripts(utils.js_files('search/docs', ['base', 'std', 'crate-doc']))
              .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'commands']))
-             .addBackgroundScripts(utils.js_files('command', ['label', 'help', 'stable', 'stats']))
+             .addBackgroundScripts(utils.js_files('command', ['label', 'help', 'stable', 'update', 'stats']))
              .addBackgroundScripts('main.js')
              .addContentScript(
   matches=['*://docs.rs/*'],

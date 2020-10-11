@@ -13,6 +13,7 @@ const commandManager = new CommandManager(
     new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandsIndex['mirror']),
     new StableCommand(),
     new LabelCommand(labelsIndex),
+    new UpdateCommand(),
     new StatsCommand(),
     new HistoryCommand(),
 );
