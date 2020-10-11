@@ -49,10 +49,10 @@ let stats = [
     },
     {
         name: "Others",
-        pattern: /^[>%].*/i,
+        pattern: /^[>%?].*/i,
         value: 0,
         color: "#ededed",
-        description: "Others count any Clippy lint (>) or book (%) prefix searches."
+        description: "Others count any Clippy lint (>), book (%), and caniuse/rfc (?) prefix searches."
     },
 ];
 let calendarData = [];

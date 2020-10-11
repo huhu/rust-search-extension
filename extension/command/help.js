@@ -13,7 +13,7 @@ class HelpCommand extends Command {
             "#": `Prefix ${c.match("#")} to search builtin attributes`,
             "%": `Prefix ${c.match("%")} to search Rust official book chapters`,
             ">": `Prefix ${c.match(">")} to search Rust clippy lints`,
-            "?": `[WIP] Prefix ${c.match("?")} to search Rust tracking issues`,
+            "?": `Prefix ${c.match("?")} to search caniuse.rs, prefix ${c.match("??")} can redirect to the RFC page`,
         };
         return Object.entries(value).map(([key, description], index) => {
             return {content: key, description};
