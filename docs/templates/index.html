@@ -1,5 +1,29 @@
 {% extends "juice/templates/index.html" %}
 {% block head %}
+<meta name="keywords"
+      content="rust, rust-lang, crates, cargo, docs, crates.io, docs.rs, search extension">
+<meta itemprop="name"
+      content="{{ config.extra.meta_title }}">
+<meta itemprop="description"
+      content="{{ config.extra.meta_description }}">
+<meta itemprop="image" content="https://rust.extension.sh/banner.png">
+
+<meta property="og:url" content="https://rust.extension.sh">
+<meta property="og:type" content="website">
+<meta property="og:title"
+      content="{{ config.extra.meta_title }}">
+<meta property="og:description"
+      content="{{ config.extra.meta_description }}">
+<meta property="og:image" content="https://rust.extension.sh/banner.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@_huhuio">
+<meta name="twitter:creator" content="@_huhuio">
+<meta name="twitter:title"
+      content="{{ config.extra.meta_title }}">
+<meta name="twitter:description"
+      content="{{ config.extra.meta_description }}">
+<meta name="twitter:image" content="https://rust.extension.sh/banner.png">
 <link rel="stylesheet" href="{{ get_url(path="index.css") }}">
 {% endblock head %}
 
