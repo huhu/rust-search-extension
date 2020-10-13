@@ -10,7 +10,7 @@
 ![Microsoft Edge](https://img.shields.io/badge/microsoft--edge-v0.11.0-1D4F8C)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
-[![Discord](https://img.shields.io/discord/711895914494558250?label=chat&logo=discord)](https://discord.com/invite/UAzW4A)
+[![Discord](https://img.shields.io/discord/711895914494558250?label=chat&logo=discord)](https://discord.gg/xucZNVd)
 
 Search **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly. 
 
@@ -67,7 +67,7 @@ $ make edge # For Edge version
 
 ## Get involved
 
-- You can contact us on Discord Channel: https://discord.com/invite/UAzW4A
+- You can contact us on Discord Channel: https://discord.gg/xucZNVd
 - Or by adding the Wechat ID: `huhu_io`, we'll invite you to our Wechat group.
 
 
