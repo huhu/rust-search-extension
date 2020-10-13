@@ -1,9 +1,9 @@
 const c = new Compat();
-const crateSearcher = new CrateSearch(mapping, crateIndex);
+const crateSearcher = new CrateSearch(mapping, IndexManager.getCrateIndex());
 const attributeSearcher = new AttributeSearch(attributesIndex);
-const caniuseSearcher = new CaniuseSearch(caniuseIndex);
-const bookSearcher = new BookSearch(booksIndex);
-const lintSearcher = new LintSearch(lintsIndex);
+const caniuseSearcher = new CaniuseSearch(IndexManager.getCaniuseIndex());
+const bookSearcher = new BookSearch(IndexManager.getBookIndex());
+const lintSearcher = new LintSearch(IndexManager.getLintIndex());
 const crateDocSearchManager = new CrateDocSearchManager();
 const commandManager = new CommandManager(
     new HelpCommand(),
@@ -12,14 +12,14 @@ const commandManager = new CommandManager(
     new SimpleCommand('tool', 'Show some most useful Rust tools.', commandsIndex['tool']),
     new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandsIndex['mirror']),
     new StableCommand(),
-    new LabelCommand(labelsIndex),
+    new LabelCommand(IndexManager.geLabelIndex()),
     new UpdateCommand(),
     new StatsCommand(),
     new HistoryCommand(),
 );
 
-let stdSearcher = new StdSearch(DocManager.getStableDocs());
-let nightlySearcher = new NightlySearch(DocManager.getNightlyDocs());
+let stdSearcher = new StdSearch(IndexManager.getStdStableIndex());
+let nightlySearcher = new NightlySearch(IndexManager.getStdNightlyIndex());
 
 const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
 const omnibox = new Omnibox(defaultSuggestion, c.omniboxPageSize());
@@ -268,7 +268,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
         // Stable:* action is exclusive to nightly docs event
         case "stable:add" : {
-            DocManager.setStableDocs(message.searchIndex);
+            IndexManager.setStdStableIndex(message.searchIndex);
             // New stdSearcher instance after docs updated
             stdSearcher = new StdSearch(message.searchIndex);
             sendResponse(true);
@@ -276,7 +276,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
         // Nightly:* action is exclusive to nightly docs event
         case "nightly:add" : {
-            DocManager.setNightlyDocs(message.searchIndex);
+            IndexManager.setStdNightlyIndex(message.searchIndex);
             // New nightlySearcher instance after docs updated
             nightlySearcher = new NightlySearch(message.searchIndex);
             sendResponse(true);
