@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let childrenNumber = ul.children.length;
     if (childrenNumber >= 3) {
         await insertFeatureFlagsElement(childrenNumber);
-        chrome.runtime.sendMessage({crateName, action: "check"}, crate => {
+        chrome.runtime.sendMessage({crateName, action: "crate:check"}, crate => {
             if (crate) {
                 currentCrateVersion = crate.version;
             }
@@ -67,7 +67,7 @@ function insertAddToExtensionElement() {
     li.onclick = () => {
         // Toggle search index added state
         if (state === "latest") {
-            chrome.runtime.sendMessage({crateName, action: "remove"}, response => {
+            chrome.runtime.sendMessage({crateName, action: "crate:remove"}, response => {
                 currentCrateVersion = undefined;
                 insertAddToExtensionElement();
             });
@@ -106,7 +106,7 @@ window.addEventListener("message", function(event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension") {
-        chrome.runtime.sendMessage({action: "add", ...event.data.message},
+        chrome.runtime.sendMessage({action: "crate:add", ...event.data.message},
             (response) => {
                 console.log(response);
             }

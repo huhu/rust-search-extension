@@ -266,7 +266,7 @@ chrome.runtime.setUninstallURL(
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
-        // Stable:* action is exclusive to nightly docs event
+        // Stable:* action is exclusive to stable docs event
         case "stable:add" : {
             IndexManager.setStdStableIndex(message.searchIndex);
             // New stdSearcher instance after docs updated
@@ -282,18 +282,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             sendResponse(true);
             break;
         }
-        case "check": {
+        // Crate:* action is exclusive to crate event
+        case "crate:check": {
             let crates = CrateDocSearchManager.getCrates();
             sendResponse(crates[message.crateName]);
             break;
         }
-        case "add": {
+        case "crate:add": {
             CrateDocSearchManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
             crateDocSearchManager.initAllCrateSearcher();
             sendResponse(true);
             break;
         }
-        case "remove": {
+        case "crate:remove": {
             CrateDocSearchManager.removeCrate(message.crateName);
             crateDocSearchManager.initAllCrateSearcher();
             sendResponse(true);
