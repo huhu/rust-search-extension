@@ -303,5 +303,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     return true;
 });
-
-window.crateSearcher = crateSearcher;

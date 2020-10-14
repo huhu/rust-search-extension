@@ -1,42 +1,4 @@
-const c = new Compat();
-// Get extension background page.
-const background = c.getBackgroundPage();
-const CRATES_INDEX_BASE_URL = "https://rust.extension.sh/crates";
-
 const toast = new Toast(".toast");
-
-async function checkLatestCratesIndex() {
-    toast.info("Checking latest crates index...");
-
-    let response = await fetch(`${CRATES_INDEX_BASE_URL}/version.json?${Date.now()}`);
-    let { version } = await response.json();
-    if (background.crateSearcher.getCrateIndexVersion() < version) {
-        try {
-            toast.info("Updating latest crates index, wait a seconds...");
-            await loadLatestCratesIndex(version);
-
-            // Update the latest crates index and mapping.
-            background.crateSearcher.setCrateIndex(crateIndex, version);
-            background.crateSearcher.updateMapping(mapping);
-            toast.success("Updated to latest crates index.");
-        } catch (error) {
-            toast.error("Update failed, please try again :(");
-        }
-    } else {
-        toast.success("You already the latest crates index.");
-    }
-    toast.dismiss();
-}
-
-async function loadLatestCratesIndex(version) {
-    return new Promise((resolve, reject) => {
-        let script = document.createElement('script');
-        script.src = `${CRATES_INDEX_BASE_URL}/index.js?${version}`;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.body.appendChild(script);
-    });
-}
 
 document.addEventListener('DOMContentLoaded', function () {
     // Offline mode checkbox
@@ -85,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let weekAgo = now.setDate(now.getDate() - 7);
 
     if (history.length > 0) {
-        history = history.filter(({ time }) => {
+        history = history.filter(({time}) => {
             return weekAgo <= time;
         });
         statsWeekCount.textContent = `${history.length}`
@@ -105,10 +67,3 @@ function toggleOfflinePathEnableState(enable) {
         offlineDocPath.classList.add('disable');
     }
 }
-
-(async () => {
-    if (c.browserType() !== "firefox") {
-        // Only Chrome browser supports 'script-src-elem' Content Security Policy to load script.
-        await checkLatestCratesIndex();
-    }
-})();
