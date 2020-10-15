@@ -1,9 +1,11 @@
 const c = new Compat();
-const crateSearcher = new CrateSearch(IndexManager.getCrateMapping(), IndexManager.getCrateIndex());
+
+let crateSearcher = new CrateSearch(IndexManager.getCrateMapping(), IndexManager.getCrateIndex());
+let caniuseSearcher = new CaniuseSearch(IndexManager.getCaniuseIndex());
+let bookSearcher = new BookSearch(IndexManager.getBookIndex());
+let lintSearcher = new LintSearch(IndexManager.getLintIndex());
+
 const attributeSearcher = new AttributeSearch(attributesIndex);
-const caniuseSearcher = new CaniuseSearch(IndexManager.getCaniuseIndex());
-const bookSearcher = new BookSearch(IndexManager.getBookIndex());
-const lintSearcher = new LintSearch(IndexManager.getLintIndex());
 const crateDocSearchManager = new CrateDocSearchManager();
 const commandManager = new CommandManager(
     new HelpCommand(),
@@ -12,7 +14,7 @@ const commandManager = new CommandManager(
     new SimpleCommand('tool', 'Show some most useful Rust tools.', commandsIndex['tool']),
     new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandsIndex['mirror']),
     new StableCommand(),
-    new LabelCommand(IndexManager.geLabelIndex()),
+    new LabelCommand(IndexManager.getLabelIndex()),
     new UpdateCommand(),
     new StatsCommand(),
     new HistoryCommand(),
@@ -297,6 +299,38 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         case "crate:remove": {
             CrateDocSearchManager.removeCrate(message.crateName);
             crateDocSearchManager.initAllCrateSearcher();
+            sendResponse(true);
+            break;
+        }
+        // Index-update:* action is exclusive to index update event
+        case "index-update:crate" : {
+            IndexManager.setCrateMapping(message.mapping);
+            IndexManager.setCrateIndex(message.index);
+            crateSearcher = new CrateSearch(message.mapping, message.index);
+            sendResponse(true);
+            break;
+        }
+        case "index-update:book" : {
+            IndexManager.setBookIndex(message.index);
+            bookSearcher = new BookSearch(message.index);
+            sendResponse(true);
+            break;
+        }
+        case "index-update:lint" : {
+            IndexManager.setLintIndex(message.index);
+            lintSearcher = new LintSearch(message.index);
+            sendResponse(true);
+            break;
+        }
+        case "index-update:label" : {
+            IndexManager.setLabelIndex(message.index);
+            commandManager.addCommand(new LabelCommand(message.index));
+            sendResponse(true);
+            break;
+        }
+        case "index-update:caniuse" : {
+            IndexManager.setCaniuseIndex(message.index);
+            caniuseSearcher = new CaniuseSearch(message.index);
             sendResponse(true);
             break;
         }

@@ -23,7 +23,7 @@ class IndexManager {
         localStorage.setItem('index-book', JSON.stringify(index));
     }
 
-    static geLabelIndex() {
+    static getLabelIndex() {
         return JSON.parse(localStorage.getItem('index-label')) || labelsIndex;
     }
 
