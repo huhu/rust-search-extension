@@ -1,5 +1,5 @@
 const c = new Compat();
-const crateSearcher = new CrateSearch(mapping, IndexManager.getCrateIndex());
+const crateSearcher = new CrateSearch(IndexManager.getCrateMapping(), IndexManager.getCrateIndex());
 const attributeSearcher = new AttributeSearch(attributesIndex);
 const caniuseSearcher = new CaniuseSearch(IndexManager.getCaniuseIndex());
 const bookSearcher = new BookSearch(IndexManager.getBookIndex());

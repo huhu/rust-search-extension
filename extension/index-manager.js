@@ -31,6 +31,14 @@ class IndexManager {
         localStorage.setItem('index-label', JSON.stringify(index));
     }
 
+    static getCrateMapping() {
+        return JSON.parse(localStorage.getItem('index-crate-mapping')) || mapping;
+    }
+
+    static setCrateMapping(mapping) {
+        localStorage.setItem('index-crate-mapping', JSON.stringify(mapping));
+    }
+
     static getCrateIndex() {
         return JSON.parse(localStorage.getItem('index-crate')) || crateIndex;
     }

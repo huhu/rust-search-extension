@@ -28,7 +28,7 @@ function levenshtein(s1, s2) {
 }
 
 // Prototype function to perform levenshtein contain search.
-String.prototype.levenshteinContains = function(keyword) {
+String.prototype.levenshteinContains = function (keyword) {
     let len = keyword.length;
     if (this === keyword) return true;
 
@@ -43,24 +43,16 @@ String.prototype.levenshteinContains = function(keyword) {
 function CrateSearch(mapping, crateIndex, crateIndexVersion = 1) {
     this.crateIndexVersion = crateIndexVersion;
     this.deminifier = new Deminifier(mapping);
-    this.setCrateIndex(crateIndex);
-}
-
-CrateSearch.prototype.setCrateIndex = function(rawCrateIndex, crateIndexVersion) {
-    this.crateIndexVersion = crateIndexVersion;
+    
     this.crateIndex = {};
-    for (let [key, value] of Object.entries(rawCrateIndex)) {
+    for (let [key, value] of Object.entries(crateIndex)) {
         this.crateIndex[this.deminifier.deminify(key)] = value;
     }
     this.crateIds = Object.keys(this.crateIndex);
-};
+}
 
-CrateSearch.prototype.getCrateIndexVersion = function() {
+CrateSearch.prototype.getCrateIndexVersion = function () {
     return this.crateIndexVersion || 1;
-};
-
-CrateSearch.prototype.updateMapping = function(mapping) {
-    this.deminifier.setMapping(mapping);
 };
 
 /**
@@ -68,7 +60,7 @@ CrateSearch.prototype.updateMapping = function(mapping) {
  * @param keyword the keyword to search against.
  * @returns
  */
-CrateSearch.prototype.search = function(keyword) {
+CrateSearch.prototype.search = function (keyword) {
     let result = [];
     keyword = keyword.replace(/[-_!\s]/g, "");
     for (let rawCrateId of this.crateIds) {
