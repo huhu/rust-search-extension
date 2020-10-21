@@ -4,9 +4,9 @@ crateName = crateName.replace("-", "_");
 let currentCrateVersion = undefined;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    let ul = document.querySelector(".landing-search-form-nav>ul");
-    let childrenNumber = ul.children.length;
-    if (childrenNumber >= 3) {
+    let menu = document.querySelector(".pure-menu-list:not(.pure-menu-right)");
+    // Exclude /crate/** pages
+    if (menu.children.length >= 3 && !location.pathname.includes("/crate/")) {
         await insertFeatureFlagsElement();
         chrome.runtime.sendMessage({crateName, action: "crate:check"}, crate => {
             if (crate) {
@@ -60,7 +60,7 @@ function insertAddToExtensionElement() {
         el.remove();
     }
 
-    let platformElement = document.querySelector(`.landing-search-form-nav>ul>li:last-child`);
+    let menu = document.querySelector(".pure-menu-list:not(.pure-menu-right)");
     let li = document.createElement("li");
     li.classList.add("pure-menu-item", "pure-menu-has-children", "pure-menu-allow-hover");
     li.onclick = () => {
@@ -98,7 +98,7 @@ function insertAddToExtensionElement() {
                             ${content}
                         </div>
                     </div>`;
-    platformElement.insertAdjacentElement("afterend", li);
+    menu.lastElementChild.insertAdjacentElement("afterend", li);
 }
 
 window.addEventListener("message", function(event) {
