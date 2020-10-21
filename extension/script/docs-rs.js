@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let ul = document.querySelector(".landing-search-form-nav>ul");
     let childrenNumber = ul.children.length;
     if (childrenNumber >= 3) {
-        await insertFeatureFlagsElement(childrenNumber);
+        await insertFeatureFlagsElement();
         chrome.runtime.sendMessage({crateName, action: "crate:check"}, crate => {
             if (crate) {
                 currentCrateVersion = crate.version;
@@ -18,10 +18,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-async function insertFeatureFlagsElement(number) {
-    let sourceLink = document.querySelector(`.landing-search-form-nav>ul>li:nth-child(${number - 1})>a`);
-
-    let response = await fetch(sourceLink.href + "Cargo.toml");
+async function insertFeatureFlagsElement() {
+    let menu = document.querySelector(".pure-menu-list:not(.pure-menu-right)");
+    let response = await fetch(`https://docs.rs/crate/${crateName}/${crateVersion}/source/Cargo.toml`);
     let features = await parseCargoFeatures(await response.text());
     let html = `<div style="padding: 1rem"><p>This crate has no feature flag.</p></div>`;
     if (features.length > 0) {
@@ -38,7 +37,7 @@ async function insertFeatureFlagsElement(number) {
                     <tbody>${tbody}</tbody>
                 </table>`;
     }
-    sourceLink.parentElement.insertAdjacentHTML("beforebegin",
+    menu.firstElementChild.insertAdjacentHTML("afterend",
         `<li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
               <a href="#" class="pure-menu-link" aria-label="Feature flags" aria-haspopup="menu">
                 <span class="fa-svg fa-svg-fw" >${SVG_FLAG}</span><span class="title"> Feature flags</span>
