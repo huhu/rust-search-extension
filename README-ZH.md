@@ -1,9 +1,7 @@
 
 ![](assets/rustacean.gif)
 
-# Rust Search Extension
-
-[简体中文](https://github.com/Wei-kiki/rust-search-extension/blob/master/README-ZH.md)
+# Rust Search Extension 
 
 ### The ultimate search extension for Rust
 
@@ -14,11 +12,11 @@
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
 [![Discord](https://img.shields.io/discord/711895914494558250?label=chat&logo=discord)](https://discord.gg/xucZNVd)
 
-Search **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly. 
+在地址栏快速搜索文档、crates、内置属性、官方书籍和错误码等 
 
 [https://rust.extension.sh/](https://rust.extension.sh/)
 
-## Installation
+## 下载安装
 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh)
 
@@ -26,34 +24,33 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe)
 
-## Features
+## 功能
 
-- Search Primitive Types and Modules
-- Search Structs, Traits and Enums
-- Search Functions, Methods and Macros
-- Search builtin attributes 
-- Search crates on https://crates.io or https://lib.rs
-- Search crate's docs on docs.rs
-- Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error codes
-- Search Rust official book chapters
-- Search Cargo Clippy lints
-- Search nightly docs
-- Offline mode, search local Rust docs (`rustup docs --std`)
-- Builtin commands (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool`, `:mirror` and `:history` etc)
-- Docs.rs enhancements (display Feature flags)
+- 搜索基本类型和模块
+- 搜索Structs, Traits和Enums
+- 搜索函数、方法和宏
+- 搜索内置属性
+- 搜索 https://crates.io 或 https://lib.rs 上的crates
+- 支持在 docs.rs 上搜索 crate 的文档
+- 支持搜索 [Compiler Error Index](https://doc.rust-lang.org/error-index.html) 上的错误代码
+- 支持实时搜索Rust官方书籍的章节
+- 支持搜索Cargo Clippy lints
+- 支持暗色模式
+- 支持离线模式，可以搜索本地 Rust 文档 (`rustup docs --std`)
+- 内置命令 (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool`, `:mirror` and `:history` etc)
+- Docs.rs加强，展示每一个crate的Feature flags
 
-## How to use it
+## 使用方法
 
-Input keyword **rs** in the address bar, press `Space` to activate the search bar. Then enter any word 
-you want to search, the extension will response the related search results instantly.
+在浏览器地址栏输入关键字**rs**，然后敲击**空格键**就能激活查询功能，输入任何你想搜索的词，插件会即时返回相关搜索结果。
 
 ![demonstration.gif](assets/demonstration.gif)
 
-## Diagram
+## 图示
 
 ![diagram](assets/diagram.jpg)
 
-## Contribution
+## 贡献
 
 ```bash
 $ git clone --recursive https://github.com/huhu/rust-search-extension
@@ -67,20 +64,20 @@ $ make firefox # For Firefox version
 $ make edge # For Edge version
 ```
 
-## Get involved
+## 联系
 
-- You can contact us on Discord Channel: https://discord.gg/xucZNVd
-- Or by adding the Wechat ID: `huhu_io`, we'll invite you to our Wechat group.
+- 您可以通过Discord频道与我们联系： https://discord.gg/xucZNVd
+- 或添加微信： `huhu_io`，我们会邀请您加入我们的微信群
 
 
-## Miscellaneous
+## 其他
 
 - [Changelog](https://rust.extension.sh/changelog/)
 - [FAQ](https://rust.extension.sh/faq/)
 
-## Thanks
+## 感谢
 
-Thanks for the sponsorship from these great companies.
+感谢下列优秀企业的赞助
 
 [![](docs/static/jetbrains.svg)](https://www.jetbrains.com/?from=rust-search-extension)
 
