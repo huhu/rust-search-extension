@@ -1,16 +1,13 @@
+use serde_derive::Deserialize;
+
+use rust_search_extension::minify::Minifier;
 use std::clone::Clone;
 use std::collections::HashMap;
 use std::path::Path;
 use std::{env, fs};
 
-use reqwest;
-use serde_derive::Deserialize;
-use tokio;
-
-use rust_search_extension::minify::Minifier;
-
-const LINT_URL: &'static str = "https://rust-lang.github.io/rust-clippy/master/lints.json";
-const LINTS_INDEX_PATH: &'static str = "../extension/index/lints.js";
+const LINT_URL: &str = "https://rust-lang.github.io/rust-clippy/master/lints.json";
+const LINTS_INDEX_PATH: &str = "../extension/index/lints.js";
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 

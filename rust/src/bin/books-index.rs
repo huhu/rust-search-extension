@@ -4,15 +4,12 @@ use std::path::Path;
 use std::{env, fs};
 
 use futures::future::try_join_all;
-use reqwest;
 use select::document::Document;
 use select::node::Node;
 use select::predicate::{Class, Name};
 use serde::ser::SerializeTuple;
 use serde::{Serialize, Serializer};
 use serde_derive::{Deserialize, Serialize};
-use serde_json;
-use tokio;
 
 use rust_search_extension::minify::Minifier;
 

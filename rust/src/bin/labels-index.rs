@@ -1,14 +1,12 @@
 #![cfg(feature = "labels-index")]
 
-use std::env;
-use std::fs;
-use std::path::Path;
-
-use reqwest;
 use serde::ser::SerializeTuple;
 use serde::{Serialize, Serializer};
 use serde_derive::Deserialize;
-use serde_json;
+
+use std::env;
+use std::fs;
+use std::path::Path;
 
 const MAX_PAGE: u32 = 3;
 const API: &str = "https://api.github.com/repos/rust-lang/rust/labels?page={}&per_page=100";

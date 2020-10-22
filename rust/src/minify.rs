@@ -1,11 +1,12 @@
-use std::cmp;
-use std::collections::HashMap;
-use std::ops::Deref;
-
 use minifier::js::{
     aggregate_strings_into_array_filter, simple_minify, Keyword, ReservedChar, Token, Tokens,
 };
 use unicode_segmentation::UnicodeSegmentation;
+
+use std::cmp;
+use std::cmp::Reverse;
+use std::collections::HashMap;
+use std::ops::Deref;
 
 #[derive(Debug)]
 struct FrequencyWord {
@@ -47,7 +48,7 @@ impl Minifier {
             .into_iter()
             .map(|(word, frequency)| FrequencyWord { word, frequency })
             .collect::<Vec<FrequencyWord>>();
-        frequency_words.sort_by(|a, b| b.score().cmp(&a.score()));
+        frequency_words.sort_by_key(|b| Reverse(b.score()));
 
         let keys: Vec<String> = Self::PREFIX
             .chars()

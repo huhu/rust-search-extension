@@ -28,7 +28,7 @@ impl Feat {
         }
     }
 
-    fn to_array(self) -> FeatArray {
+    fn into_array(self) -> FeatArray {
         (self.version, self.slug, self.flag, self.title, self.rfc)
     }
 }
@@ -58,8 +58,8 @@ fn main() {
 
             let input = fs::read_to_string(feat_file.path()).unwrap();
             input.lines().skip(1).for_each(|l| {
-                if l.contains("=") {
-                    let mut s = l.split("=");
+                if l.contains('=') {
+                    let mut s = l.split('=');
                     let key = s.next().unwrap().trim().trim_matches('"');
                     let val = s.next().unwrap().trim().trim_matches('"');
                     match key {
@@ -71,16 +71,12 @@ fn main() {
                 }
             });
 
-            feats.push(feat.to_array());
+            feats.push(feat.into_array());
         }
     }
 
     let path = args.next();
-    let path = Path::new(
-        path.as_ref()
-            .map(|path| path.as_str())
-            .unwrap_or(INDEX_PATH),
-    );
+    let path = Path::new(path.as_deref().unwrap_or(INDEX_PATH));
     fs::write(
         path,
         format!(
