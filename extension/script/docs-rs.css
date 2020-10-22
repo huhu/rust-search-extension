@@ -1,3 +1,15 @@
+/* Adaptive classes for docs.rs */
+
+div.container {
+    max-width: none !important;
+}
+
+div.nav-container form.landing-search-form-nav {
+    max-width: none !important;
+}
+
+/* Rust Search Extension classes */
+
 .feature-flags-content {
     color: #333;
     max-height: 600px;

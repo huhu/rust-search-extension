@@ -6,7 +6,7 @@ let currentCrateVersion = undefined;
 document.addEventListener("DOMContentLoaded", async () => {
     let menu = document.querySelector(".pure-menu-list:not(.pure-menu-right)");
     // Exclude /crate/** pages
-    if (menu.children.length >= 3 && !location.pathname.includes("/crate/")) {
+    if (menu && menu.children.length >= 3 && !location.pathname.includes("/crate/")) {
         await insertFeatureFlagsElement();
         chrome.runtime.sendMessage({crateName, action: "crate:check"}, crate => {
             if (crate) {
