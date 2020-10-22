@@ -3,7 +3,7 @@
 
 # Rust Search Extension
 
-[简体中文](https://github.com/Wei-kiki/rust-search-extension/blob/master/README-ZH.md)
+[简体中文](README-ZH.md)
 
 ### The ultimate search extension for Rust
 
