@@ -16,6 +16,6 @@ jobs:
         submodules: 'recursive'
     - run: |
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-        git clone --depth 1 https://github.com/jplatte/caniuse.rs.git
+        git clone --depth 1 https://github.com/jplatte/caniuse.rs.git /tmp/caniuse
     - name: Deloy docs
       run: ./scripts/deploy-docs.sh
