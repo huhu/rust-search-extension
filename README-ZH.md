@@ -12,7 +12,7 @@
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
 [![Discord](https://img.shields.io/discord/711895914494558250?label=chat&logo=discord)](https://discord.gg/xucZNVd)
 
-在地址栏快速搜索文档、crates、内置属性、官方书籍和错误码等 
+在地址栏快速搜索Rust文档、crates、内置属性、官方书籍和错误码等
 
 [https://rust.extension.sh/](https://rust.extension.sh/)
 
@@ -31,7 +31,7 @@
 - 搜索函数、方法和宏
 - 搜索内置属性
 - 搜索 https://crates.io 或 https://lib.rs 上的crates
-- 支持在 docs.rs 上搜索 crate 的文档
+- 支持搜索docs.rs上任意第三方crate的文档
 - 支持搜索 [Compiler Error Index](https://doc.rust-lang.org/error-index.html) 上的错误代码
 - 支持实时搜索Rust官方书籍的章节
 - 支持搜索Cargo Clippy lints
