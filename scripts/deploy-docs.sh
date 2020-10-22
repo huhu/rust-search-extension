@@ -14,6 +14,7 @@ build() {
   RUST_BACKTRACE=full cargo run --bin books-index --features books-index --manifest-path=rust/Cargo.toml /tmp/public/index/books.js
   RUST_BACKTRACE=full cargo run --bin lints-index --features books-index --manifest-path=rust/Cargo.toml /tmp/public/index/lints.js
   RUST_BACKTRACE=full cargo run --bin labels-index --features labels-index --manifest-path=rust/Cargo.toml /tmp/public/index/labels.js
+  RUST_BACKTRACE=full cargo run --bin caniuse-index --features caniuse-index --manifest-path=rust/Cargo.toml /tmp/public/index/caniuse.js
 }
 
 deploy() {
