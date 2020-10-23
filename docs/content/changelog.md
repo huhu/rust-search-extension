@@ -9,7 +9,7 @@ weight = 3
 Finally, we reach **v1.0**! 🎉🎉
 
 - Support sync stable/nightly std search index automatically. There is no extension updating required to get the latest search index after v1.0.
-- Support prefix **?** and **??** to search [caniuse.rs](https://caniuse.rs) and RFC respectively
+- Support prefix **?** and **??** to search [caniuse.rs](https://caniuse.rs) and RFC respectively. Thanks the [PR](https://github.com/huhu/rust-search-extension/pull/77) from [@aquarhead](https://github.com/aquarhead).
 - Upload the latest index files to the [update page](/update) once a day, those index including:
     - Command index 
     - Book index 
