@@ -1,6 +1,6 @@
 const indexList = document.querySelector(".index-list");
 
-function updateIndex(target, index, ...extra) {
+function updateIndex(target, index, extra) {
     window.postMessage({
         direction: "rust-search-extension:update-index",
         message: {
