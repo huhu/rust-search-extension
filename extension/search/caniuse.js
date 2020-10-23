@@ -7,41 +7,43 @@
 // - (null-able) RFC pull request ID
 
 function CaniuseSearch(index) {
-  this.feats = {};
-  index.forEach(([ver, slug, flag, title, rfc]) => {
-    // `match` is for highlighting
-    let match = flag || title;
-    // `rest` contains other information in description
-    let rest = ((flag == null) ? [ver] : [title, ver]).join(" - ");
+    this.feats = {};
+    index.forEach(([version, slug, flag, title, rfc]) => {
+        // `match` is for highlighting
+        let match = flag || title;
+        // Other description information
+        let description = match === title ? null : title;
 
-    let searchTerm = `${match}${rest}`.replace(/[-_\s#?]/ig, "");
-    this.feats[searchTerm] = { slug, match, rest, rfc };
-  });
-  this.searchTerms = Object.keys(this.feats);
+        let searchTerm = match.replace(/[-_\s#?]/ig, "");
+        this.feats[searchTerm] = {version, slug, match, rfc, description};
+    });
+    this.searchTerms = Object.keys(this.feats);
 }
 
 CaniuseSearch.prototype.search = function (rawKeyword) {
-  let keyword = rawKeyword.toLowerCase().replace(/[-_\s#?]/ig, "");
-  let result = [];
+    let keyword = rawKeyword.toLowerCase().replace(/[-_\s#?]/ig, "");
+    let result = [];
 
-  for (let searchTerm of this.searchTerms) {
-    if (searchTerm.length < keyword.length) continue;
+    for (let searchTerm of this.searchTerms) {
+        if (searchTerm.length < keyword.length) continue;
 
-    let foundAt = searchTerm.toLowerCase().indexOf(keyword);
-    if (foundAt > -1) {
-      let rfc = this.feats[searchTerm].rfc;
-      // skip those without RFC when searching for RFCs
-      if (!(rawKeyword.startsWith("??") && rfc == null)) {
-        result.push({
-          slug: this.feats[searchTerm].slug,
-          match: this.feats[searchTerm].match,
-          rest: this.feats[searchTerm].rest,
-          rfc,
-          matchIndex: foundAt,
-        });
-      }
+        let foundAt = searchTerm.toLowerCase().indexOf(keyword);
+        if (foundAt > -1) {
+            let rfc = this.feats[searchTerm].rfc;
+            // skip those without RFC when searching for RFCs
+            if (!(rawKeyword.startsWith("??") && rfc == null)) {
+                result.push({
+                    matchIndex: foundAt,
+                    ...this.feats[searchTerm],
+                });
+            }
+        }
     }
-  }
 
-  return result;
+    return result.sort((a, b) => {
+        if (a.matchIndex === b.matchIndex) {
+            return a.match.length - b.match.length;
+        }
+        return a.matchIndex - b.matchIndex;
+    });
 };
