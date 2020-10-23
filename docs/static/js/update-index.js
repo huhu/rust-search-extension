@@ -22,22 +22,25 @@ function renderSuccessMessage(message) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    updateIndex("crate", window.crateIndex, {mapping: window.mapping}).then(() => {
-        renderSuccessMessage("Crate index");
+    updateIndex("command", window.commandsIndex).then(() => {
+        renderSuccessMessage("Command index");
     });
     updateIndex("book", window.booksIndex).then(() => {
         renderSuccessMessage("Book index");
     });
     updateIndex("lint", window.lintsIndex).then(() => {
-        renderSuccessMessage("Clippy Lint index");
+        renderSuccessMessage("Clippy lint index");
     });
     updateIndex("caniuse", window.caniuseIndex).then(() => {
         renderSuccessMessage("Caniuse index");
     });
     updateIndex("label", window.labelsIndex).then(() => {
-        renderSuccessMessage("Github Label index");
+        renderSuccessMessage("Github rust-lang/rust repository label index");
+    });
+    updateIndex("crate", window.crateIndex, {mapping: window.mapping}).then(() => {
+        renderSuccessMessage("Top 20K crate index");
     });
 
     let updateProgress = document.querySelector(".update-progress");
-    updateProgress.textContent = "Update success! All your index is latest!"
+    updateProgress.textContent = "Update success! All your index is the latest!"
 });

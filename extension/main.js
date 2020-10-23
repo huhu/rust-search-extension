@@ -13,14 +13,15 @@ const bookCommand = new SimpleCommand('book', 'Show all Rust official books.', c
 const yetCommand = new SimpleCommand('yet', 'Show all Are We Yet websites.', commandIndex['yet']);
 const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
 const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
+const labelCommand = new LabelCommand(IndexManager.getLabelIndex());
 const commandManager = new CommandManager(
     new HelpCommand(),
     bookCommand,
     yetCommand,
     toolCommand,
     mirrorCommand,
+    labelCommand,
     new StableCommand(),
-    new LabelCommand(IndexManager.getLabelIndex()),
     new UpdateCommand(),
     new StatsCommand(),
     new HistoryCommand(),
@@ -330,13 +331,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
         case "index-update:label" : {
             IndexManager.setLabelIndex(message.index);
-            commandManager.addCommand(new LabelCommand(message.index));
+            labelCommand.setIndex(message.index);
             sendResponse(true);
             break;
         }
         case "index-update:caniuse" : {
             IndexManager.setCaniuseIndex(message.index);
             caniuseSearcher = new CaniuseSearch(message.index);
+            sendResponse(true);
+            break;
+        }
+        case "index-update:command" : {
+            let index = message.index;
+            IndexManager.setCommandIndex(index);
+            bookCommand.setIndex(index['book']);
+            yetCommand.setIndex(index['yet']);
+            toolCommand.setIndex(index['tool']);
+            mirrorCommand.setIndex(index['mirror']);
             sendResponse(true);
             break;
         }
