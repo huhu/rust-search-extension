@@ -4,6 +4,26 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.0 - 2020-10-30
+
+Finally, we reach **v1.0**! 🎉🎉
+
+- Support sync stable/nightly std search index automatically. There is no extension updating required to get the latest search index after v1.0.
+- Support prefix **?** and **??** to search [caniuse.rs](https://caniuse.rs) and RFC respectively
+- Upload the latest index files to the [update page](/update) once a day, those index including:
+    - Command index 
+    - Book index 
+    - Clippy lint index 
+    - Caniuse index 
+    - Github *rust-lang/rust* repository label index 
+    - Top 20K crate index 
+- New commands:
+    - `:stats`: open search statistics page
+    - `:update`: open the [update page](/update) to sync the latest index automatically
+- Bugfix:
+    - Fix docs.rs SVG icon missing issue
+    - Fix docs.rs new header bar UI compatibility
+
 # v0.11 - 2020-08-27
 
 - New domain: change rust-search-extension.now.sh to [rust.extension.sh](https://rust.extension.sh) 🎉🎉

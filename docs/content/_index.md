@@ -8,6 +8,9 @@ sort_by = "weight"
 We support search documentation of official crates (including **std**, **alloc**, **proc_macro**, **test**) 
 and any external crates on [docs.rs](https://docs.rs).
 
+> We'll sync the latest **std** search index automatically every day to ensure the docs freshness.
+> There is no extension updating required to get the latest search index since v1.0.
+
 ## Search Primitive Types and Modules
 
 ![GIF](/primary-module.gif)
@@ -22,8 +25,10 @@ and any external crates on [docs.rs](https://docs.rs).
 
 ## Search nightly docs
 
-You can prefix **/** before the keyword to search nightly docs. However, before your first nightly docs searching, 
-you need to open the nightly docs page, we'll sync the latest nightly docs search index.
+You can prefix **/** before the keyword to search nightly docs. 
+
+> We'll sync the latest **nightly** search index automatically every day to ensure the docs freshness.
+> There is no extension updating required to get the latest search index since v1.0.
 
 ## Search with type mode
 
@@ -90,13 +95,21 @@ prefix **!!!** (triple exclamation mark) to open crate's repository (See [Open r
 # Search Rust official book chapters
 
 You can search all of Rust book chapters too! The result will show the title of the related page, 
-parent chapter, and grandparent chapter.
+parent chapter, and grandparent chapter. Don't forget the **%** is the prefix to perform the book searching.
 
 ![IMG](/search-book.png)
 
 # Search Cargo Clippy lints
 
-![GIF](/search-clippy-lints.png)
+**>** (right angle bracket) is also a great prefix to help you search [Cargo Clippy lints](https://rust-lang.github.io/rust-clippy/master/) exclusively. 
+
+![IMG](/search-clippy-lints.png)
+
+# Search Caniuse.rs and RFC
+
+You can search [caniuse.rs](https://caniuse.rs) and RFC with **?** and **??** prefix respectively.
+
+![IMG](/search-caniuse.png)
 
 # Commands system
 
@@ -111,6 +124,8 @@ Those commands including but not limited to:
 - **:label** - Show all issue labels of rust-lang repository. 
 - **:tool** - Show useful rust tools.
 - **:mirror** - Show all Rust mirror websites.
+- **:stats** - open search statistics page.
+- **:update** - open the [update page](/update) to sync the latest index automatically.
 - **:history** - Show your local search history.
 
 ![IMG](/command-system.gif)

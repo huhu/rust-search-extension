@@ -32,14 +32,15 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 - Search Structs, Traits and Enums
 - Search Functions, Methods and Macros
 - Search builtin attributes 
+- Search nightly docs
 - Search crates on https://crates.io or https://lib.rs
-- Search crate's docs on docs.rs
+- Search any third-party crate's docs
 - Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error codes
 - Search Rust official book chapters
 - Search Cargo Clippy lints
-- Search nightly docs
-- Offline mode, search local Rust docs (`rustup docs --std`)
-- Builtin commands (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool`, `:mirror` and `:history` etc)
+- Search [Caniuse.rs](https://caniuse.rs) and RFC
+- Offline mode supported, search local Rust docs (`rustup docs --std`)
+- Builtin commands (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool`, `:mirror`, `:update` and `:history` etc)
 - Docs.rs enhancements (display Feature flags)
 
 ## How to use it
