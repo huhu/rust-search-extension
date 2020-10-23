@@ -197,10 +197,10 @@ omnibox.addPrefixQueryEvent("?", {
         let description;
         if (query.startsWith("??")) {
             content = `https://github.com/rust-lang/rfcs/pull/${feat.rfc}`;
-            description = `RFC: ${c.match(feat.match)} - ${feat.rest}`
+            description = `RFC: ${c.match(c.escape(feat.match))} - ${c.escape(feat.rest)}`
         } else {
             content = `https://caniuse.rs/features/${feat.slug}`;
-            description = `Can I use: ${c.match(feat.match)} - ${feat.rest}`
+            description = `Can I use: ${c.match(c.escape(feat.match))} - ${c.escape(feat.rest)}`
         }
         return {
             content,
