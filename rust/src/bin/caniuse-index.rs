@@ -9,12 +9,18 @@ use std::path::Path;
 const INDEX_PATH: &str = "../extension/index/caniuse.js";
 
 struct Feat {
+    // Rust version that the feature is stabilized
     version: String,
+    // The slug used in caniuse.rs URL
     slug: String,
+    // (null-able) The flag needed to use the feature in (unstable) Rust
     flag: Option<String>,
+    // (null-able) A title that describes the feature
     title: Option<String>,
+    // (null-able) RFC pull request ID
     rfc: Option<u32>,
 }
+
 type FeatArray = (String, String, Option<String>, Option<String>, Option<u32>);
 
 impl Feat {
@@ -47,31 +53,33 @@ fn main() {
 
         for ff in fs::read_dir(version_dir.path()).unwrap() {
             let feat_file = ff.unwrap();
-            let slug = feat_file
+            // Ignore non-markdown files, such as version.toml
+            if let Some(file_name) = feat_file
                 .file_name()
                 .to_str()
-                .unwrap()
-                .trim_end_matches(".md")
-                .to_owned();
+                .filter(|f| f.ends_with(".md"))
+            {
+                let slug = file_name.trim_end_matches(".md").to_owned();
 
-            let mut feat = Feat::new(version.clone(), slug.clone());
+                let mut feat = Feat::new(version.clone(), slug.clone());
 
-            let input = fs::read_to_string(feat_file.path()).unwrap();
-            input.lines().skip(1).for_each(|l| {
-                if l.contains('=') {
-                    let mut s = l.split('=');
-                    let key = s.next().unwrap().trim().trim_matches('"');
-                    let val = s.next().unwrap().trim().trim_matches('"');
-                    match key {
-                        "title" => feat.title = Some(val.to_owned()),
-                        "flag" => feat.flag = Some(val.to_owned()),
-                        "rfc_id" => feat.rfc = Some(val.parse::<u32>().unwrap()),
-                        _ => {}
+                let input = fs::read_to_string(feat_file.path()).unwrap();
+                input.lines().skip(1).for_each(|l| {
+                    if l.contains('=') {
+                        let mut s = l.split('=');
+                        let key = s.next().unwrap().trim().trim_matches('"');
+                        let val = s.next().unwrap().trim().trim_matches('"');
+                        match key {
+                            "title" => feat.title = Some(val.to_owned()),
+                            "flag" => feat.flag = Some(val.to_owned()),
+                            "rfc_id" => feat.rfc = Some(val.parse::<u32>().unwrap()),
+                            _ => {}
+                        }
                     }
-                }
-            });
+                });
 
-            feats.push(feat.into_array());
+                feats.push(feat.into_array());
+            }
         }
     }
 
