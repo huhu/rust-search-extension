@@ -7,12 +7,18 @@ let lintSearcher = new LintSearch(IndexManager.getLintIndex());
 
 const attributeSearcher = new AttributeSearch(attributesIndex);
 const crateDocSearchManager = new CrateDocSearchManager();
+
+const commandIndex = IndexManager.getCommandIndex();
+const bookCommand = new SimpleCommand('book', 'Show all Rust official books.', commandIndex['book']);
+const yetCommand = new SimpleCommand('yet', 'Show all Are We Yet websites.', commandIndex['yet']);
+const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
+const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
 const commandManager = new CommandManager(
     new HelpCommand(),
-    new SimpleCommand('book', 'Show all Rust official books.', commandsIndex['book']),
-    new SimpleCommand('yet', 'Show all Are We Yet websites.', commandsIndex['yet']),
-    new SimpleCommand('tool', 'Show some most useful Rust tools.', commandsIndex['tool']),
-    new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandsIndex['mirror']),
+    bookCommand,
+    yetCommand,
+    toolCommand,
+    mirrorCommand,
     new StableCommand(),
     new LabelCommand(IndexManager.getLabelIndex()),
     new UpdateCommand(),

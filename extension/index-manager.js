@@ -63,4 +63,11 @@ class IndexManager {
         localStorage.setItem('index-caniuse', JSON.stringify(index));
     }
 
+    static getCommandIndex() {
+        return JSON.parse(localStorage.getItem('index-command')) || commandsIndex;
+    }
+
+    static setCommandIndex(index) {
+        localStorage.setItem('index-command', JSON.stringify(index));
+    }
 }
