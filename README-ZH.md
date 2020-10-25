@@ -30,14 +30,15 @@
 - 搜索Structs, Traits和Enums
 - 搜索函数、方法和宏
 - 搜索内置属性
+- 搜索nightly文档
 - 搜索 https://crates.io 或 https://lib.rs 上的crates
 - 支持搜索docs.rs上任意第三方crate的文档
 - 支持搜索 [Compiler Error Index](https://doc.rust-lang.org/error-index.html) 上的错误代码
 - 支持实时搜索Rust官方书籍的章节
 - 支持搜索Cargo Clippy lints
-- 支持暗色模式
+- 支持搜索 [Caniuse.rs](https://caniuse.rs) 和 RFC
 - 支持离线模式，可以搜索本地 Rust 文档 (`rustup docs --std`)
-- 内置命令 (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool`, `:mirror` and `:history` etc)
+- 内置命令 (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool`, `:mirror`,  `:update` 和 `:history`等)
 - Docs.rs加强，展示每一个crate的Feature flags
 
 ## 使用方法
