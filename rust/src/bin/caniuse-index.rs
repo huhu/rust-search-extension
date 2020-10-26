@@ -6,6 +6,10 @@ use std::env;
 use std::fs;
 use std::path::Path;
 
+use regex::Regex;
+
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+
 const INDEX_PATH: &str = "../extension/index/caniuse.js";
 
 struct Feat {
@@ -39,20 +43,22 @@ impl Feat {
     }
 }
 
-fn main() {
+fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     let caniuse_repo_str = args.next().expect("Path to caniuse.rs repo required");
     let mut data_dir = Path::new(&caniuse_repo_str).to_path_buf();
     data_dir.push("data");
 
+    // Use regex to match key and value.
+    let regex = Regex::new(r"(?P<key>[_a-z0-9]*)\s*=\s*(?P<value>.*)")?;
     let mut feats = vec![];
 
-    for vd in fs::read_dir(data_dir).unwrap() {
-        let version_dir = vd.unwrap();
+    for vd in fs::read_dir(data_dir)? {
+        let version_dir = vd?;
         let version = version_dir.file_name().to_str().unwrap().to_owned();
 
-        for ff in fs::read_dir(version_dir.path()).unwrap() {
-            let feat_file = ff.unwrap();
+        for ff in fs::read_dir(version_dir.path())? {
+            let feat_file = ff?;
             // Ignore non-markdown files, such as version.toml
             if let Some(file_name) = feat_file
                 .file_name()
@@ -63,16 +69,16 @@ fn main() {
 
                 let mut feat = Feat::new(version.clone(), slug.clone());
 
-                let input = fs::read_to_string(feat_file.path()).unwrap();
+                let input = fs::read_to_string(feat_file.path())?;
                 input.lines().skip(1).for_each(|l| {
-                    if l.contains('=') {
-                        let mut s = l.split('=');
-                        let key = s.next().unwrap().trim().trim_matches('"');
-                        let val = s.next().unwrap().trim().trim_matches('"');
+                    if let Some(c) = regex.captures(l) {
+                        let key = c.name("key").unwrap().as_str();
+                        let value = c.name("value").unwrap().as_str();
+
                         match key {
-                            "title" => feat.title = Some(val.to_owned()),
-                            "flag" => feat.flag = Some(val.to_owned()),
-                            "rfc_id" => feat.rfc = Some(val.parse::<u32>().unwrap()),
+                            "title" => feat.title = Some(value.to_owned()),
+                            "flag" => feat.flag = Some(value.to_owned()),
+                            "rfc_id" => feat.rfc = value.parse::<u32>().ok(),
                             _ => {}
                         }
                     }
@@ -87,10 +93,7 @@ fn main() {
     let path = Path::new(path.as_deref().unwrap_or(INDEX_PATH));
     fs::write(
         path,
-        format!(
-            "var caniuseIndex={};",
-            serde_json::to_string(&feats).unwrap()
-        ),
-    )
-    .unwrap();
+        format!("var caniuseIndex={};", serde_json::to_string(&feats)?),
+    )?;
+    Ok(())
 }
