@@ -7,38 +7,34 @@
 // - (null-able) RFC pull request ID
 
 function CaniuseSearch(index) {
-    this.feats = {};
-    index.forEach(([version, slug, flag, title, rfc]) => {
-        // `match` is for highlighting
-        let match = flag || title;
-        // Other description information
-        let description = match === title ? null : title;
-
-        let searchTerm = match.replace(/[-_\s#?]/ig, "");
-        this.feats[searchTerm] = {version, slug, match, rfc, description};
-    });
-    this.searchTerms = Object.keys(this.feats);
+    this.index = index;
 }
 
 CaniuseSearch.prototype.search = function (rawKeyword) {
     let keyword = rawKeyword.toLowerCase().replace(/[-_\s#?]/ig, "");
     let result = [];
 
-    for (let searchTerm of this.searchTerms) {
-        if (searchTerm.length < keyword.length) continue;
+    this.index.forEach(([version, slug, flag, title, rfc]) => {
+        // `match` is for highlighting
+        let match = flag || title;
+        let searchTerm = match.toLowerCase().replace(/[-_\s#?]/ig, "");
 
-        let foundAt = searchTerm.toLowerCase().indexOf(keyword);
-        if (foundAt > -1) {
-            let rfc = this.feats[searchTerm].rfc;
+        let matchIndex = searchTerm.toLowerCase().indexOf(keyword);
+        if (matchIndex > -1) {
             // skip those without RFC when searching for RFCs
             if (!(rawKeyword.startsWith("??") && rfc == null)) {
+                let description = match === title ? null : title;
                 result.push({
-                    matchIndex: foundAt,
-                    ...this.feats[searchTerm],
+                    matchIndex,
+                    version,
+                    slug,
+                    match,
+                    rfc,
+                    description,
                 });
             }
         }
-    }
+    });
 
     return result.sort((a, b) => {
         if (a.matchIndex === b.matchIndex) {
