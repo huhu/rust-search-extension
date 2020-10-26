@@ -27,6 +27,7 @@
             padding: 0 5px;
         }
     </style>
+    <link rel="stylesheet" href="../libs/balloon.min.css">
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -39,6 +40,20 @@
                 <a href="https://doc.rust-lang.org/std/">
                     <img src="https://img.shields.io/badge/stable-latest-yellow.svg" alt="stable-docs">
                 </a>
+            </div>
+        </div>
+        <div style="margin-top: 20px" class="flex-vertical">
+            <div>
+                Enable auto update
+                <span aria-label="Whether auto opens the index update page when the browser launch (default false). At any time, you can use the `:update` command to sync the latest index."
+                      data-balloon-pos="up" data-balloon-length="large" style="vertical-align: middle">
+                    <img style="vertical-align: middle;width: 15px;margin-right: 5px;"
+                         src="../stats/info.svg" alt="info">
+                </span>
+                <label class="toggle">
+                    <input type="checkbox" id="auto-update">
+                    <span class="slider"></span>
+                </label>
             </div>
         </div>
         <div style="margin-top: 20px" class="flex-vertical">

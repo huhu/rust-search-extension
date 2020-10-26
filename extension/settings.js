@@ -4,6 +4,12 @@ const REGEX_DOC_PATH_FILE = /(^file:\/\/.*\/doc\/rust\/html\/)(.*)/i;
 const REGEX_DOC_PATH_HTTP = /(^https?:\/\/.*:\d{2,6}\/)(.*)/i;
 
 const settings = {
+    get autoUpdate() {
+        return JSON.parse(localStorage.getItem('auto-update')) || false;
+    },
+    set autoUpdate(mode) {
+        localStorage.setItem('auto-update', mode);
+    },
     get isOfflineMode() {
         return JSON.parse(localStorage.getItem('offline-mode')) || false;
     },

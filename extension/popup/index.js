@@ -1,6 +1,12 @@
 const toast = new Toast(".toast");
 
 document.addEventListener('DOMContentLoaded', function () {
+    const autoUpdateCheckbox = document.getElementById('auto-update');
+    autoUpdateCheckbox.checked = settings.autoUpdate;
+    autoUpdateCheckbox.onchange = function (event) {
+        settings.autoUpdate = event.target.checked;
+    };
+
     // Offline mode checkbox
     if (!settings.offlineDocPath) {
         // If the offline doc path not exists, turn off the offline mode.
