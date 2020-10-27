@@ -1,73 +1,87 @@
+// Wrap chrome.storage API as a promise.
+// See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/StorageArea/get
+function getIndexInternal(key) {
+    return new Promise(resolve => {
+        chrome.storage.local.get(key, (result) => {
+            resolve(result[key]);
+        });
+    });
+}
+
+// Query all storage by this method:
+// chrome.storage.local.get(null, function(result) {
+//     console.log('Value currently is ', result);
+// });
 class IndexManager {
-    static getStdStableIndex() {
-        return JSON.parse(localStorage.getItem('index-std-stable')) || searchIndex;
+    static async getStdStableIndex() {
+        return await getIndexInternal('index-std-stable') || searchIndex;
     }
 
     static setStdStableIndex(index) {
-        localStorage.setItem('index-std-stable', JSON.stringify(index));
+        chrome.storage.local.set({'index-std-stable': index});
     }
 
-    static getStdNightlyIndex() {
-        return JSON.parse(localStorage.getItem('index-std-nightly')) || searchIndex;
+    static async getStdNightlyIndex() {
+        return await getIndexInternal('index-std-nightly') || searchIndex;
     }
 
-    static setStdNightlyIndex(docs) {
-        localStorage.setItem('index-std-nightly', JSON.stringify(docs));
+    static setStdNightlyIndex(index) {
+        chrome.storage.local.set({'index-std-nightly': index});
     }
 
-    static getBookIndex() {
-        return JSON.parse(localStorage.getItem('index-book')) || booksIndex;
+    static async getBookIndex() {
+        return await getIndexInternal('index-book') || booksIndex;
     }
 
     static setBookIndex(index) {
-        localStorage.setItem('index-book', JSON.stringify(index));
+        chrome.storage.local.set({'index-book': index});
     }
 
-    static getLabelIndex() {
-        return JSON.parse(localStorage.getItem('index-label')) || labelsIndex;
+    static async getLabelIndex() {
+        return await getIndexInternal('index-label') || labelsIndex;
     }
 
     static setLabelIndex(index) {
-        localStorage.setItem('index-label', JSON.stringify(index));
+        chrome.storage.local.set({'index-label': index});
     }
 
-    static getCrateMapping() {
-        return JSON.parse(localStorage.getItem('index-crate-mapping')) || mapping;
+    static async getCrateMapping() {
+        return await getIndexInternal('index-crate-mapping') || mapping;
     }
 
-    static setCrateMapping(mapping) {
-        localStorage.setItem('index-crate-mapping', JSON.stringify(mapping));
+    static setCrateMapping(index) {
+        chrome.storage.local.set({'index-crate-mapping': index});
     }
 
-    static getCrateIndex() {
-        return JSON.parse(localStorage.getItem('index-crate')) || crateIndex;
+    static async getCrateIndex() {
+        return await getIndexInternal('index-crate') || crateIndex;
     }
 
     static setCrateIndex(index) {
-        localStorage.setItem('index-crate', JSON.stringify(index));
+        chrome.storage.local.set({'index-crate': index});
     }
 
-    static getLintIndex() {
-        return JSON.parse(localStorage.getItem('index-lint')) || lintsIndex;
+    static async getLintIndex() {
+        return await getIndexInternal('index-lint') || lintsIndex;
     }
 
     static setLintIndex(index) {
-        localStorage.setItem('index-lint', JSON.stringify(index));
+        chrome.storage.local.set({'index-lint': index});
     }
 
-    static getCaniuseIndex() {
-        return JSON.parse(localStorage.getItem('index-caniuse')) || caniuseIndex;
+    static async getCaniuseIndex() {
+        return await getIndexInternal('index-caniuse') || caniuseIndex;
     }
 
     static setCaniuseIndex(index) {
-        localStorage.setItem('index-caniuse', JSON.stringify(index));
+        chrome.storage.local.set({'index-caniuse': index});
     }
 
-    static getCommandIndex() {
-        return JSON.parse(localStorage.getItem('index-command')) || commandsIndex;
+    static async getCommandIndex() {
+        return await getIndexInternal('index-command') || commandsIndex;
     }
 
     static setCommandIndex(index) {
-        localStorage.setItem('index-command', JSON.stringify(index));
+        chrome.storage.local.set({'index-command': index});
     }
 }

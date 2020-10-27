@@ -13,6 +13,7 @@ local json = manifest.new(
   description='The ultimate search extension for Rust',
 )
              .addIcons(icons())
+             .addPermissions(['storage'])
              .addWebAccessibleResources(['script/add-search-index.js', 'script/add-std-search-index.js'])
              .addBackgroundScripts(['settings.js', 'deminifier.js'])
              .addBackgroundScripts(utils.js_files('search', ['book', 'crate', 'attribute', 'caniuse', 'lint']))
