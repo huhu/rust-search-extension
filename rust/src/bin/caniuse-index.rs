@@ -72,11 +72,11 @@ fn main() -> Result<()> {
                 let input = fs::read_to_string(feat_file.path())?;
                 input.lines().skip(1).for_each(|l| {
                     if let Some(c) = regex.captures(l) {
-                        let key = c.name("key").unwrap().as_str();
-                        let value = c.name("value").unwrap().as_str();
+                        let key = c.name("key").unwrap().as_str().trim().trim_matches('"');
+                        let value = c.name("value").unwrap().as_str().trim().trim_matches('"');
 
                         match key {
-                            "title" => feat.title = Some(value.to_owned()),
+                            "title" => feat.title = Some(value.replace("\\\"", "\"")),
                             "flag" => feat.flag = Some(value.to_owned()),
                             "rfc_id" => feat.rfc = value.parse::<u32>().ok(),
                             _ => {}
