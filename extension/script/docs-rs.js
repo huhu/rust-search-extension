@@ -4,7 +4,7 @@ crateName = crateName.replace("-", "_");
 let currentCrateVersion = undefined;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    let menu = document.querySelector(".pure-menu-list:not(.pure-menu-right)");
+    let menu = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     // Exclude /crate/** pages
     if (menu && menu.children.length >= 3 && !location.pathname.includes("/crate/")) {
         await insertFeatureFlagsElement();
