@@ -17,6 +17,7 @@ Finally, we reach **v1.0**! 🎉🎉
     - Caniuse index 
     - Github *rust-lang/rust* repository label index 
     - Top 20K crate index 
+- Support configure auto index-updating in the popup page
 - New commands:
     - `:stats`: open search statistics page
     - `:update`: open the [update page](/update) to sync the latest index automatically

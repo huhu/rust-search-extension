@@ -7,7 +7,7 @@
 
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)
 ![Mozilla Add-on](https://img.shields.io/amo/v/rust-search-extension?color=%2320123A)
-![Microsoft Edge](https://img.shields.io/badge/microsoft--edge-v0.11.0-1D4F8C)
+![Microsoft Edge](https://img.shields.io/badge/microsoft--edge-v1.0.0-1D4F8C)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
 [![Discord](https://img.shields.io/discord/711895914494558250?label=chat&logo=discord)](https://discord.gg/xucZNVd)
