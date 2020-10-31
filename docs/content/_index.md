@@ -5,7 +5,7 @@ sort_by = "weight"
 
 # Search std and external crate docs
 
-We support search documentation of official crates (including **std**, **alloc**, **proc_macro**, **test**) 
+We support search documentation of official crates (including **std**, **proc_macro**, **test**) 
 and any external crates on [docs.rs](https://docs.rs).
 
 > We'll sync the latest **std** search index automatically every day to ensure the docs freshness.
