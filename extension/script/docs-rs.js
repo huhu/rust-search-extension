@@ -1,5 +1,8 @@
-let [crateName, crateVersion] = location.pathname.slice(1).split("/");
-crateName = crateName.replace("-", "_");
+// rawCrateName v.s crateName
+// See: https://docs.rs/actix-web/3.2.0/actix_web/
+// Here actix-web is the rawCrateName, actix_web is the crateName.
+// The rawCrateName mainly for Cargo.toml url to parse feature flags.
+let [rawCrateName, crateVersion, crateName] = location.pathname.slice(1).split("/");
 // A crate version which added to the extension.
 let currentCrateVersion = undefined;
 
@@ -20,7 +23,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function insertFeatureFlagsElement() {
     let menu = document.querySelector(".pure-menu-list:not(.pure-menu-right)");
-    let response = await fetch(`https://docs.rs/crate/${crateName}/${crateVersion}/source/Cargo.toml`);
+    // Use rawCrateName to fetch the Cargo.toml, otherwise will get 404.
+    let response = await fetch(`https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml`);
     let features = await parseCargoFeatures(await response.text());
     let html = `<div style="padding: 1rem"><p>This crate has no feature flag.</p></div>`;
     if (features.length > 0) {
