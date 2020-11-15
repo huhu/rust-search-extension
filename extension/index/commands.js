@@ -21,6 +21,7 @@ var commandsIndex = {
         ["Rust API Guidelines", "https://rust-lang.github.io/api-guidelines/"],
         ["Rust Fuzz Book", "https://rust-fuzz.github.io/book/"],
         ["Rust Forge Book", "https://forge.rust-lang.org/"],
+        ["Rust Chalk Book", "https://rust-lang.github.io/chalk/book/"],
     ],
     "yet": [
         ["Are we async yet?", "https://areweasyncyet.rs", "Asynchronous I/O in Rust"],
