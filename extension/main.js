@@ -9,6 +9,7 @@ const c = new Compat();
     const crateDocSearchManager = new CrateDocSearchManager();
 
     const commandIndex = await IndexManager.getCommandIndex();
+    const cargoCommand = new SimpleCommand('cargo', 'Show all useful third-party cargo subcommands.', commandIndex['cargo']);
     const bookCommand = new SimpleCommand('book', 'Show all Rust official books.', commandIndex['book']);
     const yetCommand = new SimpleCommand('yet', 'Show all Are We Yet websites.', commandIndex['yet']);
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
@@ -16,6 +17,7 @@ const c = new Compat();
     const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
     const commandManager = new CommandManager(
         new HelpCommand(),
+        cargoCommand,
         bookCommand,
         yetCommand,
         toolCommand,

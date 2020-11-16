@@ -78,7 +78,17 @@ class IndexManager {
     }
 
     static async getCommandIndex() {
-        return await getIndexInternal('index-command') || commandsIndex;
+        let index = await getIndexInternal('index-command');
+        if (index) {
+            // commandsIndex would update if the new version installed.
+            // So we should override the old cache one.
+            if (Object.keys(index).length < Object.keys(commandsIndex).length) {
+                this.setCommandIndex(commandsIndex);
+                return commandsIndex;
+            }
+            return index;
+        }
+        return commandsIndex;
     }
 
     static setCommandIndex(index) {
