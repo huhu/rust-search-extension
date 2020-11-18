@@ -4,6 +4,9 @@ description = "Testimonials"
 weight = 1
 +++
 
+## From *u/sonaxaton*
+
+> Congrats! Love this extension, lots of useful features.
 
 ## From *u/iulian_r*
 
@@ -18,6 +21,11 @@ weight = 1
 > It's crazy to me that it can even compete with a `cargo doc --open` invocation 
 > now that one can cache crate docs locally.
  
+## From *u/gnosnivek*
+
+> This extension was probably the only thing keeping me sane when I was working on a homebrew gzip implementation for a crazy idea of mine. Tracking bitstreams and bitvectors and bit(?????)s was a mess, and google searches were pulling up weird outdated docs for the crates I was using.
+>
+> Thanks for all your work on the extension, and congrats on 1.0!
 
 ## From *u/iulian_r*
 
