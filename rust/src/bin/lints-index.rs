@@ -1,10 +1,11 @@
-use serde_derive::Deserialize;
-
-use rust_search_extension::minify::Minifier;
 use std::clone::Clone;
 use std::collections::HashMap;
 use std::path::Path;
 use std::{env, fs};
+
+use serde_derive::Deserialize;
+
+use rust_search_extension::minify::Minifier;
 
 const LINT_URL: &str = "https://rust-lang.github.io/rust-clippy/master/lints.json";
 const LINTS_INDEX_PATH: &str = "../extension/index/lints.js";
@@ -33,7 +34,7 @@ impl ToString for LintLevel {
 #[derive(Deserialize, Debug)]
 struct LintDocs {
     #[serde(rename(deserialize = "What it does"))]
-    desc: String,
+    desc: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -58,11 +59,14 @@ async fn main() -> Result<()> {
     let lints: HashMap<String, [String; 2]> = fetch_clippy_lints()
         .await?
         .iter()
-        .map(|lint| {
-            let mut desc = lint.docs.desc.to_string();
-            desc = desc.replace("`", "");
-            desc.truncate(100);
-            (lint.id.clone(), [lint.level.to_string(), desc])
+        .filter_map(|lint| {
+            if let Some(mut desc) = lint.docs.desc.clone() {
+                desc = desc.replace("`", "");
+                desc.truncate(100);
+                Some((lint.id.clone(), [lint.level.to_string(), desc]))
+            } else {
+                None
+            }
         })
         .collect();
 
