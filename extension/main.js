@@ -145,12 +145,12 @@ const c = new Compat();
                 content = `${REDIRECT_URL}?crate=${crate.id}`;
                 description = `${c.capitalize("repository")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`;
             } else if (query.startsWith("!!")) {
-                content = `https://docs.rs/${crate.id}`;
-                description = `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
-            } else {
                 let registry = settings.crateRegistry;
                 content = `https://${registry}/crates/${crate.id}`;
                 description = `${c.capitalize(registry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
+            } else {
+                content = `https://docs.rs/${crate.id}`;
+                description = `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
             }
             return {
                 content,
@@ -166,12 +166,12 @@ const c = new Compat();
                 content = "https://github.com/search?q=" + encode;
                 description = "Search Rust crates for " + c.match(keyword) + " on https://github.com";
             } else if (query.startsWith("!!")) {
-                content = "https://docs.rs/releases/search?query=" + encode;
-                description = "Search Rust crates for " + c.match(keyword) + " on https://docs.rs";
-            } else {
                 let registry = settings.crateRegistry;
                 content = `https://${registry}/search?q=` + encode;
                 description = "Search Rust crates for " + c.match(keyword) + ` on https://${registry}`;
+            } else {
+                content = "https://docs.rs/releases/search?query=" + encode;
+                description = "Search Rust crates for " + c.match(keyword) + " on https://docs.rs";
             }
             return [{
                 content,
