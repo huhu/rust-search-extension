@@ -1,4 +1,4 @@
-async function parseCargoFeatures(content) {
+function parseCargoFeatures(content) {
     let features = [];
 
     let start = content.lastIndexOf("[features]");

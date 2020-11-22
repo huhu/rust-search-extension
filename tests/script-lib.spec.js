@@ -59,8 +59,8 @@ describe("Script library function", function() {
             ],
         ];
         inputs.forEach(([content, expected], number) => {
-            it(`Parse crate feature flags #${number}`, async function() {
-                let features = await parseCargoFeatures(content);
+            it(`Parse crate feature flags #${number}`, function() {
+                let features = parseCargoFeatures(content);
                 features.should.has.lengthOf(expected.length);
                 features.should.deep.equal(expected);
             });
