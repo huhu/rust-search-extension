@@ -11,7 +11,7 @@ div.nav-container form.landing-search-form-nav {
 /* Rust Search Extension classes */
 
 .feature-flags-content {
-    color: #333;
+    color: var(--color-navbar-standard);
     max-height: 600px;
     overflow: auto;
     max-width: 60rem;
@@ -46,5 +46,5 @@ div.nav-container form.landing-search-form-nav {
     display: block;
     white-space: normal;
     font-size: 13px;
-    color: #555;
+    color: var(--color-navbar-standard);
 }
