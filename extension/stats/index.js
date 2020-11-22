@@ -36,9 +36,7 @@ let stats = [
     },
     {
         name: "crates",
-        // Remove pattern for crates search for history data compatibility,
-        // since we switched the prefix priority between crates and docs.rs.
-        pattern: null,
+        pattern: /^!!!.*/i,
         value: 0,
         color: "#3D6739",
         description: "crates.io or lib.rs searches."
