@@ -38,6 +38,10 @@ local json = manifest.new(
   matches=['*://rust.extension.sh/update', '*://extension.sh/update/'],
   js=utils.js_files('script', ['rust-extension-sh']),
   css=[],
+).addContentScript(
+   matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md'],
+   js=utils.js_files('script', ['lib', 'rust-lang-release']),
+   css=[],
 );
 
 local browser = std.extVar('browser');
