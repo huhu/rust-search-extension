@@ -17,6 +17,7 @@ const c = new Compat();
     const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
     const commandManager = new CommandManager(
         new HelpCommand(),
+        new ReleaseCommand(),
         cargoCommand,
         bookCommand,
         yetCommand,
