@@ -2,7 +2,9 @@
 // See: https://docs.rs/actix-web/3.2.0/actix_web/
 // Here actix-web is the rawCrateName, actix_web is the crateName.
 // The rawCrateName mainly for Cargo.toml url to parse feature flags.
-let [rawCrateName, crateVersion, crateName] = location.pathname.slice(1).split("/");
+let pathname = location.pathname.replace("/crate", "");
+let [rawCrateName, crateVersion] = pathname.slice(1).split("/");
+crateName = rawCrateName.replace("-", "_");
 // A crate version which added to the extension.
 let currentCrateVersion = undefined;
 
@@ -22,6 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Using separate event listener to avoid network requesting latency for feature flags menu enhancement.
 document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
+    if (!menus) return;
 
     // Exclude /crate/** pages
     if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
