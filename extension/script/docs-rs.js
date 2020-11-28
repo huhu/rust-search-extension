@@ -7,22 +7,34 @@ let [rawCrateName, crateVersion, crateName] = location.pathname.slice(1).split("
 let currentCrateVersion = undefined;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    let menu = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
+    let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
+    if (!menus) return;
+
+    let featureFlagsMenu = Array.from(menus.children).find(menu => menu.textContent.toLowerCase().includes("feature flags"));
+    if (featureFlagsMenu) {
+        // Rearrange the featureFlagsMenu to order 2th.
+        menus.insertBefore(featureFlagsMenu, menus.firstElementChild.nextElementSibling);
+        featureFlagsMenu.classList.add("pure-menu-has-children", "pure-menu-allow-hover");
+        await enhanceFeatureFlagsMenu(featureFlagsMenu);
+    }
+});
+
+// Using separate event listener to avoid network requesting latency for feature flags menu enhancement.
+document.addEventListener("DOMContentLoaded", async () => {
+    let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
+
     // Exclude /crate/** pages
-    if (menu && menu.children.length >= 3 && !location.pathname.includes("/crate/")) {
-        await insertFeatureFlagsElement();
+    if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
         chrome.runtime.sendMessage({crateName, action: "crate:check"}, crate => {
             if (crate) {
                 currentCrateVersion = crate.version;
             }
-
             insertAddToExtensionElement();
         });
     }
 });
 
-async function insertFeatureFlagsElement() {
-    let menu = document.querySelector(".pure-menu-list:not(.pure-menu-right)");
+async function enhanceFeatureFlagsMenu(menu) {
     // Use rawCrateName to fetch the Cargo.toml, otherwise will get 404.
     let response = await fetch(`https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml`);
     let features = parseCargoFeatures(await response.text());
@@ -42,14 +54,11 @@ async function insertFeatureFlagsElement() {
                 </table>`;
     }
     menu.firstElementChild.insertAdjacentHTML("afterend",
-        `<li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-              <a href="#" class="pure-menu-link" aria-label="Feature flags" aria-haspopup="menu">
-                <span class="fa-svg fa-svg-fw" >${SVG_FLAG}</span><span class="title"> Feature flags</span>
-              </a>
+        `
               <div class="pure-menu-children feature-flags-content" role="menu">
                 ${html}
               </div>
-          </li>`);
+          `);
 }
 
 function insertAddToExtensionElement() {
@@ -105,7 +114,7 @@ function insertAddToExtensionElement() {
     menu.lastElementChild.insertAdjacentElement("afterend", li);
 }
 
-window.addEventListener("message", function(event) {
+window.addEventListener("message", function (event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension") {
