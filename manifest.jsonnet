@@ -41,7 +41,7 @@ local json = manifest.new(
 ).addContentScript(
    matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md'],
    js=utils.js_files('script', ['lib', 'rust-lang-release']),
-   css=[],
+   css=['script/github.css'],
 );
 
 local browser = std.extVar('browser');
