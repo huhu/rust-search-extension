@@ -1,8 +1,10 @@
+use std::collections::HashMap;
+use std::path::Path;
+use std::{env, fs};
+
 use regex::Regex;
-use reqwest;
 use select::document::Document;
 use select::predicate::{Name, Predicate};
-use std::collections::HashMap;
 use tokio::runtime::Runtime;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -27,19 +29,34 @@ async fn parse_rust_blog_page_urls() -> Result<HashMap<String, String>> {
 fn parse_version_from_url(url: &str) -> String {
     // /2020/10/08/Rust-1.47.html
     // /2020/08/27/Rust-1.46.0.html
+    // /2018/12/06/Rust-1.31-and-rust-2018.html
     let mut split = url.split('-');
-    split.nth(1).map(|mut v| {
-        let v = v.replace(".html", "");
-        v
-    }).unwrap()
+    split
+        .nth(1)
+        .map(|v| {
+            let mut v = v.replace(".html", "");
+            if v.matches('.').count() == 1 {
+                v.push_str(".0");
+            }
+            v
+        })
+        .unwrap()
 }
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    let path_name = match args.get(1) {
+        Some(path_name) => path_name,
+        None => "rust-blog-urls.json",
+    };
     let mut rt = Runtime::new().unwrap();
     rt.block_on(async {
         match parse_rust_blog_page_urls().await {
-            Ok(vec) => {
-                println!("vec {:?}", vec);
+            Ok(map) => {
+                println!("vec {:?}", map);
+
+                let path = Path::new(path_name);
+                fs::write(path, serde_json::to_string(&map).unwrap()).unwrap();
             }
             Err(e) => println!("{}", e),
         }
