@@ -1,8 +1,7 @@
-#![cfg(feature = "books-index")]
-
+use std::fs;
 use std::path::Path;
-use std::{env, fs};
 
+use argh::FromArgs;
 use futures::future::try_join_all;
 use select::document::Document;
 use select::node::Node;
@@ -10,10 +9,21 @@ use select::predicate::{Class, Name};
 use serde::ser::SerializeTuple;
 use serde::{Serialize, Serializer};
 use serde_derive::{Deserialize, Serialize};
+use tokio::runtime::Runtime;
 
-use rust_search_extension::minify::Minifier;
+use crate::minify::Minifier;
+use crate::tasks::Task;
 
 const BOOKS_INDEX_PATH: &str = "../extension/index/books.js";
+
+/// Books task
+#[argh(subcommand, name = "books")]
+#[derive(FromArgs)]
+pub struct BooksTask {
+    /// destination path
+    #[argh(option, default = "BOOKS_INDEX_PATH.to_string()")]
+    dest_path: String,
+}
 
 #[derive(Debug)]
 struct Page {
@@ -51,8 +61,8 @@ impl Page {
 impl Serialize for Page {
     #[inline]
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut ser = serializer.serialize_tuple(3)?;
         ser.serialize_element(&self.title)?;
@@ -93,31 +103,35 @@ async fn fetch_book(mut book: Book) -> Result<Book, Box<dyn std::error::Error>> 
     Ok(book)
 }
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let args: Vec<String> = env::args().collect();
-    let path_name = match args.get(1) {
-        Some(path_name) => path_name,
-        None => BOOKS_INDEX_PATH,
-    };
-    let futures: Vec<_> = serde_json::from_str::<Vec<Book>>(include_str!("books.json"))?
-        .into_iter()
-        .map(fetch_book)
-        .collect();
-    match try_join_all(futures).await {
-        Ok(result) => {
-            let books: Vec<_> = result.into_iter().collect();
-            let contents = format!(
-                "var N=null;var booksIndex={};",
-                serde_json::to_string(&books)?
-            );
-            let path = Path::new(path_name);
-            fs::write(path, &Minifier::minify_js(contents)).unwrap();
-        }
-        Err(error) => {
-            println!("{:?}", error);
-        }
+impl Task for BooksTask {
+    fn execute(&self) -> anyhow::Result<()> {
+        let mut rt = Runtime::new()?;
+        rt.block_on(self.run())?;
+        Ok(())
     }
+}
 
-    Ok(())
+impl BooksTask {
+    async fn run(&self) -> anyhow::Result<()> {
+        let futures: Vec<_> = serde_json::from_str::<Vec<Book>>(include_str!("books.json"))?
+            .into_iter()
+            .map(fetch_book)
+            .collect();
+        match try_join_all(futures).await {
+            Ok(result) => {
+                let books: Vec<_> = result.into_iter().collect();
+                let contents = format!(
+                    "var N=null;var booksIndex={};",
+                    serde_json::to_string(&books)?
+                );
+                let path = Path::new(&self.dest_path);
+                fs::write(path, &Minifier::minify_js(contents)).unwrap();
+            }
+            Err(error) => {
+                println!("{:?}", error);
+            }
+        }
+
+        Ok(())
+    }
 }

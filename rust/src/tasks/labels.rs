@@ -1,5 +1,3 @@
-#![cfg(feature = "labels-index")]
-
 use serde::ser::SerializeTuple;
 use serde::{Serialize, Serializer};
 use serde_derive::Deserialize;
