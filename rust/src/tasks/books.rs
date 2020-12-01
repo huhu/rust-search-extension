@@ -61,8 +61,8 @@ impl Page {
 impl Serialize for Page {
     #[inline]
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut ser = serializer.serialize_tuple(3)?;
         ser.serialize_element(&self.title)?;

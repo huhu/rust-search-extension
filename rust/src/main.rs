@@ -20,6 +20,8 @@ enum Subcommand {
     Crates(CratesTask),
     Books(BooksTask),
     Caniuse(CaniuseTask),
+    Lints(LintsTask),
+    BlogUrls(BlogUrlsTask),
 }
 
 fn main() -> anyhow::Result<()> {
@@ -28,6 +30,8 @@ fn main() -> anyhow::Result<()> {
         Subcommand::Crates(cmd) => cmd.execute()?,
         Subcommand::Books(cmd) => cmd.execute()?,
         Subcommand::Caniuse(cmd) => cmd.execute()?,
+        Subcommand::Lints(cmd) => cmd.execute()?,
+        Subcommand::BlogUrls(cmd) => cmd.execute()?,
     }
     Ok(())
 }
