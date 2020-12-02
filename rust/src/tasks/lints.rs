@@ -19,7 +19,7 @@ const LINTS_INDEX_PATH: &str = "../extension/index/lints.js";
 #[derive(FromArgs)]
 pub struct LintsTask {
     /// destination path
-    #[argh(option, default = "LINTS_INDEX_PATH.to_string()")]
+    #[argh(option, short = 'd', default = "LINTS_INDEX_PATH.to_string()")]
     dest_path: String,
 }
 

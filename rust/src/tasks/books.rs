@@ -21,7 +21,7 @@ const BOOKS_INDEX_PATH: &str = "../extension/index/books.js";
 #[derive(FromArgs)]
 pub struct BooksTask {
     /// destination path
-    #[argh(option, default = "BOOKS_INDEX_PATH.to_string()")]
+    #[argh(option, short = 'd', default = "BOOKS_INDEX_PATH.to_string()")]
     dest_path: String,
 }
 

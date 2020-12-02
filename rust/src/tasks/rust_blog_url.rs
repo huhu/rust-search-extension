@@ -16,7 +16,7 @@ use crate::tasks::Task;
 #[derive(FromArgs)]
 pub struct BlogUrlsTask {
     /// destination path
-    #[argh(option, default = "\"rust-blog-urls.json\".to_string()")]
+    #[argh(option, short = 'd', default = "\"rust-blog-urls.json\".to_string()")]
     dest_path: String,
 }
 

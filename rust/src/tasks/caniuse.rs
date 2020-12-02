@@ -16,10 +16,10 @@ const INDEX_PATH: &str = "../extension/index/caniuse.js";
 #[derive(FromArgs)]
 pub struct CaniuseTask {
     /// caniuse.rs repository path
-    #[argh(option)]
+    #[argh(option, short = 'r')]
     repo_path: String,
     /// destination path
-    #[argh(option, default = "INDEX_PATH.to_string()")]
+    #[argh(option, short = 'd', default = "INDEX_PATH.to_string()")]
     dest_path: String,
 }
 

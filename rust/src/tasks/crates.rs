@@ -25,10 +25,10 @@ const CRATES_INDEX_PATH: &str = "../extension/index/crates.js";
 #[derive(FromArgs)]
 pub struct CratesTask {
     /// destination path
-    #[argh(option, default = "CRATES_INDEX_PATH.to_string()")]
+    #[argh(option, short = 'd', default = "CRATES_INDEX_PATH.to_string()")]
     dest_path: String,
     /// CSV path
-    #[argh(option)]
+    #[argh(option, short = 'p')]
     csv_path: String,
 }
 
