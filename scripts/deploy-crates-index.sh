@@ -8,7 +8,7 @@ BRANCH="now"
 build() {
   echo "Starting building crates-index..."
   cd rust
-  RUST_BACKTRACE=full cargo run --release --bin crates-index ${CRATES_DATABASE_PATH} ${CRATES_INDEX_PATH}
+  RUST_BACKTRACE=full cargo run --release crates -p ${CRATES_DATABASE_PATH} -d ${CRATES_INDEX_PATH}
   echo "{\"version\": $(date +%s)}" > /tmp/version.json
   cd ..
 }

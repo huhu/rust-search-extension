@@ -11,11 +11,11 @@ jobs:
       - name: "Build index"
         run: |
           cd rust
-          RUST_BACKTRACE=full cargo run --bin books-index --features books-index --manifest-path=Cargo.toml /tmp/books.js
-          RUST_BACKTRACE=full cargo run --bin lints-index --features books-index --manifest-path=Cargo.toml /tmp/lints.js
-          RUST_BACKTRACE=full cargo run --bin labels-index --features labels-index --manifest-path=Cargo.toml /tmp/labels.js
+          RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml books -d /tmp/public/index/books.js
+          RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml lints -d /tmp/public/index/lints.js
+          RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml labels -d /tmp/public/index/labels.js
           git clone https://github.com/jplatte/caniuse.rs.git
-          RUST_BACKTRACE=full cargo run --bin caniuse-index --features caniuse-index --manifest-path=Cargo.toml -- caniuse.rs /tmp/caniuse.js
+          RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml caniuse -r /tmp/caniuse -d /tmp/public/index/caniuse.js
           zip /tmp/index.zip /tmp/*.js
       - name: "Upload Index Artifact"
         uses: actions/upload-artifact@master
