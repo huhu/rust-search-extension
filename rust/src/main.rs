@@ -21,6 +21,7 @@ enum Subcommand {
     Books(BooksTask),
     Caniuse(CaniuseTask),
     Lints(LintsTask),
+    Labels(LabelsTask),
     BlogUrls(BlogUrlsTask),
 }
 
@@ -32,6 +33,7 @@ fn main() -> anyhow::Result<()> {
         Subcommand::Caniuse(cmd) => cmd.execute()?,
         Subcommand::Lints(cmd) => cmd.execute()?,
         Subcommand::BlogUrls(cmd) => cmd.execute()?,
+        Subcommand::Labels(cmd) => cmd.execute()?,
     }
     Ok(())
 }
