@@ -4,7 +4,7 @@
 // The rawCrateName mainly for Cargo.toml url to parse feature flags.
 let pathname = location.pathname.replace("/crate", "");
 let [rawCrateName, crateVersion] = pathname.slice(1).split("/");
-crateName = rawCrateName.replace("-", "_");
+crateName = rawCrateName.replaceAll("-", "_");
 // A crate version which added to the extension.
 let currentCrateVersion = undefined;
 
