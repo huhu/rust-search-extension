@@ -21,9 +21,6 @@ pub struct BlogUrlsTask {
 }
 
 fn parse_version_from_url(url: &str) -> String {
-    // /2020/10/08/Rust-1.47.html
-    // /2020/08/27/Rust-1.46.0.html
-    // /2018/12/06/Rust-1.31-and-rust-2018.html
     let mut split = url.split('-');
     split
         .nth(1)
@@ -62,14 +59,34 @@ impl BlogUrlsTask {
             .await?
             .text()
             .await?;
-        let doc = Document::from(html.as_str());
-        Ok(doc
+
+        let mut map = HashMap::new();
+        for (version, url) in Document::from(html.as_str())
             .find(Name("tr").descendant(Name("a")))
             .filter_map(|item| {
                 item.attr("href")
-                    .filter(|url| regex.is_match(url) && url.contains('-'))
+                    .filter(|url| regex.is_match(url))
                     .map(|url| (parse_version_from_url(url), url.to_string()))
             })
-            .collect())
+        {
+            if !map.contains_key(&version) {
+                map.insert(version, url);
+            }
+        }
+        Ok(map)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_version_from_url() {
+        let f = parse_version_from_url;
+        assert_eq!("1.47.0", &f("/2020/10/08/Rust-1.47.html"));
+        assert_eq!("1.46.0", &f("/2020/08/27/Rust-1.46.0.html"));
+        assert_eq!("1.45.1", &f("/2020/08/27/Rust-1.45.1.html"));
+        assert_eq!("1.31.0", &f("/2018/12/06/Rust-1.31-and-rust-2018.html"));
     }
 }
