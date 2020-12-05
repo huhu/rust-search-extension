@@ -21,6 +21,8 @@ pub struct BlogUrlsTask {
 }
 
 fn parse_version_from_url(url: &str) -> String {
+    // Normalize special cases, such as /2020/05/07/Rust.1.43.1.html
+    let url = url.to_lowercase().replacen("rust.", "rust-", 1);
     let mut split = url.split('-');
     split
         .nth(1)
@@ -54,7 +56,7 @@ impl Task for BlogUrlsTask {
 
 impl BlogUrlsTask {
     async fn parse_rust_blog_page_urls(&self) -> Result<HashMap<String, String>> {
-        let regex = Regex::new(r"^/\d{4}/\d+/\d+/Rust-[01]\..*html$")?;
+        let regex = Regex::new(r"^/\d{4}/\d+/\d+/Rust[-.][01]\..*html$")?;
         let html = reqwest::get("https://blog.rust-lang.org/")
             .await?
             .text()
@@ -69,9 +71,7 @@ impl BlogUrlsTask {
                     .map(|url| (parse_version_from_url(url), url.to_string()))
             })
         {
-            if !map.contains_key(&version) {
-                map.insert(version, url);
-            }
+            map.entry(version).or_insert(url);
         }
         Ok(map)
     }
@@ -79,7 +79,7 @@ impl BlogUrlsTask {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::parse_version_from_url;
 
     #[test]
     fn test_parse_version_from_url() {
@@ -87,6 +87,7 @@ mod tests {
         assert_eq!("1.47.0", &f("/2020/10/08/Rust-1.47.html"));
         assert_eq!("1.46.0", &f("/2020/08/27/Rust-1.46.0.html"));
         assert_eq!("1.45.1", &f("/2020/08/27/Rust-1.45.1.html"));
+        assert_eq!("1.43.1", &f("/2020/08/27/Rust.1.43.1.html"));
         assert_eq!("1.31.0", &f("/2018/12/06/Rust-1.31-and-rust-2018.html"));
     }
 }
