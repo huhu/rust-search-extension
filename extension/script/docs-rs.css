@@ -17,6 +17,11 @@ div.nav-container form.landing-search-form-nav {
     max-width: 60rem;
 }
 
+.feature-flags-content a {
+    color: var(--color-navbar-standard);
+    text-decoration: underline;
+}
+
 .feature-flags-table {
     margin: 0.5rem;
     border-collapse: separate;

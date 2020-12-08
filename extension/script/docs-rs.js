@@ -39,9 +39,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function enhanceFeatureFlagsMenu(menu) {
     // Use rawCrateName to fetch the Cargo.toml, otherwise will get 404.
-    let response = await fetch(`https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml`);
+    let cargoTomUrl = `https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml`;
+    let response = await fetch(cargoTomUrl);
     let features = parseCargoFeatures(await response.text());
-    let html = `<div style="padding: 1rem"><p>This crate has no feature flag.</p></div>`;
+    let html = `<div style="padding: 1rem"><p>
+                    This crate has no explicit-declared feature flag.
+                    <br>
+                    Check its <a href="${cargoTomUrl}">Cargo.toml</a> to learn more.
+                </p></div>`;
     if (features.length > 0) {
         let tbody = features.map(([name, flags]) => {
             return `<tr class="module-item">
