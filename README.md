@@ -40,7 +40,7 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 - Search Cargo Clippy lints
 - Search [Caniuse.rs](https://caniuse.rs) and RFC
 - Offline mode supported, search local Rust docs (`rustup docs --std`)
-- Builtin commands (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool`, `:mirror`, `:update` and `:history` etc)
+- Builtin commands (`:yet`, `:book`, `:stable`, `:label`, `:tool`, `:mirror`, `:update` and `:history` etc)
 - Docs.rs enhancements (display Feature flags)
 
 ## How to use it
