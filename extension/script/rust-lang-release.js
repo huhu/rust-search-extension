@@ -1,59 +1,74 @@
 (async () => {
-    let response = await fetch("https://rust.extension.sh/rust-blog-urls.json");
-    let urls = await response.json();
-
     document.addEventListener("DOMContentLoaded", async () => {
+        let boxHeader = document.querySelector("div.Box.position-relative>div.Box-header");
+        boxHeader.classList.add("rse-sticky-header");
+        let height = boxHeader.getBoundingClientRect().height;
+
         let versions = [];
         // Stick release page h1 title
-        let titles = document.querySelectorAll('.markdown-body>h1');
-        for (let title of titles) {
+        for (let title of document.querySelectorAll('.markdown-body>h1')) {
+            title.classList.add("rse-sticky-title");
+            title.style.top = height + "px";
+
             let version = parseVersion(title)
             versions.push(version);
-            title.classList.add("rse-sticky")
-            let releaseUrl = urls[version.number];
-            if (releaseUrl) {
-                let s = document.createElement('span');
-                s.innerHTML = `<a href="https://blog.rust-lang.org/${releaseUrl}" class="rse-button">Release blog</a>`;
-                title.appendChild(s);
-            }
         }
+        let popover = document.createElement('div');
+        popover.classList.add("Popover", "js-hovercard-content", "position-absolute");
+
+        let popoverWrapper = document.createElement("div");
+        popoverWrapper.classList.add("Popover-message", "Popover-message--large", "Box", "box-shadow-large", "Popover-message--top-left");
 
         let ul = document.createElement("ul");
+        ul.classList.add("res-version-list");
         let year = new Date().getFullYear();
         versions.filter(version => version.fix === "0" && version.major === "1").forEach(version => {
             let item = document.createElement("li");
+            item.classList.add("res-version-list-item");
 
             let fixVersions = versions
                 .filter(v => v.minor === version.minor && v.major === version.major && v.fix !== "0")
                 .sort((a, b) => parseInt(a.fix) - parseInt(b.fix));
             if (fixVersions && fixVersions.length > 0) {
-                fixVersions = fixVersions.map(fv => `<span><a href="${fv.anchor}">${fv.number}</a></span>`);
+                fixVersions = fixVersions.map(fv => `<small><a href="${fv.anchor}">${fv.number}</a></small>`);
             }
-            item.innerHTML = `<div>
-                <span><a href="${version.anchor}">${version.number}</a></span>
-                ${fixVersions.join(" ")}
-            </div>`;
+            item.innerHTML = `
+                    <div style="display: flex">
+                        <span><a href="${version.anchor}"><b>${version.number}</b></a></span> 
+                        <span class="res-version-date Counter">${version.date}</span>
+                    </div>
+                    <div style="margin-top: 0.3rem">${fixVersions.join(" , ")}</div>
+            `;
             let versionYear = new Date(version.date).getFullYear();
             if (versionYear < year) {
                 // Show year gap
                 year = versionYear;
                 let li = document.createElement("li");
+                li.classList.add("res-version-list-gap");
                 li.textContent = year;
                 ul.appendChild(li);
             }
             ul.appendChild(item);
         });
+        popoverWrapper.appendChild(ul);
+        popover.appendChild(popoverWrapper);
 
+        let versionListInserted = false;
         let div = document.createElement("div");
-        div.classList.add("rse-more");
         div.textContent = "more";
         div.onmouseover = () => {
-            div.appendChild(ul);
+            if (!versionListInserted) {
+                div.appendChild(popover);
+                versionListInserted = true;
+            }
         };
         div.onmouseleave = () => {
-            ul.remove();
+            popover.remove();
+            versionListInserted = false;
         };
-        titles[0].appendChild(div);
+
+        let btnGroup = boxHeader.querySelector(".BtnGroup");
+        btnGroup.insertAdjacentElement("beforebegin", div);
     });
 })();
 
