@@ -39,7 +39,7 @@ local json = manifest.new(
   js=utils.js_files('script', ['rust-extension-sh']),
   css=[],
 ).addContentScript(
-   matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md'],
+   matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md*'],
    js=utils.js_files('script', ['lib', 'rust-lang-release']),
    css=['script/github.css'],
 );

@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
+    let searchParams = new URL(location.href).searchParams;
+    let toVersion = searchParams.get("version");
+    // Parse search parameter to scroll target version
+    // E.g: https://github.com/rust-lang/rust/blob/master/RELEASES.md?version=1.43.0 will scroll to version 1.43.0
+    if (toVersion) {
+        scrollToVersion(toVersion);
+    }
+
     let versions = [];
     for (let title of document.querySelectorAll('.markdown-body>h1')) {
         let version = parseVersion(title)
@@ -45,6 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     highlight();
 });
+
+
+function scrollToVersion(version) {
+    let versionElements = Array.from(document.querySelectorAll('.markdown-body>h1'));
+    let target = versionElements.find(h1 => h1.textContent.toLowerCase().includes(version.toLowerCase()));
+    location.href = target.firstElementChild.href;
+}
 
 function highlight() {
     let items = document.querySelectorAll('.markdown-body>h1>a');
