@@ -1,54 +1,37 @@
-.rse-button {
-    padding: 0.25rem 0.5rem;
-    font-size: 12px;
-    color: rgba(18, 18, 18, 0.733);
-    background-color: rgba(249, 187, 45, 0.667);
-    border-radius: 3px;
-    margin: 0 10px;
-    vertical-align: middle;
+.rse-fix-readme {
+    display: flex;
+    padding-right: 0 !important;
 }
 
-.rse-button:hover {
-    color: #121212;
-    background-color: #F9BB2D;
-}
-
-.rse-sticky-header {
+.rse-version-list {
+    min-width: 220px;
+    padding: 0 1rem;
+    border-left: var(--color-border-secondary) solid 1px;
+    margin-left: 1.5rem;
+    max-height: 100vh;
     position: sticky;
     top: 0;
-    z-index: 1;
-}
-
-.rse-sticky-title {
-    position: sticky;
-    display: block;
-    background-color: #fff;
-}
-
-.res-version-list {
-    padding: 1.5rem;
-    max-height: 400px;
     overflow: scroll !important;
-    font-size: 14px;
+    font-size: 13px;
     list-style: none;
     color: var(--color-text-primary);
     background-color: var(--color-bg-canvas);
     z-index: 999;
 }
 
-.res-version-list-item {
+.rse-version-list-item {
     padding: 0.5rem 0;
 }
 
-.res-version-list-item:not(:last-child) {
+.rse-version-list-item:not(:last-child) {
     border-bottom: 1px solid var(--color-border-secondary);
 }
 
-.res-version-date {
+.rse-version-date {
     margin: auto 0 auto auto;
 }
 
-.res-version-list-gap {
+.rse-version-list-gap {
     padding: 0.2rem;
     text-align: center;
     font-size: 16px;
