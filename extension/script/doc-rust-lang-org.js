@@ -1,6 +1,13 @@
 let target = location.pathname.includes("/nightly/") ? "nightly" : "stable";
 
 document.addEventListener("DOMContentLoaded", () => {
+    for (let span of document.querySelectorAll("span.since")) {
+        let version = span.textContent;
+        span.innerHTML = `<a href="https://github.com/rust-lang/rust/blob/master/RELEASES.md?version=${version}">
+                            ${version}
+                          </a>`;
+    }
+
     let version = localStorage.getItem(`rust-search-extension:${target}`);
     let now = new Date();
     let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)
