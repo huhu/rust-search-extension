@@ -30,7 +30,7 @@
 
     .rse-version-list {
         box-sizing: content-box;
-        min-width: 220px;
+        min-width: 200px;
         border-left: var(--color-border-secondary) solid 1px;
         margin-left: 1.5rem;
         max-height: 100vh;

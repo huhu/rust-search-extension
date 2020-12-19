@@ -56,8 +56,12 @@ function highlight() {
                 });
 
                 let url = new URL(entry.target.href);
-                let a = document.querySelector(`.rse-version-list-item a[href$="${url.hash}"]`)
-                a.parentElement.parentElement.classList.add("rse-active");
+                let link = document.querySelector(`.rse-version-list-item a[href$="${url.hash}"]`)
+                if (link) {
+                    let target = link.parentElement.parentElement;
+                    target.classList.add("rse-active");
+                    target.scrollIntoView({behavior: "auto", block: "nearest"});
+                }
             }
         });
     };
