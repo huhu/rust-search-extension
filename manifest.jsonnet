@@ -27,13 +27,9 @@ local json = manifest.new(
   css=['script/docs-rs.css'],
 )
              .addContentScript(
-  matches=['*://doc.rust-lang.org/nightly/std/*'],
+  matches=['*://doc.rust-lang.org/*'],
   js=utils.js_files('script', ['lib', 'doc-rust-lang-org']),
-  css=[],
-).addContentScript(
-  matches=['*://doc.rust-lang.org/std/*', '*://doc.rust-lang.org/stable/std/*'],
-  js=utils.js_files('script', ['lib', 'doc-rust-lang-org']),
-  css=[],
+  css=['script/doc-rust-lang-org.css'],
 ).addContentScript(
   matches=['*://rust.extension.sh/update', '*://extension.sh/update/'],
   js=utils.js_files('script', ['rust-extension-sh']),

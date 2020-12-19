@@ -1,21 +1,23 @@
+const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
 let target = location.pathname.includes("/nightly/") ? "nightly" : "stable";
 
 document.addEventListener("DOMContentLoaded", () => {
-    for (let span of document.querySelectorAll("span.since")) {
-        let version = span.textContent;
-        span.innerHTML = `<a href="https://github.com/rust-lang/rust/blob/master/RELEASES.md?version=${version}">
-                            ${version}
-                          </a>`;
-    }
+    if (["/src/", "/stable/src/", "/nightly/src/"].some(p => location.pathname.startsWith(p))) {
+        // Source code pages
+        linkSourcePageUrls();
+    } else {
+        // Docs page
+        linkDocPageSinceUrls();
 
-    let version = localStorage.getItem(`rust-search-extension:${target}`);
-    let now = new Date();
-    let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)
-    if (version && today <= Date.parse(version)) {
-        // Check version between localStorage and today to ensure update search index once a day.
-        return;
+        let version = localStorage.getItem(`rust-search-extension:${target}`);
+        let now = new Date();
+        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)
+        if (version && today <= Date.parse(version)) {
+            // Check version between localStorage and today to ensure update search index once a day.
+            return;
+        }
+        injectScripts(["script/add-std-search-index.js"]);
     }
-    injectScripts(["script/add-std-search-index.js"]);
 });
 
 window.addEventListener("message", function (event) {
@@ -32,3 +34,27 @@ window.addEventListener("message", function (event) {
         );
     }
 });
+
+function linkDocPageSinceUrls() {
+    for (let span of document.querySelectorAll("span.since")) {
+        let version = span.textContent;
+        let href = `${RUST_RELEASE_README_URL}?version=${version}`;
+        span.innerHTML = `<a class="rse-link" href="${href}">${version}</a>`;
+    }
+}
+
+// Link issue and since urls in source pages.
+function linkSourcePageUrls() {
+    for (let span of document.querySelectorAll("span.attribute>span.string")) {
+        let text = span.textContent;
+        if (/^"[0-9]*"$/g.test(text)) {
+            // #[unstable(feature = "xxx", issue = "62358")]
+            let href = `https://github.com/rust-lang/rust/issues/${text.replace('"', '').trim()}`;
+            span.innerHTML = `<a class="rse-link" href="${href}">${text}</a>`;
+        } else if (/^"\d\.\d+\.?\d?"$/g.test(text)) {
+            // #[stable(feature = "xxx", since = "1.23.0")]
+            let href = `${RUST_RELEASE_README_URL}?version=${text.replace('"', '').trim()}`;
+            span.innerHTML = `<a class="rse-link" href="${href}">${text}</a>`;
+        }
+    }
+}
