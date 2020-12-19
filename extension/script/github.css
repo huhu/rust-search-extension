@@ -1,26 +1,5 @@
-.rse-fix-readme {
-    display: flex;
-    padding-right: 0 !important;
-}
-
-.rse-version-list {
-    min-width: 220px;
-    padding: 0 1rem;
-    border-left: var(--color-border-secondary) solid 1px;
-    margin-left: 1.5rem;
-    max-height: 100vh;
-    position: sticky;
-    top: 0;
-    overflow: scroll !important;
-    font-size: 13px;
-    list-style: none;
-    color: var(--color-text-primary);
-    background-color: var(--color-bg-canvas);
-    z-index: 999;
-}
-
 .rse-version-list-item {
-    padding: 0.5rem 0;
+    padding: 0.5rem 1rem;
 }
 
 .rse-version-list-item:not(:last-child) {
@@ -37,4 +16,31 @@
     font-size: 16px;
     font-weight: bold;
     margin: 0.3rem 0;
+}
+
+.rse-active {
+    border-left: solid #f9826c 2px;
+}
+
+@media screen and (min-width: 1280px) {
+    .rse-fix-readme {
+        display: flex;
+        padding-right: 0 !important;
+    }
+
+    .rse-version-list {
+        box-sizing: content-box;
+        min-width: 220px;
+        border-left: var(--color-border-secondary) solid 1px;
+        margin-left: 1.5rem;
+        max-height: 100vh;
+        position: sticky;
+        top: 0;
+        overflow: scroll !important;
+        font-size: 13px;
+        list-style: none;
+        color: var(--color-text-primary);
+        background-color: var(--color-bg-canvas);
+        z-index: 999;
+    }
 }
