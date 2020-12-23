@@ -42,6 +42,8 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 - Offline mode supported, search local Rust docs (`rustup docs --std`)
 - Builtin commands (`:yet`, `:book`, `:stable`, `:label`, `:tool`, `:mirror`, `:update` and `:history` etc)
 - Docs.rs enhancements (display Feature flags)
+- Github rust-lang release page enhancements (show table of content)
+- docs.rust-lang.org enhancements
 
 ## How to use it
 
@@ -55,6 +57,10 @@ you want to search, the extension will response the related search results insta
 ![diagram](assets/diagram.jpg)
 
 ## Contribution
+
+[jsonnet](https://jsonnet.org/) is required before getting started. To install `jsonnet`, 
+please check `jsonnet`'s [README](https://github.com/google/jsonnet#packages). 
+For Linux users, the `snap` is a good choice to [install jsonnet](https://snapcraft.io/install/jsonnet/ubuntu).
 
 ```bash
 $ git clone --recursive https://github.com/huhu/rust-search-extension
