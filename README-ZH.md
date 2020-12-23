@@ -38,7 +38,7 @@
 - 支持搜索Cargo Clippy lints
 - 支持搜索 [Caniuse.rs](https://caniuse.rs) 和 RFC
 - 支持离线模式，可以搜索本地 Rust 文档 (`rustup docs --std`)
-- 内置命令 (`:yet`, `:book`, `:stable`, `:book`, `:label`, `:tool`, `:mirror`,  `:update` 和 `:history`等)
+- 内置命令 (`:yet`, `:book`, `:stable`, `:label`, `:tool`, `:mirror`,  `:update` 和 `:history`等)
 - Docs.rs加强，展示每一个crate的Feature flags
 
 ## 使用方法

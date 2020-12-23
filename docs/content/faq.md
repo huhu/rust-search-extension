@@ -4,6 +4,13 @@ description = "Frequently asked questions"
 weight = 2
 +++
 
+# Platform
+
+### Any plans on support Safari?
+
+Unfortunately, no. According to MDN's web extension [compatibility chart](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_support_for_JavaScript_APIs#omnibox):
+Safari doesn't support omnibox API, which is essential to this extension. See issue [#87](https://github.com/huhu/rust-search-extension/issues/87).
+
 # Permissions
 
 ### Why the extension requires read browsing history permission?
