@@ -82,8 +82,8 @@ If you prefer to search attribute exclusively, prefix a **#** (pound sign) befor
 # Search top 20K crates
 
 We build top 20K crates index (near 50K in total on crates.io) once a day to help you search crates instantly. 
-You can prefix an **!** (exclamation mark) before the keyword to search crates exclusively, 
-prefix one more **!** (double exclamation mark) to open [docs.rs](https://docs.rs) page instead [crates.io](https://crates.io) page,
+You can prefix an **!** (exclamation mark) before the keyword to search [docs.rs](https://docs.rs) exclusively, 
+prefix one more **!** (double exclamation mark) to open [crates.io](https://crates.io) page,
 prefix **!!!** (triple exclamation mark) to open crate's repository (See [Open repository quickly](/#open-repository-quickly)).
 
 ![GIF](/search-crates.gif)
@@ -118,6 +118,7 @@ Each command starts with a **:** (colon), followed by the name, and function dif
 Those commands including but not limited to:
 
 - **:help** - Show the help messages. 
+- **:cargo** - Show all useful third-party cargo subcommands. 
 - **:yet** - Show all Are We Yet websites. 
 - **:book** - Show all Rust official books. 
 - **:stable** - Show stable Rust scheduled release date in the next year. 
@@ -126,9 +127,21 @@ Those commands including but not limited to:
 - **:mirror** - Show all Rust mirror websites.
 - **:stats** - open search statistics page.
 - **:update** - open the [update page](/update) to sync the latest index automatically.
+- **:release** - Open rust-lang repository [release page](https://github.com/rust-lang/rust/blob/master/RELEASES.md).
 - **:history** - Show your local search history.
 
 ![IMG](/command-system.gif)
+
+# Rust docs enhancement
+
+## Make all "since" and "issue" linkable
+
+Two kinds of tags links to corresponding urls, including:
+
+- **"since"** links to Github release page (works in docs page and source code page)
+- **"issue"** links to Github issue (works in source code page)
+
+![](/since-issue-links.png)
 
 # Docs.rs enhancement
 
@@ -142,6 +155,12 @@ Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust 
 
 By clicking the `+ to Rust Search Extension` button, you can add the crate to the extension, which brings the 
 search capability for this crate on the address bar.
+
+# Rust repository enhancement
+
+## Show table of content in release page
+
+![](/github-release-toc.png)
 
 # Searching statistics
 
