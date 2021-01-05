@@ -7,7 +7,7 @@
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)](https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh)
 [![Mozilla Add-on](https://img.shields.io/amo/v/rust-search-extension?color=%2320123A)](https://addons.mozilla.org/firefox/addon/rust-search-extension/)
-[![Microsoft Edge](https://img.shields.io/badge/microsoft--edge-v1.0.0-1D4F8C)](https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe)
+[![Microsoft Edge](https://img.shields.io/badge/microsoft--edge-v1.1.0-1D4F8C)](https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
 [![Discord](https://img.shields.io/discord/711895914494558250?label=chat&logo=discord)](https://discord.gg/xucZNVd)
@@ -40,6 +40,8 @@
 - 支持离线模式，可以搜索本地 Rust 文档 (`rustup docs --std`)
 - 内置命令 (`:yet`, `:book`, `:stable`, `:label`, `:tool`, `:mirror`,  `:update` 和 `:history`等)
 - Docs.rs加强，展示每一个crate的Feature flags
+- Github release页面加强（展示所有Rust版本目录）
+- docs.rust-lang.org加强（链接所有"since"和"issue"标签）
 
 ## 使用方法
 

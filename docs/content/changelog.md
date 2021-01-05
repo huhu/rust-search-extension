@@ -4,7 +4,7 @@ description = "Changelog"
 weight = 3
 +++
 
-# v1.1 - 2021-01-??
+# v1.1 - 2021-01-07
 
 - Docs.rs is now the `!` search, crates.io is `!!`. See issue [#85](https://github.com/huhu/rust-search-extension/issues/85).
 - Refactor search statistics page (finer granularity for search metrics)
