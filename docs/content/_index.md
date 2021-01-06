@@ -158,7 +158,7 @@ search capability for this crate on the address bar.
 
 # Rust repository enhancement
 
-## Show table of content in release page
+## Show table of content in the release page
 
 ![](/github-release-toc.png)
 
