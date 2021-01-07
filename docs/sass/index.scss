@@ -36,13 +36,6 @@
   background-image: url("edge.svg");
 }
 
-.explore-more {
-  position: absolute;
-  bottom: 20px;
-  left: 45%;
-  cursor: pointer;
-}
-
 .hide {
   display: none;
 }
@@ -86,7 +79,7 @@
     height: auto;
   }
 
-  .explore-more, .toc, .demonstration-gif {
+  .explore-more, .demonstration-gif {
     display: none;
   }
 }
