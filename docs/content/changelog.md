@@ -8,7 +8,7 @@ weight = 3
 
 - Docs.rs is now the `!` search, crates.io is `!!`. See issue [#85](https://github.com/huhu/rust-search-extension/issues/85).
 - Refactor search statistics page (finer granularity for search metrics)
-- Add a table of content for the rust-lang repository release page
+- Add a table of content for the rust-lang repository release page. (New permission required, see [FAQ](/faq/#why-the-extension-requires-access-to-github-com))
 - docs.rust-lang.org enhancement: in stable/nightly docs page and source code pages, link all `"since"` and `"issue"` tags to corresponding URLs
 - Show a crate's Cargo.toml quick link when feature flag is empty  
 - New commands:
