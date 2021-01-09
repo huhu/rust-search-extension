@@ -4,6 +4,10 @@ description = "Testimonials"
 weight = 1
 +++
 
+## From *u/Michael-F-Bryan*
+
+> I love this extension! It's super useful when I'm doing a code reviews or answering newbie questions and need to quickly link to API docs or crates.io.
+
 ## From *u/sonaxaton*
 
 > Congrats! Love this extension, lots of useful features.
