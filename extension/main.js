@@ -272,7 +272,16 @@ const c = new Compat();
     omnibox.addNoCacheQueries("/", "!", "@", ":");
 
     if (settings.autoUpdate) {
+        let version = localStorage.getItem('auto-update-version');
+        let now = new Date();
+        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+        if (version && today <= Date.parse(version)) {
+            // Check version between localStorage and today to ensure open update page once a day.
+            return;
+        }
+
         Omnibox.navigateToUrl("https://rust.extension.sh/update");
+        localStorage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
 
     let fileNewIssue = "title=Have you found a bug? Did you feel something was missing?&body=Whatever it was, we'd love to hear from you.";

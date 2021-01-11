@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let version = localStorage.getItem(`rust-search-extension:${target}`);
         let now = new Date();
-        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)
+        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
         if (version && today <= Date.parse(version)) {
             // Check version between localStorage and today to ensure update search index once a day.
             return;
