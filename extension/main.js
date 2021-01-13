@@ -32,6 +32,7 @@ const c = new Compat();
 
     let stdSearcher = new StdSearch(await IndexManager.getStdStableIndex());
     let nightlySearcher = new NightlySearch(await IndexManager.getStdNightlyIndex());
+    let rustcSearcher = new RustcSearch();
 
     const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
     const omnibox = new Omnibox(defaultSuggestion, c.omniboxPageSize());
@@ -78,7 +79,8 @@ const c = new Compat();
         }
     });
 
-    omnibox.addPrefixQueryEvent("/", {
+    // Nightly std docs search
+    omnibox.addRegexQueryEvent(/^\/[^/].*/i, {
         onSearch: (query) => {
             query = query.replace("/", "").trim();
             return nightlySearcher.search(query);
@@ -93,6 +95,32 @@ const c = new Compat();
                 content: nightlySearcher.getSearchUrl(query),
                 description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.rootPath}`,
             }];
+        },
+    });
+
+    // Nightly rustc docs search
+    omnibox.addPrefixQueryEvent("//", {
+        onSearch: (query) => {
+            query = query.replace("/", "").trim();
+            return rustcSearcher.search(query);
+        },
+        onFormat: (index, doc) => {
+            let {content, description} = formatDoc(index, doc);
+            return {content, description: '[rustc] ' + description};
+        },
+        onAppend: (query) => {
+            query = query.replace("/", "").trim();
+            if (rustcSearcher.searchIndex && rustcSearcher.searchIndex.length > 0) {
+                return [{
+                    content: rustcSearcher.getSearchUrl(query),
+                    description: `Search nightly rustc docs ${c.match(query)} on ${rustcSearcher.rootPath}`,
+                }];
+            } else {
+                return [{
+                    content: rustcSearcher.rootPath,
+                    description: "To search nightly rustc docs, please open the nightly rustc docs page firstly.",
+                }]
+            }
         },
     });
 
@@ -297,6 +325,13 @@ const c = new Compat();
                 IndexManager.setStdNightlyIndex(message.searchIndex);
                 // New nightlySearcher instance after docs updated
                 nightlySearcher = new NightlySearch(message.searchIndex);
+                sendResponse(true);
+                break;
+            }
+            // Rustc:* action is exclusive to rustc docs event
+            case "rustc:add" : {
+                // New rustcSearcher instance after docs updated
+                rustcSearcher = new RustcSearch(message.searchIndex);
                 sendResponse(true);
                 break;
             }
