@@ -89,17 +89,10 @@ const c = new Compat();
         },
         onAppend: (query) => {
             query = query.replace("/", "");
-            if (nightlySearcher.searchIndex && nightlySearcher.searchIndex.length > 0) {
-                return [{
-                    content: nightlySearcher.getSearchUrl(query),
-                    description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.rootPath}`,
-                }];
-            } else {
-                return [{
-                    content: "https://doc.rust-lang.org/nightly/std/",
-                    description: "To search nightly docs, please press Enter to open the nightly docs page firstly.",
-                }]
-            }
+            return [{
+                content: nightlySearcher.getSearchUrl(query),
+                description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.rootPath}`,
+            }];
         },
     });
 
