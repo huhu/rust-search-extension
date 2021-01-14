@@ -80,7 +80,7 @@ const c = new Compat();
     });
 
     // Nightly std docs search
-    omnibox.addRegexQueryEvent(/^\/[^/].*/i, {
+    omnibox.addRegexQueryEvent(/^\/[^/]?.*/i, {
         onSearch: (query) => {
             query = query.replace("/", "").trim();
             return nightlySearcher.search(query);
