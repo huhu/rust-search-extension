@@ -101,7 +101,7 @@ const c = new Compat();
     // Nightly rustc docs search
     omnibox.addPrefixQueryEvent("//", {
         onSearch: (query) => {
-            query = query.replace("/", "").trim();
+            query = query.replaceAll("/", "").trim();
             return rustcSearcher.search(query);
         },
         onFormat: (index, doc) => {
@@ -109,7 +109,7 @@ const c = new Compat();
             return {content, description: '[rustc] ' + description};
         },
         onAppend: (query) => {
-            query = query.replace("/", "").trim();
+            query = query.replaceAll("/", "").trim();
             if (rustcSearcher.searchIndex && rustcSearcher.searchIndex.length > 0) {
                 return [{
                     content: rustcSearcher.getSearchUrl(query),
@@ -290,7 +290,7 @@ const c = new Compat();
         },
     });
 
-    omnibox.addNoCacheQueries("/", "!", "@", ":");
+    omnibox.addNoCacheQueries("/", "//", "!", "@", ":");
 
     if (settings.autoUpdate) {
         let version = localStorage.getItem('auto-update-version');
