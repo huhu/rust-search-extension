@@ -22,7 +22,7 @@ let stats = [
     },
     {
         name: "nightly",
-        pattern: /^\/.*/i,
+        pattern: /^\/[^/].*/i,
         value: 0,
         color: "#030303",
         description: "Std nightly docs searches."
@@ -54,6 +54,13 @@ let stats = [
         value: 0,
         color: "#f50707",
         description: "Compile error index searches."
+    },
+    {
+        name: "rustc",
+        pattern: /^\/\/.*/i,
+        value: 0,
+        color: "#0995cf",
+        description: "Rustc docs searches."
     },
     {
         name: "others",
@@ -190,12 +197,13 @@ frequency[0].textContent = `${history.length}`;
 frequency[1].textContent = calculateSavedTime(history.length);
 
 function calculateSavedTime(times) {
-    if (times * 5 > 3600) {
-        return `${Math.round(times * 5 / 3600)} hours.`;
-    } else if (times * 5 > 60) {
-        return `${Math.round(times * 5 / 60)} minutes.`;
+    let seconds = times * 5;
+    if (seconds > 3600) {
+        return `${Math.round(seconds / 3600)} hours.`;
+    } else if (seconds > 60) {
+        return `${Math.round(seconds / 60)} minutes.`;
     } else {
-        return `${Math.round(times * 5)} seconds.`;
+        return `${Math.round(seconds)} seconds.`;
     }
 }
 
