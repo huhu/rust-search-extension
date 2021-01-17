@@ -329,9 +329,15 @@ const c = new Compat();
                 break;
             }
             // Rustc:* action is exclusive to rustc docs event
+            case "rustc:check" : {
+                sendResponse({
+                    version: rustcSearcher.version,
+                });
+                break;
+            }
             case "rustc:add" : {
                 // New rustcSearcher instance after docs updated
-                rustcSearcher = new RustcSearch(message.searchIndex);
+                rustcSearcher = new RustcSearch(message.searchIndex, message.version);
                 sendResponse(true);
                 break;
             }

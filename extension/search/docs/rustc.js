@@ -1,6 +1,7 @@
 class RustcSearch extends DocSearch {
-    constructor(searchIndex) {
+    constructor(searchIndex, version) {
         super("*", searchIndex);
+        this.version = version;
     }
 
     get rootPath() {
