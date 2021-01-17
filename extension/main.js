@@ -80,9 +80,9 @@ const c = new Compat();
     });
 
     // Nightly std docs search
-    omnibox.addRegexQueryEvent(/^\/[^/]?.*/i, {
+    omnibox.addPrefixQueryEvent("/", {
         onSearch: (query) => {
-            query = query.replace("/", "").trim();
+            query = query.replaceAll("/", "").trim();
             return nightlySearcher.search(query);
         },
         onFormat: (index, doc) => {
@@ -90,7 +90,7 @@ const c = new Compat();
             return {content, description: '[Nightly] ' + description};
         },
         onAppend: (query) => {
-            query = query.replace("/", "");
+            query = query.replaceAll("/", "").trim();
             return [{
                 content: nightlySearcher.getSearchUrl(query),
                 description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.rootPath}`,
@@ -290,7 +290,7 @@ const c = new Compat();
         },
     });
 
-    omnibox.addNoCacheQueries("/", "//", "!", "@", ":");
+    omnibox.addNoCacheQueries("/", "!", "@", ":");
 
     if (settings.autoUpdate) {
         let version = localStorage.getItem('auto-update-version');
