@@ -14,7 +14,7 @@ local json = manifest.new(
 )
              .addIcons(icons())
              .addPermissions(['storage'])
-             .addWebAccessibleResources(utils.js_files('script',['add-search-index', 'add-std-search-index', 'add-rustc-search-index']))
+             .addWebAccessibleResources(utils.js_files('script', ['add-search-index', 'add-std-search-index', 'add-rustc-search-index']))
              .addBackgroundScripts(['settings.js', 'deminifier.js'])
              .addBackgroundScripts(utils.js_files('search', ['book', 'crate', 'attribute', 'caniuse', 'lint']))
              .addBackgroundScripts(utils.js_files('search/docs', ['base', 'std', 'crate-doc', 'rustc']))
@@ -32,19 +32,19 @@ local json = manifest.new(
   css=['script/doc-rust-lang-org.css'],
   exclude_matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
 )
-.addContentScript(
+             .addContentScript(
   matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
   js=utils.js_files('script', ['lib', 'rustc']),
   css=[],
 )
-.addContentScript(
+             .addContentScript(
   matches=['*://rust.extension.sh/update', '*://extension.sh/update/'],
   js=utils.js_files('script', ['rust-extension-sh']),
   css=[],
 ).addContentScript(
-   matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md*'],
-   js=utils.js_files('script', ['lib', 'rust-lang-release']),
-   css=['script/github.css'],
+  matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md*'],
+  js=utils.js_files('script', ['lib', 'rust-lang-release']),
+  css=['script/github.css'],
 );
 
 local browser = std.extVar('browser');

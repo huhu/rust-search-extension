@@ -35,21 +35,21 @@ let stats = [
         description: "Docs.rs docs search.",
     },
     {
-        name: "crates",
+        name: "crate",
         pattern: /^!!!.*/i,
         value: 0,
         color: "#3D6739",
         description: "crates.io or lib.rs searches."
     },
     {
-        name: "attributes",
+        name: "attribute",
         pattern: /^#.*/i,
         value: 0,
         color: "#9e78c6",
         description: "Built-in attributes searches."
     },
     {
-        name: "error codes",
+        name: "error code",
         pattern: /^`?e\d{2,4}`?$/i,
         value: 0,
         color: "#f50707",
@@ -63,7 +63,7 @@ let stats = [
         description: "Rustc docs searches."
     },
     {
-        name: "others",
+        name: "other",
         pattern: /^[>%?].*/i,
         value: 0,
         color: "#ededed",
@@ -199,11 +199,11 @@ frequency[1].textContent = calculateSavedTime(history.length);
 function calculateSavedTime(times) {
     let seconds = times * 5;
     if (seconds > 3600) {
-        return `${Math.round(seconds / 3600)} hours.`;
+        return `${Math.round(seconds / 3600)} hours`;
     } else if (seconds > 60) {
-        return `${Math.round(seconds / 60)} minutes.`;
+        return `${Math.round(seconds / 60)} minutes`;
     } else {
-        return `${Math.round(seconds)} seconds.`;
+        return `${Math.round(seconds)} seconds`;
     }
 }
 
