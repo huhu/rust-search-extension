@@ -4,12 +4,27 @@
 {% endblock head %}
 {% block content %}
 <div class="heading-text">{{ page.description }}</div>
-<div class="update-progress">We are updating our index, please wait for a second...</div>
+<br>
+<div class="update-progress">The search index is being updated, please wait for a second...</div>
 <ul class="index-list">
 </ul>
 
+<blockquote>
+    <h1>Notice</h1>
+    <p>
+        If you encounter an auto-opening of this page when you launch your browser,
+        this is because you have turned on the auto-update configuration in the <span><b>popup page</b></span>.
+    </p>
+
+    <p>
+        This auto-update is not intended for an extension version update, it's for the offline search index instead.
+        This is mandatory and only necessary for the local index updating.
+    </p>
+
+    <p>You can enable/disable the auto-update in the extension's <span><b>popup page</b></span>.</p>
+</blockquote>
 <div>
-    You can configure the setting in the extension's <span><b>popup page</b></span> to enable/disable auto-update.
+
 </div>
 
 {% endblock content %}
