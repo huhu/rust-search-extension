@@ -197,7 +197,7 @@ const c = new Compat();
             }
             return [{
                 content,
-                description
+                description,
             }, {
                 content: "remind",
                 description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,
@@ -238,6 +238,22 @@ const c = new Compat();
                 description
             };
         },
+    });
+
+    const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
+    // Search previous Rust version
+    omnibox.addRegexQueryEvent(/^1\.\d*/i, {
+        onSearch: (query) => {
+            let [_, minor] = query.split('.');
+            return getPreviousStableVersions()
+                .filter(v => !minor || `${v.minor}`.startsWith(minor))
+                .map(version => {
+                    return {
+                        content: `${RUST_RELEASE_README_URL}?version=${version.number}`,
+                        description: `Rust ${c.match(version.number)} - ${c.dim(c.normalizeDate(version.date))}`,
+                    }
+                });
+        }
     });
 
     omnibox.addRegexQueryEvent(/`?e\d{2,4}`?$/i, {
