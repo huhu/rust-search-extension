@@ -1,3 +1,4 @@
+const TYPE_OTHER = "other";
 const history = JSON.parse(localStorage.getItem("history")) || [];
 let chartColor = "rgba(249, 188, 45, 0.5)";
 let weeks = {"Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0};
@@ -63,11 +64,11 @@ let stats = [
         description: "Rustc docs searches."
     },
     {
-        name: "other",
-        pattern: /^[>%?].*/i,
+        name: TYPE_OTHER,
+        pattern: /^[>%?]|(1\.).*/i,
         value: 0,
         color: "#ededed",
-        description: "Others including any Clippy lint (>), book (%), and caniuse/rfc (?) searches."
+        description: "Others including any Rust version, Clippy lint (>), book (%), and caniuse/rfc (?) searches."
     },
 ];
 let calendarData = [];
@@ -211,8 +212,8 @@ let searchStatsGraph = document.querySelector(".search-stats-graph");
 let searchStatsText = document.querySelector(".search-stats-text");
 let ol = searchStatsText.querySelector("ol");
 stats.sort((a, b) => {
-    // Others always the last
-    if (a.name.toLowerCase() === "others" || b.name.toLowerCase() === "others") return 0;
+    // Other always the last
+    if (a.name.toLowerCase() === TYPE_OTHER || b.name.toLowerCase() === TYPE_OTHER) return 0;
     return b.value - a.value;
 });
 stats.forEach(({name, color, value, description}) => {
