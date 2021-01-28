@@ -245,7 +245,7 @@ const c = new Compat();
     omnibox.addRegexQueryEvent(/^1\.\d*/i, {
         onSearch: (query) => {
             let [_, minor] = query.split('.');
-            return getPreviousStableVersions()
+            return getReleasedVersions()
                 .filter(v => !minor || `${v.minor}`.startsWith(minor))
                 .map(version => {
                     return {

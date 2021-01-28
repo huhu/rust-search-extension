@@ -1,7 +1,7 @@
 // 6 week release gap.
 const RUST_RELEASE_GAP = 6 * 7;
 
-function getNextStableVersions(limit = 10) {
+function getScheduledVersions(limit = 10) {
     let versions = [];
     let startMinor = 42;
     let date = new Date("2020-03-12");
@@ -23,9 +23,9 @@ function getNextStableVersions(limit = 10) {
     return versions;
 }
 
-function getPreviousStableVersions() {
+function getReleasedVersions() {
     let versions = [];
-    let nextVersion = getNextStableVersions(1)[0];
+    let nextVersion = getScheduledVersions(1)[0];
     let startMinor = nextVersion.minor;
     let date = nextVersion.date;
     let now = new Date();

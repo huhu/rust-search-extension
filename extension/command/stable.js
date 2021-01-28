@@ -4,7 +4,7 @@ class StableCommand extends Command {
     }
 
     onExecute(arg) {
-        let versions = getNextStableVersions(2 * c.omniboxPageSize())
+        let versions = getScheduledVersions(2 * c.omniboxPageSize())
             .map(version => `Version ${c.match(version.number)} scheduled release on ${c.match(c.normalizeDate(version.date))}`)
         return this.wrap(versions);
     }
