@@ -153,55 +153,75 @@ const c = new Compat();
         },
     });
 
-    const REDIRECT_URL = chrome.runtime.getURL("redirect.html");
+    function wrapCrateSearchAppendix(appendix) {
+        return [
+            appendix,
+            {
+                content: "remind",
+                description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,
+            }
+        ];
+    }
+
     omnibox.addPrefixQueryEvent("!", {
         defaultSearch: true,
         searchPriority: 1,
         onSearch: (query) => {
             return crateSearcher.search(query);
         },
-        onFormat: (index, crate, query) => {
-            let content;
-            let description;
-            if (query.startsWith("!!!")) {
-                content = `${REDIRECT_URL}?crate=${crate.id}`;
-                description = `${c.capitalize("repository")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`;
-            } else if (query.startsWith("!!")) {
-                let registry = settings.crateRegistry;
-                content = `https://${registry}/crates/${crate.id}`;
-                description = `${c.capitalize(registry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
-            } else {
-                content = `https://docs.rs/${crate.id}`;
-                description = `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`
-            }
+        onFormat: (index, crate) => {
             return {
-                content,
-                description
+                content: `https://docs.rs/${crate.id}`,
+                description: `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+            }
+        },
+        onAppend: (query) => {
+            let keyword = query.replace(/[!\s]/g, "");
+            return wrapCrateSearchAppendix({
+                content: "https://docs.rs/releases/search?query=" + encodeURIComponent(keyword),
+                description: "Search Rust crates for " + c.match(keyword) + " on https://docs.rs",
+            });
+        }
+    });
+
+    omnibox.addPrefixQueryEvent("!!", {
+        onSearch: (query) => {
+            return crateSearcher.search(query);
+        },
+        onFormat: (index, crate) => {
+            let registry = settings.crateRegistry;
+            return {
+                content: `https://${registry}/crates/${crate.id}`,
+                description: `${c.capitalize(registry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
             };
         },
         onAppend: (query) => {
             let keyword = query.replace(/[!\s]/g, "");
-            let encode = encodeURIComponent(keyword);
-            let content;
-            let description;
-            if (query.startsWith("!!!")) {
-                content = "https://github.com/search?q=" + encode;
-                description = "Search Rust crates for " + c.match(keyword) + " on https://github.com";
-            } else if (query.startsWith("!!")) {
-                let registry = settings.crateRegistry;
-                content = `https://${registry}/search?q=` + encode;
-                description = "Search Rust crates for " + c.match(keyword) + ` on https://${registry}`;
-            } else {
-                content = "https://docs.rs/releases/search?query=" + encode;
-                description = "Search Rust crates for " + c.match(keyword) + " on https://docs.rs";
-            }
-            return [{
-                content,
-                description,
-            }, {
-                content: "remind",
-                description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,
-            }];
+            let registry = settings.crateRegistry;
+            return wrapCrateSearchAppendix({
+                content: `https://${registry}/search?q=` + encodeURIComponent(keyword),
+                description: "Search Rust crates for " + c.match(keyword) + ` on https://${registry}`,
+            });
+        }
+    });
+
+    const REDIRECT_URL = chrome.runtime.getURL("redirect.html");
+    omnibox.addPrefixQueryEvent("!!!", {
+        onSearch: (query) => {
+            return crateSearcher.search(query);
+        },
+        onFormat: (index, crate) => {
+            return {
+                content: `${REDIRECT_URL}?crate=${crate.id}`,
+                description: `${c.capitalize("repository")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+            };
+        },
+        onAppend: (query) => {
+            let keyword = query.replace(/[!\s]/g, "");
+            return wrapCrateSearchAppendix({
+                content: "https://github.com/search?q=" + encodeURIComponent(keyword),
+                description: "Search Rust crates for " + c.match(keyword) + " on https://github.com",
+            });
         }
     });
 
