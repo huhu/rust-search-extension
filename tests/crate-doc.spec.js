@@ -1,5 +1,5 @@
-describe("CrateDocSearchManager", function() {
-    before(function() {
+describe("CrateDocSearchManager", function () {
+    before(function () {
         this.crateName = "matches";
         this.crateVersion = "0.1.8";
         this.searchIndex = {
@@ -10,39 +10,58 @@ describe("CrateDocSearchManager", function() {
             }
         };
     });
-    
-    after(function() {
+
+    after(function () {
         CrateDocSearchManager.removeCrate(this.crateName);
     });
 
-    describe("crates", function() {
-        it("getCrates()", function() {
+    describe("crates", function () {
+        it("getCrates()", function () {
             CrateDocSearchManager.getCrates().should.deep.equal({});
         });
-        it("addCrate()", function() {
+        it("addCrate()", function () {
             CrateDocSearchManager.addCrate(this.crateName, this.crateVersion, this.searchIndex);
             let crates = CrateDocSearchManager.getCrates();
             Object.keys(crates).should.contains(this.crateName);
         });
-        it("getSearchIndex()", function() {
+        it("getSearchIndex()", function () {
             let searchIndex = CrateDocSearchManager.getCrateSearchIndex(this.crateName);
             searchIndex.should.deep.equal(this.searchIndex);
         });
-        it("removeCrate()", function() {
+        it("removeCrate()", function () {
             CrateDocSearchManager.removeCrate(this.crateName);
             CrateDocSearchManager.getCrates().should.deep.equal({});
         });
     });
 
-    describe("search", function() {
+    describe("search", function () {
         let manager = new CrateDocSearchManager();
         [["@match", 2], ["@matches", 1], ["@matches m", 5], ["@matches z", 1]]
-            .forEach(function([keyword, len]) {
-                it(`"${keyword}" search()`, function() {
+            .forEach(function ([keyword, len]) {
+                it(`"${keyword}" search()`, function () {
                     CrateDocSearchManager.addCrate(this.crateName, this.crateVersion, this.searchIndex);
                     let result = manager.search(keyword);
                     result.should.have.lengthOf(len);
                 });
             });
+    });
+
+    describe("parseCrateDocsSearchKeyword", function () {
+        [
+            ["@tokio", ["tokio", ""]],
+            ["@tokio spawn", ["tokio", "spawn"]],
+            ["@@tokio spawn", ["tokio", "spawn"]],
+            ["@tokio  spawn", ["tokio", "spawn"]],
+            ["@tokio::spawn", ["tokio", "spawn"]],
+            ["@tokio:spawn", ["tokio", "spawn"]],
+            ["@tokio task::spawn", ["tokio", "task::spawn"]],
+            ["@tokio::task::spawn", ["tokio", "task::spawn"]],
+            ["@tokio  time::sleep::poll", ["tokio", "time::sleep::poll"]],
+        ].forEach(function ([keyword, expected]) {
+            it(`parseCrateDocsSearchKeyword("${keyword}")`, function () {
+                let result = CrateDocSearchManager.parseCrateDocsSearchKeyword(keyword);
+                result.should.deep.equal(expected);
+            });
+        });
     });
 });
