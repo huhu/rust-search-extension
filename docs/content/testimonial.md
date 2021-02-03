@@ -4,6 +4,14 @@ description = "Testimonials"
 weight = 1
 +++
 
+## From *@Lucretiel*
+
+> If you aren't using the Rust Search extension, you absolutely should be. 
+> Makes it several times faster to land where you want, \*especially\* with some 
+> libraries (cough nom cough) for which Google stubbornly prefers to link to old version.
+> 
+> -- Quote from [this tweet](https://twitter.com/Lucretiel/status/1356749724754333711).
+
 ## From *u/Michael-F-Bryan*
 
 > I love this extension! It's super useful when I'm doing a code reviews or answering newbie questions and need to quickly link to API docs or crates.io.
