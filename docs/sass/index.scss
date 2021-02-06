@@ -40,6 +40,10 @@
   display: none;
 }
 
+.sidebar {
+  width: 215px;
+}
+
 @media screen and (max-width: 768px) {
   header {
     padding: 10px 30px;
@@ -68,6 +72,8 @@
 
   main {
     padding: 30px;
+    display: flex;
+    flex-direction: column;
   }
 
   .content {
@@ -77,6 +83,11 @@
   .content img {
     width: 100%;
     height: auto;
+  }
+
+  .sidebar {
+    width: 215px;
+    margin: 2rem auto 0;
   }
 
   .explore-more, .demonstration-gif {
