@@ -229,6 +229,7 @@ const c = new Compat();
         defaultSearch: true,
         searchPriority: 2,
         onSearch: (query) => {
+            query = query.replace(/[\[\]]/g, "");
             return attributeSearcher.search(query);
         },
         onFormat: (index, attribute) => {
