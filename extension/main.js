@@ -15,9 +15,12 @@ const c = new Compat();
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
     const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
     const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
+
+    let response = await fetch("https://blog.rust-lang.org/releases.json");
     const commandManager = new CommandManager(
         new HelpCommand(),
         new ReleaseCommand(),
+        new BlogCommand((await response.json())["releases"]),
         cargoCommand,
         bookCommand,
         yetCommand,
