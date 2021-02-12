@@ -29,7 +29,7 @@ function getReleasedVersions() {
     let startMinor = nextVersion.minor;
     let date = nextVersion.date;
     let now = new Date();
-    for (let i = startMinor, j = 1; i > 0; i--) {
+    for (let i = startMinor, j = 1; i > 1; i--) {
         date.setDate(date.getDate() - RUST_RELEASE_GAP);
         if (date <= now) {
             let minor = startMinor - j;
@@ -43,5 +43,13 @@ function getReleasedVersions() {
             j += 1;
         }
     }
+    // Version 1.0.0 is a special release date.
+    versions.push({
+        number: "1.0.0",
+        major: 1,
+        minor: 0,
+        fix: 0,
+        date: new Date("2015-05-15"),
+    });
     return versions;
 }
