@@ -38,7 +38,8 @@ window.addEventListener("message", function (event) {
 function linkDocPageSinceUrls() {
     for (let span of document.querySelectorAll("span.since")) {
         let version = span.textContent;
-        let href = `${RUST_RELEASE_README_URL}?version=${version}`;
+        // "1.0.0 (const: 1.48.0)" should convert to "1.0.0".
+        let href = `${RUST_RELEASE_README_URL}?version=${version.replace(/\(.*\)/g, "").trim()}`;
         span.innerHTML = `<a class="rse-link" href="${href}">${version}</a>`;
     }
 }
