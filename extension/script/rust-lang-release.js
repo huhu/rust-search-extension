@@ -58,7 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function scrollToVersion(version) {
     let versionElements = Array.from(document.querySelectorAll('.markdown-body>h1'));
     let target = versionElements.find(h1 => h1.textContent.toLowerCase().includes(version.toLowerCase()));
-    location.href = target.firstElementChild.href;
+    if (target) {
+        location.href = target.firstElementChild.href;
+    }
 }
 
 function highlight() {
