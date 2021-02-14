@@ -13,6 +13,7 @@ var commandsIndex = {
         ["Rust RFC", "https://rust-lang.github.io/rfcs/"],
         ["The Rust Doc Book", "https://doc.rust-lang.org/rustdoc/index.html"],
         ["The rustc Book", "https://doc.rust-lang.org/rustc/index.html"],
+        ["Standard library developers Guide", "https://std-dev-guide.rust-lang.org/"],
         ["Guide to Rustc Development", "https://rustc-dev-guide.rust-lang.org/"],
         ["The Rust Reference", "https://doc.rust-lang.org/reference/index.html"],
         ["The Rustonomicon", "https://doc.rust-lang.org/nomicon/index.html"],
@@ -24,6 +25,7 @@ var commandsIndex = {
         ["Rust Forge Book", "https://forge.rust-lang.org/"],
         ["Rust Chalk Book", "https://rust-lang.github.io/chalk/book/"],
         ["Rust Performance Book", "https://nnethercote.github.io/perf-book/"],
+        ["mdBook Documentation", "https://rust-lang.github.io/mdBook/"],
     ],
     "yet": [
         ["Are we async yet?", "https://areweasyncyet.rs", "Asynchronous I/O in Rust"],
