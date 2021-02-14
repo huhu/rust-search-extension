@@ -5,6 +5,8 @@ class HelpCommand extends Command {
 
     onExecute() {
         const value = {
+            "tips1": `Tips: Shortcut ${c.match("Cmd")}/${c.match("Ctrl")} + ${c.match("L")} can autofocus the address bar`,
+            "tips2": `Tips: Combine ${c.match("Cmd")} or ${c.match("Alt")} with ${c.match("Enter")} to open the search result in the new tab`,
             ":": `Prefix ${c.match(":")} to execute command (:cargo, :book, :yet, :stable, etc)`,
             "/": `Prefix ${c.match("/")} to search nightly rust docs, prefix ${c.match("//")} to search nightly rustc docs`,
             "!": `Prefix ${c.match("!")} to search docs.rs, prefix ${c.match("!!")} to search crates.io, prefix ${c.match("!!!")} can redirect to the repository`,
@@ -14,7 +16,7 @@ class HelpCommand extends Command {
             "%": `Prefix ${c.match("%")} to search Rust official book chapters`,
             ">": `Prefix ${c.match(">")} to search Rust clippy lints`,
             "?": `Prefix ${c.match("?")} to search caniuse.rs, prefix ${c.match("??")} can redirect to the RFC page`,
-            "1.": `Input ${c.match("Rust version")} (${c.dim("e.g. 1.42.0")}) to open its release page.`,
+            "1.": `Input ${c.match("Rust version")} (${c.dim("e.g. 1.42.0")}) to open its release page`,
         };
         return Object.entries(value).map(([key, description], index) => {
             return {content: key, description};

@@ -18,15 +18,15 @@ const c = new Compat();
 
     let response = await fetch("https://blog.rust-lang.org/releases.json");
     const commandManager = new CommandManager(
-        new HelpCommand(),
-        new ReleaseCommand(),
-        new BlogCommand((await response.json())["releases"]),
         cargoCommand,
         bookCommand,
         yetCommand,
         toolCommand,
         mirrorCommand,
         labelCommand,
+        new HelpCommand(),
+        new ReleaseCommand(),
+        new BlogCommand((await response.json())["releases"]),
         new StableCommand(),
         new UpdateCommand(),
         new StatsCommand(),
