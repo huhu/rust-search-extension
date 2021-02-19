@@ -39,7 +39,6 @@ You can prefix a type to get the exclusive search result. Those type keywords in
 - fn
 - trait
 - type
-- static
 - macro
 - const
 
