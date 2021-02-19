@@ -110,10 +110,14 @@ history.forEach(({query, content, description, time}) => {
 
     if (["https://docs.rs", "https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
         let url = new URL(content);
-        // Starting with "search" is a valid form for a crate name. We should distinguish it from the crates.io search path.
-        // E.g. https://crates.io/search?q=abc is the search URL, which should be excluded in the top crates data,
-        // https://docs.rs/searchspot is a crate named "searchspot" URL, which should be included.
-        if (!(url.pathname.startsWith("/search") && url.search)) {
+        if (url.search && (url.pathname.startsWith("/search") || url.pathname.startsWith("/releases/"))) {
+            // Ignore following cases:
+            // 1. https://docs.rs/releases/search?query=
+            // 2. https://crates.io/search?q=
+            // 3. https://lib.rs/search?q=
+        } else {
+            // Following cases should be included:
+            // - https://docs.rs/searchspot
             let pathname = url.pathname.replace("/crates/", "/").slice(1);
             let result = pathname.split("/");
             let crate;
