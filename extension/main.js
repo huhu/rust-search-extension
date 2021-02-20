@@ -19,7 +19,13 @@ const c = new Compat();
         chrome.runtime.getURL("stats/index.html"),
         {
             content: ':stats',
-            description: `Press ${c.match("Enter")} to open search statistics page.`
+            description: `Press ${c.match("Enter")} to open search statistics page.`,
+        });
+    const updateCommand = new OpenCommand('update', 'Update to the latest search index.',
+        'https://rust.extension.sh/update',
+        {
+            content: ':update',
+            description: `Press ${c.match("Enter")} to open search-index update page.`,
         });
 
     let response = await fetch("https://blog.rust-lang.org/releases.json");
@@ -31,11 +37,11 @@ const c = new Compat();
         mirrorCommand,
         labelCommand,
         statsCommand,
+        updateCommand,
         new HelpCommand(),
         new ReleaseCommand(),
         new BlogCommand((await response.json())["releases"]),
         new StableCommand(),
-        new UpdateCommand(),
         new HistoryCommand(),
     );
 
