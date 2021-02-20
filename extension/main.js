@@ -15,6 +15,12 @@ const c = new Compat();
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
     const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
     const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
+    const statsCommand = new OpenCommand('stats', 'Open search statistics page.',
+        chrome.runtime.getURL("stats/index.html"),
+        {
+            content: ':stats',
+            description: `Press ${c.match("Enter")} to open search statistics page.`
+        });
 
     let response = await fetch("https://blog.rust-lang.org/releases.json");
     const commandManager = new CommandManager(
@@ -24,12 +30,12 @@ const c = new Compat();
         toolCommand,
         mirrorCommand,
         labelCommand,
+        statsCommand,
         new HelpCommand(),
         new ReleaseCommand(),
         new BlogCommand((await response.json())["releases"]),
         new StableCommand(),
         new UpdateCommand(),
-        new StatsCommand(),
         new HistoryCommand(),
     );
 
