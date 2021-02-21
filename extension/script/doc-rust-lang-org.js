@@ -2,18 +2,6 @@ const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/R
 let target = location.pathname.includes("/nightly/") ? "nightly" : "stable";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // https://doc.rust-lang.org/std/option/enum.Option.html?mode=src will redirect to
-    // https://doc.rust-lang.org/src/core/option.rs.html#161-170
-    let currentUrl = new URL(location.href);
-    if (currentUrl.searchParams.get("mode") === "src") {
-        let element = document.getElementById(currentUrl.hash.replace("#", ""))
-            || document.querySelector(".fqn");
-        if (element) {
-            let srclink = element.querySelector(".srclink");
-            location.href = srclink.href;
-        }
-    }
-
     if (["/src/", "/stable/src/", "/nightly/src/"].some(p => location.pathname.startsWith(p))) {
         // Source code pages
         linkSourcePageUrls();
