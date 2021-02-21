@@ -1,32 +1,3 @@
-var levenshtein_row2 = [];
-
-function levenshtein(s1, s2) {
-    if (s1 === s2) {
-        return 0;
-    }
-    var s1_len = s1.length, s2_len = s2.length;
-    if (s1_len && s2_len) {
-        var i1 = 0, i2 = 0, a, b, c, c2, row = levenshtein_row2;
-        while (i1 < s1_len) {
-            row[i1] = ++i1;
-        }
-        while (i2 < s2_len) {
-            c2 = s2.charCodeAt(i2);
-            a = i2;
-            ++i2;
-            b = i2;
-            for (i1 = 0; i1 < s1_len; ++i1) {
-                c = a + (s1.charCodeAt(i1) !== c2 ? 1 : 0);
-                a = row[i1];
-                b = b < a ? (b < c ? b + 1 : c) : (a < c ? a + 1 : c);
-                row[i1] = b;
-            }
-        }
-        return b;
-    }
-    return s1_len + s2_len;
-}
-
 // Prototype function to perform levenshtein contain search.
 String.prototype.levenshteinContains = function (keyword) {
     let len = keyword.length;
