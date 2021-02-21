@@ -53,12 +53,19 @@ const c = new Compat();
     const omnibox = new Omnibox(defaultSuggestion, c.omniboxPageSize());
 
     let formatDoc = (index, doc) => {
+        let content = doc.href;
         let description = doc.displayPath + c.match(doc.name);
         if (doc.desc) {
             description += ` - ${c.dim(c.escape(doc.desc))}`;
-
         }
-        return {content: doc.href, description};
+
+        if (doc.queryType === "src") {
+            let url = new URL(doc.href);
+            url.search = "?mode=src";
+            content = url.toString();
+            description = `[Source code] ${description}`;
+        }
+        return {content, description};
     };
 
     omnibox.bootstrap({
@@ -121,7 +128,7 @@ const c = new Compat();
         },
         onFormat: (index, doc) => {
             let {content, description} = formatDoc(index, doc);
-            return {content, description: '[rustc] ' + description};
+            return {content, description: '[Rustc] ' + description};
         },
         onAppend: (query) => {
             query = query.replaceAll("/", "").trim();

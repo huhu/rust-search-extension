@@ -138,7 +138,7 @@ class DocSearch {
 
         // let query = "fn:unwrap";
         // then the matches is ["fn:", "fn", index: 0, input: "fn:unwrap", groups: undefined]
-        matches = query.match(/^(fn|mod|struct|enum|trait|type|const|macro)\s*:\s*/i);
+        matches = query.match(/^(fn|mod|struct|enum|trait|type|const|macro|src)\s*:\s*/i);
         if (matches) {
             type = matches[1].replace(/^const$/, 'constant');
             query = query.substring(matches[0].length);
@@ -314,6 +314,7 @@ class DocSearch {
                         id: j,
                         index: index,
                         lev: lev,
+                        type: query.type,
                     };
                 }
                 results[fullId].lev = Math.min(results[fullId].lev, lev);
@@ -454,6 +455,9 @@ class DocSearch {
                     // To be sure than it some items aren't considered as duplicate.
                     // obj.fullPath += '|' + obj.ty;
                     obj.href = res[1];
+                    // The queryType mean 'fn', 'trait', 'src' search types.
+                    // See buildQuery() method.
+                    obj.queryType = results[i].type;
                     out.push(obj);
                 }
             }
@@ -528,7 +532,7 @@ class DocSearch {
      * @param  {[string]} path   [The path of the result]
      * @param  {[string]} keys   [The keys to be used (["file", "open"])]
      * @param  {[object]} parent [The parent of the result]
-     * @return {[boolean]}       [Whether the result is valid or not]
+     * @return {boolean}       [Whether the result is valid or not]
      */
     validateResult(name, path, keys, parent) {
         for (var i = 0; i < keys.length; ++i) {
