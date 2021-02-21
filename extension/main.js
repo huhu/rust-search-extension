@@ -27,6 +27,12 @@ const c = new Compat();
             content: ':update',
             description: `Press ${c.match("Enter")} to open search-index update page.`,
         });
+    const releaseCommand = new OpenCommand('release', 'Open rust-lang repository release page.',
+        'https://github.com/rust-lang/rust/blob/master/RELEASES.md',
+        {
+            content: ':release',
+            description: `Press ${c.match("Enter")} to open rust-lang repository release page.`,
+        });
 
     let response = await fetch("https://blog.rust-lang.org/releases.json");
     const commandManager = new CommandManager(
@@ -38,8 +44,8 @@ const c = new Compat();
         labelCommand,
         statsCommand,
         updateCommand,
+        releaseCommand,
         new HelpCommand(),
-        new ReleaseCommand(),
         new BlogCommand((await response.json())["releases"]),
         new StableCommand(),
         new HistoryCommand(),

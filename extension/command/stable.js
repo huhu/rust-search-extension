@@ -1,6 +1,6 @@
 class StableCommand extends Command {
     constructor() {
-        super("stable", "Show stable Rust scheduled release date in the next year.")
+        super("stable", "Show stable Rust scheduled release date.")
     }
 
     onExecute(arg) {
