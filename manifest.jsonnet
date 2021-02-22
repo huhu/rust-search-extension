@@ -23,7 +23,7 @@ local json = manifest.new(
              .addBackgroundScripts(['rust-version.js', 'index-manager.js', 'main.js'])
              .addContentScript(
   matches=['*://docs.rs/*'],
-  js=utils.js_files('script', ['lib', 'docs-rs', 'svgs']) + utils.js_files('libs', ['semver']),
+  js=utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate']) + utils.js_files('libs', ['semver']),
   css=['script/docs-rs.css'],
 )
              .addContentScript(
