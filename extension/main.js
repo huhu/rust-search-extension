@@ -1,5 +1,7 @@
 const c = new Compat();
 (async () => {
+    const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
+
     let crateSearcher = new CrateSearch(await IndexManager.getCrateMapping(), await IndexManager.getCrateIndex());
     let caniuseSearcher = new CaniuseSearch(await IndexManager.getCaniuseIndex());
     let bookSearcher = new BookSearch(await IndexManager.getBookIndex());
@@ -15,24 +17,6 @@ const c = new Compat();
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
     const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
     const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
-    const statsCommand = new OpenCommand('stats', 'Open search statistics page.',
-        chrome.runtime.getURL("stats/index.html"),
-        {
-            content: ':stats',
-            description: `Press ${c.match("Enter")} to open search statistics page.`,
-        });
-    const updateCommand = new OpenCommand('update', 'Update to the latest search index.',
-        'https://rust.extension.sh/update',
-        {
-            content: ':update',
-            description: `Press ${c.match("Enter")} to open search-index update page.`,
-        });
-    const releaseCommand = new OpenCommand('release', 'Open rust-lang repository release page.',
-        'https://github.com/rust-lang/rust/blob/master/RELEASES.md',
-        {
-            content: ':release',
-            description: `Press ${c.match("Enter")} to open rust-lang repository release page.`,
-        });
 
     let response = await fetch("https://blog.rust-lang.org/releases.json");
     const commandManager = new CommandManager(
@@ -42,13 +26,28 @@ const c = new Compat();
         toolCommand,
         mirrorCommand,
         labelCommand,
-        statsCommand,
-        updateCommand,
-        releaseCommand,
         new HelpCommand(),
         new BlogCommand((await response.json())["releases"]),
         new StableCommand(),
         new HistoryCommand(),
+        new OpenCommand('stats', 'Open search statistics page.',
+            chrome.runtime.getURL("stats/index.html"),
+            {
+                content: ':stats',
+                description: `Press ${c.match("Enter")} to open search statistics page.`,
+            }),
+        new OpenCommand('update', 'Update to the latest search index.',
+            'https://rust.extension.sh/update',
+            {
+                content: ':update',
+                description: `Press ${c.match("Enter")} to open search-index update page.`,
+            }),
+        new OpenCommand('release', 'Open rust-lang repository release page.',
+            RUST_RELEASE_README_URL,
+            {
+                content: ':release',
+                description: `Press ${c.match("Enter")} to open rust-lang repository release page.`,
+            }),
     );
 
     let stdSearcher = new StdSearch(await IndexManager.getStdStableIndex());
@@ -289,7 +288,6 @@ const c = new Compat();
         },
     });
 
-    const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
     // Search previous Rust version
     omnibox.addRegexQueryEvent(/^1\.\d*/i, {
         onSearch: (query) => {
