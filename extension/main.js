@@ -102,6 +102,9 @@ const c = new Compat();
             }
         },
         afterNavigated: (query, result) => {
+            // Ignore the command history
+            if (query && query.startsWith(":")) return;
+
             HistoryCommand.record(query, result);
         }
     });
