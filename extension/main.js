@@ -1,6 +1,7 @@
 const c = new Compat();
 (async () => {
     const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
+    const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
 
     let crateSearcher = new CrateSearch(await IndexManager.getCrateMapping(), await IndexManager.getCrateIndex());
     let caniuseSearcher = new CaniuseSearch(await IndexManager.getCaniuseIndex());
@@ -37,7 +38,7 @@ const c = new Compat();
                 description: `Press ${c.match("Enter")} to open search statistics page.`,
             }),
         new OpenCommand('update', 'Update to the latest search index.',
-            'https://rust.extension.sh/update',
+            INDEX_UPDATE_URL,
             {
                 content: ':update',
                 description: `Press ${c.match("Enter")} to open search-index update page.`,
@@ -367,7 +368,7 @@ const c = new Compat();
             return;
         }
 
-        Omnibox.navigateToUrl("https://rust.extension.sh/update");
+        Omnibox.navigateToUrl(INDEX_UPDATE_URL);
         localStorage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
 
