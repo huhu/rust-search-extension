@@ -138,7 +138,7 @@ class DocSearch {
 
         // let query = "fn:unwrap";
         // then the matches is ["fn:", "fn", index: 0, input: "fn:unwrap", groups: undefined]
-        matches = query.match(/^(fn|mod|struct|enum|trait|type|const|macro|src)\s*:\s*/i);
+        matches = query.match(/^(fn|mod|struct|enum|trait|type|const|macro|s|src)\s*:\s*/i);
         if (matches) {
             type = matches[1].replace(/^const$/, 'constant');
             query = query.substring(matches[0].length);

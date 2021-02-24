@@ -65,7 +65,7 @@ const c = new Compat();
             description += ` - ${c.dim(c.escape(doc.desc))}`;
         }
 
-        if (doc.queryType === "src") {
+        if (doc.queryType === "s" || doc.queryType === "src") {
             let url = new URL(doc.href);
             url.search = "?mode=src";
             content = url.toString();
