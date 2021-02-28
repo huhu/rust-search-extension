@@ -204,7 +204,13 @@ frequency[1].textContent = calculateSavedTime(history.length);
 function calculateSavedTime(times) {
     let seconds = times * 5;
     if (seconds > 3600) {
-        return `${Math.round(seconds / 3600)} hours`;
+        let hours = seconds / 3600;
+        let minutes = seconds % 3600 / 60;
+        if (minutes > 0) {
+            return `${Math.round(hours)} hours ${Math.round(minutes)} minutes`;
+        } else {
+            return `${Math.round(hours)} hours`;
+        }
     } else if (seconds > 60) {
         return `${Math.round(seconds / 60)} minutes`;
     } else {
