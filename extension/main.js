@@ -475,3 +475,19 @@ const c = new Compat();
     let response = await fetch("https://blog.rust-lang.org/releases.json");
     commandManager.addCommand(new BlogCommand((await response.json())["releases"]));
 })();
+
+(function () {
+    // Eliminate unnecessary tags (such as <match>, <dim>) to save disk usage.
+    let history = JSON.parse(localStorage.getItem("history"));
+    if (history) {
+        history = history.map(({description, ...rest}) => {
+            return {
+                description: description
+                    .replace(/<\/?match>/g, "")
+                    .replace(/<\/?dim>/g, ""),
+                ...rest,
+            };
+        });
+        localStorage.setItem("history", JSON.stringify(history));
+    }
+})();
