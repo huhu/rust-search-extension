@@ -19,7 +19,6 @@ const c = new Compat();
     const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
     const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
 
-    let response = await fetch("https://blog.rust-lang.org/releases.json");
     const commandManager = new CommandManager(
         cargoCommand,
         bookCommand,
@@ -28,7 +27,6 @@ const c = new Compat();
         mirrorCommand,
         labelCommand,
         new HelpCommand(),
-        new BlogCommand((await response.json())["releases"]),
         new StableCommand(),
         new HistoryCommand(),
         new OpenCommand('stats', 'Open search statistics page.',
@@ -471,4 +469,9 @@ const c = new Compat();
         }
         return true;
     });
+
+    // Put blog release request last to avoid reload error due to
+    // possibly request failed. E.g. Github Pages down.
+    let response = await fetch("https://blog.rust-lang.org/releases.json");
+    commandManager.addCommand(new BlogCommand((await response.json())["releases"]));
 })();
