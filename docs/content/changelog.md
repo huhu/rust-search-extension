@@ -6,7 +6,7 @@ weight = 3
 
 # v1.1 - 2021-01-06
 
-- Docs.rs is now the `!` search, crates.io is `!!`. See issue [#85](https://github.com/huhu/rust-search-extension/issues/85).
+- Docs.rs is now the `!` search, crates.io is `!!`. See issue {{ issue(id=85) }}.
 - Refactor search statistics page (finer granularity for search metrics)
 - Add a table of content for the rust-lang repository release page. (New permission required, see [FAQ](/faq/#why-the-extension-requires-access-to-github-com))
 - docs.rust-lang.org enhancement: in stable/nightly docs page and source code pages, link all `"since"` and `"issue"` tags to corresponding URLs
@@ -16,15 +16,15 @@ weight = 3
   - `:release`: open rust-lang repository release page
 - Bugfix:
   - Fix dark theme color compatibility in docs.rs
-  - Fix [#89](https://github.com/huhu/rust-search-extension/issues/89), official feature flags menu compatibility
-  - Fix [#84](https://github.com/huhu/rust-search-extension/issues/84), feature flags not working in some crate's docs.rs page
+  - Fix {{ issue(id=89) }}, official feature flags menu compatibility
+  - Fix {{ issue(id=84) }}, feature flags not working in some crate's docs.rs page
 
 # v1.0 - 2020-10-30
 
 Finally, we reach **v1.0**! 🎉🎉
 
 - Support sync stable/nightly std search index automatically. There is no extension updating required to get the latest search index after v1.0.
-- Support prefix **?** and **??** to search [caniuse.rs](https://caniuse.rs) and RFC respectively. Thanks the [PR](https://github.com/huhu/rust-search-extension/pull/77) from [@aquarhead](https://github.com/aquarhead).
+- Support prefix **?** and **??** to search [caniuse.rs](https://caniuse.rs) and RFC respectively. Thanks the PR {{ issue(id=77) }} from [@aquarhead](https://github.com/aquarhead).
 - Upload the latest index files to the [update page](/update) once a day, those index including:
     - Command index 
     - Book index 

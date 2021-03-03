@@ -9,7 +9,7 @@ weight = 2
 ### Any plans to support Safari?
 
 Unfortunately, no. According to MDN's web extension [compatibility chart](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_support_for_JavaScript_APIs#omnibox):
-Safari doesn't support omnibox API, which is essential to this extension. See issue [#87](https://github.com/huhu/rust-search-extension/issues/87).
+Safari doesn't support omnibox API, which is essential to this extension. See issue {{ issue(id=87) }}.
 
 # Permissions
 
