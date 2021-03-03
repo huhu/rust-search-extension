@@ -5,7 +5,7 @@ class HelpCommand extends Command {
 
     onExecute() {
         const value = {
-            "tips1": `Tips: Shortcut ${c.match("Cmd")}/${c.match("Ctrl")} + ${c.match("L")} can autofocus the address bar`,
+            "tips1": `Tips: You can use shortcut ${c.match("Cmd")}/${c.match("Ctrl")} + ${c.match("L")} to autofocus the address bar`,
             "tips2": `Tips: Combine ${c.match("Cmd")} or ${c.match("Alt")} with ${c.match("Enter")} to open the search result in the new tab`,
             ":": `Prefix ${c.match(":")} to execute command (:cargo, :book, :yet, :stable, etc)`,
             "/": `Prefix ${c.match("/")} to search nightly rust docs, prefix ${c.match("//")} to search nightly rustc docs`,

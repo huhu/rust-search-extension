@@ -60,7 +60,7 @@ const c = new Compat();
         let content = doc.href;
         let description = doc.displayPath + c.match(doc.name);
         if (doc.desc) {
-            description += ` - ${c.dim(c.escape(doc.desc))}`;
+            description += ` - ${c.dim(c.escape(c.eliminateTags(doc.desc)))}`;
         }
 
         if (doc.queryType === "s" || doc.queryType === "src") {
@@ -147,7 +147,7 @@ const c = new Compat();
             } else {
                 return [{
                     content: rustcSearcher.rootPath,
-                    description: "To search nightly rustc docs, please open the nightly rustc docs page firstly.",
+                    description: "To search nightly rustc docs, please open the nightly rustc docs page in advance.",
                 }]
             }
         },
