@@ -4,6 +4,23 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.2 - Unreleased
+
+- Support prefix `//` (double slash) to search [rustc crates docs](https://doc.rust-lang.org/nightly/nightly-rustc/).
+- Support search released Rust versions quickly. See issue {{ issue(id=100) }}.
+- Add source code mode (with `src:` or with alias `s:`) to open the source code page directly.
+- New commands:
+  - `:blog`: show all Rust release blog posts
+- Improvements:
+  - Add a reminder for Firefox offline mode on the popup page. Fix {{ issue(id=94) }}.
+  - Add fallback search strategy for @crate search. Fix {{ issue(id=96) }}.
+  - Only open update page once a day if the auto-update is on. Fix {{ issue(id=97) }}.
+  - Add more useful tips for the `:help` command.
+- Bugfix:
+  - Add validation when auto index std search-index. Fix {{ issue(id=99) }}.
+  - Fix compatibility issue of the new const-since link in Rust docs page.
+  - Fix search statistics bug for [https://docs.rs/releases](https://docs.rs/releases) data.
+
 # v1.1 - 2021-01-06
 
 - Docs.rs is now the `!` search, crates.io is `!!`. See issue {{ issue(id=85) }}.
@@ -12,7 +29,7 @@ weight = 3
 - docs.rust-lang.org enhancement: in stable/nightly docs page and source code pages, link all `"since"` and `"issue"` tags to corresponding URLs
 - Show a crate's Cargo.toml quick link when feature flag is empty  
 - New commands:
-  - `:cargo`： show all useful cargo subcommands
+  - `:cargo`: show all useful cargo subcommands
   - `:release`: open rust-lang repository release page
 - Bugfix:
   - Fix dark theme color compatibility in docs.rs

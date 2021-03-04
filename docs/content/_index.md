@@ -3,12 +3,15 @@ title = "Rust Search Extension"
 sort_by = "weight"
 +++
 
-# Search std and external crate docs
+# Search docs
 
-We support search documentation of official crates (including **std**, **proc_macro**, **test**) 
-and any external crates on [docs.rs](https://docs.rs).
+We support search all kinds of Rust docs blaze-fastly. Those docs including:
 
-> We'll sync the latest **std** search index automatically every day to ensure the docs freshness.
+- The **stable**/**nightly** documentation of official crates (including **std**, **proc_macro**, **test**).
+- All external docs on [docs.rs](https://docs.rs).
+- All **rustc** crates docs.
+
+> We'll sync the latest **std**/**nightly** search index automatically every day to ensure the docs freshness.
 > There is no extension updating required to get the latest search index since v1.0.
 
 ## Search Primitive Types and Modules
@@ -25,28 +28,44 @@ and any external crates on [docs.rs](https://docs.rs).
 
 ## Search nightly docs
 
-You can prefix **/** before the keyword to search nightly docs. 
+You can prefix a **/** (slash) before the keyword to search nightly docs. 
 
-> We'll sync the latest **nightly** search index automatically every day to ensure the docs freshness.
-> There is no extension updating required to get the latest search index since v1.0.
+## Search rustc docs
+
+You can prefix a **//** (double slash) before the keyword to search all of 
+crates [docs of **rustc**](https://doc.rust-lang.org/nightly/nightly-rustc/), 
+such as *rustc_mir*, *rustc_hir*, or *rustc_ast*, etc.
+
+> It doesn't make sense to have a built-in search-index of **rustc** since the **rustc** is changed 
+> very frequently. Therefore, you need to open the **rustc** docs page in advance to sync the 
+> search-index before you search **rustc** docs. However, the search-index of **rustc** is big, 
+> we never persist it to the local storage (due to the limited storage size available 
+> to browser extension).
 
 ## Search with type mode
 
 You can prefix a type to get the exclusive search result. Those type keywords including:
-- mod
-- struct
-- enum
-- fn
-- trait
-- type
-- macro
-- const
+- **mod**
+- **struct**
+- **enum**
+- **fn**
+- **trait**
+- **type**
+- **macro**
+- **const**
 
 For example, `fn:asref` to search function or `trait:iterator` to search trait.
 
 ![GIF](/type-mode.gif)
 
-## Offline mode, search local Rust docs
+## Source code mode
+
+Since **v1.2**, we can straight open the source code page for our docs search result.
+Simply prefix `src:` (or `s:`, an alias to `src:`) before the keyword, you'll be 
+redirected to the correct source code line of your search result after you press `Enter`.
+For example, input `src:try_fold` or `s:try_fold`, you'll open the source code line of `std::iter::Iterator::try_fold()`. 
+
+## Offline mode: search local Rust docs
 
 You can run command `rustup doc --std` to open the offline std docs. 
 To enable the offline mode, you should check the checkbox and input the offline docs path on the popup page. 
@@ -110,6 +129,12 @@ You can search [caniuse.rs](https://caniuse.rs) and RFC with **?** and **??** pr
 
 ![IMG](/search-caniuse.png)
 
+# Search Rust Version
+
+Just input any Rust version (such as `v1.38`) to open the release page of that version.
+
+![](/search-rust-version.png)
+
 # Commands system
 
 The command system brings a handy set of useful and convenient commands to you. 
@@ -117,6 +142,7 @@ Each command starts with a **:** (colon), followed by the name, and function dif
 Those commands including but not limited to:
 
 - **:help** - Show the help messages. 
+- **:blog** - Show all Rust release blog posts.
 - **:cargo** - Show all useful third-party cargo subcommands. 
 - **:yet** - Show all Are We Yet websites. 
 - **:book** - Show all Rust official books. 
