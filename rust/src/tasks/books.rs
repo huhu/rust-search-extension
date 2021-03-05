@@ -42,18 +42,22 @@ struct Book {
 
 impl Page {
     #[inline]
-    fn parse(node: &Node) -> Self {
-        let a = node.first_child().unwrap();
-        let title = a.text();
-        let path = a
-            .attr("href")
-            .unwrap()
-            .trim_end_matches(".html")
-            .to_string();
-        Page {
-            title,
-            path,
-            parent_titles: None,
+    fn parse(node: &Node) -> Option<Page> {
+        if let Some(a) = node.first_child().filter(|n| n.is(Name("a"))) {
+            let title = a.text();
+            let path = a
+                .attr("href")
+                .unwrap()
+                .trim_end_matches(".html")
+                .to_string();
+
+            Some(Page {
+                title,
+                path,
+                parent_titles: None,
+            })
+        } else {
+            None
         }
     }
 }
@@ -76,15 +80,15 @@ impl Serialize for Page {
 fn parse_node(node: &Node, parent_titles: Option<Vec<String>>) -> Vec<Page> {
     let mut pages = vec![];
     for child in node.children() {
-        if child.is(Class("expanded"))
-            || (child.first_child().is_some() && child.first_child().unwrap().is(Name("a")))
+        if child.is(Class("expanded")) || child.first_child().filter(|n| n.is(Name("a"))).is_some()
         {
-            let mut page = Page::parse(&child);
-            page.parent_titles = parent_titles.clone();
-            pages.push(page);
+            if let Some(mut page) = Page::parse(&child) {
+                page.parent_titles = parent_titles.clone();
+                pages.push(page);
+            }
         } else {
             let mut new_parent_titles = parent_titles.clone().unwrap_or_default();
-            if let Some(page) = child.prev().map(|n| Page::parse(&n)) {
+            if let Some(page) = child.prev().map(|n| Page::parse(&n)).flatten() {
                 new_parent_titles.push(page.title);
                 if let Some(section) = child.find(Class("section")).next() {
                     pages.extend(parse_node(&section, Some(new_parent_titles)))
