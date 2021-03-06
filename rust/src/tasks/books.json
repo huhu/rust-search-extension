@@ -30,5 +30,25 @@
   {
     "name": "The Rustonomicon",
     "url": "https://doc.rust-lang.org/nomicon/"
+  },
+  {
+    "name": "The Rust Reference",
+    "url": "https://doc.rust-lang.org/reference/index.html"
+  },
+  {
+    "name": "The Unstable Book",
+    "url": "https://doc.rust-lang.org/unstable-book/index.html"
+  },
+  {
+    "name": "The Embedded Rust Book",
+    "url": "https://docs.rust-embedded.org/book/"
+  },
+  {
+    "name": "Guide to Rustc Development",
+    "url": "https://rustc-dev-guide.rust-lang.org/"
+  },
+  {
+    "name": "Standard library developers Guide",
+    "url": "https://std-dev-guide.rust-lang.org/"
   }
 ]
