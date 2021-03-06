@@ -99,7 +99,7 @@ fn parse_node(node: &Node, parent_titles: Option<Vec<String>>) -> Vec<Page> {
     pages
 }
 
-async fn fetch_book(mut book: Book) -> Result<Book, Box<dyn std::error::Error>> {
+async fn fetch_book(mut book: Book) -> crate::Result<Book> {
     let html = reqwest::get(&book.url).await?.text().await?;
     let doc = Document::from(html.as_str());
     let node = doc.find(Class("chapter")).next().unwrap();
@@ -108,7 +108,7 @@ async fn fetch_book(mut book: Book) -> Result<Book, Box<dyn std::error::Error>> 
 }
 
 impl Task for BooksTask {
-    fn execute(&self) -> anyhow::Result<()> {
+    fn execute(&self) -> crate::Result<()> {
         let mut rt = Runtime::new()?;
         rt.block_on(self.run())?;
         Ok(())
@@ -116,7 +116,7 @@ impl Task for BooksTask {
 }
 
 impl BooksTask {
-    async fn run(&self) -> anyhow::Result<()> {
+    async fn run(&self) -> crate::Result<()> {
         let futures: Vec<_> = serde_json::from_str::<Vec<Book>>(include_str!("books.json"))?
             .into_iter()
             .map(fetch_book)

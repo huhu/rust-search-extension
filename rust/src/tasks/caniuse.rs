@@ -55,7 +55,7 @@ impl Feat {
 }
 
 impl Task for CaniuseTask {
-    fn execute(&self) -> anyhow::Result<()> {
+    fn execute(&self) -> crate::Result<()> {
         let mut data_dir = Path::new(&self.repo_path).to_path_buf();
         data_dir.push("data");
 

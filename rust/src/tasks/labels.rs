@@ -1,7 +1,6 @@
 use std::fs;
 use std::path::Path;
 
-use anyhow::Result;
 use argh::FromArgs;
 use serde::ser::SerializeTuple;
 use serde::{Serialize, Serializer};
@@ -44,7 +43,7 @@ impl Serialize for Label {
 }
 
 impl Task for LabelsTask {
-    fn execute(&self) -> Result<()> {
+    fn execute(&self) -> crate::Result<()> {
         let mut rt = Runtime::new()?;
         rt.block_on(self.run())?;
         Ok(())
@@ -52,7 +51,7 @@ impl Task for LabelsTask {
 }
 
 impl LabelsTask {
-    async fn run(&self) -> Result<()> {
+    async fn run(&self) -> crate::Result<()> {
         let mut labels = vec![];
         let client = reqwest::Client::builder()
             .timeout(std::time::Duration::from_secs(30))

@@ -1,5 +1,3 @@
-use anyhow::Result;
-
 pub use books::BooksTask;
 pub use caniuse::CaniuseTask;
 pub use crates::CratesTask;
@@ -13,5 +11,5 @@ mod labels;
 mod lints;
 
 pub trait Task {
-    fn execute(&self) -> Result<()>;
+    fn execute(&self) -> crate::Result<()>;
 }

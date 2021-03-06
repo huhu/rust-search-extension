@@ -1247,7 +1247,6 @@ checksum = "cabe4fa914dec5870285fa7f71f602645da47c486e68486d2b4ceb4a343e90ac"
 name = "rust-search-extension"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "argh",
  "csv",
  "futures",

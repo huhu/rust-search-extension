@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use argh::FromArgs;
 
 use crate::tasks::*;
@@ -24,7 +26,9 @@ enum Subcommand {
     Labels(LabelsTask),
 }
 
-fn main() -> anyhow::Result<()> {
+pub type Result<T> = std::result::Result<T, Box<dyn Error>>;
+
+fn main() -> Result<()> {
     let options: Options = argh::from_env();
     match options.subcommand {
         Subcommand::Crates(cmd) => cmd.execute()?,

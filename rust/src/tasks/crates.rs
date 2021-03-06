@@ -4,7 +4,6 @@ use std::fs::{self, File};
 use std::io::{BufReader, Read};
 use std::path::Path;
 
-use anyhow::Result;
 use argh::FromArgs;
 use csv::ReaderBuilder;
 use libflate::gzip::Decoder;
@@ -86,7 +85,7 @@ fn default_version() -> Version {
     Version::parse("0.0.0").unwrap()
 }
 
-fn read_csv<D: DeserializeOwned>(file: impl Read) -> Result<Vec<D>> {
+fn read_csv<D: DeserializeOwned>(file: impl Read) -> crate::Result<Vec<D>> {
     let mut records: Vec<D> = vec![];
     let mut reader = ReaderBuilder::new().has_headers(true).from_reader(file);
     for record in reader.deserialize() {
@@ -120,7 +119,7 @@ fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> 
 }
 
 impl Task for CratesTask {
-    fn execute(&self) -> Result<()> {
+    fn execute(&self) -> crate::Result<()> {
         let mut crates: Vec<Crate> = Vec::with_capacity(0);
         let mut versions: Vec<CrateVersion> = Vec::with_capacity(0);
 

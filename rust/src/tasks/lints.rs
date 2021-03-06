@@ -3,7 +3,6 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 
-use anyhow::Result;
 use argh::FromArgs;
 use serde_derive::Deserialize;
 use tokio::runtime::Runtime;
@@ -55,13 +54,13 @@ struct Lint {
     docs: LintDocs,
 }
 
-async fn fetch_clippy_lints() -> Result<Vec<Lint>> {
+async fn fetch_clippy_lints() -> crate::Result<Vec<Lint>> {
     let lints = reqwest::get(LINT_URL).await?.json().await?;
     Ok(lints)
 }
 
 impl Task for LintsTask {
-    fn execute(&self) -> Result<()> {
+    fn execute(&self) -> crate::Result<()> {
         let mut rt = Runtime::new()?;
         rt.block_on(self.run())?;
         Ok(())
@@ -69,7 +68,7 @@ impl Task for LintsTask {
 }
 
 impl LintsTask {
-    async fn run(&self) -> Result<()> {
+    async fn run(&self) -> crate::Result<()> {
         let lints: HashMap<String, [String; 2]> = fetch_clippy_lints()
             .await?
             .iter()
