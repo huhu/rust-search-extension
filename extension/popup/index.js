@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             // If the offline doc path is invalid, turn off the offline mode.
             offlineModeCheckbox.checked = false;
-            toast.error("Local doc path should match regex ^file://.*/doc/rust/html/ or ^https?://.*:\\d{2,6}/");
+            toast.error("Local doc path should match regex ^file://.*/doc/rust/html/$ or ^https?://.*/$");
         }
         toast.dismiss(3000);
     };
