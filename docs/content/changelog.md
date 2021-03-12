@@ -16,6 +16,7 @@ weight = 3
   - Add fallback search strategy for @crate search. Fix {{ issue(id=96) }}.
   - Only open update page once a day if the auto-update is on. Fix {{ issue(id=97) }}.
   - Add more useful tips for the `:help` command.
+  - Compress history's JSON data slightly.
 - Bugfix:
   - Add validation when auto index std search-index. Fix {{ issue(id=99) }}.
   - Fix compatibility issue of the new const-since link in Rust docs page.
