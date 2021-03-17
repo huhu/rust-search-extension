@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Check version between localStorage and today to ensure update search index once a day.
             return;
         }
-        injectScripts(["script/add-std-search-index.js"]);
+        injectScripts(["script/add-search-index.js"]);
     }
 });
 

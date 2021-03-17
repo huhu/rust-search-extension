@@ -14,7 +14,7 @@ local json = manifest.new(
 )
              .addIcons(icons())
              .addPermissions(['storage'])
-             .addWebAccessibleResources(utils.js_files('script', ['add-search-index', 'add-std-search-index', 'add-rustc-search-index']))
+             .addWebAccessibleResources(utils.js_files('script', ['add-search-index']))
              .addBackgroundScripts(['settings.js', 'deminifier.js'])
              .addBackgroundScripts(utils.js_files('search', ['algorithm', 'book', 'crate', 'attribute', 'caniuse', 'lint']))
              .addBackgroundScripts(utils.js_files('search/docs', ['base', 'std', 'crate-doc', 'rustc']))

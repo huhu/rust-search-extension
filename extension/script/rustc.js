@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Check version to ensure update search index once a day.
                 return;
             }
-            injectScripts(["script/add-rustc-search-index.js"]);
+            injectScripts(["script/add-search-index.js"]);
         }
     );
 });
