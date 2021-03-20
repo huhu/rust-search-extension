@@ -6,11 +6,11 @@ weight = 3
 
 # v1.2 - Unreleased
 
-- Support prefix `//` (double slash) to search [rustc crates docs](https://doc.rust-lang.org/nightly/nightly-rustc/).
-- Support search released Rust versions quickly. See issue {{ issue(id=100) }}.
-- Add source code mode (with `src:` or with alias `s:`) to open the source code page directly.
+- Support prefix `//` (double slash) to search [rustc crates docs](https://doc.rust-lang.org/nightly/nightly-rustc/). 👉 [Learn more](/#search-rustc-docs).
+- Support search released Rust versions quickly. 👉 [Learn more](/#search-rust-version).
+- Add source code mode (with `src:` or with alias `s:`) to open the source code page directly. 👉 [Learn more](/#source-code-mode).
 - New commands:
-  - `:blog`: show all Rust release blog posts
+  - `:blog`: show all Rust release blog posts.
 - Improvements:
   - Add a reminder for Firefox offline mode on the popup page. Fix {{ issue(id=94) }}.
   - Add fallback search strategy for @crate search. Fix {{ issue(id=96) }}.
@@ -18,6 +18,8 @@ weight = 3
   - Add more useful tips for the `:help` command.
   - Compress history's JSON data slightly.
 - Bugfix:
+  - Fix the compatibility for the new style of search-index.js format. Fix {{ issue(id=106) }}.
+  - Fix search-index.js on-demand load mode compatiblity. See this commit [eefa192c](https://github.com/huhu/rust-search-extension/commit/eefa192c90450ac6340c3eedf2ad6c9cf1dc7f13).
   - Add validation when auto index std search-index. Fix {{ issue(id=99) }}.
   - Fix compatibility issue of the new const-since link in Rust docs page.
   - Fix search statistics bug for [https://docs.rs/releases](https://docs.rs/releases) data.
