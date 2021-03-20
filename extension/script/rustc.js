@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // rustc search index is a memory cache, therefore we don't use localStorage
+    // to store the cached-version. Instead, we use `rustc:check` action.
     chrome.runtime.sendMessage({action: "rustc:check"},
         response => {
             let now = new Date();
@@ -19,6 +21,8 @@ window.addEventListener("message", function (event) {
         event.data.direction === "rust-search-extension:rustc") {
         let now = new Date();
         let version = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        // rustc search index is a memory cache, therefore we don't use localStorage
+        // to store the cached-version. Instead, we use `rustc:check` action, see above.
         chrome.runtime.sendMessage({action: "rustc:add", version, ...event.data.message},
             (response) => {
                 console.log(response);
