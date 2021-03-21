@@ -9,7 +9,7 @@
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ennpfpdlaclocpomkiablnmbppdnlhoh.svg)](https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh)
 [![Mozilla Add-on](https://img.shields.io/amo/v/rust-search-extension?color=%2320123A)](https://addons.mozilla.org/firefox/addon/rust-search-extension/)
-[![Microsoft Edge](https://img.shields.io/badge/microsoft--edge-v1.1.0-1D4F8C)](https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe)
+[![Microsoft Edge](https://img.shields.io/badge/microsoft--edge-v1.2.0-1D4F8C)](https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe)
 [![license-mit](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-MIT)
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
 [![Discord](https://img.shields.io/discord/711895914494558250?label=chat&logo=discord)](https://discord.gg/xucZNVd)
@@ -32,7 +32,7 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 - Search Structs, Traits and Enums
 - Search Functions, Methods and Macros
 - Search builtin attributes 
-- Search nightly docs
+- Search nightly and rustc docs
 - Search crates on https://crates.io or https://lib.rs
 - Search any third-party crate's docs
 - Search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error codes
