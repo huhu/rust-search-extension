@@ -4,7 +4,7 @@ description = "Changelog"
 weight = 3
 +++
 
-# v1.2 - Unreleased
+# v1.2 - 2021-03-26
 
 - Support prefix `//` (double slash) to search [rustc crates docs](https://doc.rust-lang.org/nightly/nightly-rustc/). 👉 [Learn more](/#search-rustc-docs).
 - Support search released Rust versions quickly. 👉 [Learn more](/#search-rust-version).
