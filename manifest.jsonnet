@@ -38,7 +38,7 @@ local json = manifest.new(
   css=[],
 )
              .addContentScript(
-  matches=['*://rust.extension.sh/update', '*://extension.sh/update/'],
+  matches=['*://rust.extension.sh/update'],
   js=utils.js_files('script', ['rust-extension-sh']),
   css=[],
 ).addContentScript(
