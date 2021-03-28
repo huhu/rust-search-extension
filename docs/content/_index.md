@@ -75,8 +75,8 @@ However, please check the [Caveats](/faq/#caveats) if you are a Firefox user.
 
 ## Search external crate docs
 
-After you [add the crate to extension](#add-crate-to-extension), you can prefix **@crate-name** to search the docs 
-exclusive to that crate. For example, input `@tokio spawn` to search docs of **tokio**. 
+After you [add the crate to extension](#add-your-favorite-crate-to-extension), you can prefix **@crate-name** to search
+the docs exclusive to that crate. For example, input `@tokio spawn` to search docs of **tokio**. 
 
 ![GIF](/search-crate-docs.gif)
 
