@@ -14,8 +14,8 @@ const LINT_URL: &str = "https://rust-lang.github.io/rust-clippy/master/lints.jso
 const LINTS_INDEX_PATH: &str = "../extension/index/lints.js";
 
 /// Lint task
-#[argh(subcommand, name = "lints")]
 #[derive(FromArgs)]
+#[argh(subcommand, name = "lints")]
 pub struct LintsTask {
     /// destination path
     #[argh(option, short = 'd', default = "LINTS_INDEX_PATH.to_string()")]

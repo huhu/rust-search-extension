@@ -20,8 +20,8 @@ const MAX_CRATE_SIZE: usize = 20 * 1000;
 const CRATES_INDEX_PATH: &str = "../extension/index/crates.js";
 
 /// Crates task
-#[argh(subcommand, name = "crates")]
 #[derive(FromArgs)]
+#[argh(subcommand, name = "crates")]
 pub struct CratesTask {
     /// destination path
     #[argh(option, short = 'd', default = "CRATES_INDEX_PATH.to_string()")]
@@ -86,12 +86,8 @@ fn default_version() -> Version {
 }
 
 fn read_csv<D: DeserializeOwned>(file: impl Read) -> crate::Result<Vec<D>> {
-    let mut records: Vec<D> = vec![];
     let mut reader = ReaderBuilder::new().has_headers(true).from_reader(file);
-    for record in reader.deserialize() {
-        records.push(record?);
-    }
-    Ok(records)
+    Ok(reader.deserialize().map(|record| record.unwrap()).collect())
 }
 
 fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> String {

@@ -17,8 +17,8 @@ use crate::tasks::Task;
 const BOOKS_INDEX_PATH: &str = "../extension/index/books.js";
 
 /// Books task
-#[argh(subcommand, name = "books")]
 #[derive(FromArgs)]
+#[argh(subcommand, name = "books")]
 pub struct BooksTask {
     /// destination path
     #[argh(option, short = 'd', default = "BOOKS_INDEX_PATH.to_string()")]

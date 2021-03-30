@@ -12,8 +12,8 @@ const INDEX_PATH: &str = "../extension/index/caniuse.js";
 ///
 /// Expects one argument, path to caniuse.rs repo
 /// Optional 2nd argument, path to output
-#[argh(subcommand, name = "caniuse")]
 #[derive(FromArgs)]
+#[argh(subcommand, name = "caniuse")]
 pub struct CaniuseTask {
     /// caniuse.rs repository path
     #[argh(option, short = 'r')]

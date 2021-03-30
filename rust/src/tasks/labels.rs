@@ -15,8 +15,8 @@ const LABELS_INDEX_PATH: &str = "../extension/index/labels.js";
 const USER_AGENT: &str = "Rust Search Extension (lyshuhow@gmail.com)";
 
 /// Github issue labels task
-#[argh(subcommand, name = "labels")]
 #[derive(FromArgs)]
+#[argh(subcommand, name = "labels")]
 pub struct LabelsTask {
     /// destination path
     #[argh(option, short = 'd', default = "LABELS_INDEX_PATH.to_string()")]
