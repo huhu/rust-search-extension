@@ -42,6 +42,8 @@ such as *rustc_mir*, *rustc_hir*, or *rustc_ast*, etc.
 > we never persist it to the local storage (due to the limited storage size available 
 > to browser extension).
 
+![IMG](/search-rustc-docs.png)
+
 ## Search with type mode
 
 You can prefix a type to get the exclusive search result. Those type keywords including:
