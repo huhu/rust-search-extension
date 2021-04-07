@@ -42,5 +42,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     let updateProgress = document.querySelector(".update-progress");
-    updateProgress.textContent = "Update success! All your index is the latest!"
+    updateProgress.textContent = "Update success! All your indexes are up to date!"
 });
