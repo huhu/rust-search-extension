@@ -35,7 +35,8 @@
         margin-left: 1.5rem;
         max-height: 100vh;
         position: sticky;
-        top: 0;
+        /* 50px to fix compatibility of Github markdown file's sticky header*/
+        top: 50px;
         overflow: scroll !important;
         font-size: 13px;
         list-style: none;
