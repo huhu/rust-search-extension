@@ -4,6 +4,11 @@ description = "Changelog"
 weight = 3
 +++
 
+# v.13 - Unreleased
+
+- Bugfix:
+  - Fix the compatibility of Github markdown file's sticky header.
+
 # v1.2 - 2021-03-26
 
 - Support prefix `//` (double slash) to search [rustc crates docs](https://doc.rust-lang.org/nightly/nightly-rustc/). 👉 [Learn more](/#search-rustc-docs).
