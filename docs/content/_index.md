@@ -36,9 +36,9 @@ You can prefix a **//** (double slash) before the keyword to search all of
 crates [docs of **rustc**](https://doc.rust-lang.org/nightly/nightly-rustc/), 
 such as *rustc_mir*, *rustc_hir*, or *rustc_ast*, etc.
 
-> It doesn't make sense to have a built-in search-index of **rustc** since the **rustc** is changed 
+> It makes no sense to have a built-in search-index of **rustc** since the **rustc** is changed 
 > very frequently. Therefore, you need to open the **rustc** docs page in advance to sync the 
-> search-index before you search **rustc** docs. However, the search-index of **rustc** is big, 
+> search-index before you search **rustc** docs. However, the search-index of **rustc** is very big, 
 > we never persist it to the local storage (due to the limited storage size available 
 > to browser extension).
 
@@ -103,8 +103,8 @@ If you prefer to search attribute exclusively, prefix a **#** (pound sign) befor
 
 We build top 20K crates index (near 50K in total on crates.io) once a day to help you search crates instantly. 
 You can prefix an **!** (exclamation mark) before the keyword to search [docs.rs](https://docs.rs) exclusively, 
-prefix one more **!** (double exclamation mark) to open [crates.io](https://crates.io) page,
-prefix **!!!** (triple exclamation mark) to open crate's repository (See [Open repository quickly](/#open-repository-quickly)).
+prefix one more **!** (double exclamation marks) to open [crates.io](https://crates.io) page,
+prefix **!!!** (triple exclamation marks) to open crate's repository (See [Open repository quickly](/#open-repository-quickly)).
 
 ![GIF](/search-crates.gif)
 
