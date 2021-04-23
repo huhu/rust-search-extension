@@ -11,7 +11,6 @@ function calendarHeatmap() {
   var yearAgo = moment().startOf('day').subtract(1, 'year').toDate();
   var startDate = null;
   var counterMap = {};
-  var data = [];
   var max = null;
   var colorRange = [];
   var tooltipEnabled = true;
@@ -31,17 +30,8 @@ function calendarHeatmap() {
 
   // setters and getters
   chart.data = function (value) {
-    if (!arguments.length) { return data; }
-    data = value;
-
-    counterMap = {};
-
-    data.forEach(function (element, index) {
-      var key = moment(element.date).format('YYYY-MM-DD');
-      var counter = counterMap[key] || 0;
-      counterMap[key] = counter + element.count;
-    });
-
+    if (!arguments.length) { return counterMap; }
+    counterMap = value;
     return chart;
   };
 
@@ -112,7 +102,7 @@ function calendarHeatmap() {
       monthRange = monthRange.slice(0,12);
     }
     var firstDate = moment(dateRange[0]);
-    if (chart.data().length == 0) {
+    if (chart.data().length === 0) {
       max = 0;
     } else if (max === null) {
       max = d3.max(chart.data(), function (d) { return d.count; }); // max data value
@@ -282,11 +272,6 @@ function calendarHeatmap() {
       }
       return weekDay;
     }
-
-    var daysOfChart = chart.data().map(function (day) {
-      return day.date.toDateString();
-    });
-
   }
 
   return chart;

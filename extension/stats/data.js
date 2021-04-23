@@ -59,17 +59,15 @@ function makeNumericKeyObject(start, end, initial = 0) {
 
 class LegacyStatistics {
     static statistic() {
-        let percentData = [];
-        let calendarData = [];
+        const c = new Compat();
+        let calendarData = {};
         let topCratesData = {};
 
         const history = JSON.parse(localStorage.getItem("history")) || [];
         history.forEach(({query, content, description, time}) => {
             let date = new Date(time);
-            calendarData.push({
-                date,
-                count: 1
-            });
+            let key = c.normalizeDate(date);
+            calendarData[key] = (calendarData[key] || 0) + 1;
 
             let stat = STATS.find(item => item.pattern && item.pattern.test(query));
             if (stat) {
@@ -126,11 +124,14 @@ class LegacyStatistics {
                 topCratesData[crate] = counter + 1;
             }
 
-            percentData = STATS;
-
             WEEKS[W[date.getDay()]] += 1;
             DATES[D[date.getDate() - 1]] += 1;
             HOURS[H[date.getHours()]] += 1;
+        });
+
+        // Eliminate 'pattern' field.
+        let percentData = STATS.map(({name, value}) => {
+            return {name, value};
         });
 
         let [weeksData, datesData, hoursData] = [WEEKS, DATES, HOURS].map(data => {
