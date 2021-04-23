@@ -1,154 +1,45 @@
 const TYPE_OTHER = "other";
-const history = JSON.parse(localStorage.getItem("history")) || [];
-let chartColor = "rgba(249, 188, 45, 0.5)";
-let weeks = {"Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0};
-let dates = makeNumericKeyObject(1, 31);
-let hours = makeNumericKeyObject(0, 23);
-
-function makeNumericKeyObject(start, end, initial = 0) {
-    return Array.from({length: end + 1 - start}).fill(initial)
-        .reduce((obj, current, index) => {
-            obj[start + index] = current;
-            return obj;
-        }, {});
-}
-
-let stats = [
-    {
-        name: "stable",
-        pattern: null,
-        value: 0,
+const CHART_COLOR = "rgba(249, 188, 45, 0.5)";
+const STATS_MAP = {
+    "stable": {
         color: "#FEC744",
         description: "Std stable docs searches."
     },
-    {
-        name: "nightly",
-        pattern: /^\/[^/].*/i,
-        value: 0,
+    "nightly": {
         color: "#030303",
         description: "Std nightly docs searches."
-    },
-    {
-        name: "docs.rs",
-        pattern: /^[~@].*/i,
-        value: 0,
+    }, "docs.rs": {
         color: "#dd6b33",
         description: "Docs.rs docs search.",
     },
-    {
-        name: "crate",
-        pattern: /^!!!.*/i,
-        value: 0,
+    "crate": {
         color: "#3D6739",
         description: "crates.io or lib.rs searches."
     },
-    {
-        name: "attribute",
-        pattern: /^#.*/i,
-        value: 0,
+    "attribute": {
         color: "#9e78c6",
         description: "Built-in attributes searches."
-    },
-    {
-        name: "error code",
-        pattern: /^`?e\d{2,4}`?$/i,
-        value: 0,
+    }, "error code": {
         color: "#f50707",
         description: "Compile error index searches."
-    },
-    {
-        name: "rustc",
-        pattern: /^\/\/.*/i,
-        value: 0,
+    }, "rustc": {
         color: "#0995cf",
         description: "Rustc docs searches."
-    },
-    {
-        name: TYPE_OTHER,
-        pattern: /^[>%?]|(1\.).*/i,
-        value: 0,
+    }, [TYPE_OTHER]: {
         color: "#ededed",
         description: "Others including any Rust version, Clippy lint (>), book (%), and caniuse/rfc (?) searches."
-    },
-];
-let calendarData = [];
-let topCratesData = {};
-
-let w = Object.keys(weeks);
-let d = Object.keys(dates);
-let h = Object.keys(hours);
-
-history.forEach(({query, content, description, time}) => {
-    let date = new Date(time);
-    calendarData.push({
-        date,
-        count: 1
-    });
-    weeks[w[date.getDay()]] += 1;
-    dates[d[date.getDate() - 1]] += 1;
-    hours[h[date.getHours()]] += 1;
-
-    let stat = stats.find(item => item.pattern && item.pattern.test(query));
-    if (stat) {
-        stat.value += 1;
-    } else {
-        // Classify the default search cases
-        if (content.startsWith("https://docs.rs")) {
-            // Crate docs
-            stats[2].value += 1;
-        } else if (["https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
-            // Crates
-            stats[3].value += 1;
-        } else if (description.startsWith("Attribute")) {
-            // Attribute
-            stats[4].value += 1;
-        } else {
-            // Std docs (stable)
-            stats[0].value += 1;
-        }
     }
+};
 
-    if (["https://docs.rs", "https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
-        let url = new URL(content);
-        if (url.search && (url.pathname.startsWith("/search") || url.pathname.startsWith("/releases/"))) {
-            // Ignore following cases:
-            // 1. https://docs.rs/releases/search?query=
-            // 2. https://crates.io/search?q=
-            // 3. https://lib.rs/search?q=
-        } else {
-            // Following cases should be included:
-            // - https://docs.rs/searchspot
-            let pathname = url.pathname.replace("/crates/", "/").slice(1);
-            let result = pathname.split("/");
-            let crate;
-            if (result.length >= 3) {
-                // In this case, third element is the correct crate name.
-                // e.g. https://docs.rs/~/*/async_std/stream/trait.Stream.html
-                [_, __, crate] = result;
-            } else {
-                // In this case, the first element is the correct crate name.
-                // e.g. https://crates.io/crates/async_std
-                [crate] = result;
-            }
-            crate = crate.replace(/-/gi, "_");
-            let counter = topCratesData[crate] || 0;
-            topCratesData[crate] = counter + 1;
-        }
-    } else if (["chrome-extension", "moz-extension"].some(prefix => content.startsWith(prefix))) {
-        // This is the repository redirection case
-        let url = new URL(content);
-        let search = url.search.replace("?crate=", "");
-        let crate = search.replace(/-/gi, "_");
-        let counter = topCratesData[crate] || 0;
-        topCratesData[crate] = counter + 1;
-    }
-});
-
-let [weeksData, datesData, hoursData] = [weeks, dates, hours].map(data => {
-    return Object.entries(data).map(([key, value]) => {
-        return {name: key, value}
-    })
-});
+let {
+    percentData,
+    calendarData,
+    topCratesData,
+    weeksData,
+    hoursData,
+    datesData,
+    total,
+} = LegacyStatistics.statistic();
 
 let heatmap = calendarHeatmap()
     .data(calendarData)
@@ -175,7 +66,7 @@ heatmap();
 let histogramConfig = {
     width: 460,
     height: 240,
-    color: chartColor,
+    color: CHART_COLOR,
     margin: {top: 30, right: 0, bottom: 40, left: 40}
 };
 histogram({
@@ -198,8 +89,8 @@ histogram({
 
 let searchTimes = document.querySelector(".search-time");
 let frequency = searchTimes.querySelectorAll("b");
-frequency[0].textContent = `${history.length}`;
-frequency[1].textContent = calculateSavedTime(history.length);
+frequency[0].textContent = `${total}`;
+frequency[1].textContent = calculateSavedTime(total);
 
 function calculateSavedTime(times) {
     let seconds = times * 5;
@@ -221,22 +112,23 @@ function calculateSavedTime(times) {
 let searchStatsGraph = document.querySelector(".search-stats-graph");
 let searchStatsText = document.querySelector(".search-stats-text");
 let ol = searchStatsText.querySelector("ol");
-stats.sort((a, b) => {
+percentData.sort((a, b) => {
     // Other always the last
     if (a.name.toLowerCase() === TYPE_OTHER || b.name.toLowerCase() === TYPE_OTHER) return 0;
     return b.value - a.value;
 });
-stats.forEach(({name, color, value, description}) => {
+percentData.forEach(({name, value}) => {
+    let {color, description} = STATS_MAP[name];
     let li = document.createElement("li");
     li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up" data-balloon-length="large"
                         style="text-align: center" class="tooltip-color">
                         <span class="color-block" style="background-color:${color}"></span>
                         <span class="">${name}</span>
-                        <span class="">${(value / history.length * 100).toFixed(1)}%</span>
+                        <span class="">${(value / total * 100).toFixed(1)}%</span>
                      </div>`;
     ol.append(li);
     if (value > 0) {
-        searchStatsGraph.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / history.length * 100}%;
+        searchStatsGraph.insertAdjacentHTML('beforeend', `<span class="show" style="width: ${value / total * 100}%;
                                                         background-color:${color}"></span>`);
     }
 });
@@ -257,5 +149,5 @@ barChart({
     width: 460,
     data: topCratesData,
     selector: ".topCratesData",
-    color: chartColor,
+    color: CHART_COLOR,
 });
