@@ -1,4 +1,5 @@
-var tooltip;
+let tooltip;
+
 function histogram({ selector, width, height, data, color, margin }) {
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)

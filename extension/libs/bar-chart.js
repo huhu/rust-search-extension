@@ -1,5 +1,6 @@
-var tooltip;
 function barChart({ margin, height, width, data, selector, color, }) {
+    let tooltip;
+
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y).tickFormat(i => data[i].label).tickSizeOuter(0))
