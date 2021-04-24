@@ -8,7 +8,8 @@ const STATS_MAP = {
     "nightly": {
         color: "#030303",
         description: "Std nightly docs searches."
-    }, "docs.rs": {
+    },
+    "docs.rs": {
         color: "#dd6b33",
         description: "Docs.rs docs search.",
     },
@@ -25,7 +26,8 @@ const STATS_MAP = {
     }, "rustc": {
         color: "#0995cf",
         description: "Rustc docs searches."
-    }, [TYPE_OTHER]: {
+    },
+    [TYPE_OTHER]: {
         color: "#ededed",
         description: "Others including any Rust version, Clippy lint (>), book (%), and caniuse/rfc (?) searches."
     }
@@ -39,7 +41,7 @@ let {
     hoursData,
     datesData,
     total,
-} = LegacyStatistics.statistic();
+} = Statistics.statistic();
 
 let heatmap = calendarHeatmap()
     .data(calendarData)
@@ -112,12 +114,16 @@ function calculateSavedTime(times) {
 let searchStatsGraph = document.querySelector(".search-stats-graph");
 let searchStatsText = document.querySelector(".search-stats-text");
 let ol = searchStatsText.querySelector("ol");
-percentData.sort((a, b) => {
-    // Other always the last
-    if (a.name.toLowerCase() === TYPE_OTHER || b.name.toLowerCase() === TYPE_OTHER) return 0;
-    return b.value - a.value;
-});
-percentData.forEach(({name, value}) => {
+
+let array = Object.entries(percentData);
+// Split the other part from the others in order to
+// keep the other part always in the last order.
+[
+    ...array.filter(([key, value]) => key !== TYPE_OTHER)
+        .sort((a, b) => b[1] - a[1]),
+    // Other part always the last.
+    ...array.filter(([key, value]) => key === TYPE_OTHER),
+].forEach(([name, value]) => {
     let {color, description} = STATS_MAP[name];
     let li = document.createElement("li");
     li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up" data-balloon-length="large"
@@ -133,13 +139,15 @@ percentData.forEach(({name, value}) => {
     }
 });
 
-topCratesData = Object.entries(topCratesData).sort((a, b) => b[1] - a[1]).map(([key, value], index) => {
-    return {
-        label: `#${index + 1}`,
-        name: key,
-        value
-    };
-});
+topCratesData = Object.entries(topCratesData)
+    .sort((a, b) => b[1] - a[1])
+    .map(([key, value], index) => {
+        return {
+            label: `#${index + 1}`,
+            name: key,
+            value
+        };
+    });
 topCratesData.splice(15);
 barChart({
     margin: ({top: 30, right: 0, bottom: 10, left: 30}),
