@@ -96,11 +96,13 @@ class CrateDocSearchManager {
     }
 
     static addCrate(name, version, searchIndex) {
-        localStorage.setItem(`@${name}`, JSON.stringify(searchIndex));
-        let doc = searchIndex[name]["doc"];
-        let crates = CrateDocSearchManager.getCrates();
-        crates[name] = {version, doc, time: Date.now()};
-        localStorage.setItem("crates", JSON.stringify(crates));
+        if (searchIndex.hasOwnProperty(name)) {
+            localStorage.setItem(`@${name}`, JSON.stringify(searchIndex));
+            let doc = searchIndex[name]["doc"];
+            let crates = CrateDocSearchManager.getCrates();
+            crates[name] = {version, doc, time: Date.now()};
+            localStorage.setItem("crates", JSON.stringify(crates));
+        }
     }
 
     static removeCrate(name) {

@@ -379,18 +379,26 @@ const c = new Compat();
         switch (message.action) {
             // Stable:* action is exclusive to stable docs event
             case "stable:add" : {
-                IndexManager.setStdStableIndex(message.searchIndex);
-                // New stdSearcher instance after docs updated
-                stdSearcher = new StdSearch(message.searchIndex);
-                sendResponse(true);
+                if (message.searchIndex) {
+                    IndexManager.setStdStableIndex(message.searchIndex);
+                    // New stdSearcher instance after docs updated
+                    stdSearcher = new StdSearch(message.searchIndex);
+                    sendResponse(true);
+                } else {
+                    sendResponse(false);
+                }
                 break;
             }
             // Nightly:* action is exclusive to nightly docs event
             case "nightly:add" : {
-                IndexManager.setStdNightlyIndex(message.searchIndex);
-                // New nightlySearcher instance after docs updated
-                nightlySearcher = new NightlySearch(message.searchIndex);
-                sendResponse(true);
+                if (message.searchIndex) {
+                    IndexManager.setStdNightlyIndex(message.searchIndex);
+                    // New nightlySearcher instance after docs updated
+                    nightlySearcher = new NightlySearch(message.searchIndex);
+                    sendResponse(true);
+                } else {
+                    sendResponse(false);
+                }
                 break;
             }
             // Rustc:* action is exclusive to rustc docs event
@@ -401,9 +409,13 @@ const c = new Compat();
                 break;
             }
             case "rustc:add" : {
-                // New rustcSearcher instance after docs updated
-                rustcSearcher = new RustcSearch(message.searchIndex, message.version);
-                sendResponse(true);
+                if (message.searchIndex) {
+                    // New rustcSearcher instance after docs updated
+                    rustcSearcher = new RustcSearch(message.searchIndex, message.version);
+                    sendResponse(true);
+                } else {
+                    sendResponse(false);
+                }
                 break;
             }
             // Crate:* action is exclusive to crate event
@@ -413,9 +425,13 @@ const c = new Compat();
                 break;
             }
             case "crate:add": {
-                CrateDocSearchManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
-                crateDocSearchManager.initAllCrateSearcher();
-                sendResponse(true);
+                if (message.searchIndex) {
+                    CrateDocSearchManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
+                    crateDocSearchManager.initAllCrateSearcher();
+                    sendResponse(true);
+                } else {
+                    sendResponse(false);
+                }
                 break;
             }
             case "crate:remove": {
