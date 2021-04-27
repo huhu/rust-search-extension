@@ -46,12 +46,12 @@
     } else {
         // Due to the new search-index.js on-demand load mode after PR #82310 has been merged.
         // We need to trigger a manual search-index.js load here.
-        console.log("Not search index found, start loading...")
+        console.log("No search index found, start loading...")
         let rustdocVars = document.getElementById("rustdoc-vars");
         if (rustdocVars) {
-            let searchJS = rustdocVars.attributes["data-search-js"].value;
+            let searchIndexJS = rustdocVars.attributes["data-search-index-js"].value;
             let script = document.createElement('script');
-            script.src = searchJS;
+            script.src = searchIndexJS;
             script.onload = sendSearchIndex;
             document.head.append(script);
         }
