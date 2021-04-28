@@ -6,7 +6,7 @@ let pathname = location.pathname.replace("/crate", "");
 let [rawCrateName, crateVersion] = pathname.slice(1).split("/");
 crateName = rawCrateName.replaceAll("-", "_");
 // A crate version which added to the extension.
-let currentCrateVersion = undefined;
+let installedVersion = undefined;
 
 document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
@@ -30,9 +30,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
         chrome.runtime.sendMessage({crateName, action: "crate:check"}, crate => {
             if (crate) {
-                currentCrateVersion = crate.version;
+                insertAddToExtensionElement(getState(crate.version));
+            } else {
+                insertAddToExtensionElement("need-to-install");
             }
-            insertAddToExtensionElement();
         });
     }
 });
@@ -69,12 +70,21 @@ async function enhanceFeatureFlagsMenu(menu) {
           `);
 }
 
-function insertAddToExtensionElement() {
-    let state;
-    if (currentCrateVersion) {
-        state = Semver.compareVersion(currentCrateVersion, crateVersion) === -1 ? "outdated" : "latest";
+/**
+ * Compare the installed version with the current page's version to get the state.
+ * @param version the installed version
+ * @returns string outdated|latest|need-to-install
+ */
+function getState(version) {
+    installedVersion = version;
+    if (installedVersion) {
+        return Semver.compareVersion(installedVersion, crateVersion) === -1 ? "outdated" : "latest";
+    } else {
+        return "need-to-install";
     }
+}
 
+function insertAddToExtensionElement(state) {
     // Remove previous element.
     let el = document.querySelector(".add-to-extension");
     if (el) {
@@ -88,29 +98,33 @@ function insertAddToExtensionElement() {
         // Toggle search index added state
         if (state === "latest") {
             chrome.runtime.sendMessage({crateName, action: "crate:remove"}, response => {
-                currentCrateVersion = undefined;
-                insertAddToExtensionElement();
+                insertAddToExtensionElement(getState(undefined));
             });
         } else {
-            currentCrateVersion = crateVersion;
             injectScripts(["script/add-search-index.js"]);
-            insertAddToExtensionElement();
         }
     };
-    let content = `<p>Add this crate to Rust Search Extension then you can search it in the address bar.</p>`;
-    let iconAttributes = `class="fa-svg fa-svg-fw" style="color:#121212"`;
-    let iconFile = SVG_PLUS_CIRCLE;
+    let content, iconAttributes, iconFile;
     if (state === "latest") {
-        content = `<p>You already added this crate (v${currentCrateVersion}). Click again to remove it.</p>`;
+        content = `<p>You already added this crate (v${installedVersion}). Click again to remove it.</p>`;
         iconAttributes = `class="fa-svg fa-svg-fw" style="color:green"`;
         iconFile = SVG_CHECK_CIRCLE;
     } else if (state === "outdated") {
-        content = `<p>You current version v${currentCrateVersion} is outdated. Click to update to the v${crateVersion}.</p>`;
+        content = `<p>You current version v${installedVersion} is outdated. Click to update to the v${crateVersion}.</p>`;
         iconAttributes = `class="fa-svg fa-svg-fw" style="color:#e57300"`;
         iconFile = SVG_ARROW_UP_CIRCLE;
+    } else if (state === "error") {
+        // The error case: the user fail to install the crate.
+        content = `<p>Oops! Some error happened. You can try again. <br><br>Or check the console and file an issue to report the error.</p>`;
+        iconAttributes = `class="fa-svg fa-svg-fw" style="color:#e62f07"`;
+        iconFile = SVG_ERROR;
+    } else {
+        // The default case: need-to-install.
+        content = `<p>Add this crate to Rust Search Extension then you can search it in the address bar.</p>`;
+        iconAttributes = `class="fa-svg fa-svg-fw" style="color:#121212"`;
+        iconFile = SVG_PLUS_CIRCLE;
     }
     li.innerHTML = `<div class="add-to-extension"
-                         title="Add this crate to Rust Search Extension then you can search it in the address bar."
                          aria-label="Add to Rust Search Extension">
                          <span ${iconAttributes}>${iconFile}</span><span class="title"> to Rust Search Extension</span>
                     </div>
@@ -128,7 +142,18 @@ window.addEventListener("message", function (event) {
         event.data.direction === "rust-search-extension") {
         chrome.runtime.sendMessage({action: "crate:add", ...event.data.message},
             (response) => {
-                console.log(response);
+                if (response) {
+                    insertAddToExtensionElement(getState(event.data.message.crateVersion));
+                    console.log("Congrats! This crate has been installed successfully!");
+                } else {
+                    insertAddToExtensionElement("error");
+                    console.error("Oops! We have failed to install this crate!", {
+                        pathname,
+                        crateVersion,
+                        installedVersion,
+                        data: event.data,
+                    });
+                }
             }
         );
     }

@@ -29,6 +29,12 @@ weight = 3
   - Fix compatibility issue of the new const-since link in Rust docs page.
   - Fix search statistics bug for [https://docs.rs/releases](https://docs.rs/releases) data.
 
+## v1.2.1 - 2021-04-30
+
+- Fix wrongly load searchIndexJS bug. {{ issue(id=154) }}.
+- Improve error user experience when adding search index to the extension.
+- Fix the compatibility of Github markdown file's sticky header.
+
 # v1.1 - 2021-01-06
 
 - Docs.rs is now the `!` search, crates.io is `!!`. See issue {{ issue(id=85) }}.
