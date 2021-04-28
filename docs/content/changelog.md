@@ -4,10 +4,7 @@ description = "Changelog"
 weight = 3
 +++
 
-# v.13 - Unreleased
-
-- Bugfix:
-  - Fix the compatibility of Github markdown file's sticky header.
+# v1.3 - Unreleased
 
 # v1.2 - 2021-03-26
 
@@ -31,7 +28,7 @@ weight = 3
 
 ## v1.2.1 - 2021-04-30
 
-- Fix wrongly load searchIndexJS bug. {{ issue(id=154) }}.
+- Fix wrongly load searchIndexJS bug. {{ issue(id=114) }}.
 - Improve error user experience when adding search index to the extension.
 - Fix the compatibility of Github markdown file's sticky header.
 
