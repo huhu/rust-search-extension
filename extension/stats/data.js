@@ -1,4 +1,4 @@
-const WEEKS = {"Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0};
+const WEEKS = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
 const DATES = makeNumericKeyObject(1, 31);
 const HOURS = makeNumericKeyObject(0, 23);
 
@@ -50,7 +50,7 @@ const STATS = [
 ];
 
 function makeNumericKeyObject(start, end, initial = 0) {
-    return Array.from({length: end + 1 - start}).fill(initial)
+    return Array.from({ length: end + 1 - start }).fill(initial)
         .reduce((obj, current, index) => {
             obj[start + index] = current;
             return obj;
@@ -58,11 +58,49 @@ function makeNumericKeyObject(start, end, initial = 0) {
 }
 
 class Statistics {
+    constructor() {
+        this.calendarData = {};
+        this.topCratesData = {};
+        this.percentData = {};
+        this.weeksData = [];
+        this.hoursData = [];
+        this.datesData = [];
+        this.total = 0;
+    }
+
+    /**
+     * Record search history item.
+     * 
+     * @param the search history item
+     */
+    record({ query, content, description, time }) {
+        let date = new Date(time);
+        WEEKS[W[date.getDay()]] += 1;
+        DATES[D[date.getDate() - 1]] += 1;
+        HOURS[H[date.getHours()]] += 1;
+
+        const c = new Compat();
+        let key = c.normalizeDate(date);
+        this.calendarData[key] = (this.calendarData[key] || 0) + 1;
+
+        let searchType = Statistics.recordSearchType({ query, content, description });
+        if (searchType) {
+            this.percentData[searchType] = (this.percentData[searchType] || 0) + 1;
+        }
+
+        let crate = Statistics.recordSearchCrate(content);
+        if (crate) {
+            this.topCratesData[crate] = (this.topCratesData[crate] || 0) + 1;
+        }
+
+        this.total += 1;
+    }
+
     /**
      * Record the search type from the search history.
      * @returns {string|*} return the search type result if matched, otherwise return null.
      */
-    static recordSearchType({query, content, description}) {
+    static recordSearchType({ query, content, description }) {
         let stat = STATS.find(item => item.pattern && item.pattern.test(query));
         if (stat) {
             return stat.name;
@@ -123,47 +161,16 @@ class Statistics {
         }
     }
 
-    static statistic() {
-        const c = new Compat();
-        let calendarData = {};
-        let topCratesData = {};
-        let percentData = {};
-
-        const history = JSON.parse(localStorage.getItem("history")) || [];
-        history.forEach(({query, content, description, time}) => {
-            let date = new Date(time);
-            WEEKS[W[date.getDay()]] += 1;
-            DATES[D[date.getDate() - 1]] += 1;
-            HOURS[H[date.getHours()]] += 1;
-            
-            let key = c.normalizeDate(date);
-            calendarData[key] = (calendarData[key] || 0) + 1;
-
-            let searchType = Statistics.recordSearchType({query, content, description});
-            if (searchType) {
-                percentData[searchType] = (percentData[searchType] || 0) + 1;
-            }
-
-            let crate = Statistics.recordSearchCrate(content);
-            if (crate) {
-                topCratesData[crate] = (topCratesData[crate] || 0) + 1;
-            }
-        });
-
-        let [weeksData, datesData, hoursData] = [WEEKS, DATES, HOURS].map(data => {
+    /**
+     * Aggregate statistics.
+     * @returns The Statistics result.
+     */
+    aggregate() {
+        [this.weeksData, this.datesData, this.hoursData] = [WEEKS, DATES, HOURS].map(data => {
             return Object.entries(data).map(([key, value]) => {
-                return {name: key, value}
+                return { name: key, value }
             })
         });
-
-        return {
-            percentData,
-            calendarData,
-            topCratesData,
-            weeksData,
-            hoursData,
-            datesData,
-            total: history.length
-        };
+        return this;
     }
 }
