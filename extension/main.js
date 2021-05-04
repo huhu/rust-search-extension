@@ -69,7 +69,7 @@ const c = new Compat();
             content = url.toString();
             description = `[Source code] ${description}`;
         }
-        return {content, description};
+        return { content, description };
     };
 
     omnibox.bootstrap({
@@ -104,7 +104,8 @@ const c = new Compat();
             // Ignore the command history
             if (query && query.startsWith(":")) return;
 
-            HistoryCommand.record(query, result);
+            let historyItem = HistoryCommand.record(query, result);
+            new Statistics().record(historyItem, autoSave = true);
         }
     });
 
@@ -115,8 +116,8 @@ const c = new Compat();
             return nightlySearcher.search(query);
         },
         onFormat: (index, doc) => {
-            let {content, description} = formatDoc(index, doc);
-            return {content, description: '[Nightly] ' + description};
+            let { content, description } = formatDoc(index, doc);
+            return { content, description: '[Nightly] ' + description };
         },
         onAppend: (query) => {
             query = query.replaceAll("/", "").trim();
@@ -134,8 +135,8 @@ const c = new Compat();
             return rustcSearcher.search(query);
         },
         onFormat: (index, doc) => {
-            let {content, description} = formatDoc(index, doc);
-            return {content, description: '[Rustc] ' + description};
+            let { content, description } = formatDoc(index, doc);
+            return { content, description: '[Rustc] ' + description };
         },
         onAppend: (query) => {
             query = query.replaceAll("/", "").trim();
@@ -378,7 +379,7 @@ const c = new Compat();
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         switch (message.action) {
             // Stable:* action is exclusive to stable docs event
-            case "stable:add" : {
+            case "stable:add": {
                 if (message.searchIndex) {
                     IndexManager.setStdStableIndex(message.searchIndex);
                     // New stdSearcher instance after docs updated
@@ -390,7 +391,7 @@ const c = new Compat();
                 break;
             }
             // Nightly:* action is exclusive to nightly docs event
-            case "nightly:add" : {
+            case "nightly:add": {
                 if (message.searchIndex) {
                     IndexManager.setStdNightlyIndex(message.searchIndex);
                     // New nightlySearcher instance after docs updated
@@ -402,13 +403,13 @@ const c = new Compat();
                 break;
             }
             // Rustc:* action is exclusive to rustc docs event
-            case "rustc:check" : {
+            case "rustc:check": {
                 sendResponse({
                     version: rustcSearcher.version,
                 });
                 break;
             }
-            case "rustc:add" : {
+            case "rustc:add": {
                 if (message.searchIndex) {
                     // New rustcSearcher instance after docs updated
                     rustcSearcher = new RustcSearch(message.searchIndex, message.version);
@@ -441,38 +442,38 @@ const c = new Compat();
                 break;
             }
             // Index-update:* action is exclusive to index update event
-            case "index-update:crate" : {
+            case "index-update:crate": {
                 IndexManager.setCrateMapping(message.mapping);
                 IndexManager.setCrateIndex(message.index);
                 crateSearcher = new CrateSearch(message.mapping, message.index);
                 sendResponse(true);
                 break;
             }
-            case "index-update:book" : {
+            case "index-update:book": {
                 IndexManager.setBookIndex(message.index);
                 bookSearcher = new BookSearch(message.index);
                 sendResponse(true);
                 break;
             }
-            case "index-update:lint" : {
+            case "index-update:lint": {
                 IndexManager.setLintIndex(message.index);
                 lintSearcher = new LintSearch(message.index);
                 sendResponse(true);
                 break;
             }
-            case "index-update:label" : {
+            case "index-update:label": {
                 IndexManager.setLabelIndex(message.index);
                 labelCommand.setIndex(message.index);
                 sendResponse(true);
                 break;
             }
-            case "index-update:caniuse" : {
+            case "index-update:caniuse": {
                 IndexManager.setCaniuseIndex(message.index);
                 caniuseSearcher = new CaniuseSearch(message.index);
                 sendResponse(true);
                 break;
             }
-            case "index-update:command" : {
+            case "index-update:command": {
                 let index = message.index;
                 IndexManager.setCommandIndex(index);
                 bookCommand.setIndex(index['book']);
@@ -493,17 +494,27 @@ const c = new Compat();
 })();
 
 (function () {
-    // Eliminate unnecessary tags (such as <match>, <dim>) to save disk usage.
-    let history = JSON.parse(localStorage.getItem("history"));
+    let history = JSON.parse(localStorage.getItem("history")) || [];
     if (history) {
-        history = history.map(({description, ...rest}) => {
-            return {
-                description: description
-                    .replace(/<\/?match>/g, "")
-                    .replace(/<\/?dim>/g, ""),
-                ...rest,
-            };
-        });
+        if (!localStorage.getItem("statistics")) {
+            let statistics = new Statistics();
+            history.forEach((item) => {
+                statistics.record(item);
+            });
+
+            statistics.save();
+        }
+
+        // Eliminate unnecessary tags (such as <match>, <dim>) to save disk usage.
+        history = history
+            .map(({ description, ...rest }) => {
+                return {
+                    description: description
+                        .replace(/<\/?match>/g, "")
+                        .replace(/<\/?dim>/g, ""),
+                    ...rest,
+                };
+            });
         localStorage.setItem("history", JSON.stringify(history));
     }
 })();

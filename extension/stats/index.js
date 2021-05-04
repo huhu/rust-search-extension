@@ -35,24 +35,11 @@ const STATS_MAP = {
     }
 };
 
-const statistics = new Statistics();
-const history = JSON.parse(localStorage.getItem("history")) || [];
-history.forEach((item) => {
-    statistics.record(item);
-});
-
-let {
-    percentData,
-    calendarData,
-    topCratesData,
-    weeksData,
-    hoursData,
-    datesData,
-    total,
-} = statistics.aggregate();
+const stats = new Statistics();
+const total = stats.total;
 
 let heatmap = calendarHeatmap()
-    .data(calendarData)
+    .data(stats.calendarData)
     .selector('.chart-heatmap')
     .tooltipEnabled(true)
     .colorRange([
@@ -81,19 +68,19 @@ let histogramConfig = {
 };
 histogram({
     selector: ".chart-histogram-week",
-    data: weeksData,
+    data: stats.weeksData,
     ...histogramConfig,
 });
 
 histogram({
     selector: ".chart-histogram-date",
-    data: datesData,
+    data: stats.datesData,
     ...histogramConfig,
 });
 
 histogram({
     selector: ".chart-histogram-hour",
-    data: hoursData,
+    data: stats.hoursData,
     ...histogramConfig,
 });
 
@@ -123,7 +110,7 @@ let searchStatsGraph = document.querySelector(".search-stats-graph");
 let searchStatsText = document.querySelector(".search-stats-text");
 let ol = searchStatsText.querySelector("ol");
 
-let array = Object.entries(percentData);
+let array = Object.entries(stats.percentData);
 // Split the other part from the others in order to
 // keep the other part always in the last order.
 [
@@ -148,7 +135,7 @@ let array = Object.entries(percentData);
     }
 });
 
-topCratesData = Object.entries(topCratesData)
+let topCratesData = Object.entries(stats.topCratesData)
     .sort((a, b) => b[1] - a[1])
     .map(([key, value], index) => {
         return {

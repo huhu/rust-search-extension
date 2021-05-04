@@ -20,7 +20,7 @@ local json = manifest.new(
              .addBackgroundScripts(utils.js_files('search/docs', ['base', 'std', 'crate-doc', 'rustc']))
              .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'commands']))
              .addBackgroundScripts(utils.js_files('command', ['blog', 'label', 'help', 'stable']))
-             .addBackgroundScripts(['rust-version.js', 'index-manager.js', 'main.js'])
+             .addBackgroundScripts(['statistics.js', 'rust-version.js', 'index-manager.js', 'main.js'])
              .addContentScript(
   matches=['*://docs.rs/*'],
   js=utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate']) + utils.js_files('libs', ['semver']),

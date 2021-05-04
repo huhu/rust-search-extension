@@ -1,51 +1,35 @@
-const WEEKS = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
-const DATES = makeNumericKeyObject(1, 31);
-const HOURS = makeNumericKeyObject(0, 23);
-
-const W = Object.keys(WEEKS);
-const D = Object.keys(DATES);
-const H = Object.keys(HOURS);
-
-const STATS = [
+const STATS_PATTERNS = [
     {
         name: "stable",
         pattern: null,
-        value: 0,
     },
     {
         name: "nightly",
         pattern: /^\/[^/].*/i,
-        value: 0,
     },
     {
         name: "docs.rs",
         pattern: /^[~@].*/i,
-        value: 0,
     },
     {
         name: "crate",
         pattern: /^!!!.*/i,
-        value: 0,
     },
     {
         name: "attribute",
         pattern: /^#.*/i,
-        value: 0,
     },
     {
         name: "error code",
         pattern: /^`?e\d{2,4}`?$/i,
-        value: 0,
     },
     {
         name: "rustc",
         pattern: /^\/\/.*/i,
-        value: 0,
     },
     {
         name: 'other',
         pattern: /^[>%?]|(1\.).*/i,
-        value: 0,
     },
 ];
 
@@ -62,22 +46,48 @@ class Statistics {
         this.calendarData = {};
         this.topCratesData = {};
         this.percentData = {};
-        this.weeksData = [];
-        this.hoursData = [];
-        this.datesData = [];
+        this.weeksData = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
+        this.hoursData = makeNumericKeyObject(1, 31);
+        this.datesData = makeNumericKeyObject(0, 23);
         this.total = 0;
+
+        this.load();
+    }
+
+    /**
+     * Load statistics data from local storage.
+     */
+    load() {
+        let self = JSON.parse(localStorage.getItem("statistics"));
+        if (self) {
+            this.calendarData = self.calendarData;
+            this.topCratesData = self.topCratesData;
+            this.percentData = self.percentData;
+            this.weeksData = self.weeksData;
+            this.hoursData = self.hoursData;
+            this.datesData = self.datesData;
+            this.total = self.total;
+        }
+    }
+
+    /**
+     * Save the statistics data to local storage.
+     */
+    save() {
+        localStorage.setItem("statistics", JSON.stringify(this.transform()));
     }
 
     /**
      * Record search history item.
      * 
      * @param the search history item
+     * @param autoSave whether auto save the statistics result into local storage
      */
-    record({ query, content, description, time }) {
+    record({ query, content, description, time }, autoSave = false) {
         let date = new Date(time);
-        WEEKS[W[date.getDay()]] += 1;
-        DATES[D[date.getDate() - 1]] += 1;
-        HOURS[H[date.getHours()]] += 1;
+        this.weeksData[Object.keys(this.weeksData)[date.getDay()]] += 1;
+        this.datesData[date.getDate() - 1] += 1;
+        this.hoursData[date.getHours()] += 1;
 
         const c = new Compat();
         let key = c.normalizeDate(date);
@@ -94,6 +104,10 @@ class Statistics {
         }
 
         this.total += 1;
+
+        if (autoSave) {
+            this.save();
+        }
     }
 
     /**
@@ -101,23 +115,23 @@ class Statistics {
      * @returns {string|*} return the search type result if matched, otherwise return null.
      */
     static recordSearchType({ query, content, description }) {
-        let stat = STATS.find(item => item.pattern && item.pattern.test(query));
+        let stat = STATS_PATTERNS.find(item => item.pattern && item.pattern.test(query));
         if (stat) {
             return stat.name;
         } else {
             // Classify the default search cases
             if (content.startsWith("https://docs.rs")) {
                 // Crate docs
-                return STATS[2].name;
+                return STATS_PATTERNS[2].name;
             } else if (["https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
                 // Crates
-                return STATS[3].name;
+                return STATS_PATTERNS[3].name;
             } else if (description.startsWith("Attribute")) {
                 // Attribute
-                return STATS[4].name;
+                return STATS_PATTERNS[4].name;
             } else {
                 // Std docs (stable)
-                return STATS[0].name;
+                return STATS_PATTERNS[0].name;
             }
         }
     }
@@ -162,15 +176,16 @@ class Statistics {
     }
 
     /**
-     * Aggregate statistics.
+     * Transform the statistics.
      * @returns The Statistics result.
      */
-    aggregate() {
-        [this.weeksData, this.datesData, this.hoursData] = [WEEKS, DATES, HOURS].map(data => {
-            return Object.entries(data).map(([key, value]) => {
-                return { name: key, value }
-            })
-        });
+    transform() {
+        [this.weeksData, this.datesData, this.hoursData] = [this.weeksData, this.datesData, this.hoursData]
+            .map(data => {
+                return Object.entries(data).map(([key, value]) => {
+                    return { name: key, value }
+                })
+            });
         return this;
     }
 }
