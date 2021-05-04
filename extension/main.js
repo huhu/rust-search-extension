@@ -104,7 +104,8 @@ const c = new Compat();
             // Ignore the command history
             if (query && query.startsWith(":")) return;
 
-            let historyItem = HistoryCommand.record(query, result);
+            // Only keep the latest 100 of search history.
+            let historyItem = HistoryCommand.record(query, result, maxSize = 100);
             new Statistics().record(historyItem, autoSave = true);
         }
     });
