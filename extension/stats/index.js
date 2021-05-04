@@ -110,7 +110,7 @@ let searchStatsGraph = document.querySelector(".search-stats-graph");
 let searchStatsText = document.querySelector(".search-stats-text");
 let ol = searchStatsText.querySelector("ol");
 
-let array = Object.entries(stats.percentData);
+let array = Object.entries(stats.typeData);
 // Split the other part from the others in order to
 // keep the other part always in the last order.
 [
@@ -135,7 +135,7 @@ let array = Object.entries(stats.percentData);
     }
 });
 
-let topCratesData = Object.entries(stats.topCratesData)
+let topCratesData = Object.entries(stats.cratesData)
     .sort((a, b) => b[1] - a[1])
     .map(([key, value], index) => {
         return {

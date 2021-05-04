@@ -44,8 +44,8 @@ function makeNumericKeyObject(start, end, initial = 0) {
 class Statistics {
     constructor() {
         this.calendarData = {};
-        this.topCratesData = {};
-        this.percentData = {};
+        this.cratesData = {};
+        this.typeData = {};
         this.weeksData = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
         this.hoursData = makeNumericKeyObject(1, 31);
         this.datesData = makeNumericKeyObject(0, 23);
@@ -61,8 +61,8 @@ class Statistics {
         let self = JSON.parse(localStorage.getItem("statistics"));
         if (self) {
             this.calendarData = self.calendarData;
-            this.topCratesData = self.topCratesData;
-            this.percentData = self.percentData;
+            this.cratesData = self.topCratesData;
+            this.typeData = self.percentData;
             this.weeksData = self.weeksData;
             this.hoursData = self.hoursData;
             this.datesData = self.datesData;
@@ -95,12 +95,12 @@ class Statistics {
 
         let searchType = Statistics.recordSearchType({ query, content, description });
         if (searchType) {
-            this.percentData[searchType] = (this.percentData[searchType] || 0) + 1;
+            this.typeData[searchType] = (this.typeData[searchType] || 0) + 1;
         }
 
         let crate = Statistics.recordSearchCrate(content);
         if (crate) {
-            this.topCratesData[crate] = (this.topCratesData[crate] || 0) + 1;
+            this.cratesData[crate] = (this.cratesData[crate] || 0) + 1;
         }
 
         this.total += 1;
