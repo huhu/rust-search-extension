@@ -74,7 +74,7 @@ class Statistics {
      * Save the statistics data to local storage.
      */
     save() {
-        localStorage.setItem("statistics", JSON.stringify(this.transform()));
+        localStorage.setItem("statistics", JSON.stringify(this));
     }
 
     /**

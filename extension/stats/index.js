@@ -35,7 +35,7 @@ const STATS_MAP = {
     }
 };
 
-const stats = new Statistics();
+const stats = new Statistics().transform();
 const total = stats.total;
 
 let heatmap = calendarHeatmap()
