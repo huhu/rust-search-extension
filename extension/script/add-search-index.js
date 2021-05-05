@@ -49,7 +49,11 @@
         console.log("No search index found, start loading...")
         let rustdocVars = document.getElementById("rustdoc-vars");
         if (rustdocVars) {
-            let searchIndexJS = rustdocVars.attributes["data-search-index-js"].value;
+            // If we can't get the search index via "data-search-index-js",
+            // then we should fallback to the "data-search-js", which is a
+            // temporary stage in librustdoc. 
+            // Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
+            let searchIndexJS = (rustdocVars.attributes["data-search-index-js"] || rustdocVars.attributes["data-search-js"]).value;
             let script = document.createElement('script');
             script.src = searchIndexJS;
             script.onload = sendSearchIndex;
