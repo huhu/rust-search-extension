@@ -35,7 +35,23 @@ const STATS_MAP = {
     }
 };
 
-const stats = new Statistics().transform();
+const stats = new Statistics();
+const [weeksData, datesData, hoursData] = [stats.weeksData, stats.datesData, stats.hoursData]
+    .map(data => {
+        return Object.entries(data).map(([key, value]) => {
+            return { name: key, value }
+        })
+    });
+const topCratesData = Object.entries(stats.cratesData)
+    .sort((a, b) => b[1] - a[1])
+    .map(([key, value], index) => {
+        return {
+            label: `#${index + 1}`,
+            name: key,
+            value
+        };
+    });
+topCratesData.splice(15);
 const total = stats.total;
 
 let heatmap = calendarHeatmap()
@@ -68,19 +84,19 @@ let histogramConfig = {
 };
 histogram({
     selector: ".chart-histogram-week",
-    data: stats.weeksData,
+    data: weeksData,
     ...histogramConfig,
 });
 
 histogram({
     selector: ".chart-histogram-date",
-    data: stats.datesData,
+    data: datesData,
     ...histogramConfig,
 });
 
 histogram({
     selector: ".chart-histogram-hour",
-    data: stats.hoursData,
+    data: hoursData,
     ...histogramConfig,
 });
 
@@ -135,16 +151,6 @@ let array = Object.entries(stats.typeData);
     }
 });
 
-let topCratesData = Object.entries(stats.cratesData)
-    .sort((a, b) => b[1] - a[1])
-    .map(([key, value], index) => {
-        return {
-            label: `#${index + 1}`,
-            name: key,
-            value
-        };
-    });
-topCratesData.splice(15);
 barChart({
     margin: ({ top: 30, right: 0, bottom: 10, left: 30 }),
     // Calculate height dynamically to keep the bar with consistence width regardless of the topCratesData length.

@@ -61,8 +61,8 @@ class Statistics {
         let self = JSON.parse(localStorage.getItem("statistics"));
         if (self) {
             this.calendarData = self.calendarData;
-            this.cratesData = self.topCratesData;
-            this.typeData = self.percentData;
+            this.cratesData = self.cratesData;
+            this.typeData = self.typeData;
             this.weeksData = self.weeksData;
             this.hoursData = self.hoursData;
             this.datesData = self.datesData;
@@ -173,19 +173,5 @@ class Statistics {
             let search = url.search.replace("?crate=", "");
             return search.replace(/-/gi, "_");
         }
-    }
-
-    /**
-     * Transform the statistics.
-     * @returns The Statistics result.
-     */
-    transform() {
-        [this.weeksData, this.datesData, this.hoursData] = [this.weeksData, this.datesData, this.hoursData]
-            .map(data => {
-                return Object.entries(data).map(([key, value]) => {
-                    return { name: key, value }
-                })
-            });
-        return this;
     }
 }
