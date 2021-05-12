@@ -36,6 +36,7 @@ var commandsIndex = {
         ["Are we podcast yet?", "https://soundcloud.com/arewepodcastyet", "Rust Are We Podcast Yet"],
         ["Are we IPFS yet?", "https://areweipfsyet.rs/", "Are We InterPlanetary File System (IPFS) Yet"],
         ["Are we quantum yet?", "https://arewequantumyet.github.io/", "A framework compilation for all things quantum computing in Rust."],
+        ["Are We Yeet Yet?", "https://areweyeetyet.rs/", "Track progress on the ability to yeet errors in Rust."],
     ],
     "tool": [
         ["Rust Playground", "https://play.rust-lang.org/"],
