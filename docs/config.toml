@@ -6,14 +6,16 @@ title = "Rust Search Extension - The ultimate search extension for Rust"
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = false
+theme = "juice"
+
+# Configuration of the Markdown rendering
+[markdown]
 # Whether to do syntax highlighting
 # Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
 highlight_code = true
 highlight_theme = "inspired-github"
-
-# Whether to build a search index to be used later on by a JavaScript library
-build_search_index = false
-theme = "juice"
 
 [extra]
 # Put all your custom variables here
