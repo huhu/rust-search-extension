@@ -372,11 +372,6 @@ const c = new Compat();
         localStorage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
 
-    let fileNewIssue = "title=Have you found a bug? Did you feel something was missing?&body=Whatever it was, we'd love to hear from you.";
-    chrome.runtime.setUninstallURL(
-        `https://github.com/huhu/rust-search-extension/issues/new?${encodeURI(fileNewIssue)}`
-    );
-
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         switch (message.action) {
             // Stable:* action is exclusive to stable docs event
@@ -519,3 +514,8 @@ const c = new Compat();
         localStorage.setItem("history", JSON.stringify(history));
     }
 })();
+
+const fileNewIssue = "title=Have you found a bug? Did you feel something was missing?&body=Whatever it was, we'd love to hear from you.";
+chrome.runtime.setUninstallURL(
+    `https://github.com/huhu/rust-search-extension/issues/new?${encodeURI(fileNewIssue)}`
+);
