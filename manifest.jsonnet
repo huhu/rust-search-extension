@@ -10,7 +10,7 @@ local json = manifest.new(
   name='Rust Search Extension',
   version='1.2.1',
   keyword='rs',
-  description='The ultimate search extension for Rust',
+  description='Rust Search Extension - the ultimate search extension for Rust',
 )
              .addIcons(icons())
              .addPermissions(['storage'])
