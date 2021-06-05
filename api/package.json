@@ -1,0 +1,10 @@
+{
+  "name": "rust-search-extension-serverless-api",
+  "version": "0.1.0",
+  "description": "",
+  "dependencies": {},
+  "devDependencies": {
+    "@vercel/node": "^1.11.0"
+  },
+  "author": "Huhu.io"
+}
