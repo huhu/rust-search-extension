@@ -1,7 +1,12 @@
 const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
-let target = location.pathname.includes("/nightly/") ? "nightly" : "stable";
+const TARGET = location.pathname.includes("/nightly/") ? "nightly" : "stable";
 
 document.addEventListener("DOMContentLoaded", () => {
+    if (location.pathname.startsWith("/0.")) {
+        // Ignore legacy docs, such as 0.12.0. (https://doc.rust-lang.org/0.12.0/std/index.html)
+        return;
+    }
+
     if (["/src/", "/stable/src/", "/nightly/src/"].some(p => location.pathname.startsWith(p))) {
         // Source code pages
         linkSourcePageUrls();
