@@ -126,7 +126,13 @@ let searchStatsGraph = document.querySelector(".search-stats-graph");
 let searchStatsText = document.querySelector(".search-stats-text");
 let ol = searchStatsText.querySelector("ol");
 
-let array = Object.entries(stats.typeData);
+// Generate default type data.
+let defaultTypeData = {};
+Object.keys(STATS_MAP).forEach(name => {
+    defaultTypeData[name] = 0;
+});
+// Merge default type data with statistic type data.
+let array = Object.entries(Object.assign(defaultTypeData, stats.typeData));
 // Split the other part from the others in order to
 // keep the other part always in the last order.
 [
