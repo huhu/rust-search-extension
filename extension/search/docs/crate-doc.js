@@ -1,4 +1,5 @@
-class CrateDocSearch extends DocSearch {
+// A DocSearch dedicated to a single crate based on the search-index.
+class SingleCrateDocSearch extends DocSearch {
 
     constructor(name, version, searchIndex) {
         super(name, searchIndex);
@@ -10,7 +11,8 @@ class CrateDocSearch extends DocSearch {
     }
 }
 
-class CrateDocSearchManager {
+// Search all crate's docs, including `@` sigil and `~` sigil,.
+class CrateDocSearch {
     constructor() {
         this.cachedCrateSearcher = null;
         this.allCrateSearcher = null;
@@ -18,26 +20,26 @@ class CrateDocSearchManager {
 
     initAllCrateSearcher() {
         let searchIndex = {};
-        Object.keys(CrateDocSearchManager.getCrates()).forEach(crateName => {
-            searchIndex = Object.assign(searchIndex, CrateDocSearchManager.getCrateSearchIndex(crateName));
+        Object.keys(CrateDocManager.getCrates()).forEach(crateName => {
+            searchIndex = Object.assign(searchIndex, CrateDocManager.getCrateSearchIndex(crateName));
         });
-        this.allCrateSearcher = new CrateDocSearch("~", "*", searchIndex);
+        this.allCrateSearcher = new SingleCrateDocSearch("~", "*", searchIndex);
     }
 
     // Search specific crate docs by prefix `@` sigil.
     // If that crate not been indexed, fallback to the list of all indexed crates.
     search(query) {
-        let [crateName, keyword] = CrateDocSearchManager.parseCrateDocsSearchKeyword(query);
+        let [crateName, keyword] = CrateDocSearch.parseCrateDocsSearchKeyword(query);
 
         let searcher = null;
         if (this.cachedCrateSearcher && this.cachedCrateSearcher.name === crateName) {
             searcher = this.cachedCrateSearcher;
         } else {
-            let crates = CrateDocSearchManager.getCrates();
+            let crates = CrateDocManager.getCrates();
             let crate = crates[crateName];
             if (crate) {
-                let searchIndex = CrateDocSearchManager.getCrateSearchIndex(crateName);
-                searcher = new CrateDocSearch(crateName, crate.version, searchIndex);
+                let searchIndex = CrateDocManager.getCrateSearchIndex(crateName);
+                searcher = new SingleCrateDocSearch(crateName, crate.version, searchIndex);
 
                 this.cachedCrateSearcher = searcher;
             } else {
@@ -86,29 +88,5 @@ class CrateDocSearchManager {
         let [crateName, ...keyword] = query.split(/\s|:+/i);
         return [crateName, keyword.filter(k => k).join('::')];
     }
-
-    static getCrates() {
-        return JSON.parse(localStorage.getItem("crates") || "{}");
-    }
-
-    static getCrateSearchIndex(name) {
-        return JSON.parse(localStorage.getItem(`@${name}`));
-    }
-
-    static addCrate(name, version, searchIndex) {
-        if (searchIndex.hasOwnProperty(name)) {
-            localStorage.setItem(`@${name}`, JSON.stringify(searchIndex));
-            let doc = searchIndex[name]["doc"];
-            let crates = CrateDocSearchManager.getCrates();
-            crates[name] = {version, doc, time: Date.now()};
-            localStorage.setItem("crates", JSON.stringify(crates));
-        }
-    }
-
-    static removeCrate(name) {
-        let crates = CrateDocSearchManager.getCrates();
-        delete crates[name];
-        localStorage.setItem("crates", JSON.stringify(crates));
-        localStorage.removeItem(`@${name}`);
-    }
 }
+

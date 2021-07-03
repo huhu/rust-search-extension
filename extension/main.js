@@ -9,7 +9,7 @@ const c = new Compat();
     let lintSearcher = new LintSearch(await IndexManager.getLintIndex());
 
     const attributeSearcher = new AttributeSearch(attributesIndex);
-    const crateDocSearchManager = new CrateDocSearchManager();
+    const crateDocSearcher = new CrateDocSearch();
 
     const commandIndex = await IndexManager.getCommandIndex();
     const cargoCommand = new SimpleCommand('cargo', 'Show all useful third-party cargo subcommands.', commandIndex['cargo']);
@@ -94,7 +94,7 @@ const c = new Compat();
                 // Sanitize docs url which from all crates doc search mode. (Prefix with "~")
                 // Here is the url instance: https://docs.rs/~/*/reqwest/fn.get.html
                 let [_, __, crateName] = new URL(content).pathname.slice(1).split("/");
-                let crateVersion = CrateDocSearchManager.getCrates()[crateName].version;
+                let crateVersion = CrateDocManager.getCrates()[crateName].version;
                 return content.replace("/~/", `/${crateName}/`).replace("/*/", `/${crateVersion}/`);
             } else {
                 return content;
@@ -157,14 +157,14 @@ const c = new Compat();
 
     omnibox.addPrefixQueryEvent("~", {
         onSearch: (query) => {
-            return crateDocSearchManager.searchAll(query);
+            return crateDocSearcher.searchAll(query);
         },
         onFormat: formatDoc,
     });
 
     omnibox.addPrefixQueryEvent("@", {
         onSearch: (query) => {
-            return crateDocSearchManager.search(query);
+            return crateDocSearcher.search(query);
         },
         onFormat: (index, item) => {
             if (item.hasOwnProperty("content")) {
@@ -417,14 +417,14 @@ const c = new Compat();
             }
             // Crate:* action is exclusive to crate event
             case "crate:check": {
-                let crates = CrateDocSearchManager.getCrates();
+                let crates = CrateDocManager.getCrates();
                 sendResponse(crates[message.crateName]);
                 break;
             }
             case "crate:add": {
                 if (message.searchIndex) {
-                    CrateDocSearchManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
-                    crateDocSearchManager.initAllCrateSearcher();
+                    CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
+                    crateDocSearcher.initAllCrateSearcher();
                     sendResponse(true);
                 } else {
                     sendResponse(false);
@@ -432,8 +432,8 @@ const c = new Compat();
                 break;
             }
             case "crate:remove": {
-                CrateDocSearchManager.removeCrate(message.crateName);
-                crateDocSearchManager.initAllCrateSearcher();
+                CrateDocManager.removeCrate(message.crateName);
+                crateDocSearcher.initAllCrateSearcher();
                 sendResponse(true);
                 break;
             }
