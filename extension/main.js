@@ -30,7 +30,7 @@ const c = new Compat();
         new StableCommand(),
         new HistoryCommand(),
         new OpenCommand('stats', 'Open search statistics page.',
-            chrome.runtime.getURL("stats/index.html"),
+            chrome.runtime.getURL("manage/index.html"),
             {
                 content: ':stats',
                 description: `Press ${c.match("Enter")} to open search statistics page.`,

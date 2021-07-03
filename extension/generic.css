@@ -2,24 +2,27 @@
     margin: 0;
     padding: 0;
     font-family: "Fira Sans", sans-serif;
-  }
-  html {
+}
+
+html {
     background-color: #fcfaf6;
-  }
-  .logo {
+}
+
+.logo {
     padding: 40px;
     font-family: "Alfa Slab One", serif;
     font-size: 32px;
     text-align: center;
     display: flex;
-  }
-  .logo img {
+}
+
+.logo img {
     width: 60px;
     margin: 0 25px;
-  }
-  .flex-layout {
+}
+
+.flex-layout {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
+}

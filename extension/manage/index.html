@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Search Extension</title>
+    <script type="text/javascript" src="../libs/calendar-heatmap.js"></script>
+    <script type="text/javascript" src="../libs/d3.min.js"></script>
+    <script type="text/javascript" src="../libs/moment.min.js"></script>
+    <script type="text/javascript" src="../libs/charts.js"></script>
+
+    <link rel="stylesheet" href="../libs/calendar-heatmap.css">
+    <link rel="stylesheet" href="../libs/balloon.min.css">
+    <link rel="stylesheet" href="../libs/charts.css">
+    <link rel="stylesheet" href="../generic.css">
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="flex-layout" style="flex-direction: column;">
+        <div style="width: 61%; display: flex;flex-direction: column;">
+            <ul class="nav">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="crates.html">Crate manager</a></li>
+                <li class="nav-item"><a href="settings.html">Settings</a></li>
+            </ul>
+            <div style="padding: 30px 80px; background-color: white;">
+                <div class="logo flex-layout">
+                    <img src="../icon.png" alt="rust-search-extension-logo"> Rust Search Extension
+                </div>
+
+                <div style="flex-direction: column;" class="flex-layout">
+                    <div class="chart-heatmap"></div>
+                </div>
+                <div class="search-time" style="text-align: center;font-size: 20px;">
+                    <b>0</b> searches in total since the first day, approximately saved <b>0 seconds</b>.
+                    <b aria-label="We consider one search save 5 seconds in average, just an estimated value." data-balloon-pos="up" data-balloon-length="large" style="vertical-align: middle" class="tooltip-color">
+                        <img src="info.svg" alt="info">
+                    </b>
+                </div>
+                <div id="chart">
+                    <div style="padding: 30px 0;">
+                        <div class="search-stats-graph" style=" height: 8px; width: 100%; display: flex;">
+                        </div>
+                        <div class="search-stats-text" style=" padding: 10px;">
+                            <ol style="display: flex; justify-content: space-around;">
+                            </ol>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row-reverse; align-items: flex-start; padding-top: 30px;">
+                        <div>
+                            <div class="" style="padding-bottom: 20px;">
+                                <h3>Searches per weekday</h3>
+                                <div class="chart-histogram-week" style="position: relative;"></div>
+                            </div>
+                            <div class="" style="padding-bottom: 20px;">
+                                <h3>Searches per day of month</h3>
+                                <div class="chart-histogram-date" style="position: relative;"></div>
+                            </div>
+                            <div class="" style="padding-bottom: 20px;">
+                                <h3>Searches per hour (local time)</h3>
+                                <div class="chart-histogram-hour" style="position: relative;"></div>
+                            </div>
+                        </div>
+
+                        <div class="" style="padding-right: 80px;">
+                            <h3>Top searched crates</h3>
+                            <div class="topCratesData" style="position: relative;box-sizing: border-box;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../libs/bar-chart.js"></script>
+<script type="text/javascript" src="../core/compat.js"></script>
+<script type="text/javascript" src="../statistics.js"></script>
+<script type="text/javascript" src="index.js"></script>
+
+</html>
