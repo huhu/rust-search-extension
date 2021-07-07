@@ -39,6 +39,7 @@ var commandsIndex = {
         ["Are we IPFS yet?", "https://areweipfsyet.rs/", "Are We InterPlanetary File System (IPFS) Yet"],
         ["Are we quantum yet?", "https://arewequantumyet.github.io/", "A framework compilation for all things quantum computing in Rust."],
         ["Are We Yeet Yet?", "https://areweyeetyet.rs/", "Track progress on the ability to yeet errors in Rust."],
+        ["Are we in space yet?", "https://www.areweinspaceyet.org/", "A catalogue of crates in the Rust ecosystem for (aero)space."],
     ],
     "tool": [
         ["Rust Playground", "https://play.rust-lang.org/"],
@@ -47,12 +48,13 @@ var commandsIndex = {
         ["Macro Railroad ", "https://lukaslueg.github.io/macro_railroad_wasm_demo/"],
     ],
     "mirror": [
-        ["[CN] 清华大学开源软件镜像站-Rust Crates源", "https://mirrors.tuna.tsinghua.edu.cn/help/crates.io-index.git/"],
-        ["[CN] 清华大学开源软件镜像站-Rustup源", "https://mirrors.tuna.tsinghua.edu.cn/help/rustup/"],
-        ["[CN] 中国科学技术大学开源软件镜像站-Rust Crates源", "http://mirrors.ustc.edu.cn/help/crates.io-index.html"],
-        ["[CN] 中国科学技术大学开源软件镜像站-Rust Toolchain源", "http://mirrors.ustc.edu.cn/help/rust-static.html"],
-        ["[CN] 南京大学开源镜像站-Rust Crates源", "https://nju-mirror-help.njuer.org/rust-crates.html"],
-        ["[CN] 上海交通大学开源镜像站-Rust Crates源", "https://mirrors.sjtug.sjtu.edu.cn/#/"],
+        ["[CN] Rsproxy.cn - 字节跳动Rust源", "https://rsproxy.cn/"],
+        ["[CN] 清华大学开源软件镜像站 - Rust Crates源", "https://mirrors.tuna.tsinghua.edu.cn/help/crates.io-index.git/"],
+        ["[CN] 清华大学开源软件镜像站 - Rustup源", "https://mirrors.tuna.tsinghua.edu.cn/help/rustup/"],
+        ["[CN] 中国科学技术大学开源软件镜像站 - Rust Crates源", "http://mirrors.ustc.edu.cn/help/crates.io-index.html"],
+        ["[CN] 中国科学技术大学开源软件镜像站 - Rust Toolchain源", "http://mirrors.ustc.edu.cn/help/rust-static.html"],
+        ["[CN] 南京大学开源镜像站 - Rust Crates源", "https://nju-mirror-help.njuer.org/rust-crates.html"],
+        ["[CN] 上海交通大学开源镜像站 - Rust Crates源", "https://mirrors.sjtug.sjtu.edu.cn/#/"],
         ["[CN] Rustcc.com源", "https://rustcc.com/article?id=6baecc6f-29ed-40d2-870b-343606aa2e93"],
     ]
 };
