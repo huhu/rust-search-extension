@@ -7,3 +7,4 @@ node_modules
 target
 docs/public
 manifest.json
+extension/manage/
