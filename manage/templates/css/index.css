@@ -148,6 +148,7 @@ input:checked+.slider:before {
     width: 100%;
     position: fixed;
     bottom: 0;
+    left: 0;
     z-index: 9;
     text-align: center;
     padding: 8px;

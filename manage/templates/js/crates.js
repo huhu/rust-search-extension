@@ -1,3 +1,5 @@
+let cratesData = new Statistics().cratesData;
+
 function buildRemoveButton(name) {
     let btn = document.createElement("span");
     btn.textContent = "Remove";
@@ -14,14 +16,15 @@ function buildCrateItem(crate) {
     li.style.padding = "10px";
     li.innerHTML = `
         <div>
-            <b class="title-text">${crate.name}</b>
-            <span class="subtitle-text">${crate.version}</span>
+            <b class="subtitle-text">${crate.name}</b>
+            <span class="text">${crate.version}</span>
             <a href="https://crates.io/crates/${crate.name}" target="_blank">crates.io</a>
             <a href="https://docs.rs/${crate.name}" target="_blank">docs.rs</a>
         </div>
         <div>
             <span>${crate.doc}</span>
             <span>${crate.time}</span>
+            <span>${cratesData[crate.name] || 0}</span>
         </div>
     `;
     li.appendChild(buildRemoveButton(crate.name));
@@ -29,14 +32,16 @@ function buildCrateItem(crate) {
 }
 
 function refresh() {
-    let crates = CrateDocManager.getCrates();
+    let crates = Object.entries(CrateDocManager.getCrates());
     let root = document.querySelector(".crate-list");
-    for (let [name, crate] of Object.entries(crates)) {
+    for (let [name, crate] of crates) {
         root.appendChild(buildCrateItem({
             name,
             ...crate
         }));
     }
+
+    document.getElementById("crate-count").textContent = crates.length;
 }
 
 refresh();
