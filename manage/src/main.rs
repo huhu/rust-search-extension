@@ -1,7 +1,8 @@
 //! Build manage directory html pages.
 
-use std::{error::Error, fs, io::Write, path::PathBuf};
+use std::{error::Error, fs, io::Write, path::PathBuf, sync::mpsc::channel, time::Duration};
 
+use notify::{watcher, Watcher};
 use tera::{Context, Tera};
 
 pub type Result<T> = std::result::Result<T, Box<dyn Error>>;
@@ -11,6 +12,22 @@ const ASSETS: [&str; 3] = ["css", "js", "static"];
 const BUILD_DIR: &str = "../extension/manage";
 
 fn main() -> Result<()> {
+    let (tx, rx) = channel();
+    let mut watcher = watcher(tx, Duration::from_secs(1))?;
+    watcher.watch("templates", notify::RecursiveMode::Recursive)?;
+
+    loop {
+        match rx.recv() {
+            Ok(event) => {
+                println!("Watched changed: {:?}", event);
+                build()?
+            }
+            Err(err) => println!("watch error: {:?}", &err),
+        }
+    }
+}
+
+fn build() -> Result<()> {
     copy_asset()?;
 
     let tera = Tera::new("templates/*.html")?;
@@ -21,6 +38,7 @@ fn main() -> Result<()> {
         let path = format!("{}/{}", BUILD_DIR, template);
         fs::File::create(&path)?.write_all(&buf)?;
     }
+
     Ok(())
 }
 
