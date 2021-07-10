@@ -11,6 +11,10 @@ a:visited {
     color: initial;
 }
 
+ul {
+    list-style: none;
+}
+
 h3 {
     padding: 10px 0;
     font-size: 18px;

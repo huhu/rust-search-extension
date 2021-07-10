@@ -10,16 +10,18 @@ function buildRemoveButton(name) {
 
 function buildCrateItem(crate) {
     let li = document.createElement("li");
+    li.classList.add("text");
+    li.style.padding = "10px";
     li.innerHTML = `
         <div>
-            ${crate.name}
-            <span>${crate.version}</span>
+            <b class="title-text">${crate.name}</b>
+            <span class="subtitle-text">${crate.version}</span>
             <a href="https://crates.io/crates/${crate.name}" target="_blank">crates.io</a>
             <a href="https://docs.rs/${crate.name}" target="_blank">docs.rs</a>
         </div>
         <div>
-        <span>${crate.doc}</span>
-        <span>${crate.time}</span>
+            <span>${crate.doc}</span>
+            <span>${crate.time}</span>
         </div>
     `;
     li.appendChild(buildRemoveButton(crate.name));
