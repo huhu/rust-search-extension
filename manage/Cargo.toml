@@ -8,4 +8,5 @@ edition = "2018"
 
 [dependencies]
 notify = "4"
+sass-rs = "0.2"
 tera = { version = "1.12", default-features = false }

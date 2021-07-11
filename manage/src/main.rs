@@ -12,6 +12,8 @@ const ASSETS: [&str; 3] = ["css", "js", "static"];
 const BUILD_DIR: &str = "../extension/manage";
 
 fn main() -> Result<()> {
+    build()?;
+
     let (tx, rx) = channel();
     let mut watcher = watcher(tx, Duration::from_secs(1))?;
     watcher.watch("templates", notify::RecursiveMode::Recursive)?;
@@ -27,8 +29,18 @@ fn main() -> Result<()> {
     }
 }
 
+fn compile_sass() -> Result<()> {
+    let mut options = sass_rs::Options::default();
+    options.output_style = sass_rs::OutputStyle::Compressed;
+    let content = sass_rs::compile_file("templates/sass/index.scss", options)?;
+    let path = format!("{}/css/index.css", BUILD_DIR);
+    fs::File::create(&path)?.write_all(&content.as_bytes())?;
+    Ok(())
+}
+
 fn build() -> Result<()> {
     copy_asset()?;
+    compile_sass()?;
 
     let tera = Tera::new("templates/*.html")?;
     let context = Context::new();

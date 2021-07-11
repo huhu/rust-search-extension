@@ -1,0 +1,36 @@
+.search-stats-graph {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+
+.color-block {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.search-stats-text li {
+    list-style: none;
+}
+
+.search-stats-text div {
+    display: flex;
+    align-items: center;
+}
+
+.search-stats-text span {
+    padding: 3px;
+    font-size: 16px;
+}
+
+#chart rect {
+    stroke: #F9BB2D;
+    stroke-width: 2px;
+}
+
+#chart rect:hover {
+    fill: rgb(255, 157, 0);
+}

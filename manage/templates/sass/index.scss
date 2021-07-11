@@ -1,0 +1,41 @@
+@import "_text.scss";
+@import "_home.scss";
+@import "_crates.scss";
+@import "_settings.scss";
+a {
+    color: initial;
+    &:hover {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    &:visited {
+        color: initial;
+    }
+}
+
+ul {
+    list-style: none;
+}
+
+h3 {
+    padding: 10px 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+.tooltip-color {
+    --balloon-color: rgba(0, 0, 0, 0.7)
+}
+
+.nav {
+    list-style: none;
+    flex-direction: row;
+    display: flex;
+    align-self: end;
+    padding: 0 10px;
+    font-size: 20px;
+}
+
+.nav .nav-item {
+    padding: 20px;
+}
