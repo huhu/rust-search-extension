@@ -1,12 +1,21 @@
+.setting-group {
+    display: flex;
+    flex-direction: row;
+    margin: 40px 50px 60px;
+    .title-text {
+        width: 280px;
+        align-self: start;
+    }
+}
+
 .disable {
     pointer-events: none;
     opacity: 0.3;
 }
 
-.flex-vertical {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
+.setting-item {
+    font-size: 20px;
+    margin-bottom: 30px;
 }
 
 .offline-doc-path {
