@@ -1,36 +1,48 @@
-.search-stats-graph {
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
+.percent-bar:not(:first-child) {
+    border-left: 1px solid #ffffff;
+}
+
+.percent-bar:first-child {
     border-bottom-left-radius: 3px;
     border-top-left-radius: 3px;
 }
 
-.color-block {
+.percent-bar:last-child {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.tooltip-color {
+    --balloon-color: rgba(0, 0, 0, 0.7)
+}
+
+.color-circle-dot {
     display: inline-block;
     width: 8px;
     height: 8px;
     border-radius: 50%;
 }
 
-.search-stats-text li {
-    list-style: none;
+.search-stats-text {
+    li {
+        list-style: none;
+    }
+    div {
+        display: flex;
+        align-items: center;
+    }
+    span {
+        padding: 3px;
+        font-size: 16px;
+    }
 }
 
-.search-stats-text div {
-    display: flex;
-    align-items: center;
-}
-
-.search-stats-text span {
-    padding: 3px;
-    font-size: 16px;
-}
-
-#chart rect {
-    stroke: #F9BB2D;
-    stroke-width: 2px;
-}
-
-#chart rect:hover {
-    fill: rgb(255, 157, 0);
+#chart {
+    rect {
+        stroke: #F9BB2D;
+        stroke-width: 1px;
+        &:hover {
+            fill: rgb(255, 157, 0);
+        }
+    }
 }

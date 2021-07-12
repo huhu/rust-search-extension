@@ -37,11 +37,11 @@ const STATS_MAP = {
 
 const stats = new Statistics();
 const [weeksData, datesData, hoursData] = [stats.weeksData, stats.datesData, stats.hoursData]
-    .map(data => {
-        return Object.entries(data).map(([key, value]) => {
-            return { name: key, value }
-        })
-    });
+.map(data => {
+    return Object.entries(data).map(([key, value]) => {
+        return { name: key, value }
+    })
+});
 const topCratesData = Object.entries(stats.cratesData)
     .sort((a, b) => b[1] - a[1])
     .map(([key, value], index) => {
@@ -71,7 +71,7 @@ let heatmap = calendarHeatmap()
         { min: 2, max: 'Infinity', unit: 'searches' }
     ])
     .legendEnabled(true)
-    .onClick(function (data) {
+    .onClick(function(data) {
         console.log('data', data);
     });
 heatmap();
@@ -137,22 +137,23 @@ let array = Object.entries(Object.assign(defaultTypeData, stats.typeData));
 // keep the other part always in the last order.
 [
     ...array.filter(([key, value]) => key !== TYPE_OTHER)
-        .sort((a, b) => b[1] - a[1]),
+    .sort((a, b) => b[1] - a[1]),
     // Other part always the last.
     ...array.filter(([key, value]) => key === TYPE_OTHER),
 ].forEach(([name, value]) => {
     let { color, description } = STATS_MAP[name];
     let li = document.createElement("li");
+    let percent = (value / total * 100).toFixed(1);
     li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up" data-balloon-length="large"
                         style="text-align: center" class="tooltip-color">
-                        <span class="color-block" style="background-color:${color}"></span>
+                        <span class="color-circle-dot" style="background-color:${color}"></span>
                         <span class="">${name}</span>
-                        <span class="">${(value / total * 100).toFixed(1)}%</span>
+                        <span class="">${percent}%</span>
                      </div>`;
     ol.append(li);
     if (value > 0) {
         searchStatsGraph.insertAdjacentHTML('beforeend',
-            `<span class="show" style="width: ${value / total * 100}%; background-color:${color}"></span>`
+            `<span class="percent-bar" style="width: ${percent}%; background-color:${color}"></span>`
         );
     }
 });

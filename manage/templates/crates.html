@@ -1,13 +1,22 @@
 {% extends "base.html" %} 
 
 {% block content %}
-<h1>
-    You have indexed <span id="crate-count">0</span> crate(s).
-</h1>
-<ul class="crate-list"></ul>
+<div class="subtitle-text crate-list-filter">
+    <span>You have indexed <span id="crate-count">0</span> crate(s)</span>
+    <span>
+        Sort by:
+        <select name="crate-filter">
+            <option value="time">Indexed time</option>
+            <option value="alphanumeric">Alphanumeric</option>
+            <option value="searches">Searches</option>
+        </select>
+    </span>
+</div>
+<ul class="crate-list text"></ul>
 {% endblock %} 
 
 {% block js %}
+<script src="../core/compat.js"></script>
 <script src="../crate-manager.js"></script>
 <script src="../statistics.js"></script>
 <script src="./js/crates.js"></script>

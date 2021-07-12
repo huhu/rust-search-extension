@@ -1,0 +1,40 @@
+.crate-list-filter {
+    margin: 15px 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.crate-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &:not(:last-child) {
+        border-bottom: var(--primary-color) 1px dashed;
+    }
+    &:hover {
+        background-color: rgb(245, 243, 241);
+    }
+    .crate-attr {
+        margin: 0 8px;
+        font-size: 16px;
+    }
+    .crate-desc {
+        color: #565656;
+        padding: 10px 0;
+        font-size: 16px;
+    }
+    .crate-extra {
+        color: #565656;
+        font-size: 15px;
+    }
+}
+
+.btn-remove {
+    color: #dd4814;
+    font-size: 14px;
+    padding: 15px;
+    &:hover {
+        cursor: pointer;
+        font-weight: bold;
+    }
+}
