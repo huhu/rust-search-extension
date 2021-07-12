@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+<style>
+    .loading {
+        text-align: center;
+        font-size: 20px;
+        padding: 60px 0;
+    }
+    .redirect {
+        padding: 30px 0;
+    }
+    .redirect a {
+        color: #551a8a;
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+<div class="loading">
+    Get crate's repository url via crates.io api...
+</div>
+{% endblock %} 
+
+{% block js %}
+<script src="./js/redirect.js"></script>
+{% endblock %}

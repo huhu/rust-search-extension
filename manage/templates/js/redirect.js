@@ -1,4 +1,4 @@
-(async () => {
+(async() => {
     let crate = location.search.slice(1).split("=")[1];
     try {
         let response = await fetch(`https://crates.io/api/v1/crates/${crate}`, { mode: "cors" });
@@ -8,12 +8,12 @@
 
             if (json.crate.repository) {
                 loading.innerHTML = `Obtained the repository url of <b>${crate}</b>. 
-                <span style="vertical-align:sub"><img class="animate__animated animate__fadeIn" src="check.svg" style="padding-left:10px"/></span>`;
-                loading.insertAdjacentHTML("beforeend", '<h1 class="redirect animate__animated animate__fadeIn">Redirecting...</h1>');
+                <span style="vertical-align:sub"><img class="animate__animated animate__fadeIn" src="./static/check.svg" style="padding-left:10px"/></span>`;
+                loading.insertAdjacentHTML("beforeend", '<div class="heading-text redirect animate__animated animate__fadeIn">Redirecting...</div>');
                 location = json.crate.repository;
             } else {
                 loading.innerHTML = `<div>
-                    <p>Sorry, the crate <b>${crate}</b> has no repository url. <span style="vertical-align:sub"><img class="animate__animated animate__fadeIn" src="error.svg" style="padding-left:10px"/></span></p>
+                    <p>Sorry, the crate <b>${crate}</b> has no repository url. <span style="vertical-align:sub"><img class="animate__animated animate__fadeIn" src="./static/error.svg" style="padding-left:10px"/></span></p>
                     <h2 class="redirect">Go to <a href="https://crates.io/crates/${crate}">crates.io/crates/${crate}</a> or <a href="https://docs.rs/${crate}">docs.rs/${crate}</a></h2>
                     </div>`;
             }

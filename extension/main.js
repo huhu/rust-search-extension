@@ -236,7 +236,7 @@ const c = new Compat();
         }
     });
 
-    const REDIRECT_URL = chrome.runtime.getURL("redirect.html");
+    const REDIRECT_URL = chrome.runtime.getURL("manage/redirect.html");
     omnibox.addPrefixQueryEvent("!!!", {
         onSearch: (query) => {
             return crateSearcher.search(query);
