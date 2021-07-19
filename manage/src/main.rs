@@ -7,7 +7,13 @@ use tera::{Context, Tera};
 
 pub type Result<T> = std::result::Result<T, Box<dyn Error>>;
 
-const TEMPLATES: [&str; 4] = ["index.html", "crates.html", "settings.html", "redirect.html"];
+const TEMPLATES: [&str; 5] = [
+    "index.html",
+    "crates.html",
+    "settings.html",
+    "export.html",
+    "redirect.html",
+];
 const ASSETS: [&str; 3] = ["css", "js", "static"];
 const BUILD_DIR: &str = "../extension/manage";
 

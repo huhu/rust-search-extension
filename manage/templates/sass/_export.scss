@@ -1,0 +1,18 @@
+.btn {
+  padding: 8px 15px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 120px;
+}
+
+.btn-export {
+  background-color: #F9BB2DAA;
+  margin-top: 40px;
+
+  &:hover {
+    background-color: #F9BB2D;
+  }
+}
