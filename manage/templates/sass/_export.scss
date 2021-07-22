@@ -16,3 +16,19 @@
     background-color: #F9BB2D;
   }
 }
+
+.btn-import {
+  background-color: #121212BB;
+  margin-top: 40px;
+  color: white;
+
+  &:hover {
+    background-color: #121212;
+  }
+}
+
+#file-selector {
+  margin-bottom: 30px;
+  border: 1px dashed;
+  padding: 10px;
+}

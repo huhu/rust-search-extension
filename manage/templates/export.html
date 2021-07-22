@@ -21,10 +21,33 @@
         <div class="btn btn-export">Export</div>
     </div>
 </div>
+<div class="setting-group">
+    <div class="title-text">Import</div>
+    <div class="text">
+        <div>Import from local JSON file:</div>
+        <br>
+        <input class="text" type="file" accept="application/json" id="file-selector">
+        {% set items = ["settings", "search-history", "search-statistics", "crates"] %}
+        {% for item in items %}
+        <div class="setting-item">
+            <div>
+                <label class="toggle">
+                    <input type="checkbox" class="{{ item }}" checked>
+                    <span class="slider"></span>
+                </label>
+                {{ item | capitalize | replace(from="-", to=" ") }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="btn btn-import">Import</div>
+    </div>
+</div>
 {% endblock %}
 
 {% block js %}
+<script src="../settings.js"></script>
 <script src="../crate-manager.js"></script>
 <script src="../statistics.js"></script>
 <script src="./js/export.js"></script>
+<script src="./js/import.js"></script>
 {% endblock %}
