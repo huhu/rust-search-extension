@@ -1,5 +1,17 @@
 const c = new Compat();
+
+// Get the information about the current platform os.
+// Possible values: "arm", "arm64", "x86-32", "x86-64", "mips", or "mips64"
+function getPlatformOs() {
+    return new Promise(resolve => {
+        chrome.runtime.getPlatformInfo(platformInfo => {
+            resolve(platformInfo.os);
+        });
+    });
+}
+
 (async () => {
+    const os = await getPlatformOs();
     const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
     const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
 
@@ -58,6 +70,11 @@ const c = new Compat();
 
     let formatDoc = (index, doc) => {
         let content = doc.href;
+        if (settings.isOfflineMode && os === "win") {
+            // Replace all "/" to "\" for Windows in offline mode.
+            content.replaceAll("/", "\\");
+        }
+
         let description = doc.displayPath + c.match(doc.name);
         if (doc.desc) {
             description += ` - ${c.dim(c.escape(c.eliminateTags(doc.desc)))}`;
