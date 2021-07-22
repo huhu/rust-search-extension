@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const toast = new Toast(".toast");
-
     const autoUpdateCheckbox = document.getElementById('auto-update');
     autoUpdateCheckbox.checked = settings.autoUpdate;
     autoUpdateCheckbox.onchange = function(event) {
@@ -26,18 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const offlineDocPath = document.querySelector('.offline-doc-path');
     offlineDocPath.value = settings.offlineDocPath;
     offlineDocPath.onchange = function(event) {
-        let path = event.target.value;
-        // Check the std doc path validity
-        if (settings.checkDocPathValidity(path)) {
-            settings.offlineDocPath = path;
-
-            toast.success("Great! Your local doc path is valid!");
-        } else {
-            // If the offline doc path is invalid, turn off the offline mode.
-            offlineModeCheckbox.checked = false;
-            toast.error("Local doc path should match regex ^file://.*/doc/rust/html/$ or ^https?://.*/$");
-        }
-        toast.dismiss(3000);
+        settings.offlineDocPath = event.target.value;
     };
 
     let crateRegistry = document.querySelector("select[name='crate-registry']");
