@@ -72,14 +72,3 @@ input:checked+.slider:before {
     -ms-transform: translateX(10px);
     transform: translateX(10px);
 }
-
-.toast {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 9;
-    text-align: center;
-    padding: 8px;
-    display: none;
-}

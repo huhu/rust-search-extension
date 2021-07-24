@@ -1,18 +1,36 @@
 (function () {
     let json = null;
-    document.getElementById("file-selector").onchange = function () {
+    let fileSelector = document.querySelector(".file-selector");
+    fileSelector.onchange = function () {
+        fileSelector.classList.remove("required");
+
         let fileReader = new FileReader();
         fileReader.onload = () => {
             json = JSON.parse(fileReader.result);
-            console.log(json);
+            console.log("Imported JSON:", json);
         };
         fileReader.readAsText(this.files[0]);
     };
 
     document.querySelector(".btn-import").onclick = (event) => {
-        if (!json) return;
+        if (!json) {
+            fileSelector.classList.add("required");
+            return;
+        }
+
+        if (!["settings", "history", "stats", "crates"].some(item => item in json)) {
+            alert("Invalid json file");
+            return;
+        }
 
         let target = event.target.parentElement;
+        if (
+            ![".settings", ".search-history", ".search-statistics", ".crates"]
+                .some(item => target.querySelector(item).checked)
+        ) {
+            alert("Please select at least one category to import.");
+            return;
+        }
 
         if (json["settings"] && target.querySelector(".settings").checked) {
             let importedSettings = json["settings"];

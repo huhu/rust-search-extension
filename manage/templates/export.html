@@ -26,7 +26,7 @@
     <div class="text">
         <div>Import from local JSON file:</div>
         <br>
-        <input class="text" type="file" accept="application/json" id="file-selector">
+        <input class="file-selector text" type="file" accept="application/json">
         {% set items = ["settings", "search-history", "search-statistics", "crates"] %}
         {% for item in items %}
         <div class="setting-item">
@@ -45,6 +45,7 @@
 {% endblock %}
 
 {% block js %}
+<script src="../core/compat.js"></script>
 <script src="../settings.js"></script>
 <script src="../crate-manager.js"></script>
 <script src="../statistics.js"></script>

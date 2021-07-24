@@ -27,8 +27,8 @@
                 list,
             };
         }
-
-        saveToFile(JSON.stringify(data), 'rust-search-extension.json', 'text/plain');
+        let date = new Compat().normalizeDate(new Date());
+        saveToFile(JSON.stringify(data), `rust-search-extension-${date}.json`, 'text/plain');
     };
 
     function saveToFile(content, fileName, contentType) {
