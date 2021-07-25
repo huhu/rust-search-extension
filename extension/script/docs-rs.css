@@ -53,3 +53,42 @@ div.nav-container form.landing-search-form-nav {
     font-size: 13px;
     color: var(--color-navbar-standard);
 }
+
+@media screen and (min-width: 1500px) {
+    .rse-doc-toc {
+        position: fixed;
+        right: 50px;
+        top: 30px;
+        list-style: none;
+        border-left: solid #bbb 1px;
+        padding-left: 10px;
+        max-width: 320px;
+    }
+
+    .rse-doc-toc-item {
+        padding: 5px;
+        border-left: solid transparent 3px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .rse-doc-toc-h1 {
+        font-family: "Fira Sans", Arial, sans-serif;
+    }
+
+    .rse-doc-toc-h2 {
+        margin-left: 10px;
+        font-size: 14px;
+        font-family: "Fira Sans", Arial, sans-serif;
+    }
+
+    .rse-doc-toc-h3 {
+        margin-left: 20px;
+        font-size: 13px;
+    }
+
+    .rse-active {
+        border-left: solid #F9BB2D 3px;
+    }
+}

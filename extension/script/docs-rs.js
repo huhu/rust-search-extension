@@ -8,6 +8,58 @@ crateName = rawCrateName.replaceAll("-", "_");
 // A crate version which added to the extension.
 let installedVersion = undefined;
 
+
+// Highlight the TOC
+function highlight() {
+    let headers = Array.from(document.querySelectorAll("#main>.docblock>.section-header"))
+        .filter(header => ["H1", "H2", "H3"].includes(header.tagName));
+    const scrollHandler = entries => {
+        entries.forEach(entry => {
+            if (entry.intersectionRatio > 0) {
+                document.querySelectorAll(".rse-doc-toc-item").forEach((item) => {
+                    item.classList.remove("rse-active");
+                });
+
+                let url = new URL(entry.target.firstChild.href);
+                let link = document.querySelector(`.rse-doc-toc-item a[href$="${url.hash}"]`)
+                if (link) {
+                    let target = link.parentElement;
+                    target.classList.add("rse-active");
+                    target.scrollIntoView({behavior: "auto", block: "nearest"});
+                }
+            }
+        });
+    };
+    const observer = new IntersectionObserver(scrollHandler);
+    headers.forEach(item => observer.observe(item));
+}
+
+// Show TOC of docs.rs
+document.addEventListener("DOMContentLoaded", () => {
+    let headers = Array.from(document.querySelectorAll("#main>.docblock>.section-header"))
+        .filter(header => ["H1", "H2", "H3"].includes(header.tagName));
+    if (!headers || headers.length < 3) {
+        // Don't show TOC if headers less than 3.
+        return;
+    }
+
+    let mainBlock = document.getElementById("main");
+    let ul = document.createElement("ul");
+    ul.classList.add("rse-doc-toc");
+    for (let header of headers) {
+        let link = header.firstChild;
+
+        let item = document.createElement("li");
+        item.innerHTML = `<div class="rse-doc-toc-item rse-doc-toc-${header.tagName.toLowerCase()}">
+                <a href="${link.href}">${link.textContent}</a>
+            </div>`;
+
+        ul.appendChild(item);
+    }
+    mainBlock.insertAdjacentElement("afterend", ul);
+    highlight();
+});
+
 document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
