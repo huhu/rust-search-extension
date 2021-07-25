@@ -20,19 +20,31 @@ const BUILD_DIR: &str = "../extension/manage";
 fn main() -> Result<()> {
     build()?;
 
-    let (tx, rx) = channel();
-    let mut watcher = watcher(tx, Duration::from_secs(1))?;
-    watcher.watch("templates", notify::RecursiveMode::Recursive)?;
+    if matches!(
+        std::env::args().skip(1).next().as_deref(),
+        Some("-w" | "--watch")
+    ) {
+        println!("Watching...");
 
-    loop {
-        match rx.recv() {
-            Ok(event) => {
-                println!("Watched changed: {:?}", event);
-                build()?
+        let (tx, rx) = channel();
+        let mut watcher = watcher(tx, Duration::from_secs(1))?;
+        watcher.watch("templates", notify::RecursiveMode::Recursive)?;
+
+        loop {
+            match rx.recv() {
+                Ok(event) => {
+                    println!("Changed: {:?}", event);
+                    build()?
+                }
+                Err(err) => println!("watch error: {:?}", &err),
             }
-            Err(err) => println!("watch error: {:?}", &err),
         }
     }
+    {
+        println!("Build success!");
+    }
+
+    Ok(())
 }
 
 fn compile_sass() -> Result<()> {

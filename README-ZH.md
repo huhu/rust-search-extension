@@ -60,6 +60,10 @@ $ git clone --recursive https://github.com/huhu/rust-search-extension
 Cloning into 'rust-search-extension'...
 $ cd rust-search-extension
 
+$ cd manage && cargo build # Generate manage templates
+
+$ cd ..
+
 $ make chrome # For Chrome version
 
 $ make firefox # For Firefox version
