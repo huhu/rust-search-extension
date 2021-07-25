@@ -42,16 +42,13 @@
 - Docs.rs 加强，展示每一个 crate 的 Feature flags
 - Github release 页面加强（展示所有 Rust 版本目录）
 - docs.rust-lang.org 加强（链接所有 "since" 和 "issue" 标签）
+- 支持导入、导出本地的数据
 
 ## 使用方法
 
 在浏览器地址栏输入关键字 **rs**，然后敲击**空格键**就能激活查询功能，输入任何你想搜索的词，插件会即时返回相关搜索结果。
 
 ![demonstration.gif](assets/demonstration.gif)
-
-## 图示
-
-![diagram](assets/diagram.jpg)
 
 ## 贡献
 

@@ -41,9 +41,10 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 - Search [Caniuse.rs](https://caniuse.rs) and RFC
 - Offline mode supported, search local Rust docs (`rustup docs --std`)
 - Builtin commands (`:yet`, `:book`, `:stable`, `:label`, `:tool`, `:mirror`, `:update` and `:history` etc)
-- Docs.rs enhancements (display Feature flags)
+- Docs.rs enhancements (display Feature flags, show table of content)
 - Github rust-lang release page enhancements (show table of content)
 - docs.rust-lang.org enhancements (link all "since" and "issue" label)
+- Support import/export your local data
 
 ## How to use it
 
@@ -51,10 +52,6 @@ Input keyword **rs** in the address bar, press `Space` to activate the search ba
 you want to search, the extension will response the related search results instantly.
 
 ![demonstration.gif](assets/demonstration.gif)
-
-## Diagram
-
-![diagram](assets/diagram.jpg)
 
 ## Contribution
 

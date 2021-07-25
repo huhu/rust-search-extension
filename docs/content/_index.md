@@ -70,7 +70,7 @@ For example, input `src:try_fold` or `s:try_fold`, you'll open the source code l
 ## Offline mode: search local Rust docs
 
 You can run command `rustup doc --std` to open the offline std docs. 
-To enable the offline mode, you should check the checkbox and input the offline docs path on the popup page. 
+To enable the offline mode, you should check the checkbox and input the offline docs path on the settings page. 
 However, please check the [Caveats](/faq/#caveats) if you are a Firefox user.
 
 ![GIF](/offline-mode.gif)
@@ -183,9 +183,13 @@ Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust 
 By clicking the `+ to Rust Search Extension` button, you can add the crate to the extension, which brings the 
 search capability for this crate on the address bar.
 
+## Show Table of Content
+
+![IMG](/docs-rs-toc.png)
+
 # Rust repository enhancement
 
-## Show table of content in the release page
+## Show Table of Content in the release page
 
 ![](/github-release-toc.png)
 
@@ -206,10 +210,18 @@ These charts including:
 
 # Miscellaneous
 
+## Manage your indexed crates
+
+![IMG](/crate-manage.png)
+
+## Import/Export your data
+
+![IMG](/import-export.png)
+
 ## Customize crates searching platform
 
 You can customize your preferred crates searching platform such as [crates.io](https://crates.io)(default) 
-or [lib.rs](https://lib.rs) on the popup page.
+or [lib.rs](https://lib.rs) on the settings page.
 
 ## Open repository quickly
 

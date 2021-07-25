@@ -6,6 +6,17 @@ weight = 3
 
 # v1.3 - Unreleased
 
+- Unify **Settings**, **Statistics** into **manage pages**, additionally, you can also:
+  - Manage your all indexed crates.
+  - **Import/Export** your settings, search history, statistics, and crates data.
+- Support offline mode in Windows.
+- Show **Table of Content** in [docs.rs](https://docs.rs).
+- Improvements:
+  - Only keep the latest 100 search histories.
+  - Ignore legacy rust std docs, such as [v0.12.0](https://doc.rust-lang.org/0.12.0/std/index.html).
+- Bugfix:
+  - Fix fail to add some crate into the extension issue. Fix {{ issue(id=114) }}, {{ issue(id=119) }}, {{ issue(id=120) }}.
+
 # v1.2 - 2021-03-26
 
 - Support prefix `//` (double slash) to search [rustc crates docs](https://doc.rust-lang.org/nightly/nightly-rustc/). 👉 [Learn more](/#search-rustc-docs).
