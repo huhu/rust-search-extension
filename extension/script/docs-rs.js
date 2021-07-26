@@ -11,7 +11,7 @@ let installedVersion = undefined;
 
 // Highlight the TOC
 function highlight() {
-    let headers = Array.from(document.querySelectorAll("#main>.docblock>.section-header"))
+    let headers = Array.from(document.querySelectorAll("#main .docblock .section-header"))
         .filter(header => ["H1", "H2", "H3"].includes(header.tagName));
     const scrollHandler = entries => {
         entries.forEach(entry => {
@@ -36,7 +36,7 @@ function highlight() {
 
 // Show TOC of docs.rs
 document.addEventListener("DOMContentLoaded", () => {
-    let headers = Array.from(document.querySelectorAll("#main>.docblock>.section-header"))
+    let headers = Array.from(document.querySelectorAll("#main .docblock .section-header"))
         .filter(header => ["H1", "H2", "H3"].includes(header.tagName));
     if (!headers || headers.length < 3) {
         // Don't show TOC if headers less than 3.

@@ -63,6 +63,7 @@ div.nav-container form.landing-search-form-nav {
         border-left: solid #bbb 1px;
         padding-left: 10px;
         max-width: 320px;
+        min-width: 120px;
     }
 
     .rse-doc-toc-item {
