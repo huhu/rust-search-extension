@@ -23,11 +23,13 @@ pub struct LintsTask {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(rename_all = "lowercase")]
 enum LintLevel {
     Allow,
     Warn,
     Deny,
     Deprecated,
+    None,
 }
 
 impl ToString for LintLevel {
@@ -37,21 +39,16 @@ impl ToString for LintLevel {
             Self::Warn => "Warn".to_string(),
             Self::Deny => "Deny".to_string(),
             Self::Deprecated => "Deprecated".to_string(),
+            Self::None => "None".to_string(),
         }
     }
-}
-
-#[derive(Deserialize, Debug)]
-struct LintDocs {
-    #[serde(rename(deserialize = "What it does"))]
-    desc: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
 struct Lint {
     id: String,
     level: LintLevel,
-    docs: LintDocs,
+    docs: Option<String>,
 }
 
 async fn fetch_clippy_lints() -> crate::Result<Vec<Lint>> {
@@ -73,8 +70,13 @@ impl LintsTask {
             .await?
             .iter()
             .filter_map(|lint| {
-                if let Some(mut desc) = lint.docs.desc.clone() {
-                    desc = desc.replace("`", "");
+                if let Some(docs) = lint
+                    .docs
+                    .as_ref()
+                    .map(|d| d.trim().strip_prefix("### What it does"))
+                    .flatten()
+                {
+                    let mut desc = docs.replace("`", "").replace('#', "");
                     desc.truncate(100);
                     Some((lint.id.clone(), [lint.level.to_string(), desc]))
                 } else {
