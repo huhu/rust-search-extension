@@ -4,7 +4,7 @@ description = "Changelog"
 weight = 3
 +++
 
-# v1.3 - Unreleased
+# v1.3 - 2021-08-01
 
 - Unify **Settings**, **Statistics** into **manage pages**, additionally, you can also:
   - Manage your all indexed crates.
