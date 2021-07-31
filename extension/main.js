@@ -199,6 +199,12 @@ function getPlatformOs() {
                 }
             }
         },
+        onAppend: () => {
+            return [{
+                content: chrome.runtime.getURL("manage/crates.html"),
+                description: `Remind: ${ c.dim("Select here to manage all your indexed crates")}`,
+            }];
+        }
     });
 
     function wrapCrateSearchAppendix(appendix) {
