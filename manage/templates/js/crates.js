@@ -4,6 +4,8 @@ function buildRemoveButton(name) {
     btn.textContent = "Remove";
     btn.onclick = () => {
         CrateDocManager.removeCrate(name);
+        // Update the crate count
+        document.getElementById("crate-count").textContent = Object.keys(CrateDocManager.getCrates()).length || 0;
         btn.parentElement.remove();
     };
     return btn;
@@ -64,7 +66,7 @@ function refresh(orderBy = "time") {
 }
 
 let crateFilter = document.querySelector("select[name='crate-filter']");
-crateFilter.onchange = function() {
+crateFilter.onchange = function () {
     refresh(crateFilter.value);
 };
 

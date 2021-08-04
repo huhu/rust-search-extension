@@ -195,7 +195,7 @@ function calendarHeatmap() {
             }
 
             dayRects.exit().remove();
-            const monthLabels = svg.selectAll('.month')
+            svg.selectAll('.month')
                 .data(monthRange)
                 .enter().append('text')
                 .attr('class', 'month-name')
