@@ -162,8 +162,7 @@ function insertAddToExtensionElement(state) {
         content = `<p>
                       You already added this crate (v${installedVersion}). Click again to remove it. 
                       Or click 
-                      <a style="text-decoration: underline" target="_blank" 
-                         href="${chrome.runtime.getURL("manage/crates.html")}">here</a> 
+                      <span id="rse-here" style="text-decoration: underline; cursor: pointer">here</span> 
                       to manage all your indexed crates.
                    </p>`;
         iconAttributes = `class="fa-svg fa-svg-fw" style="color:green"`;
@@ -193,6 +192,13 @@ function insertAddToExtensionElement(state) {
                         </div>
                     </div>`;
     menu.lastElementChild.insertAdjacentElement("afterend", li);
+
+    if (menu.querySelector("#rse-here")) {
+        menu.querySelector("#rse-here").onclick = () => {
+            let url = chrome.runtime.getURL("manage/crates.html");
+            chrome.runtime.sendMessage({action: "open-url", url});
+        };
+    }
 }
 
 window.addEventListener("message", function (event) {

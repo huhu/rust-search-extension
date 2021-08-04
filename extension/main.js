@@ -86,7 +86,7 @@ function getPlatformOs() {
             content = url.toString();
             description = `[Source code] ${description}`;
         }
-        return { content, description };
+        return {content, description};
     };
 
     omnibox.bootstrap({
@@ -134,8 +134,8 @@ function getPlatformOs() {
             return nightlySearcher.search(query);
         },
         onFormat: (index, doc) => {
-            let { content, description } = formatDoc(index, doc);
-            return { content, description: '[Nightly] ' + description };
+            let {content, description} = formatDoc(index, doc);
+            return {content, description: '[Nightly] ' + description};
         },
         onAppend: (query) => {
             query = query.replaceAll("/", "").trim();
@@ -153,8 +153,8 @@ function getPlatformOs() {
             return rustcSearcher.search(query);
         },
         onFormat: (index, doc) => {
-            let { content, description } = formatDoc(index, doc);
-            return { content, description: '[Rustc] ' + description };
+            let {content, description} = formatDoc(index, doc);
+            return {content, description: '[Rustc] ' + description};
         },
         onAppend: (query) => {
             query = query.replaceAll("/", "").trim();
@@ -202,7 +202,7 @@ function getPlatformOs() {
         onAppend: () => {
             return [{
                 content: chrome.runtime.getURL("manage/crates.html"),
-                description: `Remind: ${ c.dim("Select here to manage all your indexed crates")}`,
+                description: `Remind: ${c.dim("Select here to manage all your indexed crates")}`,
             }];
         }
     });
@@ -502,6 +502,12 @@ function getPlatformOs() {
                 sendResponse(true);
                 break;
             }
+            case "open-url": {
+                if (message.url) {
+                    Omnibox.navigateToUrl(message.url);
+                }
+                break;
+            }
         }
         return true;
     });
@@ -526,7 +532,7 @@ function getPlatformOs() {
 
         // Eliminate unnecessary tags (such as <match>, <dim>) to save disk usage.
         history = history
-            .map(({ description, ...rest }) => {
+            .map(({description, ...rest}) => {
                 return {
                     description: description
                         .replace(/<\/?match>/g, "")
@@ -540,7 +546,7 @@ function getPlatformOs() {
 
 chrome.browserAction.onClicked.addListener(() => {
     let managePage = chrome.runtime.getURL("manage/index.html");
-    chrome.tabs.create({ url: managePage });
+    chrome.tabs.create({url: managePage});
 });
 const fileNewIssue = "title=Have you found a bug? Did you feel something was missing?&body=Whatever it was, we'd love to hear from you.";
 chrome.runtime.setUninstallURL(
