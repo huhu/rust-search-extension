@@ -159,7 +159,13 @@ function insertAddToExtensionElement(state) {
     };
     let content, iconAttributes, iconFile;
     if (state === "latest") {
-        content = `<p>You already added this crate (v${installedVersion}). Click again to remove it.</p>`;
+        content = `<p>
+                      You already added this crate (v${installedVersion}). Click again to remove it. 
+                      Or click 
+                      <a style="text-decoration: underline" target="_blank" 
+                         href="${chrome.runtime.getURL("manage/crates.html")}">here</a> 
+                      to manage all your indexed crates.
+                   </p>`;
         iconAttributes = `class="fa-svg fa-svg-fw" style="color:green"`;
         iconFile = SVG_CHECK_CIRCLE;
     } else if (state === "outdated") {
