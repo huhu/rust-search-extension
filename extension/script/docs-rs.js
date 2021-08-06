@@ -37,6 +37,9 @@ function highlight() {
 
 // Show TOC of docs.rs
 document.addEventListener("DOMContentLoaded", () => {
+    // Don't render TOC if the screen width less than 1500px.
+    if (window.innerWidth < 1500) return;
+
     let headers = Array.from(document.querySelectorAll(DOC_HEADERS_SELECTOR))
         .filter(header => ["H1", "H2", "H3"].includes(header.tagName));
     if (!headers || headers.length < 3) {
