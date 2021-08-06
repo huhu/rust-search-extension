@@ -17,6 +17,11 @@ weight = 3
 - Bugfix:
   - Fix fail to add some crate into the extension issue. Fix {{ issue(id=114) }}, {{ issue(id=119) }}, {{ issue(id=120) }}.
 
+## v1.3.1 - 2021-08-06
+
+- Fix docs.rs **Table of Content** render issues. {{ issue(id=122) }} {{ issue(id=123) }}
+- Fix manage crates page UI issue.
+
 # v1.2 - 2021-03-26
 
 - Support prefix `//` (double slash) to search [rustc crates docs](https://doc.rust-lang.org/nightly/nightly-rustc/). 👉 [Learn more](/#search-rustc-docs).

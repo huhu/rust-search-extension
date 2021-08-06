@@ -57,7 +57,7 @@ div.nav-container form.landing-search-form-nav {
 @media screen and (min-width: 1500px) {
     .rse-doc-toc {
         position: fixed;
-        right: 50px;
+        right: 20px;
         top: 30px;
         list-style: none;
         border-left: solid #bbb 1px;
