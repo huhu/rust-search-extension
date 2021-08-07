@@ -19,8 +19,12 @@ weight = 3
 
 ## v1.3.1 - 2021-08-06
 
-- Fix docs.rs **Table of Content** render issues. {{ issue(id=122) }} {{ issue(id=123) }}
+- Fix docs.rs **Table of Content** render issues. {{ issue(id=122) }}, {{ issue(id=123) }}
 - Fix manage crates page UI issue.
+
+## v1.3.2 - 2021-08-07
+
+- Fix the stupid bug: missing the manage pages. {{ issue(id=124) }}
 
 # v1.2 - 2021-03-26
 
