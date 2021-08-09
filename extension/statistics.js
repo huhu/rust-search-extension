@@ -32,9 +32,10 @@ const STATS_PATTERNS = [
         pattern: /^[>%?]|(1\.).*/i,
     },
 ];
+const WEEKS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function makeNumericKeyObject(start, end, initial = 0) {
-    return Array.from({ length: end + 1 - start }).fill(initial)
+    return Array.from({length: end + 1 - start}).fill(initial)
         .reduce((obj, current, index) => {
             obj[start + index] = current;
             return obj;
@@ -46,9 +47,12 @@ class Statistics {
         this.calendarData = {};
         this.cratesData = {};
         this.typeData = {};
-        this.weeksData = { "Sun": 0, "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0 };
-        this.hoursData = makeNumericKeyObject(1, 31);
-        this.datesData = makeNumericKeyObject(0, 23);
+        this.weeksData = WEEKS.reduce((obj, week) => {
+            obj[week] = 0;
+            return obj;
+        }, {});
+        this.hoursData = makeNumericKeyObject(0, 23);
+        this.datesData = makeNumericKeyObject(1, 31);
         this.total = 0;
 
         this.load();
@@ -58,15 +62,19 @@ class Statistics {
      * Load statistics data from local storage.
      */
     load() {
-        let self = JSON.parse(localStorage.getItem("statistics"));
-        if (self) {
-            this.calendarData = self.calendarData;
-            this.cratesData = self.cratesData;
-            this.typeData = self.typeData;
-            this.weeksData = self.weeksData;
-            this.hoursData = self.hoursData;
-            this.datesData = self.datesData;
-            this.total = self.total;
+        let stats = JSON.parse(localStorage.getItem("statistics"));
+        if (stats) {
+            this.calendarData = stats.calendarData;
+            // Generate weeks and dates data from calendar data.
+            for (let [key, value] of Object.entries(stats.calendarData)) {
+                let date = new Date(key);
+                this.weeksData[WEEKS[date.getDay()]] += value;
+                this.datesData[date.getDate()] += value;
+            }
+            this.cratesData = stats.cratesData;
+            this.typeData = stats.typeData;
+            this.hoursData = stats.hoursData;
+            this.total = stats.total;
         }
     }
 
@@ -74,26 +82,38 @@ class Statistics {
      * Save the statistics data to local storage.
      */
     save() {
-        localStorage.setItem("statistics", JSON.stringify(this));
+        for (let hour of Object.keys(this.hoursData)) {
+            // Clean legacy dirty data.
+            if (hour < 1 || hour > 23) {
+                delete this.hoursData[hour];
+            }
+        }
+
+        // Never serialize weeksData and datesData.
+        localStorage.setItem("statistics", JSON.stringify({
+            calendarData: this.calendarData,
+            cratesData: this.cratesData,
+            typeData: this.typeData,
+            hoursData: this.hoursData,
+            total: this.total,
+        }));
     }
 
     /**
      * Record search history item.
-     * 
+     *
      * @param the search history item
      * @param autoSave whether auto save the statistics result into local storage
      */
-    record({ query, content, description, time }, autoSave = false) {
+    record({query, content, description, time}, autoSave = false) {
         let date = new Date(time);
-        this.weeksData[Object.keys(this.weeksData)[date.getDay()]] += 1;
-        this.datesData[date.getDate() - 1] += 1;
         this.hoursData[date.getHours()] += 1;
 
         const c = new Compat();
         let key = c.normalizeDate(date);
         this.calendarData[key] = (this.calendarData[key] || 0) + 1;
 
-        let searchType = Statistics.recordSearchType({ query, content, description });
+        let searchType = Statistics.recordSearchType({query, content, description});
         if (searchType) {
             this.typeData[searchType] = (this.typeData[searchType] || 0) + 1;
         }
@@ -114,7 +134,7 @@ class Statistics {
      * Record the search type from the search history.
      * @returns {string|*} return the search type result if matched, otherwise return null.
      */
-    static recordSearchType({ query, content, description }) {
+    static recordSearchType({query, content, description}) {
         let stat = STATS_PATTERNS.find(item => item.pattern && item.pattern.test(query));
         if (stat) {
             return stat.name;

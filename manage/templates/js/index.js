@@ -40,7 +40,7 @@ const [weeksData, datesData, hoursData] = [stats.weeksData, stats.datesData, sta
 .map(data => {
     return Object.entries(data).map(([key, value]) => {
         return { name: key, value }
-    })
+    });
 });
 const topCratesData = Object.entries(stats.cratesData)
     .sort((a, b) => b[1] - a[1])
