@@ -65,7 +65,7 @@ div.nav-container form.landing-search-form-nav {
         max-width: calc(100vw - 1260px);
         min-width: 120px;
         max-height: 100vh;
-        overflow-y: scroll !important;
+        overflow-y: auto !important;
     }
 
     .rse-doc-toc-item {

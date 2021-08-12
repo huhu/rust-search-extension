@@ -1,7 +1,7 @@
 const c = new Compat();
 
 // Get the information about the current platform os.
-// Possible values: "arm", "arm64", "x86-32", "x86-64", "mips", or "mips64"
+// Possible os values: "mac", "win", "android", "cros", "linux", or "openbsd"
 function getPlatformOs() {
     return new Promise(resolve => {
         chrome.runtime.getPlatformInfo(platformInfo => {
