@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Update | Rust Search Extension - The ultimate search extension for Rust </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color: #F9BB2D;
+        /* Primary theme text color */
+        --primary-text-color: #121212;
+        /* Primary theme link color */
+        --primary-link-color: #dd4814;
+        /* Secondary color: the background body color*/
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #303030;
+        --toc-highlight-text-color: #d46e13;
+    }
+</style>
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/juice.css">
+    
+<link rel="stylesheet" href="/index.css">
+<link rel="stylesheet" href="/carbon.css">
+
+</head>
+
+<body>
+    
+<header class="box-shadow">
+    
+
+<a href="&#x2F;">
+    <div class="logo">
+        <img src="/logo.png" alt="logo">
+        Rust Search Extension
+    </div>
+</a>
+
+<nav>
+    
+    <a class="nav-item subtitle-text" href="&#x2F;testimonial&#x2F;">Testimonial</a>
+    
+    <a class="nav-item subtitle-text" href="&#x2F;faq&#x2F;">FAQ</a>
+    
+    <a class="nav-item subtitle-text" href="&#x2F;changelog&#x2F;">Changelog</a>
+    
+    <a class="nav-item subtitle-text" href="&#x2F;privacy&#x2F;">Privacy</a>
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension">Github</a>
+        
+    
+</nav>
+
+</header>
+
+
+    <main>
+        
+        
+        
+        
+
+        <div class="content text">
+            
+<div class="heading-text">Update: sync the latest search index to local</div>
+<br>
+<div class="update-progress">The search index is being updated, please wait for a second...</div>
+<ul class="index-list">
+</ul>
+
+<blockquote>
+    <h1>Notice</h1>
+    <p>
+        If you encounter an auto-opening of this page when you launch your browser,
+        this is because you have turned on the auto-update configuration in the <span><b>settings page</b></span>.
+    </p>
+
+    <p>
+        This auto-update is not intended for an extension version update, it's for the offline search index instead.
+        This is mandatory and only necessary for the local index updating.
+    </p>
+
+    <p>You can enable/disable the auto-update in the extension's <span><b>settings page</b></span>.</p>
+</blockquote>
+<div>
+
+</div>
+
+
+        </div>
+
+        
+<div class="sidebar">
+    <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEBIL27E&placement=extensionsh" id="_carbonads_js"></script>
+</div>
+
+    </main>
+
+    
+<iframe id="footer" src="https://huhu.io/extension-footer.html"
+        style="display:block;width:100%;border:none;"></iframe>
+<script>
+    window.onmessage = e => {
+        e.data.hasOwnProperty("frameHeight") && (document.getElementById("footer").style.height = `${e.data.frameHeight}px`)
+    }
+</script>
+<script src="/crates/index.js"></script>
+<script src="/index/commands.js"></script>
+<script src="/index/books.js"></script>
+<script src="/index/labels.js"></script>
+<script src="/index/lints.js"></script>
+<script src="/index/caniuse.js"></script>
+<script src="/js/update-index.js"></script>
+
+</body>
+<script>
+    function highlightNav(heading) {
+        let pathname = location.pathname;
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+        document.querySelector(".toc a[href$='" + pathname + "#" + heading + "']").classList.add("active");
+    }
+
+    let currentHeading = "";
+    window.onscroll = function () {
+        let h = document.querySelectorAll("h1,h2,h3,h4,h5,h6");
+        let elementArr = [];
+
+        h.forEach(item => {
+            if (item.id !== "") {
+                elementArr[item.id] = item.getBoundingClientRect().top;
+            }
+        });
+        elementArr.sort();
+        for (let key in elementArr) {
+            if (!elementArr.hasOwnProperty(key)) {
+                continue;
+            }
+            if (elementArr[key] > 0 && elementArr[key] < 300) {
+                if (currentHeading !== key) {
+                    highlightNav(key);
+                    currentHeading = key;
+                }
+                break;
+            }
+        }
+    }
+</script>
+
+</html>

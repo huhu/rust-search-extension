@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FAQ | Rust Search Extension - The ultimate search extension for Rust </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color: #F9BB2D;
+        /* Primary theme text color */
+        --primary-text-color: #121212;
+        /* Primary theme link color */
+        --primary-link-color: #dd4814;
+        /* Secondary color: the background body color*/
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #303030;
+        --toc-highlight-text-color: #d46e13;
+    }
+</style>
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/juice.css">
+    
+<meta name="keywords"
+      content="rust, rust-lang, crates, cargo, docs, crates.io, docs.rs, search extension">
+<meta itemprop="name"
+      content="Rust Search Extension: The ultimate search extension for Rust">
+<meta itemprop="description"
+      content="Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.">
+<meta itemprop="image" content="https://rust.extension.sh/banner.png">
+
+<meta property="og:url" content="https://rust.extension.sh">
+<meta property="og:type" content="website">
+<meta property="og:title"
+      content="Rust Search Extension: The ultimate search extension for Rust">
+<meta property="og:description"
+      content="Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.">
+<meta property="og:image" content="https://rust.extension.sh/banner.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@_huhuio">
+<meta name="twitter:creator" content="@_huhuio">
+<meta name="twitter:title"
+      content="Rust Search Extension: The ultimate search extension for Rust">
+<meta name="twitter:description"
+      content="Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.">
+<meta name="twitter:image" content="https://rust.extension.sh/banner.png">
+<link rel="stylesheet" href="/index.css">
+
+</head>
+
+<body>
+    
+<header class="box-shadow">
+    
+
+<a href="&#x2F;">
+    <div class="logo">
+        <img src="/logo.png" alt="logo">
+        Rust Search Extension
+    </div>
+</a>
+
+<nav>
+    
+    <a class="nav-item subtitle-text" href="&#x2F;testimonial&#x2F;">Testimonial</a>
+    
+    <a class="nav-item subtitle-text" href="&#x2F;faq&#x2F;">FAQ</a>
+    
+    <a class="nav-item subtitle-text" href="&#x2F;changelog&#x2F;">Changelog</a>
+    
+    <a class="nav-item subtitle-text" href="&#x2F;privacy&#x2F;">Privacy</a>
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension">Github</a>
+        
+    
+</nav>
+
+</header>
+
+
+    <main>
+        
+        
+        
+        
+        
+        <div class="toc">
+            <div class="toc-sticky">
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/faq/#platform">Platform</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/faq/#any-plans-to-support-safari"><small>- Any plans to support Safari?</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/faq/#permissions">Permissions</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/faq/#why-does-the-extension-require-reading-browser-history-permission"><small>- Why does the extension require reading browser history permission?</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/faq/#why-does-the-extension-require-access-to-github-com"><small>- Why does the extension require access to github.com?</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/faq/#caveats">Caveats</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/faq/#why-local-file-rust-doc-not-work-properly-on-firefox"><small>- Why local file: rust doc not work properly on Firefox?</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/faq/#any-workaround-to-support-offline-mode-on-firefox"><small>- Any workaround to support offline mode on Firefox?</small></a>
+                </div>
+                
+                
+                
+            </div>
+        </div>
+        
+        
+
+        <div class="content text">
+            
+<div class="heading-text">Frequently asked questions</div>
+<h1 id="platform">Platform</h1>
+<h3 id="any-plans-to-support-safari">Any plans to support Safari?</h3>
+<p>Unfortunately, no. According to MDN's web extension <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_support_for_JavaScript_APIs#omnibox">compatibility chart</a>:
+Safari doesn't support omnibox API, which is essential to this extension. See issue <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/87">#87</a>.</p>
+<h1 id="permissions">Permissions</h1>
+<h3 id="why-does-the-extension-require-reading-browser-history-permission">Why does the extension require reading browser history permission?</h3>
+<p>The sole permission required by the extension is <a href="https://developer.chrome.com/extensions/tabs">tabs</a>, which gives accessing browser tabs information capability. 
+We use this permission to open the search result in the <code>current tab</code> or <code>new tab</code> for the sole purpose. Feel free to check our <a href="/privacy/">Privacy Policy</a> for more information. </p>
+<h3 id="why-does-the-extension-require-access-to-github-com">Why does the extension require access to github.com?</h3>
+<p>Since <strong>v1.1.0</strong>, we add a <a href="/#rust-repository-enhancement">new enhancement feature</a> for the rust-lang repository's <a href="https://github.com/rust-lang/rust/blob/master/RELEASES.md">release page</a>.
+This needs permission to access the single release page, no other page else. See the extension permission declaration file: <a href="https://github.com/huhu/rust-search-extension/blob/7a0aabd0eada6c615816c3f164647d3059fa4d6f/manifest.jsonnet#L38">line 38</a>.</p>
+<h1 id="caveats">Caveats</h1>
+<h3 id="why-local-file-rust-doc-not-work-properly-on-firefox">Why local <code>file:</code> rust doc not work properly on Firefox?</h3>
+<p>For security reasons, in Firefox, <code>file:</code> URLs is an unprivileged URL, accessing to those unprivileged URLs are prohibited. 
+See the <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/create">MDN documentation</a> for more detail.</p>
+<h3 id="any-workaround-to-support-offline-mode-on-firefox">Any workaround to support offline mode on Firefox?</h3>
+<p>Sure. A good choice is use http server! For example using python <strong>http.server</strong> module:</p>
+<pre data-lang="sh" style="background-color:#ffffff;color:#323232;" class="language-sh "><code class="language-sh" data-lang="sh"><span>$ cd your-rust-doc-directory
+</span><span>$ python -m http.server
+</span><span>Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+</span></code></pre>
+<p>Then set <code>http://0.0.0.0:8000</code> as your local doc path.</p>
+
+
+        </div>
+
+        
+<div class="sidebar">
+    <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEBIL27E&placement=extensionsh" id="_carbonads_js"></script>
+</div>
+
+    </main>
+
+    
+<iframe id="footer" src="https://huhu.io/extension-footer.html"
+        style="display:block;width:100%;border:none;"></iframe>
+<script>
+    window.onmessage = e => {
+        e.data.hasOwnProperty("frameHeight") && (document.getElementById("footer").style.height = `${e.data.frameHeight}px`)
+    }
+</script>
+
+</body>
+<script>
+    function highlightNav(heading) {
+        let pathname = location.pathname;
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+        document.querySelector(".toc a[href$='" + pathname + "#" + heading + "']").classList.add("active");
+    }
+
+    let currentHeading = "";
+    window.onscroll = function () {
+        let h = document.querySelectorAll("h1,h2,h3,h4,h5,h6");
+        let elementArr = [];
+
+        h.forEach(item => {
+            if (item.id !== "") {
+                elementArr[item.id] = item.getBoundingClientRect().top;
+            }
+        });
+        elementArr.sort();
+        for (let key in elementArr) {
+            if (!elementArr.hasOwnProperty(key)) {
+                continue;
+            }
+            if (elementArr[key] > 0 && elementArr[key] < 300) {
+                if (currentHeading !== key) {
+                    highlightNav(key);
+                    currentHeading = key;
+                }
+                break;
+            }
+        }
+    }
+</script>
+
+</html>
