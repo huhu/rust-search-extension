@@ -143,7 +143,7 @@ let array = Object.entries(Object.assign(defaultTypeData, stats.typeData));
 ].forEach(([name, value]) => {
     let { color, description } = STATS_MAP[name];
     let li = document.createElement("li");
-    let percent = (value / total * 100).toFixed(1);
+    let percent = total ? (value / total * 100).toFixed(1): 0.0;
     li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up" data-balloon-length="large"
                         style="text-align: center" class="tooltip-color">
                         <span class="color-circle-dot" style="background-color:${color}"></span>
