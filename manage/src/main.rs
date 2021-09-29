@@ -20,10 +20,7 @@ const BUILD_DIR: &str = "../extension/manage";
 fn main() -> Result<()> {
     build()?;
 
-    if matches!(
-        std::env::args().skip(1).next().as_deref(),
-        Some("-w" | "--watch")
-    ) {
+    if matches!(std::env::args().nth(1).as_deref(), Some("-w" | "--watch")) {
         println!("Watching...");
 
         let (tx, rx) = channel();
@@ -48,11 +45,13 @@ fn main() -> Result<()> {
 }
 
 fn compile_sass() -> Result<()> {
-    let mut options = sass_rs::Options::default();
-    options.output_style = sass_rs::OutputStyle::Compressed;
+    let options = sass_rs::Options {
+        output_style: sass_rs::OutputStyle::Compressed,
+        ..Default::default()
+    };
     let content = sass_rs::compile_file("templates/sass/index.scss", options)?;
     let path = format!("{}/css/index.css", BUILD_DIR);
-    fs::File::create(&path)?.write_all(&content.as_bytes())?;
+    fs::File::create(&path)?.write_all(content.as_bytes())?;
     Ok(())
 }
 
