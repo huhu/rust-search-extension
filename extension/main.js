@@ -339,10 +339,11 @@ function getPlatformOs() {
                 let errorIndex = 'E' + String(baseIndex++).padStart(4, "0").toUpperCase();
                 result.push(errorIndex);
             }
+            let baseUrl = settings.isOfflineMode ? settings.offlineDocPath : 'https://doc.rust-lang.org/';
             return result.map(errorCode => {
                 return {
-                    content: "https://doc.rust-lang.org/error-index.html#" + errorCode,
-                    description: `Search Rust error index for ${c.match(errorCode)} on https://doc.rust-lang.org/error-index.html`,
+                    content: `${baseUrl}error-index.html#${errorCode}`,
+                    description: `Search Rust error index for ${c.match(errorCode)} on ${settings.isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error-index.html'}`,
                 };
             });
         },
