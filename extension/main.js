@@ -195,7 +195,7 @@ function getPlatformOs() {
                 let content = `@${item.name}`;
                 return {
                     content,
-                    description: `${c.match(content)} v${item.version} - ${c.dim(item.doc)}`,
+                    description: `${c.match(content)} v${item.version} - ${c.dim(c.escape(c.eliminateTags(item.doc)))}`,
                 }
             }
         },
@@ -226,7 +226,7 @@ function getPlatformOs() {
         onFormat: (index, crate) => {
             return {
                 content: `https://docs.rs/${crate.id}`,
-                description: `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+                description: `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
             }
         },
         onAppend: (query) => {
@@ -246,7 +246,7 @@ function getPlatformOs() {
             let registry = settings.crateRegistry;
             return {
                 content: `https://${registry}/crates/${crate.id}`,
-                description: `${c.capitalize(registry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+                description: `${c.capitalize(registry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
             };
         },
         onAppend: (query) => {
@@ -267,7 +267,7 @@ function getPlatformOs() {
         onFormat: (index, crate) => {
             return {
                 content: `${REDIRECT_URL}?crate=${crate.id}`,
-                description: `${c.capitalize("repository")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(crate.description))}`,
+                description: `${c.capitalize("repository")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
             };
         },
         onAppend: (query) => {
@@ -289,7 +289,7 @@ function getPlatformOs() {
         onFormat: (index, attribute) => {
             return {
                 content: attribute.href,
-                description: `Attribute: ${c.match("#[" + attribute.name + "]")} ${c.dim(attribute.description)}`,
+                description: `Attribute: ${c.match("#[" + attribute.name + "]")} ${c.dim(c.escape(attribute.description))}`,
             }
         }
     });
