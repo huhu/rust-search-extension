@@ -45,6 +45,14 @@ class IndexManager {
         chrome.storage.local.set({'index-label': index});
     }
 
+    static async getRfcIndex() {
+        return await getIndexInternal('index-rfc') || rfcsIndex;
+    }
+
+    static setRfcIndex(index) {
+        chrome.storage.local.set({'index-rfc': index});
+    }
+
     static async getCrateMapping() {
         return await getIndexInternal('index-crate-mapping') || mapping;
     }

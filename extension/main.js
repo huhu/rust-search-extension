@@ -30,6 +30,7 @@ function getPlatformOs() {
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
     const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
     const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
+    const rfcCommand = new RfcCommand(await IndexManager.getRfcIndex());
 
     const commandManager = new CommandManager(
         cargoCommand,
@@ -38,6 +39,7 @@ function getPlatformOs() {
         toolCommand,
         mirrorCommand,
         labelCommand,
+        rfcCommand,
         new HelpCommand(),
         new StableCommand(),
         new HistoryCommand(),
@@ -484,6 +486,12 @@ function getPlatformOs() {
             case "index-update:label": {
                 IndexManager.setLabelIndex(message.index);
                 labelCommand.setIndex(message.index);
+                sendResponse(true);
+                break;
+            }
+            case "index-update:rfc": {
+                IndexManager.setRfcIndex(message.index);
+                rfcCommand.setIndex(message.index);
                 sendResponse(true);
                 break;
             }
