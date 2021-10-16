@@ -1,8 +1,8 @@
 class RfcCommand extends SimpleCommand {
     constructor(index) {
         super("rfc", "Show the RFC index.");
-        this.rfcs = index.map(([name, description]) => {
-            return {name, description};
+        this.rfcs = index.map(([number, name, date, title]) => {
+            return {number, name, date, title};
         });
     }
 
@@ -10,11 +10,11 @@ class RfcCommand extends SimpleCommand {
         let results = this.rfcs;
         if (arg) {
             results = [];
-            for (let label of this.rfcs) {
-                let index = label.name.toLowerCase().indexOf(arg);
+            for (let rfc of this.rfcs) {
+                let index = rfc.name.toLowerCase().indexOf(arg);
                 if (index > -1) {
-                    label["matchIndex"] = index;
-                    results.push(label);
+                    rfc["matchIndex"] = index;
+                    results.push(rfc);
                 }
             }
 
@@ -25,10 +25,11 @@ class RfcCommand extends SimpleCommand {
                 return a.matchIndex - b.matchIndex;
             });
         }
-        return results.map(label => {
+        return results.map(rfc => {
+            let title = rfc.title ? `- ${c.dim(c.escape(rfc.title))}` : c.dim(c.escape(rfc.title));
             return {
-                content: `https://github.com/rust-lang/rust/labels/${label.name}`,
-                description: `${c.match(label.name)} - ${c.dim(c.escape(label.description))}`
+                content: `https://www.ncameron.org/rfcs/${String(rfc.number).padStart(4, '0')}.html`,
+                description: `${c.match("RFC " + rfc.number + ": ")} ${rfc.name} ${rfc.date} ${title}`
             }
         });
     }
