@@ -12,7 +12,12 @@ class CrateDocManager {
             localStorage.setItem(`@${name}`, JSON.stringify(searchIndex));
             let doc = searchIndex[name]["doc"];
             let crates = CrateDocManager.getCrates();
-            crates[name] = { version, doc, time: Date.now() };
+            if (name in crates) {
+                // Don't override the time if the crate exists
+                crates[name] = {version, doc, time: crates[name].time};
+            } else {
+                crates[name] = {version, doc, time: Date.now()};
+            }
             localStorage.setItem("crates", JSON.stringify(crates));
         }
     }
