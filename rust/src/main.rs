@@ -24,6 +24,7 @@ enum Subcommand {
     Caniuse(CaniuseTask),
     Lints(LintsTask),
     Labels(LabelsTask),
+    Rfcs(RfcsTask),
 }
 
 pub type Result<T> = std::result::Result<T, Box<dyn Error>>;
@@ -36,6 +37,7 @@ fn main() -> Result<()> {
         Subcommand::Caniuse(cmd) => cmd.execute()?,
         Subcommand::Lints(cmd) => cmd.execute()?,
         Subcommand::Labels(cmd) => cmd.execute()?,
+        Subcommand::Rfcs(cmd) => cmd.execute()?,
     }
     Ok(())
 }
