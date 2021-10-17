@@ -3,8 +3,7 @@ use std::path::Path;
 
 use argh::FromArgs;
 use serde::ser::SerializeTuple;
-use serde::{Serialize, Serializer};
-use serde_derive::Deserialize;
+use serde::{Deserialize, Serialize, Serializer};
 use tokio::runtime::Runtime;
 
 use crate::tasks::Task;

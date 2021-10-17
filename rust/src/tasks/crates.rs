@@ -10,7 +10,7 @@ use libflate::gzip::Decoder;
 use rayon::prelude::*;
 use semver::Version;
 use serde::de::DeserializeOwned;
-use serde_derive::Deserialize;
+use serde::Deserialize;
 use tar::Archive;
 
 use crate::minify::Minifier;

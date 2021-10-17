@@ -3,7 +3,7 @@ use std::{fs, path::Path};
 use super::Task;
 use argh::FromArgs;
 use rayon::slice::ParallelSliceMut;
-use serde_derive::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
 const INDEX_PATH: &str = "../extension/index/rfcs.js";
 

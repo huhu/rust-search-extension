@@ -4,7 +4,7 @@ use std::fs;
 use std::path::Path;
 
 use argh::FromArgs;
-use serde_derive::Deserialize;
+use serde::Deserialize;
 use tokio::runtime::Runtime;
 
 use crate::minify::Minifier;

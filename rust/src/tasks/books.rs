@@ -7,8 +7,7 @@ use select::document::Document;
 use select::node::Node;
 use select::predicate::{Class, Name};
 use serde::ser::SerializeTuple;
-use serde::{Serialize, Serializer};
-use serde_derive::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 use tokio::runtime::Runtime;
 
 use crate::minify::Minifier;
