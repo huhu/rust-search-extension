@@ -62,7 +62,7 @@ div.nav-container form.landing-search-form-nav {
         list-style: none;
         border-left: solid #bbb 1px;
         padding-left: 10px;
-        max-width: calc(100vw - 1260px);
+        max-width: calc(100vw - 1300px);
         min-width: 120px;
         max-height: 100vh;
         overflow-y: auto !important;

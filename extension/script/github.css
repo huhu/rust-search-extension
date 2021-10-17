@@ -1,9 +1,10 @@
 .rse-version-list-item {
     padding: 0.5rem 1rem;
+    border-left: solid transparent 2px;
 }
 
 .rse-version-list-item:not(:last-child) {
-    border-bottom: 1px solid var(--color-border-secondary);
+    border-bottom: 1px solid var(--color-border-muted);
 }
 
 .rse-version-date {
