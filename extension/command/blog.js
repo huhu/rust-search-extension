@@ -9,7 +9,7 @@ class BlogCommand extends Command {
         if (arg) {
             results = [];
             for (let post of this.posts) {
-                let index = post.title.indexOf(arg);
+                let index = post.title.toLowerCase().indexOf(arg);
                 if (index > -1) {
                     post["matchIndex"] = index;
                     results.push(post);

@@ -11,19 +11,24 @@ class RfcCommand extends SimpleCommand {
         if (arg) {
             results = [];
             for (let rfc of this.rfcs) {
-                let index = rfc.name.toLowerCase().indexOf(arg);
-                if (index > -1) {
-                    rfc["matchIndex"] = index;
-                    results.push(rfc);
-                }
+                rfc['numberMatchIndex'] = `${rfc.number}`.indexOf(arg);
+                rfc["matchIndex"] = rfc.name.toLowerCase().indexOf(arg);
+                results.push(rfc);
             }
 
-            results = results.sort((a, b) => {
-                if (a.matchIndex === b.matchIndex) {
-                    return a.name.length - b.name.length;
-                }
-                return a.matchIndex - b.matchIndex;
-            });
+            results = results.filter(rfc => rfc.numberMatchIndex !== -1 || rfc.matchIndex !== -1)
+                .sort((a, b) => {
+                    if (a.numberMatchIndex === b.numberMatchIndex) {
+                        if (a.number === b.number) {
+                            if (a.matchIndex === b.matchIndex) {
+                                return a.name.length - b.name.length;
+                            }
+                            return a.matchIndex - b.matchIndex;
+                        }
+                        return a.number - b.number;
+                    }
+                    return a.numberMatchIndex - b.numberMatchIndex;
+                });
         }
         return results.map(rfc => {
             let title = rfc.title ? `- ${c.dim(c.escape(rfc.title))}` : c.dim(c.escape(rfc.title));
