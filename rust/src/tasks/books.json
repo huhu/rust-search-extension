@@ -33,11 +33,11 @@
   },
   {
     "name": "The Rust Reference",
-    "url": "https://doc.rust-lang.org/reference/index.html"
+    "url": "https://doc.rust-lang.org/reference/"
   },
   {
     "name": "The Unstable Book",
-    "url": "https://doc.rust-lang.org/unstable-book/index.html"
+    "url": "https://doc.rust-lang.org/unstable-book/"
   },
   {
     "name": "The Embedded Rust Book",
