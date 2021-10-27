@@ -155,6 +155,7 @@ Those commands including but not limited to:
 - **:stats** - open search statistics page.
 - **:update** - open the [update page](/update) to sync the latest index automatically.
 - **:release** - Open rust-lang repository [release page](https://github.com/rust-lang/rust/blob/master/RELEASES.md).
+- **:rfc** - Show all Rust RFC list.
 - **:history** - Show your local search history.
 
 ![IMG](/command-system.gif)

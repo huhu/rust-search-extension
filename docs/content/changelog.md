@@ -4,6 +4,23 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.4 - 2021-10-30
+
+- New commands:
+  - `:rfc`: show all Rust RFC list.
+- Improvements:
+  - Error code search supports offline mode.
+  - Expand the `:stable` command result to 100 versions.
+> What a coincidence! Rust will release **v1.87.0** on its **10th** anniversary day!
+> 
+> ![](/stable-command.png)
+
+- Bugfix:
+  - Fix docs.rs TOC overlap issue.
+  - Fix weeks, hours, and dates statistics bug.
+  - Fix percent statistics NAN bug. fix {{ issue(id=125) }}.
+  - Fix **%** books search some invalid urls bug.
+
 # v1.3 - 2021-08-01
 
 - Unify **Settings**, **Statistics** into **manage pages**, additionally, you can also:
