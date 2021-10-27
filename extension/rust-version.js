@@ -5,10 +5,12 @@ function getScheduledVersions(limit = 10) {
     let versions = [];
     let startMinor = 42;
     let date = new Date("2020-03-12");
-    let now = new Date();
+    let today = new Date();
+    // Set to the start seconds of today
+    today.setHours(0, 0, 0);
     for (let i = 1, j = 1; j <= limit; i++) {
         date.setDate(date.getDate() + RUST_RELEASE_GAP);
-        if (date >= now) {
+        if (date >= today) {
             let minor = startMinor + i;
             versions.push({
                 number: "1." + minor + ".0",
