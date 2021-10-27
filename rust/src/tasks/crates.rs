@@ -177,7 +177,7 @@ impl Task for CratesTask {
         // Extract frequency word mapping
         let minifier = Minifier::new(&collector.words);
         let mapping = minifier.get_mapping();
-        let mut contents = format!("var mapping={};", serde_json::to_string(&mapping)?);
+        let mut contents = format!("var mapping=JSON.parse('{}');", serde_json::to_string(&mapping)?);
         contents.push_str(&generate_javascript_crates_index(crates, &minifier));
         let path = Path::new(&self.dest_path);
         fs::write(path, &contents)?;
