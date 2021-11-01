@@ -7,7 +7,7 @@ weight = 3
 # v1.4 - 2021-10-30
 
 - New commands:
-  - `:rfc`: show all Rust RFC list.
+  - `:rfc`: show all Rust RFC list. Kudos to [nrc](https://github.com/nrc)'s [rfc-index](https://github.com/nrc/rfc-index) repository.
 - Improvements:
   - Error code search supports offline mode.
   - Expand the `:stable` command result to 100 versions.
