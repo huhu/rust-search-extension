@@ -66,6 +66,10 @@ impl Task for CaniuseTask {
         for vd in fs::read_dir(data_dir)? {
             let version_dir = vd?;
             let version = version_dir.file_name().to_str().unwrap().to_owned();
+            if version_dir.path().is_file() {
+                // Skip files
+                continue;
+            }
 
             for ff in fs::read_dir(version_dir.path())? {
                 let feat_file = ff?;
@@ -73,14 +77,14 @@ impl Task for CaniuseTask {
                 if let Some(file_name) = feat_file
                     .file_name()
                     .to_str()
-                    .filter(|f| f.ends_with(".md"))
+                    .filter(|f| f.ends_with(".toml"))
                 {
-                    let slug = file_name.trim_end_matches(".md").to_owned();
+                    let slug = file_name.trim_end_matches(".toml").to_owned();
 
                     let mut feat = Feat::new(version.clone(), slug.clone());
 
                     let input = fs::read_to_string(feat_file.path())?;
-                    input.lines().skip(1).for_each(|l| {
+                    input.lines().for_each(|l| {
                         if let Some(c) = regex.captures(l) {
                             let key = c.name("key").unwrap().as_str().trim().trim_matches('"');
                             let value = c.name("value").unwrap().as_str().trim().trim_matches('"');
