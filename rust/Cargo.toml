@@ -2,7 +2,7 @@
 name = "rust-search-extension"
 version = "0.1.0"
 authors = ["Folyd <lyshuhow@gmail.com>"]
-edition = "2018"
+edition = "2021"
 publish = false
 
 [dependencies]
