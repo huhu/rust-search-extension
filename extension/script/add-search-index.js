@@ -3,6 +3,16 @@
         if (location.hostname === "docs.rs") { // docs.rs pages
             // Parse crate info from location pathname.
             let [_, crateVersion, crateName] = location.pathname.slice(1).split("/");
+            // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
+            // the latest version path has changed:
+            // from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/
+            //
+            // If we parse the crate version from url is 'latest',
+            // we should reparse it from the DOM to get the correct value.
+            if (crateVersion === 'latest') {
+                let versionText = document.querySelector('nav.sidebar > div.block.version > p').textContent;
+                crateVersion = versionText.split(' ')[1];
+            }
             window.postMessage({
                 direction: "rust-search-extension",
                 message: {
@@ -11,8 +21,8 @@
                     searchIndex: window.searchIndex,
                 },
             }, "*");
-        } else if (location.pathname.startsWith("/nightly/nightly-rustc/")
-            && location.hostname === "doc.rust-lang.org") { // rustc pages
+        } else if (location.pathname.startsWith("/nightly/nightly-rustc/") &&
+            location.hostname === "doc.rust-lang.org") { // rustc pages
             window.postMessage({
                 direction: 'rust-search-extension:rustc',
                 message: {

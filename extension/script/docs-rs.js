@@ -26,7 +26,7 @@ function highlight() {
                 if (link) {
                     let target = link.parentElement;
                     target.classList.add("rse-active");
-                    target.scrollIntoView({behavior: "auto", block: "nearest"});
+                    target.scrollIntoView({ behavior: "auto", block: "nearest" });
                 }
             }
         });
@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     highlight();
 });
 
+// Using separate event listener to avoid network requesting latency for feature flags menu enhancement.
 document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
@@ -77,14 +78,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// Using separate event listener to avoid network requesting latency for feature flags menu enhancement.
 document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
 
+    // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
+    // the latest version path has changed:
+    // from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/
+    //
+    // If we parse the crate version from url is 'latest',
+    // we should reparse it from the DOM to get the correct value.
+    if (crateVersion === 'latest') {
+        let versionText = document.querySelector('nav.sidebar > div.block.version > p').textContent;
+        crateVersion = versionText.split(' ')[1];
+    }
+
     // Exclude /crate/** pages
     if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
-        chrome.runtime.sendMessage({crateName, action: "crate:check"}, crate => {
+        chrome.runtime.sendMessage({ crateName, action: "crate:check" }, crate => {
             if (crate) {
                 insertAddToExtensionElement(getState(crate.version));
             } else {
@@ -153,7 +164,7 @@ function insertAddToExtensionElement(state) {
     li.onclick = () => {
         // Toggle search index added state
         if (state === "latest") {
-            chrome.runtime.sendMessage({crateName, action: "crate:remove"}, response => {
+            chrome.runtime.sendMessage({ crateName, action: "crate:remove" }, response => {
                 insertAddToExtensionElement(getState(undefined));
             });
         } else {
@@ -199,7 +210,7 @@ function insertAddToExtensionElement(state) {
     if (menu.querySelector("#rse-here")) {
         menu.querySelector("#rse-here").onclick = () => {
             let url = chrome.runtime.getURL("manage/crates.html");
-            chrome.runtime.sendMessage({action: "open-url", url});
+            chrome.runtime.sendMessage({ action: "open-url", url });
         };
     }
 }
@@ -208,7 +219,7 @@ window.addEventListener("message", function (event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension") {
-        chrome.runtime.sendMessage({action: "crate:add", ...event.data.message},
+        chrome.runtime.sendMessage({ action: "crate:add", ...event.data.message },
             (response) => {
                 if (response) {
                     insertAddToExtensionElement(getState(event.data.message.crateVersion));
