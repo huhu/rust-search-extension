@@ -51,23 +51,34 @@
         console.log("Send search index success.");
     }
 
+    // Before rust 1.52.0, we can get the search index from window directly.
     if (window.searchIndex) {
         sendSearchIndex();
     } else {
         // Due to the new search-index.js on-demand load mode after PR #82310 has been merged.
         // We need to trigger a manual search-index.js load here.
         console.log("No search index found, start loading...")
-        let rustdocVars = document.getElementById("rustdoc-vars");
-        if (rustdocVars) {
+        // Since rust 1.58, we can get the searchIndexJs from window.searchIndexJs.
+        let searchIndexJs = window.searchIndexJS;
+
+        // For the older version, we still need to get it from the DOM.
+        if (!searchIndexJs) {
+            let rustdocVars = document.getElementById("rustdoc-vars");
             // If we can't get the search index via "data-search-index-js",
             // then we should fallback to the "data-search-js", which is a
             // temporary stage in librustdoc. 
             // Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
-            let searchIndexJS = (rustdocVars.attributes["data-search-index-js"] || rustdocVars.attributes["data-search-js"]).value;
+            searchIndexJS = (rustdocVars.attributes["data-search-index-js"] || rustdocVars.attributes["data-search-js"]).value;
+        }
+
+        if (searchIndexJs) {
             let script = document.createElement('script');
             script.src = searchIndexJS;
             script.onload = sendSearchIndex;
             document.head.append(script);
+        } else {
+            console.error("Sorry, no search index found.");
         }
+
     }
 })();
