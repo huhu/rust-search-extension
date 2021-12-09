@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+export RUST_BACKTRACE=full
 source ./core/deploy-docs.sh
 build
 
