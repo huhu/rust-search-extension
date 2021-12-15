@@ -26,6 +26,7 @@ var commandsIndex = {
         ["Rust Chalk Book", "https://rust-lang.github.io/chalk/book/"],
         ["Rust Performance Book", "https://nnethercote.github.io/perf-book/"],
         ["mdBook Documentation", "https://rust-lang.github.io/mdBook/"],
+        ["Rust's Unsafe Code Guidelines Reference", "https://rust-lang.github.io/unsafe-code-guidelines/"],
     ],
     "yet": [
         ["Are we async yet?", "https://areweasyncyet.rs", "Asynchronous I/O in Rust"],
