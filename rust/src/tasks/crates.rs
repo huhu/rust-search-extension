@@ -18,6 +18,9 @@ use crate::tasks::Task;
 
 const MAX_CRATE_SIZE: usize = 20 * 1000;
 const CRATES_INDEX_PATH: &str = "../extension/index/crates.js";
+// A prefix to filter out auto-generated google api crates.
+// See https://github.com/huhu/rust-search-extension/issues/138
+const GOOGLE_API_CRATES_FILTER_PREFIX: &str = "A complete library to interact with";
 
 /// Crates task
 #[derive(FromArgs)]
@@ -148,6 +151,10 @@ impl Task for CratesTask {
                 }
             }
         }
+        crates.retain(|c| {
+            // Filter out auto-generated google api crates.
+            c.description.is_none() || matches!(c.description.as_ref(), Some(d) if !d.starts_with(GOOGLE_API_CRATES_FILTER_PREFIX))
+        });
         crates.sort_unstable_by(|a, b| b.downloads.cmp(&a.downloads));
         crates = crates.drain(0..MAX_CRATE_SIZE).collect();
         versions.sort_unstable_by(|a, b| b.num.cmp(&a.num));
@@ -177,7 +184,10 @@ impl Task for CratesTask {
         // Extract frequency word mapping
         let minifier = Minifier::new(&collector.words);
         let mapping = minifier.get_mapping();
-        let mut contents = format!("var mapping=JSON.parse('{}');", serde_json::to_string(&mapping)?);
+        let mut contents = format!(
+            "var mapping=JSON.parse('{}');",
+            serde_json::to_string(&mapping)?
+        );
         contents.push_str(&generate_javascript_crates_index(crates, &minifier));
         let path = Path::new(&self.dest_path);
         fs::write(path, &contents)?;
