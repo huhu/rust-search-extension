@@ -101,7 +101,7 @@ If you prefer to search attribute exclusively, prefix a **#** (pound sign) befor
 
 # Search top 20K crates
 
-We build top 20K crates index (near 50K in total on crates.io) once a day to help you search crates instantly. 
+We build top 20K crates index once a day to help you search crates instantly. 
 You can prefix an **!** (exclamation mark) before the keyword to search [docs.rs](https://docs.rs) exclusively, 
 prefix one more **!** (double exclamation marks) to open [crates.io](https://crates.io) page,
 prefix **!!!** (triple exclamation marks) to open crate's repository (See [Open repository quickly](/#open-repository-quickly)).

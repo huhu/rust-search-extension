@@ -21,6 +21,12 @@ weight = 3
   - Fix percent statistics NAN bug. fix {{ issue(id=125) }}.
   - Fix **%** books search some invalid urls bug.
 
+## v1.4.1 - 2021-12-30
+
+- Fix {{ issue(id=134) }}, get the `searchIndexJs` from `window.searchIndexJs`.
+- Fix {{ issue(id=135) }}, docs.rs latest version path compatibility.
+- Filter out auto-generated google api crates. Fixes {{ issue(id=138) }}.
+
 # v1.3 - 2021-08-01
 
 - Unify **Settings**, **Statistics** into **manage pages**, additionally, you can also:
