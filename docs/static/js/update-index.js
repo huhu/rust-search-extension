@@ -37,10 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateIndex("label", window.labelsIndex).then(() => {
         renderSuccessMessage("Github rust-lang/rust repository label index");
     });
-    updateIndex("label", window.rfcsIndex).then(() => {
+    updateIndex("rfc", window.rfcsIndex).then(() => {
         renderSuccessMessage("Rust RFC index");
     });
-    updateIndex("crate", window.crateIndex, {mapping: window.mapping}).then(() => {
+    updateIndex("crate", window.crateIndex, { mapping: window.mapping }).then(() => {
         renderSuccessMessage("Top 20K crate index");
     });
 
