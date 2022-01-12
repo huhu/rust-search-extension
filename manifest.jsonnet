@@ -24,18 +24,18 @@ local json = manifest.new(
              .addContentScript(
   matches=['*://docs.rs/*'],
   js=utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate']) + utils.js_files('libs', ['semver']),
-  css=['script/docs-rs.css'],
+  css=['script/docs-rs.css', 'script/details-toggle.css'],
 )
              .addContentScript(
   matches=['*://doc.rust-lang.org/*'],
   js=utils.js_files('script', ['lib', 'doc-rust-lang-org', 'rust-src-navigate']),
-  css=['script/doc-rust-lang-org.css'],
+  css=['script/doc-rust-lang-org.css', 'script/details-toggle.css'],
   exclude_matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
 )
              .addContentScript(
   matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
   js=utils.js_files('script', ['lib', 'rustc', 'rust-src-navigate']),
-  css=[],
+  css=['script/details-toggle.css'],
 )
              .addContentScript(
   matches=['*://rust.extension.sh/update'],
