@@ -1,6 +1,17 @@
-/* Exclude .top-doc class*/
 details.rustdoc-toggle:not(.top-doc) {
-    border: 1px solid #bbb;
+    border: 1px solid;
     margin-top: 5px;
     padding: 5px;
+}
+
+html[data-theme="ayu"] details.rustdoc-toggle:not(.top-doc) {
+    border-color: #5c6773;
+}
+
+html[data-theme="dark"] details.rustdoc-toggle:not(.top-doc) {
+    border-color: #d2d2d2;
+}
+
+html[data-theme="light"] details.rustdoc-toggle:not(.top-doc) {
+    border-color: #ddd;
 }
