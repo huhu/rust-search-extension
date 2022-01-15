@@ -8,6 +8,7 @@ div.nav-container form.landing-search-form-nav {
     max-width: none !important;
 }
 
+
 /* Rust Search Extension classes */
 
 .feature-flags-content {
@@ -67,7 +68,6 @@ div.nav-container form.landing-search-form-nav {
         max-height: 100vh;
         overflow-y: auto !important;
     }
-
     .rse-doc-toc-item {
         padding: 5px;
         border-left: solid transparent 3px;
@@ -75,26 +75,30 @@ div.nav-container form.landing-search-form-nav {
         white-space: nowrap;
         text-overflow: ellipsis;
     }
-
     .rse-doc-toc-item:hover {
         text-decoration: underline;
     }
-
     .rse-doc-toc-h1 {
         font-family: "Fira Sans", Arial, sans-serif;
     }
-
     .rse-doc-toc-h2 {
         margin-left: 10px;
         font-size: 14px;
         font-family: "Fira Sans", Arial, sans-serif;
     }
-
     .rse-doc-toc-h3 {
         margin-left: 20px;
         font-size: 13px;
     }
-
+    html[data-theme="ayu"] .rse-doc-toc a {
+        color: #c5c5c5;
+    }
+    html[data-theme="dark"] .rse-doc-toc a {
+        color: #ddd;
+    }
+    html[data-theme="light"] .rse-doc-toc a {
+        color: black;
+    }
     .rse-active {
         border-left: solid #F9BB2D 3px;
     }

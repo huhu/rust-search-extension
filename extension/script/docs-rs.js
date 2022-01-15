@@ -8,7 +8,7 @@ crateName = rawCrateName.replaceAll("-", "_");
 // A crate version which added to the extension.
 let installedVersion = undefined;
 
-const DOC_HEADERS_SELECTOR = "#main>.docblock>.section-header, #main>.top-doc>.docblock>.section-header";
+const DOC_HEADERS_SELECTOR = "main .docblock>.section-header, #main>.docblock>.section-header, #main>.top-doc>.docblock>.section-header";
 
 // Highlight the TOC
 function highlight() {
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    let mainBlock = document.getElementById("main");
+    let mainBlock = document.querySelector("main, #main");
     let ul = document.createElement("ul");
     ul.classList.add("rse-doc-toc");
     for (let header of headers) {
