@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Using separate event listener to avoid network requesting latency for feature flags menu enhancement.
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async() => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
 
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async() => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
 
@@ -89,8 +89,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // If we parse the crate version from url is 'latest',
     // we should reparse it from the DOM to get the correct value.
     if (crateVersion === 'latest') {
-        let versionText = document.querySelector('nav.sidebar > div.block.version > p').textContent;
-        crateVersion = versionText.split(' ')[1];
+        let versionText = document.querySelector('.nav-container a.crate-name>.title').textContent;
+        crateVersion = versionText.split('-')[1];
     }
 
     // Exclude /crate/** pages
@@ -215,7 +215,7 @@ function insertAddToExtensionElement(state) {
     }
 }
 
-window.addEventListener("message", function (event) {
+window.addEventListener("message", function(event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension") {

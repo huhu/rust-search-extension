@@ -1,4 +1,4 @@
-(function () {
+(function() {
     function sendSearchIndex() {
         if (location.hostname === "docs.rs") { // docs.rs pages
             // Parse crate info from location pathname.
@@ -10,8 +10,8 @@
             // If we parse the crate version from url is 'latest',
             // we should reparse it from the DOM to get the correct value.
             if (crateVersion === 'latest') {
-                let versionText = document.querySelector('nav.sidebar > div.block.version > p').textContent;
-                crateVersion = versionText.split(' ')[1];
+                let versionText = document.querySelector('.nav-container a.crate-name>.title').textContent;
+                crateVersion = versionText.split('-')[1];
             }
             window.postMessage({
                 direction: "rust-search-extension",
@@ -58,7 +58,7 @@
         // Due to the new search-index.js on-demand load mode after PR #82310 has been merged.
         // We need to trigger a manual search-index.js load here.
         console.log("No search index found, start loading...")
-        // Since rust 1.58, we can get the searchIndexJs from window.searchIndexJs.
+            // Since rust 1.58, we can get the searchIndexJs from window.searchIndexJs.
         let searchIndexJs = window.searchIndexJS;
 
         // For the older version, we still need to get it from the DOM.
@@ -68,12 +68,12 @@
             // then we should fallback to the "data-search-js", which is a
             // temporary stage in librustdoc. 
             // Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
-            searchIndexJS = (rustdocVars.attributes["data-search-index-js"] || rustdocVars.attributes["data-search-js"]).value;
+            searchIndexJs = (rustdocVars.attributes["data-search-index-js"] || rustdocVars.attributes["data-search-js"]).value;
         }
 
         if (searchIndexJs) {
             let script = document.createElement('script');
-            script.src = searchIndexJS;
+            script.src = searchIndexJs;
             script.onload = sendSearchIndex;
             document.head.append(script);
         } else {
