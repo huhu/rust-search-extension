@@ -175,6 +175,8 @@ function getPlatformOs() {
     });
 
     omnibox.addPrefixQueryEvent("~", {
+        defaultSearch: true,
+        searchPriority: 1,
         onSearch: (query) => {
             return crateDocSearcher.searchAll(query);
         },
@@ -221,7 +223,7 @@ function getPlatformOs() {
 
     omnibox.addPrefixQueryEvent("!", {
         defaultSearch: true,
-        searchPriority: 1,
+        searchPriority: 2,
         onSearch: (query) => {
             return crateSearcher.search(query);
         },
@@ -283,7 +285,7 @@ function getPlatformOs() {
 
     omnibox.addPrefixQueryEvent("#", {
         defaultSearch: true,
-        searchPriority: 2,
+        searchPriority: 3,
         onSearch: (query) => {
             query = query.replace(/[\[\]]/g, "");
             return attributeSearcher.search(query);
