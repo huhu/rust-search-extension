@@ -175,7 +175,9 @@ function getPlatformOs() {
     });
 
     omnibox.addPrefixQueryEvent("~", {
-        defaultSearch: true,
+        isDefaultSearch: () => {
+            return settings.defaultSearch.thirdPartyDocs;
+        },
         searchPriority: 1,
         onSearch: (query) => {
             return crateDocSearcher.searchAll(query);
@@ -222,7 +224,9 @@ function getPlatformOs() {
     }
 
     omnibox.addPrefixQueryEvent("!", {
-        defaultSearch: true,
+        isDefaultSearch: () => {
+            return settings.defaultSearch.docsRs;
+        },
         searchPriority: 2,
         onSearch: (query) => {
             return crateSearcher.search(query);
@@ -284,7 +288,9 @@ function getPlatformOs() {
     });
 
     omnibox.addPrefixQueryEvent("#", {
-        defaultSearch: true,
+        isDefaultSearch: () => {
+            return settings.defaultSearch.attributes;
+        },
         searchPriority: 3,
         onSearch: (query) => {
             query = query.replace(/[\[\]]/g, "");
