@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
     crateRegistry.onchange = function() {
         settings.crateRegistry = crateRegistry.value;
     };
+
+    setupDefaultSearch();
 }, false);
 
 
@@ -44,4 +46,30 @@ function toggleOfflinePathEnableState(enable) {
         offlineDocPath.classList.remove('enable');
         offlineDocPath.classList.add('disable');
     }
+}
+
+function setupDefaultSearch() {
+    const thirdPartyDocs = document.getElementById('ds-3rd-docs');
+    const docsRs = document.getElementById('ds-docs-rs');
+    const attributes = document.getElementById('ds-attributes');
+
+    let defaultSearch = settings.defaultSearch;
+
+    thirdPartyDocs.checked = defaultSearch.thirdPartyDocs;
+    docsRs.checked = defaultSearch.docsRs;
+    attributes.checked = defaultSearch.attributes;
+
+    thirdPartyDocs.onchange = function(event) {
+        defaultSearch.thirdPartyDocs = event.target.checked;
+        settings.defaultSearch = defaultSearch;
+    };
+    docsRs.onchange = function(event) {
+        defaultSearch.docsRs = event.target.checked;
+        settings.defaultSearch = defaultSearch;
+    };
+    attributes.onchange = function(event) {
+        defaultSearch.attributes = event.target.checked;
+        settings.defaultSearch = defaultSearch;
+    };
+
 }

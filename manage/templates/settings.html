@@ -32,6 +32,43 @@
                 </div>
                 <input type="text" class="offline-doc-path" placeholder="Input the local doc path">
             </div>
+            <div class="setting-item">
+                <div>
+                    Enable default search items
+                    <span aria-label="Default search means search without any sigils required." data-balloon-pos="up" data-balloon-length="large" style="vertical-align: middle">
+                        <img style="vertical-align: middle;width: 15px;margin-right: 5px;" src="./static/info.svg"
+                            alt="info">
+                    </span>
+                </div>
+                <div class="setting-subitem" style="opacity: 0.5">
+                    - Standard library
+                    <label class="toggle">
+                        <input type="checkbox" disabled checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-subitem">
+                    - Third-party docs
+                    <label class="toggle">
+                        <input type="checkbox" id="ds-3rd-docs">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-subitem">
+                    - Docs.rs
+                    <label class="toggle">
+                        <input type="checkbox" id="ds-docs-rs">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-subitem">
+                    - Attributes
+                    <label class="toggle">
+                        <input type="checkbox" id="ds-attributes">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
             <div>
                 <label>Crate registry</label>
                 <select name="crate-registry">

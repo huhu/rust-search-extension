@@ -23,4 +23,10 @@ const settings = {
     set crateRegistry(value) {
         localStorage.setItem("crate-registry", value);
     },
+    get defaultSearch() {
+        return JSON.parse(localStorage.getItem("default-search")) || { thirdPartyDocs: false, docsRs: true, attributes: true };
+    },
+    set defaultSearch(value) {
+        localStorage.setItem("default-search", JSON.stringify(value));
+    }
 };
