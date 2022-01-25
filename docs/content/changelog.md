@@ -7,12 +7,13 @@ weight = 3
 # v1.5 - 2022-01-25
 
 - Support customize default search items in settings. Fixes {{ issue(id=141) }}.
-- Add docs outline. Thanks the contribution {{ issue(id=140) }} from [@NaturelLee](https://github.com/NaturelLee).
+> ![](/configure-default-search.png)
+- Add docs outline highlight. Thanks for contribution {{ issue(id=140) }} from [@NaturelLee](https://github.com/NaturelLee).
 - Bugfix:
   - Fix update label/rfc index bug.
   - Fix add to extension button toggle float issue.
   - Fix crate version parse bug.
-  - Fix docs.rs TOC render and UI
+  - Fix docs.rs TOC render and UI.
 
 # v1.4 - 2021-10-30
 
