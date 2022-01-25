@@ -1,3 +1,7 @@
+.rse-link {
+    color: grey;
+}
+
 .rse-link:hover {
     text-decoration: underline;
 }
