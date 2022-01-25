@@ -1,5 +1,5 @@
 details.rustdoc-toggle:not(.top-doc) {
-    border: 1px solid;
+    border: 1px solid #ddd;
     margin-top: 5px;
     padding: 5px;
 }
