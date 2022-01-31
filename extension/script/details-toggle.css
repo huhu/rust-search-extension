@@ -1,17 +1,9 @@
-details.rustdoc-toggle:not(.top-doc) {
-    border: 1px solid #ddd;
-    margin-top: 5px;
-    padding: 5px;
+.impl-items>details.rustdoc-toggle {
+    border-left: 2px solid transparent;
+    padding-left: 5px;
 }
 
-html[data-theme="ayu"] details.rustdoc-toggle:not(.top-doc) {
-    border-color: #5c6773;
-}
-
-html[data-theme="dark"] details.rustdoc-toggle:not(.top-doc) {
-    border-color: #d2d2d2;
-}
-
-html[data-theme="light"] details.rustdoc-toggle:not(.top-doc) {
-    border-color: #ddd;
+.impl-items>details.rustdoc-toggle:hover {
+    border-left: 2px solid #F9BB2DAA;
+    padding-left: 5px;
 }
