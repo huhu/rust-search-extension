@@ -15,6 +15,10 @@ weight = 3
   - Fix crate version parse bug.
   - Fix docs.rs TOC render and UI.
 
+## v1.5.1 - 2022-02-01
+
+- Improve `impl` blocks highlight effects. Fixes {{ issue(id=144) }}, {{ issue(id=145) }}.
+
 # v1.4 - 2021-10-30
 
 - New commands:
