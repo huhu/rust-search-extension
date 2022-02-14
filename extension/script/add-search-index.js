@@ -10,8 +10,8 @@
             // If we parse the crate version from url is 'latest',
             // we should reparse it from the DOM to get the correct value.
             if (crateVersion === 'latest') {
-                let versionText = document.querySelector('.nav-container a.crate-name>.title').textContent;
-                crateVersion = versionText.split('-')[1];
+                let versionText = document.querySelector('nav.sidebar .version').textContent;
+                crateVersion = versionText.split(' ')[1];
             }
             window.postMessage({
                 direction: "rust-search-extension",

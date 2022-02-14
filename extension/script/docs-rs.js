@@ -82,15 +82,15 @@ document.addEventListener("DOMContentLoaded", async() => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
 
-    // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
+    // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged,
     // the latest version path has changed:
     // from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/
     //
     // If we parse the crate version from url is 'latest',
     // we should reparse it from the DOM to get the correct value.
     if (crateVersion === 'latest') {
-        let versionText = document.querySelector('.nav-container a.crate-name>.title').textContent;
-        crateVersion = versionText.split('-')[1];
+        let versionText = document.querySelector('nav.sidebar .version').textContent;
+        crateVersion = versionText.split(' ')[1];
     }
 
     // Exclude /crate/** pages
@@ -174,9 +174,9 @@ function insertAddToExtensionElement(state) {
     let content, iconAttributes, iconFile;
     if (state === "latest") {
         content = `<p>
-                      You already added this crate (v${installedVersion}). Click again to remove it. 
-                      Or click 
-                      <span id="rse-here" style="text-decoration: underline; cursor: pointer">here</span> 
+                      You already added this crate (v${installedVersion}). Click again to remove it.
+                      Or click
+                      <span id="rse-here" style="text-decoration: underline; cursor: pointer">here</span>
                       to manage all your indexed crates.
                    </p>`;
         iconAttributes = `class="fa-svg fa-svg-fw" style="color:green"`;
