@@ -17,6 +17,34 @@ function parseCargoFeatures(content) {
     return features;
 }
 
+/**
+ * Parse optional dependecies from Cargo.tom HTML page.
+ * 
+ * @param {*} content HTML page of Cargo.toml content
+ * @returns the list of optional dependencies
+ */
+function parseOptionalDependencies(content) {
+    let dependencies = [];
+    let start = content.indexOf("[dependencies.");
+    if (start !== -1) {
+        let lines = content.slice(start).split("\n");
+        let currentCrate = null;
+        for (let line of lines) {
+            let match = line.match(/\[dependencies\.(.+)\]/);
+            if (match) {
+                currentCrate = match[1];
+            } else if (/optional = true/g.test(line)) {
+                if (currentCrate) {
+                    dependencies.push(currentCrate);
+                    currentCrate = null;
+                }
+            }
+        }
+    }
+
+    return dependencies;
+}
+
 function injectScripts(paths) {
     paths.map(path => {
         let script = document.createElement("script");

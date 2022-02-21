@@ -114,7 +114,8 @@ async function enhanceFeatureFlagsMenu(menu) {
     // Use rawCrateName to fetch the Cargo.toml, otherwise will get 404.
     let cargoTomUrl = `https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml`;
     let response = await fetch(cargoTomUrl);
-    let features = parseCargoFeatures(await response.text());
+    let content = await response.text();
+    let features = parseCargoFeatures(content);
     let html = `<div style="padding: 1rem"><p>
                     This crate has no explicit-declared feature flag.
                     <br>
@@ -132,14 +133,27 @@ async function enhanceFeatureFlagsMenu(menu) {
         }).join("");
         html = `<table class="feature-flags-table">
                     <tbody>${tbody}</tbody>
-                </table>`;
+                </table>
+                `;
     }
+
+    // Render optional dependency list.
+    let optionalDependencies = parseOptionalDependencies(content);
+    let dependeciesList = optionalDependencies.map(dependency => `
+        <li class="stab portability optional-dependency-item"><code style="white-space: nowrap;">
+        <a href="https://docs.rs/${dependency}">${dependency}</a>
+        </code></li>
+    `);
+    html += `
+        <div class="optional-dependency">
+            <p><b>Optional dependencies</b></p>
+            ${dependeciesList.length > 0 ? `<ul class="optional-dependency-list">${dependeciesList}</ul>` : `<span>This crate has no optional dependency.</span>`
+        }
+        </div>`;
     menu.firstElementChild.insertAdjacentHTML("afterend",
-        `
-              <div class="pure-menu-children feature-flags-content" role="menu">
-                ${html}
-              </div>
-          `);
+        `<div class="pure-menu-children feature-flags-content" role="menu">
+            ${html}
+        </div>`);
 }
 
 /**
@@ -220,7 +234,7 @@ function insertAddToExtensionElement(state) {
     }
 }
 
-window.addEventListener("message", function(event) {
+window.addEventListener("message", function (event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension") {
