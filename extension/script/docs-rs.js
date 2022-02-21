@@ -8,7 +8,7 @@ crateName = rawCrateName.replaceAll("-", "_");
 // A crate version which added to the extension.
 let installedVersion = undefined;
 
-const DOC_HEADERS_SELECTOR = "main .docblock>.section-header, #main>.docblock>.section-header, #main>.top-doc>.docblock>.section-header";
+const DOC_HEADERS_SELECTOR = "div.docblock>h1[id], div.docblock>h2[id], div.docblock>h3[id]";
 
 // Highlight the TOC
 function highlight() {
@@ -42,8 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let headers = Array.from(document.querySelectorAll(DOC_HEADERS_SELECTOR))
         .filter(header => ["H1", "H2", "H3"].includes(header.tagName));
-    if (!headers || headers.length < 3) {
+    if (!headers) {
+        console.log("No headers parsed for selector:", DOC_HEADERS_SELECTOR);
+        return;
+    }
+    if (headers.length < 3) {
         // Don't show TOC if headers less than 3.
+        console.log("The number of headers less than 3, don't show Table of Content.");
         return;
     }
 
