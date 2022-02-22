@@ -94,8 +94,7 @@ document.addEventListener("DOMContentLoaded", async() => {
     // If we parse the crate version from url is 'latest',
     // we should reparse it from the DOM to get the correct value.
     if (crateVersion === 'latest') {
-        let versionText = document.querySelector('nav.sidebar .version').textContent;
-        crateVersion = versionText.split(' ')[1];
+        crateVersion = parseCrateVersionFromDOM();
     }
 
     // Exclude /crate/** pages
@@ -191,7 +190,7 @@ function insertAddToExtensionElement(state) {
                 insertAddToExtensionElement(getState(undefined));
             });
         } else {
-            injectScripts(["script/add-search-index.js"]);
+            injectScripts(["script/lib.js", "script/add-search-index.js"]);
         }
     };
     let content, iconAttributes, iconFile;

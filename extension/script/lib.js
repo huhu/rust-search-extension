@@ -1,3 +1,21 @@
+// Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
+// the latest version path has changed:
+// from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/
+//
+// If we parse the crate version from url is 'latest',
+// we should reparse it from the DOM to get the correct value.
+function parseCrateVersionFromDOM() {
+    let versionText = document.querySelector('form .crate-name>.title').textContent;
+    if (versionText) {
+        // The form of versionText is {crateName}-{version}, separated by hypen, e.g. 'tokio-1.7.0', 
+        // However, the crate name could contains hypen too, such as 'tracing-subscriber-0.3.9'.
+        let lastHypenIndex = versionText.lastIndexOf('-');
+        return versionText.substring(lastHypenIndex + 1);
+    } else {
+        return null;
+    }
+}
+
 function parseCargoFeatures(content) {
     let features = [];
 
