@@ -33,11 +33,11 @@ function parseOptionalDependencies(content) {
             let match = line.match(/\[dependencies\.(.+)\]/);
             if (match) {
                 currentCrate = match[1];
-            } else if (/optional = true/g.test(line)) {
-                if (currentCrate) {
-                    dependencies.push(currentCrate);
-                    currentCrate = null;
-                }
+            } else if (currentCrate && /optional = true/g.test(line)) {
+                dependencies.push(currentCrate);
+                currentCrate = null;
+            } else if (line.startsWith("[dev-dependencies.")) {
+                break;
             }
         }
     }

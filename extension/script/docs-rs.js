@@ -140,13 +140,17 @@ async function enhanceFeatureFlagsMenu(menu) {
     // Render optional dependency list.
     let optionalDependencies = parseOptionalDependencies(content);
     let dependeciesList = optionalDependencies.map(dependency => `
-        <li class="stab portability optional-dependency-item"><code style="white-space: nowrap;">
-        <a href="https://docs.rs/${dependency}">${dependency}</a>
-        </code></li>
+        <li class="optional-dependency-item">
+            <a href="https://docs.rs/${dependency}">
+                <span class="stab portability docblock-short">
+                    <code style="white-space: nowrap;">${dependency}</code>
+                </span>
+            </a>
+        </li>
     `);
     html += `
         <div class="optional-dependency">
-            <p><b>Optional dependencies</b></p>
+            <p class="optional-dependency-title">Optional dependencies</p>
             ${dependeciesList.length > 0 ? `<ul class="optional-dependency-list">${dependeciesList}</ul>` : `<span>This crate has no optional dependency.</span>`
         }
         </div>`;

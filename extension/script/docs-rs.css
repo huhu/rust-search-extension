@@ -19,7 +19,10 @@ div.nav-container form.landing-search-form-nav {
 }
 
 .feature-flags-content a {
-    color: var(--color-navbar-standard);
+    color: var(--color-standard);
+}
+
+.feature-flags-content a:hover {
     text-decoration: underline;
 }
 
@@ -35,6 +38,11 @@ div.nav-container form.landing-search-form-nav {
     max-width: 60rem;
 }
 
+.optional-dependency-title {
+    color: var(--color-standard);
+    text-transform: uppercase;
+}
+
 .optional-dependency-list {
     list-style: none;
     margin: 0;
@@ -44,6 +52,8 @@ div.nav-container form.landing-search-form-nav {
 
 .optional-dependency-item {
     display: inline-block;
+    vertical-align: middle;
+    margin: 5px 0;
 }
 
 .add-to-extension {
