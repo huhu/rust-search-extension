@@ -4,6 +4,12 @@ description = "Testimonials"
 weight = 1
 +++
 
+## From *Kazuhiro Serizawa*
+
+> 同僚氏に教えてもらったRustのdocやcrateをchromeのURL barでincremental searchできるようになるchrome extension．超便利．
+>
+> -- Quoted from [this tweet](https://twitter.com/seri_k/status/1494159043778453504).
+
 ## From *@Lucretiel*
 
 > If you aren't using the Rust Search extension, you absolutely should be. 
