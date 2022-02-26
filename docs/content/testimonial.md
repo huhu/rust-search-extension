@@ -4,7 +4,7 @@ description = "Testimonials"
 weight = 1
 +++
 
-## From *Kazuhiro Serizawa*
+## From *@Kazuhiro Serizawa*
 
 > 同僚氏に教えてもらったRustのdocやcrateをchromeのURL barでincremental searchできるようになるchrome extension．超便利．
 >
