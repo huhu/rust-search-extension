@@ -4,11 +4,17 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.6 - 2022-03-02
+
+- Show optional dependencies in feature flags menu. Fixes {{ issue(id=29) }}.
+  > ![](/optional-dependencies.png)
+- Fix latest version parsing for crates with hyphens. Thanks the contribution {{ issue(id=147) }} from [@rrbutani](https://github.com/rrbutani).
+
 # v1.5 - 2022-01-25
 
 - Support customize default search items in settings. Fixes {{ issue(id=141) }}.
-> ![](/configure-default-search.png)
-- Add docs outline highlight. Thanks for contribution {{ issue(id=140) }} from [@NaturelLee](https://github.com/NaturelLee).
+  > ![](/configure-default-search.png)
+- Add docs outline highlight. Thanks the contribution {{ issue(id=140) }} from [@NaturelLee](https://github.com/NaturelLee).
 - Bugfix:
   - Fix update label/rfc index bug.
   - Fix add to extension button toggle float issue.
