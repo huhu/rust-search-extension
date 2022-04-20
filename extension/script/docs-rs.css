@@ -82,6 +82,12 @@ div.nav-container form.landing-search-form-nav {
     color: var(--color-navbar-standard);
 }
 
+@media screen and (max-width: 1500px) {
+    .rse-doc-toc {
+        display: none;
+    }
+}
+
 @media screen and (min-width: 1500px) {
     .rse-doc-toc {
         position: fixed;
@@ -89,8 +95,8 @@ div.nav-container form.landing-search-form-nav {
         top: 30px;
         list-style: none;
         border-left: solid #bbb 1px;
-        padding-left: 10px;
-        max-width: 300px;
+        padding-left: 5px;
+        max-width: 220px;
         min-width: 120px;
         max-height: 100vh;
         overflow-y: auto !important;
