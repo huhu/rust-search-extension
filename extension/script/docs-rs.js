@@ -8,7 +8,7 @@ crateName = rawCrateName.replaceAll("-", "_");
 // A crate version which added to the extension.
 let installedVersion = undefined;
 
-const DOC_HEADERS_SELECTOR = "div.docblock>h1[id], div.docblock>h2[id], div.docblock>h3[id]";
+const DOC_HEADERS_SELECTOR = ".top-doc div.docblock>h1[id], .top-doc div.docblock>h2[id], .top-doc div.docblock>h3[id]";
 
 // Highlight the TOC
 function highlight() {
