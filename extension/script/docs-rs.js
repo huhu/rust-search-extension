@@ -76,8 +76,6 @@ document.addEventListener("DOMContentLoaded", async() => {
 
     let featureFlagsMenu = Array.from(menus.children).find(menu => menu.textContent.toLowerCase().includes("feature flags"));
     if (featureFlagsMenu) {
-        // Rearrange the featureFlagsMenu to order 2th.
-        menus.insertBefore(featureFlagsMenu, menus.firstElementChild.nextElementSibling);
         featureFlagsMenu.classList.add("pure-menu-has-children", "pure-menu-allow-hover");
         await enhanceFeatureFlagsMenu(featureFlagsMenu);
     }
