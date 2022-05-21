@@ -4,13 +4,13 @@ function barChart({ margin, height, width, data, selector, color, }) {
     let yAxis = g => g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y).tickFormat(i => data[i].label).tickSizeOuter(0))
-        .attr('font-size', 14);;
+        .attr('font-size', 14);
 
     let xAxis = g => g
         .attr("transform", `translate(0,${margin.top})`)
         .call(d3.axisTop(x).ticks(Math.min(10, d3.max(data, d => d.value))))
         .call(g => g.select(".domain"))
-        .attr('font-size', 14);;
+        .attr('font-size', 14);
 
     let y = d3.scaleBand()
         .domain(d3.range(data.length))

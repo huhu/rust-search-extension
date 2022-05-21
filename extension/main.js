@@ -293,7 +293,7 @@ function getPlatformOs() {
         },
         searchPriority: 3,
         onSearch: (query) => {
-            query = query.replace(/[\[\]]/g, "");
+            query = query.replace(/[[\]]/g, "");
             return attributeSearcher.search(query);
         },
         onFormat: (index, attribute) => {

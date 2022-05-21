@@ -1,3 +1,14 @@
+const STD_CRATES = ['std', 'test', 'proc_macro'];
+
+// Remove unnecessary std crate's search index, such as core, alloc, etc
+function cleanSearchIndex() {
+    let searchIndex = {};
+    STD_CRATES.forEach(crate => {
+        searchIndex[crate] = window.searchIndex[crate];
+    });
+    return searchIndex;
+}
+
 (function() {
     function sendSearchIndex() {
         if (location.hostname === "docs.rs") { // docs.rs pages
@@ -29,17 +40,6 @@
                 },
             }, "*");
         } else { // stable/nightly pages
-            const STD_CRATES = ['std', 'test', 'proc_macro'];
-
-            // Remove unnecessary std crate's search index, such as core, alloc, etc
-            function cleanSearchIndex() {
-                let searchIndex = {};
-                STD_CRATES.forEach(crate => {
-                    searchIndex[crate] = window.searchIndex[crate];
-                });
-                return searchIndex;
-            }
-
             window.postMessage({
                 direction: `rust-search-extension:std`,
                 message: {
