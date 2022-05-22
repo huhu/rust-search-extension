@@ -1,5 +1,4 @@
-const STATS_PATTERNS = [
-    {
+const STATS_PATTERNS = [{
         name: "stable",
         pattern: null,
     },
@@ -35,7 +34,7 @@ const STATS_PATTERNS = [
 const WEEKS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function makeNumericKeyObject(start, end, initial = 0) {
-    return Array.from({length: end + 1 - start}).fill(initial)
+    return Array.from({ length: end + 1 - start }).fill(initial)
         .reduce((obj, current, index) => {
             obj[start + index] = current;
             return obj;
@@ -54,34 +53,35 @@ class Statistics {
         this.hoursData = makeNumericKeyObject(0, 23);
         this.datesData = makeNumericKeyObject(1, 31);
         this.total = 0;
-
-        this.load();
     }
 
     /**
      * Load statistics data from local storage.
      */
-    load() {
-        let stats = JSON.parse(localStorage.getItem("statistics"));
+    static async load() {
+        let self = new Statistics();
+
+        let stats = await storage.getItem("statistics");
         if (stats) {
-            this.calendarData = stats.calendarData;
+            self.calendarData = stats.calendarData;
             // Generate weeks and dates data from calendar data.
             for (let [key, value] of Object.entries(stats.calendarData)) {
                 let date = new Date(key);
-                this.weeksData[WEEKS[date.getDay()]] += value;
-                this.datesData[date.getDate()] += value;
+                self.weeksData[WEEKS[date.getDay()]] += value;
+                self.datesData[date.getDate()] += value;
             }
-            this.cratesData = stats.cratesData;
-            this.typeData = stats.typeData;
-            this.hoursData = stats.hoursData;
-            this.total = stats.total;
+            self.cratesData = stats.cratesData;
+            self.typeData = stats.typeData;
+            self.hoursData = stats.hoursData;
+            self.total = stats.total;
         }
+        return self;
     }
 
     /**
      * Save the statistics data to local storage.
      */
-    save() {
+    async save() {
         for (let hour of Object.keys(this.hoursData)) {
             // Clean legacy dirty data.
             if (hour < 1 || hour > 23) {
@@ -90,13 +90,13 @@ class Statistics {
         }
 
         // Never serialize weeksData and datesData.
-        localStorage.setItem("statistics", JSON.stringify({
+        await storage.setItem("statistics", {
             calendarData: this.calendarData,
             cratesData: this.cratesData,
             typeData: this.typeData,
             hoursData: this.hoursData,
             total: this.total,
-        }));
+        });
     }
 
     /**
@@ -105,7 +105,7 @@ class Statistics {
      * @param the search history item
      * @param autoSave whether auto save the statistics result into local storage
      */
-    record({query, content, description, time}, autoSave = false) {
+    record({ query, content, description, time }, autoSave = false) {
         let date = new Date(time);
         this.hoursData[date.getHours()] += 1;
 
@@ -113,7 +113,7 @@ class Statistics {
         let key = c.normalizeDate(date);
         this.calendarData[key] = (this.calendarData[key] || 0) + 1;
 
-        let searchType = Statistics.recordSearchType({query, content, description});
+        let searchType = Statistics.recordSearchType({ query, content, description });
         if (searchType) {
             this.typeData[searchType] = (this.typeData[searchType] || 0) + 1;
         }
@@ -134,7 +134,7 @@ class Statistics {
      * Record the search type from the search history.
      * @returns {string|*} return the search type result if matched, otherwise return null.
      */
-    static recordSearchType({query, content, description}) {
+    static recordSearchType({ query, content, description }) {
         let stat = STATS_PATTERNS.find(item => item.pattern && item.pattern.test(query));
         if (stat) {
             return stat.name;

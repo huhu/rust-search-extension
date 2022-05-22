@@ -32,7 +32,7 @@ function buildCrateItem(crate) {
     return li;
 }
 
-function refresh(orderBy = "time") {
+async function refresh(orderBy = "time") {
     let root = document.querySelector(".crate-list");
     // Clear old crate list.
     while (root.firstChild) {
@@ -40,8 +40,8 @@ function refresh(orderBy = "time") {
     }
 
     let compat = new Compat();
-    let cratesData = new Statistics().cratesData;
-    let crates = Object.entries(CrateDocManager.getCrates()).map(([name, crate]) => {
+    let cratesData = (await Statistics.load()).cratesData;
+    let crates = Object.entries(await CrateDocManager.getCrates()).map(([name, crate]) => {
         return {
             name,
             searchs: cratesData[name] || 0,
@@ -66,8 +66,10 @@ function refresh(orderBy = "time") {
 }
 
 let crateFilter = document.querySelector("select[name='crate-filter']");
-crateFilter.onchange = function () {
-    refresh(crateFilter.value);
+crateFilter.onchange = async function() {
+    await refresh(crateFilter.value);
 };
 
-refresh();
+(async() => {
+    await refresh();
+})();
