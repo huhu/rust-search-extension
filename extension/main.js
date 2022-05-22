@@ -11,6 +11,8 @@ function getPlatformOs() {
 }
 
 (async () => {
+    await migrate();
+
     const os = await getPlatformOs();
     const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
     const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
@@ -44,20 +46,17 @@ function getPlatformOs() {
         new StableCommand(),
         new HistoryCommand(),
         new OpenCommand('stats', 'Open search statistics page.',
-            chrome.runtime.getURL("manage/index.html"),
-            {
+            chrome.runtime.getURL("manage/index.html"), {
                 content: ':stats',
                 description: `Press ${c.match("Enter")} to open search statistics page.`,
             }),
         new OpenCommand('update', 'Update to the latest search index.',
-            INDEX_UPDATE_URL,
-            {
+            INDEX_UPDATE_URL, {
                 content: ':update',
                 description: `Press ${c.match("Enter")} to open search-index update page.`,
             }),
         new OpenCommand('release', 'Open rust-lang repository release page.',
-            RUST_RELEASE_README_URL,
-            {
+            RUST_RELEASE_README_URL, {
                 content: ':release',
                 description: `Press ${c.match("Enter")} to open rust-lang repository release page.`,
             }),
@@ -125,7 +124,7 @@ function getPlatformOs() {
 
             // Only keep the latest 100 of search history.
             let historyItem = HistoryCommand.record(query, result, maxSize = 100);
-            new Statistics().record(historyItem, autoSave = true);
+            Statistics.record(historyItem, autoSave = true);
         }
     });
 
@@ -394,7 +393,7 @@ function getPlatformOs() {
     omnibox.addNoCacheQueries("/", "!", "@", ":");
 
     if (settings.autoUpdate) {
-        let version = localStorage.getItem('auto-update-version');
+        let version = await storage.getItem('auto-update-version');
         let now = new Date();
         let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
         if (version && today <= Date.parse(version)) {
@@ -403,7 +402,7 @@ function getPlatformOs() {
         }
 
         Omnibox.navigateToUrl(INDEX_UPDATE_URL);
-        localStorage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
+        storage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
 
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -535,11 +534,11 @@ function getPlatformOs() {
     commandManager.addCommand(new BlogCommand((await response.json())["releases"]));
 })();
 
-(function () {
-    let history = JSON.parse(localStorage.getItem("history")) || [];
+(async () => {
+    let history = await storage.getItem("history") || [];
     if (history) {
-        if (!localStorage.getItem("statistics")) {
-            let statistics = new Statistics();
+        if (!await storage.getItem("statistics")) {
+            let statistics = await Statistics().load();
             history.forEach((item) => {
                 statistics.record(item);
             });
@@ -557,7 +556,7 @@ function getPlatformOs() {
                     ...rest,
                 };
             });
-        localStorage.setItem("history", JSON.stringify(history));
+        storage.setItem("history", history);
     }
 })();
 
