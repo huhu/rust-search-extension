@@ -12,6 +12,12 @@ async function migrate() {
         return;
     }
 
+    // Don't re-migrate.
+    if (await storage.getItem('migrate-result')) {
+        console.log('Already migrated.');
+        return;
+    }
+
     console.log('starting migration...');
     // Migrate all keys.
     const keys = ['history', 'statistics', 'crates', 'auto-update', 'auto-update-version', 'offline-mode', 'offline-path', 'crate-registry', 'default-search'];
@@ -24,5 +30,7 @@ async function migrate() {
     for (let crate in crates) {
         await migrateLocalStorage(`@${crate}`);
     }
+
+    storage.setItem('migrate-result', true);
     console.log('migrate finised');
 }
