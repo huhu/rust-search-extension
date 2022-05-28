@@ -13,6 +13,13 @@ function getPlatformOs() {
 (async () => {
     await migrate();
 
+    // All dynamic setting items. Those items will been updated
+    // in chrome.storage.onchange listener callback.
+    let isOfflineMode = await settings.isOfflineMode;
+    let offlineDocPath = await settings.offlineDocPath;
+    let defaultSearch = await settings.defaultSearch;
+    let crateRegistry = await settings.crateRegistry;
+
     const os = await getPlatformOs();
     const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
     const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
@@ -71,7 +78,7 @@ function getPlatformOs() {
 
     let formatDoc = (index, doc) => {
         let content = doc.href;
-        if (settings.isOfflineMode && os === "win") {
+        if (isOfflineMode && os === "win") {
             // Replace all "/" to "\" for Windows in offline mode.
             content.replaceAll("/", "\\");
         }
@@ -98,7 +105,7 @@ function getPlatformOs() {
         onAppend: (query) => {
             return [{
                 content: stdSearcher.getSearchUrl(query),
-                description: `Search Rust docs ${c.match(query)} on ${settings.isOfflineMode ? "offline mode" : stdSearcher.rootPath}`,
+                description: `Search Rust docs ${c.match(query)} on ${isOfflineMode ? "offline mode" : stdSearcher.rootPath}`,
             }];
         },
         onEmptyNavigate: (content, disposition) => {
@@ -122,9 +129,12 @@ function getPlatformOs() {
             // Ignore the command history
             if (query && query.startsWith(":")) return;
 
-            // Only keep the latest 100 of search history.
-            let historyItem = HistoryCommand.record(query, result, maxSize = 100);
-            Statistics.record(historyItem, autoSave = true);
+            (async () => {
+                // Only keep the latest 100 of search history.
+                let historyItem = await HistoryCommand.record(query, result, maxSize = 100);
+                let statistics = await Statistics.load();
+                await statistics.record(historyItem, true);
+            })();
         }
     });
 
@@ -175,7 +185,7 @@ function getPlatformOs() {
 
     omnibox.addPrefixQueryEvent("~", {
         isDefaultSearch: () => {
-            return settings.defaultSearch.thirdPartyDocs;
+            return defaultSearch.thirdPartyDocs;
         },
         searchPriority: 1,
         onSearch: (query) => {
@@ -224,7 +234,7 @@ function getPlatformOs() {
 
     omnibox.addPrefixQueryEvent("!", {
         isDefaultSearch: () => {
-            return settings.defaultSearch.docsRs;
+            return defaultSearch.docsRs;
         },
         searchPriority: 2,
         onSearch: (query) => {
@@ -250,18 +260,16 @@ function getPlatformOs() {
             return crateSearcher.search(query);
         },
         onFormat: (index, crate) => {
-            let registry = settings.crateRegistry;
             return {
-                content: `https://${registry}/crates/${crate.id}`,
-                description: `${c.capitalize(registry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
+                content: `https://${crateRegistry}/crates/${crate.id}`,
+                description: `${c.capitalize(crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
             };
         },
         onAppend: (query) => {
             let keyword = query.replace(/[!\s]/g, "");
-            let registry = settings.crateRegistry;
             return wrapCrateSearchAppendix({
-                content: `https://${registry}/search?q=` + encodeURIComponent(keyword),
-                description: "Search Rust crates for " + c.match(keyword) + ` on https://${registry}`,
+                content: `https://${crateRegistry}/search?q=` + encodeURIComponent(keyword),
+                description: "Search Rust crates for " + c.match(keyword) + ` on https://${crateRegistry}`,
             });
         }
     });
@@ -288,7 +296,7 @@ function getPlatformOs() {
 
     omnibox.addPrefixQueryEvent("#", {
         isDefaultSearch: () => {
-            return settings.defaultSearch.attributes;
+            return defaultSearch.attributes;
         },
         searchPriority: 3,
         onSearch: (query) => {
@@ -348,11 +356,11 @@ function getPlatformOs() {
                 let errorIndex = 'E' + String(baseIndex++).padStart(4, "0").toUpperCase();
                 result.push(errorIndex);
             }
-            let baseUrl = settings.isOfflineMode ? settings.offlineDocPath : 'https://doc.rust-lang.org/';
+            let baseUrl = isOfflineMode ? offlineDocPath : 'https://doc.rust-lang.org/';
             return result.map(errorCode => {
                 return {
                     content: `${baseUrl}error-index.html#${errorCode}`,
-                    description: `Search Rust error index for ${c.match(errorCode)} on ${settings.isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error-index.html'}`,
+                    description: `Search Rust error index for ${c.match(errorCode)} on ${isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error-index.html'}`,
                 };
             });
         },
@@ -392,7 +400,25 @@ function getPlatformOs() {
 
     omnibox.addNoCacheQueries("/", "!", "@", ":");
 
-    if (settings.autoUpdate) {
+    chrome.storage.onChanged.addListener(changes => {
+        if (changes.isOfflineMode) {
+            isOfflineMode = changes.isOfflineMode.newValue;
+        }
+        if (changes.offlineDocPath) {
+            offlineDocPath = changes.offlineDocPath.newValue;
+        }
+        if (changes.defaultSearch) {
+            defaultSearch = changes.defaultSearch.newValue;
+        }
+        if (changes.crateRegistry) {
+            crateRegistry = changes.crateRegistry.newValue;
+        }
+        if (changes.crateRegistry) {
+            crateRegistry = changes.crateRegistry.newValue;
+        }
+    });
+
+    if (await settings.autoUpdate) {
         let version = await storage.getItem('auto-update-version');
         let now = new Date();
         let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
@@ -538,12 +564,12 @@ function getPlatformOs() {
     let history = await storage.getItem("history") || [];
     if (history) {
         if (!await storage.getItem("statistics")) {
-            let statistics = await Statistics().load();
-            history.forEach((item) => {
-                statistics.record(item);
-            });
+            let statistics = await Statistics.load();
+            for (const item of history) {
+                await statistics.record(item);
+            }
 
-            statistics.save();
+            await statistics.save();
         }
 
         // Eliminate unnecessary tags (such as <match>, <dim>) to save disk usage.
@@ -556,7 +582,7 @@ function getPlatformOs() {
                     ...rest,
                 };
             });
-        storage.setItem("history", history);
+        await storage.setItem("history", history);
     }
 })();
 

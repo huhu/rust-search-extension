@@ -1,9 +1,8 @@
-// Migrate data from locaStorage to chrome.storage API.
-//
-// This migrations is required because Chrome Manifest V3 change background script to service worker,
-// however, service worker doesn't support localStorage API. Therefore, we should migrate those data to
-// chrome.storage before we upgrade to Manifest V3. Otherwise, we cann't do such a migrations, because we
-// cannot access to localStorage API in service worker any more.
+// This migration is required because Chrome Manifest V3 changes the background script
+// to the service worker, however, the service worker doesn't support localStorage API.
+// Therefore, we should migrate those data to chrome.storage before we upgrade to Manifest V3.
+// Otherwise, we can't do such a migration, because we cannot access localStorage API
+// in the service worker anymore.
 async function migrate() {
     // If localStorage API unavailable means we are in Manifest V3,
     // we cannot do this migrations.
@@ -31,6 +30,6 @@ async function migrate() {
         await migrateLocalStorage(`@${crate}`);
     }
 
-    storage.setItem('migrate-result', true);
+    await storage.setItem('migrate-result', true);
     console.log('migrate finised');
 }

@@ -105,7 +105,7 @@ class Statistics {
      * @param the search history item
      * @param autoSave whether auto save the statistics result into local storage
      */
-    record({ query, content, description, time }, autoSave = false) {
+    async record({ query, content, description, time }, autoSave = false) {
         let date = new Date(time);
         this.hoursData[date.getHours()] += 1;
 
@@ -126,7 +126,7 @@ class Statistics {
         this.total += 1;
 
         if (autoSave) {
-            this.save();
+            await this.save();
         }
     }
 
