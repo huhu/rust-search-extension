@@ -413,9 +413,6 @@ function getPlatformOs() {
         if (changes.crateRegistry) {
             crateRegistry = changes.crateRegistry.newValue;
         }
-        if (changes.crateRegistry) {
-            crateRegistry = changes.crateRegistry.newValue;
-        }
     });
 
     if (await settings.autoUpdate) {
@@ -428,7 +425,7 @@ function getPlatformOs() {
         }
 
         Omnibox.navigateToUrl(INDEX_UPDATE_URL);
-        storage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
+        await storage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
 
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -554,7 +551,7 @@ function getPlatformOs() {
         return true;
     });
 
-    // Put blog release request last to avoid reload error due to
+    // Put blog release request last to avoid error due to
     // possibly request failed. E.g. Github Pages down.
     let response = await fetch("https://blog.rust-lang.org/releases.json");
     commandManager.addCommand(new BlogCommand((await response.json())["releases"]));
