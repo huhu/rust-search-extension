@@ -17,11 +17,11 @@
             data["stats"] = new Statistics();
         }
         if (target.querySelector(".crates").checked) {
-            let catalog = CrateDocManager.getCrates();
+            let catalog = await CrateDocManager.getCrates();
             let list = {};
-            Object.entries(catalog).forEach(([name, _]) => {
-                list[`@${name}`] = CrateDocManager.getCrateSearchIndex(name);
-            });
+            for (const name of Object.keys(catalog)) {
+                list[`@${name}`] = await CrateDocManager.getCrateSearchIndex(name);
+            }
             data["crates"] = {
                 catalog,
                 list,

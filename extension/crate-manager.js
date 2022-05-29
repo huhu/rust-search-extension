@@ -3,29 +3,29 @@ class CrateDocManager {
         return await storage.getItem("crates") || {};
     }
 
-    static getCrateSearchIndex(name) {
-        return storage.getItem(`@${name}`);
+    static async getCrateSearchIndex(name) {
+        return await storage.getItem(`@${name}`);
     }
 
-    static addCrate(name, version, searchIndex) {
+    static async addCrate(name, version, searchIndex) {
         if (searchIndex.hasOwnProperty(name)) {
-            storage.setItem(`@${name}`, searchIndex);
+            await storage.setItem(`@${name}`, searchIndex);
             let doc = searchIndex[name]["doc"];
-            let crates = CrateDocManager.getCrates();
+            let crates = await CrateDocManager.getCrates();
             if (name in crates) {
                 // Don't override the time if the crate exists
-                crates[name] = { version, doc, time: crates[name].time };
+                crates[name] = {version, doc, time: crates[name].time};
             } else {
-                crates[name] = { version, doc, time: Date.now() };
+                crates[name] = {version, doc, time: Date.now()};
             }
-            storage.setItem("crates", crates);
+            await storage.setItem("crates", crates);
         }
     }
 
-    static removeCrate(name) {
-        let crates = CrateDocManager.getCrates();
+    static async removeCrate(name) {
+        let crates = await CrateDocManager.getCrates();
         delete crates[name];
-        storage.setItem("crates", crates);
-        storage.removeItem(`@${name}`);
+        await storage.setItem("crates", crates);
+        await storage.removeItem(`@${name}`);
     }
 }
