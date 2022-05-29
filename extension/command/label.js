@@ -6,7 +6,7 @@ class LabelCommand extends SimpleCommand {
         });
     }
 
-    onExecute(arg) {
+    async onExecute(arg) {
         let results = this.labels;
         if (arg) {
             results = [];

@@ -6,7 +6,7 @@ class RfcCommand extends SimpleCommand {
         });
     }
 
-    onExecute(arg) {
+    async onExecute(arg) {
         let results = this.rfcs;
         if (arg) {
             results = [];

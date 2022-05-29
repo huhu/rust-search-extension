@@ -4,7 +4,7 @@ class BlogCommand extends Command {
         this.posts = posts || [];
     }
 
-    onExecute(arg) {
+    async onExecute(arg) {
         let results = this.posts;
         if (arg) {
             results = [];

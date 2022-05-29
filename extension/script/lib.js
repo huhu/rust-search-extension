@@ -48,7 +48,7 @@ function parseOptionalDependencies(content) {
         let lines = content.slice(start).split("\n");
         let currentCrate = null;
         for (let line of lines) {
-            let match = line.match(/\[dependencies\.(.+)\]/);
+            let match = line.match(/\[dependencies\.(.+)]/);
             if (match) {
                 currentCrate = match[1];
             } else if (currentCrate && /optional = true/g.test(line)) {

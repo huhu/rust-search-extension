@@ -31,5 +31,5 @@ async function migrate() {
     }
 
     await storage.setItem('migrate-result', true);
-    console.log('migrate finised');
+    console.log('migrate finished');
 }

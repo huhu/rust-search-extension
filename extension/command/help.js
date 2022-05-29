@@ -3,7 +3,7 @@ class HelpCommand extends Command {
         super("help", "Show the help messages.")
     }
 
-    onExecute() {
+    async onExecute() {
         const value = {
             "tips1": `Tips: You can use shortcut ${c.match("Cmd")}/${c.match("Ctrl")} + ${c.match("L")} to autofocus the address bar`,
             "tips2": `Tips: Combine ${c.match("Cmd")} or ${c.match("Alt")} with ${c.match("Enter")} to open the search result in the new tab`,
