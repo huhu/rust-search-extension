@@ -47,7 +47,7 @@
         }
         if (json["crates"] && target.querySelector(".crates").checked) {
             let importedCrates = json["crates"];
-            let catalog = CrateDocManager.getCrates();
+            let catalog = await CrateDocManager.getCrates();
             for (let [name, searchIndex] of Object.entries(importedCrates["list"])) {
                 await storage.setItem(name, searchIndex);
             }

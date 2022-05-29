@@ -2,10 +2,11 @@ function buildRemoveButton(name) {
     let btn = document.createElement("span");
     btn.classList.add("btn-remove");
     btn.textContent = "Remove";
-    btn.onclick = () => {
-        CrateDocManager.removeCrate(name);
+    btn.onclick = async () => {
+        await CrateDocManager.removeCrate(name);
         // Update the crate count
-        document.getElementById("crate-count").textContent = Object.keys(CrateDocManager.getCrates()).length || 0;
+        let crates = await CrateDocManager.getCrates();
+        document.getElementById("crate-count").textContent = Object.keys(crates).length || '0';
         btn.parentElement.remove();
     };
     return btn;
@@ -66,10 +67,10 @@ async function refresh(orderBy = "time") {
 }
 
 let crateFilter = document.querySelector("select[name='crate-filter']");
-crateFilter.onchange = async function() {
+crateFilter.onchange = async function () {
     await refresh(crateFilter.value);
 };
 
-(async() => {
+(async () => {
     await refresh();
 })();

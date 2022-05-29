@@ -116,7 +116,7 @@ function getPlatformOs() {
         onEmptyNavigate: (content, disposition) => {
             commandManager.handleCommandEnterEvent(content, disposition);
         },
-        beforeNavigate: (query, content) => {
+        beforeNavigate: async (query, content) => {
             if (content && /^@\w+$/i.test(content.trim())) {
                 // Case: @crate, redirect to that crate's docs.rs page
                 return `https://docs.rs/${content.replace("@", "")}`;
@@ -124,22 +124,20 @@ function getPlatformOs() {
                 // Sanitize docs url which from all crates doc search mode. (Prefix with "~")
                 // Here is the url instance: https://docs.rs/~/*/reqwest/fn.get.html
                 let [_, __, crateName] = new URL(content).pathname.slice(1).split("/");
-                let crateVersion = CrateDocManager.getCrates()[crateName].version;
+                let crateVersion = (await CrateDocManager.getCrates())[crateName].version;
                 return content.replace("/~/", `/${crateName}/`).replace("/*/", `/${crateVersion}/`);
             } else {
                 return content;
             }
         },
-        afterNavigated: (query, result) => {
+        afterNavigated: async (query, result) => {
             // Ignore the command history
             if (query && query.startsWith(":")) return;
 
-            (async () => {
-                // Only keep the latest 100 of search history.
-                let historyItem = await HistoryCommand.record(query, result, maxSize = 100);
-                let statistics = await Statistics.load();
-                await statistics.record(historyItem, true);
-            })();
+            // Only keep the latest 100 of search history.
+            let historyItem = await HistoryCommand.record(query, result, maxSize = 100);
+            let statistics = await Statistics.load();
+            await statistics.record(historyItem, true);
         }
     });
 
@@ -193,15 +191,15 @@ function getPlatformOs() {
             return defaultSearch.thirdPartyDocs;
         },
         searchPriority: 1,
-        onSearch: (query) => {
-            return crateDocSearcher.searchAll(query);
+        onSearch: async (query) => {
+            return await crateDocSearcher.searchAll(query);
         },
         onFormat: formatDoc,
     });
 
     omnibox.addPrefixQueryEvent("@", {
-        onSearch: (query) => {
-            return crateDocSearcher.search(query);
+        onSearch: async (query) => {
+            return await crateDocSearcher.search(query);
         },
         onFormat: (index, item) => {
             if (item.hasOwnProperty("content")) {
@@ -398,7 +396,7 @@ function getPlatformOs() {
     });
 
     omnibox.addPrefixQueryEvent(":", {
-        onSearch: (query) => {
+        onSearch: async (query) => {
             return commandManager.execute(query);
         },
     });
@@ -433,7 +431,7 @@ function getPlatformOs() {
         await storage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
 
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
         switch (message.action) {
             // Stable:* action is exclusive to stable docs event
             case "stable:add": {
@@ -478,14 +476,14 @@ function getPlatformOs() {
             }
             // Crate:* action is exclusive to crate event
             case "crate:check": {
-                let crates = CrateDocManager.getCrates();
+                let crates = await CrateDocManager.getCrates();
                 sendResponse(crates[message.crateName]);
                 break;
             }
             case "crate:add": {
                 if (message.searchIndex) {
-                    CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
-                    crateDocSearcher.initAllCrateSearcher();
+                    await CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
+                    await crateDocSearcher.initAllCrateSearcher();
                     sendResponse(true);
                 } else {
                     sendResponse(false);
@@ -493,8 +491,8 @@ function getPlatformOs() {
                 break;
             }
             case "crate:remove": {
-                CrateDocManager.removeCrate(message.crateName);
-                crateDocSearcher.initAllCrateSearcher();
+                await CrateDocManager.removeCrate(message.crateName);
+                await crateDocSearcher.initAllCrateSearcher();
                 sendResponse(true);
                 break;
             }
