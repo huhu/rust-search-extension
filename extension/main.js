@@ -69,8 +69,13 @@ function getPlatformOs() {
             }),
     );
 
-    let stdSearcher = new StdSearch(await IndexManager.getStdStableIndex());
-    let nightlySearcher = new NightlySearch(await IndexManager.getStdNightlyIndex());
+    let stdSearcher = new DocSearch("std", await IndexManager.getStdStableIndex(), () => {
+        return isOfflineMode ? offlineDocPath : "https://doc.rust-lang.org/";
+    });
+    let nightlySearcher = new DocSearch("std", await IndexManager.getStdNightlyIndex(), () => {
+        // Nightly docs doesn't support offline mode yet.
+        return "https://doc.rust-lang.org/nightly/";
+    });
     let rustcSearcher = new RustcSearch();
 
     const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
@@ -105,7 +110,7 @@ function getPlatformOs() {
         onAppend: (query) => {
             return [{
                 content: stdSearcher.getSearchUrl(query),
-                description: `Search Rust docs ${c.match(query)} on ${isOfflineMode ? "offline mode" : stdSearcher.rootPath}`,
+                description: `Search Rust docs ${c.match(query)} on ${isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
             }];
         },
         onEmptyNavigate: (content, disposition) => {
@@ -152,7 +157,7 @@ function getPlatformOs() {
             query = query.replaceAll("/", "").trim();
             return [{
                 content: nightlySearcher.getSearchUrl(query),
-                description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.rootPath}`,
+                description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.getRootPath()}`,
             }];
         },
     });
@@ -172,11 +177,11 @@ function getPlatformOs() {
             if (rustcSearcher.searchIndex && rustcSearcher.searchIndex.length > 0) {
                 return [{
                     content: rustcSearcher.getSearchUrl(query),
-                    description: `Search nightly rustc docs ${c.match(query)} on ${rustcSearcher.rootPath}`,
+                    description: `Search nightly rustc docs ${c.match(query)} on ${rustcSearcher.getRootPath()}`,
                 }];
             } else {
                 return [{
-                    content: rustcSearcher.rootPath,
+                    content: rustcSearcher.getRootPath(),
                     description: "To search nightly rustc docs, please open the nightly rustc docs page in advance.",
                 }]
             }

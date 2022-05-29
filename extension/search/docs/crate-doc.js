@@ -2,12 +2,9 @@
 class SingleCrateDocSearch extends DocSearch {
 
     constructor(name, version, searchIndex) {
-        super(name, searchIndex);
-        this._path = `https://docs.rs/${name}/${version}/`;
-    }
-
-    get rootPath() {
-        return this._path;
+        super(name, searchIndex, () => {
+            return `https://docs.rs/${name}/${version}/`;
+        });
     }
 }
 
