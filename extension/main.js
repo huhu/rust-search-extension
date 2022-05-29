@@ -404,17 +404,17 @@ function getPlatformOs() {
     omnibox.addNoCacheQueries("/", "!", "@", ":");
 
     chrome.storage.onChanged.addListener(changes => {
-        if (changes.isOfflineMode) {
-            isOfflineMode = changes.isOfflineMode.newValue;
+        if (changes['offline-mode']) {
+            isOfflineMode = changes['offline-mode'].newValue;
         }
-        if (changes.offlineDocPath) {
-            offlineDocPath = changes.offlineDocPath.newValue;
+        if (changes['offline-path']) {
+            offlineDocPath = changes['offline-path'].newValue;
         }
-        if (changes.defaultSearch) {
-            defaultSearch = changes.defaultSearch.newValue;
+        if (changes['default-search']) {
+            defaultSearch = changes['default-search'].newValue;
         }
-        if (changes.crateRegistry) {
-            crateRegistry = changes.crateRegistry.newValue;
+        if (changes['crate-registry']) {
+            crateRegistry = changes['crate-registry'].newValue;
         }
     });
 
