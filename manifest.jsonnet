@@ -13,9 +13,9 @@ local json = manifest.new(
   description='Rust Search Extension - the ultimate search extension for Rust',
 )
              .addIcons(icons())
-             .addPermissions(['storage'])
+             .addPermissions(['storage', 'unlimitedStorage'])
              .addWebAccessibleResources(utils.js_files('script', ['lib', 'add-search-index']))
-             .addBackgroundScripts(['settings.js', 'deminifier.js'])
+             .addBackgroundScripts(['migration.js', 'settings.js', 'deminifier.js', 'core/storage.js'])
              .addBackgroundScripts(utils.js_files('search', ['algorithm', 'book', 'crate', 'attribute', 'caniuse', 'lint']))
              .addBackgroundScripts(utils.js_files('search/docs', ['base', 'std', 'crate-doc', 'rustc']))
              .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'rfcs', 'commands']))
