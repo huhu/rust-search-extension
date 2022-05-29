@@ -36,24 +36,26 @@ var MAX_LEV_DISTANCE = 2;
 
 class DocSearch {
 
-    constructor(name, searchIndex) {
+    /**
+     * Construct the DocSearch.
+     * @param name the crate name
+     * @param searchIndex the crate search index
+     * @param rootPathCallback the root path callback to help dynamically get root path
+     */
+    constructor(name, searchIndex, rootPathCallback) {
         this.name = name;
         // The list of search words to query against.
         this.searchWords = [];
         this.searchIndex = this.buildIndex(searchIndex);
+        this.getRootPath = rootPathCallback;
 
         // Current query lowercase keyword.
         this.valLower = null;
         this.split = null;
     }
 
-    // A getter function for rootPath property.
-    // Child class should override this function.
-    get rootPath() {
-    }
-
     getSearchUrl(keyword) {
-        let url = `${this.rootPath}${this.name}/index.html`;
+        let url = `${this.getRootPath()}${this.name}/index.html`;
         if (keyword) {
             url += `?search=${encodeURIComponent(keyword)}`;
         }
@@ -528,7 +530,7 @@ class DocSearch {
     }
 
     buildHrefAndPath(item) {
-        let rootPath = this.rootPath;
+        let rootPath = this.getRootPath();
         var displayPath;
         var href;
         var type = itemTypes[item.ty];
