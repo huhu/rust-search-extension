@@ -1,6 +1,6 @@
 // This mapping table should match the discriminants of
 // `rustdoc::html::item_type::ItemType` type in Rust.
-var itemTypes = [
+const itemTypes = [
     "mod",
     "externcrate",
     "import",
@@ -28,11 +28,11 @@ var itemTypes = [
     "derive"
 ];
 // used for special search precedence
-var TY_PRIMITIVE = itemTypes.indexOf("primitive");
-var TY_KEYWORD = itemTypes.indexOf("keyword");
+const TY_PRIMITIVE = itemTypes.indexOf("primitive");
+const TY_KEYWORD = itemTypes.indexOf("keyword");
 
 // Max levenshtein distance.
-var MAX_LEV_DISTANCE = 2;
+const MAX_LEV_DISTANCE = 2;
 
 class DocSearch {
 
@@ -73,8 +73,8 @@ class DocSearch {
 
     buildIndex(rawSearchIndex) {
         let searchIndex = [];
-        var searchWords = [];
-        for (var crate in rawSearchIndex) {
+        const searchWords = [];
+        for (let crate in rawSearchIndex) {
             if (!rawSearchIndex.hasOwnProperty(crate)) {
                 continue;
             }
@@ -94,23 +94,23 @@ class DocSearch {
             // We need to compat both the new and old formats.
             if (["t", "n", "q", "d", "i", "f", "p"].every(key => key in rawSearchIndex[crate])) {
                 // an array of (Number) item types
-                var itemTypes = rawSearchIndex[crate].t;
+                const itemTypes = rawSearchIndex[crate].t;
                 // an array of (String) item names
-                var itemNames = rawSearchIndex[crate].n;
+                const itemNames = rawSearchIndex[crate].n;
                 // an array of (String) full paths (or empty string for previous path)
-                var itemPaths = rawSearchIndex[crate].q;
+                const itemPaths = rawSearchIndex[crate].q;
                 // an array of (String) descriptions
-                var itemDescs = rawSearchIndex[crate].d;
+                const itemDescs = rawSearchIndex[crate].d;
                 // an array of (Number) the parent path index + 1 to `paths`, or 0 if none
-                var itemParentIdxs = rawSearchIndex[crate].i;
+                const itemParentIdxs = rawSearchIndex[crate].i;
                 // an array of (Object | null) the type of the function, if any
-                var itemFunctionSearchTypes = rawSearchIndex[crate].f;
+                const itemFunctionSearchTypes = rawSearchIndex[crate].f;
                 // an array of [(Number) item type,
                 //              (String) name]
-                var paths = rawSearchIndex[crate].p;
+                let paths = rawSearchIndex[crate].p;
 
                 // convert `paths` into an object form
-                for (var i = 0; i < paths.length; ++i) {
+                for (let i = 0; i < paths.length; ++i) {
                     if (Array.isArray(paths[i])) {
                         paths[i] = {ty: paths[i][0], name: paths[i][1]};
                     }
@@ -123,10 +123,10 @@ class DocSearch {
                 // operation that is cached for the life of the page state so that
                 // all other search operations have access to this cached data for
                 // faster analysis operations
-                var len = itemTypes.length;
-                var lastPath = "";
-                for (i = 0; i < len; ++i) {
-                    var row = {
+                let len = itemTypes.length;
+                let lastPath = "";
+                for (let i = 0; i < len; ++i) {
+                    let row = {
                         crate: crate,
                         ty: itemTypes[i],
                         name: itemNames[i],
@@ -137,7 +137,7 @@ class DocSearch {
                     };
                     searchIndex.push(row);
                     if (typeof row.name === "string") {
-                        var word = row.name.toLowerCase();
+                        let word = row.name.toLowerCase();
                         searchWords.push(word);
                     } else {
                         searchWords.push("");
@@ -152,14 +152,14 @@ class DocSearch {
                 //              (Number | null) the parent path index to `paths`]
                 //              (Object | null) the type of the function (if any)
                 // Compat old style (items, paths) and new style (i, p)
-                var items = rawSearchIndex[crate].items || rawSearchIndex[crate].i;
+                const items = rawSearchIndex[crate].items || rawSearchIndex[crate].i;
 
                 // an array of [(Number) item type,
                 //              (String) name]
-                var paths = rawSearchIndex[crate].paths || rawSearchIndex[crate].p;
+                let paths = rawSearchIndex[crate].paths || rawSearchIndex[crate].p;
 
                 // convert `paths` into an object form
-                for (var i = 0; i < paths.length; ++i) {
+                for (let i = 0; i < paths.length; ++i) {
                     if (Array.isArray(paths[i])) {
                         paths[i] = {ty: paths[i][0], name: paths[i][1]};
                     }
@@ -172,11 +172,11 @@ class DocSearch {
                 // operation that is cached for the life of the page state so that
                 // all other search operations have access to this cached data for
                 // faster analysis operations
-                var len = items.length;
-                var lastPath = "";
-                for (i = 0; i < len; ++i) {
-                    var rawRow = items[i];
-                    var row = {
+                let len = items.length;
+                let lastPath = "";
+                for (let i = 0; i < len; ++i) {
+                    const rawRow = items[i];
+                    let row = {
                         crate: crate,
                         ty: rawRow[0],
                         name: rawRow[1],
@@ -187,7 +187,7 @@ class DocSearch {
                     };
                     searchIndex.push(row);
                     if (typeof row.name === "string") {
-                        var word = row.name.toLowerCase();
+                        let word = row.name.toLowerCase();
                         searchWords.push(word);
                     } else {
                         searchWords.push("");
@@ -201,7 +201,7 @@ class DocSearch {
     }
 
     buildQuery(raw) {
-        var matches, type, query;
+        let matches, type, query;
         query = raw;
 
         // let query = "fn:unwrap";
@@ -222,7 +222,7 @@ class DocSearch {
 
     execQuery(query) {
         function itemTypeFromName(typename) {
-            for (var i = 0; i < itemTypes.length; ++i) {
+            for (let i = 0; i < itemTypes.length; ++i) {
                 if (itemTypes[i] === typename) {
                     return i;
                 }
@@ -234,8 +234,8 @@ class DocSearch {
             if (contains.length === 0) {
                 return 0;
             }
-            var ret_lev = MAX_LEV_DISTANCE + 1;
-            var path = ty.path.split("::");
+            let ret_lev = MAX_LEV_DISTANCE + 1;
+            const path = ty.path.split("::");
 
             if (ty.parent && ty.parent.name) {
                 path.push(ty.parent.name.toLowerCase());
@@ -244,14 +244,14 @@ class DocSearch {
             if (contains.length > path.length) {
                 return MAX_LEV_DISTANCE + 1;
             }
-            for (var i = 0; i < path.length; ++i) {
+            for (let i = 0; i < path.length; ++i) {
                 if (i + contains.length > path.length) {
                     break;
                 }
-                var lev_total = 0;
-                var aborted = false;
-                for (var x = 0; x < contains.length; ++x) {
-                    var lev = levenshtein(path[i + x], contains[x]);
+                let lev_total = 0;
+                let aborted = false;
+                for (let x = 0; x < contains.length; ++x) {
+                    const lev = levenshtein(path[i + x], contains[x]);
                     if (lev > MAX_LEV_DISTANCE) {
                         aborted = true;
                         break;
@@ -273,7 +273,7 @@ class DocSearch {
             if (filter === type) return true;
 
             // Match related items
-            var name = itemTypes[type];
+            const name = itemTypes[type];
             switch (itemTypes[filter]) {
                 case "constant":
                     return (name === "associatedconstant");
@@ -297,18 +297,18 @@ class DocSearch {
         this.valLower = query.query.toLowerCase();
         this.split = this.valLower.split("::");
 
-        var val = this.valLower,
-            typeFilter = itemTypeFromName(query.type),
+        let val = this.valLower;
+        const typeFilter = itemTypeFromName(query.type),
             results = {};
 
-        for (var z = 0; z < this.split.length; ++z) {
+        for (let z = 0; z < this.split.length; ++z) {
             if (this.split[z] === "") {
                 this.split.splice(z, 1);
                 z -= 1;
             }
         }
 
-        var nSearchWords = this.searchWords.length;
+        const nSearchWords = this.searchWords.length;
         query.inputs = [val];
         query.output = val;
         query.search = val;
@@ -317,8 +317,8 @@ class DocSearch {
 
         // var valGenerics = extractGenerics(val);
 
-        var paths = this.valLower.split("::");
-        var j;
+        const paths = this.valLower.split("::");
+        let j;
         // "std::option::".split("::") => ["std", "option", ""]
         for (j = 0; j < paths.length; ++j) {
             if (paths[j] === "") {
@@ -327,16 +327,16 @@ class DocSearch {
             }
         }
         val = paths[paths.length - 1];
-        var contains = paths.slice(0, paths.length > 1 ? paths.length - 1 : 1);
+        let contains = paths.slice(0, paths.length > 1 ? paths.length - 1 : 1);
 
         for (j = 0; j < nSearchWords; ++j) {
-            var ty = this.searchIndex[j];
+            let ty = this.searchIndex[j];
             if (!ty) {
                 continue;
             }
-            var lev_add = 0;
+            let lev_add = 0;
             if (paths.length > 1) {
-                var lev = checkPath(contains, paths[paths.length - 1], ty);
+                let lev = checkPath(contains, paths[paths.length - 1], ty);
                 if (lev > MAX_LEV_DISTANCE) {
                     continue;
                 } else if (lev > 0) {
@@ -344,10 +344,10 @@ class DocSearch {
                 }
             }
 
-            var index = -1;
+            let index = -1;
             // we want lev results to go lower than others
-            var lev = MAX_LEV_DISTANCE + 1;
-            var fullId = generateId(ty);
+            let lev = MAX_LEV_DISTANCE + 1;
+            const fullId = generateId(ty);
 
             if (this.searchWords[j].indexOf(val) > -1 ||
                 this.searchWords[j].replace(/_/g, "").indexOf(val) > -1) {
@@ -393,15 +393,15 @@ class DocSearch {
     }
 
     sortResults(results) {
-        var ar = [];
-        for (var entry in results) {
+        const ar = [];
+        for (let entry in results) {
             if (results.hasOwnProperty(entry)) {
                 ar.push(results[entry]);
             }
         }
         results = ar;
-        var nresults = results.length;
-        for (var i = 0; i < nresults; ++i) {
+        const nresults = results.length;
+        for (let i = 0; i < nresults; ++i) {
             results[i].word = this.searchWords[results[i].id];
             results[i].item = this.searchIndex[results[i].id] || {};
         }
@@ -410,9 +410,9 @@ class DocSearch {
             return [];
         }
 
-        var valLower = this.valLower;
+        const valLower = this.valLower;
         results.sort(function(aaa, bbb) {
-            var a, b;
+            let a, b;
 
             // Sort by non levenshtein results and then levenshtein results by the distance
             // (less changes required to match means higher rankings)
@@ -491,14 +491,14 @@ class DocSearch {
             return 0;
         });
 
-        for (var i = 0; i < results.length; ++i) {
-            var result = results[i];
+        for (let i = 0; i < results.length; ++i) {
+            const result = results[i];
 
             // this validation does not make sense when searching by types
             if (result.dontValidate) {
                 continue;
             }
-            var name = result.item.name.toLowerCase(),
+            const name = result.item.name.toLowerCase(),
                 path = result.item.path.toLowerCase(),
                 parent = result.item.parent;
 
@@ -510,13 +510,13 @@ class DocSearch {
     }
 
     transformResults(results, isType) {
-        var out = [];
-        for (var i = 0; i < results.length; ++i) {
+        const out = [];
+        for (let i = 0; i < results.length; ++i) {
             if (results[i].id > -1) {
-                var obj = this.searchIndex[results[i].id];
+                const obj = this.searchIndex[results[i].id];
                 obj.lev = results[i].lev;
                 if (isType !== true || obj.type) {
-                    var res = this.buildHrefAndPath(obj);
+                    const res = this.buildHrefAndPath(obj);
                     // obj.displayPath = pathSplitter(res[0]);
                     obj.displayPath = res[0];
                     obj.fullPath = obj.displayPath + obj.name;
@@ -535,11 +535,11 @@ class DocSearch {
 
     buildHrefAndPath(item) {
         let rootPath = this.getRootPath();
-        var displayPath;
-        var href;
-        var type = itemTypes[item.ty];
-        var name = item.name;
-        var path = item.path;
+        let displayPath;
+        let href;
+        const type = itemTypes[item.ty];
+        const name = item.name;
+        let path = item.path;
 
         if (type === "mod") {
             displayPath = path + "::";
@@ -553,19 +553,19 @@ class DocSearch {
             displayPath = "";
             href = rootPath + name + "/index.html";
         } else if (item.parent !== undefined) {
-            var myparent = item.parent;
-            var anchor = "#" + type + "." + name;
-            var parentType = itemTypes[myparent.ty];
-            var pageType = parentType;
-            var pageName = myparent.name;
+            const myparent = item.parent;
+            let anchor = "#" + type + "." + name;
+            const parentType = itemTypes[myparent.ty];
+            let pageType = parentType;
+            let pageName = myparent.name;
 
             if (parentType === "primitive") {
                 displayPath = myparent.name + "::";
             } else if (type === "structfield" && parentType === "variant") {
                 // Structfields belonging to variants are special: the
                 // final path element is the enum name.
-                var splitPath = item.path.split("::");
-                var enumName = splitPath.pop();
+                const splitPath = item.path.split("::");
+                const enumName = splitPath.pop();
                 path = splitPath.join("::");
                 displayPath = path + "::" + enumName + "::" + myparent.name + "::";
                 anchor = "#variant." + myparent.name + ".field." + name;
@@ -603,7 +603,7 @@ class DocSearch {
      * @return {boolean}       [Whether the result is valid or not]
      */
     validateResult(name, path, keys, parent) {
-        for (var i = 0; i < keys.length; ++i) {
+        for (let i = 0; i < keys.length; ++i) {
             // each check is for validation so we negate the conditions and invalidate
             if (!(
                 // check for an exact name match
