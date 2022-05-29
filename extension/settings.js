@@ -1,3 +1,5 @@
+// All getters are async getter, all setter are sync setter,
+// we just ignore the set promise.
 const settings = {
     get autoUpdate() {
         return (async () => {
