@@ -54,6 +54,10 @@ class DocSearch {
         this.split = null;
     }
 
+    setSearchIndex(searchIndex) {
+        this.searchIndex = this.buildIndex(searchIndex);
+    }
+
     getSearchUrl(keyword) {
         let url = `${this.getRootPath()}${this.name}/index.html`;
         if (keyword) {
@@ -88,7 +92,7 @@ class DocSearch {
             // https://github.com/rust-lang/rust/pull/83003
             // librustdoc has switched the search-index.js from a "array of struct" to a "struct of array" format.
             // We need to compat both the new and old formats.
-            if (["t", "n", "q", "d", "i", "f", "p"].every( key => key in rawSearchIndex[crate])) {
+            if (["t", "n", "q", "d", "i", "f", "p"].every(key => key in rawSearchIndex[crate])) {
                 // an array of (Number) item types
                 var itemTypes = rawSearchIndex[crate].t;
                 // an array of (String) item names

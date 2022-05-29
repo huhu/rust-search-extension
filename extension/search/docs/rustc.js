@@ -1,8 +1,12 @@
 class RustcSearch extends DocSearch {
-    constructor(searchIndex, version) {
+    constructor(searchIndex) {
         super("rustc", searchIndex, () => {
             return "https://doc.rust-lang.org/nightly/nightly-rustc/";
         });
+    }
+
+    // rustc cached version, see also script/rustc.js
+    setVersion(version) {
         this.version = version;
     }
 

@@ -437,8 +437,8 @@ function getPlatformOs() {
             case "stable:add": {
                 if (message.searchIndex) {
                     IndexManager.setStdStableIndex(message.searchIndex);
-                    // New stdSearcher instance after docs updated
-                    stdSearcher = new StdSearch(message.searchIndex);
+                    // Update search index after docs updated
+                    stdSearcher.setSearchIndex(message.searchIndex);
                     sendResponse(true);
                 } else {
                     sendResponse(false);
@@ -449,8 +449,8 @@ function getPlatformOs() {
             case "nightly:add": {
                 if (message.searchIndex) {
                     IndexManager.setStdNightlyIndex(message.searchIndex);
-                    // New nightlySearcher instance after docs updated
-                    nightlySearcher = new NightlySearch(message.searchIndex);
+                    // Update search index after docs updated
+                    nightlySearcher.setSearchIndex(message.searchIndex);
                     sendResponse(true);
                 } else {
                     sendResponse(false);
@@ -466,8 +466,8 @@ function getPlatformOs() {
             }
             case "rustc:add": {
                 if (message.searchIndex) {
-                    // New rustcSearcher instance after docs updated
-                    rustcSearcher = new RustcSearch(message.searchIndex, message.version);
+                    rustcSearcher.setSearchIndex(message.searchIndex);
+                    rustcSearcher.setVersion(message.version);
                     sendResponse(true);
                 } else {
                     sendResponse(false);
