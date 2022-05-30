@@ -15,7 +15,7 @@ local json = manifest.new(
              .addIcons(icons())
              .addPermissions(['storage', 'unlimitedStorage'])
              .addWebAccessibleResources(utils.js_files('script', ['lib', 'add-search-index']))
-             .addBackgroundScripts(['migration.js', 'settings.js', 'deminifier.js', 'core/storage.js'])
+             .addBackgroundScripts(['migration.js', 'settings.js', 'deminifier.js'])
              .addBackgroundScripts(utils.js_files('search', ['algorithm', 'book', 'crate', 'attribute', 'caniuse', 'lint']))
              .addBackgroundScripts(utils.js_files('search/docs', ['base', 'crate-doc', 'rustc']))
              .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'rfcs', 'commands']))
