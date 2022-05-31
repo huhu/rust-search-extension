@@ -74,40 +74,38 @@ class DocSearch {
     buildIndex(rawSearchIndex) {
         let searchIndex = [];
         const searchWords = [];
-        for (let crate in rawSearchIndex) {
-            if (!rawSearchIndex.hasOwnProperty(crate)) {
-                continue;
-            }
-
-            searchWords.push(crate);
+        // if the rawSearchIndex is undefined or null, give it a empty object `{}`
+        // to call iterate.
+        for (let [crateName, indexItem] of Object.entries(rawSearchIndex || {})) {
+            searchWords.push(crateName);
             searchIndex.push({
-                crate: crate,
+                crate: crateName,
                 ty: 1, // == ExternCrate
-                name: crate,
+                name: crateName,
                 path: "",
-                desc: rawSearchIndex[crate].doc,
+                desc: indexItem.doc,
                 type: null,
             });
 
             // https://github.com/rust-lang/rust/pull/83003
             // librustdoc has switched the search-index.js from a "array of struct" to a "struct of array" format.
             // We need to compat both the new and old formats.
-            if (["t", "n", "q", "d", "i", "f", "p"].every(key => key in rawSearchIndex[crate])) {
+            if (["t", "n", "q", "d", "i", "f", "p"].every(key => key in indexItem)) {
                 // an array of (Number) item types
-                const itemTypes = rawSearchIndex[crate].t;
+                const itemTypes = indexItem.t;
                 // an array of (String) item names
-                const itemNames = rawSearchIndex[crate].n;
+                const itemNames = indexItem.n;
                 // an array of (String) full paths (or empty string for previous path)
-                const itemPaths = rawSearchIndex[crate].q;
+                const itemPaths = indexItem.q;
                 // an array of (String) descriptions
-                const itemDescs = rawSearchIndex[crate].d;
+                const itemDescs = indexItem.d;
                 // an array of (Number) the parent path index + 1 to `paths`, or 0 if none
-                const itemParentIdxs = rawSearchIndex[crate].i;
+                const itemParentIdxs = indexItem.i;
                 // an array of (Object | null) the type of the function, if any
-                const itemFunctionSearchTypes = rawSearchIndex[crate].f;
+                const itemFunctionSearchTypes = indexItem.f;
                 // an array of [(Number) item type,
                 //              (String) name]
-                let paths = rawSearchIndex[crate].p;
+                let paths = indexItem.p;
 
                 // convert `paths` into an object form
                 for (let i = 0; i < paths.length; ++i) {
@@ -127,7 +125,7 @@ class DocSearch {
                 let lastPath = "";
                 for (let i = 0; i < len; ++i) {
                     let row = {
-                        crate: crate,
+                        crate: crateName,
                         ty: itemTypes[i],
                         name: itemNames[i],
                         path: itemPaths[i] ? itemPaths[i] : lastPath,
@@ -152,11 +150,11 @@ class DocSearch {
                 //              (Number | null) the parent path index to `paths`]
                 //              (Object | null) the type of the function (if any)
                 // Compat old style (items, paths) and new style (i, p)
-                const items = rawSearchIndex[crate].items || rawSearchIndex[crate].i;
+                const items = indexItem.items || indexItem.i;
 
                 // an array of [(Number) item type,
                 //              (String) name]
-                let paths = rawSearchIndex[crate].paths || rawSearchIndex[crate].p;
+                let paths = indexItem.paths || indexItem.p;
 
                 // convert `paths` into an object form
                 for (let i = 0; i < paths.length; ++i) {
@@ -177,7 +175,7 @@ class DocSearch {
                 for (let i = 0; i < len; ++i) {
                     const rawRow = items[i];
                     let row = {
-                        crate: crate,
+                        crate: crateName,
                         ty: rawRow[0],
                         name: rawRow[1],
                         path: rawRow[2] || lastPath,
@@ -394,10 +392,8 @@ class DocSearch {
 
     sortResults(results) {
         const ar = [];
-        for (let entry in results) {
-            if (results.hasOwnProperty(entry)) {
-                ar.push(results[entry]);
-            }
+        for (let entry of Object.values(results)) {
+            ar.push(entry);
         }
         results = ar;
         const nresults = results.length;
@@ -411,7 +407,7 @@ class DocSearch {
         }
 
         const valLower = this.valLower;
-        results.sort(function(aaa, bbb) {
+        results.sort(function (aaa, bbb) {
             let a, b;
 
             // Sort by non levenshtein results and then levenshtein results by the distance
