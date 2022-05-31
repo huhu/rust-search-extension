@@ -9,7 +9,7 @@ function cleanSearchIndex() {
     return searchIndex;
 }
 
-(function() {
+(function () {
     function sendSearchIndex() {
         if (location.hostname === "docs.rs") { // docs.rs pages
             // Parse crate info from location pathname.
@@ -57,17 +57,19 @@ function cleanSearchIndex() {
         // Due to the new search-index.js on-demand load mode after PR #82310 has been merged.
         // We need to trigger a manual search-index.js load here.
         console.log("No search index found, start loading...")
-            // Since rust 1.58, we can get the searchIndexJs from window.searchIndexJs.
+        // Since rust 1.58, we can get the searchIndexJs from window.searchIndexJs.
         let searchIndexJs = window.searchIndexJS;
 
         // For the older version, we still need to get it from the DOM.
         if (!searchIndexJs) {
             let rustdocVars = document.getElementById("rustdoc-vars");
-            // If we can't get the search index via "data-search-index-js",
-            // then we should fallback to the "data-search-js", which is a
-            // temporary stage in librustdoc. 
-            // Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
-            searchIndexJs = (rustdocVars.attributes["data-search-index-js"] || rustdocVars.attributes["data-search-js"]).value;
+            if (rustdocVars) {
+                // If we can't get the search index via "data-search-index-js",
+                // then we should fallback to the "data-search-js", which is a
+                // temporary stage in librustdoc.
+                // Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
+                searchIndexJs = (rustdocVars.attributes["data-search-index-js"] || rustdocVars.attributes["data-search-js"]).value;
+            }
         }
 
         if (searchIndexJs) {
@@ -78,6 +80,5 @@ function cleanSearchIndex() {
         } else {
             console.error("Sorry, no search index found.");
         }
-
     }
 })();
