@@ -50,6 +50,7 @@ function getPlatformOs() {
         mirrorCommand,
         labelCommand,
         rfcCommand,
+        blogCommand,
         new HelpCommand(),
         new StableCommand(),
         new HistoryCommand(),
