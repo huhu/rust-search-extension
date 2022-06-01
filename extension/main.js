@@ -40,6 +40,7 @@ function getPlatformOs() {
     const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
     const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
     const rfcCommand = new RfcCommand(await IndexManager.getRfcIndex());
+    const blogCommand = new BlogCommand();
 
     const commandManager = new CommandManager(
         cargoCommand,
@@ -541,6 +542,7 @@ function getPlatformOs() {
                 yetCommand.setIndex(index['yet']);
                 toolCommand.setIndex(index['tool']);
                 mirrorCommand.setIndex(index['mirror']);
+                blogCommand.setPosts(index['blog']);
                 sendResponse(true);
                 break;
             }
@@ -557,7 +559,7 @@ function getPlatformOs() {
     // Put blog release request last to avoid error due to
     // possibly request failed. E.g. Github Pages down.
     let response = await fetch("https://blog.rust-lang.org/releases.json");
-    commandManager.addCommand(new BlogCommand((await response.json())["releases"]));
+    blogCommand.setPosts((await response.json())["releases"]);
 })();
 
 (async () => {
