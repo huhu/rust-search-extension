@@ -19,17 +19,10 @@ The number of suggestions is limited to the browser API, currently we can't cust
 Unfortunately, the browser's API doesn't allow the extension to change its keyword dynamically. You can customize your keyword by changing [this line](https://github.com/huhu/rust-search-extension/blob/599b1c9a312751e3cfeef02e5f39d393aa091ba3/manifest.jsonnet#L12) to build your own version.
 # Permissions
 
-### Why does the extension require reading browser history permission?
-
-The sole permission required by the extension is [tabs](https://developer.chrome.com/extensions/tabs), which gives accessing browser tabs information capability. 
-We use this permission to open the search result in the `current tab` or `new tab` for the sole purpose. Feel free to check our [Privacy Policy](/privacy/) for more information. 
-
 ### Why does the extension require access to github.com?
 
 Since **v1.1.0**, we add a [new enhancement feature](/#rust-repository-enhancement) for the rust-lang repository's [release page](https://github.com/rust-lang/rust/blob/master/RELEASES.md).
 This needs permission to access the single release page, no other page else. See the extension permission declaration file: [line 38](https://github.com/huhu/rust-search-extension/blob/7a0aabd0eada6c615816c3f164647d3059fa4d6f/manifest.jsonnet#L38).
-
-
 
 # Caveats
 

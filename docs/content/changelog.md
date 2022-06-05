@@ -4,6 +4,17 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.7 - 2022-06
+
+- Remove the `tabs` permission requirement.
+- Migrate `localStorage` to `chrome.storage` API ({{ issue(id=155) }}, {{ issue(id=157) }}, {{ issue(id=158) }}).
+- Support update blog command posts index in [update page](/update).
+- Bugfix:
+  - Fix docs.rs TOC max-width and padding.
+  - Only render `.top-doc` headings as TOC. Fixes {{ issue(id=152) }}.
+  - Don't reposition feature flag menu. Fixes {{ issue(id=154) }}.
+  - Fix search base iterate issue ({{ issue(id=159) }}).
+
 # v1.6 - 2022-03-02
 
 - Show optional dependencies in feature flags menu. Fixes {{ issue(id=29) }}.

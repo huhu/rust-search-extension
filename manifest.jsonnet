@@ -8,7 +8,7 @@ local icons() = {
 
 local json = manifest.new(
   name='Rust Search Extension',
-  version='1.6.0',
+  version='1.7.0',
   keyword='rs',
   description='Rust Search Extension - the ultimate search extension for Rust',
 )
