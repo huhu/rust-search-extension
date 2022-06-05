@@ -433,7 +433,9 @@ function getPlatformOs() {
         await storage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
 
-    chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+    // DO NOT USE ASYNC CALLBACK HERE, SEE THIS ISSUE:
+    // https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         switch (message.action) {
             // Stable:* action is exclusive to stable docs event
             case "stable:add": {
@@ -478,24 +480,29 @@ function getPlatformOs() {
             }
             // Crate:* action is exclusive to crate event
             case "crate:check": {
-                let crates = await CrateDocManager.getCrates();
-                sendResponse(crates[message.crateName]);
+                CrateDocManager.getCrates().then((crates) => {
+                    sendResponse(crates[message.crateName]);
+                })
                 break;
             }
             case "crate:add": {
                 if (message.searchIndex) {
-                    await CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
-                    await crateDocSearcher.initAllCrateSearcher();
-                    sendResponse(true);
+                    CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex).then(() => {
+                        crateDocSearcher.initAllCrateSearcher();
+                    }).then(() => {
+                        sendResponse(true);
+                    });
                 } else {
                     sendResponse(false);
                 }
                 break;
             }
             case "crate:remove": {
-                await CrateDocManager.removeCrate(message.crateName);
-                await crateDocSearcher.initAllCrateSearcher();
-                sendResponse(true);
+                CrateDocManager.removeCrate(message.crateName).then(() => {
+                    crateDocSearcher.initAllCrateSearcher();
+                }).then(() => {
+                    sendResponse(true);
+                });
                 break;
             }
             // Index-update:* action is exclusive to index update event
