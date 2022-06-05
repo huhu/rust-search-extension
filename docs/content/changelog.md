@@ -4,7 +4,7 @@ description = "Changelog"
 weight = 3
 +++
 
-# v1.7 - 2022-06
+# v1.7 - 2022-06-06
 
 - Remove the `tabs` permission requirement.
 - Migrate `localStorage` to `chrome.storage` API ({{ issue(id=155) }}, {{ issue(id=157) }}, {{ issue(id=158) }}).
