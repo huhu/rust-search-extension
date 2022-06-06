@@ -11,7 +11,7 @@ serde_json = "1"
 minifier = "0.0.41"
 unicode-segmentation = "1.6.0"
 futures = "0.3.1"
-tokio = { version = "0.2", features = ["macros", "time"] }
+tokio = { version = "1.8", features = ["macros", "time"] }
 reqwest = { version = "0.10", features = ["json"] }
 select = "0.4.3"
 csv = "1.1.3"
