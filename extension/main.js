@@ -487,22 +487,26 @@ function getPlatformOs() {
             }
             case "crate:add": {
                 if (message.searchIndex) {
-                    CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex).then(() => {
-                        crateDocSearcher.initAllCrateSearcher();
-                    }).then(() => {
-                        sendResponse(true);
-                    });
+                    CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex)
+                        .then(() => {
+                            crateDocSearcher.initAllCrateSearcher();
+                        })
+                        .then(() => {
+                            sendResponse(true);
+                        });
                 } else {
                     sendResponse(false);
                 }
                 break;
             }
             case "crate:remove": {
-                CrateDocManager.removeCrate(message.crateName).then(() => {
-                    crateDocSearcher.initAllCrateSearcher();
-                }).then(() => {
-                    sendResponse(true);
-                });
+                CrateDocManager.removeCrate(message.crateName)
+                    .then(() => {
+                        crateDocSearcher.initAllCrateSearcher();
+                    })
+                    .then(() => {
+                        sendResponse(true);
+                    });
                 break;
             }
             // Index-update:* action is exclusive to index update event
