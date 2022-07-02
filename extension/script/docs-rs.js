@@ -97,7 +97,10 @@ document.addEventListener("DOMContentLoaded", async() => {
 
     // Exclude /crate/** pages
     if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
-        chrome.runtime.sendMessage({ crateName, action: "crate:check" }, crate => {
+        // Query installed crates from chrome.storage API
+        chrome.storage.local.get("crates", (result) => {
+            let crates = result['crates'] || {};
+            let crate = crates[crateName];
             if (crate) {
                 insertAddToExtensionElement(getState(crate.version));
             } else {

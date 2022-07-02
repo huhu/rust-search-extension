@@ -479,12 +479,6 @@ function getPlatformOs() {
                 break;
             }
             // Crate:* action is exclusive to crate event
-            case "crate:check": {
-                CrateDocManager.getCrates().then((crates) => {
-                    sendResponse(crates[message.crateName]);
-                })
-                break;
-            }
             case "crate:add": {
                 if (message.searchIndex) {
                     CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex)
