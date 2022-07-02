@@ -8,7 +8,7 @@ class CrateDocManager {
     }
 
     static async addCrate(name, version, searchIndex) {
-        if (searchIndex.hasOwnProperty(name)) {
+        if (name in searchIndex) {
             await storage.setItem(`@${name}`, searchIndex);
             let doc = searchIndex[name]["doc"];
             let crates = await CrateDocManager.getCrates();

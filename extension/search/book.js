@@ -1,13 +1,13 @@
 class BookSearch {
     constructor(bookIndex) {
         this.pages = {};
-        bookIndex.forEach(({name, url, pages}) => {
+        bookIndex.forEach(({ name, url, pages }) => {
             pages.forEach(([title, path, parentTitles]) => {
                 let cleanedTitle = cleanChapterTitle(title);
-                if (!this.pages.hasOwnProperty(cleanedTitle)) {
+                if (!(cleanedTitle in this.pages)) {
                     this.pages[cleanedTitle] = [];
                 }
-                this.pages[cleanedTitle].push({title, name, url: `${url}${path}.html`, parentTitles});
+                this.pages[cleanedTitle].push({ title, name, url: `${url}${path}.html`, parentTitles });
             });
         });
         this.titles = Object.keys(this.pages);
@@ -20,7 +20,7 @@ class BookSearch {
             if (title.length < query.length) continue;
             let index = title.indexOf(query);
             if (index > -1) {
-                results.push({title, matchIndex: index});
+                results.push({ title, matchIndex: index });
             }
         }
         return results.sort((a, b) => a.title.length - b.title.length)

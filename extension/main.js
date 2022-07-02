@@ -204,11 +204,11 @@ function getPlatformOs() {
             return await crateDocSearcher.search(query);
         },
         onFormat: (index, item) => {
-            if (item.hasOwnProperty("content")) {
+            if ('content' in item) {
                 // 1. Crate list header.
                 // 2. Crate result footer
                 return item;
-            } else if (item.hasOwnProperty("href")) {
+            } else if ('href' in item) {
                 return formatDoc(index, item);
             } else {
                 // Crate name list.
