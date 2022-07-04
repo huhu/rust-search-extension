@@ -62,14 +62,14 @@
 
         // For the older version, we still need to get it from the DOM.
         if (!searchIndexJs) {
-            let rustdocVars = document.getElementById("rustdoc-vars");
-            if (rustdocVars) {
-                // If we can't get the search index via "data-search-index-js",
-                // then we should fallback to the "data-search-js", which is a
-                // temporary stage in librustdoc.
-                // Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
-                searchIndexJs = (rustdocVars.attributes["data-search-index-js"] || rustdocVars.attributes["data-search-js"]).value;
-            }
+            // If we can't get the search index via "data-search-index-js",
+            // then we should fallback to the "data-search-js", which is a
+            // temporary stage in librustdoc.
+            // Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
+            //
+            // This PR https://github.com/rust-lang/rust/pull/98124 use another way to load search-index:
+            // by concatenating the paths to get a full search-index.js file, see resourcePath() function.
+            searchIndexJs = getVar('search-index-js') || getVar('search-js') || resourcePath("search-index", ".js");
         }
 
         if (searchIndexJs) {
@@ -82,3 +82,21 @@
         }
     }
 })();
+
+// ======== Following function mirrored to librustdoc main.js ========
+
+// Get rustdoc variable from DOM.
+function getVar(name) {
+    const el = document.getElementById("rustdoc-vars");
+    if (el) {
+        const dataVar = el.attributes["data-" + name];
+        if (dataVar) {
+            return dataVar.value;
+        }
+    }
+    return null
+}
+
+function resourcePath(basename, extension) {
+    return getVar("root-path") + basename + getVar("resource-suffix") + extension
+}
