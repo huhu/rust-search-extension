@@ -19,7 +19,7 @@ const settings = {
     },
     get offlineDocPath() {
         return (async () => {
-            return await storage.getItem('offline-path');
+            return await storage.getItem('offline-path') || '';
         })();
     },
     set offlineDocPath(path) {
