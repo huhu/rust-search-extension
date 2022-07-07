@@ -547,6 +547,7 @@ function getPlatformOs() {
                 let index = message.index;
                 IndexManager.setCommandIndex(index);
                 bookCommand.setIndex(index['book']);
+                bookZhCommand.setIndex(index['book/zh']);
                 yetCommand.setIndex(index['yet']);
                 toolCommand.setIndex(index['tool']);
                 mirrorCommand.setIndex(index['mirror']);
