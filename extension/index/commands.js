@@ -61,6 +61,9 @@ var commandsIndex = {
         ["Demystifying Async/Await in Rust", "https://ruspiro.github.io/ruspiro-async-book/"],
         ["Roguelike Tutorial - In Rust", "https://bfnightly.bracketproductions.com/"],
     ],
+    "book/zh":[
+        
+    ],
     "yet": [
         ["Are we async yet?", "https://areweasyncyet.rs", "Asynchronous I/O in Rust"],
         ["Are we audio yet?", "https://areweaudioyet.com", "Audio related development in Rust"],
