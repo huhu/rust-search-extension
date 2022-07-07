@@ -28,6 +28,9 @@ var commandsIndex = {
         ["mdBook Documentation", "https://rust-lang.github.io/mdBook/"],
         ["Rust's Unsafe Code Guidelines Reference", "https://rust-lang.github.io/unsafe-code-guidelines/"],
     ],
+    "book/zh":[
+        
+    ],
     "yet": [
         ["Are we async yet?", "https://areweasyncyet.rs", "Asynchronous I/O in Rust"],
         ["Are we audio yet?", "https://areweaudioyet.com", "Audio related development in Rust"],

@@ -34,7 +34,8 @@ function getPlatformOs() {
 
     const commandIndex = await IndexManager.getCommandIndex();
     const cargoCommand = new SimpleCommand('cargo', 'Show all useful third-party cargo subcommands.', commandIndex['cargo']);
-    const bookCommand = new SimpleCommand('book', 'Show all Rust official books.', commandIndex['book']);
+    const bookCommand = new SimpleCommand('book', 'Show all Rust books.', commandIndex['book']);
+    const bookZhCommand = new SimpleCommand('book/zh', 'Show all Chinese Rust books.', commandIndex['book/zh']);
     const yetCommand = new SimpleCommand('yet', 'Show all Are We Yet websites.', commandIndex['yet']);
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
     const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
@@ -45,6 +46,7 @@ function getPlatformOs() {
     const commandManager = new CommandManager(
         cargoCommand,
         bookCommand,
+        bookZhCommand,
         yetCommand,
         toolCommand,
         mirrorCommand,
