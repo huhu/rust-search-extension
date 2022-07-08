@@ -43,6 +43,7 @@ var commandsIndex = {
         ["Rust for the Polyglot Programmer", "https://www.chiark.greenend.org.uk/~ianmdlvl/rust-polyglot/"],
         ["Demystifying Async/Await in Rust", "https://ruspiro.github.io/ruspiro-async-book/"],
         ["Roguelike Tutorial - In Rust", "https://bfnightly.bracketproductions.com/"],
+        ["High Assurance Rust Developing Secure and Robust Software", "https://highassurance.rs/"],
     ],
     "book/zh":[
         ["【中文版】The Rust Programming Language", "https://rustwiki.org/zh-CN/book"],
@@ -58,13 +59,10 @@ var commandsIndex = {
         ["【中文版】The Rustonomicon", "https://nomicon.purewhite.io/"],
         ["【中文版】Rust API Guidelines", "https://zjp-cn.github.io/api-guidelines/"],
         ["【中文版】Rust Design Patterns", "http://chuxiuhong.com/chuxiuhong-rust-patterns-zh/"],
-        ["【中文版】std Rust 标准库文档", "https://rustwiki.org/zh-CN/std/"],
+        ["【中文版】Rust 标准库文档", "https://rustwiki.org/zh-CN/std/"],
         ["【中文版】The Little Book of Rust Macros", "https://zjp-cn.github.io/tlborm/"],
         ["【中文版】Futures Explained in 200 Lines of Rust", "https://stevenbai.top/books-futures-explained/book/"],
         ["【中文版】Rust 编码规范（非官方）", "https://rust-coding-guidelines.github.io/rust-coding-guidelines-zh/"],
-    ],
-    "book/zh":[
-        
     ],
     "yet": [
         ["Are we async yet?", "https://areweasyncyet.rs", "Asynchronous I/O in Rust"],
