@@ -202,21 +202,21 @@ function insertAddToExtensionElement(state) {
                       <span id="rse-here" style="text-decoration: underline; cursor: pointer">here</span>
                       to manage all your indexed crates.
                    </p>`;
-        iconAttributes = `class="fa-svg fa-svg-fw" style="color:green"`;
+        iconAttributes = `class="fa-svg" style="color:green"`;
         iconFile = SVG_CHECK_CIRCLE;
     } else if (state === "outdated") {
         content = `<p>You current version v${installedVersion} is outdated. Click to update to the v${crateVersion}.</p>`;
-        iconAttributes = `class="fa-svg fa-svg-fw" style="color:#e57300"`;
+        iconAttributes = `class="fa-svg" style="color:#e57300"`;
         iconFile = SVG_ARROW_UP_CIRCLE;
     } else if (state === "error") {
         // The error case: the user fail to install the crate.
         content = `<p>Oops! Some error happened. You can try again. <br><br>Or check the console and file an issue to report the error.</p>`;
-        iconAttributes = `class="fa-svg fa-svg-fw" style="color:#e62f07"`;
+        iconAttributes = `class="fa-svg" style="color:#e62f07"`;
         iconFile = SVG_ERROR;
     } else {
         // The default case: need-to-install.
         content = `<p>Add this crate to Rust Search Extension then you can search it in the address bar.</p>`;
-        iconAttributes = `class="fa-svg fa-svg-fw" style="color:#121212"`;
+        iconAttributes = `class="fa-svg" style="color:#121212"`;
         iconFile = SVG_PLUS_CIRCLE;
     }
     li.innerHTML = `<div class="add-to-extension"
