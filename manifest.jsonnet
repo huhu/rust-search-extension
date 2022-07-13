@@ -1,4 +1,4 @@
-local manifest = import 'core/manifest.libsonnet';
+local manifest = import 'core/manifest_v3.libsonnet';
 local utils = import 'core/utils.libsonnet';
 
 local icons() = {
@@ -8,19 +8,14 @@ local icons() = {
 
 local json = manifest.new(
   name='Rust Search Extension',
-  version='1.7.0',
+  version='1.8.0',
   keyword='rs',
   description='Rust Search Extension - the ultimate search extension for Rust',
+  service_worker="service-worker.js",
 )
              .addIcons(icons())
              .addPermissions(['storage', 'unlimitedStorage'])
-             .addWebAccessibleResources(utils.js_files('script', ['lib', 'add-search-index']))
-             .addBackgroundScripts(['migration.js', 'settings.js', 'deminifier.js'])
-             .addBackgroundScripts(utils.js_files('search', ['algorithm', 'book', 'crate', 'attribute', 'caniuse', 'lint']))
-             .addBackgroundScripts(utils.js_files('search/docs', ['base', 'crate-doc', 'rustc']))
-             .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'rfcs', 'commands']))
-             .addBackgroundScripts(utils.js_files('command', ['blog', 'label', 'help', 'stable', 'rfc']))
-             .addBackgroundScripts(['statistics.js', 'rust-version.js', 'crate-manager.js', 'index-manager.js', 'main.js'])
+             .addWebAccessibleResources(resources=utils.js_files('script', ['lib', 'add-search-index']))
              .addContentScript(
   matches=['*://docs.rs/*'],
   js=utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate']) + utils.js_files('libs', ['semver']),

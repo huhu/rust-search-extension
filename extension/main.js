@@ -11,8 +11,6 @@ function getPlatformOs() {
 }
 
 (async () => {
-    await migrate();
-
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
     let isOfflineMode = await settings.isOfflineMode;
@@ -597,7 +595,7 @@ function getPlatformOs() {
     }
 })();
 
-chrome.browserAction.onClicked.addListener(() => {
+chrome.action.onClicked.addListener(() => {
     let managePage = chrome.runtime.getURL("manage/index.html");
     chrome.tabs.create({url: managePage});
 });
