@@ -1,3 +1,5 @@
+// Format: jsonnetfmt -i manifest.jsonnet
+
 local manifest = import 'core/manifest_v3.libsonnet';
 local utils = import 'core/utils.libsonnet';
 
@@ -11,11 +13,14 @@ local json = manifest.new(
   version='1.8.0',
   keyword='rs',
   description='Rust Search Extension - the ultimate search extension for Rust',
-  service_worker="service-worker.js",
+  service_worker='service-worker.js',
 )
              .addIcons(icons())
              .addPermissions(['storage', 'unlimitedStorage'])
-             .addWebAccessibleResources(resources=utils.js_files('script', ['lib', 'add-search-index']))
+             .addWebAccessibleResources(
+  resources=utils.js_files('script', ['lib', 'add-search-index']),
+  matches=['*://docs.rs/*', '*://doc.rust-lang.org/*'],
+)
              .addContentScript(
   matches=['*://docs.rs/*'],
   js=utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate']) + utils.js_files('libs', ['semver']),
