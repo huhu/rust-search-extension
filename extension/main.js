@@ -1,4 +1,5 @@
 const c = new Compat();
+const manifestVersion = chrome.runtime.getManifest().manifest_version;
 
 // Get the information about the current platform os.
 // Possible os values: "mac", "win", "android", "cros", "linux", or "openbsd"
@@ -11,7 +12,9 @@ function getPlatformOs() {
 }
 
 (async () => {
-    await migrate();
+    if (manifestVersion === 2) {
+        await migrate();
+    }
 
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
@@ -597,7 +600,8 @@ function getPlatformOs() {
     }
 })();
 
-chrome.browserAction.onClicked.addListener(() => {
+const chromeAction = chrome.action || chrome.browserAction;
+chromeAction.onClicked.addListener(() => {
     let managePage = chrome.runtime.getURL("manage/index.html");
     chrome.tabs.create({url: managePage});
 });
