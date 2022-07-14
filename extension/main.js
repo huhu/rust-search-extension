@@ -1,4 +1,5 @@
 const c = new Compat();
+const manifestVersion = chrome.runtime.getManifest().manifest_version;
 
 // Get the information about the current platform os.
 // Possible os values: "mac", "win", "android", "cros", "linux", or "openbsd"
@@ -11,6 +12,10 @@ function getPlatformOs() {
 }
 
 (async () => {
+    if (manifestVersion === 2) {
+        await migrate();
+    }
+
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
     let isOfflineMode = await settings.isOfflineMode;
