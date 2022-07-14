@@ -595,7 +595,8 @@ function getPlatformOs() {
     }
 })();
 
-chrome.action.onClicked.addListener(() => {
+const chromeAction = chrome.action || chrome.browserAction;
+chromeAction.onClicked.addListener(() => {
     let managePage = chrome.runtime.getURL("manage/index.html");
     chrome.tabs.create({url: managePage});
 });
