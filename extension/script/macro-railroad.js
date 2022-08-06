@@ -27,7 +27,6 @@ async function load() {
         let modalContainer = createModal();
         newNode.appendChild(modalContainer);
 
-
         const diagramOptions = new wasm_bindgen.DiagramOptions();
         let iconsContainer = createIcons(macroSrc, diagramOptions);
         svgContainer.appendChild(iconsContainer);
@@ -46,20 +45,6 @@ function isRustDoc() {
 // Injects the relevant CSS into the document's <head>
 function injectCss() {
     let head = document.head;
-    // let mrextCss = document.createElement('link');
-    // mrextCss.setAttribute('type', 'text/css');
-    // mrextCss.setAttribute('rel', 'stylesheet');
-    // mrextCss.setAttribute('href', chrome.runtime.getURL('assets/macro_railroad_ext.css'));
-    // // Since this CSS is loaded after the fact, the modal may flicker upon
-    // // page-load. The modal-containers are therefor display:none by default,
-    // // which is removed once the CSS takes over.
-    // mrextCss.onload = function () {
-    //     for (let n of document.getElementsByClassName("railroad_modal")) {
-    //         n.removeAttribute("style");
-    //     }
-    // };
-
-    // head.appendChild(mrextCss);
 
     let rrCss = document.createElement('style');
     rrCss.setAttribute('type', 'text/css');
@@ -81,8 +66,6 @@ function createModal() {
     let modalContainer = document.createElement('div');
     modalContainer.appendChild(modalContent);
     modalContainer.setAttribute('class', 'railroad_modal');
-    // See injectCss() function
-    modalContainer.setAttribute('style', 'display: none');
     modalContainer.onclick = function () {
         modalContainer.classList.remove('railroad_active');
     };
