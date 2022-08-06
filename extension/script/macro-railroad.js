@@ -1,6 +1,6 @@
-(async () => {
+document.addEventListener("DOMContentLoaded", async () => {
     await load();
-})();
+});
 
 async function load() {
     if (!isRustDoc()) return;
