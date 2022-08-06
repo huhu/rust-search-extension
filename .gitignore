@@ -8,3 +8,4 @@ target
 docs/public
 manifest.json
 extension/manage/
+macro_railroad/pkg

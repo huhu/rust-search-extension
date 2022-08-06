@@ -20,6 +20,13 @@ local json = if browser == 'chrome' then
   .addWebAccessibleResources(
     resources=utils.js_files('script', ['lib', 'add-search-index']),
     matches=['*://docs.rs/*', '*://doc.rust-lang.org/*'],
+  ).addWebAccessibleResources(
+    resources=['wasm/macro-railroad.wasm', 'assets/fullscreen.svg', 'assets/options.svg'],
+    matches=[
+      '*://docs.rs/*',
+      '*://doc.rust-lang.org/*',
+      'file:///*',
+    ],
   ) {
     description: 'A handy browser extension to search Rust docs and crates, etc in the address bar instantly!',
     // The production extension public key to get the constant extension id during development.
@@ -29,6 +36,7 @@ else
   local manifest_v2 = import 'core/manifest.libsonnet';
   manifest_v2.new(name, keyword, description, version)
   .addWebAccessibleResources(utils.js_files('script', ['lib', 'add-search-index']))
+  .addWebAccessibleResources(['wasm/macro-railroad.wasm', 'assets/fullscreen.svg', 'assets/options.svg'])
   .addBackgroundScripts(['migration.js', 'settings.js', 'deminifier.js'])
   .addBackgroundScripts(utils.js_files('search', ['algorithm', 'book', 'crate', 'attribute', 'caniuse', 'lint']))
   .addBackgroundScripts(utils.js_files('search/docs', ['base', 'crate-doc', 'rustc']))
@@ -63,4 +71,12 @@ json.addIcons(icons())
   matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md*'],
   js=utils.js_files('script', ['lib', 'rust-lang-release']),
   css=['script/github.css'],
+).addContentScript(
+  matches=[
+    '*://docs.rs/*',
+    '*://doc.rust-lang.org/*',
+    'file:///*',
+  ],
+  js=utils.js_files('script', ['macro-railroad', 'macro-railroad-wasm']),
+  css=['script/macro-railroad.css'],
 )
