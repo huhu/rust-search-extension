@@ -57,6 +57,7 @@ img.railroad_icon:hover {
 }
 
 div.railroad_dropdown_content {
+    color: black;
     border: 1px solid black;
     visibility: hidden;
     position: absolute;
