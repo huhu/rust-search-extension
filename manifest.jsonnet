@@ -21,7 +21,7 @@ local json = if browser == 'chrome' then
     resources=utils.js_files('script', ['lib', 'add-search-index']),
     matches=['*://docs.rs/*', '*://doc.rust-lang.org/*'],
   ).addWebAccessibleResources(
-    resources=['wasm/macro-railroad.wasm', 'assets/fullscreen.svg', 'assets/options.svg'],
+    resources=['wasm/*.wasm', 'assets/*.svg'],
     matches=[
       '*://docs.rs/*',
       '*://doc.rust-lang.org/*',
@@ -36,7 +36,7 @@ else
   local manifest_v2 = import 'core/manifest.libsonnet';
   manifest_v2.new(name, keyword, description, version)
   .addWebAccessibleResources(utils.js_files('script', ['lib', 'add-search-index']))
-  .addWebAccessibleResources(['wasm/macro-railroad.wasm', 'assets/fullscreen.svg', 'assets/options.svg'])
+  .addWebAccessibleResources(['wasm/*.wasm', 'assets/*.svg'])
   .addBackgroundScripts(['migration.js', 'settings.js', 'deminifier.js'])
   .addBackgroundScripts(utils.js_files('search', ['algorithm', 'book', 'crate', 'attribute', 'caniuse', 'lint']))
   .addBackgroundScripts(utils.js_files('search/docs', ['base', 'crate-doc', 'rustc']))
