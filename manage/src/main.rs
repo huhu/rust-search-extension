@@ -1,6 +1,6 @@
 //! Build manage directory html pages.
 
-use std::{error::Error, fs, io::Write, path::PathBuf, sync::mpsc::channel, time::Duration};
+use std::{error::Error, fs, io::Write, sync::mpsc::channel, time::Duration};
 
 use notify::{watcher, Watcher};
 use tera::{Context, Tera};
@@ -14,7 +14,6 @@ const TEMPLATES: [&str; 5] = [
     "export.html",
     "redirect.html",
 ];
-const ASSETS: [&str; 3] = ["css", "js", "static"];
 const BUILD_DIR: &str = "../extension/manage";
 
 fn main() -> Result<()> {
@@ -56,7 +55,6 @@ fn compile_sass() -> Result<()> {
 }
 
 fn build() -> Result<()> {
-    copy_asset()?;
     compile_sass()?;
 
     let tera = Tera::new("templates/*.html")?;
@@ -68,26 +66,5 @@ fn build() -> Result<()> {
         fs::File::create(&path)?.write_all(&buf)?;
     }
 
-    Ok(())
-}
-
-fn copy_asset() -> Result<()> {
-    for asset in ASSETS.iter() {
-        let path = format!("templates/{}", asset);
-        for entry in fs::read_dir(&path)? {
-            let entry = entry?;
-            let from = entry.path();
-            if let Some(file_name) = from.file_name() {
-                let mut to = PathBuf::new();
-                to.push(format!("{}/{}", BUILD_DIR, asset));
-                if !to.exists() {
-                    fs::create_dir_all(&to)?;
-                }
-
-                to.push(file_name.to_string_lossy().to_string());
-                fs::copy(from, to)?;
-            }
-        }
-    }
     Ok(())
 }
