@@ -1,12 +1,6 @@
 use railroad::RailroadNode;
 use wasm_bindgen::prelude::*;
 
-// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
-// allocator.
-#[cfg(feature = "wee_alloc")]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
@@ -20,11 +14,14 @@ mod built_info {
 
 #[wasm_bindgen(start)]
 pub fn start() {
-    #[cfg(feature = "console_error_panic_hook")]
-    set_panic_hook();
+    // Set panic hook to get better error messages if our code ever panics.
+    //
+    // For more details see
+    // https://github.com/rustwasm/console_error_panic_hook#readme
+    std::panic::set_hook(Box::new(console_error_panic_hook::hook));
 
     log(&format!(
-        "macro_railroad_ext built {} on {} using {}",
+        "macro_railroad built {} on {} using {}",
         built_info::BUILT_TIME_UTC,
         built_info::RUSTC_VERSION,
         built_info::DEPENDENCIES_STR
@@ -58,6 +55,8 @@ pub struct DiagramOptions {
 pub struct Diagram {
     #[wasm_bindgen(readonly)]
     pub width: i64,
+    // We can't make svg pub since wasm-bindgen require each public field to be Copy.
+    // See rustwasm/wasm-bindgen#1985 and rustwasm/wasm-bindgen#2775.
     svg: String,
 }
 
@@ -91,9 +90,8 @@ impl Default for DiagramOptions {
 /// Parse the given macro_rules!()-source, returns an SVG and it's preferred width
 #[wasm_bindgen(js_name = toDiagram)]
 pub fn to_diagram(src: &str, options: &DiagramOptions) -> Result<Diagram, JsValue> {
-    log(&format!("{:?}", options));
     let macro_rules = macro_railroad::parser::parse(src)
-        .map_err(|_| "Macro railroad parse failed.".to_string())?;
+        .map_err(|e| format!("macro_railroad parse failed: {}", e))?;
     let mut tree = macro_railroad::lowering::MacroRules::from(macro_rules);
 
     if options.hide_internal {
@@ -117,15 +115,4 @@ pub fn to_diagram(src: &str, options: &DiagramOptions) -> Result<Diagram, JsValu
         width: dia.width(),
         svg,
     })
-}
-
-// When the `console_error_panic_hook` feature is enabled, we can call the
-// `set_panic_hook` function at least once during initialization, and then
-// we will get better error messages if our code ever panics.
-//
-// For more details see
-// https://github.com/rustwasm/console_error_panic_hook#readme
-#[cfg(feature = "console_error_panic_hook")]
-pub fn set_panic_hook() {
-    console_error_panic_hook::set_once();
 }
