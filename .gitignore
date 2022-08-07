@@ -2,6 +2,7 @@
 .DS_Store
 *.crx
 *.pem
+Cargo.lock
 web-ext-artifacts
 node_modules
 target
