@@ -5,10 +5,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function load() {
     if (!isRustDoc()) return;
 
+    let macros = document.querySelectorAll('pre.macro');
+    if (!macros || macros.length === 0) return;
+
     await wasm_bindgen(chrome.runtime.getURL('wasm/macro-railroad.wasm'));
     injectCss();
 
-    for (let macro of document.querySelectorAll('pre.macro')) {
+    for (let macro of macros) {
         let parentNode = macro.parentNode;
         if (!parentNode) continue;
 
