@@ -3,7 +3,7 @@
 local utils = import 'core/utils.libsonnet';
 
 local icons() = {
-  [size]: 'rust.png'
+  [size]: 'assets/rust.png'
   for size in ['16', '48', '128']
 };
 
