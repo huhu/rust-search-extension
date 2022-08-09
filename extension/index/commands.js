@@ -82,6 +82,9 @@ var commandsIndex = {
         ["Rust Playground", "https://play.rust-lang.org/"],
         ["cheats.rs", "https://cheats.rs/"],
         ["caniuse.rs", "https://caniuse.rs/"],
+        ["deps.rs", "https://deps.rs/"],
+        ["stdrs.dev", "https://stdrs.dev/"],
+        ["Rust Explorer", "https://www.rustexplorer.com/"],
         ["Macro Railroad ", "https://lukaslueg.github.io/macro_railroad_wasm_demo/"],
     ],
     "mirror": [
