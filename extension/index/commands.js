@@ -467,5 +467,10 @@ var commandsIndex = {
             "https://github.com/crev-dev/cargo-crev",
             "A cryptographically verifiable code review system for the cargo (Rust) package manager"
         ],
+        [
+            "cargo-vet",
+            "https://github.com/mozilla/cargo-vet",
+            "The cargo vet subcommand is a tool to help projects ensure that third-party Rust dependencies have been audited by a trusted source."
+        ]
     ],
 };
