@@ -401,6 +401,71 @@ var commandsIndex = {
             "cargo-x",
             "https://github.com/liuchong/cargo-x",
             "A very simple third-party cargo subcommand to execute a custom command."
-        ]
+        ],
+        [
+            "cargo-flamegraph",
+            "https://github.com/flamegraph-rs/flamegraph",
+            "Easy flamegraphs for Rust projects and everything else"
+        ],
+        [
+            "cargo-call-stack",
+            "https://github.com/japaric/cargo-call-stack",
+            "Static, whole program stack usage analyzer"
+        ],
+        [
+            "cargo-typesize",
+            "https://github.com/davidrusu/cargo-typesize",
+            "cargo-typesize	List the size of all types in a Rust crate"
+        ],
+        [
+            "cargo-select",
+            "https://github.com/LoipesMas/cargo-select",
+            "Cargo subcommand to easily run targets/examples"
+        ],
+        [
+            "cargo-feature-tree",
+            "https://github.com/blu3beri/cargo-feature-tree",
+            "List your features in a expanded and tree-like format"
+        ],
+        [
+            "cargo-unused-features",
+            "https://github.com/TimonPost/cargo-unused-features",
+            "Find potential unused enabled feature flags and prune them"
+        ],
+        [
+            "cargo-quickinstall",
+            "https://github.com/alsuren/cargo-quickinstall",
+            "pre-compiled binary packages for cargo install"
+        ],
+        [
+            "cargo-pgo",
+            "https://github.com/Kobzol/cargo-pgo",
+            "optimizing binaries with PGO and BOLT"
+        ],
+        [
+            "cargo-llvm-cov",
+            "https://github.com/taiki-e/cargo-llvm-cov",
+            "to easily use LLVM source-based code coverage (-C instrument-coverage)"
+        ],
+        [
+            "cargo-llvm-lines",
+            "https://github.com/dtolnay/cargo-llvm-lines",
+            "Count lines of LLVM IR per generic function"
+        ],
+        [
+            "cargo-semver",
+            "https://github.com/rust-lang/rust-semverver",
+            "Automatic checking for semantic versioning in library crates"
+        ],
+        [
+            "cargo-geiger",
+            "https://github.com/rust-secure-code/cargo-geiger",
+            "Detects usage of unsafe Rust in a Rust crate and its dependencies"
+        ],
+        [
+            "cargo-crev",
+            "https://github.com/crev-dev/cargo-crev",
+            "A cryptographically verifiable code review system for the cargo (Rust) package manager"
+        ],
     ],
 };
