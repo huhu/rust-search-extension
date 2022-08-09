@@ -551,6 +551,7 @@ function getPlatformOs() {
                 IndexManager.setCommandIndex(index);
                 bookCommand.setIndex(index['book']);
                 bookZhCommand.setIndex(index['book/zh']);
+                cargoCommand.setIndex(index['cargo'])
                 yetCommand.setIndex(index['yet']);
                 toolCommand.setIndex(index['tool']);
                 mirrorCommand.setIndex(index['mirror']);
