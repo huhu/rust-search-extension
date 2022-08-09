@@ -401,6 +401,11 @@ var commandsIndex = {
             "cargo-x",
             "https://github.com/liuchong/cargo-x",
             "A very simple third-party cargo subcommand to execute a custom command."
+        ],
+        [
+            "cargo-vet",
+            "https://github.com/mozilla/cargo-vet",
+            "The cargo vet subcommand is a tool to help projects ensure that third-party Rust dependencies have been audited by a trusted source."
         ]
     ],
 };
