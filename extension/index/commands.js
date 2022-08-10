@@ -471,6 +471,11 @@ var commandsIndex = {
             "cargo-vet",
             "https://github.com/mozilla/cargo-vet",
             "The cargo vet subcommand is a tool to help projects ensure that third-party Rust dependencies have been audited by a trusted source."
+        ],
+        [
+            "cargo-semver-check",
+            "https://github.com/obi1kenobi/cargo-semver-check",
+            "Scan your Rust crate for semver violations"
         ]
     ],
 };
