@@ -47,7 +47,7 @@ else
 
 json.addIcons(icons())
 .addPermissions(['storage', 'unlimitedStorage'])
-.setOptionsPage("manage/index.html")
+.setOptionsPage('manage/index.html')
 .addContentScript(
   matches=['*://docs.rs/*'],
   js=utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate']) + utils.js_files('libs', ['semver']),
@@ -78,6 +78,6 @@ json.addIcons(icons())
     '*://doc.rust-lang.org/*',
     'file:///*',
   ],
-  js=utils.js_files('script', ['macro-railroad', 'macro-railroad-wasm']),
+  js=utils.js_files('script', ['lib', 'macro-railroad', 'macro-railroad-wasm']),
   css=['script/macro-railroad.css'],
 )

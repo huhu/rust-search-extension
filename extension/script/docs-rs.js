@@ -37,6 +37,9 @@ function highlight() {
 
 // Show TOC of docs.rs
 document.addEventListener("DOMContentLoaded", () => {
+    // Ignore all non-rust doc pages.
+    if (!isRustDoc()) return;
+
     // Don't render TOC if the screen width less than 1500px.
     if (window.innerWidth < 1500) return;
 
@@ -70,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Using separate event listener to avoid network requesting latency for feature flags menu enhancement.
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
 
@@ -81,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async() => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
 
@@ -241,7 +244,7 @@ function insertAddToExtensionElement(state) {
 window.addEventListener("message", function (event) {
     if (event.source === window &&
         event.data &&
-        event.data.direction === "rust-search-extension") {
+        event.data.direction === "rust-search-extension:docs.rs") {
         chrome.runtime.sendMessage({ action: "crate:add", ...event.data.message },
             (response) => {
                 if (response) {

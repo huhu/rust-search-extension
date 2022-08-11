@@ -1,3 +1,9 @@
+// Returns `true` if the document's generator is "rustdoc"
+function isRustDoc() {
+    let gen = document.querySelector('head > meta[name="generator"]');
+    return gen && gen.getAttribute('content') === 'rustdoc';
+}
+
 // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
 // the latest version path has changed:
 // from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/

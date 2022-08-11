@@ -1,15 +1,4 @@
 (function () {
-    const STD_CRATES = ['std', 'test', 'proc_macro'];
-
-    // Remove unnecessary std crate's search index, such as core, alloc, etc
-    function cleanSearchIndex() {
-        let searchIndex = {};
-        STD_CRATES.forEach(crate => {
-            searchIndex[crate] = window.searchIndex[crate];
-        });
-        return searchIndex;
-    }
-
     function sendSearchIndex() {
         if (location.hostname === "docs.rs") { // docs.rs pages
             // Parse crate info from location pathname.
@@ -24,7 +13,7 @@
                 crateVersion = parseCrateVersionFromDOM();
             }
             window.postMessage({
-                direction: "rust-search-extension",
+                direction: "rust-search-extension:docs.rs",
                 message: {
                     crateName,
                     crateVersion,
@@ -40,10 +29,17 @@
                 },
             }, "*");
         } else { // stable/nightly pages
+            const STD_CRATES = ['std', 'test', 'proc_macro'];
+
+            // Remove unnecessary std crate's search index, such as core, alloc, etc
+            let searchIndex = {};
+            STD_CRATES.forEach(crate => {
+                searchIndex[crate] = window.searchIndex[crate];
+            });
             window.postMessage({
                 direction: `rust-search-extension:std`,
                 message: {
-                    searchIndex: cleanSearchIndex(window.searchIndex),
+                    searchIndex,
                 },
             }, "*");
         }

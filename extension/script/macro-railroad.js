@@ -39,12 +39,6 @@ async function load() {
     }
 }
 
-// Returns `true` if the document's generator is "rustdoc"
-function isRustDoc() {
-    let gen = document.querySelector('head > meta[name="generator"]');
-    return gen && gen.getAttribute('content') === 'rustdoc';
-}
-
 // Injects the relevant CSS into the document's <head>
 function injectCss() {
     let head = document.head;
