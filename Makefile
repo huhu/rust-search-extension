@@ -12,4 +12,4 @@ manage:
 	@cd manage && cargo run
 
 # Build macro-railroad wasm module and js
-macro-railroad: extension/script/macro-railroad-wasm.js extension/wasm/macro-railroad.wasm
+macro-railroad: extension/wasm/macro-railroad.wasm extension/script/macro-railroad-wasm.js
