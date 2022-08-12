@@ -90,7 +90,16 @@ fn default_version() -> Version {
 
 fn read_csv<D: DeserializeOwned>(file: impl Read) -> crate::Result<Vec<D>> {
     let mut reader = ReaderBuilder::new().has_headers(true).from_reader(file);
-    Ok(reader.deserialize().map(|record| record.unwrap()).collect())
+    Ok(reader
+        .deserialize()
+        .filter_map(|record| match record {
+            Ok(record) => Some(record),
+            Err(err) => {
+                println!("Deserialize csv record failed: {:?}", err);
+                None
+            }
+        })
+        .collect())
 }
 
 fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> String {
