@@ -80,6 +80,11 @@ class CrateDocSearch {
         return this.allCrateSearcher.search(keyword);
     }
 
+    // Invalidate cached search. This is needed if we update crate's search index.
+    invalidateCachedSearch() {
+        this.cachedCrateSearcher = null;
+    }
+
     static parseCrateDocsSearchKeyword(query) {
         query = query.replaceAll("@", "").trim();
         let [crateName, ...keyword] = query.split(/\s|:+/i);

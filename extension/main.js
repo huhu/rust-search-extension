@@ -488,6 +488,7 @@ function getPlatformOs() {
                 if (message.searchIndex) {
                     CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex)
                         .then(() => {
+                            crateDocSearcher.invalidateCachedSearch();
                             crateDocSearcher.initAllCrateSearcher();
                         })
                         .then(() => {
@@ -501,6 +502,7 @@ function getPlatformOs() {
             case "crate:remove": {
                 CrateDocManager.removeCrate(message.crateName)
                     .then(() => {
+                        crateDocSearcher.invalidateCachedSearch();
                         crateDocSearcher.initAllCrateSearcher();
                     })
                     .then(() => {
