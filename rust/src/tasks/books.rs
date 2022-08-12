@@ -87,7 +87,7 @@ fn parse_node(node: &Node, parent_titles: Option<Vec<String>>) -> Vec<Page> {
             }
         } else {
             let mut new_parent_titles = parent_titles.clone().unwrap_or_default();
-            if let Some(page) = child.prev().map(|n| Page::parse(&n)).flatten() {
+            if let Some(page) = child.prev().and_then(|n| Page::parse(&n)) {
                 new_parent_titles.push(page.title);
                 if let Some(section) = child.find(Class("section")).next() {
                     pages.extend(parse_node(&section, Some(new_parent_titles)))
@@ -108,7 +108,7 @@ async fn fetch_book(mut book: Book) -> crate::Result<Book> {
 
 impl Task for BooksTask {
     fn execute(&self) -> crate::Result<()> {
-        let mut rt = Runtime::new()?;
+        let rt = Runtime::new()?;
         rt.block_on(self.run())?;
         Ok(())
     }

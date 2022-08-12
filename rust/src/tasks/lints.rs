@@ -58,7 +58,7 @@ async fn fetch_clippy_lints() -> crate::Result<Vec<Lint>> {
 
 impl Task for LintsTask {
     fn execute(&self) -> crate::Result<()> {
-        let mut rt = Runtime::new()?;
+        let rt = Runtime::new()?;
         rt.block_on(self.run())?;
         Ok(())
     }
@@ -73,10 +73,9 @@ impl LintsTask {
                 if let Some(docs) = lint
                     .docs
                     .as_ref()
-                    .map(|d| d.trim().strip_prefix("### What it does"))
-                    .flatten()
+                    .and_then(|d| d.trim().strip_prefix("### What it does"))
                 {
-                    let mut desc = docs.replace("`", "").replace('#', "");
+                    let mut desc = docs.replace('`', "").replace('#', "");
                     desc.truncate(100);
                     Some((lint.id.clone(), [lint.level.to_string(), desc]))
                 } else {

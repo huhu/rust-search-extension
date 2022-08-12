@@ -62,7 +62,7 @@ impl WordCollector {
 
     #[inline]
     fn collect_crate_id(&mut self, value: &str) {
-        let id = value.replace("-", "_");
+        let id = value.replace('-', "_");
         for word in id
             .to_lowercase()
             .split(|c| c == '_')
@@ -102,7 +102,7 @@ fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> 
                 minifier.mapping_minify_crate_id(item.name),
                 (
                     item.description
-                        .map(|value| value.replace("\n", "").trim().to_string())
+                        .map(|value| value.replace('\n', "").trim().to_string())
                         .map(|value| minifier.mapping_minify(value)),
                     item.version,
                 ),
