@@ -8,5 +8,6 @@ node_modules
 target
 docs/public
 manifest.json
+extension/core
 extension/manage/*.html
 macro_railroad/pkg
