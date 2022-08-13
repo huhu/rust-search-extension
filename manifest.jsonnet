@@ -47,7 +47,7 @@ else
 
 json.addIcons(icons())
 .addPermissions(['storage', 'unlimitedStorage'])
-.setOptionsPage('manage/index.html')
+.setOptionsUi('manage/index.html')
 .addContentScript(
   matches=['*://docs.rs/*'],
   js=utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate']) + utils.js_files('libs', ['semver']),
