@@ -66,6 +66,7 @@ div.railroad_dropdown_content {
     background-color: rgba(240,240,240,0.95);
     white-space: nowrap;
     padding: 5px;
+    right: 0;
 }
 
 div.railroad_dropdown_show {
