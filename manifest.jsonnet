@@ -14,7 +14,7 @@ local description = 'Rust Search Extension - the ultimate search extension for R
 
 local browser = std.extVar('browser');
 
-local json = if browser == 'chrome' then
+local json = if std.member(['chrome', 'edge'], browser) then
   local manifest_v3 = import 'core/manifest_v3.libsonnet';
   manifest_v3.new(name, keyword, description, version, service_worker='service-worker.js')
   .addWebAccessibleResources(
