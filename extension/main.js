@@ -608,7 +608,3 @@ chromeAction.onClicked.addListener(() => {
     let managePage = chrome.runtime.getURL("manage/index.html");
     chrome.tabs.create({url: managePage});
 });
-const fileNewIssue = "title=Have you found a bug? Did you feel something was missing?&body=Whatever it was, we'd love to hear from you.";
-chrome.runtime.setUninstallURL(
-    `https://github.com/huhu/rust-search-extension/issues/new?${encodeURI(fileNewIssue)}`
-);
