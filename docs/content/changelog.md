@@ -7,7 +7,7 @@ weight = 3
 # v1.8 - 2022-08-15
 
 - Migrate to Manifest V3 ({{ issue(id=179) }}).
-- Integrate macro_railroad_ext ({{ issue(id=183) }}).
+- Integrate [macro_railroad_ext](https://github.com/lukaslueg/macro_railroad_ext) ({{ issue(id=183) }}). Kudos to [@lukaslueg](https://github.com/lukaslueg).
   > ![](/railroad.jpg)
 - Support options page. Fixes ({{ issue(id=133) }}).
 - Replace 'crate:check' action with `chrome.storage` API query.
