@@ -147,7 +147,8 @@ Those commands including but not limited to:
 - **:blog** - Show all Rust release blog posts.
 - **:cargo** - Show all useful third-party cargo subcommands. 
 - **:yet** - Show all Are We Yet websites. 
-- **:book** - Show all Rust official books. 
+- **:book** - Show all Rust books.
+- **:book/zh** - Show all Chinese Rust books.
 - **:stable** - Show stable Rust scheduled release date in the next year. 
 - **:label** - Show all issue labels of rust-lang repository. 
 - **:tool** - Show useful rust tools.
