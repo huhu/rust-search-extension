@@ -12,16 +12,16 @@ weight = 3
 - Support options page. Fixes ({{ issue(id=133) }}).
 - Replace 'crate:check' action with `chrome.storage` API query.
 - Support the new search-index loading, see [rust-lang/rust#98124](https://github.com/rust-lang/rust/pull/98124).
-- Add more books into `:book` command. Thanks .
+- Add more books into `:book` command.
 - Add `:book/zh` command to list Chinese books. ({{ issue(id=175) }}).
 - Adjust margin of add to extension button ({{ issue(id=178) }}).
-- Remove uninstall url. Close ({{ issue(id=188) }}).
+- Remove uninstall url. Close {{ issue(id=188) }}.
 - Bugfix:
   - Fix default `offlineDocPath` undefine bug.
-  - Don't load search index in non-rust doc pages
+  - Don't load search index in non-rust doc pages.
   - Invalid cached crate searcher after crate search index updated or removed.
 
-Thanks the contributions from [@C-Dao](https://github.com/C-Dao), [@zjp-CN](https://github.com/zjp-CN), and [@ZhangHanDong](https://github.com/ZhangHanDong).
+Thanks for the contributions from [@C-Dao](https://github.com/C-Dao), [@zjp-CN](https://github.com/zjp-CN), and [@ZhangHanDong](https://github.com/ZhangHanDong).
 
 # v1.7 - 2022-06-06
 
