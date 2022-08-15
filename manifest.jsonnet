@@ -25,7 +25,6 @@ local json = if std.member(['chrome', 'edge'], browser) then
     matches=[
       '*://docs.rs/*',
       '*://doc.rust-lang.org/*',
-      'file:///*',
     ],
   ) {
     description: 'A handy browser extension to search Rust docs and crates, etc in the address bar instantly!',
@@ -76,7 +75,6 @@ json.addIcons(icons())
   matches=[
     '*://docs.rs/*',
     '*://doc.rust-lang.org/*',
-    'file:///*',
   ],
   js=utils.js_files('script', ['lib', 'macro-railroad', 'macro-railroad-wasm']),
   css=['script/macro-railroad.css'],
