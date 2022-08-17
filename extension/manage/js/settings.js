@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     autoUpdateCheckbox.onchange = async function(event) {
         settings.autoUpdate = event.target.checked;
     };
+    const showMacroRailroad = document.getElementById('show-macro-railroad');
+    showMacroRailroad.checked = await settings.showMacroRailroad;
+    showMacroRailroad.onchange = async function(event) {
+        settings.showMacroRailroad = event.target.checked;
+    };
 
     // Offline mode checkbox
     if (!(await settings.offlineDocPath)) {

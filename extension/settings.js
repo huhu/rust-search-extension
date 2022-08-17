@@ -44,5 +44,15 @@ const settings = {
     },
     set defaultSearch(value) {
         storage.setItem("default-search", value);
+    },
+    get showMacroRailroad() {
+        return (async () => {
+            let value = await storage.getItem("show-macro-railroad");
+            // Default to true.
+            return value === undefined ? true : value;
+        })();
+    },
+    set showMacroRailroad(value) {
+        storage.setItem("show-macro-railroad", value);
     }
 };

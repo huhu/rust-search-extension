@@ -7,6 +7,8 @@ async function load() {
 
     let macros = document.querySelectorAll('pre.macro');
     if (!macros || macros.length === 0) return;
+    
+    if (!await settings.showMacroRailroad) return;
 
     await wasm_bindgen(chrome.runtime.getURL('wasm/macro-railroad.wasm'));
     injectCss();

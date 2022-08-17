@@ -76,6 +76,6 @@ json.addIcons(icons())
     '*://docs.rs/*',
     '*://doc.rust-lang.org/*',
   ],
-  js=utils.js_files('script', ['lib', 'macro-railroad', 'macro-railroad-wasm']),
+  js=['core/storage.js', 'settings.js'] + utils.js_files('script', ['lib', 'macro-railroad', 'macro-railroad-wasm']),
   css=['script/macro-railroad.css'],
 )
