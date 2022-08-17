@@ -23,6 +23,14 @@ weight = 3
 
 Thanks for the contributions from [@C-Dao](https://github.com/C-Dao), [@zjp-CN](https://github.com/zjp-CN), and [@ZhangHanDong](https://github.com/ZhangHanDong).
 
+## v1.8.1 - 2022-08-17
+
+- Remove `file:///*` permission. Fixes ({{ issue(id=190) }}).
+- Add *Show Macro Railroad* options.
+- Use rustwiki Chinese CDN. ({{ issue(id=190) }})
+
+Thanks for the contributions from [@PureWhiteWu](https://github.com/PureWhiteWu).
+
 # v1.7 - 2022-06-06
 
 - Remove the `tabs` permission requirement.
