@@ -61,19 +61,19 @@ function getPlatformOs() {
         new HistoryCommand(),
         new OpenCommand('stats', 'Open search statistics page.',
             chrome.runtime.getURL("manage/index.html"), {
-                content: ':stats',
-                description: `Press ${c.match("Enter")} to open search statistics page.`,
-            }),
+            content: ':stats',
+            description: `Press ${c.match("Enter")} to open search statistics page.`,
+        }),
         new OpenCommand('update', 'Update to the latest search index.',
             INDEX_UPDATE_URL, {
-                content: ':update',
-                description: `Press ${c.match("Enter")} to open search-index update page.`,
-            }),
+            content: ':update',
+            description: `Press ${c.match("Enter")} to open search-index update page.`,
+        }),
         new OpenCommand('release', 'Open rust-lang repository release page.',
             RUST_RELEASE_README_URL, {
-                content: ':release',
-                description: `Press ${c.match("Enter")} to open rust-lang repository release page.`,
-            }),
+            content: ':release',
+            description: `Press ${c.match("Enter")} to open rust-lang repository release page.`,
+        }),
     );
 
     let stdSearcher = new DocSearch("std", await IndexManager.getStdStableIndex(), () => {
@@ -106,7 +106,7 @@ function getPlatformOs() {
             content = url.toString();
             description = `[Source code] ${description}`;
         }
-        return {content, description};
+        return { content, description };
     };
 
     omnibox.bootstrap({
@@ -155,8 +155,8 @@ function getPlatformOs() {
             return nightlySearcher.search(query);
         },
         onFormat: (index, doc) => {
-            let {content, description} = formatDoc(index, doc);
-            return {content, description: '[Nightly] ' + description};
+            let { content, description } = formatDoc(index, doc);
+            return { content, description: '[Nightly] ' + description };
         },
         onAppend: (query) => {
             query = query.replaceAll("/", "").trim();
@@ -174,8 +174,8 @@ function getPlatformOs() {
             return rustcSearcher.search(query);
         },
         onFormat: (index, doc) => {
-            let {content, description} = formatDoc(index, doc);
-            return {content, description: '[Rustc] ' + description};
+            let { content, description } = formatDoc(index, doc);
+            return { content, description: '[Rustc] ' + description };
         },
         onAppend: (query) => {
             query = query.replaceAll("/", "").trim();
@@ -369,7 +369,7 @@ function getPlatformOs() {
             let baseUrl = isOfflineMode ? offlineDocPath : 'https://doc.rust-lang.org/';
             return result.map(errorCode => {
                 return {
-                    content: `${baseUrl}error-index.html#${errorCode}`,
+                    content: `${baseUrl}error_codes/${errorCode}.html`,
                     description: `Search Rust error index for ${c.match(errorCode)} on ${isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error-index.html'}`,
                 };
             });
@@ -591,7 +591,7 @@ function getPlatformOs() {
 
         // Eliminate unnecessary tags (such as <match>, <dim>) to save disk usage.
         history = history
-            .map(({description, ...rest}) => {
+            .map(({ description, ...rest }) => {
                 return {
                     description: description
                         .replace(/<\/?match>/g, "")
@@ -606,5 +606,5 @@ function getPlatformOs() {
 const chromeAction = chrome.action || chrome.browserAction;
 chromeAction.onClicked.addListener(() => {
     let managePage = chrome.runtime.getURL("manage/index.html");
-    chrome.tabs.create({url: managePage});
+    chrome.tabs.create({ url: managePage });
 });
