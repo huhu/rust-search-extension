@@ -357,12 +357,12 @@ function getPlatformOs() {
         }
     });
 
-    omnibox.addRegexQueryEvent(/`?e\d{2,4}`?$/i, {
+    omnibox.addRegexQueryEvent(/^`?e\d{2,4}`?$/i, {
         onSearch: (query) => {
             query = query.replace("`", "");
-            let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
+            let baseIndex = parseInt(query.slice(1).padEnd(4, '0')) + 1;
             let result = [];
-            for (let index = 0; index < 10; index++) {
+            for (let i = 0; i < 10; i++) {
                 let errorIndex = 'E' + String(baseIndex++).padStart(4, "0").toUpperCase();
                 result.push(errorIndex);
             }
