@@ -43,6 +43,7 @@ var commandsIndex = {
         ["Demystifying Async/Await in Rust", "https://ruspiro.github.io/ruspiro-async-book/"],
         ["Roguelike Tutorial - In Rust", "https://bfnightly.bracketproductions.com/"],
         ["High Assurance Rust Developing Secure and Robust Software", "https://highassurance.rs/"],
+        ["Wasmtime docs", "https://docs.wasmtime.dev/"],
     ],
     "book/zh": [
         ["【中文版】The Rust Programming Language", "https://www.rustwiki.org.cn/zh-CN/book"],
@@ -82,6 +83,7 @@ var commandsIndex = {
         ["cheats.rs", "https://cheats.rs/"],
         ["caniuse.rs", "https://caniuse.rs/"],
         ["deps.rs", "https://deps.rs/"],
+        ["release.rs", "https://releases.rs/"],
         ["stdrs.dev", "https://stdrs.dev/"],
         ["Rust Explorer", "https://www.rustexplorer.com/"],
         ["Macro Railroad ", "https://lukaslueg.github.io/macro_railroad_wasm_demo/"],
