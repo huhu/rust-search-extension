@@ -31,6 +31,7 @@ importScripts(
     "search/caniuse.js",
     "search/crate.js",
     "search/lint.js",
+    "search/rfc.js",
     "crate-manager.js",
     "deminifier.js",
     "index-manager.js",
