@@ -125,9 +125,9 @@ parent chapter, and grandparent chapter. Don't forget the **%** is the prefix to
 
 ![IMG](/search-clippy-lints.png)
 
-# Search Caniuse.rs and RFC
+# Search Caniuse.rs
 
-You can search [caniuse.rs](https://caniuse.rs) and RFC with **?** and **??** prefix respectively.
+You can search [caniuse.rs](https://caniuse.rs) with **?** prefix.
 
 ![IMG](/search-caniuse.png)
 
@@ -144,19 +144,19 @@ Each command starts with a **:** (colon), followed by the name, and function dif
 Those commands including but not limited to:
 
 - **:help** - Show the help messages. 
-- **:blog** - Show all Rust release blog posts.
-- **:cargo** - Show all useful third-party cargo subcommands. 
-- **:yet** - Show all Are We Yet websites. 
-- **:book** - Show all Rust books.
-- **:book/zh** - Show all Chinese Rust books.
+- **:blog** - Search Rust release blog posts.
+- **:cargo** - Search useful third-party cargo subcommands. 
+- **:yet** - Search Are We Yet websites. 
+- **:book** - Search Rust books.
+- **:book/zh** - Search Chinese Rust books.
 - **:stable** - Show stable Rust scheduled release date in the next year. 
-- **:label** - Show all issue labels of rust-lang repository. 
+- **:label** - Search issue labels of rust-lang repository. 
 - **:tool** - Show useful rust tools.
-- **:mirror** - Show all Rust mirror websites.
-- **:stats** - open search statistics page.
-- **:update** - open the [update page](/update) to sync the latest index automatically.
+- **:mirror** - Search Rust mirror websites.
+- **:stats** - Open search statistics page.
+- **:update** - Open the [update page](/update) to sync the latest index automatically.
 - **:release** - Open rust-lang repository [release page](https://github.com/rust-lang/rust/blob/master/RELEASES.md).
-- **:rfc** - Show all Rust RFC list.
+- **:rfc** - Search Rust RFCs.
 - **:history** - Show your local search history.
 
 ![IMG](/command-system.gif)

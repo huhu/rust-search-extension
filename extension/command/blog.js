@@ -1,6 +1,6 @@
 class BlogCommand extends Command {
     constructor(posts) {
-        super("blog", "Show all Rust released blog posts.");
+        super("blog", "Search Rust release blog posts.");
         this.setPosts(posts);
     }
 

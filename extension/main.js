@@ -36,12 +36,12 @@ function getPlatformOs() {
     const crateDocSearcher = new CrateDocSearch();
 
     const commandIndex = await IndexManager.getCommandIndex();
-    const cargoCommand = new SimpleCommand('cargo', 'Show all useful third-party cargo subcommands.', commandIndex['cargo']);
-    const bookCommand = new SimpleCommand('book', 'Show all Rust books.', commandIndex['book']);
-    const bookZhCommand = new SimpleCommand('book/zh', 'Show all Chinese Rust books.', commandIndex['book/zh']);
-    const yetCommand = new SimpleCommand('yet', 'Show all Are We Yet websites.', commandIndex['yet']);
+    const cargoCommand = new SimpleCommand('cargo', 'Search useful third-party cargo subcommands.', commandIndex['cargo']);
+    const bookCommand = new SimpleCommand('book', 'Search Rust books.', commandIndex['book']);
+    const bookZhCommand = new SimpleCommand('book/zh', 'Search Chinese Rust books.', commandIndex['book/zh']);
+    const yetCommand = new SimpleCommand('yet', 'Search Are We Yet websites.', commandIndex['yet']);
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
-    const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
+    const mirrorCommand = new SimpleCommand('mirror', 'Search Rust mirror websites.', commandIndex['mirror']);
     const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
     const rfcCommand = new RfcCommand(await IndexManager.getRfcIndex());
     const blogCommand = new BlogCommand();
