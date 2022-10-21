@@ -31,7 +31,6 @@ function getPlatformOs() {
     let caniuseSearcher = new CaniuseSearch(await IndexManager.getCaniuseIndex());
     let bookSearcher = new BookSearch(await IndexManager.getBookIndex());
     let lintSearcher = new LintSearch(await IndexManager.getLintIndex());
-    let rfcSearcher = new RfcSearch(await IndexManager.getRfcIndex());
 
     const attributeSearcher = new AttributeSearch(attributesIndex);
     const crateDocSearcher = new CrateDocSearch();
@@ -331,19 +330,6 @@ function getPlatformOs() {
                 content: `https://caniuse.rs/features/${feat.slug}`,
                 description: `Can I use: ${c.match(c.escape(feat.match))} [${feat.version}] - ${c.dim(c.escape(feat.description))}`
             };
-        },
-    });
-
-    omnibox.addPrefixQueryEvent("??", {
-        onSearch: (query) => {
-            return rfcSearcher.search(query);
-        },
-        onFormat: (index, rfc) => {
-            let title = rfc.title ? `- ${c.dim(c.escape(rfc.title))}` : c.dim(c.escape(rfc.title));
-            return {
-                content: `https://www.ncameron.org/rfcs/${String(rfc.number).padStart(4, '0')}.html`,
-                description: `${c.match("RFC " + rfc.number + ": ")} ${rfc.name} ${rfc.date} ${title}`
-            }
         },
     });
 
