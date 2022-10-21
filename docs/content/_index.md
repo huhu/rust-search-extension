@@ -3,6 +3,10 @@ title = "Rust Search Extension"
 sort_by = "weight"
 +++
 
+# Pagination
+
+You can press `space` after the keyword, then increase or decrease the number of **-** (hyphen) to page down or page up.
+
 # Search docs
 
 We support search all kinds of Rust docs blaze-fastly. Those docs including:
@@ -230,7 +234,3 @@ or [lib.rs](https://lib.rs) on the settings page.
 You can prefix **!!!** (triple !) to open crate's repository quickly. 
 For example, input `!!!tokio` then enter, the extension will obtain the repository url then redirect to 
 the github repository page of **tokio** effortlessly.
-
-## Page down/up easily
-
-You can press `space` after the keyword, then increase or decrease the number of **-** (hyphen) to page down or page up.
