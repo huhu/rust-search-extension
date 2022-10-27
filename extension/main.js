@@ -377,7 +377,13 @@ function getPlatformOs() {
                 content: page.url,
                 description: `${[...parentTitles.map(t => c.escape(t)), c.match(c.escape(page.title))].join(" > ")} - ${c.dim(page.name)}`
             }
-        }
+        },
+        onAppend: () => {
+            return [{
+                content: ":book",
+                description: `Remind: ${c.dim("you can use")} :book ${c.dim("command to search all Rust books.")}`,
+            }];
+        },
     });
 
     const LINT_URL = "https://rust-lang.github.io/rust-clippy/master/";
