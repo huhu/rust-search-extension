@@ -1,6 +1,9 @@
 class BookSearch {
     constructor(bookIndex) {
-        this.pages = {};
+        // Create a empyt object with null prototype.
+        // This can prevent some weired bug, such as the key called `constructor`, 
+        // this would conflict with the prototype constructor method!
+        this.pages = Object.create(null);
         bookIndex.forEach(({ name, url, pages }) => {
             pages.forEach(([title, path, parentTitles]) => {
                 let cleanedTitle = cleanChapterTitle(title);

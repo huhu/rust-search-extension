@@ -28,7 +28,6 @@ var commandsIndex = {
         ["mdBook Documentation", "https://rust-lang.github.io/mdBook/"],
         ["Rust's Unsafe Code Guidelines Reference", "https://rust-lang.github.io/unsafe-code-guidelines/"],
         ["Rust Design Patterns", "https://rust-unofficial.github.io/patterns/"],
-        ["Rust Compiler Error Index", "https://doc.rust-lang.org/error-index.html"],
         ["Learn Rust With Entirely Too Many Linked Lists", "https://rust-unofficial.github.io/too-many-lists/"],
         ["The Little Book of Rust Macros", "https://veykril.github.io/tlborm/"],
         ["Rust SIMD Performance Guide", "https://rust-lang.github.io/packed_simd/perf-guide/introduction.html"],
