@@ -1,4 +1,4 @@
-class RfcCommand extends SimpleCommand {
+class RfcCommand extends Command {
     constructor(index) {
         super("rfc", "Search Rust RFCs.");
         this.rfcs = index.map(([number, name, date, title]) => {
