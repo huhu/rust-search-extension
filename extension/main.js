@@ -331,6 +331,12 @@ function getPlatformOs() {
                 description: `Can I use: ${c.match(c.escape(feat.match))} [${feat.version}] - ${c.dim(c.escape(feat.description))}`
             };
         },
+        onAppend: () => {
+            return [{
+                content: ":rfc",
+                description: `Remind: ${c.dim("you can use")} :rfc ${c.dim("command to search all Rust RFCs.")}`,
+            }];
+        }, 
     });
 
     // Search previous Rust version
