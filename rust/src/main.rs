@@ -25,6 +25,7 @@ enum Subcommand {
     Lints(LintsTask),
     Labels(LabelsTask),
     Rfcs(RfcsTask),
+    Rustc(RustcTask),
 }
 
 pub type Result<T> = std::result::Result<T, Box<dyn Error>>;
@@ -38,6 +39,7 @@ fn main() -> Result<()> {
         Subcommand::Lints(cmd) => cmd.execute()?,
         Subcommand::Labels(cmd) => cmd.execute()?,
         Subcommand::Rfcs(cmd) => cmd.execute()?,
+        Subcommand::Rustc(cmd) => cmd.execute()?,
     }
     Ok(())
 }
