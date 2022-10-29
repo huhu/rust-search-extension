@@ -39,8 +39,8 @@ else
   .addBackgroundScripts(['migration.js', 'settings.js', 'deminifier.js'])
   .addBackgroundScripts(utils.js_files('search', ['algorithm', 'book', 'crate', 'attribute', 'caniuse', 'lint']))
   .addBackgroundScripts(utils.js_files('search/docs', ['base', 'crate-doc', 'rustc']))
-  .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'rfcs', 'commands']))
-  .addBackgroundScripts(utils.js_files('command', ['blog', 'label', 'help', 'stable', 'rfc']))
+  .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'rfcs', 'commands', 'rustc']))
+  .addBackgroundScripts(utils.js_files('command', ['blog', 'label', 'help', 'stable', 'rfc', 'rustc']))
   .addBackgroundScripts(['statistics.js', 'rust-version.js', 'crate-manager.js', 'index-manager.js', 'main.js'])
 ;
 

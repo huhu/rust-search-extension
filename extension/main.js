@@ -38,6 +38,7 @@ function getPlatformOs() {
     const commandIndex = await IndexManager.getCommandIndex();
     let labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
     let rfcCommand = new RfcCommand(await IndexManager.getRfcIndex());
+    let rustcCommand = new RustcCommand(await IndexManager.getRustcIndex());
     const cargoCommand = new SimpleCommand('cargo', 'Search useful third-party cargo subcommands.', commandIndex['cargo']);
     const bookCommand = new SimpleCommand('book', 'Search Rust books.', commandIndex['book']);
     const bookZhCommand = new SimpleCommand('book/zh', 'Search Chinese Rust books.', commandIndex['book/zh']);
@@ -56,6 +57,7 @@ function getPlatformOs() {
         labelCommand,
         rfcCommand,
         blogCommand,
+        rustcCommand,
         new HelpCommand(),
         new StableCommand(),
         new HistoryCommand(),
@@ -548,6 +550,12 @@ function getPlatformOs() {
             case "index-update:caniuse": {
                 IndexManager.setCaniuseIndex(message.index);
                 caniuseSearcher = new CaniuseSearch(message.index);
+                sendResponse(true);
+                break;
+            }
+            case "index-update:rustc": {
+                IndexManager.setRustcIndex(message.index);
+                rustcCommand = new RustcCommand(message.index);
                 sendResponse(true);
                 break;
             }
