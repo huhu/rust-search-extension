@@ -1,4 +1,5 @@
 const c = new Compat();
+const manifestVersion = chrome.runtime.getManifest().manifest_version;
 
 // Get the information about the current platform os.
 // Possible os values: "mac", "win", "android", "cros", "linux", or "openbsd"
@@ -11,6 +12,17 @@ function getPlatformOs() {
 }
 
 (async () => {
+    if (manifestVersion === 2) {
+        await migrate();
+    }
+
+    // All dynamic setting items. Those items will been updated
+    // in chrome.storage.onchange listener callback.
+    let isOfflineMode = await settings.isOfflineMode;
+    let offlineDocPath = await settings.offlineDocPath;
+    let defaultSearch = await settings.defaultSearch;
+    let crateRegistry = await settings.crateRegistry;
+
     const os = await getPlatformOs();
     const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
     const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
@@ -24,47 +36,57 @@ function getPlatformOs() {
     const crateDocSearcher = new CrateDocSearch();
 
     const commandIndex = await IndexManager.getCommandIndex();
-    const cargoCommand = new SimpleCommand('cargo', 'Show all useful third-party cargo subcommands.', commandIndex['cargo']);
-    const bookCommand = new SimpleCommand('book', 'Show all Rust official books.', commandIndex['book']);
-    const yetCommand = new SimpleCommand('yet', 'Show all Are We Yet websites.', commandIndex['yet']);
+    let labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
+    let rfcCommand = new RfcCommand(await IndexManager.getRfcIndex());
+    let rustcCommand = new RustcCommand(await IndexManager.getRustcIndex());
+    let targetCommand = new TargetCommand(await IndexManager.getTargetsIndex());
+    const cargoCommand = new SimpleCommand('cargo', 'Search useful third-party cargo subcommands.', commandIndex['cargo']);
+    const bookCommand = new SimpleCommand('book', 'Search Rust books.', commandIndex['book']);
+    const bookZhCommand = new SimpleCommand('book/zh', 'Search Chinese Rust books.', commandIndex['book/zh']);
+    const yetCommand = new SimpleCommand('yet', 'Search Are We Yet websites.', commandIndex['yet']);
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
-    const mirrorCommand = new SimpleCommand('mirror', 'Show all Rust mirror websites.', commandIndex['mirror']);
-    const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
-    const rfcCommand = new RfcCommand(await IndexManager.getRfcIndex());
+    const mirrorCommand = new SimpleCommand('mirror', 'Search Rust mirror websites.', commandIndex['mirror']);
+    const blogCommand = new BlogCommand();
 
     const commandManager = new CommandManager(
         cargoCommand,
         bookCommand,
+        bookZhCommand,
         yetCommand,
         toolCommand,
         mirrorCommand,
+        blogCommand,
         labelCommand,
         rfcCommand,
+        rustcCommand,
+        targetCommand,
         new HelpCommand(),
         new StableCommand(),
         new HistoryCommand(),
         new OpenCommand('stats', 'Open search statistics page.',
-            chrome.runtime.getURL("manage/index.html"),
-            {
+            chrome.runtime.getURL("manage/index.html"), {
                 content: ':stats',
                 description: `Press ${c.match("Enter")} to open search statistics page.`,
             }),
         new OpenCommand('update', 'Update to the latest search index.',
-            INDEX_UPDATE_URL,
-            {
+            INDEX_UPDATE_URL, {
                 content: ':update',
                 description: `Press ${c.match("Enter")} to open search-index update page.`,
             }),
         new OpenCommand('release', 'Open rust-lang repository release page.',
-            RUST_RELEASE_README_URL,
-            {
+            RUST_RELEASE_README_URL, {
                 content: ':release',
                 description: `Press ${c.match("Enter")} to open rust-lang repository release page.`,
             }),
     );
 
-    let stdSearcher = new StdSearch(await IndexManager.getStdStableIndex());
-    let nightlySearcher = new NightlySearch(await IndexManager.getStdNightlyIndex());
+    let stdSearcher = new DocSearch("std", await IndexManager.getStdStableIndex(), () => {
+        return isOfflineMode ? offlineDocPath : "https://doc.rust-lang.org/";
+    });
+    let nightlySearcher = new DocSearch("std", await IndexManager.getStdNightlyIndex(), () => {
+        // Nightly docs doesn't support offline mode yet.
+        return "https://doc.rust-lang.org/nightly/";
+    });
     let rustcSearcher = new RustcSearch();
 
     const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
@@ -72,7 +94,7 @@ function getPlatformOs() {
 
     let formatDoc = (index, doc) => {
         let content = doc.href;
-        if (settings.isOfflineMode && os === "win") {
+        if (isOfflineMode && os === "win") {
             // Replace all "/" to "\" for Windows in offline mode.
             content.replaceAll("/", "\\");
         }
@@ -99,13 +121,13 @@ function getPlatformOs() {
         onAppend: (query) => {
             return [{
                 content: stdSearcher.getSearchUrl(query),
-                description: `Search Rust docs ${c.match(query)} on ${settings.isOfflineMode ? "offline mode" : stdSearcher.rootPath}`,
+                description: `Search Rust docs ${c.match(query)} on ${isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
             }];
         },
         onEmptyNavigate: (content, disposition) => {
             commandManager.handleCommandEnterEvent(content, disposition);
         },
-        beforeNavigate: (query, content) => {
+        beforeNavigate: async (query, content) => {
             if (content && /^@\w+$/i.test(content.trim())) {
                 // Case: @crate, redirect to that crate's docs.rs page
                 return `https://docs.rs/${content.replace("@", "")}`;
@@ -113,19 +135,20 @@ function getPlatformOs() {
                 // Sanitize docs url which from all crates doc search mode. (Prefix with "~")
                 // Here is the url instance: https://docs.rs/~/*/reqwest/fn.get.html
                 let [_, __, crateName] = new URL(content).pathname.slice(1).split("/");
-                let crateVersion = CrateDocManager.getCrates()[crateName].version;
+                let crateVersion = (await CrateDocManager.getCrates())[crateName].version;
                 return content.replace("/~/", `/${crateName}/`).replace("/*/", `/${crateVersion}/`);
             } else {
                 return content;
             }
         },
-        afterNavigated: (query, result) => {
+        afterNavigated: async (query, result) => {
             // Ignore the command history
             if (query && query.startsWith(":")) return;
 
             // Only keep the latest 100 of search history.
-            let historyItem = HistoryCommand.record(query, result, maxSize = 100);
-            new Statistics().record(historyItem, autoSave = true);
+            let historyItem = await HistoryCommand.record(query, result, maxSize = 100);
+            let statistics = await Statistics.load();
+            await statistics.record(historyItem, true);
         }
     });
 
@@ -143,7 +166,7 @@ function getPlatformOs() {
             query = query.replaceAll("/", "").trim();
             return [{
                 content: nightlySearcher.getSearchUrl(query),
-                description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.rootPath}`,
+                description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.getRootPath()}`,
             }];
         },
     });
@@ -163,11 +186,11 @@ function getPlatformOs() {
             if (rustcSearcher.searchIndex && rustcSearcher.searchIndex.length > 0) {
                 return [{
                     content: rustcSearcher.getSearchUrl(query),
-                    description: `Search nightly rustc docs ${c.match(query)} on ${rustcSearcher.rootPath}`,
+                    description: `Search nightly rustc docs ${c.match(query)} on ${rustcSearcher.getRootPath()}`,
                 }];
             } else {
                 return [{
-                    content: rustcSearcher.rootPath,
+                    content: rustcSearcher.getRootPath(),
                     description: "To search nightly rustc docs, please open the nightly rustc docs page in advance.",
                 }]
             }
@@ -176,25 +199,25 @@ function getPlatformOs() {
 
     omnibox.addPrefixQueryEvent("~", {
         isDefaultSearch: () => {
-            return settings.defaultSearch.thirdPartyDocs;
+            return defaultSearch.thirdPartyDocs;
         },
         searchPriority: 1,
-        onSearch: (query) => {
-            return crateDocSearcher.searchAll(query);
+        onSearch: async (query) => {
+            return await crateDocSearcher.searchAll(query);
         },
         onFormat: formatDoc,
     });
 
     omnibox.addPrefixQueryEvent("@", {
-        onSearch: (query) => {
-            return crateDocSearcher.search(query);
+        onSearch: async (query) => {
+            return await crateDocSearcher.search(query);
         },
         onFormat: (index, item) => {
-            if (item.hasOwnProperty("content")) {
+            if ('content' in item) {
                 // 1. Crate list header.
                 // 2. Crate result footer
                 return item;
-            } else if (item.hasOwnProperty("href")) {
+            } else if ('href' in item) {
                 return formatDoc(index, item);
             } else {
                 // Crate name list.
@@ -225,7 +248,7 @@ function getPlatformOs() {
 
     omnibox.addPrefixQueryEvent("!", {
         isDefaultSearch: () => {
-            return settings.defaultSearch.docsRs;
+            return defaultSearch.docsRs;
         },
         searchPriority: 2,
         onSearch: (query) => {
@@ -251,18 +274,16 @@ function getPlatformOs() {
             return crateSearcher.search(query);
         },
         onFormat: (index, crate) => {
-            let registry = settings.crateRegistry;
             return {
-                content: `https://${registry}/crates/${crate.id}`,
-                description: `${c.capitalize(registry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
+                content: `https://${crateRegistry}/crates/${crate.id}`,
+                description: `${c.capitalize(crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
             };
         },
         onAppend: (query) => {
             let keyword = query.replace(/[!\s]/g, "");
-            let registry = settings.crateRegistry;
             return wrapCrateSearchAppendix({
-                content: `https://${registry}/search?q=` + encodeURIComponent(keyword),
-                description: "Search Rust crates for " + c.match(keyword) + ` on https://${registry}`,
+                content: `https://${crateRegistry}/search?q=` + encodeURIComponent(keyword),
+                description: "Search Rust crates for " + c.match(keyword) + ` on https://${crateRegistry}`,
             });
         }
     });
@@ -289,11 +310,11 @@ function getPlatformOs() {
 
     omnibox.addPrefixQueryEvent("#", {
         isDefaultSearch: () => {
-            return settings.defaultSearch.attributes;
+            return defaultSearch.attributes;
         },
         searchPriority: 3,
         onSearch: (query) => {
-            query = query.replace(/[\[\]]/g, "");
+            query = query.replace(/[[\]]/g, "");
             return attributeSearcher.search(query);
         },
         onFormat: (index, attribute) => {
@@ -309,20 +330,17 @@ function getPlatformOs() {
             return caniuseSearcher.search(query);
         },
         onFormat: (index, feat, query) => {
-            let content;
-            let description;
-            if (query.startsWith("??")) {
-                content = `https://github.com/rust-lang/rfcs/pull/${feat.rfc}`;
-                description = `RFC: ${c.match(c.escape(feat.match))} [${feat.version}] - ${c.dim(c.escape(feat.description))}`
-            } else {
-                content = `https://caniuse.rs/features/${feat.slug}`;
-                description = `Can I use: ${c.match(c.escape(feat.match))} [${feat.version}] - ${c.dim(c.escape(feat.description))}`
-            }
             return {
-                content,
-                description
+                content: `https://caniuse.rs/features/${feat.slug}`,
+                description: `Can I use: ${c.match(c.escape(feat.match))} [${feat.version}] - ${c.dim(c.escape(feat.description))}`
             };
         },
+        onAppend: () => {
+            return [{
+                content: ":rfc",
+                description: `Remind: ${c.dim("you can use")} :rfc ${c.dim("command to search all Rust RFCs.")}`,
+            }];
+        }, 
     });
 
     // Search previous Rust version
@@ -340,20 +358,20 @@ function getPlatformOs() {
         }
     });
 
-    omnibox.addRegexQueryEvent(/`?e\d{2,4}`?$/i, {
+    omnibox.addRegexQueryEvent(/^`?e\d{2,4}`?$/i, {
         onSearch: (query) => {
             query = query.replace("`", "");
-            let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
+            let baseIndex = parseInt(query.slice(1).padEnd(4, '0')) + 1;
             let result = [];
-            for (let index = 0; index < 10; index++) {
+            for (let i = 0; i < 10; i++) {
                 let errorIndex = 'E' + String(baseIndex++).padStart(4, "0").toUpperCase();
                 result.push(errorIndex);
             }
-            let baseUrl = settings.isOfflineMode ? settings.offlineDocPath : 'https://doc.rust-lang.org/';
+            let baseUrl = isOfflineMode ? offlineDocPath : 'https://doc.rust-lang.org/';
             return result.map(errorCode => {
                 return {
                     content: `${baseUrl}error-index.html#${errorCode}`,
-                    description: `Search Rust error index for ${c.match(errorCode)} on ${settings.isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error-index.html'}`,
+                    description: `Search Rust error index for ${c.match(errorCode)} on ${isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error-index.html'}`,
                 };
             });
         },
@@ -369,7 +387,13 @@ function getPlatformOs() {
                 content: page.url,
                 description: `${[...parentTitles.map(t => c.escape(t)), c.match(c.escape(page.title))].join(" > ")} - ${c.dim(page.name)}`
             }
-        }
+        },
+        onAppend: () => {
+            return [{
+                content: ":book",
+                description: `Remind: ${c.dim("you can use")} :book ${c.dim("command to search all Rust books.")}`,
+            }];
+        },
     });
 
     const LINT_URL = "https://rust-lang.github.io/rust-clippy/master/";
@@ -386,15 +410,30 @@ function getPlatformOs() {
     });
 
     omnibox.addPrefixQueryEvent(":", {
-        onSearch: (query) => {
+        onSearch: async (query) => {
             return commandManager.execute(query);
         },
     });
 
     omnibox.addNoCacheQueries("/", "!", "@", ":");
 
-    if (settings.autoUpdate) {
-        let version = localStorage.getItem('auto-update-version');
+    chrome.storage.onChanged.addListener(changes => {
+        if (changes['offline-mode']) {
+            isOfflineMode = changes['offline-mode'].newValue;
+        }
+        if (changes['offline-path']) {
+            offlineDocPath = changes['offline-path'].newValue;
+        }
+        if (changes['default-search']) {
+            defaultSearch = changes['default-search'].newValue;
+        }
+        if (changes['crate-registry']) {
+            crateRegistry = changes['crate-registry'].newValue;
+        }
+    });
+
+    if (await settings.autoUpdate) {
+        let version = await storage.getItem('auto-update-version');
         let now = new Date();
         let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
         if (version && today <= Date.parse(version)) {
@@ -403,17 +442,19 @@ function getPlatformOs() {
         }
 
         Omnibox.navigateToUrl(INDEX_UPDATE_URL);
-        localStorage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
+        await storage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
 
+    // DO NOT USE ASYNC CALLBACK HERE, SEE THIS ISSUE:
+    // https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         switch (message.action) {
             // Stable:* action is exclusive to stable docs event
             case "stable:add": {
                 if (message.searchIndex) {
                     IndexManager.setStdStableIndex(message.searchIndex);
-                    // New stdSearcher instance after docs updated
-                    stdSearcher = new StdSearch(message.searchIndex);
+                    // Update search index after docs updated
+                    stdSearcher.setSearchIndex(message.searchIndex);
                     sendResponse(true);
                 } else {
                     sendResponse(false);
@@ -424,8 +465,8 @@ function getPlatformOs() {
             case "nightly:add": {
                 if (message.searchIndex) {
                     IndexManager.setStdNightlyIndex(message.searchIndex);
-                    // New nightlySearcher instance after docs updated
-                    nightlySearcher = new NightlySearch(message.searchIndex);
+                    // Update search index after docs updated
+                    nightlySearcher.setSearchIndex(message.searchIndex);
                     sendResponse(true);
                 } else {
                     sendResponse(false);
@@ -441,8 +482,8 @@ function getPlatformOs() {
             }
             case "rustc:add": {
                 if (message.searchIndex) {
-                    // New rustcSearcher instance after docs updated
-                    rustcSearcher = new RustcSearch(message.searchIndex, message.version);
+                    rustcSearcher.setSearchIndex(message.searchIndex);
+                    rustcSearcher.setVersion(message.version);
                     sendResponse(true);
                 } else {
                     sendResponse(false);
@@ -450,25 +491,30 @@ function getPlatformOs() {
                 break;
             }
             // Crate:* action is exclusive to crate event
-            case "crate:check": {
-                let crates = CrateDocManager.getCrates();
-                sendResponse(crates[message.crateName]);
-                break;
-            }
             case "crate:add": {
                 if (message.searchIndex) {
-                    CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
-                    crateDocSearcher.initAllCrateSearcher();
-                    sendResponse(true);
+                    CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex)
+                        .then(() => {
+                            crateDocSearcher.invalidateCachedSearch();
+                            crateDocSearcher.initAllCrateSearcher();
+                        })
+                        .then(() => {
+                            sendResponse(true);
+                        });
                 } else {
                     sendResponse(false);
                 }
                 break;
             }
             case "crate:remove": {
-                CrateDocManager.removeCrate(message.crateName);
-                crateDocSearcher.initAllCrateSearcher();
-                sendResponse(true);
+                CrateDocManager.removeCrate(message.crateName)
+                    .then(() => {
+                        crateDocSearcher.invalidateCachedSearch();
+                        crateDocSearcher.initAllCrateSearcher();
+                    })
+                    .then(() => {
+                        sendResponse(true);
+                    });
                 break;
             }
             // Index-update:* action is exclusive to index update event
@@ -493,13 +539,13 @@ function getPlatformOs() {
             }
             case "index-update:label": {
                 IndexManager.setLabelIndex(message.index);
-                labelCommand.setIndex(message.index);
+                labelCommand = new LabelCommand(message.index);
                 sendResponse(true);
                 break;
             }
             case "index-update:rfc": {
                 IndexManager.setRfcIndex(message.index);
-                rfcCommand.setIndex(message.index);
+                rfcCommand = new RfcCommand(message.index);
                 sendResponse(true);
                 break;
             }
@@ -509,13 +555,28 @@ function getPlatformOs() {
                 sendResponse(true);
                 break;
             }
+            case "index-update:rustc": {
+                IndexManager.setRustcIndex(message.index);
+                rustcCommand = new RustcCommand(message.index);
+                sendResponse(true);
+                break;
+            }
+            case "index-update:target": {
+                IndexManager.setTargetsIndex(message.index);
+                targetCommand = new TargetCommand(message.index);
+                sendResponse(true);
+                break;
+            }
             case "index-update:command": {
                 let index = message.index;
                 IndexManager.setCommandIndex(index);
                 bookCommand.setIndex(index['book']);
+                bookZhCommand.setIndex(index['book/zh']);
+                cargoCommand.setIndex(index['cargo'])
                 yetCommand.setIndex(index['yet']);
                 toolCommand.setIndex(index['tool']);
                 mirrorCommand.setIndex(index['mirror']);
+                blogCommand.setPosts(index['blog']);
                 sendResponse(true);
                 break;
             }
@@ -529,22 +590,22 @@ function getPlatformOs() {
         return true;
     });
 
-    // Put blog release request last to avoid reload error due to
+    // Put blog release request last to avoid error due to
     // possibly request failed. E.g. Github Pages down.
     let response = await fetch("https://blog.rust-lang.org/releases.json");
-    commandManager.addCommand(new BlogCommand((await response.json())["releases"]));
+    blogCommand.setPosts((await response.json())["releases"]);
 })();
 
-(function () {
-    let history = JSON.parse(localStorage.getItem("history")) || [];
+(async () => {
+    let history = await storage.getItem("history") || [];
     if (history) {
-        if (!localStorage.getItem("statistics")) {
-            let statistics = new Statistics();
-            history.forEach((item) => {
-                statistics.record(item);
-            });
+        if (!await storage.getItem("statistics")) {
+            let statistics = await Statistics.load();
+            for (const item of history) {
+                await statistics.record(item);
+            }
 
-            statistics.save();
+            await statistics.save();
         }
 
         // Eliminate unnecessary tags (such as <match>, <dim>) to save disk usage.
@@ -557,15 +618,12 @@ function getPlatformOs() {
                     ...rest,
                 };
             });
-        localStorage.setItem("history", JSON.stringify(history));
+        await storage.setItem("history", history);
     }
 })();
 
-chrome.browserAction.onClicked.addListener(() => {
+const chromeAction = chrome.action || chrome.browserAction;
+chromeAction.onClicked.addListener(() => {
     let managePage = chrome.runtime.getURL("manage/index.html");
     chrome.tabs.create({url: managePage});
 });
-const fileNewIssue = "title=Have you found a bug? Did you feel something was missing?&body=Whatever it was, we'd love to hear from you.";
-chrome.runtime.setUninstallURL(
-    `https://github.com/huhu/rust-search-extension/issues/new?${encodeURI(fileNewIssue)}`
-);

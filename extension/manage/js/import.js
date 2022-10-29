@@ -12,7 +12,7 @@
         fileReader.readAsText(this.files[0]);
     };
 
-    document.querySelector(".btn-import").onclick = (event) => {
+    document.querySelector(".btn-import").onclick = async (event) => {
         if (!json) {
             fileSelector.classList.add("required");
             return;
@@ -40,19 +40,19 @@
             settings.offlineDocPath = importedSettings["offline-path"];
         }
         if (json["history"] && target.querySelector(".search-history").checked) {
-            localStorage.setItem("history", JSON.stringify(json["history"]));
+            await storage.setItem("history", json["history"]);
         }
         if (json["stats"] && target.querySelector(".search-statistics").checked) {
-            localStorage.setItem("statistics", JSON.stringify(json["stats"]));
+            await storage.setItem("statistics", json["stats"]);
         }
         if (json["crates"] && target.querySelector(".crates").checked) {
             let importedCrates = json["crates"];
-            let catalog = CrateDocManager.getCrates();
+            let catalog = await CrateDocManager.getCrates();
             for (let [name, searchIndex] of Object.entries(importedCrates["list"])) {
-                localStorage.setItem(name, JSON.stringify(searchIndex));
+                await storage.setItem(name, searchIndex);
             }
             let crates = Object.assign(catalog, importedCrates["catalog"]);
-            localStorage.setItem("crates", JSON.stringify(crates));
+            await storage.setItem("crates", crates);
         }
 
         alert("Import success!")

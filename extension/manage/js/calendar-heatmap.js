@@ -9,7 +9,7 @@ function calendarHeatmap() {
     const MONTH_LABEL_PADDING = 6;
     let now = moment().endOf('day').toDate();
     let yearAgo = moment().startOf('day').subtract(1, 'year').toDate();
-    let counterMap = {};
+    let counterMap = Object.create(null)
     let colorRange = [];
     let tooltipEnabled = true;
     let tooltipUnit = 'contribution';

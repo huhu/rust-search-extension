@@ -3,17 +3,19 @@ use std::path::Path;
 
 use argh::FromArgs;
 use futures::future::try_join_all;
+use regex::Regex;
 use select::document::Document;
 use select::node::Node;
 use select::predicate::{Class, Name};
 use serde::ser::SerializeTuple;
-use serde::{Deserialize, Serialize, Serializer};
+use serde::{Serialize, Serializer};
 use tokio::runtime::Runtime;
 
 use crate::minify::Minifier;
 use crate::tasks::Task;
 
 const BOOKS_INDEX_PATH: &str = "../extension/index/books.js";
+const COMMANDS: &str = include_str!("../../../extension/index/commands.js");
 
 /// Books task
 #[derive(FromArgs)]
@@ -31,12 +33,18 @@ struct Page {
     parent_titles: Option<Vec<String>>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-struct Book {
-    name: String,
-    url: String,
+#[derive(Serialize, Debug, Default)]
+struct Book<'a> {
+    name: &'a str,
+    url: &'a str,
     #[serde(skip_deserializing)]
     pages: Vec<Page>,
+}
+
+impl<'a> Book<'a> {
+    fn is_empty(&self) -> bool {
+        self.name.is_empty() || self.url.is_empty()
+    }
 }
 
 impl Page {
@@ -87,7 +95,7 @@ fn parse_node(node: &Node, parent_titles: Option<Vec<String>>) -> Vec<Page> {
             }
         } else {
             let mut new_parent_titles = parent_titles.clone().unwrap_or_default();
-            if let Some(page) = child.prev().map(|n| Page::parse(&n)).flatten() {
+            if let Some(page) = child.prev().and_then(|n| Page::parse(&n)) {
                 new_parent_titles.push(page.title);
                 if let Some(section) = child.find(Class("section")).next() {
                     pages.extend(parse_node(&section, Some(new_parent_titles)))
@@ -98,17 +106,21 @@ fn parse_node(node: &Node, parent_titles: Option<Vec<String>>) -> Vec<Page> {
     pages
 }
 
-async fn fetch_book(mut book: Book) -> crate::Result<Book> {
-    let html = reqwest::get(&book.url).await?.text().await?;
+async fn fetch_book(mut book: Book<'_>) -> crate::Result<Book<'_>> {
+    let html = reqwest::get(book.url).await?.text().await?;
     let doc = Document::from(html.as_str());
-    let node = doc.find(Class("chapter")).next().unwrap();
-    book.pages = parse_node(&node, None);
-    Ok(book)
+    if let Some(node) = doc.find(Class("chapter")).next() {
+        book.pages = parse_node(&node, None);
+        Ok(book)
+    } else {
+        println!("Parse failed, book `{}` is ignored.", book.name);
+        Ok(Book::default())
+    }
 }
 
 impl Task for BooksTask {
     fn execute(&self) -> crate::Result<()> {
-        let mut rt = Runtime::new()?;
+        let rt = Runtime::new()?;
         rt.block_on(self.run())?;
         Ok(())
     }
@@ -116,13 +128,32 @@ impl Task for BooksTask {
 
 impl BooksTask {
     async fn run(&self) -> crate::Result<()> {
-        let futures: Vec<_> = serde_json::from_str::<Vec<Book>>(include_str!("books.json"))?
-            .into_iter()
-            .map(fetch_book)
-            .collect();
+        let re = Regex::new(r#"^\["(.*)",\s?"(.*)"\]"#).unwrap();
+        let mut books = vec![];
+        let mut started = false;
+        for line in COMMANDS.lines() {
+            if line.trim().starts_with("\"book\"") {
+                started = true;
+            } else if line.trim().starts_with("\"book/zh\"") {
+                break;
+            }
+
+            if started {
+                if let Some(capture) = re.captures(line.trim()) {
+                    let book = Book {
+                        name: capture.get(1).unwrap().as_str(),
+                        url: capture.get(2).unwrap().as_str(),
+                        pages: Vec::default(),
+                    };
+                    books.push(book);
+                }
+            }
+        }
+        println!("{:?}", books);
+        let futures: Vec<_> = books.into_iter().map(fetch_book).collect();
         match try_join_all(futures).await {
             Ok(result) => {
-                let books: Vec<_> = result.into_iter().collect();
+                let books: Vec<_> = result.into_iter().filter(|book| !book.is_empty()).collect();
                 let contents = format!(
                     "var N=null;var booksIndex={};",
                     serde_json::to_string(&books)?

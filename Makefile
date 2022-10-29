@@ -1,4 +1,5 @@
 include core/extension.mk
+include build.mk
 
 .PHONY: chrome manage
 
@@ -6,6 +7,9 @@ include core/extension.mk
 assert:
 	@test -d extension/manage && echo "Assert extension/manage success!\n" || (echo "No extension/manage found!\n Running `make manage`"; make manage)
 
-# Build manage pages
+# Build manage css and html
 manage:
 	@cd manage && cargo run
+
+# Build macro-railroad wasm module and js
+macro-railroad: extension/wasm/macro-railroad.wasm extension/script/macro-railroad-wasm.js

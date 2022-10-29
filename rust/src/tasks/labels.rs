@@ -43,7 +43,7 @@ impl Serialize for Label {
 
 impl Task for LabelsTask {
     fn execute(&self) -> crate::Result<()> {
-        let mut rt = Runtime::new()?;
+        let rt = Runtime::new()?;
         rt.block_on(self.run())?;
         Ok(())
     }

@@ -4,6 +4,44 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.8 - 2022-08-15
+
+- Migrate to Manifest V3 ({{ issue(id=179) }}).
+- Integrate [macro_railroad_ext](https://github.com/lukaslueg/macro_railroad_ext) ({{ issue(id=183) }}). Kudos to [@lukaslueg](https://github.com/lukaslueg).
+  > ![](/railroad.jpg)
+- Support options page. Fixes ({{ issue(id=133) }}).
+- Replace 'crate:check' action with `chrome.storage` API query.
+- Support the new search-index loading, see [rust-lang/rust#98124](https://github.com/rust-lang/rust/pull/98124).
+- Add more books into `:book` command.
+- Add `:book/zh` command to list Chinese books. ({{ issue(id=175) }}).
+- Adjust margin of add to extension button ({{ issue(id=178) }}).
+- Remove uninstall url. Close {{ issue(id=188) }}.
+- Bugfix:
+  - Fix default `offlineDocPath` undefine bug.
+  - Don't load search index in non-rust doc pages.
+  - Invalid cached crate searcher after crate search index updated or removed.
+
+Thanks for the contributions from [@C-Dao](https://github.com/C-Dao), [@zjp-CN](https://github.com/zjp-CN), and [@ZhangHanDong](https://github.com/ZhangHanDong).
+
+## v1.8.1 - 2022-08-17
+
+- Remove `file:///*` permission. Fixes ({{ issue(id=190) }}).
+- Add *Show Macro Railroad* options.
+- Use rustwiki Chinese CDN. ({{ issue(id=190) }})
+
+Thanks for the contributions from [@PureWhiteWu](https://github.com/PureWhiteWu).
+
+# v1.7 - 2022-06-06
+
+- Remove the `tabs` permission requirement.
+- Migrate `localStorage` to `chrome.storage` API ({{ issue(id=155) }}, {{ issue(id=157) }}, {{ issue(id=158) }}).
+- Support update blog command posts index in [update page](/update).
+- Bugfix:
+  - Fix docs.rs TOC max-width and padding.
+  - Only render `.top-doc` headings as TOC. Fixes {{ issue(id=152) }}.
+  - Don't reposition feature flag menu. Fixes {{ issue(id=154) }}.
+  - Fix search base iterate issue ({{ issue(id=159) }}).
+
 # v1.6 - 2022-03-02
 
 - Show optional dependencies in feature flags menu. Fixes {{ issue(id=29) }}.
@@ -30,11 +68,12 @@ weight = 3
 - New commands:
   - `:rfc`: show all Rust RFC list. Kudos to [nrc](https://github.com/nrc)'s [rfc-index](https://github.com/nrc/rfc-index) repository.
 - Improvements:
+
   - Error code search supports offline mode.
   - Expand the `:stable` command result to 100 versions.
-> What a coincidence! Rust will release **v1.87.0** on its **10th** anniversary day!
-> 
-> ![](/stable-command.png)
+    > What a coincidence! Rust will release **v1.87.0** on its **10th** anniversary day!
+    >
+    > ![](/stable-command.png)
 
 - Bugfix:
   - Fix docs.rs TOC overlap issue.
@@ -102,7 +141,7 @@ weight = 3
 - Refactor search statistics page (finer granularity for search metrics)
 - Add a table of content for the rust-lang repository release page. (New permission required, see [FAQ](/faq/#why-the-extension-requires-access-to-github-com))
 - docs.rust-lang.org enhancement: in stable/nightly docs page and source code pages, link all `"since"` and `"issue"` tags to corresponding URLs
-- Show a crate's Cargo.toml quick link when feature flag is empty  
+- Show a crate's Cargo.toml quick link when feature flag is empty
 - New commands:
   - `:cargo`: show all useful cargo subcommands
   - `:release`: open rust-lang repository release page
@@ -118,19 +157,19 @@ Finally, we reach **v1.0**! 🎉🎉
 - Support sync stable/nightly std search index automatically. There is no extension updating required to get the latest search index after v1.0.
 - Support prefix **?** and **??** to search [caniuse.rs](https://caniuse.rs) and RFC respectively. Thanks the PR {{ issue(id=77) }} from [@aquarhead](https://github.com/aquarhead).
 - Upload the latest index files to the [update page](/update) once a day, those index including:
-    - Command index 
-    - Book index 
-    - Clippy lint index 
-    - Caniuse index 
-    - Github *rust-lang/rust* repository label index 
-    - Top 20K crate index 
+  - Command index
+  - Book index
+  - Clippy lint index
+  - Caniuse index
+  - Github _rust-lang/rust_ repository label index
+  - Top 20K crate index
 - Support configure auto index-updating in the popup page
 - New commands:
-    - `:stats`: open search statistics page
-    - `:update`: open the [update page](/update) to sync the latest index automatically
+  - `:stats`: open search statistics page
+  - `:update`: open the [update page](/update) to sync the latest index automatically
 - Bugfix:
-    - Fix docs.rs SVG icon missing issue
-    - Fix docs.rs new header bar UI compatibility
+  - Fix docs.rs SVG icon missing issue
+  - Fix docs.rs new header bar UI compatibility
 
 # v0.11 - 2020-08-27
 
@@ -138,7 +177,7 @@ Finally, we reach **v1.0**! 🎉🎉
 - Bump std search index version to **v1.46.0**
 - Support prefix **/** to search nightly docs
 - New commands:
-    - `:mirror`: show all rust mirror websites
+  - `:mirror`: show all rust mirror websites
 - Improve error code regex
 - Update the latest attribute index
 
@@ -151,21 +190,20 @@ Finally, we reach **v1.0**! 🎉🎉
 - Add search statistics page, including calendar heatmap, daily|weekly|hourly search bar charts, and top searched crates, etc
 - Improve searching speed, approximately 10% faster than the previous version
 - New commands:
-    - `:tool`: search rust tools
+  - `:tool`: search rust tools
 - Bugfix:
-    - Fix std doc offline mode bug
-    - Fix wrong Add button state in docs.rs's src page issue 
+  - Fix std doc offline mode bug
+  - Fix wrong Add button state in docs.rs's src page issue
 
 # v0.9 - 2020-04-24
 
 - Bump std search index version to **v1.43.0**
-- Support add crates to Rust Search Extension in docs.rs page，then you can use **@crate-name** to search that crate's docs. 
+- Support add crates to Rust Search Extension in docs.rs page，then you can use **@crate-name** to search that crate's docs.
 - Support prefix **>** to search [Cargo Clippy lints](https://rust-lang.github.io/rust-clippy/master/)
 - New commands:
-    - `:label`: search rust-lang issue label
+  - `:label`: search rust-lang issue label
 - Dark mode supported
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe) version is available
-
 
 # v0.8 - 2020-03-02
 
@@ -174,11 +212,11 @@ Finally, we reach **v1.0**! 🎉🎉
 - Support prefix **!!** (double exclamation mark) to search crates with [docs.rs](https://docs.rs) url
 - Support prefix **%** (percent mark) to search Rust official book chapters
 - Builtin command system
-    - `:help` command to show all help messages
-    - `:book` command to show all Rust official books
-    - `:stable` command to show stable Rust scheduled release date in the next year
-    - `:yet` command to show all **Are We Yet** websites
-    - `:history` command to show your local search history
+  - `:help` command to show all help messages
+  - `:book` command to show all Rust official books
+  - `:stable` command to show stable Rust scheduled release date in the next year
+  - `:yet` command to show all **Are We Yet** websites
+  - `:history` command to show your local search history
 - Support page down the result with page-turner **-** (hyphen)
 - Support open in new tab by using `Cmd`/`Alt` + `Enter`
 - Add [Privacy Policy](/privacy/)
@@ -210,17 +248,16 @@ The version **v0.5** was released at `2019-11-08`.
 - Bump search-index to version **v1.39.0**
 - Fix escape bug on Firefox
 
-
 # v0.4 - 2019-11-01
 
 **v0.4** was a minor bug fix version released at `2019-11-01`.
 
 - Fix offline mode search bug
-- Offline doc path support `file://` and `http://` 
+- Offline doc path support `file://` and `http://`
 
 # v0.3 - 2019-10-29
 
-After long time inactivity. The **v0.3** gets released at `2019-10-29` with an announcing on [Reddit post](https://www.reddit.com/r/rust/comments/dp1ru6/i_published_a_handy_chromefirefox_extension_to/).  
+After long time inactivity. The **v0.3** gets released at `2019-10-29` with an announcing on [Reddit post](https://www.reddit.com/r/rust/comments/dp1ru6/i_published_a_handy_chromefirefox_extension_to/).
 
 - Bump search-index to stable version **v1.38.0**
 - Support search [Compiler Error Index](https://doc.rust-lang.org/error-index.html) with error code

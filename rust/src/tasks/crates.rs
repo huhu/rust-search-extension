@@ -62,7 +62,7 @@ impl WordCollector {
 
     #[inline]
     fn collect_crate_id(&mut self, value: &str) {
-        let id = value.replace("-", "_");
+        let id = value.replace('-', "_");
         for word in id
             .to_lowercase()
             .split(|c| c == '_')
@@ -90,7 +90,16 @@ fn default_version() -> Version {
 
 fn read_csv<D: DeserializeOwned>(file: impl Read) -> crate::Result<Vec<D>> {
     let mut reader = ReaderBuilder::new().has_headers(true).from_reader(file);
-    Ok(reader.deserialize().map(|record| record.unwrap()).collect())
+    Ok(reader
+        .deserialize()
+        .filter_map(|record| match record {
+            Ok(record) => Some(record),
+            Err(err) => {
+                println!("Deserialize csv record failed: {:?}", err);
+                None
+            }
+        })
+        .collect())
 }
 
 fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> String {
@@ -102,7 +111,7 @@ fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> 
                 minifier.mapping_minify_crate_id(item.name),
                 (
                     item.description
-                        .map(|value| value.replace("\n", "").trim().to_string())
+                        .map(|value| value.replace('\n', "").trim().to_string())
                         .map(|value| minifier.mapping_minify(value)),
                     item.version,
                 ),

@@ -4,6 +4,18 @@ description = "Testimonials"
 weight = 1
 +++
 
+## From *u/daniel5151*
+
+> This is one of those extensions I've had installed for so long that I often forget that it's not built right into Chrome! Thanks again for the regular updates, and keep up the good work :)
+
+## From *u/zim0369*
+
+> Didn't know about this and I also didn't know that I needed this so bad. Tysm
+
+## From *u/Nilstrieb*
+
+> The only time I even notice that I have it installed is whenever I'm in a browser that doesn't. It's such a great extension that I use all the time!
+
 ## From *@Kazuhiro Serizawa*
 
 > 同僚氏に教えてもらったRustのdocやcrateをchromeのURL barでincremental searchできるようになるchrome extension．超便利．

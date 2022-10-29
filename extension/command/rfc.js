@@ -1,12 +1,12 @@
-class RfcCommand extends SimpleCommand {
+class RfcCommand extends Command {
     constructor(index) {
-        super("rfc", "Show the RFC index.");
+        super("rfc", "Search Rust RFCs.");
         this.rfcs = index.map(([number, name, date, title]) => {
             return {number, name, date, title};
         });
     }
 
-    onExecute(arg) {
+    async onExecute(arg) {
         let results = this.rfcs;
         if (arg) {
             results = [];

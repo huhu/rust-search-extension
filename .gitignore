@@ -2,9 +2,12 @@
 .DS_Store
 *.crx
 *.pem
+Cargo.lock
 web-ext-artifacts
 node_modules
 target
 docs/public
 manifest.json
-extension/manage/
+extension/core
+extension/manage/*.html
+macro_railroad/pkg

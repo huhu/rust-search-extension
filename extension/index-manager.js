@@ -85,6 +85,22 @@ class IndexManager {
         chrome.storage.local.set({'index-caniuse': index});
     }
 
+    static async getRustcIndex() {
+        return await getIndexInternal('index-rustc') || rustcIndex;
+    }
+
+    static setRustcIndex(index) {
+        chrome.storage.local.set({'index-rustc': index});
+    }
+
+    static async getTargetsIndex() {
+        return await getIndexInternal('index-target') || targetsIndex;
+    }
+
+    static setTargetsIndex(index) {
+        chrome.storage.local.set({'index-target': index});
+    }
+
     static async getCommandIndex() {
         let index = await getIndexInternal('index-command');
         if (index) {

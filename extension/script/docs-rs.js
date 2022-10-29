@@ -37,6 +37,9 @@ function highlight() {
 
 // Show TOC of docs.rs
 document.addEventListener("DOMContentLoaded", () => {
+    // Ignore all non-rust doc pages.
+    if (!isRustDoc()) return;
+
     // Don't render TOC if the screen width less than 1500px.
     if (window.innerWidth < 1500) return;
 
@@ -70,20 +73,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Using separate event listener to avoid network requesting latency for feature flags menu enhancement.
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
 
     let featureFlagsMenu = Array.from(menus.children).find(menu => menu.textContent.toLowerCase().includes("feature flags"));
     if (featureFlagsMenu) {
-        // Rearrange the featureFlagsMenu to order 2th.
-        menus.insertBefore(featureFlagsMenu, menus.firstElementChild.nextElementSibling);
         featureFlagsMenu.classList.add("pure-menu-has-children", "pure-menu-allow-hover");
         await enhanceFeatureFlagsMenu(featureFlagsMenu);
     }
 });
 
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
 
@@ -99,7 +100,10 @@ document.addEventListener("DOMContentLoaded", async() => {
 
     // Exclude /crate/** pages
     if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
-        chrome.runtime.sendMessage({ crateName, action: "crate:check" }, crate => {
+        // Query installed crates from chrome.storage API
+        chrome.storage.local.get("crates", (result) => {
+            let crates = result['crates'] || {};
+            let crate = crates[crateName];
             if (crate) {
                 insertAddToExtensionElement(getState(crate.version));
             } else {
@@ -201,21 +205,21 @@ function insertAddToExtensionElement(state) {
                       <span id="rse-here" style="text-decoration: underline; cursor: pointer">here</span>
                       to manage all your indexed crates.
                    </p>`;
-        iconAttributes = `class="fa-svg fa-svg-fw" style="color:green"`;
+        iconAttributes = `class="fa-svg" style="color:green"`;
         iconFile = SVG_CHECK_CIRCLE;
     } else if (state === "outdated") {
         content = `<p>You current version v${installedVersion} is outdated. Click to update to the v${crateVersion}.</p>`;
-        iconAttributes = `class="fa-svg fa-svg-fw" style="color:#e57300"`;
+        iconAttributes = `class="fa-svg" style="color:#e57300"`;
         iconFile = SVG_ARROW_UP_CIRCLE;
     } else if (state === "error") {
         // The error case: the user fail to install the crate.
         content = `<p>Oops! Some error happened. You can try again. <br><br>Or check the console and file an issue to report the error.</p>`;
-        iconAttributes = `class="fa-svg fa-svg-fw" style="color:#e62f07"`;
+        iconAttributes = `class="fa-svg" style="color:#e62f07"`;
         iconFile = SVG_ERROR;
     } else {
         // The default case: need-to-install.
         content = `<p>Add this crate to Rust Search Extension then you can search it in the address bar.</p>`;
-        iconAttributes = `class="fa-svg fa-svg-fw" style="color:#121212"`;
+        iconAttributes = `class="fa-svg" style="color:#121212"`;
         iconFile = SVG_PLUS_CIRCLE;
     }
     li.innerHTML = `<div class="add-to-extension"
@@ -240,7 +244,7 @@ function insertAddToExtensionElement(state) {
 window.addEventListener("message", function (event) {
     if (event.source === window &&
         event.data &&
-        event.data.direction === "rust-search-extension") {
+        event.data.direction === "rust-search-extension:docs.rs") {
         chrome.runtime.sendMessage({ action: "crate:add", ...event.data.message },
             (response) => {
                 if (response) {

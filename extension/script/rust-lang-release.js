@@ -66,23 +66,25 @@ function scrollToVersion(version) {
 function highlight() {
     let items = document.querySelectorAll('.markdown-body>h1>a');
     const scrollHandler = entries => {
-        entries.forEach(entry => {
-            if (entry.intersectionRatio > 0) {
-                document.querySelectorAll(".rse-version-list-item").forEach((item) => {
-                    item.classList.remove("rse-active");
-                });
-
-                let url = new URL(entry.target.href);
-                let link = document.querySelector(`.rse-version-list-item a[href$="${url.hash}"]`)
-                if (link) {
-                    let target = link.parentElement.parentElement;
-                    target.classList.add("rse-active");
-                    target.scrollIntoView({behavior: "auto", block: "nearest"});
-                }
-            }
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
         });
+        if (!entry) return;
+
+        document.querySelectorAll(".rse-version-list-item").forEach((item) => {
+            item.classList.remove("rse-active");
+        });
+
+        let url = new URL(entry.target.href);
+        let link = document.querySelector(`.rse-version-list-item a[href$="${url.hash}"]`)
+        if (link) {
+            let target = link.parentElement.parentElement;
+            target.classList.add("rse-active");
+            target.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
     };
-    const observer = new IntersectionObserver(scrollHandler);
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
     items.forEach(item => observer.observe(item));
 }
 

@@ -2,12 +2,9 @@
 class SingleCrateDocSearch extends DocSearch {
 
     constructor(name, version, searchIndex) {
-        super(name, searchIndex);
-        this._path = `https://docs.rs/${name}/${version}/`;
-    }
-
-    get rootPath() {
-        return this._path;
+        super(name, searchIndex, () => {
+            return `https://docs.rs/${name}/${version}/`;
+        });
     }
 }
 
@@ -18,27 +15,27 @@ class CrateDocSearch {
         this.allCrateSearcher = null;
     }
 
-    initAllCrateSearcher() {
-        let searchIndex = {};
-        Object.keys(CrateDocManager.getCrates()).forEach(crateName => {
-            searchIndex = Object.assign(searchIndex, CrateDocManager.getCrateSearchIndex(crateName));
-        });
+    async initAllCrateSearcher() {
+        let searchIndex = Object.create(null)
+        for (const crateName of Object.keys(await CrateDocManager.getCrates())) {
+            searchIndex = Object.assign(searchIndex, await CrateDocManager.getCrateSearchIndex(crateName));
+        }
         this.allCrateSearcher = new SingleCrateDocSearch("~", "*", searchIndex);
     }
 
     // Search specific crate docs by prefix `@` sigil.
     // If that crate not been indexed, fallback to the list of all indexed crates.
-    search(query) {
+    async search(query) {
         let [crateName, keyword] = CrateDocSearch.parseCrateDocsSearchKeyword(query);
 
         let searcher = null;
         if (this.cachedCrateSearcher && this.cachedCrateSearcher.name === crateName) {
             searcher = this.cachedCrateSearcher;
         } else {
-            let crates = CrateDocManager.getCrates();
+            let crates = await CrateDocManager.getCrates();
             let crate = crates[crateName];
             if (crate) {
-                let searchIndex = CrateDocManager.getCrateSearchIndex(crateName);
+                let searchIndex = await CrateDocManager.getCrateSearchIndex(crateName);
                 searcher = new SingleCrateDocSearch(crateName, crate.version, searchIndex);
 
                 this.cachedCrateSearcher = searcher;
@@ -75,12 +72,17 @@ class CrateDocSearch {
     }
 
     // Search all saved crates docs collectively.
-    searchAll(query) {
+    async searchAll(query) {
         if (!this.allCrateSearcher) {
-            this.initAllCrateSearcher();
+            await this.initAllCrateSearcher();
         }
         let keyword = query.replace("~", "").trim();
         return this.allCrateSearcher.search(keyword);
+    }
+
+    // Invalidate cached search. This is needed if we update crate's search index.
+    invalidateCachedSearch() {
+        this.cachedCrateSearcher = null;
     }
 
     static parseCrateDocsSearchKeyword(query) {

@@ -1,4 +1,4 @@
-(function() {
+(function () {
     function sendSearchIndex() {
         if (location.hostname === "docs.rs") { // docs.rs pages
             // Parse crate info from location pathname.
@@ -13,7 +13,7 @@
                 crateVersion = parseCrateVersionFromDOM();
             }
             window.postMessage({
-                direction: "rust-search-extension",
+                direction: "rust-search-extension:docs.rs",
                 message: {
                     crateName,
                     crateVersion,
@@ -32,18 +32,14 @@
             const STD_CRATES = ['std', 'test', 'proc_macro'];
 
             // Remove unnecessary std crate's search index, such as core, alloc, etc
-            function cleanSearchIndex() {
-                let searchIndex = {};
-                STD_CRATES.forEach(crate => {
-                    searchIndex[crate] = window.searchIndex[crate];
-                });
-                return searchIndex;
-            }
-
+            let searchIndex = Object.create(null)
+            STD_CRATES.forEach(crate => {
+                searchIndex[crate] = window.searchIndex[crate];
+            });
             window.postMessage({
                 direction: `rust-search-extension:std`,
                 message: {
-                    searchIndex: cleanSearchIndex(window.searchIndex),
+                    searchIndex,
                 },
             }, "*");
         }
@@ -57,17 +53,19 @@
         // Due to the new search-index.js on-demand load mode after PR #82310 has been merged.
         // We need to trigger a manual search-index.js load here.
         console.log("No search index found, start loading...")
-            // Since rust 1.58, we can get the searchIndexJs from window.searchIndexJs.
+        // Since rust 1.58, we can get the searchIndexJs from window.searchIndexJs.
         let searchIndexJs = window.searchIndexJS;
 
         // For the older version, we still need to get it from the DOM.
         if (!searchIndexJs) {
-            let rustdocVars = document.getElementById("rustdoc-vars");
             // If we can't get the search index via "data-search-index-js",
             // then we should fallback to the "data-search-js", which is a
-            // temporary stage in librustdoc. 
+            // temporary stage in librustdoc.
             // Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
-            searchIndexJs = (rustdocVars.attributes["data-search-index-js"] || rustdocVars.attributes["data-search-js"]).value;
+            //
+            // This PR https://github.com/rust-lang/rust/pull/98124 use another way to load search-index:
+            // by concatenating the paths to get a full search-index.js file, see resourcePath() function.
+            searchIndexJs = getVar('search-index-js') || getVar('search-js') || resourcePath("search-index", ".js");
         }
 
         if (searchIndexJs) {
@@ -78,6 +76,23 @@
         } else {
             console.error("Sorry, no search index found.");
         }
-
     }
 })();
+
+// ======== Following function mirrored to librustdoc main.js ========
+
+// Get rustdoc variable from DOM.
+function getVar(name) {
+    const el = document.getElementById("rustdoc-vars");
+    if (el) {
+        const dataVar = el.attributes["data-" + name];
+        if (dataVar) {
+            return dataVar.value;
+        }
+    }
+    return null
+}
+
+function resourcePath(basename, extension) {
+    return getVar("root-path") + basename + getVar("resource-suffix") + extension
+}

@@ -2,6 +2,9 @@ const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/R
 const TARGET = location.pathname.includes("/nightly/") ? "nightly" : "stable";
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Ignore all non-rust doc pages.
+    if (!isRustDoc()) return;
+
     if (location.pathname.startsWith("/0.")) {
         // Ignore legacy docs, such as 0.12.0. (https://doc.rust-lang.org/0.12.0/std/index.html)
         return;
@@ -29,7 +32,7 @@ window.addEventListener("message", function (event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension:std") {
-        chrome.runtime.sendMessage({action: `${TARGET}:add`, ...event.data.message},
+        chrome.runtime.sendMessage({ action: `${TARGET}:add`, ...event.data.message },
             (response) => {
                 let now = new Date();
                 let version = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;

@@ -1,0 +1,74 @@
+div.railroad_container {
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    position: relative;
+}
+
+svg.railroad {
+    border: 1px solid grey;
+}
+
+div.railroad_modal {
+    z-index: 10000;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+	background: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s, visibility 0s 0.5s;
+}
+
+div.railroad_modal_content > svg {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 95vw;
+    max-height: 95vh;
+    border: 2px solid black;
+}
+
+div.railroad_modal.railroad_active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s;
+}
+
+div.railroad_icons {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+}
+
+img.railroad_icon {
+    opacity: 0.3;
+    transition: opacity 1s;
+    width: 25px;
+}
+
+img.railroad_icon:hover {
+    opacity: 1.0;
+}
+
+div.railroad_dropdown_content {
+    color: black;
+    border: 1px solid black;
+    visibility: hidden;
+    position: absolute;
+    overflow: auto;
+    z-index: 1;
+    background-color: rgba(240,240,240,0.95);
+    white-space: nowrap;
+    padding: 5px;
+    right: 0;
+}
+
+div.railroad_dropdown_show {
+    visibility: visible;
+}

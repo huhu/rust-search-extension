@@ -64,7 +64,7 @@ div.nav-container form.landing-search-form-nav {
     cursor: pointer;
     padding: 0.2rem;
     border-radius: 3px;
-    margin-left: 5px;
+    margin: 5.4px 16px 4.4px;
 }
 
 .add-to-extension:hover {

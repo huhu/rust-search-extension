@@ -32,13 +32,16 @@
             </ul>
             <div style="padding: 30px 80px; background-color: white;">
                 <div class="logo flex-layout">
-                    <img src="../icon.png" alt="rust-search-extension-logo"> Rust Search Extension
+                    <img src="../assets/icon.png" alt="rust-search-extension-logo"> Rust Search Extension
                 </div>
                 {% block content %}
                 {% endblock %}
             </div>
         </div>
     </div>
+    <script src="../core/compat.js"></script>
+    <script src="../core/storage.js"></script>
+    <script src="../settings.js"></script>
     {% block js %}
     {% endblock %}
 </body>

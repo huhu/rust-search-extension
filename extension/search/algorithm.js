@@ -2,7 +2,7 @@
  * Global levenshtein_row2 array which used in function levenshtein().
  * @type {Array}
  */
-var levenshtein_row2 = [];
+const levenshtein_row2 = [];
 
 /**
  * A function to compute the Levenshtein distance between two strings
@@ -15,9 +15,10 @@ function levenshtein(s1, s2) {
     if (s1 === s2) {
         return 0;
     }
-    var s1_len = s1.length, s2_len = s2.length;
+    const s1_len = s1.length, s2_len = s2.length;
     if (s1_len && s2_len) {
-        var i1 = 0, i2 = 0, a, b, c, c2, row = levenshtein_row2;
+        let i1 = 0, i2 = 0, a, b, c, c2;
+        const row = levenshtein_row2;
         while (i1 < s1_len) {
             row[i1] = ++i1;
         }

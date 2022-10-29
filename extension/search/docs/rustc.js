@@ -1,15 +1,17 @@
 class RustcSearch extends DocSearch {
-    constructor(searchIndex, version) {
-        super("rustc", searchIndex);
+    constructor(searchIndex) {
+        super("rustc", searchIndex, () => {
+            return "https://doc.rust-lang.org/nightly/nightly-rustc/";
+        });
+    }
+
+    // rustc cached version, see also script/rustc.js
+    setVersion(version) {
         this.version = version;
     }
 
-    get rootPath() {
-        return "https://doc.rust-lang.org/nightly/nightly-rustc/";
-    }
-
     getSearchUrl(keyword) {
-        let url = `${this.rootPath}index.html`;
+        let url = `${this.getRootPath()}index.html`;
         if (keyword) {
             url += `?search=${encodeURIComponent(keyword)}`;
         }

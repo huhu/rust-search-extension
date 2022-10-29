@@ -1,17 +1,22 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const autoUpdateCheckbox = document.getElementById('auto-update');
-    autoUpdateCheckbox.checked = settings.autoUpdate;
-    autoUpdateCheckbox.onchange = function(event) {
+    autoUpdateCheckbox.checked = await settings.autoUpdate;
+    autoUpdateCheckbox.onchange = async function(event) {
         settings.autoUpdate = event.target.checked;
+    };
+    const showMacroRailroad = document.getElementById('show-macro-railroad');
+    showMacroRailroad.checked = await settings.showMacroRailroad;
+    showMacroRailroad.onchange = async function(event) {
+        settings.showMacroRailroad = event.target.checked;
     };
 
     // Offline mode checkbox
-    if (!settings.offlineDocPath) {
+    if (!(await settings.offlineDocPath)) {
         // If the offline doc path not exists, turn off the offline mode.
         settings.isOfflineMode = false;
     }
     const offlineModeCheckbox = document.getElementById('offline-mode');
-    const checkedState = settings.isOfflineMode;
+    const checkedState = await settings.isOfflineMode;
     offlineModeCheckbox.checked = checkedState;
     toggleOfflinePathEnableState(checkedState);
     offlineModeCheckbox.onchange = function(event) {
@@ -22,18 +27,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Offline doc path
     const offlineDocPath = document.querySelector('.offline-doc-path');
-    offlineDocPath.value = settings.offlineDocPath;
+    offlineDocPath.value = await settings.offlineDocPath;
     offlineDocPath.onchange = function(event) {
         settings.offlineDocPath = event.target.value;
     };
 
     let crateRegistry = document.querySelector("select[name='crate-registry']");
-    crateRegistry.value = settings.crateRegistry;
+    crateRegistry.value = await settings.crateRegistry;
     crateRegistry.onchange = function() {
         settings.crateRegistry = crateRegistry.value;
     };
 
-    setupDefaultSearch();
+    await setupDefaultSearch();
 }, false);
 
 
@@ -48,12 +53,12 @@ function toggleOfflinePathEnableState(enable) {
     }
 }
 
-function setupDefaultSearch() {
+async function setupDefaultSearch() {
     const thirdPartyDocs = document.getElementById('ds-3rd-docs');
     const docsRs = document.getElementById('ds-docs-rs');
     const attributes = document.getElementById('ds-attributes');
 
-    let defaultSearch = settings.defaultSearch;
+    let defaultSearch = await settings.defaultSearch;
 
     thirdPartyDocs.checked = defaultSearch.thirdPartyDocs;
     docsRs.checked = defaultSearch.docsRs;
