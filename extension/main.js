@@ -561,6 +561,12 @@ function getPlatformOs() {
                 sendResponse(true);
                 break;
             }
+            case "index-update:target": {
+                IndexManager.setTargetsIndex(message.index);
+                targetCommand = new TargetCommand(message.index);
+                sendResponse(true);
+                break;
+            }
             case "index-update:command": {
                 let index = message.index;
                 IndexManager.setCommandIndex(index);
