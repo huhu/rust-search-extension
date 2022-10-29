@@ -10,7 +10,7 @@ use tokio::runtime::Runtime;
 
 use super::Task;
 
-const TARGETS_INDEX_PATH: &str = "../extension/index/target.js";
+const TARGETS_INDEX_PATH: &str = "../extension/index/targets.js";
 
 /// Target task
 #[derive(FromArgs)]
@@ -47,16 +47,16 @@ impl TargetsTask {
 
         let tier1 = tbody.next().expect("No tier 1 targets found");
         map.insert(
-            "Tire 1",
+            "Tier 1",
             Tier {
                 url: format!("{URL}#tier-1-with-host-tools"),
                 items: tier1
                     .find(Name("tr"))
                     .map(|tr| {
                         (
-                            tr.first_child().expect("Parse tire 1 target failed").text(),
+                            tr.first_child().expect("Parse tier 1 target failed").text(),
                             tr.last_child()
-                                .expect("Parse tire 1 target failed")
+                                .expect("Parse tier 1 target failed")
                                 .text()
                                 .trim_end_matches(char::is_numeric)
                                 .to_owned(),
@@ -67,15 +67,15 @@ impl TargetsTask {
         );
         let tier2_with_host = tbody.next().expect("No tier 2 with host targets found");
         map.insert(
-            "Tire 2 (with host tools)",
+            "Tier 2 (with host tools)",
             Tier {
                 url: format!("{URL}#tier-2-with-host-tools"),
                 items: tier2_with_host
                     .find(Name("tr"))
                     .map(|tr| {
                         (
-                            tr.first_child().expect("Parse tire 2 target failed").text(),
-                            tr.last_child().expect("Parse tire 2 target failed").text(),
+                            tr.first_child().expect("Parse tier 2 target failed").text(),
+                            tr.last_child().expect("Parse tier 2 target failed").text(),
                         )
                     })
                     .collect::<Vec<_>>(),
@@ -84,15 +84,15 @@ impl TargetsTask {
 
         let tier2 = tbody.next().expect("No tier 2 targets found");
         map.insert(
-            "Tire 2",
+            "Tier 2",
             Tier {
                 url: format!("{URL}#tier-2"),
                 items: tier2
                     .find(Name("tr"))
                     .map(|tr| {
                         (
-                            tr.first_child().expect("Parse tire 2 target failed").text(),
-                            tr.last_child().expect("Parse tire 2 target failed").text(),
+                            tr.first_child().expect("Parse tier 2 target failed").text(),
+                            tr.last_child().expect("Parse tier 2 target failed").text(),
                         )
                     })
                     .collect::<Vec<_>>(),
@@ -101,15 +101,15 @@ impl TargetsTask {
 
         let tier3 = tbody.next().expect("No tier 3 targets found");
         map.insert(
-            "Tire 3",
+            "Tier 3",
             Tier {
                 url: format!("{URL}#tier-3"),
                 items: tier3
                     .find(Name("tr"))
                     .map(|tr| {
                         (
-                            tr.first_child().expect("Parse tire 3 target failed").text(),
-                            tr.last_child().expect("Parse tire 3 target failed").text(),
+                            tr.first_child().expect("Parse tier 3 target failed").text(),
+                            tr.last_child().expect("Parse tier 3 target failed").text(),
                         )
                     })
                     .collect::<Vec<_>>(),
