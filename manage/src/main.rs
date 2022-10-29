@@ -43,20 +43,7 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn compile_sass() -> Result<()> {
-    let options = sass_rs::Options {
-        output_style: sass_rs::OutputStyle::Compressed,
-        ..Default::default()
-    };
-    let content = sass_rs::compile_file("templates/sass/index.scss", options)?;
-    let path = format!("{}/css/index.css", BUILD_DIR);
-    fs::File::create(&path)?.write_all(content.as_bytes())?;
-    Ok(())
-}
-
 fn build() -> Result<()> {
-    compile_sass()?;
-
     let tera = Tera::new("templates/*.html")?;
     let context = Context::new();
     for template in TEMPLATES.iter() {
