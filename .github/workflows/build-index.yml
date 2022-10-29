@@ -18,6 +18,8 @@ jobs:
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml caniuse -r /tmp/caniuse -d /tmp/caniuse.js
           git clone --depth 1 https://github.com/nrc/rfc-index.git /tmp/rfc-index
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml rfcs -r /tmp/rfc-index -d /tmp/rfcs.js
+          RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml rustc -r /tmp/rfc-index -d /tmp/rustc.js
+          RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml targets -r /tmp/rfc-index -d /tmp/targets.js
           zip /tmp/index.zip /tmp/*.js
       - name: "Upload Index Artifact"
         uses: actions/upload-artifact@master
