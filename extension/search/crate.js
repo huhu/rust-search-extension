@@ -16,7 +16,7 @@ class CrateSearch {
         this.crateIndexVersion = crateIndexVersion;
         this.deminifier = new Deminifier(mapping);
 
-        this.crateIndex = {};
+        this.crateIndex = Object.create(null)
         for (let [key, value] of Object.entries(crateIndex)) {
             this.crateIndex[this.deminifier.deminify(key)] = value;
         }

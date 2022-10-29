@@ -43,9 +43,9 @@ function makeNumericKeyObject(start, end, initial = 0) {
 
 class Statistics {
     constructor() {
-        this.calendarData = {};
-        this.cratesData = {};
-        this.typeData = {};
+        this.calendarData = Object.create(null)
+        this.cratesData = Object.create(null)
+        this.typeData = Object.create(null)
         this.weeksData = WEEKS.reduce((obj, week) => {
             obj[week] = 0;
             return obj;

@@ -32,7 +32,7 @@
             const STD_CRATES = ['std', 'test', 'proc_macro'];
 
             // Remove unnecessary std crate's search index, such as core, alloc, etc
-            let searchIndex = {};
+            let searchIndex = Object.create(null)
             STD_CRATES.forEach(crate => {
                 searchIndex[crate] = window.searchIndex[crate];
             });

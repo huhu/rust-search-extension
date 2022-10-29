@@ -16,7 +16,7 @@ class CrateDocSearch {
     }
 
     async initAllCrateSearcher() {
-        let searchIndex = {};
+        let searchIndex = Object.create(null)
         for (const crateName of Object.keys(await CrateDocManager.getCrates())) {
             searchIndex = Object.assign(searchIndex, await CrateDocManager.getCrateSearchIndex(crateName));
         }

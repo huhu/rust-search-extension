@@ -128,7 +128,7 @@ const STATS_MAP = {
     let ol = searchStatsText.querySelector("ol");
 
     // Generate default type data.
-    let defaultTypeData = {};
+    let defaultTypeData = Object.create(null)
     Object.keys(STATS_MAP).forEach(name => {
         defaultTypeData[name] = 0;
     });

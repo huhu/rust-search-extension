@@ -297,7 +297,7 @@ class DocSearch {
 
         let val = this.valLower;
         const typeFilter = itemTypeFromName(query.type),
-            results = {};
+            results = Object.create(null)
 
         for (let z = 0; z < this.split.length; ++z) {
             if (this.split[z] === "") {
