@@ -5,6 +5,7 @@ pub use labels::LabelsTask;
 pub use lints::LintsTask;
 pub use rfcs::RfcsTask;
 pub use rustc::RustcTask;
+pub use targets::TargetsTask;
 
 mod books;
 mod caniuse;
@@ -13,6 +14,7 @@ mod labels;
 mod lints;
 mod rfcs;
 mod rustc;
+mod targets;
 
 pub trait Task {
     fn execute(&self) -> crate::Result<()>;

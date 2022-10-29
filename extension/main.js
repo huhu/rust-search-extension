@@ -39,6 +39,7 @@ function getPlatformOs() {
     let labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
     let rfcCommand = new RfcCommand(await IndexManager.getRfcIndex());
     let rustcCommand = new RustcCommand(await IndexManager.getRustcIndex());
+    let targetCommand = new TargetCommand(await IndexManager.getTargetsIndex());
     const cargoCommand = new SimpleCommand('cargo', 'Search useful third-party cargo subcommands.', commandIndex['cargo']);
     const bookCommand = new SimpleCommand('book', 'Search Rust books.', commandIndex['book']);
     const bookZhCommand = new SimpleCommand('book/zh', 'Search Chinese Rust books.', commandIndex['book/zh']);
@@ -54,10 +55,11 @@ function getPlatformOs() {
         yetCommand,
         toolCommand,
         mirrorCommand,
+        blogCommand,
         labelCommand,
         rfcCommand,
-        blogCommand,
         rustcCommand,
+        targetCommand,
         new HelpCommand(),
         new StableCommand(),
         new HistoryCommand(),
@@ -556,6 +558,12 @@ function getPlatformOs() {
             case "index-update:rustc": {
                 IndexManager.setRustcIndex(message.index);
                 rustcCommand = new RustcCommand(message.index);
+                sendResponse(true);
+                break;
+            }
+            case "index-update:target": {
+                IndexManager.setTargetsIndex(message.index);
+                targetCommand = new TargetCommand(message.index);
                 sendResponse(true);
                 break;
             }
