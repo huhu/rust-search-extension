@@ -36,14 +36,14 @@ function getPlatformOs() {
     const crateDocSearcher = new CrateDocSearch();
 
     const commandIndex = await IndexManager.getCommandIndex();
+    let labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
+    let rfcCommand = new RfcCommand(await IndexManager.getRfcIndex());
     const cargoCommand = new SimpleCommand('cargo', 'Search useful third-party cargo subcommands.', commandIndex['cargo']);
     const bookCommand = new SimpleCommand('book', 'Search Rust books.', commandIndex['book']);
     const bookZhCommand = new SimpleCommand('book/zh', 'Search Chinese Rust books.', commandIndex['book/zh']);
     const yetCommand = new SimpleCommand('yet', 'Search Are We Yet websites.', commandIndex['yet']);
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
     const mirrorCommand = new SimpleCommand('mirror', 'Search Rust mirror websites.', commandIndex['mirror']);
-    const labelCommand = new LabelCommand(await IndexManager.getLabelIndex());
-    const rfcCommand = new RfcCommand(await IndexManager.getRfcIndex());
     const blogCommand = new BlogCommand();
 
     const commandManager = new CommandManager(
@@ -535,13 +535,13 @@ function getPlatformOs() {
             }
             case "index-update:label": {
                 IndexManager.setLabelIndex(message.index);
-                labelCommand.setIndex(message.index);
+                labelCommand = new LabelCommand(message.index);
                 sendResponse(true);
                 break;
             }
             case "index-update:rfc": {
                 IndexManager.setRfcIndex(message.index);
-                rfcCommand.setIndex(message.index);
+                rfcCommand = new RfcCommand(message.index);
                 sendResponse(true);
                 break;
             }
