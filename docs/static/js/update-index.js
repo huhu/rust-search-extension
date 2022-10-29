@@ -37,6 +37,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateIndex("rfc", window.rfcsIndex).then(() => {
         renderSuccessMessage("Rust RFC index");
     });
+    updateIndex("rustc", window.rustcIndex).then(() => {
+        renderSuccessMessage("`:rustc` command index");
+    });
+    updateIndex("target", window.targetsIndex).then(() => {
+        renderSuccessMessage("`:target` command index");
+    });
     updateIndex("crate", window.crateIndex, { mapping: window.mapping }).then(() => {
         renderSuccessMessage("Top 20K crate index");
     });
