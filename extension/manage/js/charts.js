@@ -23,6 +23,11 @@ function histogram({ selector, width, height, data, color, margin }) {
         .range([margin.left, width - margin.right])
         .padding(0.1);
 
+    const container = document.querySelector(`${selector}`)
+    if (container.hasChildNodes()) {
+        container.innerHTML = null
+    }
+
     const svg = d3.select(selector)
         .append("svg")
         .attr("width", width)

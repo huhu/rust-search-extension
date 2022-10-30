@@ -35,14 +35,15 @@ const STATS_MAP = {
     }
 };
 
-(async() => {
+
+async function init(year) {
     const stats = await Statistics.load();
     const [weeksData, datesData, hoursData] = [stats.weeksData, stats.datesData, stats.hoursData]
-    .map(data => {
-        return Object.entries(data).map(([key, value]) => {
-            return { name: key, value }
+        .map(data => {
+            return Object.entries(data).map(([key, value]) => {
+                return { name: key, value }
+            });
         });
-    });
     const topCratesData = Object.entries(stats.cratesData)
         .sort((a, b) => b[1] - a[1])
         .map(([key, value], index) => {
@@ -72,7 +73,7 @@ const STATS_MAP = {
             { min: 2, max: 'Infinity', unit: 'searches' }
         ])
         .legendEnabled(true)
-        .onClick(function(data) {
+        .onClick(function (data) {
             console.log('data', data);
         });
     heatmap();
@@ -126,6 +127,9 @@ const STATS_MAP = {
     let searchStatsGraph = document.querySelector(".search-stats-graph");
     let searchStatsText = document.querySelector(".search-stats-text");
     let ol = searchStatsText.querySelector("ol");
+    if(ol.hasChildNodes()) {
+        ol.innerHTML = null
+    }
 
     // Generate default type data.
     let defaultTypeData = Object.create(null)
@@ -138,7 +142,7 @@ const STATS_MAP = {
     // keep the other part always in the last order.
     [
         ...array.filter(([key, value]) => key !== TYPE_OTHER)
-        .sort((a, b) => b[1] - a[1]),
+            .sort((a, b) => b[1] - a[1]),
         // Other part always the last.
         ...array.filter(([key, value]) => key === TYPE_OTHER),
     ].forEach(([name, value]) => {
@@ -146,11 +150,11 @@ const STATS_MAP = {
         let li = document.createElement("li");
         let percent = total ? (value / total * 100).toFixed(1) : 0.0;
         li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up" data-balloon-length="large"
-                        style="text-align: center" class="tooltip-color">
-                        <span class="color-circle-dot" style="background-color:${color}"></span>
-                        <span class="">${name}</span>
-                        <span class="">${percent}%</span>
-                     </div>`;
+                                style="text-align: center" class="tooltip-color">
+                                <span class="color-circle-dot" style="background-color:${color}"></span>
+                                <span class="">${name}</span>
+                                <span class="">${percent}%</span>
+                             </div>`;
         ol.append(li);
         if (value > 0) {
             searchStatsGraph.insertAdjacentHTML('beforeend',
@@ -169,4 +173,32 @@ const STATS_MAP = {
         selector: ".topCratesData",
         color: CHART_COLOR,
     });
-})();
+}
+
+async function yearList() {
+    const y = new Date().getFullYear()
+    const year = document.querySelector(".filter-list")
+    year.addEventListener('click', function (e) {
+        if(e.target.tagName === "LI") {
+            year.childNodes.forEach(i => i.classList.remove("selected"))
+            e.target.className = "selected"
+            init(e.target.innerHTML)
+        }
+    })
+    for (let i = y; i > y - 3; i--) {
+        const li = document.createElement('li')
+        li.innerHTML = i
+        if(i === y) {
+            li.className = "selected"
+        }
+        year.append(li)
+    }
+    return y
+}
+
+(async () => {
+    const year = await yearList()
+    await init(year)
+})()
+
+
