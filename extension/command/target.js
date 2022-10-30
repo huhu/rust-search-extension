@@ -6,7 +6,7 @@ class TargetCommand extends Command {
             data.items.forEach(([name, description]) => {
                 this.targets.push({
                     content: data.url,
-                    description: `${tier}: ${c.match(name)} - ${c.dim(description)}`,
+                    description: `${c.capitalize(tier)}: ${c.match(name)} - ${c.dim(description)}`,
                 });
             })
         });
