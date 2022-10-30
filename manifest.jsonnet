@@ -8,7 +8,7 @@ local icons() = {
 };
 
 local name = 'Rust Search Extension';
-local version = '1.8.1';
+local version = '1.8.2';
 local keyword = 'rs';
 local description = 'Rust Search Extension - the ultimate search extension for Rust';
 
