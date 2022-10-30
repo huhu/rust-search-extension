@@ -67,7 +67,7 @@ impl TargetsTask {
         );
         let tier2_with_host = tbody.next().expect("No tier 2 with host targets found");
         map.insert(
-            "Tier 2 (with host tools)",
+            "tier 2",
             Tier {
                 url: format!("{URL}#tier-2-with-host-tools"),
                 items: tier2_with_host
