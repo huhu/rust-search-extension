@@ -5,8 +5,10 @@ class TargetCommand extends Command {
         Object.entries(index).forEach(([tier, data]) => {
             data.items.forEach(([name, description]) => {
                 this.targets.push({
-                    content: data.url,
-                    description: `${c.capitalize(tier)}: ${c.match(name)} - ${c.dim(description)}`,
+                    url: data.url,
+                    tier,
+                    name,
+                    description,
                 });
             })
         });
@@ -14,6 +16,12 @@ class TargetCommand extends Command {
 
     async onExecute(arg) {
         return this.targets
-            .filter(({ description }) => !arg || description.toLowerCase().indexOf(arg) > -1);
+            .filter(({ tier, name, description }) => !arg || `${tier}: ${name} - ${description}`.toLowerCase().indexOf(arg) > -1)
+            .map(target => {
+                return {
+                    content: target.url,
+                    description: `${c.capitalize(target.tier)}: ${c.match(target.name)} - ${c.dim(target.description)}`,
+                };
+            });
     }
 }
