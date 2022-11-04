@@ -3,10 +3,11 @@ class RustcCommand extends Command {
         super("rustc", "Search rustc codegen options and lints.");
         this.docs = [];
         Object.entries(index).forEach(([kind, data]) => {
-            data.items.forEach(item => {
+            data.items.forEach(name => {
                 this.docs.push({
-                    content: `${data.url}#${item}`,
-                    description: `${kind}: ${c.match(item)}`,
+                    url: `${data.url}#${name}`,
+                    kind,
+                    name,
                 });
             });
         });
@@ -14,6 +15,12 @@ class RustcCommand extends Command {
 
     async onExecute(arg) {
         return this.docs
-            .filter(({ description }) => !arg || description.toLowerCase().indexOf(arg) > -1);
+            .filter(({ kind, name }) => !arg || `${kind}: ${name}`.toLowerCase().indexOf(arg) > -1)
+            .map(doc => {
+                return {
+                    content: doc.url,
+                    description: `${doc.kind}: ${c.match(doc.name)}`,
+                };
+            });
     }
 }
