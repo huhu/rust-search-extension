@@ -59,9 +59,9 @@ function calculateSavedTime(times) {
     }
 }
 
-function renderHeatmap(stats) {
+function renderHeatmap(stats, year) {
     
-    let heatmap = calendarHeatmap()
+    let heatmap = calendarHeatmap(year)
         .data(stats.calendarData)
         .selector('.chart-heatmap')
         .tooltipEnabled(true)
@@ -129,7 +129,7 @@ function renderSearchText(array, total) {
 }
 
 
-async function render() {
+async function render(year) {
     const stats = await Statistics.load();
 
     const [weeksData, datesData, hoursData] = [stats.weeksData, stats.datesData, stats.hoursData]
@@ -155,7 +155,7 @@ async function render() {
     frequency[0].textContent = `${total}`;
     frequency[1].textContent = calculateSavedTime(total);
 
-    renderHeatmap(stats)
+    renderHeatmap(stats, year)
 
     histogram({
         selector: ".chart-histogram-week",
@@ -220,7 +220,7 @@ function yearList() {
 }
 
 (async () => {
-    await render()
+    await render(undefined)
     yearList()
 })()
 

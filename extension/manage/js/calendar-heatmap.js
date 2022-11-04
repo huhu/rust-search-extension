@@ -1,4 +1,4 @@
-function calendarHeatmap() {
+function calendarHeatmap(year) {
     // defaults
     const width = 800;
     const height = 150;
@@ -7,8 +7,8 @@ function calendarHeatmap() {
     const SQUARE_LENGTH = 12;
     const SQUARE_PADDING = 3;
     const MONTH_LABEL_PADDING = 6;
-    let now = moment().endOf('day').toDate();
-    let yearAgo = moment().startOf('day').subtract(1, 'year').toDate();
+    let now = year ? moment(year).endOf('year').toDate() : moment().endOf('day').toDate();
+    let yearAgo = year ? moment(year).startOf('year').toDate(): moment().startOf('day').subtract(1, 'year').toDate();
     let counterMap = Object.create(null)
     let colorRange = [];
     let tooltipEnabled = true;
