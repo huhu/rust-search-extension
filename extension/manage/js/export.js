@@ -14,7 +14,7 @@
             data["history"] = storage.getItem("history") || [];
         }
         if (target.querySelector(".search-statistics").checked) {
-            data["stats"] = new Statistics();
+            data["stats"] = await Statistics.load();
         }
         if (target.querySelector(".crates").checked) {
             let catalog = await CrateDocManager.getCrates();
