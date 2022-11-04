@@ -35,27 +35,32 @@ const STATS_MAP = {
     }
 };
 
+const histogramConfig = {
+    width: 460,
+    height: 240,
+    color: CHART_COLOR,
+    margin: { top: 30, right: 0, bottom: 40, left: 40 }
+};
 
-async function init(year) {
-    const stats = await Statistics.load();
-    const [weeksData, datesData, hoursData] = [stats.weeksData, stats.datesData, stats.hoursData]
-        .map(data => {
-            return Object.entries(data).map(([key, value]) => {
-                return { name: key, value }
-            });
-        });
-    const topCratesData = Object.entries(stats.cratesData)
-        .sort((a, b) => b[1] - a[1])
-        .map(([key, value], index) => {
-            return {
-                label: `#${index + 1}`,
-                name: key,
-                value
-            };
-        });
-    topCratesData.splice(15);
-    const total = stats.total;
+function calculateSavedTime(times) {
+    let seconds = times * 5;
+    if (seconds > 3600) {
+        let hours = seconds / 3600;
+        let minutes = seconds % 3600 / 60;
+        if (minutes > 0) {
+            return `${Math.round(hours)} hours ${Math.round(minutes)} minutes`;
+        } else {
+            return `${Math.round(hours)} hours`;
+        }
+    } else if (seconds > 60) {
+        return `${Math.round(seconds / 60)} minutes`;
+    } else {
+        return `${Math.round(seconds)} seconds`;
+    }
+}
 
+function renderHeatmap(stats) {
+    
     let heatmap = calendarHeatmap()
         .data(stats.calendarData)
         .selector('.chart-heatmap')
@@ -77,13 +82,81 @@ async function init(year) {
             console.log('data', data);
         });
     heatmap();
+}
 
-    let histogramConfig = {
-        width: 460,
-        height: 240,
-        color: CHART_COLOR,
-        margin: { top: 30, right: 0, bottom: 40, left: 40 }
-    };
+function renderSearchGraph(array, total) {
+    let searchStatsGraph = document.querySelector(".search-stats-graph");
+    if (searchStatsGraph.hasChildNodes()) {
+        searchStatsGraph.innerHTML = null
+    }
+
+    [
+        ...array.filter(([key]) => key !== TYPE_OTHER).sort((a, b) => b[1] - a[1]),
+        ...array.filter(([key]) => key === TYPE_OTHER),
+    ].forEach(([name, value]) => {
+        let { color } = STATS_MAP[name];
+        let percent = total ? (value / total * 100).toFixed(1) : 0.0;
+        if (value > 0) {
+            searchStatsGraph.insertAdjacentHTML('beforeend',
+                `<span class="percent-bar" style="width: ${percent}%; background-color:${color}"></span>`
+            );
+        }
+    })
+}
+
+function renderSearchText(array, total) {
+    let searchStatsText = document.querySelector(".search-stats-text");
+    let ol = searchStatsText.querySelector("ol");
+    if (ol.hasChildNodes()) {
+        ol.innerHTML = null
+    }
+
+    [
+        ...array.filter(([key]) => key !== TYPE_OTHER).sort((a, b) => b[1] - a[1]),
+        ...array.filter(([key]) => key === TYPE_OTHER),
+    ].forEach(([name, value]) => {
+        let { color, description } = STATS_MAP[name];
+        let li = document.createElement("li");
+        let percent = total ? (value / total * 100).toFixed(1) : 0.0;
+        li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up" data-balloon-length="large"
+                                style="text-align: center" class="tooltip-color">
+                                <span class="color-circle-dot" style="background-color:${color}"></span>
+                                <span class="">${name}</span>
+                                <span class="">${percent}%</span>
+                             </div>`;
+        ol.append(li);
+    })
+}
+
+
+async function render() {
+    const stats = await Statistics.load();
+
+    const [weeksData, datesData, hoursData] = [stats.weeksData, stats.datesData, stats.hoursData]
+        .map(data => {
+            return Object.entries(data).map(([key, value]) => {
+                return { name: key, value }
+            });
+        });
+    const topCratesData = Object.entries(stats.cratesData)
+        .sort((a, b) => b[1] - a[1])
+        .map(([key, value], index) => {
+            return {
+                label: `#${index + 1}`,
+                name: key,
+                value
+            };
+        });
+    topCratesData.splice(15);
+    const total = stats.total;
+
+    let searchTimes = document.querySelector(".search-time");
+    let frequency = searchTimes.querySelectorAll("b");
+    frequency[0].textContent = `${total}`;
+    frequency[1].textContent = calculateSavedTime(total);
+
+    renderHeatmap(stats)
+
     histogram({
         selector: ".chart-histogram-week",
         data: weeksData,
@@ -102,35 +175,6 @@ async function init(year) {
         ...histogramConfig,
     });
 
-    let searchTimes = document.querySelector(".search-time");
-    let frequency = searchTimes.querySelectorAll("b");
-    frequency[0].textContent = `${total}`;
-    frequency[1].textContent = calculateSavedTime(total);
-
-    function calculateSavedTime(times) {
-        let seconds = times * 5;
-        if (seconds > 3600) {
-            let hours = seconds / 3600;
-            let minutes = seconds % 3600 / 60;
-            if (minutes > 0) {
-                return `${Math.round(hours)} hours ${Math.round(minutes)} minutes`;
-            } else {
-                return `${Math.round(hours)} hours`;
-            }
-        } else if (seconds > 60) {
-            return `${Math.round(seconds / 60)} minutes`;
-        } else {
-            return `${Math.round(seconds)} seconds`;
-        }
-    }
-
-    let searchStatsGraph = document.querySelector(".search-stats-graph");
-    let searchStatsText = document.querySelector(".search-stats-text");
-    let ol = searchStatsText.querySelector("ol");
-    if(ol.hasChildNodes()) {
-        ol.innerHTML = null
-    }
-
     // Generate default type data.
     let defaultTypeData = Object.create(null)
     Object.keys(STATS_MAP).forEach(name => {
@@ -140,28 +184,8 @@ async function init(year) {
     let array = Object.entries(Object.assign(defaultTypeData, stats.typeData));
     // Split the other part from the others in order to
     // keep the other part always in the last order.
-    [
-        ...array.filter(([key, value]) => key !== TYPE_OTHER)
-            .sort((a, b) => b[1] - a[1]),
-        // Other part always the last.
-        ...array.filter(([key, value]) => key === TYPE_OTHER),
-    ].forEach(([name, value]) => {
-        let { color, description } = STATS_MAP[name];
-        let li = document.createElement("li");
-        let percent = total ? (value / total * 100).toFixed(1) : 0.0;
-        li.innerHTML = `<div aria-label="${description}" data-balloon-pos="up" data-balloon-length="large"
-                                style="text-align: center" class="tooltip-color">
-                                <span class="color-circle-dot" style="background-color:${color}"></span>
-                                <span class="">${name}</span>
-                                <span class="">${percent}%</span>
-                             </div>`;
-        ol.append(li);
-        if (value > 0) {
-            searchStatsGraph.insertAdjacentHTML('beforeend',
-                `<span class="percent-bar" style="width: ${percent}%; background-color:${color}"></span>`
-            );
-        }
-    });
+    renderSearchGraph(array, total);
+    renderSearchText(array, total);
 
     barChart({
         margin: ({ top: 30, right: 0, bottom: 10, left: 30 }),
@@ -174,31 +198,30 @@ async function init(year) {
         color: CHART_COLOR,
     });
 }
-
-async function yearList() {
+function yearList() {
     const y = new Date().getFullYear()
     const year = document.querySelector(".filter-list")
     year.addEventListener('click', function (e) {
-        if(e.target.tagName === "LI") {
+        if (e.target.tagName === "LI") {
             year.childNodes.forEach(i => i.classList.remove("selected"))
             e.target.className = "selected"
-            init(e.target.innerHTML)
+            render(e.target.innerHTML)
         }
     })
+
     for (let i = y; i > y - 3; i--) {
         const li = document.createElement('li')
         li.innerHTML = i
-        if(i === y) {
+        if (i === y) {
             li.className = "selected"
         }
         year.append(li)
     }
-    return y
 }
 
 (async () => {
-    const year = await yearList()
-    await init(year)
+    await render()
+    yearList()
 })()
 
 
