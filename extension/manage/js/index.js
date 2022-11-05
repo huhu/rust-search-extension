@@ -59,10 +59,14 @@ function calculateSavedTime(times) {
     }
 }
 
-function renderHeatmap(stats, year) {
-    
-    let heatmap = calendarHeatmap(year)
-        .data(stats.calendarData)
+function renderHeatmap(data, now, yearAgo) {
+    const heatMapData = data.reduce((pre, [time]) => {
+        pre[moment(time).format("YYYY-MM-DD")] = (pre[moment(time).format("YYYY-MM-DD")] || 0) + 1
+        return pre
+    }, {})
+
+    let heatmap = calendarHeatmap(now, yearAgo)
+        .data(heatMapData)
         .selector('.chart-heatmap')
         .tooltipEnabled(true)
         .colorRange([
@@ -131,13 +135,12 @@ function renderSearchText(array, total) {
 
 async function render(year) {
     const stats = await Statistics.load();
+    const now = year ? moment(year).endOf('year').valueOf() : moment().valueOf()
+    const yearAgo = year ? moment(year).startOf('year').valueOf() : moment().startOf('day').subtract(1, 'year').valueOf();
+    const data = stats.saveData.filter(([time]) => {
+        return now >= time && time >= yearAgo
+    })
 
-    const [weeksData, datesData, hoursData] = [stats.weeksData, stats.datesData, stats.hoursData]
-        .map(data => {
-            return Object.entries(data).map(([key, value]) => {
-                return { name: key, value }
-            });
-        });
     const topCratesData = Object.entries(stats.cratesData)
         .sort((a, b) => b[1] - a[1])
         .map(([key, value], index) => {
@@ -152,10 +155,35 @@ async function render(year) {
 
     let searchTimes = document.querySelector(".search-time");
     let frequency = searchTimes.querySelectorAll("b");
-    frequency[0].textContent = `${total}`;
-    frequency[1].textContent = calculateSavedTime(total);
+    frequency[0].textContent = `${data.length}`;
+    frequency[1].textContent = calculateSavedTime(data.length);
 
-    renderHeatmap(stats, year)
+    renderHeatmap(data, now, yearAgo)
+
+    const weeksObj = WEEKS.reduce((obj, week) => {
+        obj[week] = 0;
+        return obj;
+    }, {});
+    const datesObj = makeNumericKeyObject(1, 31);
+    const hoursObj = makeNumericKeyObject(1, 23);
+    data.forEach(([time]) => {
+        const week = WEEKS[moment(time).weekday()];
+        const date = moment(time).date();
+        const hour = moment(time).hour();
+
+        weeksObj[week] += 1;
+        datesObj[date] += 1
+        if (hour !== 0) {
+            hoursObj[hour] += 1
+        }
+    })
+
+    const [weeksData, datesData, hoursData] = [weeksObj, datesObj, hoursObj]
+        .map(data => {
+            return Object.entries(data).map(([key, value]) => {
+                return { name: key, value }
+            });
+        });
 
     histogram({
         selector: ".chart-histogram-week",
@@ -180,12 +208,20 @@ async function render(year) {
     Object.keys(STATS_MAP).forEach(name => {
         defaultTypeData[name] = 0;
     });
+    let typeTotal = 0;
+    const typeData = data.reduce((pre, [time, type]) => {
+        if (type) {
+            pre[type] = (pre[type] || 0) + 1;
+            typeTotal += 1;
+        }
+        return pre
+    }, {})
     // Merge default type data with statistic type data.
-    let array = Object.entries(Object.assign(defaultTypeData, stats.typeData));
+    let array = Object.entries(Object.assign(defaultTypeData, typeData));
     // Split the other part from the others in order to
     // keep the other part always in the last order.
-    renderSearchGraph(array, total);
-    renderSearchText(array, total);
+    renderSearchGraph(array, typeTotal);
+    renderSearchText(array, typeTotal);
 
     barChart({
         margin: ({ top: 30, right: 0, bottom: 10, left: 30 }),
@@ -198,6 +234,7 @@ async function render(year) {
         color: CHART_COLOR,
     });
 }
+
 function yearList() {
     const y = new Date().getFullYear()
     const year = document.querySelector(".filter-list")
