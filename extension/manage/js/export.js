@@ -11,7 +11,7 @@
             };
         }
         if (target.querySelector(".search-history").checked) {
-            data["history"] = storage.getItem("history") || [];
+            data["history"] = await storage.getItem("history") || [];
         }
         if (target.querySelector(".search-statistics").checked) {
             data["stats"] = await Statistics.load();
