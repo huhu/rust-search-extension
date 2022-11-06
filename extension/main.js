@@ -344,7 +344,7 @@ function getPlatformOs() {
     });
 
     // Search previous Rust version
-    omnibox.addRegexQueryEvent(/^1\.\d*/i, {
+    omnibox.addRegexQueryEvent(/^v?1\.\d*/i, {
         onSearch: (query) => {
             let [_, minor] = query.split('.');
             return getReleasedVersions()
