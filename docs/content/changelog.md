@@ -31,7 +31,7 @@ Thanks for the contributions from [@C-Dao](https://github.com/C-Dao), [@zjp-CN](
 
 Thanks for the contributions from [@PureWhiteWu](https://github.com/PureWhiteWu).
 
-## v1.8.2 - 2022-10-20
+## v1.8.2 - 2022-10-30
 
 - Fix book index object field (`constructor`) conflicts bug
 
