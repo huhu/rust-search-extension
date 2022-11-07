@@ -436,6 +436,69 @@ function getPlatformOs() {
                     crateRegistry = newValue;
                     break;
                 }
+                // Docs
+                case "index-std-stable": {
+                    // Update search index after docs updated
+                    stdSearcher.setSearchIndex(newValue);
+                    break;
+                }
+                case "index-std-nightly": {
+                    // Update search index after docs updated
+                    nightlySearcher.setSearchIndex(newValue);
+                    break;
+                }
+                case "index-book": {
+                    bookSearcher = new BookSearch(newValue);
+                    break;
+                }
+                case "index-caniuse": {
+                    caniuseSearcher = new CaniuseSearch(newValue);
+                    break;
+                }
+                case "index-command": {
+                    let index = newValue;
+                    bookCommand.setIndex(index['book']);
+                    bookZhCommand.setIndex(index['book/zh']);
+                    cargoCommand.setIndex(index['cargo'])
+                    yetCommand.setIndex(index['yet']);
+                    toolCommand.setIndex(index['tool']);
+                    mirrorCommand.setIndex(index['mirror']);
+                    blogCommand.setPosts(index['blog']);
+                    break;
+                }
+                case "index-label": {
+                    labelCommand = new LabelCommand(newValue);
+                    break;
+                }
+                case "index-crate": {
+                    crateSearcher.setCrateIndex(newValue);
+                    break;
+                }
+                case "index-crate-mapping": {
+                    crateSearcher.setMapping(newValue);
+                    break;
+                }
+                case "index-lint": {
+                    lintSearcher = new LintSearch(newValue);
+                    break;
+                }
+                case "index-rfc": {
+                    rfcCommand = new RfcCommand(newValue);
+                    break;
+                }
+                case "index-rustc": {
+                    rustcCommand = new RustcCommand(newValue);
+                    break;
+                }
+                case "index-target": {
+                    targetCommand = new TargetCommand(newValue);
+                    break;
+                }
+                default: {
+                    // search index from docs.rs
+
+                    break;
+                }
             }
         }
     });
