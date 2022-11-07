@@ -27,7 +27,7 @@ function getPlatformOs() {
     const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
     const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
 
-    let crateSearcher = new CrateSearch(await IndexManager.getCrateMapping(), await IndexManager.getCrateIndex());
+    const crateSearcher = new CrateSearch(await IndexManager.getCrateMapping(), await IndexManager.getCrateIndex());
     let caniuseSearcher = new CaniuseSearch(await IndexManager.getCaniuseIndex());
     let bookSearcher = new BookSearch(await IndexManager.getBookIndex());
     let lintSearcher = new LintSearch(await IndexManager.getLintIndex());
@@ -529,7 +529,8 @@ function getPlatformOs() {
             case "index-update:crate": {
                 IndexManager.setCrateMapping(message.mapping);
                 IndexManager.setCrateIndex(message.index);
-                crateSearcher = new CrateSearch(message.mapping, message.index);
+                crateSearcher.setMapping(message.mapping);
+                crateSearcher.setCrateIndex(message.index);
                 sendResponse(true);
                 break;
             }
