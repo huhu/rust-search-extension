@@ -436,7 +436,6 @@ function getPlatformOs() {
                     crateRegistry = newValue;
                     break;
                 }
-                // Docs
                 case "index-std-stable": {
                     // Update search index after docs updated
                     stdSearcher.setSearchIndex(newValue);
@@ -466,16 +465,16 @@ function getPlatformOs() {
                     blogCommand.setPosts(index['blog']);
                     break;
                 }
-                case "index-label": {
-                    labelCommand = new LabelCommand(newValue);
-                    break;
-                }
                 case "index-crate": {
                     crateSearcher.setCrateIndex(newValue);
                     break;
                 }
                 case "index-crate-mapping": {
                     crateSearcher.setMapping(newValue);
+                    break;
+                }
+                case "index-label": {
+                    labelCommand = new LabelCommand(newValue);
                     break;
                 }
                 case "index-lint": {
@@ -495,8 +494,12 @@ function getPlatformOs() {
                     break;
                 }
                 default: {
-                    // search index from docs.rs
-
+                    if (key.startsWith('@')) {
+                        // crate update from docs.rs.
+                        // no matter the crate is new added, or deleted.
+                        crateDocSearcher.invalidateCachedSearch();
+                        crateDocSearcher.initAllCrateSearcher();
+                    }
                     break;
                 }
             }
@@ -520,30 +523,6 @@ function getPlatformOs() {
     // https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         switch (message.action) {
-            // Stable:* action is exclusive to stable docs event
-            case "stable:add": {
-                if (message.searchIndex) {
-                    IndexManager.setStdStableIndex(message.searchIndex);
-                    // Update search index after docs updated
-                    stdSearcher.setSearchIndex(message.searchIndex);
-                    sendResponse(true);
-                } else {
-                    sendResponse(false);
-                }
-                break;
-            }
-            // Nightly:* action is exclusive to nightly docs event
-            case "nightly:add": {
-                if (message.searchIndex) {
-                    IndexManager.setStdNightlyIndex(message.searchIndex);
-                    // Update search index after docs updated
-                    nightlySearcher.setSearchIndex(message.searchIndex);
-                    sendResponse(true);
-                } else {
-                    sendResponse(false);
-                }
-                break;
-            }
             // Rustc:* action is exclusive to rustc docs event
             case "rustc:check": {
                 sendResponse({
@@ -559,97 +538,6 @@ function getPlatformOs() {
                 } else {
                     sendResponse(false);
                 }
-                break;
-            }
-            // Crate:* action is exclusive to crate event
-            case "crate:add": {
-                if (message.searchIndex) {
-                    CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex)
-                        .then(() => {
-                            crateDocSearcher.invalidateCachedSearch();
-                            crateDocSearcher.initAllCrateSearcher();
-                        })
-                        .then(() => {
-                            sendResponse(true);
-                        });
-                } else {
-                    sendResponse(false);
-                }
-                break;
-            }
-            case "crate:remove": {
-                CrateDocManager.removeCrate(message.crateName)
-                    .then(() => {
-                        crateDocSearcher.invalidateCachedSearch();
-                        crateDocSearcher.initAllCrateSearcher();
-                    })
-                    .then(() => {
-                        sendResponse(true);
-                    });
-                break;
-            }
-            // Index-update:* action is exclusive to index update event
-            case "index-update:crate": {
-                IndexManager.setCrateMapping(message.mapping);
-                IndexManager.setCrateIndex(message.index);
-                crateSearcher.setMapping(message.mapping);
-                crateSearcher.setCrateIndex(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:book": {
-                IndexManager.setBookIndex(message.index);
-                bookSearcher = new BookSearch(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:lint": {
-                IndexManager.setLintIndex(message.index);
-                lintSearcher = new LintSearch(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:label": {
-                IndexManager.setLabelIndex(message.index);
-                labelCommand = new LabelCommand(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:rfc": {
-                IndexManager.setRfcIndex(message.index);
-                rfcCommand = new RfcCommand(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:caniuse": {
-                IndexManager.setCaniuseIndex(message.index);
-                caniuseSearcher = new CaniuseSearch(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:rustc": {
-                IndexManager.setRustcIndex(message.index);
-                rustcCommand = new RustcCommand(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:target": {
-                IndexManager.setTargetsIndex(message.index);
-                targetCommand = new TargetCommand(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:command": {
-                let index = message.index;
-                IndexManager.setCommandIndex(index);
-                bookCommand.setIndex(index['book']);
-                bookZhCommand.setIndex(index['book/zh']);
-                cargoCommand.setIndex(index['cargo'])
-                yetCommand.setIndex(index['yet']);
-                toolCommand.setIndex(index['tool']);
-                mirrorCommand.setIndex(index['mirror']);
-                blogCommand.setPosts(index['blog']);
-                sendResponse(true);
                 break;
             }
             case "open-url": {
