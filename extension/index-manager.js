@@ -1,108 +1,99 @@
-// Wrap chrome.storage API as a promise.
-// See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/StorageArea/get
-function getIndexInternal(key) {
-    return new Promise(resolve => {
-        chrome.storage.local.get(key, (result) => {
-            resolve(result[key]);
-        });
-    });
-}
-
 // Query all storage by this method:
 // chrome.storage.local.get(null, function(result) {
 //     console.log('Value currently is ', result);
 // });
+
 class IndexManager {
     static async getStdStableIndex() {
-        return await getIndexInternal('index-std-stable') || searchIndex;
+        return await storage.getItem('index-std-stable') || searchIndex;
     }
 
     static setStdStableIndex(index) {
-        chrome.storage.local.set({'index-std-stable': index});
+        storage.setItem({ 'index-std-stable': index });
     }
 
     static async getStdNightlyIndex() {
-        return await getIndexInternal('index-std-nightly') || searchIndex;
+        return await storage.getItem('index-std-nightly') || searchIndex;
     }
 
     static setStdNightlyIndex(index) {
-        chrome.storage.local.set({'index-std-nightly': index});
+        storage.setItem({ 'index-std-nightly': index });
     }
 
     static async getBookIndex() {
-        return await getIndexInternal('index-book') || booksIndex;
+        return await storage.getItem('index-book') || booksIndex;
     }
 
     static setBookIndex(index) {
-        chrome.storage.local.set({'index-book': index});
+        storage.setItem({ 'index-book': index });
     }
 
     static async getLabelIndex() {
-        return await getIndexInternal('index-label') || labelsIndex;
+        return await storage.getItem('index-label') || labelsIndex;
     }
 
     static setLabelIndex(index) {
-        chrome.storage.local.set({'index-label': index});
+        storage.setItem({ 'index-label': index });
     }
 
     static async getRfcIndex() {
-        return await getIndexInternal('index-rfc') || rfcsIndex;
+        return await storage.getItem('index-rfc') || rfcsIndex;
     }
 
     static setRfcIndex(index) {
-        chrome.storage.local.set({'index-rfc': index});
+        storage.setItem({ 'index-rfc': index });
     }
 
     static async getCrateMapping() {
-        return await getIndexInternal('index-crate-mapping') || mapping;
+        return await storage.getItem('index-crate-mapping') || mapping;
     }
 
     static setCrateMapping(index) {
-        chrome.storage.local.set({'index-crate-mapping': index});
+        storage.setItem({ 'index-crate-mapping': index });
     }
 
     static async getCrateIndex() {
-        return await getIndexInternal('index-crate') || crateIndex;
+        return await storage.getItem('index-crate') || crateIndex;
     }
 
     static setCrateIndex(index) {
-        chrome.storage.local.set({'index-crate': index});
+        storage.setItem({ 'index-crate': index });
     }
 
     static async getLintIndex() {
-        return await getIndexInternal('index-lint') || lintsIndex;
+        return await storage.getItem('index-lint') || lintsIndex;
     }
 
     static setLintIndex(index) {
-        chrome.storage.local.set({'index-lint': index});
+        storage.setItem({ 'index-lint': index });
     }
 
     static async getCaniuseIndex() {
-        return await getIndexInternal('index-caniuse') || caniuseIndex;
+        return await storage.getItem('index-caniuse') || caniuseIndex;
     }
 
     static setCaniuseIndex(index) {
-        chrome.storage.local.set({'index-caniuse': index});
+        storage.setItem({ 'index-caniuse': index });
     }
 
     static async getRustcIndex() {
-        return await getIndexInternal('index-rustc') || rustcIndex;
+        return await storage.getItem('index-rustc') || rustcIndex;
     }
 
     static setRustcIndex(index) {
-        chrome.storage.local.set({'index-rustc': index});
+        storage.setItem({ 'index-rustc': index });
     }
 
     static async getTargetsIndex() {
-        return await getIndexInternal('index-target') || targetsIndex;
+        return await storage.getItem('index-target') || targetsIndex;
     }
 
     static setTargetsIndex(index) {
-        chrome.storage.local.set({'index-target': index});
+        storage.setItem({ 'index-target': index });
     }
 
     static async getCommandIndex() {
-        let index = await getIndexInternal('index-command');
+        let index = await storage.getItem('index-command');
         if (index) {
             // commandsIndex would update if the new version installed.
             // So we should override the old cache one.
@@ -116,6 +107,6 @@ class IndexManager {
     }
 
     static setCommandIndex(index) {
-        chrome.storage.local.set({'index-command': index});
+        storage.setItem({ 'index-command': index });
     }
 }
