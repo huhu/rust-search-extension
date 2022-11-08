@@ -4,7 +4,7 @@
 // The rawCrateName mainly for Cargo.toml url to parse feature flags.
 let pathname = location.pathname.replace("/crate", "");
 let [rawCrateName, crateVersion] = pathname.slice(1).split("/");
-crateName = rawCrateName.replaceAll("-", "_");
+let crateName = rawCrateName.replaceAll("-", "_");
 // A crate version which added to the extension.
 let installedVersion = undefined;
 
@@ -122,7 +122,7 @@ async function enhanceFeatureFlagsMenu(menu) {
     let html = `<div style="padding: 1rem"><p>
                     This crate has no explicit-declared feature flag.
                     <br>
-                    Check its <a href="${cargoTomUrl}">Cargo.toml</a> to learn more.
+                    Check its <a style="padding:0" href="${cargoTomUrl}">Cargo.toml</a> to learn more.
                 </p></div>`;
     if (features.length > 0) {
         let tbody = features.map(([name, flags]) => {
