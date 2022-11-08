@@ -9,7 +9,7 @@ class IndexManager {
     }
 
     static setStdStableIndex(index) {
-        storage.setItem({ 'index-std-stable': index });
+        storage.setItem('index-std-stable', index);
     }
 
     static async getStdNightlyIndex() {
@@ -17,7 +17,7 @@ class IndexManager {
     }
 
     static setStdNightlyIndex(index) {
-        storage.setItem({ 'index-std-nightly': index });
+        storage.setItem('index-std-nightly', index);
     }
 
     static async getBookIndex() {
@@ -25,7 +25,7 @@ class IndexManager {
     }
 
     static setBookIndex(index) {
-        storage.setItem({ 'index-book': index });
+        storage.setItem('index-book', index);
     }
 
     static async getLabelIndex() {
@@ -33,7 +33,7 @@ class IndexManager {
     }
 
     static setLabelIndex(index) {
-        storage.setItem({ 'index-label': index });
+        storage.setItem('index-label', index);
     }
 
     static async getRfcIndex() {
@@ -41,7 +41,7 @@ class IndexManager {
     }
 
     static setRfcIndex(index) {
-        storage.setItem({ 'index-rfc': index });
+        storage.setItem('index-rfc', index);
     }
 
     static async getCrateMapping() {
@@ -49,7 +49,7 @@ class IndexManager {
     }
 
     static setCrateMapping(index) {
-        storage.setItem({ 'index-crate-mapping': index });
+        storage.setItem('index-crate-mapping', index);
     }
 
     static async getCrateIndex() {
@@ -57,7 +57,7 @@ class IndexManager {
     }
 
     static setCrateIndex(index) {
-        storage.setItem({ 'index-crate': index });
+        storage.setItem('index-crate', index);
     }
 
     static async getLintIndex() {
@@ -65,7 +65,7 @@ class IndexManager {
     }
 
     static setLintIndex(index) {
-        storage.setItem({ 'index-lint': index });
+        storage.setItem('index-lint', index);
     }
 
     static async getCaniuseIndex() {
@@ -73,7 +73,7 @@ class IndexManager {
     }
 
     static setCaniuseIndex(index) {
-        storage.setItem({ 'index-caniuse': index });
+        storage.setItem('index-caniuse', index);
     }
 
     static async getRustcIndex() {
@@ -81,7 +81,7 @@ class IndexManager {
     }
 
     static setRustcIndex(index) {
-        storage.setItem({ 'index-rustc': index });
+        storage.setItem('index-rustc', index);
     }
 
     static async getTargetsIndex() {
@@ -89,7 +89,7 @@ class IndexManager {
     }
 
     static setTargetsIndex(index) {
-        storage.setItem({ 'index-target': index });
+        storage.setItem('index-target', index);
     }
 
     static async getCommandIndex() {
@@ -107,6 +107,6 @@ class IndexManager {
     }
 
     static setCommandIndex(index) {
-        storage.setItem({ 'index-command': index });
+        storage.setItem('index-command', index);
     }
 }
