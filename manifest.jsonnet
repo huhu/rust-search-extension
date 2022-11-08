@@ -49,12 +49,12 @@ json.addIcons(icons())
 .setOptionsUi('manage/index.html')
 .addContentScript(
   matches=['*://docs.rs/*'],
-  js=utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate', 'semver']),
+  js=['index-manager.js'] + utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate', 'semver']),
   css=['script/docs-rs.css', 'script/details-toggle.css'],
 )
 .addContentScript(
   matches=['*://doc.rust-lang.org/*'],
-  js=utils.js_files('script', ['lib', 'doc-rust-lang-org', 'rust-src-navigate']),
+  js=['index-manager.js'] + utils.js_files('script', ['lib', 'doc-rust-lang-org', 'rust-src-navigate']),
   css=['script/doc-rust-lang-org.css', 'script/details-toggle.css'],
   exclude_matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
 )
