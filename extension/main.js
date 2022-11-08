@@ -419,6 +419,7 @@ function getPlatformOs() {
 
     chrome.storage.onChanged.addListener(changes => {
         for (let [key, { _, newValue }] of Object.entries(changes)) {
+            console.log('storage key updated:', key);
             switch (key) {
                 case "offline-mode": {
                     isOfflineMode = newValue;

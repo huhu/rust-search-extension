@@ -44,17 +44,18 @@ else
   .addBackgroundScripts(['statistics.js', 'rust-version.js', 'crate-manager.js', 'index-manager.js', 'main.js'])
 ;
 
+local INDEX_MANAGER_FILES = ['core/storage.js', 'index-manager.js'];
 json.addIcons(icons())
 .addPermissions(['storage', 'unlimitedStorage'])
 .setOptionsUi('manage/index.html')
 .addContentScript(
   matches=['*://docs.rs/*'],
-  js=['index-manager.js'] + utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate', 'semver']),
+  js=INDEX_MANAGER_FILES + utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate', 'semver']),
   css=['script/docs-rs.css', 'script/details-toggle.css'],
 )
 .addContentScript(
   matches=['*://doc.rust-lang.org/*'],
-  js=['index-manager.js'] + utils.js_files('script', ['lib', 'doc-rust-lang-org', 'rust-src-navigate']),
+  js=INDEX_MANAGER_FILES + utils.js_files('script', ['lib', 'doc-rust-lang-org', 'rust-src-navigate']),
   css=['script/doc-rust-lang-org.css', 'script/details-toggle.css'],
   exclude_matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
 )
@@ -65,7 +66,7 @@ json.addIcons(icons())
 )
 .addContentScript(
   matches=['*://rust.extension.sh/update'],
-  js=utils.js_files('script', ['rust-extension-sh']),
+  js=INDEX_MANAGER_FILES + utils.js_files('script', ['rust-extension-sh']),
   css=[],
 ).addContentScript(
   matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md*'],
