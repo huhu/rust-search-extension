@@ -418,7 +418,7 @@ function getPlatformOs() {
     omnibox.addNoCacheQueries("/", "!", "@", ":");
 
     chrome.storage.onChanged.addListener(changes => {
-        for (let [key, { _, newValue }] of Object.entries(changes)) {
+        for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
             console.log('storage key updated:', key);
             switch (key) {
                 case "offline-mode": {
@@ -495,9 +495,13 @@ function getPlatformOs() {
                     break;
                 }
                 default: {
+                    // crate update from docs.rs.
                     if (key.startsWith('@')) {
-                        // crate update from docs.rs.
-                        // no matter the crate is new added, or deleted.
+                        if (!oldValue && newValue) {
+                            console.log(`Crate ${key} has been added.`);
+                        } else if (oldValue && !newValue) {
+                            console.log(`Crate ${key} has been deleted.`);
+                        }
                         crateDocSearcher.invalidateCachedSearch();
                         crateDocSearcher.initAllCrateSearcher();
                     }
