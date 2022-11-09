@@ -39,7 +39,7 @@ const histogramConfig = {
     width: 460,
     height: 240,
     color: CHART_COLOR,
-    margin: { top: 30, right: 0, bottom: 40, left: 40 }
+    margin: { top: 30, right: 0, bottom: 40, left: 40 },
 };
 
 function calculateSavedTime(times) {
@@ -60,10 +60,11 @@ function calculateSavedTime(times) {
 }
 
 function renderHeatmap(data, now, yearAgo) {
-    const heatMapData = data.reduce((pre, [time]) => {
-        pre[moment(time).format("YYYY-MM-DD")] = (pre[moment(time).format("YYYY-MM-DD")] || 0) + 1
-        return pre
-    }, {})
+    const heatMapData = data.reduce((pre, [t]) => {
+        const time = moment(t).format("YYYY-MM-DD");
+        pre[time] = (pre[time] || 0) + 1;
+        return pre;
+    }, {});
 
     let heatmap = calendarHeatmap(now, yearAgo)
         .data(heatMapData)
@@ -89,9 +90,9 @@ function renderHeatmap(data, now, yearAgo) {
 }
 
 function renderSearchGraph(array, total) {
-    let searchStatsGraph = document.querySelector(".search-stats-graph");
-    if (searchStatsGraph.hasChildNodes()) {
-        searchStatsGraph.innerHTML = null
+    let searchStatsContainer = document.querySelector(".search-stats-graph");
+    if (searchStatsContainer.hasChildNodes()) {
+        searchStatsContainer.innerHTML = null;
     }
 
     [
@@ -101,18 +102,18 @@ function renderSearchGraph(array, total) {
         let { color } = STATS_MAP[name];
         let percent = total ? (value / total * 100).toFixed(1) : 0.0;
         if (value > 0) {
-            searchStatsGraph.insertAdjacentHTML('beforeend',
+            searchStatsContainer.insertAdjacentHTML('beforeend',
                 `<span class="percent-bar" style="width: ${percent}%; background-color:${color}"></span>`
             );
         }
-    })
+    });
 }
 
 function renderSearchText(array, total) {
     let searchStatsText = document.querySelector(".search-stats-text");
-    let ol = searchStatsText.querySelector("ol");
-    if (ol.hasChildNodes()) {
-        ol.innerHTML = null
+    let searchTextContainer = searchStatsText.querySelector("ol");
+    if (searchTextContainer.hasChildNodes()) {
+        searchTextContainer.innerHTML = null;
     }
 
     [
@@ -128,20 +129,20 @@ function renderSearchText(array, total) {
                                 <span class="">${name}</span>
                                 <span class="">${percent}%</span>
                              </div>`;
-        ol.append(li);
-    })
+        searchTextContainer.append(li);
+    });
 }
 
+function filterCratesData(data) {
+    const obj = {};
+    for (let i = 0; i < data.length; i++) {
+        const [item, content, type] = data[i];
+        if (type) {
+            obj[type] = (obj[type] || 0) + 1;
+        }
+    }
 
-async function render(year) {
-    const stats = await Statistics.load();
-    const now = year ? moment(year).endOf('year').valueOf() : moment().valueOf()
-    const yearAgo = year ? moment(year).startOf('year').valueOf() : moment().startOf('day').subtract(1, 'year').valueOf();
-    const data = stats.saveData.filter(([time]) => {
-        return now >= time && time >= yearAgo
-    })
-
-    const topCratesData = Object.entries(stats.cratesData)
+    return Object.entries(obj)
         .sort((a, b) => b[1] - a[1])
         .map(([key, value], index) => {
             return {
@@ -150,15 +151,21 @@ async function render(year) {
                 value
             };
         });
-    topCratesData.splice(15);
-    const total = stats.total;
+}
+
+
+async function render(now, yearAgo) {
+    const stats = await Statistics.load();
+    const data = stats.saveData.filter(([time]) => {
+        return now >= time && time >= yearAgo;
+    });
 
     let searchTimes = document.querySelector(".search-time");
     let frequency = searchTimes.querySelectorAll("b");
     frequency[0].textContent = `${data.length}`;
     frequency[1].textContent = calculateSavedTime(data.length);
 
-    renderHeatmap(data, now, yearAgo)
+    renderHeatmap(data, now, yearAgo);
 
     const weeksObj = WEEKS.reduce((obj, week) => {
         obj[week] = 0;
@@ -166,37 +173,48 @@ async function render(year) {
     }, {});
     const datesObj = makeNumericKeyObject(1, 31);
     const hoursObj = makeNumericKeyObject(1, 23);
-    data.forEach(([time]) => {
-        const week = WEEKS[moment(time).weekday()];
-        const date = moment(time).date();
-        const hour = moment(time).hour();
+    data.forEach(([t]) => {
+        const time = moment(t);
+        const hour = time.hour();
 
-        weeksObj[week] += 1;
-        datesObj[date] += 1
+        weeksObj[WEEKS[time.weekday()]] += 1;
+        datesObj[time.date()] += 1;
         if (hour !== 0) {
-            hoursObj[hour] += 1
+            hoursObj[hour] += 1;
         }
-    })
+    });
 
     const [weeksData, datesData, hoursData] = [weeksObj, datesObj, hoursObj]
         .map(data => {
             return Object.entries(data).map(([key, value]) => {
-                return { name: key, value }
+                return { name: key, value };
             });
         });
 
+    const weekContainer = document.querySelector(".chart-histogram-week");
+    if (weekContainer.hasChildNodes()) {
+        weekContainer.innerHTML = null;
+    }
     histogram({
         selector: ".chart-histogram-week",
         data: weeksData,
         ...histogramConfig,
     });
 
+    const dateContainer = document.querySelector(".chart-histogram-date");
+    if (dateContainer.hasChildNodes()) {
+        dateContainer.innerHTML = null;
+    }
     histogram({
         selector: ".chart-histogram-date",
         data: datesData,
         ...histogramConfig,
     });
 
+    const hourContainer = document.querySelector(".chart-histogram-hour");
+    if (hourContainer.hasChildNodes()) {
+        hourContainer.innerHTML = null;
+    }
     histogram({
         selector: ".chart-histogram-hour",
         data: hoursData,
@@ -214,8 +232,8 @@ async function render(year) {
             pre[type] = (pre[type] || 0) + 1;
             typeTotal += 1;
         }
-        return pre
-    }, {})
+        return pre;
+    }, {});
     // Merge default type data with statistic type data.
     let array = Object.entries(Object.assign(defaultTypeData, typeData));
     // Split the other part from the others in order to
@@ -223,6 +241,11 @@ async function render(year) {
     renderSearchGraph(array, typeTotal);
     renderSearchText(array, typeTotal);
 
+    const topCratesContainer = document.querySelector(".topCratesData");
+    if (topCratesContainer.hasChildNodes()) {
+        topCratesContainer.innerHTML = null;
+    }
+    const topCratesData = filterCratesData(data).slice(0, 15);
     barChart({
         margin: ({ top: 30, right: 0, bottom: 10, left: 30 }),
         // Calculate height dynamically to keep the bar with consistence width regardless of the topCratesData length.
@@ -235,30 +258,41 @@ async function render(year) {
     });
 }
 
-function yearList() {
-    const y = new Date().getFullYear()
-    const year = document.querySelector(".filter-list")
-    year.addEventListener('click', function (e) {
-        if (e.target.tagName === "LI") {
-            year.childNodes.forEach(i => i.classList.remove("selected"))
-            e.target.className = "selected"
-            render(e.target.innerHTML)
-        }
-    })
+async function yearList() {
+    const y = new Date().getFullYear();
+    const year = document.querySelector(".filter-list");
 
-    for (let i = y; i > y - 3; i--) {
-        const li = document.createElement('li')
-        li.innerHTML = i
+    const { saveData } = await Statistics.load();
+    const min = saveData.reduce((pre, current) => {
+        return Math.min(pre, current[0]);
+    }, moment().valueOf());
+
+    for (let i = y; i >= moment(min).year(); i--) {
+        const li = document.createElement('li');
+        li.innerHTML = i;
         if (i === y) {
-            li.className = "selected"
+            li.className = "selected";
         }
-        year.append(li)
+        year.append(li);
     }
+
+    year.addEventListener('click', async function (e) {
+        if (e.target.tagName === "LI") {
+            year.childNodes.forEach(i => i.classList.remove("selected"));
+            e.target.className = "selected";
+            const time = moment(e.target.innerHTML);
+            const now = time.endOf('year').valueOf();
+            const yearAgo = time.startOf('year').valueOf();
+            await render(now, yearAgo);
+        }
+    });
 }
 
 (async () => {
-    await render(undefined)
-    yearList()
-})()
+    const now = moment().valueOf();
+    const yearAgo = moment().startOf('day').subtract(1, 'year').valueOf();
+    await render(now, yearAgo);
+    await yearList();
+})();
 
 

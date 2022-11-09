@@ -129,7 +129,7 @@ class Statistics {
             arr[2] = crate;
         }
         
-        this.saveData = this.saveData.concat([arr]);
+        this.saveData.push(arr);
 
         this.total += 1;
 

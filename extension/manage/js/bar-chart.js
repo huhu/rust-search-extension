@@ -21,11 +21,6 @@ function barChart({ margin, height, width, data, selector, color, }) {
         .domain([0, d3.max(data, d => d.value)])
         .range([margin.left, width - margin.right])
 
-    const container = document.querySelector(`${selector}`)
-    if (container.hasChildNodes()) {
-        container.innerHTML = null
-    }
-
     const svg = d3.select(selector)
         .append("svg")
         .attr("width", width)
