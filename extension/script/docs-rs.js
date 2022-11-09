@@ -4,7 +4,7 @@
 // The rawCrateName mainly for Cargo.toml url to parse feature flags.
 let pathname = location.pathname.replace("/crate", "");
 let [rawCrateName, crateVersion] = pathname.slice(1).split("/");
-crateName = rawCrateName.replaceAll("-", "_");
+let crateName = rawCrateName.replaceAll("-", "_");
 // A crate version which added to the extension.
 let installedVersion = undefined;
 
@@ -122,7 +122,7 @@ async function enhanceFeatureFlagsMenu(menu) {
     let html = `<div style="padding: 1rem"><p>
                     This crate has no explicit-declared feature flag.
                     <br>
-                    Check its <a href="${cargoTomUrl}">Cargo.toml</a> to learn more.
+                    Check its <a style="padding:0" href="${cargoTomUrl}">Cargo.toml</a> to learn more.
                 </p></div>`;
     if (features.length > 0) {
         let tbody = features.map(([name, flags]) => {
@@ -187,12 +187,11 @@ function insertAddToExtensionElement(state) {
     let menu = document.querySelector(".pure-menu-list:not(.pure-menu-right)");
     let li = document.createElement("li");
     li.classList.add("pure-menu-item", "pure-menu-has-children", "pure-menu-allow-hover");
-    li.onclick = () => {
+    li.onclick = async () => {
         // Toggle search index added state
         if (state === "latest") {
-            chrome.runtime.sendMessage({ crateName, action: "crate:remove" }, response => {
-                insertAddToExtensionElement(getState(undefined));
-            });
+            await CrateDocManager.removeCrate(crateName);
+            insertAddToExtensionElement(getState(undefined));
         } else {
             injectScripts(["script/lib.js", "script/add-search-index.js"]);
         }
@@ -241,25 +240,13 @@ function insertAddToExtensionElement(state) {
     }
 }
 
-window.addEventListener("message", function (event) {
+window.addEventListener("message", async function (event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension:docs.rs") {
-        chrome.runtime.sendMessage({ action: "crate:add", ...event.data.message },
-            (response) => {
-                if (response) {
-                    insertAddToExtensionElement(getState(event.data.message.crateVersion));
-                    console.log("Congrats! This crate has been installed successfully!");
-                } else {
-                    insertAddToExtensionElement("error");
-                    console.error("Oops! We have failed to install this crate!", {
-                        pathname,
-                        crateVersion,
-                        installedVersion,
-                        data: event.data,
-                    });
-                }
-            }
-        );
+        let message = event.data.message;
+        await CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
+        insertAddToExtensionElement(getState(message.crateVersion));
+        console.log("Congrats! This crate has been installed successfully!");
     }
 });

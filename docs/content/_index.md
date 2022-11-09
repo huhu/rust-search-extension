@@ -116,7 +116,7 @@ prefix **!!!** (triple exclamation marks) to open crate's repository (See [Open 
 
 ![GIF](/error-index.gif)
 
-# Search Rust official book chapters
+# Search Rust book chapters
 
 You can search all of Rust book chapters too! The result will show the title of the related page, 
 parent chapter, and grandparent chapter. Don't forget the **%** is the prefix to perform the book searching.
@@ -137,7 +137,7 @@ You can search [caniuse.rs](https://caniuse.rs) with **?** prefix.
 
 # Search Rust Version
 
-Just input any Rust version (such as `v1.38`) to open the release page of that version.
+Just input any Rust version (such as `1.38` or `v1.38`) to open the release page of that version.
 
 ![](/search-rust-version.png)
 
@@ -153,7 +153,7 @@ Those commands including but not limited to:
 - **:yet** - Search Are We Yet websites. 
 - **:book** - Search Rust books.
 - **:book/zh** - Search Chinese Rust books.
-- **:stable** - Show stable Rust scheduled release date in the next year. 
+- **:stable** - Show stable Rust scheduled release date. 
 - **:label** - Search issue labels of rust-lang repository. 
 - **:tool** - Show useful rust tools.
 - **:mirror** - Search Rust mirror websites.
@@ -182,7 +182,9 @@ Two kinds of tags links to corresponding urls, including:
 
 Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust Search Extension fills the gap.
 
-![IMG](/feature-flags.png)
+![IMG](/optional-dependencies.png)
+
+Also, we support optional dependencies.
 
 ## Add your favorite crate to extension
 
