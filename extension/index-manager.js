@@ -84,11 +84,11 @@ class IndexManager {
         storage.setItem('index-rustc', index);
     }
 
-    static async getTargetsIndex() {
+    static async getTargetIndex() {
         return await storage.getItem('index-target') || targetsIndex;
     }
 
-    static setTargetsIndex(index) {
+    static setTargetIndex(index) {
         storage.setItem('index-target', index);
     }
 

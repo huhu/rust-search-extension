@@ -6,7 +6,7 @@ window.addEventListener("message", async function (event) {
         console.log('target:', message.target);
         switch (message.target) {
             case 'book': {
-                await IndexManager.setBookIndex(message.index);
+                IndexManager.setBookIndex(message.index);
                 break;
             }
             case 'caniuse': {
@@ -39,7 +39,7 @@ window.addEventListener("message", async function (event) {
                 break;
             }
             case 'target': {
-                IndexManager.setTargetsIndex(message.index);
+                IndexManager.setTargetIndex(message.index);
                 break;
             }
         }
