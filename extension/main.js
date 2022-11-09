@@ -149,7 +149,7 @@ function getPlatformOs() {
             let historyItem = await HistoryCommand.record(query, result, maxSize = 100);
             let statistics = await Statistics.load();
             await statistics.record(historyItem, true);
-        }
+        },
     });
 
     // Nightly std docs search
@@ -192,7 +192,7 @@ function getPlatformOs() {
                 return [{
                     content: rustcSearcher.getRootPath(),
                     description: "To search nightly rustc docs, please open the nightly rustc docs page in advance.",
-                }]
+                }];
             }
         },
     });
@@ -225,7 +225,7 @@ function getPlatformOs() {
                 return {
                     content,
                     description: `${c.match(content)} v${item.version} - ${c.dim(c.escape(c.eliminateTags(item.doc)))}`,
-                }
+                };
             }
         },
         onAppend: () => {
@@ -233,7 +233,7 @@ function getPlatformOs() {
                 content: chrome.runtime.getURL("manage/crates.html"),
                 description: `Remind: ${c.dim("Select here to manage all your indexed crates")}`,
             }];
-        }
+        },
     });
 
     function wrapCrateSearchAppendix(appendix) {
@@ -242,7 +242,7 @@ function getPlatformOs() {
             {
                 content: "remind",
                 description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,
-            }
+            },
         ];
     }
 
@@ -258,7 +258,7 @@ function getPlatformOs() {
             return {
                 content: `https://docs.rs/${crate.id}`,
                 description: `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
-            }
+            };
         },
         onAppend: (query) => {
             let keyword = query.replace(/[!\s]/g, "");
@@ -266,7 +266,7 @@ function getPlatformOs() {
                 content: "https://docs.rs/releases/search?query=" + encodeURIComponent(keyword),
                 description: "Search Rust crates for " + c.match(keyword) + " on https://docs.rs",
             });
-        }
+        },
     });
 
     omnibox.addPrefixQueryEvent("!!", {
@@ -285,7 +285,7 @@ function getPlatformOs() {
                 content: `https://${crateRegistry}/search?q=` + encodeURIComponent(keyword),
                 description: "Search Rust crates for " + c.match(keyword) + ` on https://${crateRegistry}`,
             });
-        }
+        },
     });
 
     const REDIRECT_URL = chrome.runtime.getURL("manage/redirect.html");
@@ -305,7 +305,7 @@ function getPlatformOs() {
                 content: "https://github.com/search?q=" + encodeURIComponent(keyword),
                 description: "Search Rust crates for " + c.match(keyword) + " on https://github.com",
             });
-        }
+        },
     });
 
     omnibox.addPrefixQueryEvent("#", {
@@ -321,8 +321,8 @@ function getPlatformOs() {
             return {
                 content: attribute.href,
                 description: `Attribute: ${c.match("#[" + attribute.name + "]")} ${c.dim(c.escape(attribute.description))}`,
-            }
-        }
+            };
+        },
     });
 
     omnibox.addPrefixQueryEvent("?", {
@@ -355,7 +355,7 @@ function getPlatformOs() {
                         description: `Rust ${c.match(version.number)} - ${c.dim(c.normalizeDate(version.date))}`,
                     }
                 });
-        }
+        },
     });
 
     omnibox.addRegexQueryEvent(/^`?e\d{2,4}`?$/i, {
