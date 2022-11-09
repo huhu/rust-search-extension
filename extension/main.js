@@ -149,7 +149,7 @@ function getPlatformOs() {
             let historyItem = await HistoryCommand.record(query, result, maxSize = 100);
             let statistics = await Statistics.load();
             await statistics.record(historyItem, true);
-        }
+        },
     });
 
     // Nightly std docs search
@@ -192,7 +192,7 @@ function getPlatformOs() {
                 return [{
                     content: rustcSearcher.getRootPath(),
                     description: "To search nightly rustc docs, please open the nightly rustc docs page in advance.",
-                }]
+                }];
             }
         },
     });
@@ -225,7 +225,7 @@ function getPlatformOs() {
                 return {
                     content,
                     description: `${c.match(content)} v${item.version} - ${c.dim(c.escape(c.eliminateTags(item.doc)))}`,
-                }
+                };
             }
         },
         onAppend: () => {
@@ -233,7 +233,7 @@ function getPlatformOs() {
                 content: chrome.runtime.getURL("manage/crates.html"),
                 description: `Remind: ${c.dim("Select here to manage all your indexed crates")}`,
             }];
-        }
+        },
     });
 
     function wrapCrateSearchAppendix(appendix) {
@@ -242,7 +242,7 @@ function getPlatformOs() {
             {
                 content: "remind",
                 description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,
-            }
+            },
         ];
     }
 
@@ -258,7 +258,7 @@ function getPlatformOs() {
             return {
                 content: `https://docs.rs/${crate.id}`,
                 description: `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
-            }
+            };
         },
         onAppend: (query) => {
             let keyword = query.replace(/[!\s]/g, "");
@@ -266,7 +266,7 @@ function getPlatformOs() {
                 content: "https://docs.rs/releases/search?query=" + encodeURIComponent(keyword),
                 description: "Search Rust crates for " + c.match(keyword) + " on https://docs.rs",
             });
-        }
+        },
     });
 
     omnibox.addPrefixQueryEvent("!!", {
@@ -285,7 +285,7 @@ function getPlatformOs() {
                 content: `https://${crateRegistry}/search?q=` + encodeURIComponent(keyword),
                 description: "Search Rust crates for " + c.match(keyword) + ` on https://${crateRegistry}`,
             });
-        }
+        },
     });
 
     const REDIRECT_URL = chrome.runtime.getURL("manage/redirect.html");
@@ -305,7 +305,7 @@ function getPlatformOs() {
                 content: "https://github.com/search?q=" + encodeURIComponent(keyword),
                 description: "Search Rust crates for " + c.match(keyword) + " on https://github.com",
             });
-        }
+        },
     });
 
     omnibox.addPrefixQueryEvent("#", {
@@ -321,8 +321,8 @@ function getPlatformOs() {
             return {
                 content: attribute.href,
                 description: `Attribute: ${c.match("#[" + attribute.name + "]")} ${c.dim(c.escape(attribute.description))}`,
-            }
-        }
+            };
+        },
     });
 
     omnibox.addPrefixQueryEvent("?", {
@@ -355,7 +355,7 @@ function getPlatformOs() {
                         description: `Rust ${c.match(version.number)} - ${c.dim(c.normalizeDate(version.date))}`,
                     }
                 });
-        }
+        },
     });
 
     omnibox.addRegexQueryEvent(/^`?e\d{2,4}`?$/i, {
@@ -418,7 +418,8 @@ function getPlatformOs() {
     omnibox.addNoCacheQueries("/", "!", "@", ":");
 
     chrome.storage.onChanged.addListener(changes => {
-        for (let [key, { _, newValue }] of Object.entries(changes)) {
+        for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+            console.log('storage key updated:', key);
             switch (key) {
                 case "offline-mode": {
                     isOfflineMode = newValue;
@@ -434,6 +435,76 @@ function getPlatformOs() {
                 }
                 case "crate-registry": {
                     crateRegistry = newValue;
+                    break;
+                }
+                case "index-std-stable": {
+                    // Update search index after docs updated
+                    stdSearcher.setSearchIndex(newValue);
+                    break;
+                }
+                case "index-std-nightly": {
+                    // Update search index after docs updated
+                    nightlySearcher.setSearchIndex(newValue);
+                    break;
+                }
+                case "index-book": {
+                    bookSearcher = new BookSearch(newValue);
+                    break;
+                }
+                case "index-caniuse": {
+                    caniuseSearcher = new CaniuseSearch(newValue);
+                    break;
+                }
+                case "index-command": {
+                    let index = newValue;
+                    bookCommand.setIndex(index['book']);
+                    bookZhCommand.setIndex(index['book/zh']);
+                    cargoCommand.setIndex(index['cargo'])
+                    yetCommand.setIndex(index['yet']);
+                    toolCommand.setIndex(index['tool']);
+                    mirrorCommand.setIndex(index['mirror']);
+                    blogCommand.setPosts(index['blog']);
+                    break;
+                }
+                case "index-crate": {
+                    crateSearcher.setCrateIndex(newValue);
+                    break;
+                }
+                case "index-crate-mapping": {
+                    crateSearcher.setMapping(newValue);
+                    break;
+                }
+                case "index-label": {
+                    labelCommand = new LabelCommand(newValue);
+                    break;
+                }
+                case "index-lint": {
+                    lintSearcher = new LintSearch(newValue);
+                    break;
+                }
+                case "index-rfc": {
+                    rfcCommand = new RfcCommand(newValue);
+                    break;
+                }
+                case "index-rustc": {
+                    rustcCommand = new RustcCommand(newValue);
+                    break;
+                }
+                case "index-target": {
+                    targetCommand = new TargetCommand(newValue);
+                    break;
+                }
+                default: {
+                    // crate update from docs.rs.
+                    if (key.startsWith('@')) {
+                        if (!oldValue && newValue) {
+                            console.log(`Crate ${key} has been added.`);
+                        } else if (oldValue && !newValue) {
+                            console.log(`Crate ${key} has been deleted.`);
+                        }
+                        crateDocSearcher.invalidateCachedSearch();
+                        crateDocSearcher.initAllCrateSearcher();
+                    }
                     break;
                 }
             }
@@ -457,30 +528,6 @@ function getPlatformOs() {
     // https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         switch (message.action) {
-            // Stable:* action is exclusive to stable docs event
-            case "stable:add": {
-                if (message.searchIndex) {
-                    IndexManager.setStdStableIndex(message.searchIndex);
-                    // Update search index after docs updated
-                    stdSearcher.setSearchIndex(message.searchIndex);
-                    sendResponse(true);
-                } else {
-                    sendResponse(false);
-                }
-                break;
-            }
-            // Nightly:* action is exclusive to nightly docs event
-            case "nightly:add": {
-                if (message.searchIndex) {
-                    IndexManager.setStdNightlyIndex(message.searchIndex);
-                    // Update search index after docs updated
-                    nightlySearcher.setSearchIndex(message.searchIndex);
-                    sendResponse(true);
-                } else {
-                    sendResponse(false);
-                }
-                break;
-            }
             // Rustc:* action is exclusive to rustc docs event
             case "rustc:check": {
                 sendResponse({
@@ -496,97 +543,6 @@ function getPlatformOs() {
                 } else {
                     sendResponse(false);
                 }
-                break;
-            }
-            // Crate:* action is exclusive to crate event
-            case "crate:add": {
-                if (message.searchIndex) {
-                    CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex)
-                        .then(() => {
-                            crateDocSearcher.invalidateCachedSearch();
-                            crateDocSearcher.initAllCrateSearcher();
-                        })
-                        .then(() => {
-                            sendResponse(true);
-                        });
-                } else {
-                    sendResponse(false);
-                }
-                break;
-            }
-            case "crate:remove": {
-                CrateDocManager.removeCrate(message.crateName)
-                    .then(() => {
-                        crateDocSearcher.invalidateCachedSearch();
-                        crateDocSearcher.initAllCrateSearcher();
-                    })
-                    .then(() => {
-                        sendResponse(true);
-                    });
-                break;
-            }
-            // Index-update:* action is exclusive to index update event
-            case "index-update:crate": {
-                IndexManager.setCrateMapping(message.mapping);
-                IndexManager.setCrateIndex(message.index);
-                crateSearcher.setMapping(message.mapping);
-                crateSearcher.setCrateIndex(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:book": {
-                IndexManager.setBookIndex(message.index);
-                bookSearcher = new BookSearch(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:lint": {
-                IndexManager.setLintIndex(message.index);
-                lintSearcher = new LintSearch(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:label": {
-                IndexManager.setLabelIndex(message.index);
-                labelCommand = new LabelCommand(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:rfc": {
-                IndexManager.setRfcIndex(message.index);
-                rfcCommand = new RfcCommand(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:caniuse": {
-                IndexManager.setCaniuseIndex(message.index);
-                caniuseSearcher = new CaniuseSearch(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:rustc": {
-                IndexManager.setRustcIndex(message.index);
-                rustcCommand = new RustcCommand(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:target": {
-                IndexManager.setTargetsIndex(message.index);
-                targetCommand = new TargetCommand(message.index);
-                sendResponse(true);
-                break;
-            }
-            case "index-update:command": {
-                let index = message.index;
-                IndexManager.setCommandIndex(index);
-                bookCommand.setIndex(index['book']);
-                bookZhCommand.setIndex(index['book/zh']);
-                cargoCommand.setIndex(index['cargo'])
-                yetCommand.setIndex(index['yet']);
-                toolCommand.setIndex(index['tool']);
-                mirrorCommand.setIndex(index['mirror']);
-                blogCommand.setPosts(index['blog']);
-                sendResponse(true);
                 break;
             }
             case "open-url": {
