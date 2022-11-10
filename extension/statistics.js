@@ -43,7 +43,7 @@ function makeNumericKeyObject(start, end, initial = 0) {
 
 class Statistics {
     constructor() {
-        this.saveData = [];
+        this.saveData = Object.create(new Array());
         this.calendarData = Object.create(null)
         this.cratesData = Object.create(null)
         this.typeData = Object.create(null)

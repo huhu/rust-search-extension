@@ -94,7 +94,8 @@ function renderSearchGraph(array, total) {
     if (searchStatsContainer.hasChildNodes()) {
         searchStatsContainer.innerHTML = null;
     }
-
+    // Split the other part from the others in order to
+    // keep the other part always in the last order.
     [
         ...array.filter(([key]) => key !== TYPE_OTHER).sort((a, b) => b[1] - a[1]),
         ...array.filter(([key]) => key === TYPE_OTHER),
@@ -115,7 +116,8 @@ function renderSearchText(array, total) {
     if (searchTextContainer.hasChildNodes()) {
         searchTextContainer.innerHTML = null;
     }
-
+    // Split the other part from the others in order to
+    // keep the other part always in the last order.
     [
         ...array.filter(([key]) => key !== TYPE_OTHER).sort((a, b) => b[1] - a[1]),
         ...array.filter(([key]) => key === TYPE_OTHER),
@@ -236,8 +238,6 @@ async function render(now, yearAgo) {
     }, {});
     // Merge default type data with statistic type data.
     let array = Object.entries(Object.assign(defaultTypeData, typeData));
-    // Split the other part from the others in order to
-    // keep the other part always in the last order.
     renderSearchGraph(array, typeTotal);
     renderSearchText(array, typeTotal);
 

@@ -292,8 +292,6 @@ h3 {
   right: 20px;
   top: 20px;
   font-size: 16px;
-  max-height: 300px;
-  overflow-y: auto;
   z-index: 9;
 }
 
