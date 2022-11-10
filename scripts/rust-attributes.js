@@ -25,7 +25,7 @@ for (let node of attributeIndex) {
             }
         });
         attribute.querySelectorAll("a").forEach(a => {
-            attributeMap[a.firstChild.textContent] = [description, a.href];
+            attributeMap[a.firstChild.textContent] = [description.trim(), a.getAttribute("href")];
         });
     });
 }
