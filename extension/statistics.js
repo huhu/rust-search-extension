@@ -43,6 +43,7 @@ function makeNumericKeyObject(start, end, initial = 0) {
 
 class Statistics {
     constructor() {
+        this.saveData = [];
         this.calendarData = Object.create(null)
         this.cratesData = Object.create(null)
         this.typeData = Object.create(null)
@@ -74,6 +75,7 @@ class Statistics {
             self.typeData = stats.typeData;
             self.hoursData = stats.hoursData;
             self.total = stats.total;
+            self.saveData = stats.saveData;
         }
         return self;
     }
@@ -96,6 +98,7 @@ class Statistics {
             typeData: this.typeData,
             hoursData: this.hoursData,
             total: this.total,
+            saveData: this.saveData,
         });
     }
 
@@ -113,15 +116,20 @@ class Statistics {
         let key = c.normalizeDate(date);
         this.calendarData[key] = (this.calendarData[key] || 0) + 1;
 
+        const arr = [time, null, null]
         let searchType = Statistics.recordSearchType({ query, content, description });
         if (searchType) {
             this.typeData[searchType] = (this.typeData[searchType] || 0) + 1;
+            arr[1] = searchType;
         }
 
         let crate = Statistics.recordSearchCrate(content);
         if (crate) {
             this.cratesData[crate] = (this.cratesData[crate] || 0) + 1;
+            arr[2] = crate;
         }
+        
+        this.saveData.push(arr);
 
         this.total += 1;
 

@@ -277,3 +277,31 @@ h3 {
 .nav .nav-item {
   padding: 20px;
 }
+
+
+.container {
+  padding: 30px 40px 80px; 
+  background-color: white; 
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.filter-list {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 16px;
+  z-index: 9;
+}
+
+.filter-list > li {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.selected {
+  background-color: var(--primary-color);
+}
