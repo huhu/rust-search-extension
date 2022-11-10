@@ -28,7 +28,7 @@ const STATS_PATTERNS = [{
     },
     {
         name: 'other',
-        pattern: /^[>%?]|(1\.).*/i,
+        pattern: /^[>%?]|(v?1\.).*/i,
     },
 ];
 const WEEKS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -75,7 +75,7 @@ class Statistics {
             self.typeData = stats.typeData;
             self.hoursData = stats.hoursData;
             self.total = stats.total;
-            self.saveData = stats.saveData;
+            self.saveData = stats.saveData || [];
         }
         return self;
     }
