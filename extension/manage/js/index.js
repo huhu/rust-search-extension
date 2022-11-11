@@ -200,7 +200,7 @@ function renderTopCratesChart(topCratesObj) {
 }
 
 
-async function v2Render(now, yearAgo) {
+async function renderV2(now, yearAgo) {
     const stats = await Statistics.load();
     const data = stats.saveData.filter(([time]) => {
         return now >= time && time >= yearAgo;
@@ -278,7 +278,7 @@ async function yearList() {
             const time = moment(e.target.innerHTML);
             const now = time.endOf('year').valueOf();
             const yearAgo = time.startOf('year').valueOf();
-            await v2Render(now, yearAgo);
+            await renderV2(now, yearAgo);
         }
     });
 }
@@ -301,8 +301,8 @@ async function render(now, yearAgo) {
     const now = moment().valueOf();
     const yearAgo = moment().startOf('day').subtract(1, 'year').valueOf();
     const searchParams = new URLSearchParams(window.location.search);
-    if (/^v2$/i.test(searchParams.get('mode'))) {
-        await v2Render(now, yearAgo);
+    if (searchParams.get('mode') === 'v2') {
+        await renderV2(now, yearAgo);
         await yearList();
     } else {
         await render(now, yearAgo);
