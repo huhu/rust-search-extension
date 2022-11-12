@@ -147,7 +147,7 @@ function renderSearchStats(typeDataObj, total) {
 
     // Merge default type data with statistic type data.
     let array = Object.entries(Object.assign(defaultTypeData, typeDataObj));
-    
+
     // Split the other part from the others in order to
     // keep the other part always in the last order.
     [
@@ -234,7 +234,8 @@ async function renderV2(now, yearAgo) {
             hoursObj[hour] += 1;
         }
         if (content) {
-            typeDataObj[content] = (typeDataObj[content] || 0) + 1;
+            const typeName =  STATS_NUMBER[content];
+            typeDataObj[typeName] = (typeDataObj[typeName] || 0) + 1;
             typeTotal += 1;
         }
         if (type) {
@@ -264,7 +265,7 @@ async function yearList() {
 
     for (let i = y; i >= moment(min).year(); i--) {
         const li = document.createElement('li');
-        li.innerHTML = i;
+        li.innerText = i;
         if (i === y) {
             li.className = "selected";
         }
@@ -275,7 +276,7 @@ async function yearList() {
         if (e.target.tagName === "LI") {
             year.childNodes.forEach(i => i.classList.remove("selected"));
             e.target.className = "selected";
-            const time = moment(e.target.innerHTML);
+            const time = moment(e.target.innerText);
             const now = time.endOf('year').valueOf();
             const yearAgo = time.startOf('year').valueOf();
             await renderV2(now, yearAgo);

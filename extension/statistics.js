@@ -1,36 +1,45 @@
 const STATS_PATTERNS = [{
         name: "stable",
         pattern: null,
+        number: 1,
     },
     {
         name: "nightly",
         pattern: /^\/[^/].*/i,
+        number: 2,
     },
     {
         name: "docs.rs",
         pattern: /^[~@].*/i,
+        number: 3,
     },
     {
         name: "crate",
         pattern: /^!!!.*/i,
+        number: 4,
     },
     {
         name: "attribute",
         pattern: /^#.*/i,
+        number: 5,
     },
     {
         name: "error code",
         pattern: /^`?e\d{2,4}`?$/i,
+        number: 6,
     },
     {
         name: "rustc",
         pattern: /^\/\/.*/i,
+        number: 7,
     },
     {
-        name: 'other',
+        name: "other",
         pattern: /^[>%?]|(v?1\.).*/i,
+        number: 8,
     },
 ];
+const STATS_NUMBER = { 1: "stable", 2: "nightly", 3: "docs.rs", 4: "crate", 5: "attribute", 6: "error code", 7: "rustc", 8: "other" };
 const WEEKS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function makeNumericKeyObject(start, end, initial = 0) {
@@ -117,10 +126,12 @@ class Statistics {
         this.calendarData[key] = (this.calendarData[key] || 0) + 1;
 
         const arr = [time, null, null]
-        let searchType = Statistics.recordSearchType({ query, content, description });
+        let [searchType, number] = Statistics.recordSearchType({ query, content, description });
         if (searchType) {
             this.typeData[searchType] = (this.typeData[searchType] || 0) + 1;
-            arr[1] = searchType;
+        }
+        if(number) {
+            arr[1] = number;
         }
 
         let crate = Statistics.recordSearchCrate(content);
@@ -145,21 +156,25 @@ class Statistics {
     static recordSearchType({ query, content, description }) {
         let stat = STATS_PATTERNS.find(item => item.pattern && item.pattern.test(query));
         if (stat) {
-            return stat.name;
+            return [stat.name, stat.number];
         } else {
             // Classify the default search cases
             if (content.startsWith("https://docs.rs")) {
                 // Crate docs
-                return STATS_PATTERNS[2].name;
+                const obj = STATS_PATTERNS[2];
+                return [obj.name, obj.number];
             } else if (["https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
                 // Crates
-                return STATS_PATTERNS[3].name;
+                const obj = STATS_PATTERNS[3];
+                return [obj.name, obj.number];
             } else if (description.startsWith("Attribute")) {
                 // Attribute
-                return STATS_PATTERNS[4].name;
+                const obj = STATS_PATTERNS[4];
+                return [obj.name, obj.number];
             } else {
                 // Std docs (stable)
-                return STATS_PATTERNS[0].name;
+                const obj = STATS_PATTERNS[0];
+                return [obj.name, obj.number];
             }
         }
     }
