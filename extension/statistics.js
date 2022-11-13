@@ -1,45 +1,13 @@
-const STATS_PATTERNS = [{
-        name: "stable",
-        pattern: null,
-        number: 1,
-    },
-    {
-        name: "nightly",
-        pattern: /^\/[^/].*/i,
-        number: 2,
-    },
-    {
-        name: "docs.rs",
-        pattern: /^[~@].*/i,
-        number: 3,
-    },
-    {
-        name: "crate",
-        pattern: /^!!!.*/i,
-        number: 4,
-    },
-    {
-        name: "attribute",
-        pattern: /^#.*/i,
-        number: 5,
-    },
-    {
-        name: "error code",
-        pattern: /^`?e\d{2,4}`?$/i,
-        number: 6,
-    },
-    {
-        name: "rustc",
-        pattern: /^\/\/.*/i,
-        number: 7,
-    },
-    {
-        name: "other",
-        pattern: /^[>%?]|(v?1\.).*/i,
-        number: 8,
-    },
-];
-const STATS_NUMBER = { 1: "stable", 2: "nightly", 3: "docs.rs", 4: "crate", 5: "attribute", 6: "error code", 7: "rustc", 8: "other" };
+const STATS_PATTERNS = new Map([
+    [1, { name: "stable", pattern: null, number: 1, }],
+    [2, { name: "nightly", pattern: /^\/[^/].*/i, number: 2, }],
+    [3, { name: "docs.rs", pattern: /^[~@].*/i, number: 3, }],
+    [4, { name: "crate", pattern: /^!!!.*/i, number: 4, }],
+    [5, { name: "attribute", pattern: /^#.*/i, number: 5, }],
+    [6, { name: "error code", pattern: /^`?e\d{2,4}`?$/i, number: 6, }],
+    [7, { name: "rustc", pattern: /^\/\/.*/i, number: 7, }],
+    [999, { name: "other", pattern: /^[>%?]|(v?1\.).*/i, number: 999, }],
+])
 const WEEKS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function makeNumericKeyObject(start, end, initial = 0) {
@@ -126,12 +94,12 @@ class Statistics {
         this.calendarData[key] = (this.calendarData[key] || 0) + 1;
 
         const arr = [time, null, null]
-        let [searchType, number] = Statistics.recordSearchType({ query, content, description });
-        if (searchType) {
-            this.typeData[searchType] = (this.typeData[searchType] || 0) + 1;
+        let {typeName, typeNumber} = Statistics.parseSearchType({ query, content, description });
+        if (typeName) {
+            this.typeData[typeName] = (this.typeData[typeName] || 0) + 1;
         }
-        if(number) {
-            arr[1] = number;
+        if (typeNumber) {
+            arr[1] = typeNumber;
         }
 
         let crate = Statistics.recordSearchCrate(content);
@@ -139,7 +107,7 @@ class Statistics {
             this.cratesData[crate] = (this.cratesData[crate] || 0) + 1;
             arr[2] = crate;
         }
-        
+
         this.saveData.push(arr);
 
         this.total += 1;
@@ -153,28 +121,34 @@ class Statistics {
      * Record the search type from the search history.
      * @returns {string|*} return the search type result if matched, otherwise return null.
      */
-    static recordSearchType({ query, content, description }) {
-        let stat = STATS_PATTERNS.find(item => item.pattern && item.pattern.test(query));
+    static parseSearchType({ query, content, description }) {
+        let stat;
+        for(let [key, obj] of STATS_PATTERNS) {
+            if(obj.pattern && obj.pattern.test(query)) {
+                stat = obj;
+                break;
+            }
+        }
         if (stat) {
-            return [stat.name, stat.number];
+            return {typeName: stat.name, typeNumber: stat.number};
         } else {
             // Classify the default search cases
             if (content.startsWith("https://docs.rs")) {
                 // Crate docs
-                const obj = STATS_PATTERNS[2];
-                return [obj.name, obj.number];
+                const obj = STATS_PATTERNS.get(3);
+                return {typeName: obj.name, typeNumber: obj.number};
             } else if (["https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
                 // Crates
-                const obj = STATS_PATTERNS[3];
-                return [obj.name, obj.number];
+                const obj = STATS_PATTERNS.get(4);
+                return {typeName: obj.name, typeNumber: obj.number};
             } else if (description.startsWith("Attribute")) {
                 // Attribute
-                const obj = STATS_PATTERNS[4];
-                return [obj.name, obj.number];
+                const obj = STATS_PATTERNS.get(5);
+                return {typeName: obj.name, typeNumber: obj.number};
             } else {
                 // Std docs (stable)
-                const obj = STATS_PATTERNS[0];
-                return [obj.name, obj.number];
+                const obj = STATS_PATTERNS.get(1);
+                return {typeName: obj.name, typeNumber: obj.number};
             }
         }
     }
