@@ -23,6 +23,9 @@ function parseCrateVersionFromDOM() {
 }
 
 function parseCargoFeatures(content) {
+    if (!content.version?.features) {
+        return [];
+    }
     let features = [];
 
     for (const [name, flags] of Object.entries(content.version.features)) {
