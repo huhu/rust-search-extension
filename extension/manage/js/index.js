@@ -234,7 +234,7 @@ async function renderV2(now, yearAgo) {
             hoursObj[hour] += 1;
         }
         if (content) {
-            const typeName = STATS_PATTERNS.get(content).name;
+            const typeName = STATS_NUMBER[content];
             typeDataObj[typeName] = (typeDataObj[typeName] || 0) + 1;
             typeTotal += 1;
         }

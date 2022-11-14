@@ -290,7 +290,7 @@ h3 {
 .filter-list {
   position: absolute;
   right: 20px;
-  top: 20px;
+  top: 30px;
   font-size: 16px;
   z-index: 9;
 }
