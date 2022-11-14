@@ -1,36 +1,48 @@
 const STATS_PATTERNS = [{
         name: "stable",
         pattern: null,
+        number: 1,
     },
     {
         name: "nightly",
         pattern: /^\/[^/].*/i,
+        number: 2,
     },
     {
         name: "docs.rs",
         pattern: /^[~@].*/i,
+        number: 3,
     },
     {
         name: "crate",
         pattern: /^!!!.*/i,
+        number: 4,
     },
     {
         name: "attribute",
         pattern: /^#.*/i,
+        number: 5,
     },
     {
         name: "error code",
         pattern: /^`?e\d{2,4}`?$/i,
+        number: 6,
     },
     {
         name: "rustc",
         pattern: /^\/\/.*/i,
+        number: 7,
     },
     {
-        name: 'other',
+        name: "other",
         pattern: /^[>%?]|(v?1\.).*/i,
+        number: 999,
     },
 ];
+const STATS_NUMBER = STATS_PATTERNS.reduce((pre, current) => {
+    pre[current.number] = current.name;
+    return pre;
+}, Object.create(null));
 const WEEKS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function makeNumericKeyObject(start, end, initial = 0) {
@@ -117,18 +129,20 @@ class Statistics {
         this.calendarData[key] = (this.calendarData[key] || 0) + 1;
 
         const arr = [time, null, null]
-        let searchType = Statistics.recordSearchType({ query, content, description });
-        if (searchType) {
-            this.typeData[searchType] = (this.typeData[searchType] || 0) + 1;
-            arr[1] = searchType;
+        let { name, number } = Statistics.parseSearchType({ query, content, description });
+        if (name) {
+            this.typeData[name] = (this.typeData[name] || 0) + 1;
+        }
+        if(number) {
+            arr[1] = number;
         }
 
-        let crate = Statistics.recordSearchCrate(content);
+        let crate = Statistics.parseSearchCrate(content);
         if (crate) {
             this.cratesData[crate] = (this.cratesData[crate] || 0) + 1;
             arr[2] = crate;
         }
-        
+
         this.saveData.push(arr);
 
         this.total += 1;
@@ -142,24 +156,24 @@ class Statistics {
      * Record the search type from the search history.
      * @returns {string|*} return the search type result if matched, otherwise return null.
      */
-    static recordSearchType({ query, content, description }) {
+    static parseSearchType({ query, content, description }) {
         let stat = STATS_PATTERNS.find(item => item.pattern && item.pattern.test(query));
         if (stat) {
-            return stat.name;
+            return stat;
         } else {
             // Classify the default search cases
             if (content.startsWith("https://docs.rs")) {
                 // Crate docs
-                return STATS_PATTERNS[2].name;
+                return STATS_PATTERNS[2];
             } else if (["https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
                 // Crates
-                return STATS_PATTERNS[3].name;
+                return STATS_PATTERNS[3];
             } else if (description.startsWith("Attribute")) {
                 // Attribute
-                return STATS_PATTERNS[4].name;
+                return STATS_PATTERNS[4];
             } else {
                 // Std docs (stable)
-                return STATS_PATTERNS[0].name;
+                return STATS_PATTERNS[0];
             }
         }
     }
@@ -168,7 +182,7 @@ class Statistics {
      * Record the searched crate from the content.
      * @returns {string|null}
      */
-    static recordSearchCrate(content) {
+    static parseSearchCrate(content) {
         if (["https://docs.rs", "https://crates.io", "https://lib.rs"].some(prefix => content.startsWith(prefix))) {
             let url = new URL(content);
             if (url.search && (url.pathname.startsWith("/search") || url.pathname.startsWith("/releases/"))) {
