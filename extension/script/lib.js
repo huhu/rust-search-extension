@@ -28,11 +28,15 @@ function parseCargoFeatures(content) {
     }
     let features = [];
 
+    function to_string(flags) {
+        return "[" + flags.map(i => '"' + i.toString() + '"').join(', ') + "]"
+    }
+
     for (const [name, flags] of Object.entries(content.version.features)) {
         if (name === "default") {
-            features.unshift([name, "[ " + flags.join(", ") + " ]"]);
+            features.unshift([name, to_string(flags)]);
         } else {
-            features.push([name, "[ " + flags.join(", ") + " ]"]);
+            features.push([name, to_string(flags)]);
         }
     }
     return features;

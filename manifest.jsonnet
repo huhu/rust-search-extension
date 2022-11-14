@@ -46,7 +46,7 @@ else
 
 local INDEX_MANAGER_FILES = ['core/storage.js', 'index-manager.js'];
 json.addIcons(icons())
-.addPermissions(['storage', 'unlimitedStorage', 'webRequest', 'webRequestBlocking', '*://crates.io/api/v1/crates/*'])
+.addPermissions(['storage', 'unlimitedStorage', '*://crates.io/api/v1/crates/*'])
 .setOptionsUi('manage/index.html')
 .addContentScript(
   matches=['*://docs.rs/*'],

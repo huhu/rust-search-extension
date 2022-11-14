@@ -114,6 +114,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function enhanceFeatureFlagsMenu(menu) {
+    if (crateVersion === 'latest') {
+        crateVersion = parseCrateVersionFromDOM();
+    }
     // Use rawCrateName to fetch the Cargo.toml, otherwise will get 404.
     let cargoTomUrl = `https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml`;
     let crateAPIURL = `https://crates.io/api/v1/crates/${rawCrateName}/${crateVersion}`;
