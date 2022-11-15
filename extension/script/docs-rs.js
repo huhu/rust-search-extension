@@ -105,12 +105,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-async function enhanceFeatureFlagsMenu(menu) {
+async function getFeatureFlagsMenuData() {
     // Use rawCrateName to fetch the Cargo.toml, otherwise will get 404.
     let crateAPIURL = `https://crates.io/api/v1/crates/${rawCrateName}/${crateVersion}`;
     let response = await fetch(crateAPIURL);
     let content = await response.json();
     let features = parseCargoFeatures(content);
+
+    let depsURL = `https://crates.io/api/v1/crates/${rawCrateName}/${crateVersion}/dependencies`;
+    let depsResponse = await fetch(depsURL);
+    let depsContent = await depsResponse.json();
+    let optionalDependencies = parseOptionalDependencies(depsContent);
+
+    return { features, optionalDependencies };
+};
+
+async function enhanceFeatureFlagsMenu(menu) {
+    let crateData = JSON.parse(window.sessionStorage.getItem(`${rawCrateName}-${crateVersion}`));
+
+    if (!crateData) {
+        crateData = await getFeatureFlagsMenuData();
+        window.sessionStorage.setItem(`${rawCrateName}-${crateVersion}`, JSON.stringify(crateData));
+    }
+
+    const { features, optionalDependencies } = crateData;
     let html = `<div style="padding: 1rem"><p>
                     This crate has no explicit-declared feature flag.
                     <br>
@@ -133,10 +151,6 @@ async function enhanceFeatureFlagsMenu(menu) {
     }
 
     // Render optional dependency list.
-    let depsURL = `https://crates.io/api/v1/crates/${rawCrateName}/${crateVersion}/dependencies`;
-    let depsResponse = await fetch(depsURL);
-    let depsContent = await depsResponse.json();
-    let optionalDependencies = parseOptionalDependencies(depsContent);
     let dependeciesList = optionalDependencies.map(dependency => `
         <li class="optional-dependency-item">
             <a style="padding:0" href="https://docs.rs/${dependency}">
