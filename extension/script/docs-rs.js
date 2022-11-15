@@ -111,26 +111,25 @@ async function getFeatureFlagsMenuData() {
     let response = await fetch(crateAPIURL);
     let content = await response.json();
     let features = parseCargoFeatures(content);
-    window.sessionStorage.setItem('features', JSON.stringify(features));
 
     // Render optional dependency list.
     let depsURL = `https://crates.io/api/v1/crates/${rawCrateName}/${crateVersion}/dependencies`;
     let depsResponse = await fetch(depsURL);
     let depsContent = await depsResponse.json();
     let optionalDependencies = parseOptionalDependencies(depsContent);
-    window.sessionStorage.setItem('optionalDependencies', JSON.stringify(optionalDependencies));
 
+    window.sessionStorage.setItem(`${rawCrateName}-${crateVersion}`, JSON.stringify({ features, optionalDependencies }));
     return { features, optionalDependencies };
 };
 
 async function enhanceFeatureFlagsMenu(menu) {
-    let features = JSON.parse(window.sessionStorage.getItem('features'));
-    let optionalDependencies = JSON.parse(window.sessionStorage.getItem('optionalDependencies'));
+    let crateData = JSON.parse(window.sessionStorage.getItem(`${rawCrateName}-${crateVersion}`));
 
-    if(!features || !optionalDependencies) {
-        ({ features, optionalDependencies } = await getFeatureFlagsMenuData());
+    if (!crateData) {
+        crateData = await getFeatureFlagsMenuData();
     }
 
+    const { features, optionalDependencies } = crateData;
     let html = `<div style="padding: 1rem"><p>
                     This crate has no explicit-declared feature flag.
                     <br>
