@@ -112,13 +112,11 @@ async function getFeatureFlagsMenuData() {
     let content = await response.json();
     let features = parseCargoFeatures(content);
 
-    // Render optional dependency list.
     let depsURL = `https://crates.io/api/v1/crates/${rawCrateName}/${crateVersion}/dependencies`;
     let depsResponse = await fetch(depsURL);
     let depsContent = await depsResponse.json();
     let optionalDependencies = parseOptionalDependencies(depsContent);
 
-    window.sessionStorage.setItem(`${rawCrateName}-${crateVersion}`, JSON.stringify({ features, optionalDependencies }));
     return { features, optionalDependencies };
 };
 
@@ -127,6 +125,7 @@ async function enhanceFeatureFlagsMenu(menu) {
 
     if (!crateData) {
         crateData = await getFeatureFlagsMenuData();
+        window.sessionStorage.setItem(`${rawCrateName}-${crateVersion}`, JSON.stringify(crateData));
     }
 
     const { features, optionalDependencies } = crateData;
@@ -151,6 +150,7 @@ async function enhanceFeatureFlagsMenu(menu) {
                 `;
     }
 
+    // Render optional dependency list.
     let dependeciesList = optionalDependencies.map(dependency => `
         <li class="optional-dependency-item">
             <a style="padding:0" href="https://docs.rs/${dependency}">
