@@ -118,7 +118,7 @@ async function getFeatureFlagsMenuData() {
     let optionalDependencies = parseOptionalDependencies(depsContent);
 
     return { features, optionalDependencies };
-};
+}
 
 async function enhanceFeatureFlagsMenu(menu) {
     let crateData = JSON.parse(window.sessionStorage.getItem(`${rawCrateName}-${crateVersion}`));
