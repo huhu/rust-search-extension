@@ -72,18 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
     highlight();
 });
 
-// Using separate event listener to avoid network requesting latency for feature flags menu enhancement.
-document.addEventListener("DOMContentLoaded", async () => {
-    let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
-    if (!menus) return;
-
-    let featureFlagsMenu = Array.from(menus.children).find(menu => menu.textContent.toLowerCase().includes("feature flags"));
-    if (featureFlagsMenu) {
-        featureFlagsMenu.classList.add("pure-menu-has-children", "pure-menu-allow-hover");
-        await enhanceFeatureFlagsMenu(featureFlagsMenu);
-    }
-});
-
 document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
@@ -101,24 +89,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Exclude /crate/** pages
     if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
         // Query installed crates from chrome.storage API
-        chrome.storage.local.get("crates", (result) => {
-            let crates = result['crates'] || {};
-            let crate = crates[crateName];
-            if (crate) {
-                insertAddToExtensionElement(getState(crate.version));
-            } else {
-                insertAddToExtensionElement("need-to-install");
-            }
-        });
+        let crates = await storage.getItem("crates") || {};
+        let crate = crates[crateName];
+        if (crate) {
+            insertAddToExtensionElement(getState(crate.version));
+        } else {
+            insertAddToExtensionElement("need-to-install");
+        }
+    }
+
+    let featureFlagsMenu = Array.from(menus.children).find(menu => menu.textContent.toLowerCase().includes("feature flags"));
+    if (featureFlagsMenu) {
+        featureFlagsMenu.classList.add("pure-menu-has-children", "pure-menu-allow-hover");
+        await enhanceFeatureFlagsMenu(featureFlagsMenu);
     }
 });
 
 async function enhanceFeatureFlagsMenu(menu) {
-    if (crateVersion === 'latest') {
-        crateVersion = parseCrateVersionFromDOM();
-    }
     // Use rawCrateName to fetch the Cargo.toml, otherwise will get 404.
-    let cargoTomUrl = `https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml`;
     let crateAPIURL = `https://crates.io/api/v1/crates/${rawCrateName}/${crateVersion}`;
     let response = await fetch(crateAPIURL);
     let content = await response.json();
@@ -126,7 +114,7 @@ async function enhanceFeatureFlagsMenu(menu) {
     let html = `<div style="padding: 1rem"><p>
                     This crate has no explicit-declared feature flag.
                     <br>
-                    Check its <a style="padding:0" href="${cargoTomUrl}">Cargo.toml</a> to learn more.
+                    Check its <a style="padding:0" href="https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml">Cargo.toml</a> to learn more.
                 </p></div>`;
     if (features.length > 0) {
         let tbody = features.map(([name, flags]) => {
@@ -151,7 +139,7 @@ async function enhanceFeatureFlagsMenu(menu) {
     let optionalDependencies = parseOptionalDependencies(depsContent);
     let dependeciesList = optionalDependencies.map(dependency => `
         <li class="optional-dependency-item">
-            <a href="https://docs.rs/${dependency}">
+            <a style="padding:0" href="https://docs.rs/${dependency}">
                 <span class="stab portability docblock-short">
                     <code style="white-space: nowrap;">${dependency}</code>
                 </span>

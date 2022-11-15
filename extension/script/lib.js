@@ -43,9 +43,8 @@ function parseCargoFeatures(content) {
 }
 
 /**
- * Parse optional dependecies from Cargo.tom HTML page.
+ * Parse optional dependecies from crates.io API result.
  *
- * @param {*} content HTML page of Cargo.toml content
  * @returns the list of optional dependencies
  */
 function parseOptionalDependencies(content) {
