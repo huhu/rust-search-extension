@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         response => {
             let now = new Date();
             let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-            if (response && response.version && today <= Date.parse(response.version)) {
+            if (response?.version && today <= Date.parse(response.version)) {
                 // Check version to ensure update search index once a day.
                 return;
             }

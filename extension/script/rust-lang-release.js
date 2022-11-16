@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let fixVersions = versions
             .filter(v => v.minor === version.minor && v.major === version.major && v.fix !== "0")
             .sort((a, b) => parseInt(a.fix) - parseInt(b.fix));
-        if (fixVersions && fixVersions.length > 0) {
+        if (fixVersions?.length > 0) {
             fixVersions = fixVersions.map(fv => `<a href="${fv.anchor}"><small>${fv.number}</small></a>`).join(" , ");
             html += `<div style="margin-top: 0.3rem">${fixVersions}</div>`;
         }

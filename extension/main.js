@@ -143,7 +143,7 @@ function getPlatformOs() {
         },
         afterNavigated: async (query, result) => {
             // Ignore the command history
-            if (query && query.startsWith(":")) return;
+            if (query?.startsWith(":")) return;
 
             // Only keep the latest 100 of search history.
             let historyItem = await HistoryCommand.record(query, result, maxSize = 100);
@@ -183,7 +183,7 @@ function getPlatformOs() {
         },
         onAppend: (query) => {
             query = query.replaceAll("/", "").trim();
-            if (rustcSearcher.searchIndex && rustcSearcher.searchIndex.length > 0) {
+            if (rustcSearcher?.searchIndex?.length > 0) {
                 return [{
                     content: rustcSearcher.getSearchUrl(query),
                     description: `Search nightly rustc docs ${c.match(query)} on ${rustcSearcher.getRootPath()}`,

@@ -29,7 +29,7 @@ class CrateDocSearch {
         let [crateName, keyword] = CrateDocSearch.parseCrateDocsSearchKeyword(query);
 
         let searcher = null;
-        if (this.cachedCrateSearcher && this.cachedCrateSearcher.name === crateName) {
+        if (this.cachedCrateSearcher?.name === crateName) {
             searcher = this.cachedCrateSearcher;
         } else {
             let crates = await CrateDocManager.getCrates();

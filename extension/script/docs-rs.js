@@ -189,7 +189,7 @@ function getState(version) {
 function insertAddToExtensionElement(state) {
     // Remove previous element.
     let el = document.querySelector(".add-to-extension");
-    if (el && el.parentElement) {
+    if (el?.parentElement) {
         el.parentElement.remove();
     }
 

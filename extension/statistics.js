@@ -157,7 +157,7 @@ class Statistics {
      * @returns {string|*} return the search type result if matched, otherwise return null.
      */
     static parseSearchType({ query, content, description }) {
-        let stat = STATS_PATTERNS.find(item => item.pattern && item.pattern.test(query));
+        let stat = STATS_PATTERNS.find(item => item.pattern?.test(query));
         if (stat) {
             return stat;
         } else {
