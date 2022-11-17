@@ -47,13 +47,55 @@ document.addEventListener("DOMContentLoaded", () => {
         ul.appendChild(item);
     });
 
-    let readme = document.querySelector(".readme");
-    readme.classList.add("rse-fix-readme");
+    let markdownBody = document.querySelector("article.markdown-body");
+    let readme = markdownBody.parentElement;
+    readme.setAttribute("style", "display: flex; padding-right: 0px !important");
     readme.appendChild(ul);
+
+    setTimeout(() => {
+        fixStickyNotWorking();
+        fixGithubTocCompatibility();
+    });
 
     highlight();
 });
 
+// https://michaelmovsesov.com/articles/fix-css-position-sticky-not-working
+function fixStickyNotWorking() {
+    let parent = document.querySelector('.rse-version-list').parentElement;
+
+    while (parent) {
+        const overflow = getComputedStyle(parent).overflow;
+        if (overflow !== 'visible') {
+            console.log(overflow, parent);
+            break;
+        }
+        parent = parent.parentElement;
+    }
+
+    if (parent) {
+        parent.setAttribute("style", "position:relative; z-index:0; overflow: visible");
+    }
+}
+
+// https://web.dev/resize-observer/
+function fixGithubTocCompatibility() {
+    let tocStickyHeader = document.querySelector("#repos-sticky-header");
+    if (tocStickyHeader) {
+        let toc = document.querySelector('.rse-version-list');
+        const observer = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                // Hide our TOC if we have no enough space.
+                if (entry.contentRect.width <= 1040) {
+                    toc.style.display = "none";
+                } else {
+                    toc.style.display = "block";
+                }
+            }
+        });
+        observer.observe(tocStickyHeader);
+    }
+}
 
 function scrollToVersion(version) {
     let versionElements = Array.from(document.querySelectorAll('.markdown-body>h1'));
