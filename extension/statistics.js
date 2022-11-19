@@ -1,46 +1,46 @@
 const STATS_PATTERNS = [{
-        name: "stable",
-        pattern: null,
-        number: 1,
-    },
-    {
-        name: "nightly",
-        pattern: /^\/[^/].*/i,
-        number: 2,
-    },
-    {
-        name: "docs.rs",
-        pattern: /^[~@].*/i,
-        number: 3,
-    },
-    {
-        name: "crate",
-        pattern: /^!!!.*/i,
-        number: 4,
-    },
-    {
-        name: "attribute",
-        pattern: /^#.*/i,
-        number: 5,
-    },
-    {
-        name: "error code",
-        pattern: /^`?e\d{2,4}`?$/i,
-        number: 6,
-    },
-    {
-        name: "rustc",
-        pattern: /^\/\/.*/i,
-        number: 7,
-    },
-    {
-        name: "other",
-        pattern: /^[>%?]|(v?1\.).*/i,
-        number: 999,
-    },
+    name: "stable",
+    pattern: null,
+    type: 1,
+},
+{
+    name: "nightly",
+    pattern: /^\/[^/].*/i,
+    type: 2,
+},
+{
+    name: "docs.rs",
+    pattern: /^[~@].*/i,
+    type: 3,
+},
+{
+    name: "crate",
+    pattern: /^!!!.*/i,
+    type: 4,
+},
+{
+    name: "attribute",
+    pattern: /^#.*/i,
+    type: 5,
+},
+{
+    name: "error code",
+    pattern: /^`?e\d{2,4}`?$/i,
+    type: 6,
+},
+{
+    name: "rustc",
+    pattern: /^\/\/.*/i,
+    type: 7,
+},
+{
+    name: "other",
+    pattern: /^[>%?]|(v?1\.).*/i,
+    type: 999,
+},
 ];
 const STATS_NUMBER = STATS_PATTERNS.reduce((pre, current) => {
-    pre[current.number] = current.name;
+    pre[current.type] = current.name;
     return pre;
 }, Object.create(null));
 const WEEKS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -55,7 +55,12 @@ function makeNumericKeyObject(start, end, initial = 0) {
 
 class Statistics {
     constructor() {
-        this.saveData = [];
+        // The timeline data of user searching hihstory.
+        // Consist of array of [timestamp, search type, option search crate].
+        this.timeline = [];
+        this.total = 0;
+
+        // Those data will be removed in the future.
         this.calendarData = Object.create(null)
         this.cratesData = Object.create(null)
         this.typeData = Object.create(null)
@@ -65,7 +70,6 @@ class Statistics {
         }, {});
         this.hoursData = makeNumericKeyObject(0, 23);
         this.datesData = makeNumericKeyObject(1, 31);
-        this.total = 0;
     }
 
     /**
@@ -87,7 +91,7 @@ class Statistics {
             self.typeData = stats.typeData;
             self.hoursData = stats.hoursData;
             self.total = stats.total;
-            self.saveData = stats.saveData || [];
+            self.timeline = stats.timeline || [];
         }
         return self;
     }
@@ -110,7 +114,7 @@ class Statistics {
             typeData: this.typeData,
             hoursData: this.hoursData,
             total: this.total,
-            saveData: this.saveData,
+            timeline: this.timeline,
         });
     }
 
@@ -129,12 +133,12 @@ class Statistics {
         this.calendarData[key] = (this.calendarData[key] || 0) + 1;
 
         const arr = [time, null, null]
-        let { name, number } = Statistics.parseSearchType({ query, content, description });
+        let { name, type } = Statistics.parseSearchType({ query, content, description });
         if (name) {
             this.typeData[name] = (this.typeData[name] || 0) + 1;
         }
-        if(number) {
-            arr[1] = number;
+        if (type) {
+            arr[1] = type;
         }
 
         let crate = Statistics.parseSearchCrate(content);
@@ -143,7 +147,7 @@ class Statistics {
             arr[2] = crate;
         }
 
-        this.saveData.push(arr);
+        this.timeline.push(arr);
 
         this.total += 1;
 

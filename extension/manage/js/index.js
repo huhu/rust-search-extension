@@ -202,7 +202,7 @@ function renderTopCratesChart(topCratesObj) {
 
 async function renderV2(now, yearAgo) {
     const stats = await Statistics.load();
-    const data = stats.saveData.filter(([time]) => {
+    const data = stats.timeline.filter(([time]) => {
         return now >= time && time >= yearAgo;
     });
 
@@ -258,8 +258,8 @@ async function yearList() {
     const y = new Date().getFullYear();
     const year = document.querySelector(".filter-list");
 
-    const { saveData } = await Statistics.load();
-    const min = saveData.reduce((pre, current) => {
+    const { timeline } = await Statistics.load();
+    const min = timeline.reduce((pre, current) => {
         return Math.min(pre, current[0]);
     }, moment().valueOf());
 

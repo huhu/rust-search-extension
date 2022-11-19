@@ -289,15 +289,15 @@ h3 {
 
 .filter-list {
   position: absolute;
-  right: 20px;
-  top: 30px;
+  right: -68px;
+  top: 5px;
   font-size: 16px;
   z-index: 9;
 }
 
 .filter-list > li {
   margin-bottom: 10px;
-  padding: 8px 12px;
+  padding: 5px 15px;
   cursor: pointer;
   border-radius: 4px;
 }
