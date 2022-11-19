@@ -32,6 +32,11 @@ div.nav-container form.landing-search-form-nav {
     border-spacing: 0.5rem;
 }
 
+.feature-flags-table td.docblock-short {
+    position: sticky;
+    left: 0;
+}
+
 .optional-dependency {
     padding: 10px 20px;
     border-top: 1px solid var(--color-border);
