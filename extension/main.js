@@ -1,5 +1,5 @@
 const c = new Compat();
-const manifestVersion = chrome.runtime.getManifest().manifest_version;
+const manifest = chrome.runtime.getManifest();
 
 // Get the information about the current platform os.
 // Possible os values: "mac", "win", "android", "cros", "linux", or "openbsd"
@@ -12,7 +12,7 @@ function getPlatformOs() {
 }
 
 (async () => {
-    if (manifestVersion === 2) {
+    if (manifest.manifest_version === 2) {
         await migrate();
     }
 
@@ -591,4 +591,11 @@ const chromeAction = chrome.action || chrome.browserAction;
 chromeAction.onClicked.addListener(() => {
     let managePage = chrome.runtime.getURL("manage/index.html");
     chrome.tabs.create({ url: managePage });
+});
+
+chrome.runtime.onInstalled.addListener(({ previousVersion, reason }) => {
+    if (reason === "update" && previousVersion !== manifest.version) {
+        IndexManager.updateAllIndex();
+        console.log(`New version updated! Previous version: ${previousVersion}, new version: ${manifest.version}`);
+    }
 });

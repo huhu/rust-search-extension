@@ -109,4 +109,18 @@ class IndexManager {
     static setCommandIndex(index) {
         storage.setItem('index-command', index);
     }
+
+    static updateAllIndex() {
+        IndexManager.setBookIndex(booksIndex);
+        IndexManager.setCaniuseIndex(caniuseIndex);
+        IndexManager.setCommandIndex(commandsIndex);
+        IndexManager.setCrateIndex(crateIndex);
+        IndexManager.setCrateMapping(mapping);
+        IndexManager.setLabelIndex(labelsIndex);
+        IndexManager.setLintIndex(lintsIndex);
+        IndexManager.setRfcIndex(rfcsIndex);
+        IndexManager.setRustcIndex(rustcIndex);
+        IndexManager.setStdStableIndex(searchIndex);
+        IndexManager.setTargetIndex(targetsIndex);
+    }
 }
