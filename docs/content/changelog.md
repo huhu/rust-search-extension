@@ -6,12 +6,13 @@ weight = 3
 
 # v1.9.0 - 2022-11-20
 
-- Migrate to `chrome.storage.onChange` event to avoid add docs index failure ({{ issue(id=206) }}).
+- Migrate to `chrome.storage.onChange` event to avoid adding docs index failure ({{ issue(id=206) }}).
 - Support search space-separated keywords.
 - Cache feature flags in session storage.
 - New commands:
   - `:rustc` - Search rustc codegen options and lints.
   - `:target` - Search rust target for three tiers.
+  ![](/target-command.png)
 - Add a pagination tip in the last page item.
 - Remove prefix for RFC (??) & Improve docs ({{ issue(id=197) }}). 
 - Condense attributes and crates index size.
