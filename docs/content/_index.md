@@ -161,6 +161,8 @@ Those commands including but not limited to:
 - **:update** - Open the [update page](/update) to sync the latest index automatically.
 - **:release** - Open rust-lang repository [release page](https://github.com/rust-lang/rust/blob/master/RELEASES.md).
 - **:rfc** - Search Rust RFCs.
+- **:rustc** - Search rustc codegen options and lints.
+- **:target** - Search rust target for three tiers.
 - **:history** - Show your local search history.
 
 ![IMG](/command-system.gif)

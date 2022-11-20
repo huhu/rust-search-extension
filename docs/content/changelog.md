@@ -4,6 +4,27 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.9.0 - 2022-11-20
+
+- Migrate to `chrome.storage.onChange` event to avoid add docs index failure ({{ issue(id=206) }}).
+- Support search space-separated keywords.
+- Cache feature flags in session storage.
+- New commands:
+  - `:rustc` - Search rustc codegen options and lints.
+  - `:target` - Search rust target for three tiers.
+- Add a pagination tip in the last page item.
+- Remove prefix for RFC (??) & Improve docs ({{ issue(id=197) }}). 
+- Condense attributes and crates index size.
+- Make feature flag's name sticky left.
+- Bugfix:
+  - Fix error code regex.
+  - Fix incorrect export of stats/history ({{ issue(id=203) }}) ({{ issue(id=204) }}). 
+  - fix docs.rs show features ({{ issue(id=209) }}). 
+  - Fix source code navigate bug. Fix ({{ issue(id=212) }}). 
+  - Fix GitHub release page TOC compatibility ({{ issue(id=214) }}). 
+
+Thanks for the contributions from [@shwin0901](https://github.com/shwin0901), [@light4](https://github.com/light4), and [@xxchan](https://github.com/xxchan).
+
 # v1.8 - 2022-08-15
 
 - Migrate to Manifest V3 ({{ issue(id=179) }}).

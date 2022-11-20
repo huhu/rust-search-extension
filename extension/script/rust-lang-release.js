@@ -67,7 +67,6 @@ function fixStickyNotWorking() {
     while (parent) {
         const overflow = getComputedStyle(parent).overflow;
         if (overflow !== 'visible') {
-            console.log(overflow, parent);
             break;
         }
         parent = parent.parentElement;
