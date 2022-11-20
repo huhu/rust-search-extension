@@ -104,6 +104,7 @@ fn read_csv<D: DeserializeOwned>(file: impl Read) -> crate::Result<Vec<D>> {
 
 fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> String {
     let mut contents = String::from("var N=null;");
+    // <name, [optional description, version]>
     let crates_map: HashMap<String, (Option<String>, Version)> = crates
         .into_par_iter()
         .map(|item| {

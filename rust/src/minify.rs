@@ -17,7 +17,10 @@ struct FrequencyWord {
 impl FrequencyWord {
     #[inline]
     fn score(&self) -> usize {
-        self.word.len() * self.frequency
+        // Due to the prefix + suffix occupying two letters,
+        // we should minus the length to calculate the score.
+        // This will lead to a 0.4% reduction in file size.
+        (self.word.len() - 2) * self.frequency
     }
 }
 
@@ -66,9 +69,9 @@ impl Minifier {
 
         Minifier {
             mapping: words
-                .iter()
+                .into_iter()
                 .enumerate()
-                .map(|(index, fw)| (fw.word.clone(), keys.get(index).unwrap().to_owned()))
+                .map(|(index, fw)| (fw.word, keys.get(index).unwrap().to_owned()))
                 .collect(),
         }
     }

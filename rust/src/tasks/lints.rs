@@ -75,7 +75,7 @@ impl LintsTask {
                     .as_ref()
                     .and_then(|d| d.trim().strip_prefix("### What it does"))
                 {
-                    let mut desc = docs.replace('`', "").replace('#', "");
+                    let mut desc = docs.replace(['`', '#'], "");
                     desc.truncate(100);
                     Some((lint.id.clone(), [lint.level.to_string(), desc]))
                 } else {
