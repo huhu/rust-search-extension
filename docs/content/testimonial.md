@@ -4,6 +4,10 @@ description = "Testimonials"
 weight = 1
 +++
 
+## From *u/Hadamard1854*
+
+> After having used this extension for a while now, I'm in awe of the genius idea to make it. At first, I thought to myself that this is largely unnecessary thing, and a rather silly thing. I was just shocked of how much I love it now. It is beyond invaluable to me, atleast compared to my initial impression.
+
 ## From *u/daniel5151*
 
 > This is one of those extensions I've had installed for so long that I often forget that it's not built right into Chrome! Thanks again for the regular updates, and keep up the good work :)
