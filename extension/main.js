@@ -183,16 +183,20 @@ function getPlatformOs() {
         },
         onAppend: (query) => {
             query = query.replaceAll("/", "").trim();
+            let appendix = {
+                content: rustcSearcher.getSearchUrl(query),
+                description: `Search nightly rustc docs ${c.match(query)} on ${rustcSearcher.getRootPath()}`,
+            };
             if (rustcSearcher?.searchIndex?.length > 0) {
-                return [{
-                    content: rustcSearcher.getSearchUrl(query),
-                    description: `Search nightly rustc docs ${c.match(query)} on ${rustcSearcher.getRootPath()}`,
-                }];
+                return [appendix];
             } else {
-                return [{
-                    content: rustcSearcher.getRootPath(),
-                    description: "To search nightly rustc docs, please open the nightly rustc docs page in advance.",
-                }];
+                return [
+                    appendix,
+                    {
+                        content: rustcSearcher.getRootPath(),
+                        description: "To search nightly rustc docs on the address bar, please open the nightly rustc docs page in advance.",
+                    },
+                ];
             }
         },
     });
