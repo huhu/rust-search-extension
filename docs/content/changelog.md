@@ -26,6 +26,11 @@ weight = 3
 
 Thanks for the contributions from [@shwin0901](https://github.com/shwin0901), [@light4](https://github.com/light4), and [@xxchan](https://github.com/xxchan).
 
+## v1.9.1 - 2022-11-27
+
+- Revert invalid levenshtein algorithm fix
+- Feat rustc search appendix
+
 # v1.8 - 2022-08-15
 
 - Migrate to Manifest V3 ({{ issue(id=179) }}).
