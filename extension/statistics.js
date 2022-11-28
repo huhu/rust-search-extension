@@ -53,6 +53,18 @@ function makeNumericKeyObject(start, end, initial = 0) {
         }, {});
 }
 
+function makeStatDataArray(data) {
+    const newData = []
+    for (let [item, value] of Object.entries(data)) {
+        if (value) {
+            for (let i = 1; i <= value; i++) {
+                newData.push(item)
+            }
+        }
+    }
+    return newData
+}
+
 class Statistics {
     constructor() {
         // The timeline data of user searching hihstory.
@@ -218,6 +230,48 @@ class Statistics {
             let url = new URL(content);
             let search = url.search.replace("?crate=", "");
             return search.replace(/-/gi, "_");
+        }
+    }
+
+    async parseStatsData () {
+        if (!this.timeline.length) {
+            const data = [];
+            const { calendarData, cratesData, hoursData, typeData } = this;
+            for (let [time, value] of Object.entries(calendarData)) {
+                for (let i = 1; i <= value; i++) {
+                    data.push([new Date(time).valueOf(), null, null]);
+                }
+            }
+
+            const typeArr = makeStatDataArray(typeData);
+            const hoursArr = makeStatDataArray(hoursData);
+            const cratesArr = makeStatDataArray(cratesData);
+
+            const newData = data.map(item => {
+                if(hoursArr.length) {
+                    const hourIndex = Math.floor(Math.random() * hoursArr.length)
+                    item[0] = new Date(item[0]).setHours(hoursArr[hourIndex]).valueOf();
+                    hoursArr.splice(hourIndex, 1);
+                }
+
+                if(typeArr.length) {
+                    const typeIndex = Math.floor(Math.random() * typeArr.length);
+                    const typeObj = STATS_PATTERNS.find(item => item.name === typeArr[typeIndex]);
+                    if (typeObj) {
+                        item[1] = typeObj.type
+                        typeArr.splice(typeIndex, 1);
+                    }
+                }
+
+                if (cratesArr.length) {
+                    const cratesIndex = Math.floor(Math.random() * cratesArr.length);
+                    item[2] = cratesArr[cratesIndex];
+                    cratesArr.splice(cratesIndex, 1);
+                }
+                return item;
+            })
+            this.timeline = newData;
+            await this.save();
         }
     }
 }
