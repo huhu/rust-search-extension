@@ -577,7 +577,11 @@ function getPlatformOs() {
             await statistics.save();
         } else {
             let statistics = await Statistics.load();
-            await statistics.parseStatsData()
+            if (!statistics.timeline.length) {
+                const timeLineData = await statistics.parseStatsData(statistics)
+                statistics.timeline = timeLineData;
+                await statistics.save()
+            }
         }
 
         // Eliminate unnecessary tags (such as <match>, <dim>) to save disk usage.

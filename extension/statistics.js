@@ -233,10 +233,10 @@ class Statistics {
         }
     }
 
-    async parseStatsData () {
-        if (!this.timeline.length) {
+    async parseStatsData (statsData) {
+        const { calendarData, cratesData, hoursData, typeData, timeline = [] } = statsData;
+        if (!timeline.length) {
             const data = [];
-            const { calendarData, cratesData, hoursData, typeData } = this;
             for (let [time, value] of Object.entries(calendarData)) {
                 for (let i = 1; i <= value; i++) {
                     data.push([new Date(time).valueOf(), null, null]);
@@ -270,8 +270,10 @@ class Statistics {
                 }
                 return item;
             })
-            this.timeline = newData;
-            await this.save();
+
+            return newData;
         }
+
+        return [];
     }
 }
