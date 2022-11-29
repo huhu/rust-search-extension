@@ -62,6 +62,7 @@ div.nav-container form.landing-search-form-nav {
 }
 
 .add-to-extension {
+    line-height: 1;
     font-size: 0.8em;
     color: #121212bb;
     background-color: #F9BB2Daa;
