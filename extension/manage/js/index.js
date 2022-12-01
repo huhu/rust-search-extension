@@ -201,7 +201,9 @@ function renderTopCratesChart(topCratesObj) {
 
 
 async function renderV2(now, yearAgo) {
-    const stats = await Statistics.load();
+    const stats = await storage.getItem("statistics");
+    if(!stats) return;
+
     const data = stats.timeline.filter(([time]) => {
         return now >= time && time >= yearAgo;
     });
@@ -258,8 +260,10 @@ async function yearList() {
     const y = new Date().getFullYear();
     const year = document.querySelector(".filter-list");
 
-    const { timeline } = await Statistics.load();
-    const min = timeline.reduce((pre, current) => {
+    const stats = await storage.getItem("statistics");
+    if(!stats) return;
+
+    const min = stats.timeline.reduce((pre, current) => {
         return Math.min(pre, current[0]);
     }, moment().valueOf());
 
@@ -301,11 +305,16 @@ async function render(now, yearAgo) {
 (async () => {
     const now = moment().valueOf();
     const yearAgo = moment().startOf('day').subtract(1, 'year').valueOf();
-    const searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.get('mode') === 'v2') {
-        await renderV2(now, yearAgo);
-        await yearList();
-    } else {
-        await render(now, yearAgo);
-    }
+    // const searchParams = new URLSearchParams(window.location.search);
+    // if (searchParams.get('mode') === 'v2') {
+    //     await renderV2(now, yearAgo);
+    //     await yearList();
+    // } else {
+    //     await render(now, yearAgo);
+    // }
+    const statistics = await storage.getItem("statistics");;
+    await replaceStatisticsWithTimeline(statistics);
+
+    await renderV2(now, yearAgo);
+    await yearList();
 })();

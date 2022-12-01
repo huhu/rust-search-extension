@@ -221,3 +221,79 @@ class Statistics {
         }
     }
 }
+
+/**
+ * Generate an array based on the size of each value in the statistics
+ * @param {Object} obj // statistics data
+ * @returns {Array}
+ */
+function createStatisticsArray(obj) {
+    const arr = [];
+    for (let [item, value] of Object.entries(obj)) {
+        if (value) {
+            for (let i = 1; i <= value; i++) {
+                arr.push(item);
+            }
+        }
+    }
+    return arr;
+}
+
+/**
+ * Replace the statistics storage format with a timeline
+ * @param {Object} statistics 
+ */
+async function replaceStatisticsWithTimeline(statistics = {}) {
+    const { timeline = [], calendarData, cratesData, hoursData, typeData } = statistics;
+    if (calendarData) {
+        const data = [];
+        
+        // Get the minimum timestamp in the timeline data，default is the timestamp of the current date
+        const minTime = timeline.reduce((pre, [time]) => {
+            return Math.min(pre, time)
+        }, timeline[0] ? timeline[0][0] : moment().valueOf());
+
+        for (let [date, value] of Object.entries(calendarData)) {
+            const time = moment(date).valueOf();
+            if (time < minTime) {
+                for (let i = 1; i <= value; i++) {
+                    data.push([time, null, null]);
+                }
+            }
+        }
+
+        const typeArr = createStatisticsArray(typeData);
+        const hoursArr = createStatisticsArray(hoursData);
+        const cratesArr = createStatisticsArray(cratesData);
+
+        statistics.timeline = statistics.timeline || [];
+        data.forEach((item) => {
+            if (hoursArr.length) {
+                const hourIndex = Math.floor(Math.random() * hoursArr.length)
+                item[0] = moment(item[0]).set('hour', hoursArr[hourIndex]).valueOf();
+                hoursArr.splice(hourIndex, 1);
+            }
+
+            if (typeArr.length) {
+                const typeIndex = Math.floor(Math.random() * typeArr.length);
+                const typeObj = STATS_PATTERNS.find(item => item.name === typeArr[typeIndex]);
+                if (typeObj) {
+                    item[1] = typeObj.type
+                    typeArr.splice(typeIndex, 1);
+                }
+            }
+
+            if (cratesArr.length) {
+                const cratesIndex = Math.floor(Math.random() * cratesArr.length);
+                item[2] = cratesArr[cratesIndex];
+                cratesArr.splice(cratesIndex, 1);
+            }
+
+            statistics.timeline.unshift(item);
+        })
+
+        await storage.setItem("statistics", {
+            timeline: statistics.timeline,
+        })
+    }
+}
