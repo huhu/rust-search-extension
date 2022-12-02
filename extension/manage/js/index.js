@@ -200,7 +200,7 @@ function renderTopCratesChart(topCratesObj) {
 }
 
 
-async function renderV2(now, yearAgo) {
+async function renderCharts(now, yearAgo) {
     const { timeline } = await Statistics.load();
 
     const data = timeline.filter(([time]) => {
@@ -245,17 +245,13 @@ async function renderV2(now, yearAgo) {
     });
 
     renderSearchTimes(data.length);
-
     renderHeatmap(heatMapData, now, yearAgo);
-
     renderHistogram(weeksObj, datesObj, hoursObj)
-
     renderSearchStats(typeDataObj, typeTotal);
-
     renderTopCratesChart(topCratesObj);
 }
 
-async function yearList() {
+async function renderYearList() {
     const y = new Date().getFullYear();
     const year = document.querySelector(".filter-list");
 
@@ -281,17 +277,16 @@ async function yearList() {
             const time = moment(e.target.innerText);
             const now = time.endOf('year').valueOf();
             const yearAgo = time.startOf('year').valueOf();
-            await renderV2(now, yearAgo);
+            await renderCharts(now, yearAgo);
         }
     });
 }
 
 (async () => {
+    await tryMigrateLegacyStatisticsToTimeline();
+    
     const now = moment().valueOf();
     const yearAgo = moment().startOf('day').subtract(1, 'year').valueOf();
-    const statistics = await storage.getItem("statistics");
-    await replaceStatisticsWithTimeline(statistics);
-
-    await renderV2(now, yearAgo);
-    await yearList();
+    await renderCharts(now, yearAgo);
+    await renderYearList();
 })();

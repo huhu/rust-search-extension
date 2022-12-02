@@ -175,31 +175,16 @@ class Statistics {
 }
 
 /**
- * Generate an array based on the size of each value in the statistics
- * @param {Object} obj // statistics data
- * @returns {Array}
+ * Migrate the legacy statistics storage format to timeline format.
  */
-function createStatisticsArray(obj) {
-    const arr = [];
-    for (let [item, value] of Object.entries(obj)) {
-        if (value) {
-            for (let i = 1; i <= value; i++) {
-                arr.push(item);
-            }
-        }
-    }
-    return arr;
-}
-
-/**
- * Replace the statistics storage format with a timeline
- * @param {Object} statistics 
- */
-async function replaceStatisticsWithTimeline(statistics = {}) {
+async function tryMigrateLegacyStatisticsToTimeline() {
+    const statistics = await storage.getItem("statistics");
+    // Those calendar, crates, hours, type data are legacy.
     const { timeline = [], calendarData, cratesData, hoursData, typeData } = statistics;
+    // If no legacy data, we needn't migrate.
     if (!calendarData) return;
 
-    const data = [];
+    const migratedData = [];
 
     // Get the minimum timestamp in the timeline data，default is the timestamp of the current date
     const minTime = timeline.reduce((pre, [time]) => {
@@ -210,22 +195,40 @@ async function replaceStatisticsWithTimeline(statistics = {}) {
         const time = moment(date).valueOf();
         if (time < minTime) {
             for (let i = 1; i <= value; i++) {
-                data.push([time, null, null]);
+                migratedData.push([time, null, null]);
             }
         }
     }
 
-    const typeArr = createStatisticsArray(typeData);
-    const hoursArr = createStatisticsArray(hoursData);
-    const cratesArr = createStatisticsArray(cratesData);
+    /**
+     * Generate an array based on keys of the object and the size of each key's value.
+     * 
+     * For example, unfoldObjectKeysIntoArray({"a": 3, "b": 2}) will get
+     * this: ["a", "a", "a", "b", "b"]
+     */
+    function unfoldObjectKeysIntoArray(obj) {
+        const arr = [];
+        for (let [item, value] of Object.entries(obj)) {
+            if (value) {
+                for (let i = 1; i <= value; i++) {
+                    arr.push(item);
+                }
+            }
+        }
+        return arr;
+    }
 
-    data.forEach((item) => {
+    const typeArr = unfoldObjectKeysIntoArray(typeData);
+    const hoursArr = unfoldObjectKeysIntoArray(hoursData);
+    const cratesArr = unfoldObjectKeysIntoArray(cratesData);
+
+    migratedData.forEach((item) => {
         if (hoursArr.length) {
             const hourIndex = Math.floor(Math.random() * hoursArr.length)
             item[0] = moment(item[0]).set('hour', hoursArr[hourIndex]).valueOf();
             hoursArr.splice(hourIndex, 1);
         }
-        
+
         if (typeArr.length) {
             const typeIndex = Math.floor(Math.random() * typeArr.length);
             const typeObj = STATS_PATTERNS.find(item => item.name === typeArr[typeIndex]);
@@ -234,16 +237,17 @@ async function replaceStatisticsWithTimeline(statistics = {}) {
                 typeArr.splice(typeIndex, 1);
             }
         }
-        
+
         if (cratesArr.length) {
             const cratesIndex = Math.floor(Math.random() * cratesArr.length);
             item[2] = cratesArr[cratesIndex];
             cratesArr.splice(cratesIndex, 1);
         }
     })
-    
+
     statistics.timeline = statistics.timeline || [];
-    statistics.timeline.unshift(...data);
+    // Prepend migrated data into timeline.
+    statistics.timeline.unshift(...migratedData);
 
     await Statistics.prototype.save.apply(statistics)
 }
