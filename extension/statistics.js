@@ -58,18 +58,6 @@ class Statistics {
         // The timeline data of user searching hihstory.
         // Consist of array of [timestamp, search type, option search crate].
         this.timeline = [];
-        this.total = 0;
-
-        // Those data will be removed in the future.
-        this.calendarData = Object.create(null)
-        this.cratesData = Object.create(null)
-        this.typeData = Object.create(null)
-        this.weeksData = WEEKS.reduce((obj, week) => {
-            obj[week] = 0;
-            return obj;
-        }, {});
-        this.hoursData = makeNumericKeyObject(0, 23);
-        this.datesData = makeNumericKeyObject(1, 31);
     }
 
     /**
@@ -80,17 +68,6 @@ class Statistics {
 
         let stats = await storage.getItem("statistics");
         if (stats) {
-            self.calendarData = stats.calendarData;
-            // Generate weeks and dates data from calendar data.
-            for (let [key, value] of Object.entries(stats.calendarData)) {
-                let date = new Date(key);
-                self.weeksData[WEEKS[date.getDay()]] += value;
-                self.datesData[date.getDate()] += value;
-            }
-            self.cratesData = stats.cratesData;
-            self.typeData = stats.typeData;
-            self.hoursData = stats.hoursData;
-            self.total = stats.total;
             self.timeline = stats.timeline || [];
         }
         return self;
@@ -100,20 +77,8 @@ class Statistics {
      * Save the statistics data to local storage.
      */
     async save() {
-        for (let hour of Object.keys(this.hoursData)) {
-            // Clean legacy dirty data.
-            if (hour < 1 || hour > 23) {
-                delete this.hoursData[hour];
-            }
-        }
-
         // Never serialize weeksData and datesData.
         await storage.setItem("statistics", {
-            calendarData: this.calendarData,
-            cratesData: this.cratesData,
-            typeData: this.typeData,
-            hoursData: this.hoursData,
-            total: this.total,
             timeline: this.timeline,
         });
     }
@@ -125,31 +90,18 @@ class Statistics {
      * @param autoSave whether auto save the statistics result into local storage
      */
     async record({ query, content, description, time }, autoSave = false) {
-        let date = new Date(time);
-        this.hoursData[date.getHours()] += 1;
-
-        const c = new Compat();
-        let key = c.normalizeDate(date);
-        this.calendarData[key] = (this.calendarData[key] || 0) + 1;
-
-        const arr = [time, null, null]
-        let { name, type } = Statistics.parseSearchType({ query, content, description });
-        if (name) {
-            this.typeData[name] = (this.typeData[name] || 0) + 1;
-        }
+        const arr = [time, null, null];
+        let { type } = Statistics.parseSearchType({ query, content, description });
         if (type) {
             arr[1] = type;
         }
 
         let crate = Statistics.parseSearchCrate(content);
         if (crate) {
-            this.cratesData[crate] = (this.cratesData[crate] || 0) + 1;
             arr[2] = crate;
         }
 
         this.timeline.push(arr);
-
-        this.total += 1;
 
         if (autoSave) {
             await this.save();
@@ -220,4 +172,78 @@ class Statistics {
             return search.replace(/-/gi, "_");
         }
     }
+}
+
+/**
+ * Generate an array based on the size of each value in the statistics
+ * @param {Object} obj // statistics data
+ * @returns {Array}
+ */
+function createStatisticsArray(obj) {
+    const arr = [];
+    for (let [item, value] of Object.entries(obj)) {
+        if (value) {
+            for (let i = 1; i <= value; i++) {
+                arr.push(item);
+            }
+        }
+    }
+    return arr;
+}
+
+/**
+ * Replace the statistics storage format with a timeline
+ * @param {Object} statistics 
+ */
+async function replaceStatisticsWithTimeline(statistics = {}) {
+    const { timeline = [], calendarData, cratesData, hoursData, typeData } = statistics;
+    if (!calendarData) return;
+
+    const data = [];
+
+    // Get the minimum timestamp in the timeline data，default is the timestamp of the current date
+    const minTime = timeline.reduce((pre, [time]) => {
+        return Math.min(pre, time)
+    }, timeline[0] ? timeline[0][0] : moment().valueOf());
+
+    for (let [date, value] of Object.entries(calendarData)) {
+        const time = moment(date).valueOf();
+        if (time < minTime) {
+            for (let i = 1; i <= value; i++) {
+                data.push([time, null, null]);
+            }
+        }
+    }
+
+    const typeArr = createStatisticsArray(typeData);
+    const hoursArr = createStatisticsArray(hoursData);
+    const cratesArr = createStatisticsArray(cratesData);
+
+    data.forEach((item) => {
+        if (hoursArr.length) {
+            const hourIndex = Math.floor(Math.random() * hoursArr.length)
+            item[0] = moment(item[0]).set('hour', hoursArr[hourIndex]).valueOf();
+            hoursArr.splice(hourIndex, 1);
+        }
+        
+        if (typeArr.length) {
+            const typeIndex = Math.floor(Math.random() * typeArr.length);
+            const typeObj = STATS_PATTERNS.find(item => item.name === typeArr[typeIndex]);
+            if (typeObj) {
+                item[1] = typeObj.type
+                typeArr.splice(typeIndex, 1);
+            }
+        }
+        
+        if (cratesArr.length) {
+            const cratesIndex = Math.floor(Math.random() * cratesArr.length);
+            item[2] = cratesArr[cratesIndex];
+            cratesArr.splice(cratesIndex, 1);
+        }
+    })
+    
+    statistics.timeline = statistics.timeline || [];
+    statistics.timeline.unshift(...data);
+
+    await Statistics.prototype.save.apply(statistics)
 }
