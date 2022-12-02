@@ -41,7 +41,13 @@ async function refresh(orderBy = "time") {
     }
 
     let compat = new Compat();
-    let cratesData = (await Statistics.load()).cratesData;
+    const { timeline } = await Statistics.load();
+    const cratesData = timeline.reduce((pre, [time, type, crate]) => {
+        if(crate) {
+            pre[crate] = (pre[crate] || 0) + 1; 
+        }
+        return pre;
+    }, Object.create(null));
     let crates = Object.entries(await CrateDocManager.getCrates()).map(([name, crate]) => {
         return {
             name,
