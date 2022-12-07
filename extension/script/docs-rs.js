@@ -3,7 +3,7 @@
 // Here actix-web is the rawCrateName, actix_web is the crateName.
 // The rawCrateName mainly for Cargo.toml url to parse feature flags.
 let pathname = location.pathname.replace("/crate", "");
-let [rawCrateName, crateVersion] = pathname.slice(1).split("/");
+let [rawCrateName, crateVersion, targetCrateName] = pathname.slice(1).split("/");
 let crateName = rawCrateName.replaceAll("-", "_");
 // A crate version which added to the extension.
 let installedVersion = undefined;
@@ -91,6 +91,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Query installed crates from chrome.storage API
         let crates = await storage.getItem("crates") || {};
         let crate = crates[crateName];
+        if(!crate && crates[targetCrateName]) {
+            crate = crates[targetCrateName];
+            crateName = targetCrateName;
+        }
+
         if (crate) {
             insertAddToExtensionElement(getState(crate.version));
         } else {
