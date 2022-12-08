@@ -2,7 +2,7 @@
     function sendSearchIndex() {
         if (location.hostname === "docs.rs") { // docs.rs pages
             // Parse crate info from location pathname.
-            let [_, crateVersion, crateName] = location.pathname.slice(1).split("/");
+            let [crateName, crateVersion, libName] = location.pathname.slice(1).split("/");
             // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
             // the latest version path has changed:
             // from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/
@@ -15,6 +15,7 @@
             window.postMessage({
                 direction: "rust-search-extension:docs.rs",
                 message: {
+                    libName,
                     crateName,
                     crateVersion,
                     searchIndex: window.searchIndex,

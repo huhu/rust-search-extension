@@ -1,10 +1,10 @@
-// rawCrateName v.s crateName
-// See: https://docs.rs/actix-web/3.2.0/actix_web/
-// Here actix-web is the rawCrateName, actix_web is the crateName.
-// The rawCrateName mainly for Cargo.toml url to parse feature flags.
+// Some corner cases the crateName different to libName:
+// 1. https://docs.rs/actix-web/3.2.0/actix_web/
+// 2. https://docs.rs/md-5/0.10.5/md5/
+// 
+// Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
 let pathname = location.pathname.replace("/crate", "");
-let [rawCrateName, crateVersion, targetCrateName] = pathname.slice(1).split("/");
-let crateName = rawCrateName.replaceAll("-", "_");
+let [crateName, crateVersion, libName] = pathname.slice(1).split("/");
 // A crate version which added to the extension.
 let installedVersion = undefined;
 
@@ -90,18 +90,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
         // Query installed crates from chrome.storage API
         let crates = await storage.getItem("crates") || {};
-        let crate = crates[crateName];
-        if(!crate && crates[targetCrateName]) {
-            crate = crates[targetCrateName];
-            crateName = targetCrateName;
+        let installedCrate = crates[crateName];
+        if (!installedCrate && crates[libName]) {
+            installedCrate = crates[libName];
         }
 
-        if (crate) {
-            insertAddToExtensionElement(getState(crate.version));
+        if (installedCrate) {
+            insertAddToExtensionElement(getState(installedCrate.version));
         } else {
             insertAddToExtensionElement("need-to-install");
         }
     }
+
 
     let featureFlagsMenu = Array.from(menus.children).find(menu => menu.textContent.toLowerCase().includes("feature flags"));
     if (featureFlagsMenu) {
@@ -111,13 +111,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function getFeatureFlagsMenuData() {
-    // Use rawCrateName to fetch the Cargo.toml, otherwise will get 404.
-    let crateAPIURL = `https://crates.io/api/v1/crates/${rawCrateName}/${crateVersion}`;
+    let crateAPIURL = `https://crates.io/api/v1/crates/${crateName}/${crateVersion}`;
     let response = await fetch(crateAPIURL);
     let content = await response.json();
     let features = parseCargoFeatures(content);
 
-    let depsURL = `https://crates.io/api/v1/crates/${rawCrateName}/${crateVersion}/dependencies`;
+    let depsURL = `https://crates.io/api/v1/crates/${crateName}/${crateVersion}/dependencies`;
     let depsResponse = await fetch(depsURL);
     let depsContent = await depsResponse.json();
     let optionalDependencies = parseOptionalDependencies(depsContent);
@@ -126,18 +125,18 @@ async function getFeatureFlagsMenuData() {
 }
 
 async function enhanceFeatureFlagsMenu(menu) {
-    let crateData = JSON.parse(window.sessionStorage.getItem(`${rawCrateName}-${crateVersion}`));
+    let crateData = JSON.parse(window.sessionStorage.getItem(`${crateName}-${crateVersion}`));
 
     if (!crateData) {
         crateData = await getFeatureFlagsMenuData();
-        window.sessionStorage.setItem(`${rawCrateName}-${crateVersion}`, JSON.stringify(crateData));
+        window.sessionStorage.setItem(`${crateName}-${crateVersion}`, JSON.stringify(crateData));
     }
 
     const { features, optionalDependencies } = crateData;
     let html = `<div style="padding: 1rem"><p>
                     This crate has no explicit-declared feature flag.
                     <br>
-                    Check its <a style="padding:0" href="https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml">Cargo.toml</a> to learn more.
+                    Check its <a style="padding:0" href="https://docs.rs/crate/${crateName}/${crateVersion}/source/Cargo.toml">Cargo.toml</a> to learn more.
                 </p></div>`;
     if (features.length > 0) {
         let tbody = features.map(([name, flags]) => {
@@ -204,7 +203,8 @@ function insertAddToExtensionElement(state) {
     li.onclick = async () => {
         // Toggle search index added state
         if (state === "latest") {
-            await CrateDocManager.removeCrate(crateName);
+            // Use the libName to remove the installed crate.
+            await CrateDocManager.removeCrate(libName);
             insertAddToExtensionElement(getState(undefined));
         } else {
             injectScripts(["script/lib.js", "script/add-search-index.js"]);
@@ -259,7 +259,7 @@ window.addEventListener("message", async function (event) {
         event.data &&
         event.data.direction === "rust-search-extension:docs.rs") {
         let message = event.data.message;
-        await CrateDocManager.addCrate(message.crateName, message.crateVersion, message.searchIndex);
+        await CrateDocManager.addCrate(message.libName, message.crateVersion, message.searchIndex, message.crateName);
         insertAddToExtensionElement(getState(message.crateVersion));
         console.log("Congrats! This crate has been installed successfully!");
     }
