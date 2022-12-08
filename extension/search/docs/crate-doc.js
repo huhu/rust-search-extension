@@ -17,8 +17,8 @@ class CrateDocSearch {
 
     async initAllCrateSearcher() {
         let searchIndex = Object.create(null)
-        for (const crateName of Object.keys(await CrateDocManager.getCrates())) {
-            searchIndex = Object.assign(searchIndex, await CrateDocManager.getCrateSearchIndex(crateName));
+        for (const libName of Object.keys(await CrateDocManager.getCrates())) {
+            searchIndex = Object.assign(searchIndex, await CrateDocManager.getCrateSearchIndex(libName));
         }
         this.allCrateSearcher = new SingleCrateDocSearch("~", "*", searchIndex);
     }
@@ -32,16 +32,16 @@ class CrateDocSearch {
         if (this.cachedCrateSearcher?.name === crateName) {
             searcher = this.cachedCrateSearcher;
         } else {
-            let crates = await CrateDocManager.getCrates();
-            let crate = crates[crateName];
+            let crate = await CrateDocManager.getCrateByName(crateName);
             if (crate) {
                 let searchIndex = await CrateDocManager.getCrateSearchIndex(crateName);
                 searcher = new SingleCrateDocSearch(crateName, crate.version, searchIndex);
 
                 this.cachedCrateSearcher = searcher;
             } else {
-                let list = Object.entries(crates).map(([name, crate]) => {
-                    crate["name"] = name;
+                let crates = await CrateDocManager.getCrates();
+                let list = Object.entries(crates).map(([libName, crate]) => {
+                    crate["name"] = crate.crateName || libName;
                     return crate;
                 });
 
@@ -54,7 +54,7 @@ class CrateDocSearch {
                     });
                 } else {
                     list.unshift({
-                        content: `https://docs.rs/${crateName}/?search=${encodeURIComponent(keyword)}`,
+                        content: `https://docs.rs/${crateName}/latest/?search=${encodeURIComponent(keyword)}`,
                         description: `Crate ${c.match(crateName)} has not been indexed, search ${keyword ? c.match(keyword) : 'keyword'} on ${c.dim(`https://docs.rs/${crateName}`)} directly`,
                     });
                 }

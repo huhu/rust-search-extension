@@ -134,9 +134,9 @@ function getPlatformOs() {
             } else if (content && /^https?.*\/~\/\*\/.*/ig.test(content)) {
                 // Sanitize docs url which from all crates doc search mode. (Prefix with "~")
                 // Here is the url instance: https://docs.rs/~/*/reqwest/fn.get.html
-                let [_, __, crateName] = new URL(content).pathname.slice(1).split("/");
-                let crateVersion = (await CrateDocManager.getCrates())[crateName].version;
-                return content.replace("/~/", `/${crateName}/`).replace("/*/", `/${crateVersion}/`);
+                let [_, __, libName] = new URL(content).pathname.slice(1).split("/");
+                let crate = await CrateDocManager.getCrateByName(libName);
+                return content.replace("/~/", `/${crate.crateName || libName}/`).replace("/*/", `/${crate.version}/`);
             } else {
                 return content;
             }

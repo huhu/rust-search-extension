@@ -18,10 +18,10 @@ function buildCrateItem(crate) {
     li.style.padding = "15px";
     li.innerHTML = `<div style="display: flex; flex-direction: column;">
         <div>
-            <b class="subtitle-text">${crate.name}</b>
+            <b class="subtitle-text">${crate.crateName || crate.name}</b>
             <span class="crate-attr">v${crate.version}</span>
-            <a class="crate-attr" href="https://crates.io/crates/${crate.name}" target="_blank">crates.io</a>
-            <a class="crate-attr" href="https://docs.rs/${crate.name}" target="_blank">docs.rs</a>
+            <a class="crate-attr" href="https://crates.io/crates/${crate.crateName || crate.name}" target="_blank">crates.io</a>
+            <a class="crate-attr" href="https://docs.rs/${crate.crateName || crate.name}" target="_blank">docs.rs</a>
         </div>
         <div class="crate-desc">${crate.doc}</div>
         <div class="crate-extra subtext">
