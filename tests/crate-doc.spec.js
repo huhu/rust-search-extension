@@ -1,5 +1,6 @@
 let crateName = "matches";
 let crateVersion = "0.1.8";
+let libName = "matches";
 let searchIndex = {
     "matches": {
         "doc": "",
@@ -13,33 +14,33 @@ let searchIndex = {
 };
 
 describe("CrateDocSearchManager", function() {
-    after(function() {
-        CrateDocManager.removeCrate(crateName);
+    after(async function() {
+        await CrateDocManager.removeCrate(crateName);
     });
 
     describe("crates", function() {
-        it("getCrates()", function() {
-            CrateDocManager.getCrates().should.deep.equal({});
+        it("getCrates()", async function() {
+            (await CrateDocManager.getCrates()).should.deep.equal({});
         });
-        it("addCrate()", function() {
-            CrateDocManager.addCrate(crateName, crateVersion, searchIndex);
-            let crates = CrateDocManager.getCrates();
+        it("addCrate()", async function() {
+            await CrateDocManager.addCrate(libName, crateVersion, searchIndex, crateName);
+            let crates = await CrateDocManager.getCrates();
             Object.keys(crates).should.contains(crateName);
         });
-        it("getSearchIndex()", function() {
-            let searchIndex = CrateDocManager.getCrateSearchIndex(crateName);
+        it("getSearchIndex()", async function() {
+            let searchIndex = await CrateDocManager.getCrateSearchIndex(crateName);
             searchIndex.should.deep.equal(searchIndex);
         });
-        it("removeCrate()", function() {
-            CrateDocManager.removeCrate(crateName);
-            CrateDocManager.getCrates().should.deep.equal({});
+        it("removeCrate()", async function() {
+            await CrateDocManager.removeCrate(crateName);
+            (await CrateDocManager.getCrates()).should.deep.equal({});
         });
     });
 });
 
 describe("CrateDocSearch", function() {
-    after(function() {
-        CrateDocManager.removeCrate(crateName);
+    after(async function() {
+        await CrateDocManager.removeCrate(crateName);
     });
 
     describe("search", function() {
@@ -51,9 +52,9 @@ describe("CrateDocSearch", function() {
             ["@matches z", 1]
         ]
         .forEach(function([keyword, len]) {
-            it(`"${keyword}" search()`, function() {
-                CrateDocManager.addCrate(crateName, crateVersion, searchIndex);
-                let result = searcher.search(keyword);
+            it(`"${keyword}" search()`, async function() {
+                await CrateDocManager.addCrate(libName, crateVersion, searchIndex, crateName);
+                let result = await searcher.search(keyword);
                 result.should.have.lengthOf(len);
             });
         });
