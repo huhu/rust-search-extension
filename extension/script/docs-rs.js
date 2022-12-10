@@ -259,7 +259,7 @@ window.addEventListener("message", async function (event) {
         event.data &&
         event.data.direction === "rust-search-extension:docs.rs") {
         let message = event.data.message;
-        await CrateDocManager.addCrate(message.libName, message.crateVersion, message.searchIndex, message.crateName);
+        await CrateDocManager.addCrate(message);
         insertAddToExtensionElement(getState(message.crateVersion));
         console.log("Congrats! This crate has been installed successfully!");
     }
