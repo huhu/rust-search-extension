@@ -89,9 +89,15 @@ function getVar(name) {
             return dataVar.value;
         }
     }
-    return null
+    return null;
 }
 
 function resourcePath(basename, extension) {
-    return getVar("root-path") + basename + getVar("resource-suffix") + extension
+    let rootPath = getVar("root-path");
+    let resrouceSuffix = getVar("resource-suffix")
+    if (rootPath && resrouceSuffix) {
+        return rootPath + basename + resrouceSuffix + extension;
+    } else {
+        return null;
+    }
 }
