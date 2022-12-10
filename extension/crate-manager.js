@@ -40,8 +40,8 @@ class CrateDocManager {
     // 2. https://docs.rs/md-5/0.10.5/md5/
     // 
     // Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
-    static async addCrate(libName, version, searchIndex, crateName) {
-        if (libName in searchIndex) {
+    static async addCrate({ libName, version, searchIndex, crateName }) {
+        if (searchIndex && libName in searchIndex) {
             await storage.setItem(`@${libName}`, searchIndex);
             let doc = searchIndex[libName]["doc"];
             let crates = await CrateDocManager.getCrates();
