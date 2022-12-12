@@ -59,11 +59,14 @@ function calculateSavedTime(times) {
     }
 }
 
-function renderSearchTimes(length = 0) {
+function renderSearchTimes(length = 0, searchTime) {
     let searchTimes = document.querySelector(".search-time");
     let frequency = searchTimes.querySelectorAll("b");
     frequency[0].textContent = `${length}`;
-    frequency[1].textContent = calculateSavedTime(length);
+    if(searchTime) {
+        frequency[1].textContent = `${searchTime}`;
+    }
+    frequency[2].textContent = calculateSavedTime(length);
 }
 
 function renderHeatmap(data, now, yearAgo) {
@@ -200,7 +203,7 @@ function renderTopCratesChart(topCratesObj) {
 }
 
 
-async function renderCharts(now, yearAgo) {
+async function renderCharts(now, yearAgo, searchTime) {
     const { timeline } = await Statistics.load();
 
     const data = timeline.filter(([time]) => {
@@ -244,7 +247,7 @@ async function renderCharts(now, yearAgo) {
         }
     });
 
-    renderSearchTimes(data.length);
+    renderSearchTimes(data.length, searchTime);
     renderHeatmap(heatMapData, now, yearAgo);
     renderHistogram(weeksObj, datesObj, hoursObj)
     renderSearchStats(typeDataObj, typeTotal);
@@ -277,14 +280,14 @@ async function renderYearList() {
             const time = moment(e.target.innerText);
             const now = time.endOf('year').valueOf();
             const yearAgo = time.startOf('year').valueOf();
-            await renderCharts(now, yearAgo);
+            await renderCharts(now, yearAgo, moment(yearAgo).format('YYYY'));
         }
     });
 }
 
 (async () => {
     await tryMigrateLegacyStatisticsToTimeline();
-    
+
     const now = moment().valueOf();
     const yearAgo = moment().startOf('day').subtract(1, 'year').valueOf();
     await renderCharts(now, yearAgo);
