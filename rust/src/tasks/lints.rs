@@ -86,7 +86,7 @@ impl LintsTask {
 
         let contents = format!("var lintsIndex={};", serde_json::to_string(&lints)?);
         let path = Path::new(&self.dest_path);
-        fs::write(path, &Minifier::minify_js(contents))?;
+        fs::write(path, Minifier::minify_js(contents))?;
         println!("\nGenerate javascript lints index successful!");
         Ok(())
     }

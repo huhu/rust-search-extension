@@ -118,7 +118,7 @@ impl TargetsTask {
 
         fs::write(
             Path::new(&self.dest_path),
-            &format!("var targetsIndex={};", serde_json::to_string(&map).unwrap()),
+            format!("var targetsIndex={};", serde_json::to_string(&map).unwrap()),
         )?;
         println!("\nGenerate targets index successful!");
         Ok(())

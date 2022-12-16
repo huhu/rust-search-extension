@@ -67,7 +67,7 @@ impl RustcTask {
 
         fs::write(
             Path::new(&self.dest_path),
-            &format!("var rustcIndex={};", serde_json::to_string(&map).unwrap()),
+            format!("var rustcIndex={};", serde_json::to_string(&map).unwrap()),
         )?;
         println!("\nGenerate rustc index successful!");
         Ok(())
