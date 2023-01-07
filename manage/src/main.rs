@@ -46,7 +46,6 @@ fn main() -> Result<()> {
 fn build() -> Result<()> {
     let mut env = Environment::new();
     env.set_source(Source::from_path("templates"));
-    env.add_filter("capitalize", capitalize);
     for template in TEMPLATES.iter() {
         let path = format!("{}/{}", BUILD_DIR, template);
         let template = env.get_template(template)?;
@@ -55,12 +54,4 @@ fn build() -> Result<()> {
     }
 
     Ok(())
-}
-
-fn capitalize(text: &str) -> String {
-    let mut chars = text.chars();
-    match chars.next() {
-        None => String::new(),
-        Some(f) => f.to_uppercase().collect::<String>() + &chars.as_str().to_lowercase(),
-    }
 }
