@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+window.onload = () => {
     let searchParams = new URL(location.href).searchParams;
     let toVersion = searchParams.get("version");
     // Parse search parameter to scroll target version
@@ -20,12 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let item = document.createElement("li");
         item.classList.add("rse-version-list-item");
 
-        let html = `
-                    <div style="display: flex">
+        let html = `<div style="display: flex">
                         <a href="${version.anchor}"><b>${version.number}</b></a> 
                         <span class="rse-version-date Counter">${version.date}</span>
-                    </div>
-            `;
+                    </div>`;
         let fixVersions = versions
             .filter(v => v.minor === version.minor && v.major === version.major && v.fix !== "0")
             .sort((a, b) => parseInt(a.fix) - parseInt(b.fix));
@@ -58,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     highlight();
-});
+};
 
 // https://michaelmovsesov.com/articles/fix-css-position-sticky-not-working
 function fixStickyNotWorking() {
