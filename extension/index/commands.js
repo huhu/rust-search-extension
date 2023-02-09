@@ -3,7 +3,7 @@ var commandsIndex = {
         ["The Rust Programming Language", "https://doc.rust-lang.org/stable/book/"],
         ["Rust Async Book", "https://rust-lang.github.io/async-book/"],
         ["Rust Edition Guide Book", "https://doc.rust-lang.org/stable/edition-guide/"],
-        ["The Cargo Book", "https://doc.rust-lang.org/cargo/index.html"],
+        ["The Cargo Book", "https://doc.rust-lang.org/cargo/"],
         ["Rust and WebAssembly Book", "https://rustwasm.github.io/docs/book/"],
         ["Wasm-Pack Book", "https://rustwasm.github.io/docs/wasm-pack/"],
         ["The Embedded Rust Book", "https://rust-embedded.github.io/book/"],
