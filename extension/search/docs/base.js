@@ -113,7 +113,7 @@ class DocSearch {
                 // convert `paths` into an object form
                 for (let i = 0; i < paths.length; ++i) {
                     if (Array.isArray(paths[i])) {
-                        paths[i] = {ty: paths[i][0], name: paths[i][1]};
+                        paths[i] = { ty: paths[i][0], name: paths[i][1] };
                     }
                 }
 
@@ -133,7 +133,7 @@ class DocSearch {
                         // itemTypes changed from number array to string since Rust 1.69,
                         // we should compat both versions.
                         // see this PR: https://github.com/rust-lang/rust/pull/108013 
-                        ty: typeof ty === 'string'? itemTypes.charCodeAt(i) - charA: ty,
+                        ty: typeof ty === 'string' ? itemTypes.charCodeAt(i) - charA : ty,
                         name: itemNames[i],
                         path: itemPaths[i] ? itemPaths[i] : lastPath,
                         desc: itemDescs[i],
@@ -166,7 +166,7 @@ class DocSearch {
                 // convert `paths` into an object form
                 for (let i = 0; i < paths.length; ++i) {
                     if (Array.isArray(paths[i])) {
-                        paths[i] = {ty: paths[i][0], name: paths[i][1]};
+                        paths[i] = { ty: paths[i][0], name: paths[i][1] };
                     }
                 }
 
