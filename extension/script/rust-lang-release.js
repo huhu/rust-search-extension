@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+window.onload = () => {
     let searchParams = new URL(location.href).searchParams;
     let toVersion = searchParams.get("version");
     // Parse search parameter to scroll target version
@@ -20,16 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
         let item = document.createElement("li");
         item.classList.add("rse-version-list-item");
 
-        let html = `
-                    <div style="display: flex">
+        let html = `<div style="display: flex">
                         <a href="${version.anchor}"><b>${version.number}</b></a> 
                         <span class="rse-version-date Counter">${version.date}</span>
-                    </div>
-            `;
+                    </div>`;
         let fixVersions = versions
             .filter(v => v.minor === version.minor && v.major === version.major && v.fix !== "0")
             .sort((a, b) => parseInt(a.fix) - parseInt(b.fix));
-        if (fixVersions && fixVersions.length > 0) {
+        if (fixVersions?.length > 0) {
             fixVersions = fixVersions.map(fv => `<a href="${fv.anchor}"><small>${fv.number}</small></a>`).join(" , ");
             html += `<div style="margin-top: 0.3rem">${fixVersions}</div>`;
         }
@@ -47,13 +45,54 @@ document.addEventListener("DOMContentLoaded", () => {
         ul.appendChild(item);
     });
 
-    let readme = document.querySelector(".readme");
-    readme.classList.add("rse-fix-readme");
+    let markdownBody = document.querySelector("article.markdown-body");
+    let readme = markdownBody.parentElement;
+    readme.setAttribute("style", "display: flex; padding-right: 0px !important");
     readme.appendChild(ul);
 
-    highlight();
-});
+    setTimeout(() => {
+        fixStickyNotWorking();
+        fixGithubTocCompatibility();
+    });
 
+    highlight();
+};
+
+// https://michaelmovsesov.com/articles/fix-css-position-sticky-not-working
+function fixStickyNotWorking() {
+    let parent = document.querySelector('.rse-version-list').parentElement;
+
+    while (parent) {
+        const overflow = getComputedStyle(parent).overflow;
+        if (overflow !== 'visible') {
+            break;
+        }
+        parent = parent.parentElement;
+    }
+
+    if (parent) {
+        parent.setAttribute("style", "position:relative; z-index:0; overflow: visible");
+    }
+}
+
+// https://web.dev/resize-observer/
+function fixGithubTocCompatibility() {
+    let tocStickyHeader = document.querySelector("#repos-sticky-header");
+    if (tocStickyHeader) {
+        let toc = document.querySelector('.rse-version-list');
+        const observer = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                // Hide our TOC if we have no enough space.
+                if (entry.contentRect.width <= 1040) {
+                    toc.style.display = "none";
+                } else {
+                    toc.style.display = "block";
+                }
+            }
+        });
+        observer.observe(tocStickyHeader);
+    }
+}
 
 function scrollToVersion(version) {
     let versionElements = Array.from(document.querySelectorAll('.markdown-body>h1'));
@@ -66,23 +105,25 @@ function scrollToVersion(version) {
 function highlight() {
     let items = document.querySelectorAll('.markdown-body>h1>a');
     const scrollHandler = entries => {
-        entries.forEach(entry => {
-            if (entry.intersectionRatio > 0) {
-                document.querySelectorAll(".rse-version-list-item").forEach((item) => {
-                    item.classList.remove("rse-active");
-                });
-
-                let url = new URL(entry.target.href);
-                let link = document.querySelector(`.rse-version-list-item a[href$="${url.hash}"]`)
-                if (link) {
-                    let target = link.parentElement.parentElement;
-                    target.classList.add("rse-active");
-                    target.scrollIntoView({behavior: "auto", block: "nearest"});
-                }
-            }
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
         });
+        if (!entry) return;
+
+        document.querySelectorAll(".rse-version-list-item").forEach((item) => {
+            item.classList.remove("rse-active");
+        });
+
+        let url = new URL(entry.target.href);
+        let link = document.querySelector(`.rse-version-list-item a[href$="${url.hash}"]`)
+        if (link) {
+            let target = link.parentElement.parentElement;
+            target.classList.add("rse-active");
+            target.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
     };
-    const observer = new IntersectionObserver(scrollHandler);
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
     items.forEach(item => observer.observe(item));
 }
 

@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // We fallback to the "srclink" of Option.
         let hash = currentUrl.hash.replace(/#(variant\.)?/i, "");
         let element = document.getElementById(hash)
-            || document.querySelector(".fqn");
+            || document.querySelector(".out-of-band");
+
         if (element) {
             let srclink = element.querySelector(".srclink");
             location.href = srclink.href;

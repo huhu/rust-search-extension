@@ -14,6 +14,8 @@ jobs:
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml books -d /tmp/books.js
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml lints -d /tmp/lints.js
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml labels -d /tmp/labels.js
+          RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml rustc -d /tmp/rustc.js
+          RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml targets -d /tmp/targets.js
           git clone --depth 1 https://github.com/jplatte/caniuse.rs.git /tmp/caniuse
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml caniuse -r /tmp/caniuse -d /tmp/caniuse.js
           git clone --depth 1 https://github.com/nrc/rfc-index.git /tmp/rfc-index

@@ -35,28 +35,43 @@ const STATS_MAP = {
     }
 };
 
-(async() => {
-    const stats = await Statistics.load();
-    const [weeksData, datesData, hoursData] = [stats.weeksData, stats.datesData, stats.hoursData]
-    .map(data => {
-        return Object.entries(data).map(([key, value]) => {
-            return { name: key, value }
-        });
-    });
-    const topCratesData = Object.entries(stats.cratesData)
-        .sort((a, b) => b[1] - a[1])
-        .map(([key, value], index) => {
-            return {
-                label: `#${index + 1}`,
-                name: key,
-                value
-            };
-        });
-    topCratesData.splice(15);
-    const total = stats.total;
+const histogramConfig = {
+    width: 460,
+    height: 240,
+    color: CHART_COLOR,
+    margin: { top: 30, right: 0, bottom: 40, left: 40 },
+};
 
-    let heatmap = calendarHeatmap()
-        .data(stats.calendarData)
+function calculateSavedTime(times) {
+    let seconds = times * 5;
+    if (seconds > 3600) {
+        let hours = seconds / 3600;
+        let minutes = seconds % 3600 / 60;
+        if (minutes > 0) {
+            return `${Math.round(hours)} hours ${Math.round(minutes)} minutes`;
+        } else {
+            return `${Math.round(hours)} hours`;
+        }
+    } else if (seconds > 60) {
+        return `${Math.round(seconds / 60)} minutes`;
+    } else {
+        return `${Math.round(seconds)} seconds`;
+    }
+}
+
+function renderSearchTimes(length = 0, searchTime) {
+    let searchTimes = document.querySelector(".search-time");
+    let frequency = searchTimes.querySelectorAll("b");
+    frequency[0].textContent = `${length}`;
+    if(searchTime) {
+        frequency[1].textContent = `${searchTime}`;
+    }
+    frequency[2].textContent = calculateSavedTime(length);
+}
+
+function renderHeatmap(data, now, yearAgo) {
+    let heatmap = calendarHeatmap(now, yearAgo)
+        .data(data)
         .selector('.chart-heatmap')
         .tooltipEnabled(true)
         .colorRange([
@@ -72,75 +87,75 @@ const STATS_MAP = {
             { min: 2, max: 'Infinity', unit: 'searches' }
         ])
         .legendEnabled(true)
-        .onClick(function(data) {
+        .onClick(function (data) {
             console.log('data', data);
         });
     heatmap();
+}
 
-    let histogramConfig = {
-        width: 460,
-        height: 240,
-        color: CHART_COLOR,
-        margin: { top: 30, right: 0, bottom: 40, left: 40 }
-    };
+function renderHistogram(weeksObj, datesObj, hoursObj) {
+    const [weeksData, datesData, hoursData] = [weeksObj, datesObj, hoursObj]
+        .map(data => {
+            return Object.entries(data).map(([key, value]) => {
+                return { name: key, value };
+            });
+        });
+    const weekContainer = document.querySelector(".chart-histogram-week");
+    if (weekContainer.hasChildNodes()) {
+        weekContainer.innerHTML = null;
+    }
     histogram({
         selector: ".chart-histogram-week",
         data: weeksData,
         ...histogramConfig,
     });
 
+    const dateContainer = document.querySelector(".chart-histogram-date");
+    if (dateContainer.hasChildNodes()) {
+        dateContainer.innerHTML = null;
+    }
     histogram({
         selector: ".chart-histogram-date",
         data: datesData,
         ...histogramConfig,
     });
 
+    const hourContainer = document.querySelector(".chart-histogram-hour");
+    if (hourContainer.hasChildNodes()) {
+        hourContainer.innerHTML = null;
+    }
     histogram({
         selector: ".chart-histogram-hour",
         data: hoursData,
         ...histogramConfig,
     });
+}
 
-    let searchTimes = document.querySelector(".search-time");
-    let frequency = searchTimes.querySelectorAll("b");
-    frequency[0].textContent = `${total}`;
-    frequency[1].textContent = calculateSavedTime(total);
-
-    function calculateSavedTime(times) {
-        let seconds = times * 5;
-        if (seconds > 3600) {
-            let hours = seconds / 3600;
-            let minutes = seconds % 3600 / 60;
-            if (minutes > 0) {
-                return `${Math.round(hours)} hours ${Math.round(minutes)} minutes`;
-            } else {
-                return `${Math.round(hours)} hours`;
-            }
-        } else if (seconds > 60) {
-            return `${Math.round(seconds / 60)} minutes`;
-        } else {
-            return `${Math.round(seconds)} seconds`;
-        }
+function renderSearchStats(typeDataObj, total) {
+    let searchStatsGraph = document.querySelector(".search-stats-graph");
+    if (searchStatsGraph.hasChildNodes()) {
+        searchStatsGraph.innerHTML = null;
     }
 
-    let searchStatsGraph = document.querySelector(".search-stats-graph");
     let searchStatsText = document.querySelector(".search-stats-text");
     let ol = searchStatsText.querySelector("ol");
-
+    if (ol.hasChildNodes()) {
+        ol.innerHTML = null;
+    }
     // Generate default type data.
-    let defaultTypeData = {};
+    let defaultTypeData = Object.create(null)
     Object.keys(STATS_MAP).forEach(name => {
         defaultTypeData[name] = 0;
     });
+
     // Merge default type data with statistic type data.
-    let array = Object.entries(Object.assign(defaultTypeData, stats.typeData));
+    let array = Object.entries(Object.assign(defaultTypeData, typeDataObj));
+
     // Split the other part from the others in order to
     // keep the other part always in the last order.
     [
-        ...array.filter(([key, value]) => key !== TYPE_OTHER)
-        .sort((a, b) => b[1] - a[1]),
-        // Other part always the last.
-        ...array.filter(([key, value]) => key === TYPE_OTHER),
+        ...array.filter(([key]) => key !== TYPE_OTHER).sort((a, b) => b[1] - a[1]),
+        ...array.filter(([key]) => key === TYPE_OTHER),
     ].forEach(([name, value]) => {
         let { color, description } = STATS_MAP[name];
         let li = document.createElement("li");
@@ -158,7 +173,23 @@ const STATS_MAP = {
             );
         }
     });
+}
 
+function renderTopCratesChart(topCratesObj) {
+    const topCratesContainer = document.querySelector(".topCratesData");
+    if (topCratesContainer.hasChildNodes()) {
+        topCratesContainer.innerHTML = null;
+    }
+    const topCratesData = Object.entries(topCratesObj)
+        .sort((a, b) => b[1] - a[1])
+        .map(([key, value], index) => {
+            return {
+                label: `#${index + 1}`,
+                name: key,
+                value
+            };
+        });
+    topCratesData.splice(15);
     barChart({
         margin: ({ top: 30, right: 0, bottom: 10, left: 30 }),
         // Calculate height dynamically to keep the bar with consistence width regardless of the topCratesData length.
@@ -169,4 +200,96 @@ const STATS_MAP = {
         selector: ".topCratesData",
         color: CHART_COLOR,
     });
+}
+
+
+async function renderCharts(now, yearAgo, searchTime) {
+    const { timeline } = await Statistics.load();
+
+    const data = timeline.filter(([time]) => {
+        return now >= time && time >= yearAgo;
+    });
+
+    const heatMapData = data.reduce((pre, [t]) => {
+        const time = moment(t).format("YYYY-MM-DD");
+        pre[time] = (pre[time] || 0) + 1;
+        return pre;
+    }, {});
+
+    const weeksObj = WEEKS.reduce((obj, week) => {
+        obj[week] = 0;
+        return obj;
+    }, {});
+    const datesObj = makeNumericKeyObject(1, 31);
+    const hoursObj = makeNumericKeyObject(1, 23);
+
+    let typeTotal = 0;
+    const typeDataObj = Object.create(null);
+
+    const topCratesObj = Object.create(null);
+
+    data.forEach(([t, content, type]) => {
+        const time = moment(t);
+        const hour = time.hour();
+
+        weeksObj[WEEKS[time.weekday()]] += 1;
+        datesObj[time.date()] += 1;
+        if (hour !== 0) {
+            hoursObj[hour] += 1;
+        }
+        if (content) {
+            const typeName = STATS_NUMBER[content];
+            typeDataObj[typeName] = (typeDataObj[typeName] || 0) + 1;
+            typeTotal += 1;
+        }
+        if (type) {
+            topCratesObj[type] = (topCratesObj[type] || 0) + 1;
+        }
+    });
+
+    renderSearchTimes(data.length, searchTime);
+    renderHeatmap(heatMapData, now, yearAgo);
+    renderHistogram(weeksObj, datesObj, hoursObj)
+    renderSearchStats(typeDataObj, typeTotal);
+    renderTopCratesChart(topCratesObj);
+}
+
+async function renderYearList() {
+    const y = new Date().getFullYear();
+    const year = document.querySelector(".filter-list");
+
+    const { timeline } = await Statistics.load();
+
+    const min = timeline.reduce((pre, current) => {
+        return Math.min(pre, current[0]);
+    }, moment().valueOf());
+
+    for (let i = y; i >= moment(min).year(); i--) {
+        const li = document.createElement('li');
+        li.innerText = i;
+        if (i === y) {
+            li.className = "selected";
+        }
+        year.append(li);
+    }
+
+    year.addEventListener('click', async function (e) {
+        if (e.target.tagName === "LI") {
+            year.childNodes.forEach(i => i.classList.remove("selected"));
+            e.target.className = "selected";
+            const time = moment(e.target.innerText);
+            const now = time.endOf('year').valueOf();
+            const yearAgo = time.startOf('year').valueOf();
+            await renderCharts(now, yearAgo, moment(yearAgo).format('YYYY'));
+        }
+    });
+}
+
+(async () => {
+    await tryMigrateLegacyStatisticsToTimeline();
+
+    const now = moment().valueOf();
+    const yearAgo = moment().startOf('day').subtract(1, 'year').valueOf();
+    await renderCharts(now, yearAgo);
+    await renderYearList();
 })();

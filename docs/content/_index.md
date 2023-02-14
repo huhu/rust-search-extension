@@ -3,6 +3,10 @@ title = "Rust Search Extension"
 sort_by = "weight"
 +++
 
+# Pagination
+
+You can press `space` after the keyword, then increase or decrease the number of **-** (hyphen) to page down or page up.
+
 # Search docs
 
 We support search all kinds of Rust docs blaze-fastly. Those docs including:
@@ -112,7 +116,7 @@ prefix **!!!** (triple exclamation marks) to open crate's repository (See [Open 
 
 ![GIF](/error-index.gif)
 
-# Search Rust official book chapters
+# Search Rust book chapters
 
 You can search all of Rust book chapters too! The result will show the title of the related page, 
 parent chapter, and grandparent chapter. Don't forget the **%** is the prefix to perform the book searching.
@@ -125,15 +129,15 @@ parent chapter, and grandparent chapter. Don't forget the **%** is the prefix to
 
 ![IMG](/search-clippy-lints.png)
 
-# Search Caniuse.rs and RFC
+# Search Caniuse.rs
 
-You can search [caniuse.rs](https://caniuse.rs) and RFC with **?** and **??** prefix respectively.
+You can search [caniuse.rs](https://caniuse.rs) with **?** prefix.
 
 ![IMG](/search-caniuse.png)
 
 # Search Rust Version
 
-Just input any Rust version (such as `v1.38`) to open the release page of that version.
+Just input any Rust version (such as `1.38` or `v1.38`) to open the release page of that version.
 
 ![](/search-rust-version.png)
 
@@ -144,19 +148,21 @@ Each command starts with a **:** (colon), followed by the name, and function dif
 Those commands including but not limited to:
 
 - **:help** - Show the help messages. 
-- **:blog** - Show all Rust release blog posts.
-- **:cargo** - Show all useful third-party cargo subcommands. 
-- **:yet** - Show all Are We Yet websites. 
-- **:book** - Show all Rust books.
-- **:book/zh** - Show all Chinese Rust books.
-- **:stable** - Show stable Rust scheduled release date in the next year. 
-- **:label** - Show all issue labels of rust-lang repository. 
+- **:blog** - Search Rust release blog posts.
+- **:cargo** - Search useful third-party cargo subcommands. 
+- **:yet** - Search Are We Yet websites. 
+- **:book** - Search Rust books.
+- **:book/zh** - Search Chinese Rust books.
+- **:stable** - Show stable Rust scheduled release date. 
+- **:label** - Search issue labels of rust-lang repository. 
 - **:tool** - Show useful rust tools.
-- **:mirror** - Show all Rust mirror websites.
-- **:stats** - open search statistics page.
-- **:update** - open the [update page](/update) to sync the latest index automatically.
+- **:mirror** - Search Rust mirror websites.
+- **:stats** - Open search statistics page.
+- **:update** - Open the [update page](/update) to sync the latest index automatically.
 - **:release** - Open rust-lang repository [release page](https://github.com/rust-lang/rust/blob/master/RELEASES.md).
-- **:rfc** - Show all Rust RFC list.
+- **:rfc** - Search Rust RFCs.
+- **:rustc** - Search rustc codegen options and lints.
+- **:target** - Search rust target for three tiers.
 - **:history** - Show your local search history.
 
 ![IMG](/command-system.gif)
@@ -178,7 +184,9 @@ Two kinds of tags links to corresponding urls, including:
 
 Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust Search Extension fills the gap.
 
-![IMG](/feature-flags.png)
+![IMG](/optional-dependencies.png)
+
+Also, we support optional dependencies.
 
 ## Add your favorite crate to extension
 
@@ -230,7 +238,3 @@ or [lib.rs](https://lib.rs) on the settings page.
 You can prefix **!!!** (triple !) to open crate's repository quickly. 
 For example, input `!!!tokio` then enter, the extension will obtain the repository url then redirect to 
 the github repository page of **tokio** effortlessly.
-
-## Page down/up easily
-
-You can press `space` after the keyword, then increase or decrease the number of **-** (hyphen) to page down or page up.

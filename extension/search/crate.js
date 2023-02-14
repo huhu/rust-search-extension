@@ -12,19 +12,21 @@ String.prototype.levenshteinContains = function (keyword) {
 };
 
 class CrateSearch {
-    constructor(mapping, crateIndex, crateIndexVersion = 1) {
-        this.crateIndexVersion = crateIndexVersion;
-        this.deminifier = new Deminifier(mapping);
+    constructor(mapping, crateIndex) {
+        this.setMapping(mapping);
+        this.setCrateIndex(crateIndex);
+    }
 
-        this.crateIndex = {};
+    setMapping(mapping) {
+        this.deminifier = new Deminifier(mapping);
+    }
+
+    setCrateIndex(crateIndex) {
+        this.crateIndex = Object.create(null)
         for (let [key, value] of Object.entries(crateIndex)) {
             this.crateIndex[this.deminifier.deminify(key)] = value;
         }
         this.crateIds = Object.keys(this.crateIndex);
-    }
-
-    getCrateIndexVersion() {
-        return this.crateIndexVersion || 1;
     }
 
     /**

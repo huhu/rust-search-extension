@@ -1,9 +1,9 @@
 //! Build manage directory html pages.
 
-use std::{error::Error, fs, io::Write, sync::mpsc::channel, time::Duration};
+use std::{error::Error, fs, sync::mpsc::channel, time::Duration};
 
+use minijinja::{context, Environment, Source};
 use notify::{watcher, Watcher};
-use tera::{Context, Tera};
 
 pub type Result<T> = std::result::Result<T, Box<dyn Error>>;
 
@@ -43,27 +43,14 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn compile_sass() -> Result<()> {
-    let options = sass_rs::Options {
-        output_style: sass_rs::OutputStyle::Compressed,
-        ..Default::default()
-    };
-    let content = sass_rs::compile_file("templates/sass/index.scss", options)?;
-    let path = format!("{}/css/index.css", BUILD_DIR);
-    fs::File::create(&path)?.write_all(content.as_bytes())?;
-    Ok(())
-}
-
 fn build() -> Result<()> {
-    compile_sass()?;
-
-    let tera = Tera::new("templates/*.html")?;
-    let context = Context::new();
+    let mut env = Environment::new();
+    env.set_source(Source::from_path("templates"));
     for template in TEMPLATES.iter() {
-        let mut buf = vec![];
-        tera.render_to(template, &context, &mut buf)?;
         let path = format!("{}/{}", BUILD_DIR, template);
-        fs::File::create(&path)?.write_all(&buf)?;
+        let template = env.get_template(template)?;
+
+        template.render_to_write(context! {}, fs::File::create(path)?)?;
     }
 
     Ok(())

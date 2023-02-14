@@ -1,6 +1,6 @@
-class LabelCommand extends SimpleCommand {
+class LabelCommand extends Command {
     constructor(index) {
-        super("label", "Show all issue labels of rust-lang repository.");
+        super("label", "Search issue labels of rust-lang repository.");
         this.labels = index.map(([name, description]) => {
             return {name, description};
         });

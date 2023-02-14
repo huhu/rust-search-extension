@@ -9,7 +9,8 @@ function histogram({ selector, width, height, data, color, margin }) {
             .attr("y", 10)
             .attr("fill", "currentColor")
             .attr("text-anchor", "start")
-            .text("Times"))
+            // .text("Times")
+        )
         .attr('font-size', 11);
     let xAxis = g => g
         .attr("transform", `translate(0,${height - margin.bottom})`)

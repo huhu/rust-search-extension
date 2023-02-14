@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         response => {
             let now = new Date();
             let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-            if (response && response.version && today <= Date.parse(response.version)) {
+            if (response?.version && today <= Date.parse(response.version)) {
                 // Check version to ensure update search index once a day.
                 return;
             }
@@ -18,10 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("message", function (event) {
-    console.log(event.data);
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension:rustc") {
+        console.log(event.data);
         let now = new Date();
         let version = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
         // rustc search index is a memory cache, therefore we don't use localStorage

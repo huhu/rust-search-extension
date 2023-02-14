@@ -32,14 +32,16 @@ window.addEventListener("message", function (event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension:std") {
-        chrome.runtime.sendMessage({ action: `${TARGET}:add`, ...event.data.message },
-            (response) => {
-                let now = new Date();
-                let version = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-                localStorage.setItem(`rust-search-extension:${TARGET}`, version);
-                console.log(version);
-            }
-        );
+        let searchIndex = event.data.message.searchIndex;
+        if (TARGET === 'stable') {
+            IndexManager.setStdStableIndex(searchIndex);
+        } else {
+            IndexManager.setStdNightlyIndex(searchIndex);
+        }
+        let now = new Date();
+        let version = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        localStorage.setItem(`rust-search-extension:${TARGET}`, version);
+        console.log(version);
     }
 });
 

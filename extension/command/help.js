@@ -5,6 +5,7 @@ class HelpCommand extends Command {
 
     async onExecute() {
         const value = {
+            "https://rust.extension.sh/": "Open plugin documentation",
             "tips1": `Tips: You can use shortcut ${c.match("Cmd")}/${c.match("Ctrl")} + ${c.match("L")} to autofocus the address bar`,
             "tips2": `Tips: Combine ${c.match("Cmd")} or ${c.match("Alt")} with ${c.match("Enter")} to open the search result in the new tab`,
             ":": `Prefix ${c.match(":")} to execute command (:cargo, :book, :yet, :stable, etc)`,
@@ -13,13 +14,13 @@ class HelpCommand extends Command {
             "~": `Prefix ${c.match("~")} to search external crate's docs`,
             "@": `Prefix ${c.match("@crate")} (${c.dim("e.g. @tokio")}) to search that crate's doc exclusively`,
             "#": `Prefix ${c.match("#")} to search builtin attributes`,
-            "%": `Prefix ${c.match("%")} to search Rust official book chapters`,
+            "%": `Prefix ${c.match("%")} to search Rust book chapters`,
             ">": `Prefix ${c.match(">")} to search Rust clippy lints`,
-            "?": `Prefix ${c.match("?")} to search caniuse.rs, prefix ${c.match("??")} can redirect to the RFC page`,
+            "?": `Prefix ${c.match("?")} to search caniuse.rs`,
             "1.": `Input ${c.match("Rust version")} (${c.dim("e.g. 1.42.0")}) to open its release page`,
         };
         return Object.entries(value).map(([key, description], index) => {
-            return {content: key, description};
+            return { content: key, description };
         });
     }
 }

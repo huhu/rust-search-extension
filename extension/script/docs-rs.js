@@ -1,10 +1,10 @@
-// rawCrateName v.s crateName
-// See: https://docs.rs/actix-web/3.2.0/actix_web/
-// Here actix-web is the rawCrateName, actix_web is the crateName.
-// The rawCrateName mainly for Cargo.toml url to parse feature flags.
+// Some corner cases the crateName different to libName:
+// 1. https://docs.rs/actix-web/3.2.0/actix_web/
+// 2. https://docs.rs/md-5/0.10.5/md5/
+// 
+// Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
 let pathname = location.pathname.replace("/crate", "");
-let [rawCrateName, crateVersion] = pathname.slice(1).split("/");
-crateName = rawCrateName.replaceAll("-", "_");
+let [crateName, crateVersion, libName] = pathname.slice(1).split("/");
 // A crate version which added to the extension.
 let installedVersion = undefined;
 
@@ -72,18 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
     highlight();
 });
 
-// Using separate event listener to avoid network requesting latency for feature flags menu enhancement.
-document.addEventListener("DOMContentLoaded", async () => {
-    let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
-    if (!menus) return;
-
-    let featureFlagsMenu = Array.from(menus.children).find(menu => menu.textContent.toLowerCase().includes("feature flags"));
-    if (featureFlagsMenu) {
-        featureFlagsMenu.classList.add("pure-menu-has-children", "pure-menu-allow-hover");
-        await enhanceFeatureFlagsMenu(featureFlagsMenu);
-    }
-});
-
 document.addEventListener("DOMContentLoaded", async () => {
     let menus = document.querySelector("form>.pure-menu-list:not(.pure-menu-right)");
     if (!menus) return;
@@ -101,28 +89,54 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Exclude /crate/** pages
     if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
         // Query installed crates from chrome.storage API
-        chrome.storage.local.get("crates", (result) => {
-            let crates = result['crates'] || {};
-            let crate = crates[crateName];
-            if (crate) {
-                insertAddToExtensionElement(getState(crate.version));
-            } else {
-                insertAddToExtensionElement("need-to-install");
-            }
-        });
+        let crates = await storage.getItem("crates") || {};
+        let installedCrate = crates[crateName];
+        if (!installedCrate && crates[libName]) {
+            installedCrate = crates[libName];
+        }
+
+        if (installedCrate) {
+            insertAddToExtensionElement(getState(installedCrate.version));
+        } else {
+            insertAddToExtensionElement("need-to-install");
+        }
+    }
+
+
+    let featureFlagsMenu = Array.from(menus.children).find(menu => menu.textContent.toLowerCase().includes("feature flags"));
+    if (featureFlagsMenu) {
+        featureFlagsMenu.classList.add("pure-menu-has-children", "pure-menu-allow-hover");
+        await enhanceFeatureFlagsMenu(featureFlagsMenu);
     }
 });
 
-async function enhanceFeatureFlagsMenu(menu) {
-    // Use rawCrateName to fetch the Cargo.toml, otherwise will get 404.
-    let cargoTomUrl = `https://docs.rs/crate/${rawCrateName}/${crateVersion}/source/Cargo.toml`;
-    let response = await fetch(cargoTomUrl);
-    let content = await response.text();
+async function getFeatureFlagsMenuData() {
+    let crateAPIURL = `https://crates.io/api/v1/crates/${crateName}/${crateVersion}`;
+    let response = await fetch(crateAPIURL);
+    let content = await response.json();
     let features = parseCargoFeatures(content);
+
+    let depsURL = `https://crates.io/api/v1/crates/${crateName}/${crateVersion}/dependencies`;
+    let depsResponse = await fetch(depsURL);
+    let depsContent = await depsResponse.json();
+    let optionalDependencies = parseOptionalDependencies(depsContent);
+
+    return { features, optionalDependencies };
+}
+
+async function enhanceFeatureFlagsMenu(menu) {
+    let crateData = JSON.parse(window.sessionStorage.getItem(`${crateName}-${crateVersion}`));
+
+    if (!crateData) {
+        crateData = await getFeatureFlagsMenuData();
+        window.sessionStorage.setItem(`${crateName}-${crateVersion}`, JSON.stringify(crateData));
+    }
+
+    const { features, optionalDependencies } = crateData;
     let html = `<div style="padding: 1rem"><p>
                     This crate has no explicit-declared feature flag.
                     <br>
-                    Check its <a href="${cargoTomUrl}">Cargo.toml</a> to learn more.
+                    Check its <a style="padding:0" href="https://docs.rs/crate/${crateName}/${crateVersion}/source/Cargo.toml">Cargo.toml</a> to learn more.
                 </p></div>`;
     if (features.length > 0) {
         let tbody = features.map(([name, flags]) => {
@@ -141,10 +155,9 @@ async function enhanceFeatureFlagsMenu(menu) {
     }
 
     // Render optional dependency list.
-    let optionalDependencies = parseOptionalDependencies(content);
     let dependeciesList = optionalDependencies.map(dependency => `
         <li class="optional-dependency-item">
-            <a href="https://docs.rs/${dependency}">
+            <a style="padding:0" href="https://docs.rs/${dependency}">
                 <span class="stab portability docblock-short">
                     <code style="white-space: nowrap;">${dependency}</code>
                 </span>
@@ -180,19 +193,19 @@ function getState(version) {
 function insertAddToExtensionElement(state) {
     // Remove previous element.
     let el = document.querySelector(".add-to-extension");
-    if (el && el.parentElement) {
+    if (el?.parentElement) {
         el.parentElement.remove();
     }
 
     let menu = document.querySelector(".pure-menu-list:not(.pure-menu-right)");
     let li = document.createElement("li");
     li.classList.add("pure-menu-item", "pure-menu-has-children", "pure-menu-allow-hover");
-    li.onclick = () => {
+    li.onclick = async () => {
         // Toggle search index added state
         if (state === "latest") {
-            chrome.runtime.sendMessage({ crateName, action: "crate:remove" }, response => {
-                insertAddToExtensionElement(getState(undefined));
-            });
+            // Use the libName to remove the installed crate.
+            await CrateDocManager.removeCrate(libName);
+            insertAddToExtensionElement(getState(undefined));
         } else {
             injectScripts(["script/lib.js", "script/add-search-index.js"]);
         }
@@ -241,25 +254,13 @@ function insertAddToExtensionElement(state) {
     }
 }
 
-window.addEventListener("message", function (event) {
+window.addEventListener("message", async function (event) {
     if (event.source === window &&
         event.data &&
         event.data.direction === "rust-search-extension:docs.rs") {
-        chrome.runtime.sendMessage({ action: "crate:add", ...event.data.message },
-            (response) => {
-                if (response) {
-                    insertAddToExtensionElement(getState(event.data.message.crateVersion));
-                    console.log("Congrats! This crate has been installed successfully!");
-                } else {
-                    insertAddToExtensionElement("error");
-                    console.error("Oops! We have failed to install this crate!", {
-                        pathname,
-                        crateVersion,
-                        installedVersion,
-                        data: event.data,
-                    });
-                }
-            }
-        );
+        let message = event.data.message;
+        await CrateDocManager.addCrate(message);
+        insertAddToExtensionElement(getState(message.crateVersion));
+        console.log("Congrats! This crate has been installed successfully!");
     }
 });

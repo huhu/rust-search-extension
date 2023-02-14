@@ -1,7 +1,7 @@
 (async function() {
     document.querySelector(".btn-export").onclick = async (event) => {
         let target = event.target.parentElement;
-        let data = {};
+        let data = Object.create(null)
         if (target.querySelector(".settings").checked) {
             data["settings"] = {
                 "auto-update": await settings.autoUpdate,
@@ -11,14 +11,14 @@
             };
         }
         if (target.querySelector(".search-history").checked) {
-            data["history"] = storage.getItem("history") || [];
+            data["history"] = await storage.getItem("history") || [];
         }
         if (target.querySelector(".search-statistics").checked) {
-            data["stats"] = new Statistics();
+            data["stats"] = await Statistics.load();
         }
         if (target.querySelector(".crates").checked) {
             let catalog = await CrateDocManager.getCrates();
-            let list = {};
+            let list = Object.create(null)
             for (const name of Object.keys(catalog)) {
                 list[`@${name}`] = await CrateDocManager.getCrateSearchIndex(name);
             }

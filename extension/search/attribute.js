@@ -1,3 +1,5 @@
+const ATTRIBUTE_DOC_URL = "https://doc.rust-lang.org/nightly/reference/";
+
 class AttributeSearch {
     constructor(index) {
         this.attributesIndex = index;
@@ -30,6 +32,9 @@ class AttributeSearch {
         })
             .map(item => {
                 let [description, href] = this.attributesIndex[item.attribute];
+                if (!href.startsWith('http')) {
+                    href = ATTRIBUTE_DOC_URL + href;
+                }
                 return {
                     name: item.attribute,
                     description: description,

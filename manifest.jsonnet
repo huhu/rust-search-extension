@@ -8,12 +8,13 @@ local icons() = {
 };
 
 local name = 'Rust Search Extension';
-local version = '1.8.1';
+local version = '1.9.1';
 local keyword = 'rs';
 local description = 'Rust Search Extension - the ultimate search extension for Rust';
 
 local browser = std.extVar('browser');
 
+local host_permissions = ['*://crates.io/api/v1/crates/*'];
 local json = if std.member(['chrome', 'edge'], browser) then
   local manifest_v3 = import 'core/manifest_v3.libsonnet';
   manifest_v3.new(name, keyword, description, version, service_worker='service-worker.js')
@@ -31,6 +32,7 @@ local json = if std.member(['chrome', 'edge'], browser) then
     // The production extension public key to get the constant extension id during development.
     [if browser == 'chrome' then 'key' else null]: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxOX+QfzcFnxPwwmzXDhuU59XGCSMZq+FGo0vOx/ufg/Vw7HfKEPVb9TKzrGtqW38kafWkjxOxGhF7VyyX2ymi55W0xqf8BedePbvMtV6H1tY5bscJ0dLKGH/ZG4T4f645LgvOWOBgyv8s3NDWXzwOMS57ER1y+EtHjDsWD1M0nfe0VCCLW18QlAsNTHfLZk6lUeEeGXZrl6+jK+pZxwhQFmc8cJvOyw7uAq6IJ9lnGDvxFVjGUepA0lKbLuIZjN3p70mgVUIuBYzKE6R8HDk4oBbKAK0HyyKfnuAYbfwVYotHw4def+OW9uADSlZEDC10wwIpU9NoP3szh+vWSnk0QIDAQAB',
   }
+  .addHostPermissions(host_permissions)
 else
   local manifest_v2 = import 'core/manifest.libsonnet';
   manifest_v2.new(name, keyword, description, version)
@@ -39,22 +41,24 @@ else
   .addBackgroundScripts(['migration.js', 'settings.js', 'deminifier.js'])
   .addBackgroundScripts(utils.js_files('search', ['algorithm', 'book', 'crate', 'attribute', 'caniuse', 'lint']))
   .addBackgroundScripts(utils.js_files('search/docs', ['base', 'crate-doc', 'rustc']))
-  .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'rfcs', 'commands']))
-  .addBackgroundScripts(utils.js_files('command', ['blog', 'label', 'help', 'stable', 'rfc']))
+  .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'rfcs', 'commands', 'rustc', 'targets']))
+  .addBackgroundScripts(utils.js_files('command', ['blog', 'label', 'help', 'stable', 'rfc', 'rustc', 'target']))
   .addBackgroundScripts(['statistics.js', 'rust-version.js', 'crate-manager.js', 'index-manager.js', 'main.js'])
+  .addPermissions(host_permissions)
 ;
 
+local INDEX_MANAGER_FILES = ['core/storage.js', 'index-manager.js'];
 json.addIcons(icons())
 .addPermissions(['storage', 'unlimitedStorage'])
 .setOptionsUi('manage/index.html')
 .addContentScript(
   matches=['*://docs.rs/*'],
-  js=utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate']) + utils.js_files('libs', ['semver']),
+  js=['core/storage.js', 'crate-manager.js'] + utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate', 'semver']),
   css=['script/docs-rs.css', 'script/details-toggle.css'],
 )
 .addContentScript(
   matches=['*://doc.rust-lang.org/*'],
-  js=utils.js_files('script', ['lib', 'doc-rust-lang-org', 'rust-src-navigate']),
+  js=INDEX_MANAGER_FILES + utils.js_files('script', ['lib', 'doc-rust-lang-org', 'rust-src-navigate']),
   css=['script/doc-rust-lang-org.css', 'script/details-toggle.css'],
   exclude_matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
 )
@@ -65,7 +69,7 @@ json.addIcons(icons())
 )
 .addContentScript(
   matches=['*://rust.extension.sh/update'],
-  js=utils.js_files('script', ['rust-extension-sh']),
+  js=INDEX_MANAGER_FILES + utils.js_files('script', ['rust-extension-sh']),
   css=[],
 ).addContentScript(
   matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md*'],

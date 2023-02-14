@@ -24,20 +24,15 @@
 }
 
 @media screen and (min-width: 1280px) {
-    .rse-fix-readme {
-        display: flex;
-        padding-right: 0 !important;
-    }
-
     .rse-version-list {
         box-sizing: content-box;
         min-width: 200px;
-        border-left: var(--color-border-secondary) solid 1px;
+        border-left: var(--color-border-muted) solid 1px;
         margin-left: 1.5rem;
         max-height: 100vh;
         position: sticky;
-        /* 50px to fix compatibility of Github markdown file's sticky header*/
-        top: 50px;
+        /* 90px to fix compatibility of Github markdown file's sticky header*/
+        top: 90px;
         overflow: scroll !important;
         font-size: 13px;
         list-style: none;

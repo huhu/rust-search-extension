@@ -32,6 +32,11 @@ div.nav-container form.landing-search-form-nav {
     border-spacing: 0.5rem;
 }
 
+.feature-flags-table td.docblock-short {
+    position: sticky;
+    left: 0;
+}
+
 .optional-dependency {
     padding: 10px 20px;
     border-top: 1px solid var(--color-border);
@@ -53,10 +58,11 @@ div.nav-container form.landing-search-form-nav {
 .optional-dependency-item {
     display: inline-block;
     vertical-align: middle;
-    margin: 5px 0;
+    margin: 7px 0;
 }
 
 .add-to-extension {
+    line-height: 1;
     font-size: 0.8em;
     color: #121212bb;
     background-color: #F9BB2Daa;

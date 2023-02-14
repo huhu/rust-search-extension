@@ -2,7 +2,7 @@
     function sendSearchIndex() {
         if (location.hostname === "docs.rs") { // docs.rs pages
             // Parse crate info from location pathname.
-            let [_, crateVersion, crateName] = location.pathname.slice(1).split("/");
+            let [crateName, crateVersion, libName] = location.pathname.slice(1).split("/");
             // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
             // the latest version path has changed:
             // from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/
@@ -15,6 +15,7 @@
             window.postMessage({
                 direction: "rust-search-extension:docs.rs",
                 message: {
+                    libName,
                     crateName,
                     crateVersion,
                     searchIndex: window.searchIndex,
@@ -32,7 +33,7 @@
             const STD_CRATES = ['std', 'test', 'proc_macro'];
 
             // Remove unnecessary std crate's search index, such as core, alloc, etc
-            let searchIndex = {};
+            let searchIndex = Object.create(null)
             STD_CRATES.forEach(crate => {
                 searchIndex[crate] = window.searchIndex[crate];
             });
@@ -58,14 +59,12 @@
 
         // For the older version, we still need to get it from the DOM.
         if (!searchIndexJs) {
-            // If we can't get the search index via "data-search-index-js",
-            // then we should fallback to the "data-search-js", which is a
-            // temporary stage in librustdoc.
-            // Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
-            //
             // This PR https://github.com/rust-lang/rust/pull/98124 use another way to load search-index:
             // by concatenating the paths to get a full search-index.js file, see resourcePath() function.
-            searchIndexJs = getVar('search-index-js') || getVar('search-js') || resourcePath("search-index", ".js");
+            // 
+            // Fallback to legacy "data-search-index-js" or "data-search-js", which are a temporary stage 
+            // in librustdoc. Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
+            searchIndexJs = resourcePath("search-index", ".js") || getVar('search-index-js') || getVar('search-js');
         }
 
         if (searchIndexJs) {
@@ -90,9 +89,15 @@ function getVar(name) {
             return dataVar.value;
         }
     }
-    return null
+    return null;
 }
 
 function resourcePath(basename, extension) {
-    return getVar("root-path") + basename + getVar("resource-suffix") + extension
+    let rootPath = getVar("root-path");
+    let resrouceSuffix = getVar("resource-suffix")
+    if (rootPath && resrouceSuffix) {
+        return rootPath + basename + resrouceSuffix + extension;
+    } else {
+        return null;
+    }
 }
