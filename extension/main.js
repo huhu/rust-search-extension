@@ -374,7 +374,7 @@ function getPlatformOs() {
             let baseUrl = isOfflineMode ? offlineDocPath : 'https://doc.rust-lang.org/';
             return result.map(errorCode => {
                 return {
-                    content: `${baseUrl}error-index.html#${errorCode}`,
+                    content: `${baseUrl}error_codes/${errorCode}.html`,
                     description: `Search Rust error index for ${c.match(errorCode)} on ${isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error-index.html'}`,
                 };
             });
