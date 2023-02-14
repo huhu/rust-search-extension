@@ -365,7 +365,7 @@ function getPlatformOs() {
     omnibox.addRegexQueryEvent(/^`?e\d{2,4}`?$/i, {
         onSearch: (query) => {
             query = query.replace("`", "");
-            let baseIndex = parseInt(query.slice(1).padEnd(4, '0')) + 1;
+            let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
             let result = [];
             for (let i = 0; i < 10; i++) {
                 let errorIndex = 'E' + String(baseIndex++).padStart(4, "0").toUpperCase();
@@ -375,7 +375,7 @@ function getPlatformOs() {
             return result.map(errorCode => {
                 return {
                     content: `${baseUrl}error_codes/${errorCode}.html`,
-                    description: `Search Rust error index for ${c.match(errorCode)} on ${isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error-index.html'}`,
+                    description: `Open error code ${c.match(errorCode)} on ${isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error_codes/error-index.html'}`,
                 };
             });
         },
