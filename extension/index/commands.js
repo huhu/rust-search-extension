@@ -83,10 +83,10 @@ var commandsIndex = {
         ["cheats.rs", "https://cheats.rs/"],
         ["caniuse.rs", "https://caniuse.rs/"],
         ["deps.rs", "https://deps.rs/"],
+        ["diff.rs", "https://diff.rs/"],
         ["release.rs", "https://releases.rs/"],
         ["stdrs.dev", "https://stdrs.dev/"],
         ["Rust Explorer", "https://www.rustexplorer.com/"],
-        ["Macro Railroad ", "https://lukaslueg.github.io/macro_railroad_wasm_demo/"],
     ],
     "mirror": [
         ["[CN] Rsproxy.cn - 字节跳动Rust源", "https://rsproxy.cn/"],
