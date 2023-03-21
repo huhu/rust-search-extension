@@ -74,6 +74,7 @@ class DocSearch {
     buildIndex(rawSearchIndex) {
         let searchIndex = [];
         const searchWords = [];
+        const charA = "A".charCodeAt(0);
         // if the rawSearchIndex is undefined or null, give it a empty object `{}`
         // to call iterate.
         for (let [crateName, indexItem] of Object.entries(rawSearchIndex || {})) {
@@ -91,7 +92,9 @@ class DocSearch {
             // librustdoc has switched the search-index.js from a "array of struct" to a "struct of array" format.
             // We need to compat both the new and old formats.
             if (["t", "n", "q", "d", "i", "f", "p"].every(key => key in indexItem)) {
-                // an array of (Number) item types
+                // an array of (Number) item types (before 1.69.0) 
+                // However, it changed since this PR: https://github.com/rust-lang/rust/pull/108013
+                // a String of one character item type codes (since 1.69.0)
                 const itemTypes = indexItem.t;
                 // an array of (String) item names
                 const itemNames = indexItem.n;
@@ -110,7 +113,7 @@ class DocSearch {
                 // convert `paths` into an object form
                 for (let i = 0; i < paths.length; ++i) {
                     if (Array.isArray(paths[i])) {
-                        paths[i] = {ty: paths[i][0], name: paths[i][1]};
+                        paths[i] = { ty: paths[i][0], name: paths[i][1] };
                     }
                 }
 
@@ -124,9 +127,13 @@ class DocSearch {
                 let len = itemTypes.length;
                 let lastPath = "";
                 for (let i = 0; i < len; ++i) {
+                    let ty = itemTypes[i];
                     let row = {
                         crate: crateName,
-                        ty: itemTypes[i],
+                        // itemTypes changed from number array to string since Rust 1.69,
+                        // we should compat both versions.
+                        // see this PR: https://github.com/rust-lang/rust/pull/108013 
+                        ty: typeof ty === 'string' ? itemTypes.charCodeAt(i) - charA : ty,
                         name: itemNames[i],
                         path: itemPaths[i] ? itemPaths[i] : lastPath,
                         desc: itemDescs[i],
@@ -159,7 +166,7 @@ class DocSearch {
                 // convert `paths` into an object form
                 for (let i = 0; i < paths.length; ++i) {
                     if (Array.isArray(paths[i])) {
-                        paths[i] = {ty: paths[i][0], name: paths[i][1]};
+                        paths[i] = { ty: paths[i][0], name: paths[i][1] };
                     }
                 }
 
