@@ -40,16 +40,16 @@ class CrateDocManager {
     // 2. https://docs.rs/md-5/0.10.5/md5/
     // 
     // Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
-    static async addCrate({ libName, version, searchIndex, crateName }) {
+    static async addCrate({ libName, crateVersion, searchIndex, crateName }) {
         if (searchIndex && libName in searchIndex) {
             await storage.setItem(`@${libName}`, searchIndex);
             let doc = searchIndex[libName]["doc"];
             let crates = await CrateDocManager.getCrates();
             if (libName in crates) {
                 // Don't override the time if the crate exists
-                crates[libName] = { version, doc, time: crates[libName].time, crateName };
+                crates[libName] = { version: crateVersion, doc, time: crates[libName].time, crateName };
             } else {
-                crates[libName] = { version, doc, time: Date.now(), crateName };
+                crates[libName] = { version: crateVersion, doc, time: Date.now(), crateName };
             }
             await storage.setItem("crates", crates);
         }
