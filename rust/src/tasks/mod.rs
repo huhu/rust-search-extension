@@ -1,3 +1,4 @@
+pub use advisory::AdvisoryTask;
 pub use books::BooksTask;
 pub use caniuse::CaniuseTask;
 pub use crates::CratesTask;
@@ -7,6 +8,7 @@ pub use rfcs::RfcsTask;
 pub use rustc::RustcTask;
 pub use targets::TargetsTask;
 
+mod advisory;
 mod books;
 mod caniuse;
 mod crates;
