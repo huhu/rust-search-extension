@@ -20,6 +20,5 @@ jobs:
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
         git clone --depth 1 https://github.com/jplatte/caniuse.rs.git /tmp/caniuse
         git clone --depth 1 https://github.com/nrc/rfc-index.git /tmp/rfcs
-        git clone --depth 1 https://github.com/rustsec/advisory-db.git /tmp/advisory-db
     - name: Deloy docs
       run: ./scripts/deploy-docs.sh
