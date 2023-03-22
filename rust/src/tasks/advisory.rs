@@ -1,9 +1,7 @@
 use std::{collections::HashMap, io::Write, path::Path};
 
 use argh::FromArgs;
-use rustsec::{
-    database::Query, repository::git::DEFAULT_URL, Advisory, Collection, Database, Repository,
-};
+use rustsec::{database::Query, Advisory, Collection, Database, Repository};
 
 use super::Task;
 
@@ -12,12 +10,16 @@ const ADVISORY_INDEX_PATH: &str = "../docs/static/advisory";
 /// Advisory task
 #[derive(FromArgs)]
 #[argh(subcommand, name = "advisory")]
-pub struct AdvisoryTask {}
+pub struct AdvisoryTask {
+    /// advisory-db repository path
+    #[argh(option, short = 'r')]
+    repo_path: String,
+}
 
 impl Task for AdvisoryTask {
     fn execute(&self) -> crate::Result<()> {
         let mut map = HashMap::new();
-        let repo = Repository::fetch(DEFAULT_URL, "/tmp/advisory-db", true)?;
+        let repo = Repository::open(&self.repo_path)?;
         let db = Database::load_from_repo(&repo)?;
         for advisory in db
             .query(&Query::new().collection(Collection::Crates).withdrawn(false))

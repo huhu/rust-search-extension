@@ -14,7 +14,7 @@ RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml 
 RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml targets -d /tmp/public/index/targets.js
 RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml caniuse -r /tmp/caniuse -d /tmp/public/index/caniuse.js
 RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml rfcs -r /tmp/rfcs -d /tmp/public/index/rfcs.js
-RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml advisory
+RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml advisory -r /tmp/advisory-db
 # Copy commands.js
 cp extension/index/commands.js /tmp/public/index/commands.js
 
