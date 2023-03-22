@@ -1,7 +1,9 @@
 use std::{collections::HashMap, io::Write, path::Path};
 
 use argh::FromArgs;
-use rustsec::{database::Query, Advisory, Collection, Database};
+use rustsec::{
+    database::Query, repository::git::DEFAULT_URL, Advisory, Collection, Database, Repository,
+};
 
 use super::Task;
 
@@ -15,7 +17,8 @@ pub struct AdvisoryTask {}
 impl Task for AdvisoryTask {
     fn execute(&self) -> crate::Result<()> {
         let mut map = HashMap::new();
-        let db = Database::fetch()?;
+        let repo = Repository::fetch(DEFAULT_URL, "/tmp/advisory-db", true)?;
+        let db = Database::load_from_repo(&repo)?;
         for advisory in db
             .query(&Query::new().collection(Collection::Crates).withdrawn(false))
             .into_iter()
