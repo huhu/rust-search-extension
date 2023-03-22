@@ -7,7 +7,7 @@ build
 
 # Create dir in advance
 mkdir -p /tmp/public/index
-RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml advisory -d docs/static/advisory
+RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml advisory -d /tmp/public/advisory
 RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml books -d /tmp/public/index/books.js
 RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml lints -d /tmp/public/index/lints.js
 RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=rust/Cargo.toml labels -d /tmp/public/index/labels.js
