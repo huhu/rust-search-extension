@@ -17,12 +17,7 @@ impl Task for AdvisoryTask {
         let mut map = HashMap::new();
         let db = Database::fetch()?;
         for advisory in db
-            .query(
-                &Query::new()
-                    .collection(Collection::Crates)
-                    .withdrawn(false)
-                    .informational(true),
-            )
+            .query(&Query::new().collection(Collection::Crates).withdrawn(false))
             .into_iter()
         {
             map.entry(&advisory.metadata.package)
