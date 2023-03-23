@@ -1,7 +1,7 @@
-use std::{collections::HashMap, io::Write, path::Path};
+use std::{collections::HashMap, fs, io::Write, path::Path};
 
 use argh::FromArgs;
-use rustsec::{database::Query, Advisory, Collection, Database};
+use rustsec::{database::Query, Collection, Database};
 
 use super::Task;
 
@@ -28,22 +28,17 @@ impl Task for AdvisoryTask {
                 .or_insert_with(Vec::new)
                 .push(advisory);
         }
-        for (package, advisories) in map {
-            self.generate_advisory_json(package.as_str(), &advisories)?;
-        }
-        Ok(())
-    }
-}
 
-impl AdvisoryTask {
-    fn generate_advisory_json(&self, package: &str, advisory: &[&Advisory]) -> crate::Result<()> {
         let path = Path::new(&self.dest_path);
         if !path.exists() {
-            std::fs::create_dir(path)?;
+            fs::create_dir(path)?;
         }
-        let mut file = std::fs::File::create(path.join(format!("{package}.json")))?;
-        let json = serde_json::to_string_pretty(&advisory)?;
-        file.write_all(json.as_bytes())?;
+        for (package, advisories) in map {
+            let package = package.as_str().replace('-', "_");
+            let mut file = fs::File::create(path.join(format!("{package}.json")))?;
+            let json = serde_json::to_string_pretty(&advisories)?;
+            file.write_all(json.as_bytes())?;
+        }
         Ok(())
     }
 }
