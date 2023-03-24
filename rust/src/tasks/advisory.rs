@@ -33,7 +33,9 @@ impl Task for AdvisoryTask {
         if !path.exists() {
             fs::create_dir(path)?;
         }
-        for (package, advisories) in map {
+        for (package, mut advisories) in map {
+            // sort advisories by date
+            advisories.sort_by(|a, b| b.metadata.date.cmp(&a.metadata.date));
             let package = package.as_str().replace('-', "_");
             let mut file = fs::File::create(path.join(format!("{package}.json")))?;
             let json = serde_json::to_string_pretty(&advisories)?;
