@@ -76,28 +76,29 @@
             console.error("Sorry, no search index found.");
         }
     }
-})();
 
-// ======== Following function mirrored to librustdoc main.js ========
 
-// Get rustdoc variable from DOM.
-function getVar(name) {
-    const el = document.getElementById("rustdoc-vars");
-    if (el) {
-        const dataVar = el.attributes["data-" + name];
-        if (dataVar) {
-            return dataVar.value;
+    // ======== Following function mirrored to librustdoc main.js ========
+
+    // Get rustdoc variable from DOM.
+    function getVar(name) {
+        const el = document.getElementById("rustdoc-vars");
+        if (el) {
+            const dataVar = el.attributes["data-" + name];
+            if (dataVar) {
+                return dataVar.value;
+            }
         }
-    }
-    return null;
-}
-
-function resourcePath(basename, extension) {
-    let rootPath = getVar("root-path");
-    let resrouceSuffix = getVar("resource-suffix")
-    if (rootPath && resrouceSuffix) {
-        return rootPath + basename + resrouceSuffix + extension;
-    } else {
         return null;
     }
-}
+
+    function resourcePath(basename, extension) {
+        let rootPath = getVar("root-path");
+        let resrouceSuffix = getVar("resource-suffix")
+        if (rootPath && resrouceSuffix) {
+            return rootPath + basename + resrouceSuffix + extension;
+        } else {
+            return null;
+        }
+    }
+})();
