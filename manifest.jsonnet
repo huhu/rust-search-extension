@@ -72,10 +72,6 @@ json.addIcons(icons())
   js=INDEX_MANAGER_FILES + utils.js_files('script', ['rust-extension-sh']),
   css=[],
 ).addContentScript(
-  matches=['*://github.com/rust-lang/rust/blob/master/RELEASES.md*'],
-  js=utils.js_files('script', ['lib', 'rust-lang-release']),
-  css=['script/github.css'],
-).addContentScript(
   matches=[
     '*://docs.rs/*',
     '*://doc.rust-lang.org/*',
