@@ -14,7 +14,7 @@ local description = 'Rust Search Extension - the ultimate search extension for R
 
 local browser = std.extVar('browser');
 
-local host_permissions = ['*://crates.io/api/v1/crates/*'];
+local host_permissions = ['*://crates.io/api/v1/crates/*', 'https://rust.extension.sh/*'];
 local json = if std.member(['chrome', 'edge'], browser) then
   local manifest_v3 = import 'core/manifest_v3.libsonnet';
   manifest_v3.new(name, keyword, description, version, service_worker='service-worker.js')
@@ -38,11 +38,11 @@ else
   manifest_v2.new(name, keyword, description, version)
   .addWebAccessibleResources(utils.js_files('script', ['lib', 'add-search-index']))
   .addWebAccessibleResources(['wasm/*.wasm', 'assets/*.svg'])
-  .addBackgroundScripts(['migration.js', 'settings.js', 'deminifier.js'])
+  .addBackgroundScripts(['settings.js', 'deminifier.js'])
   .addBackgroundScripts(utils.js_files('search', ['algorithm', 'book', 'crate', 'attribute', 'caniuse', 'lint']))
   .addBackgroundScripts(utils.js_files('search/docs', ['base', 'crate-doc', 'rustc']))
   .addBackgroundScripts(utils.js_files('index', ['attributes', 'books', 'caniuse', 'crates', 'std-docs', 'lints', 'labels', 'rfcs', 'commands', 'rustc', 'targets']))
-  .addBackgroundScripts(utils.js_files('command', ['blog', 'label', 'help', 'stable', 'rfc', 'rustc', 'target']))
+  .addBackgroundScripts(utils.js_files('command', ['label', 'help', 'stable', 'rfc', 'rustc', 'target']))
   .addBackgroundScripts(['statistics.js', 'rust-version.js', 'crate-manager.js', 'index-manager.js', 'main.js'])
   .addPermissions(host_permissions)
 ;
