@@ -17,7 +17,6 @@ class HelpCommand extends Command {
             "%": `Prefix ${c.match("%")} to search Rust book chapters`,
             ">": `Prefix ${c.match(">")} to search Rust clippy lints`,
             "?": `Prefix ${c.match("?")} to search caniuse.rs`,
-            "1.": `Input ${c.match("Rust version")} (${c.dim("e.g. 1.42.0")}) to open its release page`,
         };
         return Object.entries(value).map(([key, description], index) => {
             return { content: key, description };
