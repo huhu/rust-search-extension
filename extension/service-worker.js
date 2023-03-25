@@ -8,7 +8,6 @@ importScripts(
     'core/command/manager.js',
     'core/command/open.js',
     'core/command/simple.js',
-    "command/blog.js",
     "command/help.js",
     "command/label.js",
     "command/rfc.js",
