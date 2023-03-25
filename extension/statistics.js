@@ -179,6 +179,7 @@ class Statistics {
  */
 async function tryMigrateLegacyStatisticsToTimeline() {
     const statistics = await storage.getItem("statistics");
+    if (!statistics) return;
     // Those calendar, crates, hours, type data are legacy.
     const { timeline = [], calendarData, cratesData, hoursData, typeData } = statistics;
     // If no legacy data, we needn't migrate.
