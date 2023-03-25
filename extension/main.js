@@ -12,10 +12,6 @@ function getPlatformOs() {
 }
 
 (async () => {
-    if (manifest.manifest_version === 2) {
-        await migrate();
-    }
-
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
     let isOfflineMode = await settings.isOfflineMode;
@@ -540,32 +536,6 @@ function getPlatformOs() {
         }
         return true;
     });
-})();
-
-(async () => {
-    let history = await storage.getItem("history") || [];
-    if (history) {
-        if (!await storage.getItem("statistics")) {
-            let statistics = await Statistics.load();
-            for (const item of history) {
-                await statistics.record(item);
-            }
-
-            await statistics.save();
-        }
-
-        // Eliminate unnecessary tags (such as <match>, <dim>) to save disk usage.
-        history = history
-            .map(({ description, ...rest }) => {
-                return {
-                    description: description
-                        .replace(/<\/?match>/g, "")
-                        .replace(/<\/?dim>/g, ""),
-                    ...rest,
-                };
-            });
-        await storage.setItem("history", history);
-    }
 })();
 
 const chromeAction = chrome.action || chrome.browserAction;
