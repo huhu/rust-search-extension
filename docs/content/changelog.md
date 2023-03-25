@@ -4,6 +4,25 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.10.0 -2023-03-25
+
+- Add security advisory menu to docs.rs ({{ issue(id=239) }})
+  > ![](/security-advisory-menu.png)
+- Support statistics by year ({{ issue(id=221) }})
+- Support new error-index page ({{ issue(id=192) }})
+- Support new search index format since 1.69 ({{ issue(id=233) }})
+- Bugfix:
+  - Make "add to extension" button vertically centered ({{ issue(id=220) }})
+  - Fix `resourcePath()` null bug. Fix {{ issue(id=219) }}
+  - Fix cargo book command ({{ issue(id=231) }}) ({{ issue(id=234) }})
+  - Fix error code autoincreament bug
+- Remove:
+  - Remove :blog command ({{ issue(id=240) }})
+  - Remove GitHub release page enhancement ({{ issue(id=241) }})
+  - Remove search rust version feature
+
+Thanks for the contributions from [@shwin0901](https://github.com/shwin0901), [@duskmoon314](https://github.com/duskmoon314), and [@isunjn](https://github.com/isunjn).
+
 # v1.9.0 - 2022-11-20
 
 - Migrate to `chrome.storage.onChange` event to avoid adding docs index failure ({{ issue(id=206) }}).
