@@ -108,9 +108,68 @@ document.addEventListener("DOMContentLoaded", async () => {
         featureFlagsMenu.classList.add("pure-menu-has-children", "pure-menu-allow-hover");
         await enhanceFeatureFlagsMenu(featureFlagsMenu);
     }
+
+    // Add a menu item to show the crate's security advisories.
+    let advisories = await getAdvisories() || [];
+    let advisoryMenu = document.createElement("li");
+    advisoryMenu.classList.add("pure-menu-item", "pure-menu-has-children", "pure-menu-allow-hover");
+    let html = advisories.map(({ advisory, versions }) => {
+        let affectedVersions = versions.patched.map(v => `<span class="stab"><code style="white-space: nowrap;">${v}</code></span>`).join(" , ");
+        return `<li class="advisory-item">
+            <div>
+                <img style="width: 15px;vertical-align: middle;margin-right: 5px;" src="https://rustsec.org/img/rustsec-logo-square.svg" alt="advisory">
+                <b>${advisory.date}</b>
+                <a class="advisory-title" href="https://rustsec.org/advisories/${advisory.id}.html" target="_blank">
+                    ${advisoryTitle(advisory)}
+                </a>
+            </div>
+            <div class="advisory-desc">${advisory.title}</div>
+            <div class="advisory-affected-versions">
+                ${affectedVersions}
+            </div>
+            </li>`;
+    }).join("");
+
+    advisoryMenu.innerHTML = `<a href="https://rustsec.org/${ advisories.length > 0 ? `packages/${crateName}.html` : ""}"
+                                class="pure-menu-link" target="_blank">
+                <span class="fa-svg" aria-hidden="true">${SVG_SHEILD}</span>
+                <span class="title">Security advisory ${advisories.length}</span>
+                </a>
+                <div class="pure-menu-children rse-dropdown-content" role="menu">
+                ${advisories.length > 0 ? `<ul>${html}</ul>` : `<div style="padding: 1rem;text-align: center;"><img style="width:100px;padding:1rem"src="https://rustsec.org/img/rustsec-logo-square.svg"/> <div>No security advisories found.</div></div>`}
+                </div>`;
+    featureFlagsMenu.insertAdjacentElement("afterend", advisoryMenu);
 });
 
+// Advisory title. Mirror to code of https://github.com/rustsec/rustsec repository.
+function advisoryTitle(advisory) {
+    let id = advisory.id;
+    let pkg = advisory.package;
+    let informational = advisory.informational;
+    if (informational) {
+        if (informational === "notice") {
+            return `${id}: Security notice about ${pkg}`;
+        } else if (informational === "unmaintained") {
+            return `${id}: ${pkg} is unmaintained`;
+        } else if (informational === "unsound") {
+            return `${id}: Unsoundness in ${pkg}`;
+        } else if (informational === "other") {
+            return `${id}: ${pkg} is ${s}`;
+        } else {
+            return `${id}: Advisory for ${pkg}`;
+        }
+    } else {
+        return `${id}: Vulnerability in ${pkg}`;
+    }
+}
+
 async function getFeatureFlagsMenuData() {
+    // Try to get the data from sessionStorage first.
+    let crateData = JSON.parse(sessionStorage.getItem(`${crateName}-${crateVersion}`));
+    if (crateData) {
+        return crateData;
+    }
+
     let crateAPIURL = `https://crates.io/api/v1/crates/${crateName}/${crateVersion}`;
     let response = await fetch(crateAPIURL);
     let content = await response.json();
@@ -121,16 +180,14 @@ async function getFeatureFlagsMenuData() {
     let depsContent = await depsResponse.json();
     let optionalDependencies = parseOptionalDependencies(depsContent);
 
-    return { features, optionalDependencies };
+    crateData = { features, optionalDependencies };
+    // Cache the data in sessionStorage.
+    sessionStorage.setItem(`${crateName}-${crateVersion}`, JSON.stringify(crateData));
+    return crateData;
 }
 
 async function enhanceFeatureFlagsMenu(menu) {
-    let crateData = JSON.parse(window.sessionStorage.getItem(`${crateName}-${crateVersion}`));
-
-    if (!crateData) {
-        crateData = await getFeatureFlagsMenuData();
-        window.sessionStorage.setItem(`${crateName}-${crateVersion}`, JSON.stringify(crateData));
-    }
+    let crateData = await getFeatureFlagsMenuData();
 
     const { features, optionalDependencies } = crateData;
     let html = `<div style="padding: 1rem"><p>
@@ -171,7 +228,7 @@ async function enhanceFeatureFlagsMenu(menu) {
         }
         </div>`;
     menu.firstElementChild.insertAdjacentHTML("afterend",
-        `<div class="pure-menu-children feature-flags-content" role="menu">
+        `<div class="pure-menu-children rse-dropdown-content" role="menu">
             ${html}
         </div>`);
 }
@@ -251,6 +308,28 @@ function insertAddToExtensionElement(state) {
             let url = chrome.runtime.getURL("manage/crates.html");
             chrome.runtime.sendMessage({ action: "open-url", url });
         };
+    }
+}
+
+// Get vulnerability advisory for this crate.
+async function getAdvisories() {
+    // Get advisory from sessionStorage first.
+    let key = `advisory:${libName}`;
+    let advisory = sessionStorage.getItem(key);
+    if (advisory) {
+        return JSON.parse(advisory);
+    }
+
+    let resp = await fetch(`https://rust.extension.sh/advisory/${libName}.json`);
+    if (resp.status === 200) {
+        let advisory = await resp.json();
+        // Save advisory to sessionStorage.
+        sessionStorage.setItem(key, JSON.stringify(advisory));
+        return advisory;
+    } else {
+        sessionStorage.setItem(key, JSON.stringify([]));
+        console.log(`${libName} has no vulnerability advisory!`);
+        return null;
     }
 }
 

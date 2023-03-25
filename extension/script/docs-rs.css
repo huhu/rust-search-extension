@@ -11,19 +11,25 @@ div.nav-container form.landing-search-form-nav {
 
 /* Rust Search Extension classes */
 
-.feature-flags-content {
+.rse-dropdown-content {
     color: var(--color-navbar-standard);
     max-height: 600px;
     overflow: auto;
     max-width: 60rem;
 }
 
-.feature-flags-content a {
+.rse-dropdown-content a {
     color: var(--color-standard);
 }
 
-.feature-flags-content a:hover {
+.rse-dropdown-content a:hover {
     text-decoration: underline;
+}
+
+.rse-dropdown-content>ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .feature-flags-table {
@@ -59,6 +65,25 @@ div.nav-container form.landing-search-form-nav {
     display: inline-block;
     vertical-align: middle;
     margin: 7px 0;
+}
+
+.advisory-item {
+    padding: 20px 0;
+    margin: 0 20px;
+}
+
+.advisory-item:not(:first-child) {
+    border-top: 1px solid var(--color-border);
+}
+
+.advisory-title {
+    color: var(--link-color) !important;
+    font-weight: bold;
+}
+
+.advisory-desc {
+    padding: 10px 0;
+    font-size: 13px;
 }
 
 .add-to-extension {
