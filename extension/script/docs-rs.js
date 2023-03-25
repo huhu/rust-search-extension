@@ -130,12 +130,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             </li>`;
     }).join("");
 
-    advisoryMenu.innerHTML = `<a href="https://rustsec.org/packages/tokio.html" class="pure-menu-link" target="_blank">
-                <span class="fa-svg" style="" aria-hidden="true">${SVG_SHEILD}</span>            
-                <span class="title">Advisory ${advisories.length}</span>
+    advisoryMenu.innerHTML = `<a href="https://rustsec.org/${ advisories.length > 0 ? `packages/${crateName}.html` : ""}"
+                                class="pure-menu-link" target="_blank">
+                <span class="fa-svg" aria-hidden="true">${SVG_SHEILD}</span>
+                <span class="title">Security advisory ${advisories.length}</span>
                 </a>
                 <div class="pure-menu-children rse-dropdown-content" role="menu">
-                ${advisories.length > 0 ? `<ul>${html}</ul>` : `<div class="no-flags">No advisories found.</div>`}
+                ${advisories.length > 0 ? `<ul>${html}</ul>` : `<div style="padding: 1rem;text-align: center;"><img style="width:100px;padding:1rem"src="https://rustsec.org/img/rustsec-logo-square.svg"/> <div>No security advisories found.</div></div>`}
                 </div>`;
     featureFlagsMenu.insertAdjacentElement("afterend", advisoryMenu);
 });
