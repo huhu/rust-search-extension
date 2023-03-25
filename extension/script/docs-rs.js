@@ -117,6 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         let affectedVersions = versions.patched.map(v => `<span class="stab"><code style="white-space: nowrap;">${v}</code></span>`).join(" , ");
         return `<li class="advisory-item">
             <div>
+                <img style="width: 15px;vertical-align: middle;margin-right: 5px;" src="https://rustsec.org/img/rustsec-logo-square.svg" alt="advisory">
                 <b>${advisory.date}</b>
                 <a class="advisory-title" href="https://rustsec.org/advisories/${advisory.id}.html" target="_blank">
                     ${advisoryTitle(advisory)}
@@ -130,7 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).join("");
 
     advisoryMenu.innerHTML = `<a href="https://rustsec.org/packages/tokio.html" class="pure-menu-link" target="_blank">
-                <span class="fa-svg" style="color:yellow" aria-hidden="true">${SVG_SHEILD}</span>            
+                <span class="fa-svg" style="" aria-hidden="true">${SVG_SHEILD}</span>            
                 <span class="title">Advisory ${advisories.length}</span>
                 </a>
                 <div class="pure-menu-children rse-dropdown-content" role="menu">
