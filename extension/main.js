@@ -345,21 +345,6 @@ function getPlatformOs() {
         },
     });
 
-    // Search previous Rust version
-    omnibox.addRegexQueryEvent(/^v?1\.\d*/i, {
-        onSearch: (query) => {
-            let [_, minor] = query.split('.');
-            return getReleasedVersions()
-                .filter(v => !minor || `${v.minor}`.startsWith(minor))
-                .map(version => {
-                    return {
-                        content: `${RUST_RELEASE_README_URL}?version=${version.number}`,
-                        description: `Rust ${c.match(version.number)} - ${c.dim(c.normalizeDate(version.date))}`,
-                    }
-                });
-        },
-    });
-
     omnibox.addRegexQueryEvent(/^`?e\d{2,4}`?$/i, {
         onSearch: (query) => {
             query = query.replace("`", "");
