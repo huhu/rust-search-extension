@@ -46,11 +46,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateIndex("crate", window.crateIndex, { mapping: window.mapping }).then(() => {
         renderSuccessMessage("Top 20K crate index");
     });
-    let response = await fetch("https://blog.rust-lang.org/releases.json");
-    let json = await response.json();
-    if (json) {
-        window.commandsIndex['blog'] = json["releases"];
-    }
     updateIndex("command", window.commandsIndex).then(() => {
         renderSuccessMessage("Command index");
     });

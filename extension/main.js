@@ -46,7 +46,6 @@ function getPlatformOs() {
     const yetCommand = new SimpleCommand('yet', 'Search Are We Yet websites.', commandIndex['yet']);
     const toolCommand = new SimpleCommand('tool', 'Show some most useful Rust tools.', commandIndex['tool']);
     const mirrorCommand = new SimpleCommand('mirror', 'Search Rust mirror websites.', commandIndex['mirror']);
-    const blogCommand = new BlogCommand();
 
     const commandManager = new CommandManager(
         cargoCommand,
@@ -55,7 +54,6 @@ function getPlatformOs() {
         yetCommand,
         toolCommand,
         mirrorCommand,
-        blogCommand,
         labelCommand,
         rfcCommand,
         rustcCommand,
@@ -467,7 +465,6 @@ function getPlatformOs() {
                     yetCommand.setIndex(index['yet']);
                     toolCommand.setIndex(index['tool']);
                     mirrorCommand.setIndex(index['mirror']);
-                    blogCommand.setPosts(index['blog']);
                     break;
                 }
                 case "index-crate": {
@@ -558,11 +555,6 @@ function getPlatformOs() {
         }
         return true;
     });
-
-    // Put blog release request last to avoid error due to
-    // possibly request failed. E.g. Github Pages down.
-    let response = await fetch("https://blog.rust-lang.org/releases.json");
-    blogCommand.setPosts((await response.json())["releases"]);
 })();
 
 (async () => {
