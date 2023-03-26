@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     advisoryMenu.innerHTML = `<a href="https://rustsec.org/${advisories.length > 0 ? `packages/${crateName}.html` : ""}"
                                 class="pure-menu-link" target="_blank">
                 <span class="fa-svg" aria-hidden="true">${SVG_SHEILD}</span>
-                <span class="title">Security advisory ${advisories.length}</span>
+                <span class="title">Security ${advisories.length}</span>
                 </a>
                 <div class="pure-menu-children rse-dropdown-content" role="menu">
                 ${advisories.length > 0 ? `<ul>${html}</ul>` : `<div style="padding: 1rem;text-align: center;"><img style="width:100px;padding:1rem"src="https://rustsec.org/img/rustsec-logo-square.svg"/> <div>No security advisories found.</div></div>`}

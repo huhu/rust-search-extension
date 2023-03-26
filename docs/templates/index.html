@@ -25,6 +25,7 @@
       content="{{ config.extra.meta_description }}">
 <meta name="twitter:image" content="https://rust.extension.sh/banner.png">
 <link rel="stylesheet" href="{{ get_url(path="index.css") }}">
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 {% endblock head %}
 
 {% block hero %}
@@ -38,10 +39,16 @@
         <code>Space</code>
         to get started. Just that easy!
     </h3>
+    <div style="text-align: center;">
+        <a class="github-button" href="https://github.com/huhu/rust-search-extension" data-size="large" data-show-count="true"
+            aria-label="Star huhu/rust-search-extension on GitHub">Star</a>
+        <a class="github-button" href="https://github.com/huhu/rust-search-extension/fork" data-size="large"
+            data-show-count="true" aria-label="Fork huhu/rust-search-extension on GitHub">Fork</a>
+    </div>
     <div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center">
         <a class="subtitle-text" style="text-decoration: underline; margin: 10px"
            href="https://github.com/huhu/rust-search-extension/releases">
-            Current version 1.9.1
+            Current version 1.10.0
         </a>
         <a class="btn-download chrome"
            href="https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh"
