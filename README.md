@@ -84,6 +84,6 @@ You can contact us on Discord Channel: https://discord.gg/xucZNVd
 
 Thanks for the sponsorship from these great companies.
 
-[![](docs/static/jetbrains.svg)](https://www.jetbrains.com/?from=rust-search-extension)
+[![](docs/static/bytebase.svg)](https://bytebase.com/?from=rust-search-extension)
 
 [![](docs/static/vercel.svg)](https://vercel.com?utm_source=rust-search-extension)

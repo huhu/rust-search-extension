@@ -78,6 +78,6 @@ $ make edge # For Edge version
 
 感谢下列优秀企业的赞助
 
-[![](docs/static/jetbrains.svg)](https://www.jetbrains.com/?from=rust-search-extension)
+[![](docs/static/bytebase.svg)](https://bytebase.com/?from=rust-search-extension)
 
 [![](docs/static/vercel.svg)](https://vercel.com?utm_source=rust-search-extension)
