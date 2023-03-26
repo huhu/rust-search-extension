@@ -1,12 +1,12 @@
 use minifier::js::{
     aggregate_strings_into_array_filter, simple_minify, Keyword, ReservedChar, Token, Tokens,
 };
-use unicode_segmentation::UnicodeSegmentation;
-
+use rayon::prelude::*;
 use std::cmp;
 use std::cmp::Reverse;
 use std::collections::HashMap;
 use std::ops::Deref;
+use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Debug)]
 struct FrequencyWord {
@@ -26,6 +26,7 @@ impl FrequencyWord {
 
 #[derive(Debug)]
 pub struct Minifier {
+    // A key to word mapping. Such as <"$0", "cargo">.
     mapping: HashMap<String, String>,
 }
 
@@ -48,17 +49,17 @@ impl Minifier {
                 *count += 1;
             });
         let mut frequency_words = mapping
-            .into_iter()
+            .into_par_iter()
             .map(|(word, frequency)| FrequencyWord { word, frequency })
             .collect::<Vec<FrequencyWord>>();
-        frequency_words.sort_by_key(|b| Reverse(b.score()));
+        frequency_words.par_sort_by_key(|b| Reverse(b.score()));
 
         let keys: Vec<String> = Self::PREFIX
             .chars()
             .flat_map(|prefix| {
                 Self::SUFFIX
                     .chars()
-                    .map(|suffix| format!("{}{}", prefix, suffix))
+                    .map(|suffix| format!("{prefix}{suffix}"))
                     .collect::<Vec<String>>()
             })
             .collect();
@@ -69,18 +70,15 @@ impl Minifier {
 
         Minifier {
             mapping: words
-                .into_iter()
+                .into_par_iter()
                 .enumerate()
                 .map(|(index, fw)| (fw.word, keys.get(index).unwrap().to_owned()))
                 .collect(),
         }
     }
 
-    pub fn get_mapping(&self) -> HashMap<String, String> {
-        self.mapping
-            .iter()
-            .map(|(key, value)| (value.to_owned(), key.to_owned()))
-            .collect()
+    pub fn get_mapping(&self) -> &HashMap<String, String> {
+        &self.mapping
     }
 
     #[inline]

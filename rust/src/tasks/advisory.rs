@@ -1,7 +1,7 @@
-use std::{collections::HashMap, fs, io::Write, path::Path};
-
 use argh::FromArgs;
+use rayon::prelude::*;
 use rustsec::{database::Query, Collection, Database};
+use std::{collections::HashMap, fs, io::Write, path::Path};
 
 use super::Task;
 
@@ -33,14 +33,14 @@ impl Task for AdvisoryTask {
         if !path.exists() {
             fs::create_dir(path)?;
         }
-        for (package, mut advisories) in map {
+        map.par_iter_mut().for_each(|(package, advisories)| {
             // sort advisories by date
             advisories.sort_by(|a, b| b.metadata.date.cmp(&a.metadata.date));
             let package = package.as_str().replace('-', "_");
-            let mut file = fs::File::create(path.join(format!("{package}.json")))?;
-            let json = serde_json::to_string_pretty(&advisories)?;
-            file.write_all(json.as_bytes())?;
-        }
+            let mut file = fs::File::create(path.join(format!("{package}.json"))).unwrap();
+            let json = serde_json::to_string_pretty(&advisories).unwrap();
+            file.write_all(json.as_bytes()).unwrap();
+        });
         Ok(())
     }
 }

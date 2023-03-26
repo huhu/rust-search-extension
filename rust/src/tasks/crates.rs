@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::collections::HashSet;
 use std::fs::{self, File};
 use std::io::{BufReader, Read};
 use std::path::Path;
@@ -165,19 +164,9 @@ impl Task for CratesTask {
             // Filter out auto-generated google api crates.
             c.description.is_none() || matches!(c.description.as_ref(), Some(d) if !d.starts_with(GOOGLE_API_CRATES_FILTER_PREFIX))
         });
-        crates.sort_unstable_by(|a, b| b.downloads.cmp(&a.downloads));
-        crates = crates.drain(0..MAX_CRATE_SIZE).collect();
-        versions.sort_unstable_by(|a, b| b.num.cmp(&a.num));
-        // Filter out duplicated version to speed up find in the later.
-        let mut unique_crate_ids: HashSet<u64> = HashSet::with_capacity(2 * MAX_CRATE_SIZE);
-        // retain() faster than iterator's filter().
-        versions.retain(|v| {
-            if unique_crate_ids.contains(&v.crate_id) {
-                return false;
-            }
-            unique_crate_ids.insert(v.crate_id);
-            true
-        });
+        crates.par_sort_unstable_by(|a, b| b.downloads.cmp(&a.downloads));
+        crates = crates.into_iter().take(MAX_CRATE_SIZE).collect();
+        versions.par_sort_unstable_by(|a, b| b.num.cmp(&a.num));
         let mut collector = WordCollector::new();
         crates.iter_mut().for_each(|item: &mut Crate| {
             // Call position() then to remove() the item could be faster than find().

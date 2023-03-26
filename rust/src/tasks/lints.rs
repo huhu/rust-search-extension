@@ -1,10 +1,10 @@
+use argh::FromArgs;
+use rayon::prelude::*;
+use serde::Deserialize;
 use std::clone::Clone;
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
-
-use argh::FromArgs;
-use serde::Deserialize;
 use tokio::runtime::Runtime;
 
 use crate::minify::Minifier;
@@ -68,7 +68,7 @@ impl LintsTask {
     async fn run(&self) -> crate::Result<()> {
         let lints: HashMap<String, [String; 2]> = fetch_clippy_lints()
             .await?
-            .iter()
+            .par_iter()
             .filter_map(|lint| {
                 if let Some(docs) = lint
                     .docs
