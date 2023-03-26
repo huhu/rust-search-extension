@@ -16,6 +16,7 @@ weight = 3
   - Fix `resourcePath()` null bug. Fix {{ issue(id=219) }}
   - Fix cargo book command ({{ issue(id=231) }}) ({{ issue(id=234) }})
   - Fix error code autoincreament bug
+  - Fix can't add crates: Redeclaration of const storage ({{ issue(id=243) }})
 - Remove:
   - Remove :blog command ({{ issue(id=240) }})
   - Remove GitHub release page enhancement ({{ issue(id=241) }})
