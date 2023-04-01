@@ -182,7 +182,7 @@ impl Task for CratesTask {
 
         // Extract frequency word mapping
         let minifier = Minifier::new(&collector.words);
-        let mapping = minifier.get_mapping();
+        let mapping = minifier.get_key_to_word_mapping();
         let mut contents = format!(
             "var mapping=JSON.parse('{}');",
             serde_json::to_string(&mapping)?

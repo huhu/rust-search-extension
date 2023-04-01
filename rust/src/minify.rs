@@ -26,7 +26,7 @@ impl FrequencyWord {
 
 #[derive(Debug)]
 pub struct Minifier {
-    // A key to word mapping. Such as <"$0", "cargo">.
+    // A word to keys mapping. Such as <"cargo", "$0">.
     mapping: HashMap<String, String>,
 }
 
@@ -77,8 +77,12 @@ impl Minifier {
         }
     }
 
-    pub fn get_mapping(&self) -> &HashMap<String, String> {
-        &self.mapping
+    // Get the key to word mapping to help Javascript to decode the minified string.
+    pub fn get_key_to_word_mapping(&self) -> HashMap<String, String> {
+        self.mapping
+            .iter()
+            .map(|(key, value)| (value.to_owned(), key.to_owned()))
+            .collect()
     }
 
     #[inline]
