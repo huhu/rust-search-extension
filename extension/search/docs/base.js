@@ -99,7 +99,18 @@ class DocSearch {
                 // an array of (String) item names
                 const itemNames = indexItem.n;
                 // an array of (String) full paths (or empty string for previous path)
-                const itemPaths = indexItem.q;
+                let itemPaths = indexItem.q;
+                if (itemPaths.length > 0 && Array.isArray(itemPaths[0])) {
+                    // an array of [(Number) item index,
+                    //              (String) full path]
+                    // an item whose index is not present will fall back to the previous present path
+                    // i.e. if indices 4 and 11 are present, but 5-10 and 12-13 are not present,
+                    // 5-10 will fall back to the path for 4 and 12-13 will fall back to the path for 11
+                    // 
+                    // Since Rust 1.70 this is a Map instead of an array.
+                    // See https://github.com/rust-lang/rust/pull/107629
+                    itemPaths = new Map(indexItem.q);
+                }
                 // an array of (String) descriptions
                 const itemDescs = indexItem.d;
                 // an array of (Number) the parent path index + 1 to `paths`, or 0 if none
@@ -128,6 +139,15 @@ class DocSearch {
                 let lastPath = "";
                 for (let i = 0; i < len; ++i) {
                     let ty = itemTypes[i];
+                    let path = lastPath;
+                    // check if itemPaths is map
+                    // Since Rust 1.70, the itemPaths has changed from array to map.
+                    // See https://github.com/rust-lang/rust/pull/107629
+                    if (itemPaths instanceof Map) {
+                        path = itemPaths.get(i) || lastPath;
+                    } else {
+                        path = itemPaths[i] || lastPath;
+                    }
                     let row = {
                         crate: crateName,
                         // itemTypes changed from number array to string since Rust 1.69,
@@ -135,7 +155,7 @@ class DocSearch {
                         // see this PR: https://github.com/rust-lang/rust/pull/108013 
                         ty: typeof ty === 'string' ? itemTypes.charCodeAt(i) - charA : ty,
                         name: itemNames[i],
-                        path: itemPaths[i] ? itemPaths[i] : lastPath,
+                        path,
                         desc: itemDescs[i],
                         parent: itemParentIdxs[i] > 0 ? paths[itemParentIdxs[i] - 1] : undefined,
                         type: itemFunctionSearchTypes[i],
