@@ -142,6 +142,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (rseButton?.parentElement) {
         rseButton.parentElement.insertAdjacentElement("beforebegin", advisoryMenu);
     }
+
+    if (getState(installedVersion) === "outdated") {
+        const cratesVersion = await storage.getItem("update-crates-version");
+        if (cratesVersion) {
+            injectScripts(["script/lib.js", "script/add-search-index.js"]);
+        }
+    }
 });
 
 // Advisory title. Mirror to code of https://github.com/rustsec/rustsec repository.

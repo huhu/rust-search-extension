@@ -54,5 +54,13 @@ const settings = {
     },
     set showMacroRailroad(value) {
         storage.setItem("show-macro-railroad", value);
-    }
+    },
+    get updateCratesVersion() {
+        return (async() => {
+            return await storage.getItem("update-crates-version");
+        })();
+    },
+    set updateCratesVersion(value) {
+        storage.setItem("update-crates-version", value);
+    },
 };
