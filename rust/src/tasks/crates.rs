@@ -108,11 +108,10 @@ fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> 
         .into_par_iter()
         .map(|item| {
             (
-                minifier.mapping_minify_crate_id(item.name),
+                minifier.mapping_minify_crate_id(&item.name),
                 (
                     item.description
-                        .map(|value| value.replace('\n', "").trim().to_string())
-                        .map(|value| minifier.mapping_minify(value)),
+                        .map(|value| minifier.mapping_minify(value.replace('\n', " ").trim())),
                     item.version,
                 ),
             )
@@ -122,7 +121,7 @@ fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> 
         "var crateIndex={};",
         serde_json::to_string(&crates_map).unwrap()
     );
-    contents.push_str(&Minifier::minify_js(crate_index));
+    contents.push_str(&Minifier::minify_js(&crate_index));
     contents
 }
 

@@ -159,7 +159,7 @@ impl BooksTask {
                     serde_json::to_string(&books)?
                 );
                 let path = Path::new(&self.dest_path);
-                fs::write(path, Minifier::minify_js(contents)).unwrap();
+                fs::write(path, Minifier::minify_js(&contents)).unwrap();
             }
             Err(error) => {
                 println!("{:?}", error);
