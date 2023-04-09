@@ -4,6 +4,7 @@ use argh::FromArgs;
 
 use crate::tasks::*;
 
+mod frequency;
 mod minify;
 mod tasks;
 

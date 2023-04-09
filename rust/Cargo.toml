@@ -9,12 +9,12 @@ publish = false
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 minifier = "0.2"
-unicode-segmentation = "1.9"
+unicode-segmentation = "1"
 futures = "0.3"
 tokio = { version = "1", features = ["macros", "time", "rt-multi-thread"] }
 reqwest = { version = "0.11", features = ["json"] }
-select = "0.5"
-csv = "1.1"
+select = "0.6"
+csv = "1"
 semver = { version = "1", features = ["serde"] }
 tar = "0.4"
 libflate = "1"

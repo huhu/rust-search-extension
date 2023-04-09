@@ -1,4 +1,4 @@
-use std::cmp::Ordering;
+use std::cmp::{Ordering, Reverse};
 use std::collections::HashMap;
 use std::fs::{self, File};
 use std::io::{BufReader, Read};
@@ -12,7 +12,9 @@ use semver::Version;
 use serde::de::DeserializeOwned;
 use serde::Deserialize;
 use tar::Archive;
+use unicode_segmentation::UnicodeSegmentation;
 
+use crate::frequency::FrequencyWord;
 use crate::minify::Minifier;
 use crate::tasks::Task;
 
@@ -61,27 +63,41 @@ impl WordCollector {
         WordCollector { words: vec![] }
     }
 
-    #[inline]
-    fn collect_crate_id(&mut self, value: &str) {
-        let id = value.replace('-', "_");
-        for word in id
-            .to_lowercase()
-            .split(|c| c == '_')
-            .filter(|c| c.len() >= 3)
-            .collect::<Vec<_>>()
-        {
-            self.words.push(word.to_string());
-        }
+    fn collect_crate_name(&mut self, name: &str) {
+        self.words.extend(
+            name.split(|c| c == '_' || c == '-')
+                .filter(|c| c.len() >= 3)
+                .map(String::from)
+                .collect::<Vec<_>>(),
+        )
     }
 
-    #[inline]
-    fn collect_crate_description(&mut self, value: &str) {
-        let mut description = value.trim().to_string();
-        // Check char boundary to prevent panic
-        if description.is_char_boundary(100) {
-            description.truncate(100);
-        }
-        self.words.push(description);
+    fn collect_crate_description(&mut self, description: &str) {
+        self.words.extend(
+            description
+                .trim()
+                .unicode_words() // Tokenize the description into words.
+                .filter(|word| word.len() >= 3)
+                .take(100)
+                .map(String::from)
+                .collect::<Vec<_>>(),
+        );
+    }
+
+    // Get the most frequent words.
+    fn get_frequency_words(self) -> Vec<FrequencyWord> {
+        // A word to frequency mapping. Such as <"cargo", 100>.
+        let mut frequency_mapping: HashMap<String, usize> = HashMap::new();
+        self.words.into_iter().for_each(|word| {
+            let count = frequency_mapping.entry(word).or_insert(0);
+            *count += 1;
+        });
+        let mut frequency_words = frequency_mapping
+            .into_par_iter()
+            .map(|(word, frequency)| FrequencyWord { word, frequency })
+            .collect::<Vec<FrequencyWord>>();
+        frequency_words.par_sort_by_key(|b| Reverse(b.score()));
+        frequency_words
     }
 }
 
@@ -103,18 +119,19 @@ fn read_csv<D: DeserializeOwned>(file: impl Read) -> crate::Result<Vec<D>> {
         .collect())
 }
 
-fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> String {
+fn generate_javascript_crates_index(crates: &[Crate], minifier: &Minifier) -> String {
     let mut contents = String::from("var N=null;");
     // <name, [optional description, version]>
-    let crates_map: HashMap<String, (Option<String>, Version)> = crates
+    let crates_map: HashMap<String, (Option<String>, &Version)> = crates
         .into_par_iter()
         .map(|item| {
             (
-                minifier.mapping_minify_crate_id(&item.name),
+                minifier.minify_crate_name(&item.name),
                 (
-                    item.description
-                        .map(|value| minifier.mapping_minify(value.replace('\n', " ").trim())),
-                    item.version,
+                    item.description.as_ref().map(|value| {
+                        minifier.minify_description(value.replace('\n', " ").trim())
+                    }),
+                    &item.version,
                 ),
             )
         })
@@ -129,32 +146,21 @@ fn generate_javascript_crates_index(crates: Vec<Crate>, minifier: &Minifier) -> 
 
 impl Task for CratesTask {
     fn execute(&self) -> crate::Result<()> {
-        let mut crates: Vec<Crate> = Vec::with_capacity(0);
-        let mut versions: Vec<CrateVersion> = Vec::with_capacity(0);
+        let mut crates: Vec<Crate> = Vec::new();
+        let mut versions: Vec<CrateVersion> = Vec::new();
 
         let mut archive = Archive::new(Decoder::new(BufReader::new(File::open(&self.csv_path)?))?);
-        let entries = archive.entries()?.filter(|entry| {
-            // Only filter the file we needed.
-            entry
-                .as_ref()
-                .unwrap()
-                .path()
-                .unwrap()
-                .file_name()
-                .and_then(|f| f.to_str())
-                .map(|f| ["crates.csv", "versions.csv"].contains(&f))
-                .unwrap()
-        });
-        for file in entries {
+        for file in archive.entries()? {
             let file = file?;
-            println!("{:?}", file.path()?);
 
             if let Some(filename) = file.path()?.file_name().and_then(|f| f.to_str()) {
                 match filename {
                     "crates.csv" => {
+                        println!("{:?}", file.path()?);
                         crates = read_csv(file)?;
                     }
                     "versions.csv" => {
+                        println!("{:?}", file.path()?);
                         versions = read_csv(file)?;
                     }
                     _ => {}
@@ -169,7 +175,7 @@ impl Task for CratesTask {
         crates = crates.into_iter().take(MAX_CRATE_SIZE).collect();
 
         // A <crate_id, latest_version> map to store the latest version of each crate.
-        let mut latest_versions = HashMap::<u64, Version>::with_capacity(crates.len());
+        let mut latest_versions = HashMap::<u64, Version>::with_capacity(versions.len());
         versions.into_iter().for_each(|cv| {
             let num = cv.num;
             latest_versions
@@ -192,17 +198,18 @@ impl Task for CratesTask {
             if let Some(description) = &item.description {
                 collector.collect_crate_description(description);
             }
-            collector.collect_crate_id(&item.name);
+            collector.collect_crate_name(&item.name);
         });
 
         // Extract frequency word mapping
-        let minifier = Minifier::new(&collector.words);
+        let frequency_words = collector.get_frequency_words();
+        let minifier = Minifier::new(&frequency_words);
         let mapping = minifier.get_key_to_word_mapping();
         let mut contents = format!(
             "var mapping=JSON.parse('{}');",
             serde_json::to_string(&mapping)?
         );
-        contents.push_str(&generate_javascript_crates_index(crates, &minifier));
+        contents.push_str(&generate_javascript_crates_index(&crates, &minifier));
         let path = Path::new(&self.dest_path);
         fs::write(path, &contents)?;
         println!("\nGenerate javascript crates index successful!");

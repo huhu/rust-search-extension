@@ -2,27 +2,11 @@ use minifier::js::{
     aggregate_strings_into_array_filter, simple_minify, Keyword, ReservedChar, Token, Tokens,
 };
 use rayon::prelude::*;
-use std::cmp;
-use std::cmp::Reverse;
 use std::collections::HashMap;
 use std::ops::Deref;
 use unicode_segmentation::UnicodeSegmentation;
 
-#[derive(Debug)]
-struct FrequencyWord<'a> {
-    word: &'a str,
-    frequency: usize,
-}
-
-impl<'a> FrequencyWord<'a> {
-    #[inline]
-    fn score(&self) -> usize {
-        // Due to the prefix + suffix occupying two letters,
-        // we should minus the length to calculate the score.
-        // This will lead to a 0.4% reduction in file size.
-        (self.word.len() - 2) * self.frequency
-    }
-}
+use crate::frequency::FrequencyWord;
 
 #[derive(Debug)]
 pub struct Minifier<'a> {
@@ -34,26 +18,7 @@ impl<'a> Minifier<'a> {
     const PREFIX: &'static str = "@$^&";
     const SUFFIX: &'static str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    pub fn new(words: &[String]) -> Minifier {
-        let mut mapping: HashMap<&str, usize> = HashMap::new();
-        words
-            .iter()
-            .flat_map(|sentence| {
-                sentence
-                    .unicode_words()
-                    .filter(|word| word.len() >= 3)
-                    .collect::<Vec<&str>>()
-            })
-            .for_each(|word| {
-                let count = mapping.entry(word).or_insert(0);
-                *count += 1;
-            });
-        let mut frequency_words = mapping
-            .into_par_iter()
-            .map(|(word, frequency)| FrequencyWord { word, frequency })
-            .collect::<Vec<FrequencyWord>>();
-        frequency_words.par_sort_by_key(|b| Reverse(b.score()));
-
+    pub fn new(frequency_words: &'a [FrequencyWord]) -> Minifier<'a> {
         let keys: Vec<String> = Self::PREFIX
             .chars()
             .flat_map(|prefix| {
@@ -63,16 +28,17 @@ impl<'a> Minifier<'a> {
                     .collect::<Vec<String>>()
             })
             .collect();
+
         let words = frequency_words
-            // Get the min value to prevent drain method panic
-            .drain(0..cmp::min(keys.len(), words.len()))
-            .collect::<Vec<FrequencyWord>>();
+            .into_par_iter()
+            .take(keys.len())
+            .collect::<Vec<_>>();
 
         Minifier {
             mapping: words
                 .into_par_iter()
                 .enumerate()
-                .map(|(index, fw)| (fw.word, keys.get(index).unwrap().to_owned()))
+                .map(|(index, fw)| (fw.word.as_str(), keys.get(index).unwrap().to_owned()))
                 .collect(),
         }
     }
@@ -86,17 +52,17 @@ impl<'a> Minifier<'a> {
     }
 
     #[inline]
-    pub fn mapping_minify_crate_id(&self, value: &str) -> String {
-        let vec: Vec<&str> = value
-            .split(|c| c == '_')
+    pub fn minify_crate_name(&self, name: &str) -> String {
+        let vec: Vec<&str> = name
+            .split(|c| c == '_' || c == '-')
             .map(|item| self.mapping.get(item).map(Deref::deref).unwrap_or(item))
             .collect();
         vec.join("_")
     }
 
     #[inline]
-    pub fn mapping_minify(&self, value: &str) -> String {
-        value
+    pub fn minify_description(&self, description: &str) -> String {
+        description
             .split_word_bounds()
             .map(|item| self.mapping.get(item).map(Deref::deref).unwrap_or(item))
             .collect()
