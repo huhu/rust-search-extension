@@ -24,6 +24,9 @@ juice_logo_path = "logo.png"
 juice_extra_menu = [
     { title = "Github", link = "https://github.com/huhu/rust-search-extension"}
 ]
+juice_exclude_menu = [
+    "Update"
+]
 repository_url = "https://github.com/huhu/rust-search-extension"
 meta_title = "Rust Search Extension: The ultimate search extension for Rust"
 meta_description = "Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly."
