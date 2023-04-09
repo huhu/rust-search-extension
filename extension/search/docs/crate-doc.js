@@ -35,7 +35,8 @@ class CrateDocSearch {
             let crate = await CrateDocManager.getCrateByName(crateName);
             if (crate) {
                 let searchIndex = await CrateDocManager.getCrateSearchIndex(crateName);
-                searcher = new SingleCrateDocSearch(crateName, crate.version, searchIndex);
+                const cratesVersion = await settings.keepCratesUpToDate ? "latest" : crate.version;
+                searcher = new SingleCrateDocSearch(crateName, cratesVersion, searchIndex);
 
                 this.cachedCrateSearcher = searcher;
             } else {

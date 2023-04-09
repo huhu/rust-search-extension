@@ -38,6 +38,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         settings.crateRegistry = crateRegistry.value;
     };
 
+    const keepCratesUpToDate = document.getElementById("keep-crates-up-to-date");
+    keepCratesUpToDate.checked = await settings.keepCratesUpToDate;
+    keepCratesUpToDate.onchange = async function(event) {
+        settings.keepCratesUpToDate = event.target.checked;
+    }
+
     await setupDefaultSearch();
 }, false);
 

@@ -142,6 +142,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (rseButton?.parentElement) {
         rseButton.parentElement.insertAdjacentElement("beforebegin", advisoryMenu);
     }
+
+    if (getState(installedVersion) === "outdated" && await settings.keepCratesUpToDate) {
+        // Auto update outdated crates if the user has enabled the setting.
+        injectScripts(["script/lib.js", "script/add-search-index.js"]);
+    }
 });
 
 // Advisory title. Mirror to code of https://github.com/rustsec/rustsec repository.
