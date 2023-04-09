@@ -58,7 +58,7 @@ const settings = {
     get keepCratesUpToDate() {
         return (async () => {
             let value = await storage.getItem("keep-crates-up-to-date");
-            // Default to true.
+            // Default to false.
             return value === undefined ? false : value;
         })();
     },
