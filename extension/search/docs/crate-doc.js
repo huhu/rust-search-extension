@@ -20,8 +20,7 @@ class CrateDocSearch {
         for (const libName of Object.keys(await CrateDocManager.getCrates())) {
             searchIndex = Object.assign(searchIndex, await CrateDocManager.getCrateSearchIndex(libName));
         }
-        const cratesVersion = await settings.keepCratesUpToDate ? "latest" : "*";
-        this.allCrateSearcher = new SingleCrateDocSearch("~", cratesVersion, searchIndex);
+        this.allCrateSearcher = new SingleCrateDocSearch("~", "*", searchIndex);
     }
 
     // Search specific crate docs by prefix `@` sigil.

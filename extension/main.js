@@ -130,7 +130,8 @@ function getPlatformOs() {
                 // Here is the url instance: https://docs.rs/~/*/reqwest/fn.get.html
                 let [_, __, libName] = new URL(content).pathname.slice(1).split("/");
                 let crate = await CrateDocManager.getCrateByName(libName);
-                return content.replace("/~/", `/${crate.crateName || libName}/`).replace("/*/", `/${crate.version}/`);
+                const crateVersion = await settings.keepCratesUpToDate ? "latest" : crate.version;
+                return content.replace("/~/", `/${crate.crateName || libName}/`).replace("/*/", `/${crateVersion}/`);
             } else {
                 return content;
             }
