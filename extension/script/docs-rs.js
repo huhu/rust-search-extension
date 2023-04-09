@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (getState(installedVersion) === "outdated") {
-        const cratesVersion = await storage.getItem("update-crates-version");
+        const cratesVersion = await settings.updateCratesVersion;
         if (cratesVersion) {
             injectScripts(["script/lib.js", "script/add-search-index.js"]);
         }
