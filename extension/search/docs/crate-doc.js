@@ -20,7 +20,7 @@ class CrateDocSearch {
         for (const libName of Object.keys(await CrateDocManager.getCrates())) {
             searchIndex = Object.assign(searchIndex, await CrateDocManager.getCrateSearchIndex(libName));
         }
-        const cratesVersion = await settings.updateCratesVersion ? "latest" : "*";
+        const cratesVersion = await settings.keepCratesUpToDate ? "latest" : "*";
         this.allCrateSearcher = new SingleCrateDocSearch("~", cratesVersion, searchIndex);
     }
 
@@ -36,7 +36,7 @@ class CrateDocSearch {
             let crate = await CrateDocManager.getCrateByName(crateName);
             if (crate) {
                 let searchIndex = await CrateDocManager.getCrateSearchIndex(crateName);
-                const cratesVersion = await settings.updateCratesVersion ? "latest" : crate.version;
+                const cratesVersion = await settings.keepCratesUpToDate ? "latest" : crate.version;
                 searcher = new SingleCrateDocSearch(crateName, cratesVersion, searchIndex);
 
                 this.cachedCrateSearcher = searcher;

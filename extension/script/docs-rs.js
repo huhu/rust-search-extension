@@ -143,11 +143,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         rseButton.parentElement.insertAdjacentElement("beforebegin", advisoryMenu);
     }
 
-    if (getState(installedVersion) === "outdated") {
-        const cratesVersion = await settings.updateCratesVersion;
-        if (cratesVersion) {
-            injectScripts(["script/lib.js", "script/add-search-index.js"]);
-        }
+    if (getState(installedVersion) === "outdated" && await settings.keepCratesUpToDate) {
+        // Auto update outdated crates if the user has enabled the setting.
+        injectScripts(["script/lib.js", "script/add-search-index.js"]);
     }
 });
 
