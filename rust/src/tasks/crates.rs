@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::fs::{self, File};
 use std::io::{BufReader, Read};
@@ -35,7 +36,8 @@ pub struct CratesTask {
 
 #[derive(Deserialize, Debug)]
 struct Crate {
-    id: u64,
+    #[serde(rename = "id")]
+    crate_id: u64,
     name: String,
     downloads: u64,
     description: Option<String>,
@@ -165,12 +167,26 @@ impl Task for CratesTask {
         });
         crates.par_sort_unstable_by(|a, b| b.downloads.cmp(&a.downloads));
         crates = crates.into_iter().take(MAX_CRATE_SIZE).collect();
-        versions.par_sort_unstable_by(|a, b| b.num.cmp(&a.num));
+
+        // A <crate_id, latest_version> map to store the latest version of each crate.
+        let mut latest_versions = HashMap::<u64, Version>::with_capacity(crates.len());
+        versions.into_iter().for_each(|cv| {
+            let num = cv.num;
+            latest_versions
+                .entry(cv.crate_id)
+                .and_modify(|v| {
+                    if (*v).cmp(&num) == Ordering::Less {
+                        *v = num.clone();
+                    }
+                })
+                .or_insert(num);
+        });
+
         let mut collector = WordCollector::new();
         crates.iter_mut().for_each(|item: &mut Crate| {
-            // Call position() then to remove() the item could be faster than find().
-            if let Some(position) = versions.par_iter().position_any(|v| v.crate_id == item.id) {
-                item.version = versions.remove(position).num;
+            if let Some(version) = latest_versions.remove(&item.crate_id) {
+                // Update the latest version of the crate.
+                item.version = version;
             }
 
             if let Some(description) = &item.description {
