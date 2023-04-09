@@ -9,12 +9,12 @@ use std::ops::Deref;
 use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Debug)]
-struct FrequencyWord {
-    word: String,
+struct FrequencyWord<'a> {
+    word: &'a str,
     frequency: usize,
 }
 
-impl FrequencyWord {
+impl<'a> FrequencyWord<'a> {
     #[inline]
     fn score(&self) -> usize {
         // Due to the prefix + suffix occupying two letters,
@@ -25,17 +25,17 @@ impl FrequencyWord {
 }
 
 #[derive(Debug)]
-pub struct Minifier {
+pub struct Minifier<'a> {
     // A word to keys mapping. Such as <"cargo", "$0">.
-    mapping: HashMap<String, String>,
+    mapping: HashMap<&'a str, String>,
 }
 
-impl Minifier {
+impl<'a> Minifier<'a> {
     const PREFIX: &'static str = "@$^&";
     const SUFFIX: &'static str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     pub fn new(words: &[String]) -> Minifier {
-        let mut mapping: HashMap<String, usize> = HashMap::new();
+        let mut mapping: HashMap<&str, usize> = HashMap::new();
         words
             .iter()
             .flat_map(|sentence| {
@@ -45,7 +45,7 @@ impl Minifier {
                     .collect::<Vec<&str>>()
             })
             .for_each(|word| {
-                let count = mapping.entry(word.to_string()).or_insert(0);
+                let count = mapping.entry(word).or_insert(0);
                 *count += 1;
             });
         let mut frequency_words = mapping
@@ -81,12 +81,12 @@ impl Minifier {
     pub fn get_key_to_word_mapping(&self) -> HashMap<String, String> {
         self.mapping
             .iter()
-            .map(|(key, value)| (value.to_owned(), key.to_owned()))
+            .map(|(key, value)| (value.to_owned(), (*key).to_owned()))
             .collect()
     }
 
     #[inline]
-    pub fn mapping_minify_crate_id(&self, value: String) -> String {
+    pub fn mapping_minify_crate_id(&self, value: &str) -> String {
         let vec: Vec<&str> = value
             .split(|c| c == '_')
             .map(|item| self.mapping.get(item).map(Deref::deref).unwrap_or(item))
@@ -95,7 +95,7 @@ impl Minifier {
     }
 
     #[inline]
-    pub fn mapping_minify(&self, value: String) -> String {
+    pub fn mapping_minify(&self, value: &str) -> String {
         value
             .split_word_bounds()
             .map(|item| self.mapping.get(item).map(Deref::deref).unwrap_or(item))
@@ -103,8 +103,8 @@ impl Minifier {
     }
 
     #[inline]
-    pub fn minify_js(json: String) -> String {
-        let tokens: Tokens = simple_minify(&json)
+    pub fn minify_js(json: &str) -> String {
+        let tokens: Tokens = simple_minify(json)
             .into_iter()
             .map(|(token, _)| match token {
                 Token::Keyword(Keyword::Null) => Token::Other("N"),
