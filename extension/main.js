@@ -11,7 +11,7 @@ function getPlatformOs() {
     });
 }
 
-(async () => {
+async function start() {
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
     let isOfflineMode = await settings.isOfflineMode;
@@ -536,7 +536,7 @@ function getPlatformOs() {
         }
         return true;
     });
-})();
+}
 
 const chromeAction = chrome.action || chrome.browserAction;
 chromeAction.onClicked.addListener(() => {
@@ -544,9 +544,11 @@ chromeAction.onClicked.addListener(() => {
     chrome.tabs.create({ url: managePage });
 });
 
-chrome.runtime.onInstalled.addListener(({ previousVersion, reason }) => {
+chrome.runtime.onInstalled.addListener(async ({ previousVersion, reason }) => {
     if (reason === "update" && previousVersion !== manifest.version) {
         IndexManager.updateAllIndex();
         console.log(`New version updated! Previous version: ${previousVersion}, new version: ${manifest.version}`);
     }
+
+    await start()
 });
