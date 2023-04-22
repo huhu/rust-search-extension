@@ -3,8 +3,9 @@ class SingleCrateDocSearch extends DocSearch {
 
     constructor(name, version, searchIndex) {
         super(name, searchIndex, () => {
-            return `https://docs.rs/${name}/${version}/`;
+            return `https://docs.rs/${name}/${this.version}/`;
         });
+        this.version = version;
     }
 }
 
@@ -31,6 +32,7 @@ class CrateDocSearch {
         let searcher = null;
         if (this.cachedCrateSearcher?.name === crateName) {
             searcher = this.cachedCrateSearcher;
+            searcher.version = await settings.keepCratesUpToDate ? "latest" : searcher.version;
         } else {
             let crate = await CrateDocManager.getCrateByName(crateName);
             if (crate) {
