@@ -553,3 +553,7 @@ chrome.runtime.onInstalled.addListener(async ({ previousVersion, reason }) => {
 
     await start()
 });
+
+(async () => {
+    await start();
+})();
