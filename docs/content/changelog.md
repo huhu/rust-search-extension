@@ -4,7 +4,17 @@ description = "Changelog"
 weight = 3
 +++
 
-# v1.10.0 -2023-03-25
+# v1.11.0 - 2023-04-22
+
+- Support keep crates up-to-date settings ({{ issue(id=248) }})
+  > ![](/keep-crates-up-to-date.png)
+- Support new format of `itemPaths` in search index ({{ issue(id=246) }})
+- Bugfix:
+  - Fix ampersand (&) escaping
+
+Thanks for the contributions from [@shwin0901](https://github.com/shwin0901).
+
+# v1.10.0 - 2023-03-25
 
 - Add security advisory menu to docs.rs ({{ issue(id=239) }})
   > ![](/security-advisory-menu.png)
