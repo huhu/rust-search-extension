@@ -14,6 +14,10 @@ weight = 3
 
 Thanks for the contributions from [@shwin0901](https://github.com/shwin0901).
 
+# v1.11.1 - 2023-04-22
+
+- Fix search functions not working bug after upgrade to v1.11.0
+
 # v1.10.0 - 2023-03-25
 
 - Add security advisory menu to docs.rs ({{ issue(id=239) }})
@@ -42,17 +46,17 @@ Thanks for the contributions from [@shwin0901](https://github.com/shwin0901), [@
 - New commands:
   - `:rustc` - Search rustc codegen options and lints.
   - `:target` - Search rust target for three tiers.
-  ![](/target-command.png)
+    ![](/target-command.png)
 - Add a pagination tip in the last page item.
-- Remove prefix for RFC (??) & Improve docs ({{ issue(id=197) }}). 
+- Remove prefix for RFC (??) & Improve docs ({{ issue(id=197) }}).
 - Condense attributes and crates index size.
 - Make feature flag's name sticky left.
 - Bugfix:
   - Fix error code regex.
-  - Fix incorrect export of stats/history ({{ issue(id=203) }}) ({{ issue(id=204) }}). 
-  - fix docs.rs show features ({{ issue(id=209) }}). 
-  - Fix source code navigate bug. Fix ({{ issue(id=212) }}). 
-  - Fix GitHub release page TOC compatibility ({{ issue(id=214) }}). 
+  - Fix incorrect export of stats/history ({{ issue(id=203) }}) ({{ issue(id=204) }}).
+  - fix docs.rs show features ({{ issue(id=209) }}).
+  - Fix source code navigate bug. Fix ({{ issue(id=212) }}).
+  - Fix GitHub release page TOC compatibility ({{ issue(id=214) }}).
 
 Thanks for the contributions from [@shwin0901](https://github.com/shwin0901), [@light4](https://github.com/light4), and [@xxchan](https://github.com/xxchan).
 
@@ -83,7 +87,7 @@ Thanks for the contributions from [@C-Dao](https://github.com/C-Dao), [@zjp-CN](
 ## v1.8.1 - 2022-08-17
 
 - Remove `file:///*` permission. Fixes ({{ issue(id=190) }}).
-- Add *Show Macro Railroad* options.
+- Add _Show Macro Railroad_ options.
 - Use rustwiki Chinese CDN. ({{ issue(id=190) }})
 
 Thanks for the contributions from [@PureWhiteWu](https://github.com/PureWhiteWu).
