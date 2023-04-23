@@ -551,7 +551,7 @@ chrome.runtime.onInstalled.addListener(async ({ previousVersion, reason }) => {
         console.log(`New version updated! Previous version: ${previousVersion}, new version: ${manifest.version}`);
     }
 
-    await start()
+    await start();
 });
 
 (async () => {

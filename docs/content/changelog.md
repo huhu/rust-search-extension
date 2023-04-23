@@ -14,7 +14,7 @@ weight = 3
 
 Thanks for the contributions from [@shwin0901](https://github.com/shwin0901).
 
-# v1.11.1 - 2023-04-22
+## v1.11.1 - 2023-04-22
 
 - Fix search functions not working bug after upgrade to v1.11.0
 
