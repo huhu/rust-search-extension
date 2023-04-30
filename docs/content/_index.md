@@ -76,9 +76,28 @@ For example, input `src:try_fold` or `s:try_fold`, you'll open the source code l
 
 You can run command `rustup doc --std` to open the offline std docs.
 To enable the offline mode, you should check the checkbox and input the offline docs path on the settings page.
-However, please check the [Caveats](/faq/#caveats) if you are a Firefox user.
 
-![GIF](/offline-mode.gif)
+Use `rustup doc --std --path` to find your doc directory, on my machine, this 
+command gives:
+
+```shell
+$ rustup doc --std --path
+/home/steve/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html
+```
+
+Remove the tailing `std/index.html` from the returned path, and the remaining
+path is your doc directory.
+
+* For Chrome/Edge users:
+  Prepend `file://` before your doc directory, and input it to the input box on the
+  settings page.
+
+  ![GIF](/offline-mode-chrome.gif)
+
+* For Firefox users:
+  Refers to [Any workaround to support offline mode on Firefox?](faq/#caveats)
+
+  ![GIF](/offline-mode-firefox.gif)
 
 ## Search external crate docs
 
