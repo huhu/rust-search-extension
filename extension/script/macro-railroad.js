@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function load() {
     if (!isRustDoc()) return;
 
-    let macros = document.querySelectorAll('pre.macro');
+    let macros = document.querySelectorAll('pre.macro, pre.item-decl');
     if (!macros || macros.length === 0) return;
     
     if (!await settings.showMacroRailroad) return;
@@ -18,6 +18,8 @@ async function load() {
         if (!parentNode) continue;
 
         const macroSrc = macro.innerText;
+        if (!macroSrc.startsWith("macro_rules")) continue;
+
         // The div that the `pre.macro` get's moved into, together with the new diagram nodes
         let newNode = document.createElement('div');
         newNode.setAttribute('style', 'width: 100%;');
