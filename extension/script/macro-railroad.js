@@ -5,41 +5,37 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function load() {
     if (!isRustDoc()) return;
 
-    let macros = document.querySelectorAll('pre.macro, pre.item-decl');
+    let macros = document.querySelectorAll('.item-decl');
     if (!macros || macros.length === 0) return;
-    
+
     if (!await settings.showMacroRailroad) return;
 
     await wasm_bindgen(chrome.runtime.getURL('wasm/macro-railroad.wasm'));
     injectCss();
 
     for (let macro of macros) {
-        let parentNode = macro.parentNode;
-        if (!parentNode) continue;
-
         const macroSrc = macro.innerText;
         if (!macroSrc.startsWith("macro_rules")) continue;
 
         // The div that the `pre.macro` get's moved into, together with the new diagram nodes
-        let newNode = document.createElement('div');
-        newNode.setAttribute('style', 'width: 100%;');
+        let diagramNode = document.createElement('div');
+        diagramNode.setAttribute('style', 'width: 100%;');
         // The container which holds the inline-svg on the page
         let svgContainer = document.createElement('div');
         svgContainer.setAttribute('class', 'railroad_container');
         svgContainer.appendChild(document.createElement('svg'));
         // Append svg container ahead macro element to prevent noisy overflow.
-        newNode.appendChild(svgContainer);
-        newNode.appendChild(macro);
+        diagramNode.appendChild(svgContainer);
 
         let modalContainer = createModal();
-        newNode.appendChild(modalContainer);
+        diagramNode.appendChild(modalContainer);
 
         const diagramOptions = new wasm_bindgen.DiagramOptions();
         let [dropdownContainer, iconsContainer] = createIcons(macroSrc, diagramOptions);
         svgContainer.appendChild(iconsContainer);
         svgContainer.appendChild(dropdownContainer);
 
-        parentNode.appendChild(newNode);
+        macro.insertAdjacentElement('beforebegin', diagramNode);
         updateDiagram(macroSrc, diagramOptions);
     }
 }
