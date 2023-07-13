@@ -77,7 +77,13 @@ impl LintsTask {
                 {
                     let mut desc = docs.replace(['`', '#'], "");
                     desc.truncate(100);
-                    Some((lint.id.clone(), [lint.level.to_string(), desc]))
+                    Some((
+                        lint.id.clone(),
+                        [
+                            lint.level.to_string(),
+                            html_escape::encode_text(&desc).to_string(),
+                        ],
+                    ))
                 } else {
                     None
                 }
