@@ -36,6 +36,7 @@ async function load() {
         svgContainer.appendChild(dropdownContainer);
 
         macro.insertAdjacentElement('beforebegin', diagramNode);
+
         updateDiagram(macroSrc, diagramOptions);
     }
 }
