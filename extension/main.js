@@ -385,10 +385,10 @@ async function start() {
         onSearch: (query) => {
             return lintSearcher.search(query);
         },
-        onFormat: (index, lint) => {
+        onFormat: (_, lint) => {
             return {
                 content: `${LINT_URL}#${lint.name}`,
-                description: `Clippy lint: [${lint.level}] ${c.match(lint.name)} - ${c.dim(c.escape(lint.description))}`,
+                description: `Clippy lint: [${lint.level}] ${c.match(lint.name)} - ${c.dim(c.escape(c.eliminateTags(lint.description)))}`,
             }
         },
     });
