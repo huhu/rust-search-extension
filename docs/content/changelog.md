@@ -4,6 +4,18 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.12.0 - 2023-07-15
+
+- Update search index
+- docs: add doc on how to enable offline mode ({{ issue(id=253) }})
+- Fix macro diagram not showing in some crates ({{ issue(id=256) }})
+- Fix redirection issue when searching in `std` documentation ({{ issue(id=258) }})
+- Fix `getVars()`, close {{ issue(id=259) }}
+- Fix html escape lint descriptions
+- Fix call start() twice. Close {{ issue(id=260) }}.
+
+Thanks for the contrubtiosn from [@Devin-Yeung](https://github.com/Devin-Yeung) and [@SteveLauC](https://github.com/SteveLauC).
+
 # v1.11.0 - 2023-04-22
 
 - Support keep crates up-to-date settings ({{ issue(id=248) }})
