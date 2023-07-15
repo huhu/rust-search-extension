@@ -550,8 +550,6 @@ chrome.runtime.onInstalled.addListener(async ({ previousVersion, reason }) => {
         IndexManager.updateAllIndex();
         console.log(`New version updated! Previous version: ${previousVersion}, new version: ${manifest.version}`);
     }
-
-    await start();
 });
 
 (async () => {
