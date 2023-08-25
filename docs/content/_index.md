@@ -77,7 +77,7 @@ For example, input `src:try_fold` or `s:try_fold`, you'll open the source code l
 You can run command `rustup doc --std` to open the offline std docs.
 To enable the offline mode, you should check the checkbox and input the offline docs path on the settings page.
 
-Use `rustup doc --std --path` to find your doc directory, on my machine, this 
+Use `rustup doc --std --path` to find your doc directory, on my machine, this
 command gives:
 
 ```shell
@@ -88,13 +88,13 @@ $ rustup doc --std --path
 Remove the tailing `std/index.html` from the returned path, and the remaining
 path is your doc directory.
 
-* For Chrome/Edge users:
+- For Chrome/Edge users:
   Prepend `file://` before your doc directory, and input it to the input box on the
   settings page.
 
   ![GIF](/offline-mode-chrome.gif)
 
-* For Firefox users:
+- For Firefox users:
   Refers to [Any workaround to support offline mode on Firefox?](faq/#caveats)
 
   ![GIF](/offline-mode-firefox.gif)
@@ -184,9 +184,6 @@ Those commands including but not limited to:
 
 ## Make all "since" and "issue" linkable
 
-Two kinds of tags links to corresponding urls, including:
-
-- **"since"** links to Github release page (works in docs page and source code page)
 - **"issue"** links to Github issue (works in source code page)
 
 ![](/since-issue-links.png)

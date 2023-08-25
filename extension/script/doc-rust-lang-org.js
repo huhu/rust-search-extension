@@ -1,4 +1,3 @@
-const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
 const TARGET = location.pathname.includes("/nightly/") ? "nightly" : "stable";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -15,8 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
         linkSourcePageUrls();
     } else {
         // Docs page
-        linkDocPageSinceUrls();
-
         let version = localStorage.getItem(`rust-search-extension:${TARGET}`);
         let now = new Date();
         let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
@@ -45,26 +42,14 @@ window.addEventListener("message", function (event) {
     }
 });
 
-function linkDocPageSinceUrls() {
-    for (let span of document.querySelectorAll("span.since")) {
-        let version = span.textContent;
-        // "1.0.0 (const: 1.48.0)" should convert to "1.0.0".
-        let href = `${RUST_RELEASE_README_URL}?version=${version.replace(/\(.*\)/g, "").trim()}`;
-        span.innerHTML = `<a class="rse-link" href="${href}">${version}</a>`;
-    }
-}
 
 // Link issue and since urls in source pages.
 function linkSourcePageUrls() {
-    for (let span of document.querySelectorAll("span.attribute>span.string")) {
+    for (let span of document.querySelectorAll("span.attribute,span.attr>span.string")) {
         let text = span.textContent;
         if (/^"[0-9]*"$/g.test(text)) {
             // #[unstable(feature = "xxx", issue = "62358")]
             let href = `https://github.com/rust-lang/rust/issues/${text.replace('"', '').trim()}`;
-            span.innerHTML = `<a class="rse-link" href="${href}">${text}</a>`;
-        } else if (/^"\d\.\d+\.?\d?"$/g.test(text)) {
-            // #[stable(feature = "xxx", since = "1.23.0")]
-            let href = `${RUST_RELEASE_README_URL}?version=${text.replace('"', '').trim()}`;
             span.innerHTML = `<a class="rse-link" href="${href}">${text}</a>`;
         }
     }
