@@ -14,24 +14,37 @@ const DOC_HEADERS_SELECTOR = ".top-doc div.docblock>h1[id], .top-doc div.docbloc
 function highlight() {
     let headers = Array.from(document.querySelectorAll(DOC_HEADERS_SELECTOR))
         .filter(header => ["H1", "H2", "H3"].includes(header.tagName));
+    const OFFSET = 32;
+    const activeByHash = (hash) => {
+        document.querySelectorAll(".rse-doc-toc-item.rse-active").forEach((item) => {
+            item.classList.remove("rse-active");
+        });
+        const link = document.querySelector(`.rse-doc-toc-item a[href$="${hash}"]`)
+        if (link) {
+            let target = link.parentElement;
+            target.classList.add("rse-active");
+            target.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    }
     const scrollHandler = entries => {
+        let hashEl = document.querySelector(document.location.hash);
+        if (hashEl?.getBoundingClientRect().top === OFFSET) {
+            activeByHash(document.location.hash);
+            // Early return if navigating directly to a named anchor.
+            return;
+        }
+
         entries.forEach(entry => {
             if (entry.intersectionRatio > 0) {
-                document.querySelectorAll(".rse-doc-toc-item").forEach((item) => {
-                    item.classList.remove("rse-active");
-                });
-
                 let url = new URL(entry.target.firstChild.href);
-                let link = document.querySelector(`.rse-doc-toc-item a[href$="${url.hash}"]`)
-                if (link) {
-                    let target = link.parentElement;
-                    target.classList.add("rse-active");
-                    target.scrollIntoView({ behavior: "auto", block: "nearest" });
-                }
+                activeByHash(url.hash);
             }
         });
     };
-    const observer = new IntersectionObserver(scrollHandler);
+    const observer = new IntersectionObserver(
+        scrollHandler,
+        { rootMargin: `-${OFFSET}px 0px 0px 0px` }
+    );
     headers.forEach(item => observer.observe(item));
 }
 
@@ -59,11 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let ul = document.createElement("ul");
     ul.classList.add("rse-doc-toc");
     for (let header of headers) {
-        let link = header.firstChild;
+        let [link, text] = header.childNodes;
 
         let item = document.createElement("li");
         item.innerHTML = `<div class="rse-doc-toc-item rse-doc-toc-${header.tagName.toLowerCase()}">
-                <a href="${link.href}">${link.textContent}</a>
+                <a href="${link.href}">${text.nodeValue}</a>
             </div>`;
 
         ul.appendChild(item);
