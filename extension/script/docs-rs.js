@@ -59,11 +59,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let ul = document.createElement("ul");
     ul.classList.add("rse-doc-toc");
     for (let header of headers) {
-        let link = header.firstChild;
+        let [link, text] = header.childNodes;
 
         let item = document.createElement("li");
         item.innerHTML = `<div class="rse-doc-toc-item rse-doc-toc-${header.tagName.toLowerCase()}">
-                <a href="${link.href}">${link.textContent}</a>
+                <a href="${link.href}">${text.nodeValue}</a>
             </div>`;
 
         ul.appendChild(item);
