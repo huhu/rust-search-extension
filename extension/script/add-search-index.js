@@ -34,9 +34,17 @@
 
             // Remove unnecessary std crate's search index, such as core, alloc, etc
             let searchIndex = Object.create(null)
-            STD_CRATES.forEach(crate => {
-                searchIndex[crate] = window.searchIndex[crate];
-            });
+            if (window.searchIndex instanceof Map) {
+                // [rustdoc] Use Map instead of Object for source files and search index #118910
+                // https://github.com/rust-lang/rust/pull/118910
+                STD_CRATES.forEach(crate => {
+                    searchIndex[crate] = window.searchIndex.get(crate);
+                });
+            } else {
+                STD_CRATES.forEach(crate => {
+                    searchIndex[crate] = window.searchIndex[crate];
+                });
+            }
             window.postMessage({
                 direction: `rust-search-extension:std`,
                 message: {
