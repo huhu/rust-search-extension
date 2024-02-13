@@ -1,31 +1,33 @@
 // This mapping table should match the discriminants of
-// `rustdoc::html::item_type::ItemType` type in Rust.
+// `rustdoc::formats::item_type::ItemType` type in Rust.
 const itemTypes = [
+    "keyword",
+    "primitive",
     "mod",
     "externcrate",
     "import",
-    "struct",
+    "struct", // 5
     "enum",
     "fn",
     "type",
     "static",
-    "trait",
+    "trait", // 10
     "impl",
     "tymethod",
     "method",
     "structfield",
-    "variant",
+    "variant", // 15
     "macro",
-    "primitive",
     "associatedtype",
     "constant",
     "associatedconstant",
-    "union",
+    "union", // 20
     "foreigntype",
-    "keyword",
     "existential",
     "attr",
-    "derive"
+    "derive",
+    "traitalias", // 25
+    "generic",
 ];
 // used for special search precedence
 const TY_PRIMITIVE = itemTypes.indexOf("primitive");
