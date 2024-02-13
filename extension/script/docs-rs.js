@@ -27,13 +27,6 @@ function highlight() {
         }
     }
     const scrollHandler = entries => {
-        let hashEl = document.querySelector(document.location.hash);
-        if (hashEl?.getBoundingClientRect().top === OFFSET) {
-            activeByHash(document.location.hash);
-            // Early return if navigating directly to a named anchor.
-            return;
-        }
-
         entries.forEach(entry => {
             if (entry.intersectionRatio > 0) {
                 let url = new URL(entry.target.firstChild.href);
@@ -72,11 +65,22 @@ document.addEventListener("DOMContentLoaded", () => {
     let ul = document.createElement("ul");
     ul.classList.add("rse-doc-toc");
     for (let header of headers) {
-        let [link, text] = header.childNodes;
+        let href, textContent;
+        // The header may contain a link or not.
+        // See also https://github.com/huhu/rust-search-extension/pull/268
+        if (header.childNodes.length > 1) {
+            let [link, text] = header.childNodes;
+            href = link.href;
+            textContent = text.nodeValue;
+        } else {
+            let link = header.firstChild;
+            href = link.href;
+            textContent = link.textContent;
+        }
 
         let item = document.createElement("li");
         item.innerHTML = `<div class="rse-doc-toc-item rse-doc-toc-${header.tagName.toLowerCase()}">
-                <a href="${link.href}">${text.nodeValue}</a>
+                <a href="${href}">${textContent}</a>
             </div>`;
 
         ul.appendChild(item);
