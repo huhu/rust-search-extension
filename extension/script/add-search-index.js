@@ -95,7 +95,7 @@
     function getVar(name) {
         // https://github.com/rust-lang/rust/pull/113094 has change the way to get meta variable.
         const el = document.querySelector("head > meta[name='rustdoc-vars']") || document.getElementById("rustdoc-vars");
-        return el ? el.attributes["data-" + name].value : null;
+        return el ? el.attributes["data-" + name]?.value : null;
     }
 
     function resourcePath(basename, extension) {
