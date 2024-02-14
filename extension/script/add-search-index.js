@@ -18,7 +18,7 @@
                     libName,
                     crateName,
                     crateVersion,
-                    searchIndex: window.searchIndex,
+                    searchIndex: getSearchIndex(),
                 },
             }, "*");
         } else if (location.pathname.startsWith("/nightly/nightly-rustc/") &&
@@ -26,25 +26,18 @@
             window.postMessage({
                 direction: 'rust-search-extension:rustc',
                 message: {
-                    searchIndex: window.searchIndex,
+                    searchIndex: getSearchIndex(),
                 },
             }, "*");
         } else { // stable/nightly pages
             const STD_CRATES = ['std', 'test', 'proc_macro'];
 
             // Remove unnecessary std crate's search index, such as core, alloc, etc
-            let searchIndex = Object.create(null)
-            if (window.searchIndex instanceof Map) {
-                // [rustdoc] Use Map instead of Object for source files and search index #118910
-                // https://github.com/rust-lang/rust/pull/118910
-                STD_CRATES.forEach(crate => {
-                    searchIndex[crate] = window.searchIndex.get(crate);
-                });
-            } else {
-                STD_CRATES.forEach(crate => {
-                    searchIndex[crate] = window.searchIndex[crate];
-                });
-            }
+            let rawSearchIndex = getSearchIndex();
+            let searchIndex = Object.create(null);
+            STD_CRATES.forEach(crate => {
+                searchIndex[crate] = rawSearchIndex[crate];
+            });
             window.postMessage({
                 direction: `rust-search-extension:std`,
                 message: {
@@ -85,6 +78,16 @@
         }
     }
 
+
+    // [rustdoc] Use Map instead of Object for source files and search index #118910
+    // https://github.com/rust-lang/rust/pull/118910
+    function getSearchIndex() {
+        if (window.searchIndex instanceof Map || Object.prototype.toString.call(window.searchIndex) === '[object Map]') {
+            return Object.fromEntries(window.searchIndex);
+        } else {
+            return window.searchIndex;
+        }
+    }
 
     // ======== Following function mirrored to librustdoc main.js ========
 

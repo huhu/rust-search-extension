@@ -74,17 +74,10 @@ class DocSearch {
     }
 
     buildIndex(rawSearchIndex) {
-        if (!rawSearchIndex) {
-            // if the rawSearchIndex is undefined or null, give it a empty map
-            // to call iterate.
-            rawSearchIndex = new Map();
-        } else if (typeof(rawSearchIndex) === 'object') {
-            rawSearchIndex = Object.entries(rawSearchIndex);
-        }
         let searchIndex = [];
         const searchWords = [];
         const charA = "A".charCodeAt(0);
-        for (let [crateName, indexItem] of rawSearchIndex) {
+        for (let [crateName, indexItem] of Object.entries(rawSearchIndex || {})) {
             searchWords.push(crateName);
             searchIndex.push({
                 crate: crateName,
