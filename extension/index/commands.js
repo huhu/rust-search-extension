@@ -37,7 +37,6 @@ var commandsIndex = {
         ["Epoll, Kqueue and IOCP Explained with Rust", "https://cfsamsonbooks.gitbook.io/epoll-kqueue-iocp-explained"],
         ["Futures Explained in 200 Lines of Rust", "https://cfsamson.github.io/books-futures-explained/"],
         ["The Little Book of Rust Books", "https://lborb.github.io/book/"],
-        ["Rust by Example -- Extended Edition", "https://rust-by-example-ext.com/"],
         ["Rust for the Polyglot Programmer", "https://www.chiark.greenend.org.uk/~ianmdlvl/rust-polyglot/"],
         ["Demystifying Async/Await in Rust", "https://ruspiro.github.io/ruspiro-async-book/"],
         ["Roguelike Tutorial - In Rust", "https://bfnightly.bracketproductions.com/"],
