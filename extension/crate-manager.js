@@ -41,9 +41,16 @@ class CrateDocManager {
     // 
     // Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
     static async addCrate({ libName, crateVersion, searchIndex, crateName }) {
-        if (searchIndex && libName in searchIndex) {
-            await storage.setItem(`@${libName}`, searchIndex);
-            let doc = searchIndex[libName]["doc"];
+        if (searchIndex && (libName in searchIndex || searchIndex.has(libName))) {
+            // Do not use typeof, since typeof new Map() is "object".
+            if (searchIndex instanceof Map) {
+                // Convert Map to Object
+                await storage.setItem(`@${libName}`, Object.fromEntries(searchIndex));
+            } else {
+                await storage.setItem(`@${libName}`, searchIndex);
+            }
+            let crate = searchIndex[libName] || searchIndex.get(libName);
+            let doc = crate["doc"];
             let crates = await CrateDocManager.getCrates();
             if (libName in crates) {
                 // Don't override the time if the crate exists

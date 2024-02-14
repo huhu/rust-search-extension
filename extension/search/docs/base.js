@@ -78,7 +78,7 @@ class DocSearch {
             // if the rawSearchIndex is undefined or null, give it a empty map
             // to call iterate.
             rawSearchIndex = new Map();
-        } else if (rawSearchIndex instanceof Object) {
+        } else if (typeof(rawSearchIndex) === 'object') {
             rawSearchIndex = Object.entries(rawSearchIndex);
         }
         let searchIndex = [];
