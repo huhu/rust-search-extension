@@ -4,6 +4,16 @@ description = "Changelog"
 weight = 3
 +++
 
+# v1.13.0 - 2024-02-14
+
+- Migrate std docs index to `Map`.
+- Remove const links feature, fix issue links. close ({{ issue(id=261) }})
+- Improve docs.rs TOC highlight. ({{ issue(id=268) }})
+- Remove domain expired book
+- Fix `getVar()` value null bug
+- Load search index for `rustc`
+- Update to latest search index
+
 # v1.12.0 - 2023-07-15
 
 - Update search index
