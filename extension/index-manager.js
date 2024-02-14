@@ -5,7 +5,8 @@
 
 class IndexManager {
     static async getStdStableIndex() {
-        return await storage.getItem('index-std-stable') || searchIndex;
+        // Convert default map searchIndex to Object since rust 1.76.0
+        return await storage.getItem('index-std-stable') || Object.fromEntries(searchIndex);
     }
 
     static setStdStableIndex(index) {
@@ -13,7 +14,8 @@ class IndexManager {
     }
 
     static async getStdNightlyIndex() {
-        return await storage.getItem('index-std-nightly') || searchIndex;
+        // Convert default map searchIndex to Object since rust 1.76.0
+        return await storage.getItem('index-std-nightly') || Object.fromEntries(searchIndex);
     }
 
     static setStdNightlyIndex(index) {
