@@ -90,7 +90,7 @@ path is your doc directory.
 
 - For Chrome/Edge users:
   Prepend `file://` before your doc directory, and input it to the input box on the
-  settings page.
+  settings page. Then [enable access to file URLs](https://developer.chrome.com/docs/extensions/develop/concepts/declare-permissions#allow_access_to_file_urls_and_incognito_pages) on the extension's details page.
 
   ![GIF](/offline-mode-chrome.gif)
 
