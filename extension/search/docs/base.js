@@ -81,7 +81,7 @@ class DocSearch {
             searchWords.push(crateName);
             searchIndex.push({
                 crate: crateName,
-                ty: 1, // == ExternCrate
+                ty: 3, // == ExternCrate
                 name: crateName,
                 path: "",
                 desc: indexItem.doc,
