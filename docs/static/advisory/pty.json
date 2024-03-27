@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0015",
+      "package": "pty",
+      "title": "pty is unmaintained",
+      "description": "The repository hasn't received any updates since Jun 25, 2017 and the author is unresponsive.\n\nMaintained alternatives include:\n\n* [`tokio-pty-process`](https://crates.io/crates/tokio-pty-process)\n* [`pty-process`](https://crates.io/crates/pty-process)",
+      "date": "2022-03-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hibariya/pty-rs/issues/19",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

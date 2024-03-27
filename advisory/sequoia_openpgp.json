@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0038",
+      "package": "sequoia-openpgp",
+      "title": "Out-of-bounds array access leads to panic",
+      "description": "Affected versions of the crate have several bugs where\nattacker-controlled input can result in the use of an out-of-bound\narray index.  Rust detects the use of the out-of-bound index and\ncauses the application to panic.  An attacker may be able to use this\nto cause a denial-of-service.  However, it is not possible for an\nattacker to read from or write to the application's address space.",
+      "date": "2023-05-16",
+      "aliases": [
+        "GHSA-25mx-8f3v-8wh7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://gitlab.com/sequoia-pgp/sequoia/-/tags/openpgp%2Fv1.16.0"
+      ],
+      "source": null,
+      "url": "https://lists.sequoia-pgp.org/hyperkitty/list/announce@lists.sequoia-pgp.org/thread/SN2E3QRT4DMQ5JNEK6VIN6DJ5SH766DI/",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.1.1, <1.2.0",
+        ">=1.8.1, <1.9.0",
+        ">=1.16.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

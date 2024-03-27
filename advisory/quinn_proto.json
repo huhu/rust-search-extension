@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0063",
+      "package": "quinn-proto",
+      "title": "Denial of service in Quinn servers",
+      "description": "Receiving QUIC frames containing a frame with unknown frame type could lead to a panic.\nUnfortunately this is issue was not found by our fuzzing infrastructure.\n\nThanks to the QUIC Tester research group for reporting this issue.",
+      "date": "2023-09-21",
+      "aliases": [
+        "CVE-2023-42805",
+        "GHSA-q8wc-j5m9-27w3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/1667",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.9.5",
+        ">=0.10.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

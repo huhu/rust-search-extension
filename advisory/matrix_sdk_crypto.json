@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0085",
+      "package": "matrix-sdk-crypto",
+      "title": "matrix-sdk Impersonation of room keys",
+      "description": "When the user receives a forwarded room key, the software accepts it without\nchecking who the room key came from. This allows homeservers to try to insert\nroom keys of questionable validity, potentially mounting an impersonation attack.",
+      "date": "2022-09-29",
+      "aliases": [
+        "CVE-2022-39252",
+        "GHSA-vp68-2wrm-69qm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/matrix-org/matrix-rust-sdk/commit/41449d2cc360e347f5d4e1c154ec1e3185f11acd"
+      ],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/commit/093fb5d0aa21c0b5eaea6ec96b477f1075271cbb",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

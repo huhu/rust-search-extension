@@ -1,0 +1,204 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0076",
+      "package": "wasmtime",
+      "title": "Bug in Wasmtime implementation of pooling instance allocator",
+      "description": "Bug in Wasmtime's implementation of its pooling instance allocator when the allocator is configured to give WebAssembly instances a maximum of zero pages of memory.\n\nIn this configuration, the virtual memory mapping for WebAssembly memories did not meet the compiler-required configuration requirements for safely executing WebAssembly modules. Wasmtime's default settings require virtual memory page faults to indicate that wasm reads/writes are out-of-bounds, but the pooling allocator's configuration would not create an appropriate virtual memory mapping for this meaning out of bounds reads/writes can successfully read/write memory unrelated to the wasm sandbox within range of the base address of the memory mapping created by the pooling allocator.\n\nThis bug is not applicable with the default settings of the `wasmtime` crate.\n\nThis bug can only be triggered by setting `InstanceLimits::memory_pages` to zero.\n\nThis is expected to be a very rare configuration since this means that wasm modules cannot allocate any pages of linear memory.\n\nAll wasm modules produced by all current toolchains are highly likely to use linear memory, so it's expected to be unlikely that this configuration is set to zero by any production embedding of Wasmtime.",
+      "date": "2022-11-10",
+      "aliases": [
+        "CVE-2022-39392",
+        "GHSA-44mr-8vmm-wjhg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "memory",
+        "allocator",
+        "Wasm",
+        "bounds",
+        "sandbox",
+        "paging"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/bytecodealliance/wasmtime/commit/e60c3742904ccbb3e26da201c9221c38a4981d72"
+      ],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-44mr-8vmm-wjhg",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "wasmtime::Config::allocation_strategy": [
+          "<1.0.2"
+        ],
+        "wasmtime::PoolingAllocationConfig::instance_memory_pages": [
+          ">=2.0.0, <2.0.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.0.2, <2.0.0",
+        ">=2.0.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0110",
+      "package": "wasmtime",
+      "title": "Multiple Vulnerabilities in Wasmtime",
+      "description": "* [Use after free passing `externref`s to Wasm in\n  Wasmtime](https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-v4cp-h94r-m7xf)\n\n* [Out-of-bounds read/write and invalid free with `externref`s and GC safepoints\n  in\n  Wasmtime](https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-4873-36h9-wv49)\n\n* [Wrong type for `Linker`-define functions when used across two\n  `Engine`s](https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-q879-9g95-56mx)",
+      "date": "2021-09-17",
+      "aliases": [
+        "CVE-2021-39216",
+        "CVE-2021-39219",
+        "CVE-2021-39218"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "use-after-free",
+        "out-of-bounds read",
+        "out-of-bounds write",
+        "Wasm",
+        "garbage collection"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-v4cp-h94r-m7xf",
+        "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-4873-36h9-wv49",
+        "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-q879-9g95-56mx"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "wasmtime::Linker::func_new": [
+          "<0.30.0"
+        ],
+        "wasmtime::Linker::func_wrap": [
+          "<0.30.0"
+        ],
+        "wasmtime::Store::gc": [
+          "<0.30.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.30.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0016",
+      "package": "wasmtime",
+      "title": "Use after free with `externref`s and epoch interruption in Wasmtime",
+      "description": "[Use after free with `externref`s and epoch interruption in Wasmtime](https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-gwc9-348x-qwv2)",
+      "date": "2022-03-31",
+      "aliases": [
+        "CVE-2022-24791"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "use-after-free",
+        "Wasm",
+        "garbage collection"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-gwc9-348x-qwv2",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "wasmtime::Config::epoch_interruption": [
+          "^0.34.0",
+          "^0.34.1",
+          "^0.35.0",
+          "^0.35.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.35.2",
+        ">=0.34.2, <0.35.0"
+      ],
+      "unaffected": [
+        "<0.34.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0075",
+      "package": "wasmtime",
+      "title": "Bug in pooling instance allocator",
+      "description": "bug in Wasmtime's implementation of its pooling instance allocator where when a linear memory is reused for another instance the initial heap snapshot of the prior instance can be visible, erroneously to the next instance.\n\nMitigations are described [here](https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-wh6w-3828-g9qf).",
+      "date": "2022-11-10",
+      "aliases": [
+        "CVE-2022-39393",
+        "GHSA-wh6w-3828-g9qf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "use-after-free",
+        "Wasm",
+        "garbage collection"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/bytecodealliance/wasmtime/commit/2614f2e9d2d36805ead8a8da0fa0c6e0d9e428a0",
+        "https://github.com/bytecodealliance/wasmtime/commit/3535acbf3be032ef1ba0b469b8ab92538a8a18a6"
+      ],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-wh6w-3828-g9qf",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.2, <2.0.0",
+        ">=2.0.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

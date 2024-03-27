@@ -1,0 +1,53 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0038",
+      "package": "fltk",
+      "title": "Multiple memory safety issues",
+      "description": "Affected versions contain multiple memory safety issues, such as:\n\n - Setting a multi label type where an image doesn't exist would lead to a NULL pointer dereference.\n - Setting a window icon using a non-raster image (which FLTK rasterizes lazily) would lead to a NULL dereference.\n - Pixmap constructor would not check for correct pixmaps which could lead to out-of bound reads.",
+      "date": "2021-03-06",
+      "aliases": [
+        "CVE-2021-28306",
+        "CVE-2021-28307",
+        "CVE-2021-28308",
+        "GHSA-5pg8-h4gv-m3p8",
+        "GHSA-7qcc-g2m9-8533",
+        "GHSA-vjmg-pc8h-p6p8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "undefined_behavior"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/MoAlyousef/fltk-rs/issues/519",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "fltk::image::Pixmap::new": [
+          "<0.15.2, >=0.14.12"
+        ],
+        "fltk::prelude::WidgetExt::set_label_type": [
+          "<0.15.2"
+        ],
+        "fltk::prelude::WindowExt::set_icon": [
+          "<0.14.12"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.15.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

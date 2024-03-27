@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0079",
+      "package": "socket2",
+      "title": "`socket2` invalidly assumes the memory layout of std::net::SocketAddr",
+      "description": "The [`socket2`](https://crates.io/crates/socket2) crate has assumed `std::net::SocketAddrV4`\nand `std::net::SocketAddrV6` have the same memory layout as the system C representation\n`sockaddr`. It has simply casted the pointers to convert the socket addresses to the\nsystem representation. The standard library does not say anything about the memory\nlayout, and this will cause invalid memory access if the standard library\nchanges the implementation. No warnings or errors will be emitted once the\nchange happens.",
+      "date": "2020-11-06",
+      "aliases": [
+        "CVE-2020-35920"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory",
+        "layout",
+        "cast"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/socket2-rs/issues/119",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.16"
+      ],
+      "unaffected": []
+    }
+  }
+]

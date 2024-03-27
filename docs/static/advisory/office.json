@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0034",
+      "package": "office",
+      "title": "office is unmaintained, use calamine instead",
+      "description": "The `office` crate is unmaintained. Use [calamine](https://crates.io/crates/calamine)\nfor reading excel files.\n\nContact the `office` author for ownership of the package name.",
+      "date": "2021-02-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustSec/advisory-db/issues/742#issuecomment-773313783",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

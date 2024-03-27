@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0021",
+      "package": "crossbeam-queue",
+      "title": "`SegQueue` creates zero value of any type",
+      "description": "Affected versions of this crate called `mem::zeroed()` to create values of a user-supplied type `T`.\nThis is unsound e.g. if `T` is a reference type (which must be non-null).\n \nThe flaw was corrected by avoiding the use of `mem::zeroed()`, using `MaybeUninit` instead.",
+      "date": "2022-05-10",
+      "aliases": [
+        "GHSA-6888-wf7j-34jq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/crossbeam-rs/crossbeam/pull/458",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

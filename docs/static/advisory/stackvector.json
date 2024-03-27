@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0048",
+      "package": "stackvector",
+      "title": "StackVec::extend can write out of bounds when size_hint is incorrect",
+      "description": "`StackVec::extend` used the lower and upper bounds from an Iterator's\n`size_hint` to determine how many items to push into the stack based vector.\n\nIf the `size_hint` implementation returned a lower bound that was larger than\nthe upper bound, `StackVec` would write out of bounds and overwrite memory\non the stack. As mentioned by the [size_hint](https://doc.rust-lang.org/std/iter/trait.Iterator.html#provided-methods)\ndocumentation, `size_hint` is mainly for optimization and incorrect\nimplementations should not lead to memory safety issues.",
+      "date": "2021-02-19",
+      "aliases": [
+        "CVE-2021-29939"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Alexhuszagh/rust-stackvector/issues/2",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.9"
+      ],
+      "unaffected": []
+    }
+  }
+]

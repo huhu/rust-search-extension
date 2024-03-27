@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0074",
+      "package": "pyo3",
+      "title": "Reference counting error in `From<Py<T>>`",
+      "description": "A bug in `From<Py<T>>` would lead to an extra reference count decrement, often\nleading to use-after-free issues.",
+      "date": "2020-11-28",
+      "aliases": [
+        "CVE-2020-35917",
+        "GHSA-2vx6-fcw6-hpr6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/1297",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.12.4"
+      ],
+      "unaffected": [
+        "<0.12.0"
+      ]
+    }
+  }
+]
