@@ -12,13 +12,29 @@
             if (crateVersion === 'latest') {
                 crateVersion = parseCrateVersionFromDOM();
             }
+
+            let searchIndex = getSearchIndex();
+
+            // `itemTypes` was reordered in rust-lang/rust@28f17d97a,
+            // which first shipped in rustc 1.76.0-nightly (1e9dda77b 2023-11-22),
+            // preceded by rustc 1.76.0-nightly (2f8d81f9d 2023-11-21).
+            //
+            // Mark each index item as using old `itemTypes` if no rustdoc version
+            // is available or if the version date is less than 2023-11-22.
+            let date = getRustdocVersionDate();
+            if (!date || date < "2023-11-22") {
+                for (let indexItem of Object.values(searchIndex || {})) {
+                    indexItem.oldItemTypes = true;
+                }
+            }
+
             window.postMessage({
                 direction: "rust-search-extension:docs.rs",
                 message: {
                     libName,
                     crateName,
                     crateVersion,
-                    searchIndex: getSearchIndex(),
+                    searchIndex,
                 },
             }, "*");
         } else if (location.pathname.startsWith("/nightly/nightly-rustc/") &&
@@ -94,6 +110,10 @@
         } else {
             return window.searchIndex;
         }
+    }
+
+    function getRustdocVersionDate() {
+        return getVar("rustdoc-version")?.match(/\d{4}-\d{2}-\d{2}/)?.[0];
     }
 
     // ======== Following function mirrored to librustdoc main.js ========

@@ -29,9 +29,18 @@ const itemTypes = [
     "traitalias", // 25
     "generic",
 ];
-// used for special search precedence
-const TY_PRIMITIVE = itemTypes.indexOf("primitive");
-const TY_KEYWORD = itemTypes.indexOf("keyword");
+
+// `itemTypes` was reordered in rust-lang/rust@28f17d97a,
+// we should upgrade the item type when the rustdoc version is
+// earlier than that commit, which is when `indexItem.oldItemTypes`
+// is set to `true` in script/add-search-index.js.
+//
+// Calculated by `oldItemTypes.map(ty => newItemTypes.indexOf(ty))`.
+const upgradeItemType = [
+    2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+    12, 13, 14, 15, 16, 1, 17, 18, 19, 20,
+    21, 0, 22, 23, 24, 25, 26
+];
 
 // Max levenshtein distance.
 const MAX_LEV_DISTANCE = 2;
@@ -124,7 +133,13 @@ class DocSearch {
                 // convert `paths` into an object form
                 for (let i = 0; i < paths.length; ++i) {
                     if (Array.isArray(paths[i])) {
-                        paths[i] = { ty: paths[i][0], name: paths[i][1] };
+                        let ty = paths[i][0];
+                        // See the comments on `upgradeItemType`.
+                        if (indexItem.oldItemTypes) {
+                            ty = upgradeItemType[ty];
+                        }
+
+                        paths[i] = { ty, name: paths[i][1] };
                     }
                 }
 
@@ -138,7 +153,17 @@ class DocSearch {
                 let len = itemTypes.length;
                 let lastPath = "";
                 for (let i = 0; i < len; ++i) {
-                    let ty = itemTypes[i];
+                    let rawTy = itemTypes[i];
+                    // `itemTypes` changed from number array to string since Rust 1.69,
+                    // we should compat both versions.
+                    // see this PR: https://github.com/rust-lang/rust/pull/108013
+                    let ty = typeof rawTy === 'string' ? rawTy.charCodeAt(0) - charA : rawTy;
+
+                    // See the comments on `upgradeItemType`.
+                    if (indexItem.oldItemTypes) {
+                        ty = upgradeItemType[ty];
+                    }
+
                     let path = lastPath;
                     // check if itemPaths is map
                     // Since Rust 1.70, the itemPaths has changed from array to map.
@@ -150,10 +175,7 @@ class DocSearch {
                     }
                     let row = {
                         crate: crateName,
-                        // itemTypes changed from number array to string since Rust 1.69,
-                        // we should compat both versions.
-                        // see this PR: https://github.com/rust-lang/rust/pull/108013 
-                        ty: typeof ty === 'string' ? itemTypes.charCodeAt(i) - charA : ty,
+                        ty,
                         name: itemNames[i],
                         path,
                         desc: itemDescs[i],
@@ -186,7 +208,13 @@ class DocSearch {
                 // convert `paths` into an object form
                 for (let i = 0; i < paths.length; ++i) {
                     if (Array.isArray(paths[i])) {
-                        paths[i] = { ty: paths[i][0], name: paths[i][1] };
+                        let ty = paths[i][0];
+                        // See the comments on `upgradeItemType`.
+                        if (indexItem.oldItemTypes) {
+                            ty = upgradeItemType[ty];
+                        }
+
+                        paths[i] = { ty, name: paths[i][1] };
                     }
                 }
 
@@ -201,9 +229,16 @@ class DocSearch {
                 let lastPath = "";
                 for (let i = 0; i < len; ++i) {
                     const rawRow = items[i];
+
+                    let ty = rawRow[0];
+                    // See the comments on `upgradeItemType`.
+                    if (indexItem.oldItemTypes) {
+                        ty = upgradeItemType[ty];
+                    }
+
                     let row = {
                         crate: crateName,
-                        ty: rawRow[0],
+                        ty,
                         name: rawRow[1],
                         path: rawRow[2] || lastPath,
                         desc: rawRow[3],
@@ -477,16 +512,6 @@ class DocSearch {
             b = bbb.index;
             if (a !== b) {
                 return a - b;
-            }
-
-            // special precedence for primitive and keyword pages
-            if ((aaa.item.ty === TY_PRIMITIVE && bbb.item.ty !== TY_KEYWORD) ||
-                (aaa.item.ty === TY_KEYWORD && bbb.item.ty !== TY_PRIMITIVE)) {
-                return -1;
-            }
-            if ((bbb.item.ty === TY_PRIMITIVE && aaa.item.ty !== TY_PRIMITIVE) ||
-                (bbb.item.ty === TY_KEYWORD && aaa.item.ty !== TY_KEYWORD)) {
-                return 1;
             }
 
             // sort by description (no description goes later)
