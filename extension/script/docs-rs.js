@@ -65,19 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let ul = document.createElement("ul");
     ul.classList.add("rse-doc-toc");
     for (let header of headers) {
-        let href, textContent;
-        // The header may contain a link or not.
-        // See also https://github.com/huhu/rust-search-extension/pull/268
-        if (header.childNodes.length > 1) {
-            let [link, text] = header.childNodes;
-            href = link.href;
-            textContent = text.nodeValue;
-        } else {
-            let link = header.firstChild;
-            href = link.href;
-            textContent = link.textContent;
-        }
-
+        let href = header.firstChild.href;
+        let textContent = header.innerText;
         let item = document.createElement("li");
         item.innerHTML = `<div class="rse-doc-toc-item rse-doc-toc-${header.tagName.toLowerCase()}">
                 <a href="${href}">${textContent}</a>
