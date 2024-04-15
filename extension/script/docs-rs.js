@@ -229,8 +229,8 @@ async function enhanceFeatureFlagsMenu(menu) {
     let dependeciesList = optionalDependencies.map(dependency => `
         <li class="optional-dependency-item">
             <a style="padding:0" href="https://docs.rs/${dependency}">
-                <span class="stab portability docblock-short">
-                    <code style="white-space: nowrap;">${dependency}</code>
+                <span class="stab portability docblock-short" style="white-space: nowrap;">
+                    <code>${dependency}</code>
                 </span>
             </a>
         </li>
