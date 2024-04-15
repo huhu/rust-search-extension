@@ -12,15 +12,16 @@
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
     <style>
         :root {
-        /* Primary theme color */
-        --primary-color: #F9BB2D;
-        /* Primary theme text color */
-        --primary-text-color: #121212;
-    }
+            /* Primary theme color */
+            --primary-color: #F9BB2D;
+            /* Primary theme text color */
+            --primary-text-color: #121212;
+        }
     </style>
     {% block head %}
     {% endblock %}
 </head>
+
 <body>
     <div class="flex-layout" style="flex-direction: column;">
         <div style="min-width: 1160px; display: flex;flex-direction: column;">
@@ -31,9 +32,11 @@
                 <li class="nav-item"><a href="export.html">Export/Import</a></li>
             </ul>
             <div style="padding: 30px 80px; background-color: white; position: relative;">
-                <div class="logo flex-layout">
-                    <img src="../assets/icon.png" alt="rust-search-extension-logo"> Rust Search Extension
-                </div>
+                <a href="https://rust.extension.sh" style="text-decoration: none">
+                    <div class="logo flex-layout">
+                        <img src="../assets/icon.png" alt="rust-search-extension-logo"> Rust Search Extension
+                    </div>
+                </a>
                 {% block content %}
                 {% endblock %}
             </div>
@@ -45,4 +48,5 @@
     {% block js %}
     {% endblock %}
 </body>
+
 </html>
