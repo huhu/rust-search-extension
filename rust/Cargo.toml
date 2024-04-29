@@ -14,12 +14,10 @@ futures = "0.3"
 tokio = { version = "1", features = ["macros", "time", "rt-multi-thread"] }
 reqwest = { version = "0.11", features = ["json"] }
 select = "0.6"
-csv = "1"
 semver = { version = "1", features = ["serde"] }
-tar = "0.4"
-libflate = "1"
 rayon = "1"
 regex = "1"
 argh = "0.1"
 rustsec = "0"
 html-escape = "0"
+db-dump = "0.7.1"

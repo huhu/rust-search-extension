@@ -1,17 +1,15 @@
-use std::cmp::{Ordering, Reverse};
+use std::cmp::Reverse;
+use std::collections::hash_map::Entry;
 use std::collections::HashMap;
-use std::fs::{self, File};
-use std::io::{BufReader, Read};
+use std::fs;
 use std::path::Path;
 
 use argh::FromArgs;
-use csv::ReaderBuilder;
-use libflate::gzip::Decoder;
+use db_dump::crates::CrateId;
 use rayon::prelude::*;
+
 use semver::Version;
-use serde::de::DeserializeOwned;
 use serde::Deserialize;
-use tar::Archive;
 use unicode_segmentation::UnicodeSegmentation;
 
 use crate::frequency::FrequencyWord;
@@ -33,24 +31,15 @@ pub struct CratesTask {
     dest_path: String,
     /// CSV path
     #[argh(option, short = 'p')]
-    csv_path: String,
+    db_dump_path: String,
 }
 
 #[derive(Deserialize, Debug)]
 struct Crate {
-    #[serde(rename = "id")]
-    crate_id: u64,
     name: String,
-    downloads: u64,
-    description: Option<String>,
+    description: String,
     #[serde(skip_deserializing, default = "default_version")]
     version: Version,
-}
-
-#[derive(Deserialize, Debug)]
-struct CrateVersion {
-    crate_id: u64,
-    num: Version,
 }
 
 #[derive(Debug)]
@@ -105,32 +94,16 @@ fn default_version() -> Version {
     Version::parse("0.0.0").unwrap()
 }
 
-fn read_csv<D: DeserializeOwned>(file: impl Read) -> crate::Result<Vec<D>> {
-    let mut reader = ReaderBuilder::new().has_headers(true).from_reader(file);
-    Ok(reader
-        .deserialize()
-        .filter_map(|record| match record {
-            Ok(record) => Some(record),
-            Err(err) => {
-                println!("Deserialize csv record failed: {:?}", err);
-                None
-            }
-        })
-        .collect())
-}
-
 fn generate_javascript_crates_index(crates: &[Crate], minifier: &Minifier) -> String {
     let mut contents = String::from("var N=null;");
     // <name, [optional description, version]>
-    let crates_map: HashMap<String, (Option<String>, &Version)> = crates
+    let crates_map: HashMap<String, (String, &Version)> = crates
         .into_par_iter()
         .map(|item| {
             (
                 minifier.minify_crate_name(&item.name),
                 (
-                    item.description.as_ref().map(|value| {
-                        minifier.minify_description(value.replace('\n', " ").trim())
-                    }),
+                    minifier.minify_description(item.description.replace('\n', " ").trim()),
                     &item.version,
                 ),
             )
@@ -147,57 +120,53 @@ fn generate_javascript_crates_index(crates: &[Crate], minifier: &Minifier) -> St
 impl Task for CratesTask {
     fn execute(&self) -> crate::Result<()> {
         let mut crates: Vec<Crate> = Vec::new();
-        let mut versions: Vec<CrateVersion> = Vec::new();
+        let mut crate_downloads = Vec::new();
+        let mut latest_versions = HashMap::new();
 
-        let mut archive = Archive::new(Decoder::new(BufReader::new(File::open(&self.csv_path)?))?);
-        for file in archive.entries()? {
-            let file = file?;
-
-            if let Some(filename) = file.path()?.file_name().and_then(|f| f.to_str()) {
-                match filename {
-                    "crates.csv" => {
-                        println!("{:?}", file.path()?);
-                        crates = read_csv(file)?;
-                    }
-                    "versions.csv" => {
-                        println!("{:?}", file.path()?);
-                        versions = read_csv(file)?;
-                    }
-                    _ => {}
+        db_dump::Loader::new()
+            .crate_downloads(|row| {
+                crate_downloads.push(row);
+            })
+            .versions(|row| match latest_versions.entry(row.crate_id) {
+                Entry::Vacant(entry) => {
+                    entry.insert(row);
                 }
-            }
-        }
-        crates.retain(|c| {
-            // Filter out auto-generated google api crates.
-            c.description.is_none() || matches!(c.description.as_ref(), Some(d) if !d.starts_with(GOOGLE_API_CRATES_FILTER_PREFIX))
-        });
-        crates.par_sort_unstable_by(|a, b| b.downloads.cmp(&a.downloads));
-        crates = crates.into_iter().take(MAX_CRATE_SIZE).collect();
-
-        // A <crate_id, latest_version> map to store the latest version of each crate.
-        let mut latest_versions = HashMap::<u64, Version>::with_capacity(versions.len());
-        versions.into_iter().for_each(|cv| {
-            let num = cv.num;
-            latest_versions
-                .entry(cv.crate_id)
-                .and_modify(|v| {
-                    if (*v).cmp(&num) == Ordering::Less {
-                        *v = num.clone();
+                Entry::Occupied(mut entry) => {
+                    if row.created_at > entry.get().created_at {
+                        entry.insert(row);
                     }
-                })
-                .or_insert(num);
-        });
+                }
+            })
+            .load(&self.db_dump_path)?;
+
+        // get top 20K of top downloaded crates
+        crate_downloads.sort_by(|a, b| b.downloads.cmp(&a.downloads));
+        let top_crates_id: Vec<CrateId> = crate_downloads
+            .iter()
+            .map(|row| row.crate_id)
+            .take(MAX_CRATE_SIZE + 1000)
+            .collect();
+
+        db_dump::Loader::new()
+            .crates(|row| {
+                if !top_crates_id.contains(&row.id) {
+                    return;
+                }
+                // Filter out auto-generated google api crates.
+                if row.description.starts_with(GOOGLE_API_CRATES_FILTER_PREFIX) {
+                    return;
+                }
+                crates.push(Crate {
+                    name: row.name,
+                    description: row.description,
+                    version: latest_versions.get(&row.id).unwrap().num.clone(),
+                });
+            })
+            .load(&self.db_dump_path)?;
 
         let mut collector = WordCollector::new();
-        crates.iter_mut().for_each(|item: &mut Crate| {
-            if let Some(version) = latest_versions.remove(&item.crate_id) {
-                // Update the latest version of the crate.
-                item.version = version;
-            }
-
-            if let Some(description) = &item.description {
-                collector.collect_crate_description(description);
-            }
+        crates.iter().for_each(|item: &Crate| {
+            collector.collect_crate_description(&item.description);
             collector.collect_crate_name(&item.name);
         });
 
