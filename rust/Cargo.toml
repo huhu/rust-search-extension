@@ -8,7 +8,7 @@ publish = false
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-minifier = "0.2"
+minifier = "0.3"
 unicode-segmentation = "1"
 futures = "0.3"
 tokio = { version = "1", features = ["macros", "time", "rt-multi-thread"] }

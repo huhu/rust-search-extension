@@ -72,7 +72,7 @@ impl<'a> Minifier<'a> {
     pub fn minify_js(json: &str) -> String {
         let tokens: Tokens = simple_minify(json)
             .into_iter()
-            .map(|(token, _)| match token {
+            .map(|token| match token {
                 Token::Keyword(Keyword::Null) => Token::Other("N"),
                 _ => token,
             })
