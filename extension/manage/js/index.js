@@ -286,8 +286,6 @@ async function renderYearList() {
 }
 
 (async () => {
-    await tryMigrateLegacyStatisticsToTimeline();
-
     const now = moment().valueOf();
     const yearAgo = moment().startOf('day').subtract(1, 'year').valueOf();
     await renderCharts(now, yearAgo);
