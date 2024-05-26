@@ -1,3 +1,7 @@
+import Statistics from "../../statistics.js";
+import Compat from "../../core/compat.js";
+import CrateDocManager from "../../crate-manager.js";
+
 function buildRemoveButton(name) {
     let btn = document.createElement("span");
     btn.classList.add("btn-remove");
@@ -43,8 +47,8 @@ async function refresh(orderBy = "time") {
     let compat = new Compat();
     const { timeline } = await Statistics.load();
     const cratesData = timeline.reduce((pre, [time, type, crate]) => {
-        if(crate) {
-            pre[crate] = (pre[crate] || 0) + 1; 
+        if (crate) {
+            pre[crate] = (pre[crate] || 0) + 1;
         }
         return pre;
     }, Object.create(null));

@@ -1,4 +1,10 @@
-(async function() {
+import Statistics from "../../statistics.js";
+import Compat from "../../core/compat.js";
+import storage from "../../core/storage.js";
+import CrateDocManager from "../../crate-manager.js";
+import settings from "../../settings.js";
+
+(async function () {
     document.querySelector(".btn-export").onclick = async (event) => {
         let target = event.target.parentElement;
         let data = Object.create(null)

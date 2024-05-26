@@ -1,3 +1,7 @@
+import storage from "../../core/storage.js";
+import CrateDocManager from "../../crate-manager.js";
+import settings from "../../settings.js";
+
 (function () {
     let json = null;
     let fileSelector = document.querySelector(".file-selector");

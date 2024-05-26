@@ -1,3 +1,6 @@
+import { STATS_PATTERNS } from "../../statistics.js";
+import Statistics from "../../statistics.js";
+
 const TYPE_OTHER = "other";
 const CHART_COLOR = "rgba(249, 188, 45, 0.5)";
 const STATS_MAP = {
@@ -34,6 +37,19 @@ const STATS_MAP = {
         description: "Others including any Rust version, Clippy lint (>), book (%), and caniuse/rfc (?) searches."
     }
 };
+const STATS_NUMBER = STATS_PATTERNS.reduce((pre, current) => {
+    pre[current.type] = current.name;
+    return pre;
+}, Object.create(null));
+const WEEKS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+function makeNumericKeyObject(start, end, initial = 0) {
+    return Array.from({ length: end + 1 - start }).fill(initial)
+        .reduce((obj, current, index) => {
+            obj[start + index] = current;
+            return obj;
+        }, {});
+}
 
 const histogramConfig = {
     width: 460,

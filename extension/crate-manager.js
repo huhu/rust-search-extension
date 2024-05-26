@@ -1,6 +1,6 @@
 import storage from "./core/storage.js";
 
-export class CrateDocManager {
+export default class CrateDocManager {
     static async getCrates() {
         return await storage.getItem("crates") || {};
     }

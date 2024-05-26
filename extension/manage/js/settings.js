@@ -1,12 +1,14 @@
-document.addEventListener('DOMContentLoaded', async function() {
+import settings from "../../settings.js";
+
+document.addEventListener('DOMContentLoaded', async function () {
     const autoUpdateCheckbox = document.getElementById('auto-update');
     autoUpdateCheckbox.checked = await settings.autoUpdate;
-    autoUpdateCheckbox.onchange = async function(event) {
+    autoUpdateCheckbox.onchange = async function (event) {
         settings.autoUpdate = event.target.checked;
     };
     const showMacroRailroad = document.getElementById('show-macro-railroad');
     showMacroRailroad.checked = await settings.showMacroRailroad;
-    showMacroRailroad.onchange = async function(event) {
+    showMacroRailroad.onchange = async function (event) {
         settings.showMacroRailroad = event.target.checked;
     };
 
@@ -19,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const checkedState = await settings.isOfflineMode;
     offlineModeCheckbox.checked = checkedState;
     toggleOfflinePathEnableState(checkedState);
-    offlineModeCheckbox.onchange = function(event) {
+    offlineModeCheckbox.onchange = function (event) {
         const checked = event.target.checked;
         settings.isOfflineMode = checked;
         toggleOfflinePathEnableState(checked);
@@ -28,19 +30,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Offline doc path
     const offlineDocPath = document.querySelector('.offline-doc-path');
     offlineDocPath.value = await settings.offlineDocPath;
-    offlineDocPath.onchange = function(event) {
+    offlineDocPath.onchange = function (event) {
         settings.offlineDocPath = event.target.value;
     };
 
     let crateRegistry = document.querySelector("select[name='crate-registry']");
     crateRegistry.value = await settings.crateRegistry;
-    crateRegistry.onchange = function() {
+    crateRegistry.onchange = function () {
         settings.crateRegistry = crateRegistry.value;
     };
 
     const keepCratesUpToDate = document.getElementById("keep-crates-up-to-date");
     keepCratesUpToDate.checked = await settings.keepCratesUpToDate;
-    keepCratesUpToDate.onchange = async function(event) {
+    keepCratesUpToDate.onchange = async function (event) {
         settings.keepCratesUpToDate = event.target.checked;
     }
 
@@ -70,15 +72,15 @@ async function setupDefaultSearch() {
     docsRs.checked = defaultSearch.docsRs;
     attributes.checked = defaultSearch.attributes;
 
-    thirdPartyDocs.onchange = function(event) {
+    thirdPartyDocs.onchange = function (event) {
         defaultSearch.thirdPartyDocs = event.target.checked;
         settings.defaultSearch = defaultSearch;
     };
-    docsRs.onchange = function(event) {
+    docsRs.onchange = function (event) {
         defaultSearch.docsRs = event.target.checked;
         settings.defaultSearch = defaultSearch;
     };
-    attributes.onchange = function(event) {
+    attributes.onchange = function (event) {
         defaultSearch.attributes = event.target.checked;
         settings.defaultSearch = defaultSearch;
     };

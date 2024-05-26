@@ -1,5 +1,6 @@
 import storage from "./core/storage.js";
 import settings from "./settings.js";
+import Statistics from "./statistics.js";
 import attributesIndex from "./index/attributes.js";
 import IndexManager from "./index-manager.js";
 import CrateSearch from "./search/crate.js";
@@ -20,6 +21,7 @@ import SimpleCommand from "./core/command/simple.js";
 import OpenCommand from "./core/command/open.js";
 import HistoryCommand from "./core/command/history.js";
 import CommandManager from "./core/command/manager.js";
+import CrateDocManager from "./crate-manager.js";
 import { Omnibox, c } from "./core/index.js";
 
 

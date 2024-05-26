@@ -1,4 +1,6 @@
-const STATS_PATTERNS = [{
+import storage from "./core/storage.js";
+
+export const STATS_PATTERNS = [{
     name: "stable",
     pattern: null,
     type: 1,
@@ -39,21 +41,8 @@ const STATS_PATTERNS = [{
     type: 999,
 },
 ];
-const STATS_NUMBER = STATS_PATTERNS.reduce((pre, current) => {
-    pre[current.type] = current.name;
-    return pre;
-}, Object.create(null));
-const WEEKS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-function makeNumericKeyObject(start, end, initial = 0) {
-    return Array.from({ length: end + 1 - start }).fill(initial)
-        .reduce((obj, current, index) => {
-            obj[start + index] = current;
-            return obj;
-        }, {});
-}
-
-class Statistics {
+export default class Statistics {
     constructor() {
         // The timeline data of user searching hihstory.
         // Consist of array of [timestamp, search type, option search crate].
