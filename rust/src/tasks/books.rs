@@ -155,7 +155,7 @@ impl BooksTask {
             Ok(result) => {
                 let books: Vec<_> = result.into_iter().filter(|book| !book.is_empty()).collect();
                 let contents = format!(
-                    "let N=null;const booksIndex={};export default booksIndex;",
+                    "var N=null;const booksIndex={};export default booksIndex;",
                     serde_json::to_string(&books)?
                 );
                 let path = Path::new(&self.dest_path);

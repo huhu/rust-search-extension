@@ -110,7 +110,7 @@ fn generate_javascript_crates_index(crates: &[Crate], minifier: &Minifier) -> St
         })
         .collect();
     let crate_index = format!(
-        "const crateIndex={};export default crateIndex;",
+        "const crateIndex={};",
         serde_json::to_string(&crates_map).unwrap()
     );
     contents.push_str(&Minifier::minify_js(&crate_index));
@@ -179,6 +179,7 @@ impl Task for CratesTask {
             serde_json::to_string(&mapping)?
         );
         contents.push_str(&generate_javascript_crates_index(&crates, &minifier));
+        contents.push_str("export {mapping,crateIndex};");
         let path = Path::new(&self.dest_path);
         fs::write(path, &contents)?;
         println!("\nGenerate javascript crates index successful!");
