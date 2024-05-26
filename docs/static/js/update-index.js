@@ -1,12 +1,12 @@
-import caniuseIndex from "./index/caniuse.js";
-import booksIndex from "./index/books.js";
-import commandsIndex from "./index/commands.js";
-import labelsIndex from "./index/labels.js";
-import lintsIndex from "./index/lints.js";
-import rfcsIndex from "./index/rfcs.js";
-import rustcIndex from "./index/rustc.js";
-import targetsIndex from "./index/targets.js";
-import { mapping, crateIndex } from "./crates/index.js";
+import caniuseIndex from "../index/caniuse.js";
+import booksIndex from "../index/books.js";
+import commandsIndex from "../index/commands.js";
+import labelsIndex from "../index/labels.js";
+import lintsIndex from "../index/lints.js";
+import rfcsIndex from "../index/rfcs.js";
+import rustcIndex from "../index/rustc.js";
+import targetsIndex from "../index/targets.js";
+import { mapping, crateIndex } from "../crates/index.js";
 
 const indexList = document.querySelector(".index-list");
 
