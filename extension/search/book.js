@@ -1,4 +1,4 @@
-class BookSearch {
+export default class BookSearch {
     constructor(bookIndex) {
         // Create a empyt object with null prototype.
         // This can prevent some weired bug, such as the key called `constructor`, 
@@ -31,7 +31,7 @@ class BookSearch {
                 return this.pages[item.title];
             });
     }
-}
+};
 
 function cleanChapterTitle(title) {
     return title.toLowerCase().replace(/[0-9.]/g, "").trim();

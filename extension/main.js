@@ -1,4 +1,28 @@
-const c = new Compat();
+import storage from "./core/storage.js";
+import settings from "./settings.js";
+import attributesIndex from "./index/attributes.js";
+import IndexManager from "./index-manager.js";
+import CrateSearch from "./search/crate.js";
+import CaniuseSearch from "./search/caniuse.js";
+import BookSearch from "./search/book.js";
+import LintSearch from "./search/lint.js";
+import AttributeSearch from "./search/attribute.js";
+import DocSearch from "./search/docs/base.js";
+import CrateDocSearch from "./search/docs/crate-doc.js";
+import RustcSearch from "./search/docs/rustc.js";
+import LabelCommand from "./command/label.js";
+import RfcCommand from "./command/rfc.js";
+import RustcCommand from "./command/rustc.js";
+import TargetCommand from "./command/target.js";
+import HelpCommand from "./command/help.js";
+import StableCommand from "./command/stable.js";
+import SimpleCommand from "./core/command/simple.js";
+import OpenCommand from "./core/command/open.js";
+import HistoryCommand from "./core/command/history.js";
+import CommandManager from "./core/command/manager.js";
+import { Omnibox, c } from "./core/index.js";
+
+
 const manifest = chrome.runtime.getManifest();
 
 // Get the information about the current platform os.
@@ -84,7 +108,7 @@ async function start() {
     let rustcSearcher = new RustcSearch();
 
     const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
-    const omnibox = new Omnibox(defaultSuggestion, c.omniboxPageSize());
+    const omnibox = new Omnibox({ defaultSuggestion, maxSuggestionSize: c.omniboxPageSize() });
 
     let formatDoc = (index, doc) => {
         let content = doc.href;
@@ -141,7 +165,7 @@ async function start() {
             if (query?.startsWith(":")) return;
 
             // Only keep the latest 100 of search history.
-            let historyItem = await HistoryCommand.record(query, result, maxSize = 100);
+            let historyItem = await HistoryCommand.record(query, result, 100);
             let statistics = await Statistics.load();
             await statistics.record(historyItem, true);
         },
@@ -552,6 +576,4 @@ chrome.runtime.onInstalled.addListener(async ({ previousVersion, reason }) => {
     }
 });
 
-(async () => {
-    await start();
-})();
+export { start };

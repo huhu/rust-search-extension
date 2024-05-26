@@ -1,4 +1,6 @@
-class CrateDocManager {
+import storage from "./core/storage.js";
+
+export class CrateDocManager {
     static async getCrates() {
         return await storage.getItem("crates") || {};
     }
@@ -63,4 +65,4 @@ class CrateDocManager {
         await storage.setItem("crates", crates);
         await storage.removeItem(`@${name}`);
     }
-}
+};

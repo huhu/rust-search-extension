@@ -1,6 +1,6 @@
 const ATTRIBUTE_DOC_URL = "https://doc.rust-lang.org/nightly/reference/";
 
-class AttributeSearch {
+export default class AttributeSearch {
     constructor(index) {
         this.attributesIndex = index;
         this.attributes = Object.keys(index);
@@ -42,4 +42,4 @@ class AttributeSearch {
                 }
             });
     }
-}
+};

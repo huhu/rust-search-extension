@@ -1,4 +1,4 @@
-class LintSearch {
+export default class LintSearch {
     constructor(lintsIndex) {
         this.lintsIndex = lintsIndex;
         this.lints = Object.keys(this.lintsIndex);
@@ -34,4 +34,4 @@ class LintSearch {
             }
         });
     }
-}
+};

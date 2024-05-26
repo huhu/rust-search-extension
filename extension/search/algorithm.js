@@ -38,3 +38,5 @@ function levenshtein(s1, s2) {
     }
     return s1_len + s2_len;
 }
+
+export { levenshtein };

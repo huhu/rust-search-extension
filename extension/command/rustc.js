@@ -1,4 +1,7 @@
-class RustcCommand extends Command {
+import { c } from "../core/index.js";
+import Command from "../core/command/base.js";
+
+export default class RustcCommand extends Command {
     constructor(index) {
         super("rustc", "Search rustc codegen options and lints.");
         this.docs = [];
@@ -23,4 +26,4 @@ class RustcCommand extends Command {
                 };
             });
     }
-}
+};

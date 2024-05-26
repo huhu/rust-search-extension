@@ -1,4 +1,7 @@
-class HelpCommand extends Command {
+import { c } from "../core/index.js";
+import Command from "../core/command/base.js";
+
+export default class HelpCommand extends Command {
     constructor() {
         super("help", "Show the help messages.")
     }
@@ -22,4 +25,4 @@ class HelpCommand extends Command {
             return { content: key, description };
         });
     }
-}
+};

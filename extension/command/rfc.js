@@ -1,4 +1,7 @@
-class RfcCommand extends Command {
+import { c } from "../core/index.js";
+import Command from "../core/command/base.js";
+
+export default class RfcCommand extends Command {
     constructor(index) {
         super("rfc", "Search Rust RFCs.");
         this.rfcs = index.map(([number, name, date, title]) => {
@@ -38,4 +41,4 @@ class RfcCommand extends Command {
             }
         });
     }
-}
+};

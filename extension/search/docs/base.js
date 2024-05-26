@@ -1,3 +1,5 @@
+import { levenshtein } from "../algorithm.js";
+
 // This mapping table should match the discriminants of
 // `rustdoc::formats::item_type::ItemType` type in Rust.
 const itemTypes = [
@@ -45,7 +47,7 @@ const upgradeItemType = [
 // Max levenshtein distance.
 const MAX_LEV_DISTANCE = 2;
 
-class DocSearch {
+export default class DocSearch {
 
     /**
      * Construct the DocSearch.
@@ -672,4 +674,4 @@ class DocSearch {
         }
         return true;
     }
-}
+};

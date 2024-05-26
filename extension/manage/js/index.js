@@ -63,7 +63,7 @@ function renderSearchTimes(length = 0, searchTime) {
     let searchTimes = document.querySelector(".search-time");
     let frequency = searchTimes.querySelectorAll("b");
     frequency[0].textContent = `${length}`;
-    if(searchTime) {
+    if (searchTime) {
         frequency[1].textContent = `${searchTime}`;
     }
     frequency[2].textContent = calculateSavedTime(length);

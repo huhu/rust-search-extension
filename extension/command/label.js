@@ -1,8 +1,11 @@
-class LabelCommand extends Command {
+import { c } from "../core/index.js";
+import Command from "../core/command/base.js";
+
+export default class LabelCommand extends Command {
     constructor(index) {
         super("label", "Search issue labels of rust-lang repository.");
         this.labels = index.map(([name, description]) => {
-            return {name, description};
+            return { name, description };
         });
     }
 
@@ -32,4 +35,4 @@ class LabelCommand extends Command {
             }
         });
     }
-}
+};

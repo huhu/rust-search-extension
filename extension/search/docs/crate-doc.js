@@ -1,3 +1,6 @@
+import { c } from "../../core/index.js";
+import DocSearch from "./base.js";
+
 // A DocSearch dedicated to a single crate based on the search-index.
 class SingleCrateDocSearch extends DocSearch {
 
@@ -10,7 +13,7 @@ class SingleCrateDocSearch extends DocSearch {
 }
 
 // Search all crate's docs, including `@` sigil and `~` sigil,.
-class CrateDocSearch {
+export default class CrateDocSearch {
     constructor() {
         this.cachedCrateSearcher = null;
         this.allCrateSearcher = null;
@@ -94,4 +97,3 @@ class CrateDocSearch {
         return [crateName, keyword.filter(k => k).join('::')];
     }
 }
-

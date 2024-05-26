@@ -1,4 +1,7 @@
-class TargetCommand extends Command {
+import { c } from "../core/index.js";
+import Command from "../core/command/base.js";
+
+export default class TargetCommand extends Command {
     constructor(index) {
         super("target", "Search rust target for three tiers.");
         this.targets = [];
@@ -24,4 +27,4 @@ class TargetCommand extends Command {
                 };
             });
     }
-}
+};

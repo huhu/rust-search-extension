@@ -1,3 +1,6 @@
+import Deminifier from "../deminifier.js";
+import { levenshtein } from "./algorithm.js";
+
 // Prototype function to perform levenshtein contain search.
 String.prototype.levenshteinContains = function (keyword) {
     let len = keyword.length;
@@ -11,7 +14,7 @@ String.prototype.levenshteinContains = function (keyword) {
     return false;
 };
 
-class CrateSearch {
+export default class CrateSearch {
     constructor(mapping, crateIndex) {
         this.setMapping(mapping);
         this.setCrateIndex(crateIndex);
@@ -22,7 +25,8 @@ class CrateSearch {
     }
 
     setCrateIndex(crateIndex) {
-        this.crateIndex = Object.create(null)
+        console.log("crateIndex", crateIndex);
+        this.crateIndex = Object.create(null);
         for (let [key, value] of Object.entries(crateIndex)) {
             this.crateIndex[this.deminifier.deminify(key)] = value;
         }
@@ -69,4 +73,4 @@ class CrateSearch {
             }
         });
     }
-}
+};

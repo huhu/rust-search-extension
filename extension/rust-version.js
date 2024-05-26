@@ -55,3 +55,5 @@ function getReleasedVersions() {
     });
     return versions;
 }
+
+export { getScheduledVersions };

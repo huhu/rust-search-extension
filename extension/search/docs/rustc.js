@@ -1,4 +1,6 @@
-class RustcSearch extends DocSearch {
+import DocSearch from "./base.js";
+
+export default class RustcSearch extends DocSearch {
     constructor(searchIndex) {
         super("rustc", searchIndex, () => {
             return "https://doc.rust-lang.org/nightly/nightly-rustc/";
@@ -17,4 +19,4 @@ class RustcSearch extends DocSearch {
         }
         return url;
     }
-}
+};

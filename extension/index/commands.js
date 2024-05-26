@@ -1,4 +1,4 @@
-var commandsIndex = {
+export default {
     "book": [
         ["The Rust Programming Language", "https://doc.rust-lang.org/stable/book/"],
         ["Rust Async Book", "https://rust-lang.github.io/async-book/"],

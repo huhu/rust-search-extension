@@ -1,9 +1,21 @@
+import caniuseIndex from "./index/caniuse.js";
+import booksIndex from "./index/books.js";
+import commandsIndex from "./index/commands.js";
+import labelsIndex from "./index/labels.js";
+import lintsIndex from "./index/lints.js";
+import rfcsIndex from "./index/rfcs.js";
+import rustcIndex from "./index/rustc.js";
+import targetsIndex from "./index/targets.js";
+import searchIndex from "./index/std-docs.js";
+import { mapping, crateIndex } from "./index/crates.js";
+import storage from "./core/storage.js";
+
 // Query all storage by this method:
 // chrome.storage.local.get(null, function(result) {
 //     console.log('Value currently is ', result);
 // });
 
-class IndexManager {
+export default class IndexManager {
     static async getStdStableIndex() {
         // Convert default map searchIndex to Object since rust 1.76.0
         return await storage.getItem('index-std-stable') || Object.fromEntries(searchIndex);
@@ -125,4 +137,4 @@ class IndexManager {
         IndexManager.setStdStableIndex(searchIndex);
         IndexManager.setTargetIndex(targetsIndex);
     }
-}
+};

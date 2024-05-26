@@ -6,7 +6,7 @@
 // - A title that describes the feature
 // - (null-able) RFC pull request ID
 
-class CaniuseSearch {
+export default class CaniuseSearch {
     constructor(index) {
         this.index = index;
     }
@@ -44,5 +44,5 @@ class CaniuseSearch {
             return a.matchIndex - b.matchIndex;
         });
     }
-}
+};
 

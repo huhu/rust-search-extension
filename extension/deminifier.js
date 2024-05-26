@@ -1,4 +1,4 @@
-class Deminifier {
+export default class Deminifier {
     constructor(mapping) {
         this.mapping = mapping;
     }
@@ -15,4 +15,4 @@ class Deminifier {
     setMapping(mapping) {
         this.mapping = mapping;
     }
-}
+};
