@@ -1,3 +1,13 @@
+import caniuseIndex from "./index/caniuse.js";
+import booksIndex from "./index/books.js";
+import commandsIndex from "./index/commands.js";
+import labelsIndex from "./index/labels.js";
+import lintsIndex from "./index/lints.js";
+import rfcsIndex from "./index/rfcs.js";
+import rustcIndex from "./index/rustc.js";
+import targetsIndex from "./index/targets.js";
+import { mapping, crateIndex } from "./crates/index.js";
+
 const indexList = document.querySelector(".index-list");
 
 function updateIndex(target, index, extra) {
@@ -22,31 +32,31 @@ function renderSuccessMessage(message) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    updateIndex("book", window.booksIndex).then(() => {
+    updateIndex("book", booksIndex).then(() => {
         renderSuccessMessage("Book index");
     });
-    updateIndex("lint", window.lintsIndex).then(() => {
+    updateIndex("lint", lintsIndex).then(() => {
         renderSuccessMessage("Clippy lint index");
     });
-    updateIndex("caniuse", window.caniuseIndex).then(() => {
+    updateIndex("caniuse", caniuseIndex).then(() => {
         renderSuccessMessage("Caniuse index");
     });
-    updateIndex("label", window.labelsIndex).then(() => {
+    updateIndex("label", labelsIndex).then(() => {
         renderSuccessMessage("Github rust-lang/rust repository label index");
     });
-    updateIndex("rfc", window.rfcsIndex).then(() => {
+    updateIndex("rfc", rfcsIndex).then(() => {
         renderSuccessMessage("Rust RFC index");
     });
-    updateIndex("rustc", window.rustcIndex).then(() => {
+    updateIndex("rustc", rustcIndex).then(() => {
         renderSuccessMessage("`:rustc` command index");
     });
-    updateIndex("target", window.targetsIndex).then(() => {
+    updateIndex("target", targetsIndex).then(() => {
         renderSuccessMessage("`:target` command index");
     });
-    updateIndex("crate", window.crateIndex, { mapping: window.mapping }).then(() => {
+    updateIndex("crate", crateIndex, { mapping: mapping }).then(() => {
         renderSuccessMessage("Top 20K crate index");
     });
-    updateIndex("command", window.commandsIndex).then(() => {
+    updateIndex("command", commandsIndex).then(() => {
         renderSuccessMessage("Command index");
     });
 

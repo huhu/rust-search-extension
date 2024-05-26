@@ -69,7 +69,7 @@ impl LabelsTask {
         fs::write(
             Path::new(&self.dest_path),
             format!(
-                "var labelsIndex={};",
+                "var labelsIndex={};export default labelsIndex;",
                 serde_json::to_string(&labels).unwrap()
             ),
         )?;

@@ -106,7 +106,7 @@ impl Task for CaniuseTask {
         let path = Path::new(&self.dest_path);
         fs::write(
             path,
-            format!("var caniuseIndex={};", serde_json::to_string(&feats)?),
+            format!("const caniuseIndex={};export default caniuseIndex;", serde_json::to_string(&feats)?),
         )?;
         Ok(())
     }

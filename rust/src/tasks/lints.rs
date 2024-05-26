@@ -90,7 +90,7 @@ impl LintsTask {
             })
             .collect();
 
-        let contents = format!("var lintsIndex={};", serde_json::to_string(&lints)?);
+        let contents = format!("const lintsIndex={};export default lintsIndex;", serde_json::to_string(&lints)?);
         let path = Path::new(&self.dest_path);
         fs::write(path, Minifier::minify_js(&contents))?;
         println!("\nGenerate javascript lints index successful!");

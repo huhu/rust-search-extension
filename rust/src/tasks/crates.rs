@@ -110,7 +110,7 @@ fn generate_javascript_crates_index(crates: &[Crate], minifier: &Minifier) -> St
         })
         .collect();
     let crate_index = format!(
-        "var crateIndex={};",
+        "const crateIndex={};export default crateIndex;",
         serde_json::to_string(&crates_map).unwrap()
     );
     contents.push_str(&Minifier::minify_js(&crate_index));
@@ -175,7 +175,7 @@ impl Task for CratesTask {
         let minifier = Minifier::new(&frequency_words);
         let mapping = minifier.get_key_to_word_mapping();
         let mut contents = format!(
-            "var mapping=JSON.parse('{}');",
+            "let mapping=JSON.parse('{}');",
             serde_json::to_string(&mapping)?
         );
         contents.push_str(&generate_javascript_crates_index(&crates, &minifier));

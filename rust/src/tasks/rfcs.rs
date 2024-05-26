@@ -63,7 +63,7 @@ impl Task for RfcsTask {
         let path = Path::new(&self.dest_path);
         fs::write(
             path,
-            format!("var rfcsIndex={};", serde_json::to_string(&metadatas)?),
+            format!("const rfcsIndex={};export default rfcsIndex;", serde_json::to_string(&metadatas)?),
         )?;
 
         Ok(())
