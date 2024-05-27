@@ -44,7 +44,7 @@ export const STATS_PATTERNS = [{
 
 export default class Statistics {
     constructor() {
-        // The timeline data of user searching hihstory.
+        // The timeline data of user searching history.
         // Consist of array of [timestamp, search type, option search crate].
         this.timeline = [];
     }
