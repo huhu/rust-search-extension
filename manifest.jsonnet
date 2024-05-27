@@ -18,12 +18,9 @@ local host_permissions = ['*://crates.io/api/v1/crates/*', 'https://rust.extensi
 local optional_host_permissions = ['file:///*'];
 local json = if std.member(['chrome', 'edge'], browser) then
   local manifest_v3 = import 'core/manifest_v3.libsonnet';
-  manifest_v3.new(name, keyword, description, version, service_worker='service-worker.js')
+  manifest_v3.new(name, keyword, description, version, service_worker='service-worker.js', module_type=true)
   .addWebAccessibleResources(
-    resources=utils.js_files('script', ['lib', 'add-search-index']),
-    matches=['*://docs.rs/*', '*://doc.rust-lang.org/*'],
-  ).addWebAccessibleResources(
-    resources=['wasm/*.wasm', 'assets/*.svg'],
+    resources=['script/*.js', 'wasm/*.wasm', 'assets/*.svg'],
     matches=[
       '*://docs.rs/*',
       '*://doc.rust-lang.org/*',
