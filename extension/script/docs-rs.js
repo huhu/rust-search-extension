@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Exclude /crate/** pages
     if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
         // Query installed crates from chrome.storage API
-        let crates = await storage.getItem("crates") || {};
+        let crates = await rse.storage.getItem("crates") || {};
         let installedCrate = crates[crateName];
         if (!installedCrate && crates[libName]) {
             installedCrate = crates[libName];
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         rseButton.parentElement.insertAdjacentElement("beforebegin", advisoryMenu);
     }
 
-    if (getState(installedVersion) === "outdated" && await settings.keepCratesUpToDate) {
+    if (getState(installedVersion) === "outdated" && await rse.settings.keepCratesUpToDate) {
         // Auto update outdated crates if the user has enabled the setting.
         injectScripts(["script/lib.js", "script/add-search-index.js"]);
     }
@@ -275,7 +275,7 @@ function insertAddToExtensionElement(state) {
         // Toggle search index added state
         if (state === "latest") {
             // Use the libName to remove the installed crate.
-            await CrateDocManager.removeCrate(libName);
+            await rse.CrateDocManager.removeCrate(libName);
             insertAddToExtensionElement(getState(undefined));
         } else {
             injectScripts(["script/lib.js", "script/add-search-index.js"]);
@@ -352,7 +352,7 @@ window.addEventListener("message", async function (event) {
         event.data &&
         event.data.direction === "rust-search-extension:docs.rs") {
         let message = event.data.message;
-        await CrateDocManager.addCrate(message);
+        await rse.CrateDocManager.addCrate(message);
         insertAddToExtensionElement(getState(message.crateVersion));
         console.log("Congrats! This crate has been installed successfully!");
     }

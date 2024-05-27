@@ -24,7 +24,8 @@ import CommandManager from "./core/command/manager.js";
 import CrateDocManager from "./crate-manager.js";
 import { Omnibox, c } from "./core/index.js";
 
-
+const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
+const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
 const manifest = chrome.runtime.getManifest();
 
 // Get the information about the current platform os.
@@ -46,9 +47,6 @@ async function start(el) {
     let crateRegistry = await settings.crateRegistry;
 
     const os = await getPlatformOs();
-    const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
-    const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
-
     const crateSearcher = new CrateSearch(await IndexManager.getCrateMapping(), await IndexManager.getCrateIndex());
     let caniuseSearcher = new CaniuseSearch(await IndexManager.getCaniuseIndex());
     let bookSearcher = new BookSearch(await IndexManager.getBookIndex());

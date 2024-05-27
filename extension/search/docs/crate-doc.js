@@ -1,6 +1,7 @@
 import { c } from "../../core/index.js";
 import DocSearch from "./base.js";
 import CrateDocManager from "../../crate-manager.js";
+import settings from "../../settings.js";
 
 // A DocSearch dedicated to a single crate based on the search-index.
 class SingleCrateDocSearch extends DocSearch {

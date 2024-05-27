@@ -31,9 +31,9 @@ window.addEventListener("message", function (event) {
         event.data.direction === "rust-search-extension:std") {
         let searchIndex = event.data.message.searchIndex;
         if (TARGET === 'stable') {
-            IndexManager.setStdStableIndex(searchIndex);
+            rse.IndexSetter.setStdStableIndex(searchIndex);
         } else {
-            IndexManager.setStdNightlyIndex(searchIndex);
+            rse.IndexSetter.setStdNightlyIndex(searchIndex);
         }
         let now = new Date();
         let version = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;

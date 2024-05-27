@@ -6,40 +6,40 @@ window.addEventListener("message", async function (event) {
         console.log('target:', message.target);
         switch (message.target) {
             case 'book': {
-                IndexManager.setBookIndex(message.index);
+                rse.IndexSetter.setBookIndex(message.index);
                 break;
             }
             case 'caniuse': {
-                IndexManager.setCaniuseIndex(message.index);
+                rse.IndexSetter.setCaniuseIndex(message.index);
                 break;
             }
             case 'command': {
-                IndexManager.setCommandIndex(message.index);
+                rse.IndexSetter.setCommandIndex(message.index);
                 break;
             }
             case 'crate': {
-                IndexManager.setCrateIndex(message.index);
-                IndexManager.setCrateMapping(message.mapping);
+                rse.IndexSetter.setCrateIndex(message.index);
+                rse.IndexSetter.setCrateMapping(message.mapping);
                 break;
             }
             case 'label': {
-                IndexManager.setLabelIndex(message.index);
+                rse.IndexSetter.setLabelIndex(message.index);
                 break;
             }
             case 'lint': {
-                IndexManager.setLintIndex(message.index);
+                rse.IndexSetter.setLintIndex(message.index);
                 break;
             }
             case 'rfc': {
-                IndexManager.setRfcIndex(message.index);
+                rse.IndexSetter.setRfcIndex(message.index);
                 break;
             }
             case 'rustc': {
-                IndexManager.setRustcIndex(message.index);
+                rse.IndexSetter.setRustcIndex(message.index);
                 break;
             }
             case 'target': {
-                IndexManager.setTargetIndex(message.index);
+                rse.IndexSetter.setTargetIndex(message.index);
                 break;
             }
         }
