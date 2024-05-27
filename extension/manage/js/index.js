@@ -1,5 +1,6 @@
 import { STATS_PATTERNS } from "../../statistics.js";
 import Statistics from "../../statistics.js";
+import { start } from "../../main.js";
 
 const TYPE_OTHER = "other";
 const CHART_COLOR = "rgba(249, 188, 45, 0.5)";
@@ -306,4 +307,6 @@ async function renderYearList() {
     const yearAgo = moment().startOf('day').subtract(1, 'year').valueOf();
     await renderCharts(now, yearAgo);
     await renderYearList();
+
+    await start("#omnibox");
 })();

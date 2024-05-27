@@ -37,7 +37,7 @@ function getPlatformOs() {
     });
 }
 
-async function start() {
+async function start(el) {
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
     let isOfflineMode = await settings.isOfflineMode;
@@ -110,7 +110,7 @@ async function start() {
     let rustcSearcher = new RustcSearch();
 
     const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
-    const omnibox = new Omnibox({ defaultSuggestion, maxSuggestionSize: c.omniboxPageSize() });
+    const omnibox = new Omnibox({ el, defaultSuggestion, maxSuggestionSize: c.omniboxPageSize() });
 
     let formatDoc = (index, doc) => {
         let content = doc.href;
@@ -427,6 +427,40 @@ async function start() {
 
     omnibox.addNoCacheQueries("/", "!", "@", ":");
 
+    // Skip following code if `el` provide, which mean this function run in webpage.
+    if (el) return;
+
+    // DO NOT USE ASYNC CALLBACK HERE, SEE THIS ISSUE:
+    // https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        switch (message.action) {
+            // Rustc:* action is exclusive to rustc docs event
+            case "rustc:check": {
+                sendResponse({
+                    version: rustcSearcher.version,
+                });
+                break;
+            }
+            case "rustc:add": {
+                if (message.searchIndex) {
+                    rustcSearcher.setSearchIndex(message.searchIndex);
+                    rustcSearcher.setVersion(message.version);
+                    sendResponse(true);
+                } else {
+                    sendResponse(false);
+                }
+                break;
+            }
+            case "open-url": {
+                if (message.url) {
+                    Omnibox.navigateToUrl(message.url);
+                }
+                break;
+            }
+        }
+        return true;
+    });
+
     chrome.storage.onChanged.addListener(changes => {
         for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
             console.log('storage key updated:', key);
@@ -520,6 +554,10 @@ async function start() {
         }
     });
 
+    await checkAutoUpdate();
+}
+
+async function checkAutoUpdate() {
     if (await settings.autoUpdate) {
         let version = await storage.getItem('auto-update-version');
         let now = new Date();
@@ -532,37 +570,6 @@ async function start() {
         Omnibox.navigateToUrl(INDEX_UPDATE_URL);
         await storage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
-
-    // DO NOT USE ASYNC CALLBACK HERE, SEE THIS ISSUE:
-    // https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        switch (message.action) {
-            // Rustc:* action is exclusive to rustc docs event
-            case "rustc:check": {
-                sendResponse({
-                    version: rustcSearcher.version,
-                });
-                break;
-            }
-            case "rustc:add": {
-                if (message.searchIndex) {
-                    rustcSearcher.setSearchIndex(message.searchIndex);
-                    rustcSearcher.setVersion(message.version);
-                    sendResponse(true);
-                } else {
-                    sendResponse(false);
-                }
-                break;
-            }
-            case "open-url": {
-                if (message.url) {
-                    Omnibox.navigateToUrl(message.url);
-                }
-                break;
-            }
-        }
-        return true;
-    });
 }
 
 const chromeAction = chrome.action || chrome.browserAction;
@@ -577,5 +584,6 @@ chrome.runtime.onInstalled.addListener(async ({ previousVersion, reason }) => {
         console.log(`New version updated! Previous version: ${previousVersion}, new version: ${manifest.version}`);
     }
 });
+
 
 export { start };
