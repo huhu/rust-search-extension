@@ -308,5 +308,5 @@ async function renderYearList() {
     await renderCharts(now, yearAgo);
     await renderYearList();
 
-    await start("#omnibox");
+    await start("#omnibox", `Search rust things instantly!`);
 })();

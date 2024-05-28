@@ -38,7 +38,7 @@ function getPlatformOs() {
     });
 }
 
-async function start(el) {
+async function start(el, placeholder) {
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
     let isOfflineMode = await settings.isOfflineMode;
@@ -108,7 +108,7 @@ async function start(el) {
     let rustcSearcher = new RustcSearch();
 
     const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
-    const omnibox = new Omnibox({ el, defaultSuggestion, maxSuggestionSize: c.omniboxPageSize() });
+    const omnibox = new Omnibox({ el, defaultSuggestion: placeholder || defaultSuggestion, maxSuggestionSize: c.omniboxPageSize() });
 
     let formatDoc = (index, doc) => {
         let content = doc.href;
