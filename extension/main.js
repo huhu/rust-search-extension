@@ -26,7 +26,6 @@ import { Omnibox, c } from "./core/index.js";
 
 const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
 const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
-const manifest = chrome.runtime.getManifest();
 
 // Get the information about the current platform os.
 // Possible os values: "mac", "win", "android", "cros", "linux", or "openbsd"
@@ -39,6 +38,9 @@ function getPlatformOs() {
 }
 
 async function start(el, placeholder) {
+    const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
+    const omnibox = new Omnibox({ el, defaultSuggestion: placeholder || defaultSuggestion, maxSuggestionSize: c.omniboxPageSize() });
+
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
     let isOfflineMode = await settings.isOfflineMode;
@@ -106,9 +108,6 @@ async function start(el, placeholder) {
         return "https://doc.rust-lang.org/nightly/";
     });
     let rustcSearcher = new RustcSearch();
-
-    const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
-    const omnibox = new Omnibox({ el, defaultSuggestion: placeholder || defaultSuggestion, maxSuggestionSize: c.omniboxPageSize() });
 
     let formatDoc = (index, doc) => {
         let content = doc.href;
@@ -577,6 +576,7 @@ chromeAction.onClicked.addListener(() => {
 });
 
 chrome.runtime.onInstalled.addListener(async ({ previousVersion, reason }) => {
+    const manifest = chrome.runtime.getManifest();
     if (reason === "update" && previousVersion !== manifest.version) {
         IndexManager.updateAllIndex();
         console.log(`New version updated! Previous version: ${previousVersion}, new version: ${manifest.version}`);

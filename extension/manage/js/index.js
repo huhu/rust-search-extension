@@ -301,12 +301,12 @@ async function renderYearList() {
         }
     });
 }
-
 (async () => {
     const now = moment().valueOf();
     const yearAgo = moment().startOf('day').subtract(1, 'year').valueOf();
     await renderCharts(now, yearAgo);
     await renderYearList();
-
+})();
+(async () => {
     await start("#omnibox", `Search rust things instantly!`);
 })();
