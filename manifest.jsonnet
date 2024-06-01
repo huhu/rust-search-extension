@@ -24,6 +24,7 @@ local json = if std.member(['chrome', 'edge'], browser) then
     matches=[
       '*://docs.rs/*',
       '*://doc.rust-lang.org/*',
+      '*://shipyard.rs/*',
     ],
   ) {
     description: 'A handy browser extension to search Rust docs and crates, etc in the address bar instantly!',
@@ -50,12 +51,12 @@ json.addIcons(icons())
 .addPermissions(['storage', 'unlimitedStorage'])
 .setOptionsUi('manage/index.html')
 .addContentScript(
-  matches=['*://docs.rs/*'],
+  matches=['*://docs.rs/*', '*://shipyard.rs/*'],
   js=['content-script-bundle.js'] + utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate', 'semver']),
   css=['script/docs-rs.css', 'script/details-toggle.css'],
 )
 .addContentScript(
-  matches=['*://doc.rust-lang.org/*'],
+  matches=['*://doc.rust-lang.org/*', '*://shipyard.rs/*'],
   js=['content-script-bundle.js'] + utils.js_files('script', ['lib', 'doc-rust-lang-org', 'rust-src-navigate']),
   css=['script/doc-rust-lang-org.css', 'script/details-toggle.css'],
   exclude_matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
@@ -73,6 +74,7 @@ json.addIcons(icons())
   matches=[
     '*://docs.rs/*',
     '*://doc.rust-lang.org/*',
+    '*://shipyard.rs/*',
   ],
   js=['content-script-bundle.js'] + utils.js_files('script', ['lib', 'macro-railroad', 'macro-railroad-wasm']),
   css=['script/macro-railroad.css'],
