@@ -9,7 +9,7 @@ export default class StableCommand extends Command {
 
     async onExecute(arg) {
         let versions = getScheduledVersions(100)
-            .map(version => `Version ${c.match(version.number)} scheduled release on ${c.match(c.normalizeDate(version.date))}`)
+            .map(version => `Version <match>${version.number}</match> scheduled release on <match>${c.normalizeDate(version.date)}</match>`)
         return this.wrap(versions);
     }
 };

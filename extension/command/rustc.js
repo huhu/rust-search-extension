@@ -22,7 +22,7 @@ export default class RustcCommand extends Command {
             .map(doc => {
                 return {
                     content: doc.url,
-                    description: `${doc.kind}: ${c.match(doc.name)}`,
+                    description: `${doc.kind}: <match>${doc.name}</match>`,
                 };
             });
     }

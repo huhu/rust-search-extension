@@ -23,7 +23,7 @@ export default class TargetCommand extends Command {
             .map(target => {
                 return {
                     content: target.url,
-                    description: `${c.capitalize(target.tier)}: ${c.match(target.name)} - ${c.dim(target.description)}`,
+                    description: `${c.capitalize(target.tier)}: <match>${target.name}</match> - <dim>${target.description}</dim>`,
                 };
             });
     }

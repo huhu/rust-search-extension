@@ -5,7 +5,7 @@ export default class RfcCommand extends Command {
     constructor(index) {
         super("rfc", "Search Rust RFCs.");
         this.rfcs = index.map(([number, name, date, title]) => {
-            return {number, name, date, title};
+            return { number, name, date, title };
         });
     }
 
@@ -34,10 +34,10 @@ export default class RfcCommand extends Command {
                 });
         }
         return results.map(rfc => {
-            let title = rfc.title ? `- ${c.dim(c.escape(rfc.title))}` : c.dim(c.escape(rfc.title));
+            let title = rfc.title ? `- <dim>${c.escape(rfc.title)}</dim>` : `<dim>${c.escape(rfc.title)}</dim>`;
             return {
                 content: `https://www.ncameron.org/rfcs/${String(rfc.number).padStart(4, '0')}.html`,
-                description: `${c.match("RFC " + rfc.number + ": ")} ${rfc.name} ${rfc.date} ${title}`
+                description: `<match>RFC ${rfc.number}:</match> ${rfc.name} ${rfc.date} ${title}`
             }
         });
     }

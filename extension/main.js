@@ -38,7 +38,7 @@ function getPlatformOs() {
 }
 
 async function start(el, placeholder) {
-    const defaultSuggestion = `Search std ${c.match("docs")}, external ${c.match("docs")} (~,@), ${c.match("crates")} (!), ${c.match("attributes")} (#), ${c.match("books")} (%), clippy ${c.match("lints")} (>), and ${c.match("error codes")}, etc in your address bar instantly!`;
+    const defaultSuggestion = `Search std <match>docs</match>, external <match>docs</match> (~,@), <match>crates</match> (!), <match>attributes</match> (#), <match>books</match> (%), clippy <match>lints</match> (>), and <match>error codes</match>, etc in your address bar instantly!`;
     const omnibox = new Omnibox({ el, defaultSuggestion: placeholder || defaultSuggestion, maxSuggestionSize: c.omniboxPageSize() });
 
     // All dynamic setting items. Those items will been updated
@@ -86,17 +86,17 @@ async function start(el, placeholder) {
         new OpenCommand('stats', 'Open search statistics page.',
             chrome.runtime.getURL("manage/index.html"), {
             content: ':stats',
-            description: `Press ${c.match("Enter")} to open search statistics page.`,
+            description: `Press <match>Enter</match> to open search statistics page.`,
         }),
         new OpenCommand('update', 'Update to the latest search index.',
             INDEX_UPDATE_URL, {
             content: ':update',
-            description: `Press ${c.match("Enter")} to open search-index update page.`,
+            description: `Press <match>Enter</match> to open search-index update page.`,
         }),
         new OpenCommand('release', 'Open rust-lang repository release page.',
             RUST_RELEASE_README_URL, {
             content: ':release',
-            description: `Press ${c.match("Enter")} to open rust-lang repository release page.`,
+            description: `Press <match>Enter</match> to open rust-lang repository release page.`,
         }),
     );
 
@@ -116,9 +116,9 @@ async function start(el, placeholder) {
             content.replaceAll("/", "\\");
         }
 
-        let description = doc.displayPath + c.match(doc.name);
+        let description = doc.displayPath + `<match>${doc.name}</match>`;
         if (doc.desc) {
-            description += ` - ${c.dim(c.escape(c.eliminateTags(doc.desc)))}`;
+            description += ` - <dim>${c.escape(c.eliminateTags(doc.desc))}</dim>`;
         }
 
         if (doc.queryType === "s" || doc.queryType === "src") {
@@ -138,7 +138,7 @@ async function start(el, placeholder) {
         onAppend: (query) => {
             return [{
                 content: stdSearcher.getSearchUrl(query),
-                description: `Search Rust docs ${c.match(query)} on ${isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
+                description: `Search Rust docs <match>${query}</match> on ${isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
             }];
         },
         onEmptyNavigate: (content, disposition) => {
@@ -184,7 +184,7 @@ async function start(el, placeholder) {
             query = query.replaceAll("/", "").trim();
             return [{
                 content: nightlySearcher.getSearchUrl(query),
-                description: `Search nightly Rust docs ${c.match(query)} on ${nightlySearcher.getRootPath()}`,
+                description: `Search nightly Rust docs <match>${query}</match> on ${nightlySearcher.getRootPath()}`,
             }];
         },
     });
@@ -203,7 +203,7 @@ async function start(el, placeholder) {
             query = query.replaceAll("/", "").trim();
             let appendix = {
                 content: rustcSearcher.getSearchUrl(query),
-                description: `Search nightly rustc docs ${c.match(query)} on ${rustcSearcher.getRootPath()}`,
+                description: `Search nightly rustc docs <match>${query}</match> on ${rustcSearcher.getRootPath()}`,
             };
             if (rustcSearcher?.searchIndex?.length > 0) {
                 return [appendix];
@@ -246,14 +246,14 @@ async function start(el, placeholder) {
                 let content = `@${item.name}`;
                 return {
                     content,
-                    description: `${c.match(content)} v${item.version} - ${c.dim(c.escape(c.eliminateTags(item.doc)))}`,
+                    description: `<match>${content}</match> v${item.version} - <dim>${c.escape(c.eliminateTags(item.doc))}</dim>`,
                 };
             }
         },
         onAppend: () => {
             return [{
                 content: chrome.runtime.getURL("manage/crates.html"),
-                description: `Remind: ${c.dim("Select here to manage all your indexed crates")}`,
+                description: `Remind: <dim>Select here to manage all your indexed crates</dim>`,
             }];
         },
     });
@@ -263,7 +263,7 @@ async function start(el, placeholder) {
             appendix,
             {
                 content: "remind",
-                description: `Remind: ${c.dim("We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.")}`,
+                description: `Remind: <dim>We only indexed the top 20K crates. Sorry for the inconvenience if your desired crate not show.</dim>`,
             },
         ];
     }
@@ -279,14 +279,14 @@ async function start(el, placeholder) {
         onFormat: (index, crate) => {
             return {
                 content: `https://docs.rs/${crate.id}`,
-                description: `${c.capitalize("docs.rs")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
+                description: `${c.capitalize("docs.rs")}: <match>${crate.id}</match> v${crate.version} - <dim>${c.escape(c.eliminateTags(crate.description))}</dim>`,
             };
         },
         onAppend: (query) => {
             let keyword = query.replace(/[!\s]/g, "");
             return wrapCrateSearchAppendix({
                 content: "https://docs.rs/releases/search?query=" + encodeURIComponent(keyword),
-                description: "Search Rust crates for " + c.match(keyword) + " on https://docs.rs",
+                description: "Search Rust crates for " + `<match>${keyword}</match>` + " on https://docs.rs",
             });
         },
     });
@@ -298,14 +298,14 @@ async function start(el, placeholder) {
         onFormat: (index, crate) => {
             return {
                 content: `https://${crateRegistry}/crates/${crate.id}`,
-                description: `${c.capitalize(crateRegistry)}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
+                description: `${c.capitalize(crateRegistry)}: <match>${crate.id}</match> v${crate.version} - <dim>${c.escape(c.eliminateTags(crate.description))}</dim>`,
             };
         },
         onAppend: (query) => {
             let keyword = query.replace(/[!\s]/g, "");
             return wrapCrateSearchAppendix({
                 content: `https://${crateRegistry}/search?q=` + encodeURIComponent(keyword),
-                description: "Search Rust crates for " + c.match(keyword) + ` on https://${crateRegistry}`,
+                description: "Search Rust crates for " + `<match>${keyword}</match>` + ` on https://${crateRegistry}`,
             });
         },
     });
@@ -318,14 +318,14 @@ async function start(el, placeholder) {
         onFormat: (index, crate) => {
             return {
                 content: `${REDIRECT_URL}?crate=${crate.id}`,
-                description: `${c.capitalize("repository")}: ${c.match(crate.id)} v${crate.version} - ${c.dim(c.escape(c.eliminateTags(crate.description)))}`,
+                description: `${c.capitalize("repository")}: <match>${crate.id}</match> v${crate.version} - <dim>${c.escape(c.eliminateTags(crate.description))}</dim>`,
             };
         },
         onAppend: (query) => {
             let keyword = query.replace(/[!\s]/g, "");
             return wrapCrateSearchAppendix({
                 content: "https://github.com/search?q=" + encodeURIComponent(keyword),
-                description: "Search Rust crates for " + c.match(keyword) + " on https://github.com",
+                description: "Search Rust crates for " + `<match>${keyword}</match>` + " on https://github.com",
             });
         },
     });
@@ -342,7 +342,7 @@ async function start(el, placeholder) {
         onFormat: (index, attribute) => {
             return {
                 content: attribute.href,
-                description: `Attribute: ${c.match("#[" + attribute.name + "]")} ${c.dim(c.escape(attribute.description))}`,
+                description: `Attribute: <match>#[${attribute.name}]</match> <dim>${c.escape(attribute.description)}</dim>`,
             };
         },
     });
@@ -354,13 +354,13 @@ async function start(el, placeholder) {
         onFormat: (index, feat, query) => {
             return {
                 content: `https://caniuse.rs/features/${feat.slug}`,
-                description: `Can I use: ${c.match(c.escape(feat.match))} [${feat.version}] - ${c.dim(c.escape(feat.description))}`
+                description: `Can I use: <match>${c.escape(feat.match)}</match> [${feat.version}] - <dim>${c.escape(feat.description)}</dim>`
             };
         },
         onAppend: () => {
             return [{
                 content: ":rfc",
-                description: `Remind: ${c.dim("you can use")} :rfc ${c.dim("command to search all Rust RFCs.")}`,
+                description: `Remind: <dim>you can use</dim> :rfc <dim>command to search all Rust RFCs.</dim>`,
             }];
         },
     });
@@ -378,7 +378,7 @@ async function start(el, placeholder) {
             return result.map(errorCode => {
                 return {
                     content: `${baseUrl}error_codes/${errorCode}.html`,
-                    description: `Open error code ${c.match(errorCode)} on ${isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error_codes/error-index.html'}`,
+                    description: `Open error code <match>${errorCode}</match> on ${isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error_codes/error-index.html'}`,
                 };
             });
         },
@@ -392,13 +392,13 @@ async function start(el, placeholder) {
             let parentTitles = page.parentTitles || [];
             return {
                 content: page.url,
-                description: `${[...parentTitles.map(t => c.escape(t)), c.match(c.escape(page.title))].join(" > ")} - ${c.dim(page.name)}`
+                description: `${[...parentTitles.map(t => c.escape(t)), `<match>${c.escape(page.title)}</match>`].join(" > ")} - <dim>${page.name}</dim>`
             }
         },
         onAppend: () => {
             return [{
                 content: ":book",
-                description: `Remind: ${c.dim("you can use")} :book ${c.dim("command to search all Rust books.")}`,
+                description: `Remind: <dim>you can use</dim> :book <dim>command to search all Rust books.</dim>`,
             }];
         },
     });
@@ -411,7 +411,7 @@ async function start(el, placeholder) {
         onFormat: (_, lint) => {
             return {
                 content: `${LINT_URL}#${lint.name}`,
-                description: `Clippy lint: [${lint.level}] ${c.match(lint.name)} - ${c.dim(c.escape(c.eliminateTags(lint.description)))}`,
+                description: `Clippy lint: [${lint.level}] <match>${lint.name}</match> - <dim>${c.escape(c.eliminateTags(lint.description))}</dim>`,
             }
         },
     });

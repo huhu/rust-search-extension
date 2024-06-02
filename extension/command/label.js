@@ -31,7 +31,7 @@ export default class LabelCommand extends Command {
         return results.map(label => {
             return {
                 content: `https://github.com/rust-lang/rust/labels/${label.name}`,
-                description: `${c.match(label.name)} - ${c.dim(c.escape(label.description))}`
+                description: `<match>${label.name}</match> - <dim>${c.escape(label.description)}</dim>`
             }
         });
     }

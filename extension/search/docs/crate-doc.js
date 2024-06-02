@@ -63,7 +63,7 @@ export default class CrateDocSearch {
                 } else {
                     list.unshift({
                         content: `https://docs.rs/${crateName}/latest/?search=${encodeURIComponent(keyword)}`,
-                        description: `Crate ${c.match(crateName)} has not been indexed, search ${keyword ? c.match(keyword) : 'keyword'} on ${c.dim(`https://docs.rs/${crateName}`)} directly`,
+                        description: `Crate <match>${crateName}</match> has not been indexed, search ${keyword ? `<match>${keyword}</match>` : 'keyword'} on <dim>${`https://docs.rs/${crateName}`}</dim> directly`,
                     });
                 }
                 return list;
@@ -74,7 +74,7 @@ export default class CrateDocSearch {
         // Push result footer.
         results.push({
             content: searcher.getSearchUrl(keyword),
-            description: `Search ${keyword ? c.match(keyword) : 'keyword'} on ${c.dim(`https://docs.rs/${crateName}`)} directly`,
+            description: `Search ${keyword ? `<match>${keyword}</match>` : 'keyword'} on <dim>${`https://docs.rs/${crateName}`}</dim> directly`,
         });
         return results;
     }
