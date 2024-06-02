@@ -1,4 +1,4 @@
-import { c } from "../core/index.js";
+import { Compat } from "../core/index.js";
 import Command from "../core/command/base.js";
 
 export default class LabelCommand extends Command {
@@ -31,7 +31,7 @@ export default class LabelCommand extends Command {
         return results.map(label => {
             return {
                 content: `https://github.com/rust-lang/rust/labels/${label.name}`,
-                description: `<match>${label.name}</match> - <dim>${c.escape(label.description)}</dim>`
+                description: `<match>${label.name}</match> - <dim>${Compat.escape(label.description)}</dim>`
             }
         });
     }

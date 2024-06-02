@@ -1,4 +1,4 @@
-import { c } from "../core/index.js";
+import { Compat } from "../core/index.js";
 import Command from "../core/command/base.js";
 import { getScheduledVersions } from "../rust-version.js";
 
@@ -9,7 +9,7 @@ export default class StableCommand extends Command {
 
     async onExecute(arg) {
         let versions = getScheduledVersions(100)
-            .map(version => `Version <match>${version.number}</match> scheduled release on <match>${c.normalizeDate(version.date)}</match>`)
+            .map(version => `Version <match>${version.number}</match> scheduled release on <match>${Compat.normalizeDate(version.date)}</match>`)
         return this.wrap(versions);
     }
 };

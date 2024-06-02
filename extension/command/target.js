@@ -1,4 +1,4 @@
-import { c } from "../core/index.js";
+import { Compat } from "../core/index.js";
 import Command from "../core/command/base.js";
 
 export default class TargetCommand extends Command {
@@ -23,7 +23,7 @@ export default class TargetCommand extends Command {
             .map(target => {
                 return {
                     content: target.url,
-                    description: `${c.capitalize(target.tier)}: <match>${target.name}</match> - <dim>${target.description}</dim>`,
+                    description: `${Compat.capitalize(target.tier)}: <match>${target.name}</match> - <dim>${target.description}</dim>`,
                 };
             });
     }

@@ -1,4 +1,4 @@
-import { c } from "../core/index.js";
+import { Compat } from "../core/index.js";
 import Command from "../core/command/base.js";
 
 export default class RfcCommand extends Command {
@@ -34,7 +34,7 @@ export default class RfcCommand extends Command {
                 });
         }
         return results.map(rfc => {
-            let title = rfc.title ? `- <dim>${c.escape(rfc.title)}</dim>` : `<dim>${c.escape(rfc.title)}</dim>`;
+            let title = rfc.title ? `- <dim>${Compat.escape(rfc.title)}</dim>` : `<dim>${Compat.escape(rfc.title)}</dim>`;
             return {
                 content: `https://www.ncameron.org/rfcs/${String(rfc.number).padStart(4, '0')}.html`,
                 description: `<match>RFC ${rfc.number}:</match> ${rfc.name} ${rfc.date} ${title}`

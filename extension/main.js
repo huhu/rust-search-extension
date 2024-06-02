@@ -22,7 +22,7 @@ import OpenCommand from "./core/command/open.js";
 import HistoryCommand from "./core/command/history.js";
 import CommandManager from "./core/command/manager.js";
 import CrateDocManager from "./crate-manager.js";
-import { Omnibox, c } from "./core/index.js";
+import { Omnibox, Compat } from "./core/index.js";
 
 const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
 const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
@@ -39,7 +39,7 @@ function getPlatformOs() {
 
 async function start(el, placeholder) {
     const defaultSuggestion = `Search std <match>docs</match>, external <match>docs</match> (~,@), <match>crates</match> (!), <match>attributes</match> (#), <match>books</match> (%), clippy <match>lints</match> (>), and <match>error codes</match>, etc in your address bar instantly!`;
-    const omnibox = new Omnibox({ el, defaultSuggestion: placeholder || defaultSuggestion, maxSuggestionSize: c.omniboxPageSize() });
+    const omnibox = new Omnibox({ el, defaultSuggestion: placeholder || defaultSuggestion, maxSuggestionSize: Compat.omniboxPageSize() });
 
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
@@ -118,7 +118,7 @@ async function start(el, placeholder) {
 
         let description = doc.displayPath + `<match>${doc.name}</match>`;
         if (doc.desc) {
-            description += ` - <dim>${c.escape(c.eliminateTags(doc.desc))}</dim>`;
+            description += ` - <dim>${Compat.escape(Compat.eliminateTags(doc.desc))}</dim>`;
         }
 
         if (doc.queryType === "s" || doc.queryType === "src") {
@@ -246,7 +246,7 @@ async function start(el, placeholder) {
                 let content = `@${item.name}`;
                 return {
                     content,
-                    description: `<match>${content}</match> v${item.version} - <dim>${c.escape(c.eliminateTags(item.doc))}</dim>`,
+                    description: `<match>${content}</match> v${item.version} - <dim>${Compat.escape(Compat.eliminateTags(item.doc))}</dim>`,
                 };
             }
         },
@@ -279,7 +279,7 @@ async function start(el, placeholder) {
         onFormat: (index, crate) => {
             return {
                 content: `https://docs.rs/${crate.id}`,
-                description: `${c.capitalize("docs.rs")}: <match>${crate.id}</match> v${crate.version} - <dim>${c.escape(c.eliminateTags(crate.description))}</dim>`,
+                description: `${Compat.capitalize("docs.rs")}: <match>${crate.id}</match> v${crate.version} - <dim>${Compat.escape(Compat.eliminateTags(crate.description))}</dim>`,
             };
         },
         onAppend: (query) => {
@@ -298,7 +298,7 @@ async function start(el, placeholder) {
         onFormat: (index, crate) => {
             return {
                 content: `https://${crateRegistry}/crates/${crate.id}`,
-                description: `${c.capitalize(crateRegistry)}: <match>${crate.id}</match> v${crate.version} - <dim>${c.escape(c.eliminateTags(crate.description))}</dim>`,
+                description: `${Compat.capitalize(crateRegistry)}: <match>${crate.id}</match> v${crate.version} - <dim>${Compat.escape(Compat.eliminateTags(crate.description))}</dim>`,
             };
         },
         onAppend: (query) => {
@@ -318,7 +318,7 @@ async function start(el, placeholder) {
         onFormat: (index, crate) => {
             return {
                 content: `${REDIRECT_URL}?crate=${crate.id}`,
-                description: `${c.capitalize("repository")}: <match>${crate.id}</match> v${crate.version} - <dim>${c.escape(c.eliminateTags(crate.description))}</dim>`,
+                description: `${Compat.capitalize("repository")}: <match>${crate.id}</match> v${crate.version} - <dim>${Compat.escape(Compat.eliminateTags(crate.description))}</dim>`,
             };
         },
         onAppend: (query) => {
@@ -342,7 +342,7 @@ async function start(el, placeholder) {
         onFormat: (index, attribute) => {
             return {
                 content: attribute.href,
-                description: `Attribute: <match>#[${attribute.name}]</match> <dim>${c.escape(attribute.description)}</dim>`,
+                description: `Attribute: <match>#[${attribute.name}]</match> <dim>${Compat.escape(attribute.description)}</dim>`,
             };
         },
     });
@@ -354,7 +354,7 @@ async function start(el, placeholder) {
         onFormat: (index, feat, query) => {
             return {
                 content: `https://caniuse.rs/features/${feat.slug}`,
-                description: `Can I use: <match>${c.escape(feat.match)}</match> [${feat.version}] - <dim>${c.escape(feat.description)}</dim>`
+                description: `Can I use: <match>${Compat.escape(feat.match)}</match> [${feat.version}] - <dim>${Compat.escape(feat.description)}</dim>`
             };
         },
         onAppend: () => {
@@ -392,7 +392,7 @@ async function start(el, placeholder) {
             let parentTitles = page.parentTitles || [];
             return {
                 content: page.url,
-                description: `${[...parentTitles.map(t => c.escape(t)), `<match>${c.escape(page.title)}</match>`].join(" > ")} - <dim>${page.name}</dim>`
+                description: `${[...parentTitles.map(t => Compat.escape(t)), `<match>${Compat.escape(page.title)}</match>`].join(" > ")} - <dim>${page.name}</dim>`
             }
         },
         onAppend: () => {
@@ -411,7 +411,7 @@ async function start(el, placeholder) {
         onFormat: (_, lint) => {
             return {
                 content: `${LINT_URL}#${lint.name}`,
-                description: `Clippy lint: [${lint.level}] <match>${lint.name}</match> - <dim>${c.escape(c.eliminateTags(lint.description))}</dim>`,
+                description: `Clippy lint: [${lint.level}] <match>${lint.name}</match> - <dim>${Compat.escape(Compat.eliminateTags(lint.description))}</dim>`,
             }
         },
     });
