@@ -308,5 +308,5 @@ async function renderYearList() {
     await renderYearList();
 })();
 (async () => {
-    await start("#omnibox", `Search rust things instantly!`);
+    await start("#omnibox", chrome.runtime.getURL("assets/rust.png"), `Search rust things instantly!`);
 })();

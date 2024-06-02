@@ -37,9 +37,9 @@ function getPlatformOs() {
     });
 }
 
-async function start(el, placeholder) {
+async function start(el, icon, placeholder) {
     const defaultSuggestion = `Search std <match>docs</match>, external <match>docs</match> (~,@), <match>crates</match> (!), <match>attributes</match> (#), <match>books</match> (%), clippy <match>lints</match> (>), and <match>error codes</match>, etc in your address bar instantly!`;
-    const omnibox = new Omnibox({ el, defaultSuggestion: placeholder || defaultSuggestion, maxSuggestionSize: Compat.omniboxPageSize() });
+    const omnibox = new Omnibox({ el, icon, defaultSuggestion: placeholder || defaultSuggestion, maxSuggestionSize: Compat.omniboxPageSize() });
 
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
