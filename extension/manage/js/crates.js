@@ -44,7 +44,6 @@ async function refresh(orderBy = "time") {
         root.firstChild.remove();
     }
 
-    let compat = new Compat();
     const { timeline } = await Statistics.load();
     const cratesData = timeline.reduce((pre, [time, type, crate]) => {
         if (crate) {
@@ -56,7 +55,7 @@ async function refresh(orderBy = "time") {
         return {
             name,
             searchs: cratesData[name] || 0,
-            formatedTime: compat.normalizeDate(new Date(crate.time)),
+            formatedTime: Compat.normalizeDate(new Date(crate.time)),
             ...crate,
         };
     });
