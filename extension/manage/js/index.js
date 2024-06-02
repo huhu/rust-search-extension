@@ -1,3 +1,4 @@
+import { barChart, histogram, calendarHeatmap } from "./charts.js";
 import { STATS_PATTERNS } from "../../statistics.js";
 import Statistics from "../../statistics.js";
 import { start } from "../../main.js";
