@@ -395,20 +395,6 @@ async function start(el, icon, placeholder) {
     // Skip following code if `el` provide, which mean this function run in webpage.
     if (el) return;
 
-    // DO NOT USE ASYNC CALLBACK HERE, SEE THIS ISSUE:
-    // https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        switch (message.action) {
-            case "open-url": {
-                if (message.url) {
-                    Omnibox.navigateToUrl(message.url);
-                }
-                break;
-            }
-        }
-        return true;
-    });
-
     chrome.storage.onChanged.addListener(changes => {
         for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
             console.log('storage key updated:', key);
@@ -534,5 +520,18 @@ chrome.runtime.onInstalled.addListener(async ({ previousVersion, reason }) => {
     }
 });
 
+// DO NOT USE ASYNC CALLBACK HERE, SEE THIS ISSUE:
+// https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    switch (message.action) {
+        case "open-url": {
+            if (message.url) {
+                Omnibox.navigateToUrl(message.url);
+            }
+            break;
+        }
+    }
+    return true;
+});
 
 export { start };
