@@ -12,6 +12,9 @@ const levenshtein_row2 = [];
  * and was found at http://stackoverflow.com/a/18514751/745719
  */
 function levenshtein(s1, s2) {
+    if (!s1 || !s2) {
+        return 999;
+    }
     if (s1 === s2) {
         return 0;
     }

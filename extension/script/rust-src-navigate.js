@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
             || document.querySelector(".out-of-band");
 
         if (element) {
-            let srclink = element.querySelector(".srclink");
+            let srclink = element.querySelector(".srclink,.src");
             location.href = srclink.href;
         }
     }

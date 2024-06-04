@@ -427,7 +427,7 @@ export default class DocSearch {
             }
 
             lev += lev_add;
-            if (lev > 0 && val.length > 3 && this.searchWords[j].indexOf(val) > -1) {
+            if (lev > 0 && val && val.length > 3 && this.searchWords[j].indexOf(val) > -1) {
                 if (val.length < 6) {
                     lev -= 1;
                 } else {
