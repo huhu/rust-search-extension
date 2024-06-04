@@ -548,8 +548,8 @@ export default class DocSearch {
             if (result.dontValidate) {
                 continue;
             }
-            const name = result.item.name.toLowerCase(),
-                path = result.item.path.toLowerCase(),
+            const name = result.item.name?.toLowerCase(),
+                path = result.item.path?.toLowerCase(),
                 parent = result.item.parent;
 
             if (this.validateResult(name, path, this.split, parent) === false) {

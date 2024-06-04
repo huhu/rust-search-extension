@@ -10,7 +10,6 @@ import LintSearch from "./search/lint.js";
 import AttributeSearch from "./search/attribute.js";
 import DocSearch from "./search/docs/base.js";
 import CrateDocSearch from "./search/docs/crate-doc.js";
-import RustcSearch from "./search/docs/rustc.js";
 import LabelCommand from "./command/label.js";
 import RfcCommand from "./command/rfc.js";
 import RustcCommand from "./command/rustc.js";
@@ -107,7 +106,6 @@ async function start(el, icon, placeholder) {
         // Nightly docs doesn't support offline mode yet.
         return "https://doc.rust-lang.org/nightly/";
     });
-    let rustcSearcher = new RustcSearch();
 
     let formatDoc = (index, doc) => {
         let content = doc.href;
@@ -186,36 +184,6 @@ async function start(el, icon, placeholder) {
                 content: nightlySearcher.getSearchUrl(query),
                 description: `Search nightly Rust docs <match>${query}</match> on ${nightlySearcher.getRootPath()}`,
             }];
-        },
-    });
-
-    // Nightly rustc docs search
-    omnibox.addPrefixQueryEvent("//", {
-        onSearch: (query) => {
-            query = query.replaceAll("/", "").trim();
-            return rustcSearcher.search(query);
-        },
-        onFormat: (index, doc) => {
-            let { content, description } = formatDoc(index, doc);
-            return { content, description: '[Rustc] ' + description };
-        },
-        onAppend: (query) => {
-            query = query.replaceAll("/", "").trim();
-            let appendix = {
-                content: rustcSearcher.getSearchUrl(query),
-                description: `Search nightly rustc docs <match>${query}</match> on ${rustcSearcher.getRootPath()}`,
-            };
-            if (rustcSearcher?.searchIndex?.length > 0) {
-                return [appendix];
-            } else {
-                return [
-                    appendix,
-                    {
-                        content: rustcSearcher.getRootPath(),
-                        description: "To search nightly rustc docs on the address bar, please open the nightly rustc docs page in advance.",
-                    },
-                ];
-            }
         },
     });
 
@@ -431,23 +399,6 @@ async function start(el, icon, placeholder) {
     // https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         switch (message.action) {
-            // Rustc:* action is exclusive to rustc docs event
-            case "rustc:check": {
-                sendResponse({
-                    version: rustcSearcher.version,
-                });
-                break;
-            }
-            case "rustc:add": {
-                if (message.searchIndex) {
-                    rustcSearcher.setSearchIndex(message.searchIndex);
-                    rustcSearcher.setVersion(message.version);
-                    sendResponse(true);
-                } else {
-                    sendResponse(false);
-                }
-                break;
-            }
             case "open-url": {
                 if (message.url) {
                     Omnibox.navigateToUrl(message.url);
