@@ -11,7 +11,7 @@ export default class HelpCommand extends Command {
             "tips1": `Tips: You can use shortcut <match>Cmd</match>/<match>Ctrl</match> + <match>L</match> to autofocus the address bar`,
             "tips2": `Tips: Combine <match>Cmd</match> or <match>Alt</match> with <match>Enter</match> to open the search result in the new tab`,
             ":": `Prefix <match>:</match> to execute command (:cargo, :book, :yet, :stable, etc)`,
-            "/": `Prefix <match>/</match> to search nightly rust docs, prefix <match>//</match> to search nightly rustc docs`,
+            "/": `Prefix <match>/</match> to search nightly rust docs`,
             "!": `Prefix <match>!</match> to search docs.rs, prefix <match>!!</match> to search crates.io, prefix <match>!!!</match> can redirect to the repository`,
             "~": `Prefix <match>~</match> to search external crate's docs`,
             "@": `Prefix <match>@crate</match> (<dim>e.g. @tokio</dim>) to search that crate's doc exclusively`,

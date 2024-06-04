@@ -53,11 +53,6 @@ json
   exclude_matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
 )
 .addContentScript(
-  matches=['*://doc.rust-lang.org/nightly/nightly-rustc/*'],
-  js=utils.js_files('script', ['lib', 'rustc', 'rust-src-navigate']),
-  css=['script/details-toggle.css'],
-)
-.addContentScript(
   matches=['*://rust.extension.sh/update'],
   js=['content-script-bundle.js'] + utils.js_files('script', ['rust-extension-sh']),
   css=[],
