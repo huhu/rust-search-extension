@@ -36,10 +36,7 @@ function getPlatformOs() {
     });
 }
 
-async function start(el, icon, placeholder) {
-    const defaultSuggestion = `Search std <match>docs</match>, external <match>docs</match> (~,@), <match>crates</match> (!), <match>attributes</match> (#), <match>books</match> (%), clippy <match>lints</match> (>), and <match>error codes</match>, etc in your address bar instantly!`;
-    const omnibox = new Omnibox({ el, icon, defaultSuggestion: placeholder || defaultSuggestion, maxSuggestionSize: Compat.omniboxPageSize() });
-
+async function start(omnibox) {
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
     let isOfflineMode = await settings.isOfflineMode;
@@ -392,8 +389,7 @@ async function start(el, icon, placeholder) {
 
     omnibox.addNoCacheQueries("/", "!", "@", ":");
 
-    // Skip following code if `el` provide, which mean this function run in webpage.
-    if (el) return;
+    if (!omnibox.extensionMode) return;
 
     chrome.storage.onChanged.addListener(changes => {
         for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
