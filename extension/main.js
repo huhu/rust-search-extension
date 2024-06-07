@@ -167,6 +167,7 @@ async function start(omnibox) {
 
     // Nightly std docs search
     omnibox.addPrefixQueryEvent("/", {
+        name: "Nightly docs",
         onSearch: (query) => {
             query = query.replaceAll("/", "").trim();
             return nightlySearcher.search(query);
@@ -185,6 +186,7 @@ async function start(omnibox) {
     });
 
     omnibox.addPrefixQueryEvent("~", {
+        name: "External docs",
         isDefaultSearch: () => {
             return defaultSearch.thirdPartyDocs;
         },
@@ -196,6 +198,7 @@ async function start(omnibox) {
     });
 
     omnibox.addPrefixQueryEvent("@", {
+        name: "Crate docs",
         onSearch: async (query) => {
             return await crateDocSearcher.search(query);
         },
@@ -234,6 +237,7 @@ async function start(omnibox) {
     }
 
     omnibox.addPrefixQueryEvent("!", {
+        name: "docs.rs",
         isDefaultSearch: () => {
             return defaultSearch.docsRs;
         },
@@ -257,6 +261,7 @@ async function start(omnibox) {
     });
 
     omnibox.addPrefixQueryEvent("!!", {
+        name: "crates.io",
         onSearch: (query) => {
             return crateSearcher.search(query);
         },
@@ -277,6 +282,7 @@ async function start(omnibox) {
 
     const REDIRECT_URL = chrome.runtime.getURL("manage/redirect.html");
     omnibox.addPrefixQueryEvent("!!!", {
+        name: "Repository",
         onSearch: (query) => {
             return crateSearcher.search(query);
         },
@@ -296,6 +302,7 @@ async function start(omnibox) {
     });
 
     omnibox.addPrefixQueryEvent("#", {
+        name: "Attributes",
         isDefaultSearch: () => {
             return defaultSearch.attributes;
         },
@@ -313,6 +320,7 @@ async function start(omnibox) {
     });
 
     omnibox.addPrefixQueryEvent("?", {
+        name: "Can I use",
         onSearch: (query) => {
             return caniuseSearcher.search(query);
         },
@@ -331,6 +339,7 @@ async function start(omnibox) {
     });
 
     omnibox.addRegexQueryEvent(/^`?e\d{2,4}`?$/i, {
+        name: "Error code",
         onSearch: (query) => {
             query = query.replace("`", "");
             let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
@@ -350,6 +359,7 @@ async function start(omnibox) {
     });
 
     omnibox.addPrefixQueryEvent("%", {
+        name: "Books",
         onSearch: (query) => {
             return bookSearcher.search(query);
         },
@@ -370,6 +380,7 @@ async function start(omnibox) {
 
     const LINT_URL = "https://rust-lang.github.io/rust-clippy/master/";
     omnibox.addPrefixQueryEvent(">", {
+        name: "Clippy lints",
         onSearch: (query) => {
             return lintSearcher.search(query);
         },
@@ -382,12 +393,11 @@ async function start(omnibox) {
     });
 
     omnibox.addPrefixQueryEvent(":", {
+        name: "Commands",
         onSearch: async (query) => {
             return commandManager.execute(query);
         },
     });
-
-    omnibox.addNoCacheQueries("/", "!", "@", ":");
 
     if (!omnibox.extensionMode) return;
 
