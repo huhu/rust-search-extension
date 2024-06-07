@@ -1,4 +1,3 @@
-import storage from "./core/storage.js";
 import settings from "./settings.js";
 import Statistics from "./statistics.js";
 import attributesIndex from "./index/attributes.js";
@@ -21,7 +20,7 @@ import OpenCommand from "./core/command/open.js";
 import HistoryCommand from "./core/command/history.js";
 import CommandManager from "./core/command/manager.js";
 import CrateDocManager from "./crate-manager.js";
-import { Omnibox, Compat } from "./core/index.js";
+import { Compat } from "./core/index.js";
 
 const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
 const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
@@ -493,51 +492,6 @@ async function start(omnibox) {
             }
         }
     });
-
-    await checkAutoUpdate();
 }
-
-async function checkAutoUpdate() {
-    if (await settings.autoUpdate) {
-        let version = await storage.getItem('auto-update-version');
-        let now = new Date();
-        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-        if (version && today <= Date.parse(version)) {
-            // Check version between localStorage and today to ensure open update page once a day.
-            return;
-        }
-
-        Omnibox.navigateToUrl(INDEX_UPDATE_URL);
-        await storage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
-    }
-}
-
-const chromeAction = chrome.action || chrome.browserAction;
-chromeAction.onClicked.addListener(() => {
-    let managePage = chrome.runtime.getURL("manage/index.html");
-    chrome.tabs.create({ url: managePage });
-});
-
-chrome.runtime.onInstalled.addListener(async ({ previousVersion, reason }) => {
-    const manifest = chrome.runtime.getManifest();
-    if (reason === "update" && previousVersion !== manifest.version) {
-        IndexManager.updateAllIndex();
-        console.log(`New version updated! Previous version: ${previousVersion}, new version: ${manifest.version}`);
-    }
-});
-
-// DO NOT USE ASYNC CALLBACK HERE, SEE THIS ISSUE:
-// https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-918076049
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    switch (message.action) {
-        case "open-url": {
-            if (message.url) {
-                Omnibox.navigateToUrl(message.url);
-            }
-            break;
-        }
-    }
-    return true;
-});
 
 export { start };
