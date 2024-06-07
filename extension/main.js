@@ -164,6 +164,20 @@ async function start(omnibox) {
         },
     });
 
+    omnibox.addRegexQueryEvent(/^s(?:rc)?:/i, {
+        name: "Source code",
+        onSearch: (query) => {
+            return stdSearcher.search(query);
+        },
+        onFormat: formatDoc,
+        onAppend: (query) => {
+            return [{
+                content: stdSearcher.getSearchUrl(query),
+                description: `Search Rust docs <match>${query}</match> on ${isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
+            }];
+        },
+    });
+
     // Nightly std docs search
     omnibox.addPrefixQueryEvent("/", {
         name: "Nightly docs",
