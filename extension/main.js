@@ -21,9 +21,13 @@ import HistoryCommand from "./core/command/history.js";
 import CommandManager from "./core/command/manager.js";
 import CrateDocManager from "./crate-manager.js";
 import { Compat } from "./core/index.js";
+import {
+    INDEX_UPDATE_URL,
+    LINT_URL,
+    REDIRECT_URL,
+    RUST_RELEASE_README_URL,
+} from "./constants.js";
 
-const INDEX_UPDATE_URL = "https://rust.extension.sh/update";
-const RUST_RELEASE_README_URL = "https://github.com/rust-lang/rust/blob/master/RELEASES.md";
 
 // Get the information about the current platform os.
 // Possible os values: "mac", "win", "android", "cros", "linux", or "openbsd"
@@ -293,7 +297,6 @@ async function start(omnibox) {
         },
     });
 
-    const REDIRECT_URL = chrome.runtime.getURL("manage/redirect.html");
     omnibox.addPrefixQueryEvent("!!!", {
         name: "Repository",
         onSearch: (query) => {
@@ -391,7 +394,6 @@ async function start(omnibox) {
         },
     });
 
-    const LINT_URL = "https://rust-lang.github.io/rust-clippy/master/";
     omnibox.addPrefixQueryEvent(">", {
         name: "Clippy lints",
         onSearch: (query) => {
