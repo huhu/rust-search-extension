@@ -1,5 +1,15 @@
 import settings from "../../settings.js";
 
+// Get the information about the current platform os.
+// Possible os values: "mac", "win", "android", "cros", "linux", or "openbsd"
+function getPlatformOs() {
+    return new Promise(resolve => {
+        chrome.runtime.getPlatformInfo(platformInfo => {
+            resolve(platformInfo.os);
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', async function () {
     const autoUpdateCheckbox = document.getElementById('auto-update');
     autoUpdateCheckbox.checked = await settings.autoUpdate;
@@ -30,8 +40,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Offline doc path
     const offlineDocPath = document.querySelector('.offline-doc-path');
     offlineDocPath.value = await settings.offlineDocPath;
-    offlineDocPath.onchange = function (event) {
-        settings.offlineDocPath = event.target.value;
+    offlineDocPath.onchange = async function (event) {
+        if (await getPlatformOs() === "win") {
+            // Replace all "/" to "\" for Windows.
+            settings.offlineDocPath = event.target.value.replaceAll("/", "\\");
+        } else {
+            settings.offlineDocPath = event.target.value;
+        }
     };
 
     let crateRegistry = document.querySelector("select[name='crate-registry']");

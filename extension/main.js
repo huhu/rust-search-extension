@@ -29,16 +29,6 @@ import {
 } from "./constants.js";
 
 
-// Get the information about the current platform os.
-// Possible os values: "mac", "win", "android", "cros", "linux", or "openbsd"
-function getPlatformOs() {
-    return new Promise(resolve => {
-        chrome.runtime.getPlatformInfo(platformInfo => {
-            resolve(platformInfo.os);
-        });
-    });
-}
-
 async function start(omnibox) {
     // All dynamic setting items. Those items will been updated
     // in chrome.storage.onchange listener callback.
@@ -47,7 +37,6 @@ async function start(omnibox) {
     let defaultSearch = await settings.defaultSearch;
     let crateRegistry = await settings.crateRegistry;
 
-    const os = await getPlatformOs();
     const crateSearcher = new CrateSearch(await IndexManager.getCrateMapping(), await IndexManager.getCrateIndex());
     let caniuseSearcher = new CaniuseSearch(await IndexManager.getCaniuseIndex());
     let bookSearcher = new BookSearch(await IndexManager.getBookIndex());
@@ -109,11 +98,6 @@ async function start(omnibox) {
 
     let formatDoc = (index, doc) => {
         let content = doc.href;
-        if (isOfflineMode && os === "win") {
-            // Replace all "/" to "\" for Windows in offline mode.
-            content.replaceAll("/", "\\");
-        }
-
         let description = doc.displayPath + `<match>${doc.name}</match>`;
         if (doc.desc) {
             description += ` - <dim>${Compat.escape(Compat.eliminateTags(doc.desc))}</dim>`;
