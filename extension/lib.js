@@ -24,7 +24,6 @@ export default class RustSearchOmnibox {
         // All dynamic setting items. Those items will been updated
         // in chrome.storage.onchange listener callback.
         let isOfflineMode = await settings.isOfflineMode;
-        let offlineDocPath = await settings.offlineDocPath;
         let defaultSearch = await settings.defaultSearch;
         let crateRegistry = await settings.crateRegistry;
 
@@ -54,7 +53,7 @@ export default class RustSearchOmnibox {
             ];
         }
 
-        omnibox.bootstrap({
+        const docsSearchMixins = {
             onSearch: (query) => {
                 return stdSearcher.search(query);
             },
@@ -65,6 +64,10 @@ export default class RustSearchOmnibox {
                     description: `Search Rust docs <match>${query}</match> on ${isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
                 }];
             },
+        };
+
+        omnibox.bootstrap({
+            ...docsSearchMixins,
             onEmptyNavigate: (content, disposition) => {
                 commandManager.handleCommandEnterEvent(content, disposition);
             },
@@ -96,16 +99,7 @@ export default class RustSearchOmnibox {
 
         omnibox.addRegexQueryEvent(/^s(?:rc)?:/i, {
             name: "Source code",
-            onSearch: (query) => {
-                return stdSearcher.search(query);
-            },
-            onFormat: formatDoc,
-            onAppend: (query) => {
-                return [{
-                    content: stdSearcher.getSearchUrl(query),
-                    description: `Search Rust docs <match>${query}</match> on ${isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
-                }];
-            },
+            ...docsSearchMixins,
         });
 
         // Nightly std docs search
@@ -272,7 +266,7 @@ export default class RustSearchOmnibox {
 
         omnibox.addRegexQueryEvent(/^`?e\d{2,4}`?$/i, {
             name: "Error code",
-            onSearch: (query) => {
+            onSearch: async (query) => {
                 query = query.replace("`", "");
                 let baseIndex = parseInt(query.slice(1).padEnd(4, '0'));
                 let result = [];
@@ -280,7 +274,9 @@ export default class RustSearchOmnibox {
                     let errorIndex = 'E' + String(baseIndex++).padStart(4, "0").toUpperCase();
                     result.push(errorIndex);
                 }
-                let baseUrl = isOfflineMode ? offlineDocPath : 'https://doc.rust-lang.org/';
+
+                let isOfflineMode = await settings.isOfflineMode;
+                let baseUrl = isOfflineMode ? await settings.offlineDocPath : 'https://doc.rust-lang.org/';
                 return result.map(errorCode => {
                     return {
                         content: `${baseUrl}error_codes/${errorCode}.html`,
