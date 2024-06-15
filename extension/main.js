@@ -30,8 +30,6 @@ async function start(omnibox) {
     // in chrome.storage.onchange listener callback.
     let isOfflineMode = await settings.isOfflineMode;
     let offlineDocPath = await settings.offlineDocPath;
-    let defaultSearch = await settings.defaultSearch;
-    let crateRegistry = await settings.crateRegistry;
 
     const crateSearcher = new CrateSearch(await IndexManager.getCrateMapping(), await IndexManager.getCrateIndex());
     let caniuseSearcher = new CaniuseSearch(await IndexManager.getCaniuseIndex());
@@ -117,14 +115,6 @@ async function start(omnibox) {
                 }
                 case "offline-path": {
                     offlineDocPath = newValue;
-                    break;
-                }
-                case "default-search": {
-                    defaultSearch = newValue;
-                    break;
-                }
-                case "crate-registry": {
-                    crateRegistry = newValue;
                     break;
                 }
                 case "index-std-stable": {

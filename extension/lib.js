@@ -24,8 +24,6 @@ export default class RustSearchOmnibox {
         // All dynamic setting items. Those items will been updated
         // in chrome.storage.onchange listener callback.
         let isOfflineMode = await settings.isOfflineMode;
-        let defaultSearch = await settings.defaultSearch;
-        let crateRegistry = await settings.crateRegistry;
 
         function formatDoc(index, doc) {
             let content = doc.href;
@@ -58,10 +56,10 @@ export default class RustSearchOmnibox {
                 return stdSearcher.search(query);
             },
             onFormat: formatDoc,
-            onAppend: (query) => {
+            onAppend: async (query) => {
                 return [{
                     content: stdSearcher.getSearchUrl(query),
-                    description: `Search Rust docs <match>${query}</match> on ${isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
+                    description: `Search Rust docs <match>${query}</match> on ${await settings.isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
                 }];
             },
         };
@@ -124,8 +122,8 @@ export default class RustSearchOmnibox {
 
         omnibox.addPrefixQueryEvent("~", {
             name: "External docs",
-            isDefaultSearch: () => {
-                return defaultSearch.thirdPartyDocs;
+            isDefaultSearch: async () => {
+                return (await settings.defaultSearch).thirdPartyDocs;
             },
             searchPriority: 1,
             onSearch: async (query) => {
@@ -165,8 +163,8 @@ export default class RustSearchOmnibox {
 
         omnibox.addPrefixQueryEvent("!", {
             name: "docs.rs",
-            isDefaultSearch: () => {
-                return defaultSearch.docsRs;
+            isDefaultSearch: async () => {
+                return (await settings.defaultSearch).docsRs;
             },
             searchPriority: 2,
             onSearch: (query) => {
@@ -192,13 +190,15 @@ export default class RustSearchOmnibox {
             onSearch: (query) => {
                 return crateSearcher.search(query);
             },
-            onFormat: (index, crate) => {
+            onFormat: async (index, crate) => {
+                let crateRegistry = await settings.crateRegistry;
                 return {
                     content: `https://${crateRegistry}/crates/${crate.id}`,
                     description: `${Compat.capitalize(crateRegistry)}: <match>${crate.id}</match> v${crate.version} - <dim>${Compat.escape(Compat.eliminateTags(crate.description))}</dim>`,
                 };
             },
-            onAppend: (query) => {
+            onAppend: async (query) => {
+                let crateRegistry = await settings.crateRegistry;
                 let keyword = query.replace(/[!\s]/g, "");
                 return wrapCrateSearchAppendix({
                     content: `https://${crateRegistry}/search?q=` + encodeURIComponent(keyword),
@@ -229,8 +229,8 @@ export default class RustSearchOmnibox {
 
         omnibox.addPrefixQueryEvent("#", {
             name: "Attributes",
-            isDefaultSearch: () => {
-                return defaultSearch.attributes;
+            isDefaultSearch: async () => {
+                return (await settings.defaultSearch).attributes;
             },
             searchPriority: 3,
             onSearch: (query) => {
