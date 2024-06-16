@@ -1,5 +1,42 @@
-(function () {
-    function sendSearchIndex() {
+(async function () {
+    function loadScript(url, errorCallback) {
+        const script = document.createElement("script");
+        script.src = url;
+        if (errorCallback !== undefined) {
+            script.onerror = errorCallback;
+        }
+        document.head.append(script);
+    }
+    async function loadDesc(descShard) {
+        if (descShard.promise === null) {
+            descShard.promise = new Promise((resolve, reject) => {
+                descShard.resolve = resolve;
+                const ds = descShard;
+                const fname = `${ds.crate}-desc-${ds.shard}-`;
+                const url = resourcePath(`search.desc/${descShard.crate}/${fname}`, ".js",);
+                loadScript(url, reject)
+            }
+            )
+        }
+        const list = await descShard.promise;
+        return list;
+    }
+    async function loadDescShard(crates) {
+        if (!window.searchState.descShards) return;
+
+        let crateDescsShard = {};
+        for (let crate of crates) {
+            let shards = {};
+            for (let descShard of window.searchState.descShards.get(crate)) {
+                shards[descShard.shard] = await loadDesc(descShard);
+            }
+
+            crateDescsShard[crate] = shards;
+        }
+
+        console.log('load desc shard:', crateDescsShard);
+    }
+    async function sendSearchIndex() {
         if (location.hostname === "docs.rs") { // docs.rs pages
             // Parse crate info from location pathname.
             let [crateName, crateVersion, libName] = location.pathname.slice(1).split("/");
@@ -46,6 +83,7 @@
             STD_CRATES.forEach(crate => {
                 searchIndex[crate] = rawSearchIndex[crate];
             });
+            await loadDescShard(STD_CRATES);
             window.postMessage({
                 direction: `rust-search-extension:std`,
                 message: {
@@ -58,7 +96,7 @@
 
     // Before rust 1.52.0, we can get the search index from window directly.
     if (window.searchIndex) {
-        sendSearchIndex();
+        await sendSearchIndex();
     } else {
         // Due to the new search-index.js on-demand load mode after PR #82310 has been merged.
         // We need to trigger a manual search-index.js load here.

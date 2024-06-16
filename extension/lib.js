@@ -21,10 +21,6 @@ export default class RustSearchOmnibox {
         lintSearcher,
         commandManager,
     }) {
-        // All dynamic setting items. Those items will been updated
-        // in chrome.storage.onchange listener callback.
-        let isOfflineMode = await settings.isOfflineMode;
-
         function formatDoc(index, doc) {
             let content = doc.href;
             let description = doc.displayPath + `<match>${doc.name}</match>`;
