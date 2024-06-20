@@ -34,12 +34,12 @@ window.addEventListener("message", function (event) {
         if (TARGET === 'stable') {
             rse.IndexSetter.setStdStableIndex(searchIndex);
             if (descShards) {
-                rse.IndexSetter.setDescShards("std-stable", descShards);
+                rse.DescShardManager.setDescShards("std-stable", descShards);
             }
         } else {
             rse.IndexSetter.setStdNightlyIndex(searchIndex);
             if (descShards) {
-                rse.IndexSetter.setDescShards("std-nightly", descShards);
+                rse.DescShardManager.setDescShards("std-nightly", descShards);
             }
         }
         let now = new Date();

@@ -1,15 +1,18 @@
 import CrateDocManager from "../../crate-manager.js";
-import IndexManager from "../../index-manager.js";
+import storage from "../../core/storage.js";
 
-class DescShardManager {
+export class DescShardManager {
     constructor() {
         // A crate -> desc shard map.
         this.descShards = new Map();
+        this.initDescShards();
     }
 
     async initDescShards() {
+        const stdDescShards = await DescShardManager.getDescShards('std-stable');
+        this.descShards = new Map(Object.entries(stdDescShards));
         for (const crate of Object.keys(await CrateDocManager.getCrates())) {
-            const descShards = await IndexManager.getDescShards(crate);
+            const descShards = await DescShardManager.getDescShards(crate);
             this.descShards.set(crate, descShards);
         }
     }
@@ -23,6 +26,14 @@ class DescShardManager {
             return null;
         }
         return crateDescShard[descShard.shard][descIndex];
+    }
+
+    static setDescShards(crate, shards) {
+        storage.setItem(`desc-shards-${crate}`, shards);
+    }
+
+    static async getDescShards(crate) {
+        return await storage.getItem(`desc-shards-${crate}`) || {};
     }
 }
 
