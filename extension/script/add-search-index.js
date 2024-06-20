@@ -22,7 +22,7 @@
         return list;
     }
     async function loadDescShard(crates) {
-        if (!window.searchState.descShards) return;
+        if (!window.searchState.descShards) return null;
 
         let crateDescsShard = {};
         for (let crate of crates) {
@@ -35,6 +35,7 @@
         }
 
         console.log('load desc shard:', crateDescsShard);
+        return crateDescsShard;
     }
     async function sendSearchIndex() {
         if (location.hostname === "docs.rs") { // docs.rs pages
@@ -83,11 +84,11 @@
             STD_CRATES.forEach(crate => {
                 searchIndex[crate] = rawSearchIndex[crate];
             });
-            await loadDescShard(STD_CRATES);
             window.postMessage({
                 direction: `rust-search-extension:std`,
                 message: {
                     searchIndex,
+                    descShards: await loadDescShard(STD_CRATES),
                 },
             }, "*");
         }

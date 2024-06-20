@@ -9,6 +9,10 @@ export default class IndexSetter {
         storage.setItem('index-std-nightly', index);
     }
 
+    static setDescShards(crate, shards) {
+        storage.setItem(`index-desc-shards-${crate}`, shards);
+    }
+
     static setBookIndex(index) {
         storage.setItem('index-book', index);
     }
