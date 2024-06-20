@@ -4,11 +4,8 @@ import settings from "../../settings.js";
 
 // A DocSearch dedicated to a single crate based on the search-index.
 class SingleCrateDocSearch extends DocSearch {
-
     constructor(name, version, searchIndex) {
-        super(name, searchIndex, () => {
-            return `https://docs.rs/${name}/${this.version}/`;
-        });
+        super(name, searchIndex, `https://docs.rs/${name}/${version}/`);
         this.version = version;
     }
 }

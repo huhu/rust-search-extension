@@ -82,13 +82,8 @@ async function start(omnibox) {
         }),
     );
 
-    let stdSearcher = new DocSearch("std", await IndexManager.getStdStableIndex(), () => {
-        return isOfflineMode ? offlineDocPath : "https://doc.rust-lang.org/";
-    });
-    let nightlySearcher = new DocSearch("std", await IndexManager.getStdNightlyIndex(), () => {
-        // Nightly docs doesn't support offline mode yet.
-        return "https://doc.rust-lang.org/nightly/";
-    });
+    let stdSearcher = new DocSearch("std", await IndexManager.getStdStableIndex(), isOfflineMode ? offlineDocPath : "https://doc.rust-lang.org/");
+    let nightlySearcher = new DocSearch("std", await IndexManager.getStdNightlyIndex(), "https://doc.rust-lang.org/nightly/");
 
     RustSearchOmnibox.run({
         omnibox,

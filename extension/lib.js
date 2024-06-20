@@ -47,21 +47,22 @@ export default class RustSearchOmnibox {
             ];
         }
 
-        const docsSearchMixins = {
-            onSearch: (query) => {
-                return stdSearcher.search(query);
+        const stdSearchMixins = {
+            onSearch: async (query) => {
+                const result = await stdSearcher.search(query);
+                return result.others;
             },
             onFormat: formatDoc,
             onAppend: async (query) => {
                 return [{
-                    content: stdSearcher.getSearchUrl(query),
-                    description: `Search Rust docs <match>${query}</match> on ${await settings.isOfflineMode ? "offline mode" : stdSearcher.getRootPath()}`,
+                    content: await stdSearcher.getSearchUrl(query),
+                    description: `Search Rust docs <match>${query}</match> on ${await settings.isOfflineMode ? "offline mode" : await stdSearcher.rootPath}`,
                 }];
             },
         };
 
         omnibox.bootstrap({
-            ...docsSearchMixins,
+            ...stdSearchMixins,
             onEmptyNavigate: (content, disposition) => {
                 commandManager.handleCommandEnterEvent(content, disposition);
             },
@@ -93,7 +94,7 @@ export default class RustSearchOmnibox {
 
         omnibox.addRegexQueryEvent(/^s(?:rc)?:/i, {
             name: "Source code",
-            ...docsSearchMixins,
+            ...stdSearchMixins,
         });
 
         // Nightly std docs search
@@ -107,11 +108,11 @@ export default class RustSearchOmnibox {
                 let { content, description } = formatDoc(index, doc);
                 return { content, description: '[Nightly] ' + description };
             },
-            onAppend: (query) => {
+            onAppend: async (query) => {
                 query = query.replaceAll("/", "").trim();
                 return [{
-                    content: nightlySearcher.getSearchUrl(query),
-                    description: `Search nightly Rust docs <match>${query}</match> on ${nightlySearcher.getRootPath()}`,
+                    content: await nightlySearcher.getSearchUrl(query),
+                    description: `Search nightly Rust docs <match>${query}</match> on ${nightlySearcher.rootPath}`,
                 }];
             },
         });
