@@ -1,4 +1,5 @@
 import storage from "./core/storage.js";
+import { DescShardManager } from "./search/docs/desc-shard.js";
 
 export default class CrateDocManager {
     static async getCrates() {
@@ -44,7 +45,7 @@ export default class CrateDocManager {
     // Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
     //
     // Ensure `searchIndex` is a Object, not a Map.
-    static async addCrate({ libName, crateVersion, searchIndex, crateName }) {
+    static async addCrate({ libName, crateVersion, searchIndex, crateName, descShards }) {
         if (searchIndex && libName in searchIndex) {
             await storage.setItem(`@${libName}`, searchIndex);
             let doc = searchIndex[libName]["doc"];
@@ -56,6 +57,7 @@ export default class CrateDocManager {
                 crates[libName] = { version: crateVersion, doc, time: Date.now(), crateName };
             }
             await storage.setItem("crates", crates);
+            DescShardManager.setDescShards(libName, descShards);
         }
     }
 

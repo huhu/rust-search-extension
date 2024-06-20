@@ -19,7 +19,7 @@ import IndexSetter from "./index-setter.js";
 export default class IndexManager extends IndexSetter {
     static async getStdStableIndex() {
         // Convert default map searchIndex to Object since rust 1.76.0
-        return await storage.getItem('index-std-stable') || Object.fromEntries(searchIndex);
+        return searchIndex;
     }
 
     static async getStdNightlyIndex() {

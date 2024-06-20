@@ -21,7 +21,7 @@
         const list = await descShard.promise;
         return list;
     }
-    async function loadDescShard(crates) {
+    async function loadDescShard(...crates) {
         if (!window.searchState.descShards) return null;
 
         let crateDescsShard = {};
@@ -73,6 +73,7 @@
                     crateName,
                     crateVersion,
                     searchIndex,
+                    descShards: await loadDescShard(libName),
                 },
             }, "*");
         } else { // stable/nightly pages
@@ -88,7 +89,7 @@
                 direction: `rust-search-extension:std`,
                 message: {
                     searchIndex,
-                    descShards: await loadDescShard(STD_CRATES),
+                    descShards: await loadDescShard(...STD_CRATES),
                 },
             }, "*");
         }
