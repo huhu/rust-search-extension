@@ -24,7 +24,8 @@ export default class IndexManager extends IndexSetter {
 
     static async getStdNightlyIndex() {
         // Convert default map searchIndex to Object since rust 1.76.0
-        return await storage.getItem('index-std-nightly') || Object.fromEntries(searchIndex);
+        // Structure clone search index is required
+        return structuredClone(searchIndex);
     }
 
     static async getBookIndex() {

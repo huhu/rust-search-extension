@@ -66,10 +66,10 @@ export default class CrateDocSearch {
             }
         }
 
-        let results = searcher.search(keyword);
+        let results = await searcher.search(keyword);
         // Push result footer.
         results.push({
-            content: searcher.getSearchUrl(keyword),
+            content: await searcher.getSearchUrl(keyword),
             description: `Search ${keyword ? `<match>${keyword}</match>` : 'keyword'} on <dim>${`https://docs.rs/${crateName}`}</dim> directly`,
         });
         return results;
@@ -81,7 +81,7 @@ export default class CrateDocSearch {
             await this.initAllCrateSearcher();
         }
         let keyword = query.replace("~", "").trim();
-        return this.allCrateSearcher.search(keyword);
+        return await this.allCrateSearcher.search(keyword);
     }
 
     // Invalidate cached search. This is needed if we update crate's search index.

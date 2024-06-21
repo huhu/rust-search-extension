@@ -100,9 +100,10 @@ export default class RustSearchOmnibox {
         // Nightly std docs search
         omnibox.addPrefixQueryEvent("/", {
             name: "Nightly docs",
-            onSearch: (query) => {
+            onSearch: async (query) => {
                 query = query.replaceAll("/", "").trim();
-                return nightlySearcher.search(query);
+                const result = await nightlySearcher.search(query);
+                return result.others;
             },
             onFormat: (index, doc) => {
                 let { content, description } = formatDoc(index, doc);
