@@ -1,6 +1,14 @@
 import CrateDocManager from "../../crate-manager.js";
 import storage from "../../core/storage.js";
 
+export function convertToIndexJS(shards) {
+    let array = new Array();
+    for (let [crate, shard] of Object.entries(shards)) {
+        array.push([crate, shard]);
+    }
+    return `new Map(JSON.parse('${JSON.stringify(array)}'));`;
+}
+
 export class DescShardManager {
     constructor() {
         // A crate -> desc shard map.
