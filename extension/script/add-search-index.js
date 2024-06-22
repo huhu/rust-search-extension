@@ -37,14 +37,6 @@
                     searchIndex,
                 },
             }, "*");
-        } else if (location.pathname.startsWith("/nightly/nightly-rustc/") &&
-            location.hostname === "doc.rust-lang.org") { // rustc pages
-            window.postMessage({
-                direction: 'rust-search-extension:rustc',
-                message: {
-                    searchIndex: getSearchIndex(),
-                },
-            }, "*");
         } else { // stable/nightly pages
             const STD_CRATES = ['std', 'test', 'proc_macro'];
 

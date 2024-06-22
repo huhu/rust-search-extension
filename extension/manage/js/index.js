@@ -31,10 +31,6 @@ const STATS_MAP = {
         color: "#f50707",
         description: "Compile error index searches."
     },
-    "rustc": {
-        color: "#0995cf",
-        description: "Rustc docs searches."
-    },
     [TYPE_OTHER]: {
         color: "#ededed",
         description: "Others including any Rust version, Clippy lint (>), book (%), and caniuse/rfc (?) searches."

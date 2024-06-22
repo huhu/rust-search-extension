@@ -31,11 +31,6 @@ export const STATS_PATTERNS = [{
     type: 6,
 },
 {
-    name: "rustc",
-    pattern: /^\/\/.*/i,
-    type: 7,
-},
-{
     name: "other",
     pattern: /^[>%?]|(v?1\.).*/i,
     type: 999,
