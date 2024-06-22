@@ -1722,7 +1722,7 @@ export default class DocSearchV2 {
                 }
             }
             currentIndex += itemTypes.length;
-            // searchState.descShards.set(crate, descShardList);
+            searchState.descShards.set(crate, descShardList);
         }
         // Drop the (rather large) hash table used for reusing function items
         this.TYPES_POOL = new Map();

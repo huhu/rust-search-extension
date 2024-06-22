@@ -28,6 +28,10 @@ export default class IndexManager extends IndexSetter {
         return structuredClone(searchIndex);
     }
 
+    static async getDescShards(crate) {
+        return await storage.getItem(`desc-shards-${crate}`) || {};
+    }
+
     static async getBookIndex() {
         return await storage.getItem('index-book') || booksIndex;
     }

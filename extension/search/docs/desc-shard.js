@@ -1,5 +1,5 @@
 import CrateDocManager from "../../crate-manager.js";
-import storage from "../../core/storage.js";
+import IndexManager from "../../index-manager.js";
 
 export function convertToIndexJS(shards) {
     let array = new Array();
@@ -9,19 +9,21 @@ export function convertToIndexJS(shards) {
     return `new Map(JSON.parse('${JSON.stringify(array)}'));`;
 }
 
-export class DescShardManager {
+class DescShardManager {
     constructor() {
-        // A crate -> desc shard map.
-        this.descShards = new Map();
+        // A dummy descShards map to allow interact in librustdoc's DocSearch js
+        this.descShards = new DummyMap();
+        // The real crate -> desc shard map.
+        this._descShards = new Map();
         this.initDescShards();
     }
 
     async initDescShards() {
-        const stdDescShards = await DescShardManager.getDescShards('std-stable');
-        this.descShards = new Map(Object.entries(stdDescShards));
+        const stdDescShards = await IndexManager.getDescShards('std-stable');
+        this._descShards = new Map(Object.entries(stdDescShards));
         for (const crate of Object.keys(await CrateDocManager.getCrates())) {
             const descShards = await DescShardManager.getDescShards(crate);
-            this.descShards.set(crate, descShards);
+            this._descShards.set(crate, descShards);
         }
     }
 
@@ -29,17 +31,18 @@ export class DescShardManager {
     // Load a single desc shard.
     // Compatible with librustdoc main.js.
     async loadDesc({ descShard, descIndex }) {
-        let crateDescShard = this.descShards.get(descShard.crate);
+        let crateDescShard = this._descShards.get(descShard.crate);
         if (!crateDescShard || crateDescShard.length === 0) {
             return null;
         }
         return crateDescShard[descShard.shard][descIndex];
     }
-
-    static async getDescShards(crate) {
-        return await storage.getItem(`desc-shards-${crate}`) || {};
-    }
 }
+
+class DummyMap {
+    set(_ke, _value) { }
+}
+
 
 const searchState = new DescShardManager();
 export default searchState;
