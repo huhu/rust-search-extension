@@ -1,11 +1,14 @@
 (async function () {
-    function loadScript(url, errorCallback) {
+    function loadScript({ url, loadCallback, errorCallback }) {
         const script = document.createElement("script");
         script.src = url;
-        if (errorCallback !== undefined) {
-            script.onerror = errorCallback;
+        if (loadCallback !== undefined) {
+            script.onload = loadCallback
         }
-        document.head.append(script);
+        if (errorCallback !== undefined) {
+            script.onerror = errorCallback
+        }
+        document.head.append(script)
     }
     async function loadDesc(descShard) {
         if (descShard.promise === null) {
@@ -14,7 +17,7 @@
                 const ds = descShard;
                 const fname = `${ds.crate}-desc-${ds.shard}-`;
                 const url = resourcePath(`search.desc/${descShard.crate}/${fname}`, ".js",);
-                loadScript(url, reject)
+                loadScript({ url, errorCallback: reject })
             }
             )
         }
@@ -39,64 +42,60 @@
         return crateDescsShard;
     }
     async function sendSearchIndex() {
-        if (location.hostname === "docs.rs") { // docs.rs pages
-            // Parse crate info from location pathname.
-            let [crateName, crateVersion, libName] = location.pathname.slice(1).split("/");
-            // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
-            // the latest version path has changed:
-            // from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/
-            //
-            // If we parse the crate version from url is 'latest',
-            // we should reparse it from the DOM to get the correct value.
-            if (crateVersion === 'latest') {
-                crateVersion = parseCrateVersionFromDOM();
-            }
+        // The original searchIndex loaded from search-index.js
+        const originalSearchIndex = structuredClone(window.searchIndex);
+        loadScript({
+            url: getVar("static-root-path") + getVar("search-js"),
+            loadCallback: async () => {
+                // // After the search.js loaded, init the search
+                // window.initSearch(window.searchIndex);
 
-            let searchIndex = getSearchIndex();
+                if (location.hostname === "docs.rs") { // docs.rs pages
+                    // Parse crate info from location pathname.
+                    let [crateName, crateVersion, libName] = location.pathname.slice(1).split("/");
+                    // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
+                    // the latest version path has changed:
+                    // from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/
+                    //
+                    // If we parse the crate version from url is 'latest',
+                    // we should reparse it from the DOM to get the correct value.
+                    if (crateVersion === 'latest') {
+                        crateVersion = parseCrateVersionFromDOM();
+                    }
 
-            // `itemTypes` was reordered in rust-lang/rust@28f17d97a,
-            // which first shipped in rustc 1.76.0-nightly (1e9dda77b 2023-11-22),
-            // preceded by rustc 1.76.0-nightly (2f8d81f9d 2023-11-21).
-            //
-            // Mark each index item as using old `itemTypes` if no rustdoc version
-            // is available or if the version date is less than 2023-11-22.
-            let date = getRustdocVersionDate();
-            if (!date || date < "2023-11-22") {
-                for (let indexItem of Object.values(searchIndex || {})) {
-                    indexItem.oldItemTypes = true;
+                    // [rustdoc] Use Map instead of Object for source files and search index #118910
+                    // https://github.com/rust-lang/rust/pull/118910;
+                    window.postMessage({
+                        direction: "rust-search-extension:docs.rs",
+                        message: {
+                            libName,
+                            crateName,
+                            crateVersion,
+                            searchIndex: Array.from(originalSearchIndex),
+                            descShards: await loadDescShard(libName),
+                        },
+                    }, "*");
+                } else { // stable/nightly pages
+                    const STD_CRATES = ['std', 'test', 'proc_macro'];
+
+                    // Remove unnecessary std crate's search index, such as core, alloc, etc
+                    let searchIndex = new Map();
+                    STD_CRATES.forEach(crate => {
+                        searchIndex.set(crate, originalSearchIndex.get(crate));
+                    });
+                    window.postMessage({
+                        direction: `rust-search-extension:std`,
+                        message: {
+                            searchIndex: Array.from(searchIndex),
+                            descShards: await loadDescShard(...STD_CRATES),
+                        },
+                    }, "*");
                 }
+                console.log("Send search index success.");
+                // Disable librustdoc search.js onpageshow event
+                window.onpageshow = function () { };
             }
-
-            window.postMessage({
-                direction: "rust-search-extension:docs.rs",
-                message: {
-                    libName,
-                    crateName,
-                    crateVersion,
-                    searchIndex,
-                    descShards: await loadDescShard(libName),
-                },
-            }, "*");
-        } else { // stable/nightly pages
-            const STD_CRATES = ['std', 'test', 'proc_macro'];
-
-            // Remove unnecessary std crate's search index, such as core, alloc, etc
-            let rawSearchIndex = getSearchIndex();
-            let searchIndex = Object.create(null);
-            STD_CRATES.forEach(crate => {
-                searchIndex[crate] = rawSearchIndex[crate];
-            });
-            window.postMessage({
-                direction: `rust-search-extension:std`,
-                message: {
-                    searchIndex,
-                    descShards: await loadDescShard(...STD_CRATES),
-                },
-            }, "*");
-        }
-        console.log("Send search index success.");
-        // Disable librustdoc search.js onpageshow event
-        window.onpageshow = function () { };
+        });
     }
 
     // Before rust 1.52.0, we can get the search index from window directly.
@@ -121,39 +120,12 @@
 
 
         if (searchIndexJs) {
-            // Load search.js first
-            loadScript(getVar("static-root-path") + getVar("search-js"));
-            // The load search-index.js, since initSearch rquired search.js loaded
-            loadScript(searchIndexJs, sendSearchIndex);
+            // Load search-index.js first, clone the search index for backup.
+            // because after the initSearch() called, the search index will be modified.
+            loadScript({ url: searchIndexJs, loadCallback: sendSearchIndex });
         } else {
             console.error("Sorry, no search index found.");
         }
-    }
-
-    function loadScript(url, loadCallback, errorCallback) {
-        const script = document.createElement("script");
-        script.src = url;
-        if (errorCallback !== undefined) {
-            script.onerror = errorCallback
-        }
-        if (loadCallback !== undefined) {
-            script.onload = loadCallback
-        }
-        document.head.append(script)
-    }
-
-    // [rustdoc] Use Map instead of Object for source files and search index #118910
-    // https://github.com/rust-lang/rust/pull/118910
-    function getSearchIndex() {
-        if (window.searchIndex instanceof Map || Object.prototype.toString.call(window.searchIndex) === '[object Map]') {
-            return Object.fromEntries(window.searchIndex);
-        } else {
-            return window.searchIndex;
-        }
-    }
-
-    function getRustdocVersionDate() {
-        return getVar("rustdoc-version")?.match(/\d{4}-\d{2}-\d{2}/)?.[0];
     }
 
     // ======== Following function mirrored to librustdoc main.js ========

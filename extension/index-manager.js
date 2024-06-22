@@ -19,14 +19,23 @@ import IndexSetter from "./index-setter.js";
 
 export default class IndexManager extends IndexSetter {
     static async getStdStableIndex() {
-        // Convert default map searchIndex to Object since rust 1.76.0
-        return searchIndex;
+        let index = await storage.getItem('index-std-stable');
+        if (index?.length > 0) {
+            return new Map(index);
+        } else {
+            return searchIndex;
+        }
     }
 
     static async getStdNightlyIndex() {
-        // Convert default map searchIndex to Object since rust 1.76.0
-        // Structure clone search index is required
-        return structuredClone(searchIndex);
+        let index = await storage.getItem('index-std-nightly');
+        if (index?.length > 0) {
+            return new Map(index);
+        } else {
+            // Structure clone search index is required
+            return structuredClone(searchIndex);
+        }
+
     }
 
     static async getDescShards(crate) {
