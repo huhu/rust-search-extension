@@ -1,15 +1,4 @@
 (async function () {
-    function loadScript({ url, loadCallback, errorCallback }) {
-        const script = document.createElement("script");
-        script.src = url;
-        if (loadCallback !== undefined) {
-            script.onload = loadCallback
-        }
-        if (errorCallback !== undefined) {
-            script.onerror = errorCallback
-        }
-        document.head.append(script)
-    }
     async function loadDesc(descShard) {
         if (descShard.promise === null) {
             descShard.promise = new Promise((resolve, reject) => {
