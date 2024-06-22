@@ -28,7 +28,7 @@
         let crateDescsShard = [];
         for (let crate of crates) {
             let shards = {};
-            for (let descShard of window.searchState.descShards.get(crate)) {
+            for (let descShard of window.searchState.descShards.get(crate) || []) {
                 shards[descShard.shard] = await loadDesc(descShard);
             }
 
@@ -95,6 +95,8 @@
             }, "*");
         }
         console.log("Send search index success.");
+        // Disable librustdoc search.js onpageshow event
+        window.onpageshow = function () { };
     }
 
     // Before rust 1.52.0, we can get the search index from window directly.
@@ -117,16 +119,28 @@
             searchIndexJs = resourcePath("search-index", ".js") || getVar('search-index-js') || getVar('search-js');
         }
 
+
         if (searchIndexJs) {
-            let script = document.createElement('script');
-            script.src = searchIndexJs;
-            script.onload = sendSearchIndex;
-            document.head.append(script);
+            // Load search.js first
+            loadScript(getVar("static-root-path") + getVar("search-js"));
+            // The load search-index.js, since initSearch rquired search.js loaded
+            loadScript(searchIndexJs, sendSearchIndex);
         } else {
             console.error("Sorry, no search index found.");
         }
     }
 
+    function loadScript(url, loadCallback, errorCallback) {
+        const script = document.createElement("script");
+        script.src = url;
+        if (errorCallback !== undefined) {
+            script.onerror = errorCallback
+        }
+        if (loadCallback !== undefined) {
+            script.onload = loadCallback
+        }
+        document.head.append(script)
+    }
 
     // [rustdoc] Use Map instead of Object for source files and search index #118910
     // https://github.com/rust-lang/rust/pull/118910
