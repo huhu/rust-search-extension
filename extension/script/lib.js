@@ -22,6 +22,15 @@ function parseCrateVersionFromDOM() {
     }
 }
 
+function parseCrateTitleFromDOM() {
+    let el = document.querySelector('form a.crate-name');
+    if (el) {
+        return el.getAttribute("title").substring(0, 100);
+    } else {
+        return null;
+    }
+}
+
 function parseCargoFeatures(content) {
     if (!content.version?.features) {
         return [];

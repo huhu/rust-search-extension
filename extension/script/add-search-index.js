@@ -71,6 +71,7 @@
                             libName,
                             crateName,
                             crateVersion,
+                            crateTitle: parseCrateTitleFromDOM(),
                             searchIndex: Array.from(originalSearchIndex),
                             descShards: await loadDescShard(libName),
                         },

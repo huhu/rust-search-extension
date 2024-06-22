@@ -31,7 +31,7 @@ export default class CrateDocManager {
             let crate = Object.entries(crates).find(([_, { crateName }]) => crateName == name);
             if (crate) {
                 let libName = crate[0];
-                return await storage.getItem(`@${libName}`);
+                return new Map(await storage.getItem(`@${libName}`));
             } else {
                 return null;
             }
@@ -44,21 +44,19 @@ export default class CrateDocManager {
     // 
     // Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
     //
-    // Ensure `searchIndex` is a Object, not a Map.
-    static async addCrate({ libName, crateVersion, searchIndex, crateName, descShards }) {
-        if (searchIndex && libName in searchIndex) {
-            await storage.setItem(`@${libName}`, searchIndex);
-            let doc = searchIndex[libName]["doc"];
-            let crates = await CrateDocManager.getCrates();
-            if (libName in crates) {
-                // Don't override the time if the crate exists
-                crates[libName] = { version: crateVersion, doc, time: crates[libName].time, crateName };
-            } else {
-                crates[libName] = { version: crateVersion, doc, time: Date.now(), crateName };
-            }
-            await storage.setItem("crates", crates);
-            IndexSetter.setDescShards(libName, descShards);
+    // The caller should ensure `searchIndex` is a Map, not a Object.
+    static async addCrate({ libName, crateVersion, crateTitle, searchIndex, crateName, descShards }) {
+        await storage.setItem(`@${libName}`, searchIndex);
+        let doc = crateTitle;
+        let crates = await CrateDocManager.getCrates();
+        if (libName in crates) {
+            // Don't override the time if the crate exists
+            crates[libName] = { version: crateVersion, doc, time: crates[libName].time, crateName };
+        } else {
+            crates[libName] = { version: crateVersion, doc, time: Date.now(), crateName };
         }
+        await storage.setItem("crates", crates);
+        IndexSetter.setDescShards(libName, descShards);
     }
 
     static async removeCrate(name) {
@@ -66,5 +64,6 @@ export default class CrateDocManager {
         delete crates[name];
         await storage.setItem("crates", crates);
         await storage.removeItem(`@${name}`);
+        await storage.removeItem(`desc-shards-${name}`);
     }
 };

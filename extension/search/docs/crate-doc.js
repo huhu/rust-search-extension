@@ -18,9 +18,13 @@ export default class CrateDocSearch {
     }
 
     async initAllCrateSearcher() {
-        let searchIndex = Object.create(null)
+        let searchIndex = new Map();
         for (const libName of Object.keys(await CrateDocManager.getCrates())) {
-            searchIndex = Object.assign(searchIndex, await CrateDocManager.getCrateSearchIndex(libName));
+            let crateSearchIndex = await CrateDocManager.getCrateSearchIndex(libName);
+            if (crateSearchIndex) {
+                // merge search index into single map
+                searchIndex = new Map([...searchIndex, ...crateSearchIndex]);
+            }
         }
         this.allCrateSearcher = new SingleCrateDocSearch("~", "*", searchIndex);
     }
@@ -67,6 +71,7 @@ export default class CrateDocSearch {
         }
 
         let results = await searcher.search(keyword);
+        results = results.others || [];
         // Push result footer.
         results.push({
             content: await searcher.getSearchUrl(keyword),
