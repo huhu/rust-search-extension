@@ -28,12 +28,6 @@ export default class RustSearchOmnibox {
                 description += ` - <dim>${Compat.escape(Compat.eliminateTags(doc.desc))}</dim>`;
             }
 
-            if (doc.queryType === "s" || doc.queryType === "src") {
-                let url = new URL(doc.href);
-                url.search = "?mode=src";
-                content = url.toString();
-                description = `[Source code] ${description}`;
-            }
             return { content, description };
         }
 
@@ -47,10 +41,10 @@ export default class RustSearchOmnibox {
             ];
         }
 
-        const stdSearchMixins = {
+        omnibox.bootstrap({
             onSearch: async (query) => {
                 const result = await stdSearcher.search(query);
-                return result.others;
+                return result.others || [];
             },
             onFormat: formatDoc,
             onAppend: async (query) => {
@@ -59,10 +53,6 @@ export default class RustSearchOmnibox {
                     description: `Search Rust docs <match>${query}</match> on ${await settings.isOfflineMode ? "offline mode" : await stdSearcher.rootPath}`,
                 }];
             },
-        };
-
-        omnibox.bootstrap({
-            ...stdSearchMixins,
             onEmptyNavigate: (content, disposition) => {
                 commandManager.handleCommandEnterEvent(content, disposition);
             },
@@ -94,7 +84,25 @@ export default class RustSearchOmnibox {
 
         omnibox.addRegexQueryEvent(/^s(?:rc)?:/i, {
             name: "Source code",
-            ...stdSearchMixins,
+            onSearch: async (query) => {
+                query = query.replace(/^s(?:rc)?:/i, "");
+                const result = await stdSearcher.search(query);
+                return result.others || [];
+            },
+            onFormat: (index, doc) => {
+                let { content, description } = formatDoc(index, doc);
+                let url = new URL(doc.href);
+                url.search = "?mode=src";
+                content = url.toString();
+                description = `[Source code] ${description}`;
+                return { content, description };
+            },
+            onAppend: async (query) => {
+                return [{
+                    content: await stdSearcher.getSearchUrl(query),
+                    description: `Search Rust docs <match>${query}</match> on ${await settings.isOfflineMode ? "offline mode" : await stdSearcher.rootPath}`,
+                }];
+            },
         });
 
         // Nightly std docs search
@@ -103,7 +111,7 @@ export default class RustSearchOmnibox {
             onSearch: async (query) => {
                 query = query.replaceAll("/", "").trim();
                 const result = await nightlySearcher.search(query);
-                return result.others;
+                return result.others || [];
             },
             onFormat: (index, doc) => {
                 let { content, description } = formatDoc(index, doc);
