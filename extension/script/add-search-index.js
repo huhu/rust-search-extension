@@ -24,14 +24,15 @@
     async function loadDescShard(...crates) {
         if (!window.searchState.descShards) return null;
 
-        let crateDescsShard = {};
+        // Use [[crateName, shards]] array to construct a map.
+        let crateDescsShard = [];
         for (let crate of crates) {
             let shards = {};
             for (let descShard of window.searchState.descShards.get(crate)) {
                 shards[descShard.shard] = await loadDesc(descShard);
             }
 
-            crateDescsShard[crate] = shards;
+            crateDescsShard.push([crate, shards]);
         }
 
         console.log('load desc shard:', crateDescsShard);

@@ -19,8 +19,7 @@ class DescShardManager {
     }
 
     async initDescShards() {
-        const stdDescShards = await IndexManager.getDescShards('std-stable');
-        this._descShards = new Map(Object.entries(stdDescShards));
+        this._descShards = await IndexManager.getDescShards('std-stable');
         for (const crate of Object.keys(await CrateDocManager.getCrates())) {
             const descShards = await DescShardManager.getDescShards(crate);
             this._descShards.set(crate, descShards);

@@ -7,6 +7,7 @@ import rfcsIndex from "./index/rfcs.js";
 import rustcIndex from "./index/rustc.js";
 import targetsIndex from "./index/targets.js";
 import searchIndex from "./index/std-docs.js";
+import stdDescShards from "./index/desc-shards/std.js";
 import { mapping, crateIndex } from "./index/crates.js";
 import storage from "./core/storage.js";
 import IndexSetter from "./index-setter.js";
@@ -29,7 +30,12 @@ export default class IndexManager extends IndexSetter {
     }
 
     static async getDescShards(crate) {
-        return await storage.getItem(`desc-shards-${crate}`) || {};
+        let descShards = await storage.getItem(`desc-shards-${crate}`);
+        if (descShards) {
+            return new Map(descShards);
+        } else {
+            return stdDescShards;
+        }
     }
 
     static async getBookIndex() {
