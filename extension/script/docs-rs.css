@@ -98,6 +98,12 @@ div.nav-container form.landing-search-form-nav {
     margin: 5.4px 16px 4.4px;
 }
 
+.add-to-extension-disabled {
+    background-color: #edebe7 !important;
+    cursor: not-allowed !important;
+    color: #666 !important;
+}
+
 .add-to-extension:hover {
     color: #121212;
     background-color: #F9BB2D;

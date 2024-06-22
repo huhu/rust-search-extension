@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             insertAddToExtensionElement("need-to-install");
         }
+        injectScripts(["script/docs-rs-check-crate.js"]);
     }
 
 
