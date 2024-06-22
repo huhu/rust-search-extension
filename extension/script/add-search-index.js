@@ -85,22 +85,15 @@
         }
 
         if (searchIndexJs) {
-            if (location.pathname.startsWith("/nightly/nightly-rustc/")) {
-                loadSearchIndex("/nightly/nightly-rustc/search-index.js");
-            } else {
-                loadSearchIndex(searchIndexJs);
-            }
+            let script = document.createElement('script');
+            script.src = searchIndexJs;
+            script.onload = sendSearchIndex;
+            document.head.append(script);
         } else {
             console.error("Sorry, no search index found.");
         }
     }
 
-    function loadSearchIndex(searchIndexJs) {
-        let script = document.createElement('script');
-        script.src = searchIndexJs;
-        script.onload = sendSearchIndex;
-        document.head.append(script);
-    }
 
     // [rustdoc] Use Map instead of Object for source files and search index #118910
     // https://github.com/rust-lang/rust/pull/118910
