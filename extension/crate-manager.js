@@ -1,5 +1,5 @@
 import storage from "./core/storage.js";
-import { DescShardManager } from "./search/docs/desc-shard.js";
+import IndexSetter from "./index-setter.js";
 
 export default class CrateDocManager {
     static async getCrates() {
@@ -57,7 +57,7 @@ export default class CrateDocManager {
                 crates[libName] = { version: crateVersion, doc, time: Date.now(), crateName };
             }
             await storage.setItem("crates", crates);
-            DescShardManager.setDescShards(libName, descShards);
+            IndexSetter.setDescShards(libName, descShards);
         }
     }
 

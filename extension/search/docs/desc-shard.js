@@ -36,12 +36,6 @@ export class DescShardManager {
         return crateDescShard[descShard.shard][descIndex];
     }
 
-    static setDescShards(crate, shards) {
-        if (shards) {
-            storage.setItem(`desc-shards-${crate}`, shards);
-        }
-    }
-
     static async getDescShards(crate) {
         return await storage.getItem(`desc-shards-${crate}`) || {};
     }

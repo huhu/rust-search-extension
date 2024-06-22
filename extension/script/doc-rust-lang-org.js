@@ -33,10 +33,10 @@ window.addEventListener("message", function (event) {
         let descShards = event.data.message.descShards;
         if (TARGET === 'stable') {
             rse.IndexSetter.setStdStableIndex(searchIndex);
-            rse.DescShardManager.setDescShards("std-stable", descShards);
+            rse.IndexSetter.setDescShards("std-stable", descShards);
         } else {
             rse.IndexSetter.setStdNightlyIndex(searchIndex);
-            rse.DescShardManager.setDescShards("std-nightly", descShards);
+            rse.IndexSetter.setDescShards("std-nightly", descShards);
         }
         let now = new Date();
         let version = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
