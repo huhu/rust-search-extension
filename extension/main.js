@@ -23,6 +23,7 @@ import {
     INDEX_UPDATE_URL,
     RUST_RELEASE_README_URL,
 } from "./constants.js";
+import DescShardManager from "./search/docs/desc-shard.js";
 import { RustSearchOmnibox, getBaseUrl } from "./lib.js";
 
 
@@ -83,8 +84,20 @@ async function start(omnibox) {
         }),
     );
 
-    let nightlySearcher = new DocSearch("std", await IndexManager.getStdNightlyIndex(), "https://doc.rust-lang.org/nightly/");
-    let stdSearcher = new DocSearch("std", await IndexManager.getStdStableIndex(), await getBaseUrl());
+    const nightlyDescShards = await DescShardManager.create("std-nightly");
+    const stdDescShards = await DescShardManager.create("std-stable");
+    let nightlySearcher = new DocSearch(
+        "std",
+        await IndexManager.getStdNightlyIndex(),
+        "https://doc.rust-lang.org/nightly/",
+        nightlyDescShards,
+    );
+    let stdSearcher = new DocSearch(
+        "std",
+        await IndexManager.getStdStableIndex(),
+        await getBaseUrl(),
+        stdDescShards,
+    );
 
     RustSearchOmnibox.run({
         omnibox,
@@ -181,9 +194,12 @@ async function start(omnibox) {
                         }
                         crateDocSearcher.invalidateCachedSearch();
                         crateDocSearcher.initAllCrateSearcher();
-                    } else if (key.startsWith('desc-shards-')) {
-                        // DescShards index changed, update searchState
-                        searchState.initDescShards();
+                    } else if (key === "desc-shards-std-stable") {
+                        stdDescShards.addCrateDescShards("std-stable");
+                    } else if (key === "desc-shards-std-nightly") {
+                        nightlyDescShards.addCrateDescShards("std-nightly");
+                    } else if (key.startsWith("desc-shards-")) {
+                        let crateName = key.slice(12);
                     }
                     break;
                 }
