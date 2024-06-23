@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2017-0005",
+      "package": "cookie",
+      "title": "Large cookie Max-Age values can cause a denial of service",
+      "description": "Affected versions of this crate use the `time` crate and the method\n`Duration::seconds` to parse the `Max-Age` duration cookie setting. This method\nwill panic if the value is greater than 2^64/1000 and less than or equal to\n2^64, which can result in denial of service for a client or server.\n\nThis flaw was corrected by explicitly checking for the `Max-Age` being in this\ninteger range and clamping the value to the maximum duration value.",
+      "date": "2017-05-06",
+      "aliases": [
+        "CVE-2017-18589"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "crash"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/alexcrichton/cookie-rs/pull/86",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "<0.6.0",
+        "^0.6.2",
+        ">=0.7.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

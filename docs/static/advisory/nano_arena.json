@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0031",
+      "package": "nano_arena",
+      "title": "split_at allows obtaining multiple mutable references to the same data",
+      "description": "Affected versions of this crate assumed that `Borrow<Idx>` was guaranteed to\nreturn the same value on `.borrow()`. The borrowed index value was used to\nretrieve a mutable reference to a value.\n\nIf the `Borrow<Idx>` implementation returned a different index, the split arena\nwould allow retrieving the index as a mutable reference creating two mutable\nreferences to the same element. This violates Rust's aliasing rules and allows\nfor memory safety issues such as writing out of bounds and use-after-frees.\n\nThe flaw was corrected in commit `6b83f9d` by storing the `.borrow()` value in\na temporary variable.",
+      "date": "2021-01-31",
+      "aliases": [
+        "CVE-2021-28032"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "aliasing",
+        "unsound"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bennetthardwick/nano-arena/issues/1",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "nano_arena::Arena::split_at": [
+          "<0.5.2"
+        ],
+        "nano_arena::ArenaSplit::split_at": [
+          "<0.5.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.5.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0095",
+      "package": "difference",
+      "title": "difference is unmaintained",
+      "description": "The author of the `difference` crate is unresponsive.\n\nMaintained alternatives:\n\n- [`dissimilar`](https://crates.io/crates/dissimilar)\n\n- [`similar`](https://crates.io/crates/similar)\n\n- [`treediff`](https://crates.io/crates/treediff)\n\n- [`diffus`](https://crates.io/crates/diffus)",
+      "date": "2020-12-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/johannhof/difference.rs/issues/45",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">2.0.0"
+      ]
+    }
+  }
+]

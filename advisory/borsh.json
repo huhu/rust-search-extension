@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0033",
+      "package": "borsh",
+      "title": "Parsing borsh messages with ZST which are not-copy/clone is unsound",
+      "description": "Affected versions of borsh cause undefined behavior when zero-sized-types (ZST) \nare parsed and the Copy/Clone traits are not implemented/derived.\nFor instance if 1000 instances of a ZST are deserialized, and the ZST is not copy \n(this can be achieved through a singleton), then accessing/writing to deserialized \ndata will cause a segmentation fault.\n\nThere is currently no way for borsh to read data without also providing a Rust type. \nTherefore, if not ZST are used for serialization, then you are not affected by this issue.",
+      "date": "2023-04-12",
+      "aliases": [
+        "GHSA-fjx5-qpf4-xjf2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/near/borsh-rs/pull/136"
+      ],
+      "source": null,
+      "url": "https://github.com/near/borsh-rs/issues/19",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=1.0.0-alpha.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

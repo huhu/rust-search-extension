@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0039",
+      "package": "simple-slab",
+      "title": "`index()` allows out-of-bound read and `remove()` has off-by-one error",
+      "description": "`Slab::index()` does not perform the boundary checking, which leads to out-of-bound read access. `Slab::remove()` copies an element from an invalid address due to off-by-one error, resulting in memory leakage and uninitialized memory drop.",
+      "date": "2020-09-03",
+      "aliases": [
+        "CVE-2020-35892",
+        "CVE-2020-35893",
+        "GHSA-438g-fx34-4h9m",
+        "GHSA-hqc8-j86x-2764"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nathansizemore/simple-slab/issues/2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

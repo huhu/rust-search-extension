@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0032",
+      "package": "crust",
+      "title": "crust repo has been archived; use libp2p instead",
+      "description": "** The `crust` crate repo was archived with no warning or explanation.**\n\nGiven that it was archived with no warning or successor, there's not an\nofficial replacement but [`rust-libp2p`](https://github.com/libp2p/rust-libp2p)\nlooks like it's got a similar feature set and is actively maintained.",
+      "date": "2019-11-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maidsafe/crust",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.32.1"
+      ]
+    }
+  }
+]

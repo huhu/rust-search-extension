@@ -1,0 +1,76 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0045",
+      "package": "memoffset",
+      "title": "memoffset allows reading uninitialized memory",
+      "description": "memoffset allows attempt of reading data from address `0` with arbitrary type. This behavior is an undefined behavior because address `0` to `std::mem::size_of<T>` may not have valid bit-pattern with `T`. Old implementation dereferences uninitialized memory obtained from `std::mem::align_of`. Older implementation prior to it allows using uninitialized data obtained from `std::mem::uninitialized` with arbitrary type then compute offset by taking the address of field-projection. This may also result in an undefined behavior for \"father\" that includes (directly or transitively) type that [does not allow to be uninitialized](https://doc.rust-lang.org/nightly/reference/behavior-considered-undefined.html).\n\nThis flaw was corrected by using `std::ptr::addr_of` in <https://github.com/Gilnaa/memoffset/pull/50>.",
+      "date": "2023-06-21",
+      "aliases": [
+        "GHSA-wfg4-322g-9vqv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memoffset",
+        "offset"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Gilnaa/memoffset/issues/24",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "memoffset::offset_of": [
+          "<0.6.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0011",
+      "package": "memoffset",
+      "title": "Flaw in offset_of and span_of causes SIGILL, drops uninitialized memory of arbitrary type on panic in client code",
+      "description": "Affected versions of this crate caused traps and/or memory unsafety by zero-initializing references.\nThey also could lead to uninitialized memory being dropped if the field for which the offset is requested was behind a deref coercion, and that deref coercion caused a panic.\n\nThe flaw was corrected by using `MaybeUninit`.",
+      "date": "2019-07-16",
+      "aliases": [
+        "CVE-2019-15553",
+        "GHSA-rh89-x75f-rh3c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Gilnaa/memoffset/issues/9#issuecomment-505461490",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

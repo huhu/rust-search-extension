@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0342",
+      "package": "vodozemac",
+      "title": "Degraded secret zeroization capabilities",
+      "description": "Versions 0.5.0 and 0.5.1 of vodozemac have degraded secret zeroization capabilities,\ndue to changes in third-party cryptographic dependencies (the Dalek crates),\nwhich moved secret zeroization capabilities behind a feature flag while\nvodozemac disabled the default feature set.\n\n## Impact\n\nThe degraded zeroization capabilities could result in the production of more\nmemory copies of encryption secrets and secrets could linger in memory longer\nthan necessary. This marginally increases the risk of sensitive data exposure.\n\nOverall, we consider the impact of this issue to be low. Although cryptographic\nbest practices recommend the clearing of sensitive information from memory once\nit's no longer needed, the inherent limitations of Rust regarding absolute\nzeroization reduce the practical severity of this lapse.",
+      "date": "2024-05-02",
+      "aliases": [
+        "CVE-2024-34063",
+        "GHSA-c3hm-hxwf-g5c6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/vodozemac/security/advisories/GHSA-c3hm-hxwf-g5c6",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": [
+        "<0.5.0"
+      ]
+    }
+  }
+]

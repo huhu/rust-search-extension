@@ -1,0 +1,277 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0072",
+      "package": "openssl",
+      "title": "`openssl` `X509StoreRef::objects` is unsound",
+      "description": "This function returned a shared reference into an OpenSSL datastructure but did not account for interior mutability. OpenSSL may modify the data behind this reference, meaning accesses can race and the reference is unsound.\n\nUse of this function should be replaced with `X509StoreRef::all_certificates`.",
+      "date": "2023-11-23",
+      "aliases": [
+        "GHSA-xphf-cx8h-7q9g"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/issues/2096",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::store::X509StoreRef::objects": [
+          "<0.10.60, >=0.10.29"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.60"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0044",
+      "package": "openssl",
+      "title": "`openssl` `X509VerifyParamRef::set_host` buffer over-read",
+      "description": "When this function was passed an empty string, `openssl` would attempt to call `strlen` on it, reading arbitrary memory until it reached a NUL byte.",
+      "date": "2023-06-20",
+      "aliases": [
+        "GHSA-xcf7-rvmh-g6q4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/issues/1965",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::verify::X509VerifyParamRef::set_host": [
+          "<0.10.55, >=0.10.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.55"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0024",
+      "package": "openssl",
+      "title": "`openssl` `X509Extension::new` and `X509Extension::new_nid` null pointer dereference",
+      "description": "These functions would crash when the context argument was None with certain extension types.\n\nThanks to David Benjamin (Google) for reporting this issue.",
+      "date": "2023-03-24",
+      "aliases": [
+        "GHSA-6hcf-g6gr-hhcr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/1854",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::X509Extension::new": [
+          "<0.10.48, >=0.9.7"
+        ],
+        "openssl::x509::X509Extension::new_nid": [
+          "<0.10.48, >=0.9.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.48"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0022",
+      "package": "openssl",
+      "title": "`openssl` `X509NameBuilder::build` returned object is not thread safe",
+      "description": "OpenSSL has a `modified` bit that it can set on on `X509_NAME` objects. If this\nbit is set then the object is not thread-safe even when it appears the code is\nnot modifying the value.\n\nThanks to David Benjamin (Google) for reporting this issue.",
+      "date": "2023-03-24",
+      "aliases": [
+        "GHSA-3gxf-9r58-2ghg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/1854",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::X509NameBuilder::build": [
+          "<0.10.48, >=0.9.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.48"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0023",
+      "package": "openssl",
+      "title": "`openssl` `SubjectAlternativeName` and `ExtendedKeyUsage::other` allow arbitrary file read",
+      "description": "`SubjectAlternativeName` and `ExtendedKeyUsage` arguments were parsed using the OpenSSL\nfunction `X509V3_EXT_nconf`. This function parses all input using an OpenSSL mini-language\nwhich can perform arbitrary file reads.\n\nThanks to David Benjamin (Google) for reporting this issue.",
+      "date": "2023-03-24",
+      "aliases": [
+        "GHSA-9qwg-crg9-m2vc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/1854",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::extension::ExtendedKeyUsage::other": [
+          "<0.10.48, >=0.9.7"
+        ],
+        "openssl::x509::extension::SubjectAlternativeName::new": [
+          "<0.10.48, >=0.9.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.48"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0010",
+      "package": "openssl",
+      "title": "Use after free in CMS Signing",
+      "description": "Affected versions of the OpenSSL crate used structures after they'd been freed.",
+      "date": "2018-06-01",
+      "aliases": [
+        "CVE-2018-20997",
+        "GHSA-xjxc-vfw2-cg96"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/942",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.9"
+      ],
+      "unaffected": [
+        "<0.10.8"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2016-0001",
+      "package": "openssl",
+      "title": "SSL/TLS MitM vulnerability due to insecure defaults",
+      "description": "All versions of rust-openssl prior to 0.9.0 contained numerous insecure defaults\nincluding off-by-default certificate verification and no API to perform hostname\nverification.\n\nUnless configured correctly by a developer, these defaults could allow an attacker\nto perform man-in-the-middle attacks.\n\nThe problem was addressed in newer versions by enabling certificate verification\nby default and exposing APIs to perform hostname verification. Use the\n`SslConnector` and `SslAcceptor` types to take advantage of these new features\n(as opposed to the lower-level `SslContext` type).",
+      "date": "2016-11-05",
+      "aliases": [
+        "CVE-2016-10931",
+        "GHSA-34p9-f4q3-c4r7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "ssl",
+        "mitm"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/releases/tag/v0.9.0",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0062",
+      "package": "miscreant",
+      "title": "project abandoned; migrate to the `aes-siv` crate",
+      "description": "The Miscreant project has been abandoned and archived.\n\nThe Rust implementation has been adapted into the new `aes-siv` crate which\nimplements both the AES-CMAC-SIV and AES-PMAC-SIV constructions:\n\n<https://github.com/RustCrypto/AEADs/tree/master/aes-siv>\n\nPlease migrate to the `aes-siv` crate.\n\nAlternatively see the `aes-gcm-siv` crate for a newer, faster construction\nwhich provides similar properties:\n\n<https://github.com/RustCrypto/AEADs/tree/master/aes-gcm-siv>",
+      "date": "2021-02-28",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/miscreant/miscreant.rs/commit/5d921f579e0c2b9960d472cf377b8487d97fbcec",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
