@@ -279,6 +279,10 @@ function insertAddToExtensionElement(state) {
             await rse.CrateDocManager.removeCrate(libName);
             insertAddToExtensionElement(getState(undefined));
         } else {
+            let svgIcon = document.querySelector(".add-to-extension .fa-svg");
+            if (svgIcon) {
+                svgIcon.innerHTML = SVG_SPINNER;
+            }
             injectScripts("script/lib.js", "script/add-search-index.js");
         }
     };

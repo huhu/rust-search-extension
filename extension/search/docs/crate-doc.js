@@ -84,7 +84,7 @@ export default class CrateDocSearch {
         if (!this.allCrateSearcher) {
             await this.initAllCrateSearcher();
         }
-        let keyword = query.replace("~", "").trim();
+        let keyword = query.replaceAll("~", "").trim();
         return await this.allCrateSearcher.search(keyword);
     }
 
