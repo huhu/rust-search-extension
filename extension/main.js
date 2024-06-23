@@ -199,7 +199,7 @@ async function start(omnibox) {
                     } else if (key === "desc-shards-std-nightly") {
                         nightlyDescShards.addCrateDescShards("std-nightly");
                     } else if (key.startsWith("desc-shards-")) {
-                        let crateName = key.slice(12);
+                        // ignore, will be updated in crateDocSearcher.initAllCrateSearcher()
                     }
                     break;
                 }

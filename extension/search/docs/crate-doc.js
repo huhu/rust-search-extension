@@ -1,14 +1,7 @@
 import DocSearch from "./base.js";
 import CrateDocManager from "../../crate-manager.js";
 import settings from "../../settings.js";
-
-// A DocSearch dedicated to a single crate based on the search-index.
-class SingleCrateDocSearch extends DocSearch {
-    constructor(name, version, searchIndex) {
-        super(name, searchIndex, `https://docs.rs/${name}/${version}/`);
-        this.version = version;
-    }
-}
+import DescShardManager from "./desc-shard.js";
 
 // Search all crate's docs, including `@` sigil and `~` sigil,.
 export default class CrateDocSearch {
@@ -19,14 +12,16 @@ export default class CrateDocSearch {
 
     async initAllCrateSearcher() {
         let searchIndex = new Map();
+        let descShards = new DescShardManager();
         for (const libName of Object.keys(await CrateDocManager.getCrates())) {
             let crateSearchIndex = await CrateDocManager.getCrateSearchIndex(libName);
             if (crateSearchIndex) {
                 // merge search index into single map
                 searchIndex = new Map([...searchIndex, ...crateSearchIndex]);
             }
+            descShards.addCrateDescShards(libName);
         }
-        this.allCrateSearcher = new SingleCrateDocSearch("~", "*", searchIndex);
+        this.allCrateSearcher = new DocSearch("~", searchIndex, "https://docs.rs/~/*/", descShards);
     }
 
     // Search specific crate docs by prefix `@` sigil.
@@ -42,8 +37,13 @@ export default class CrateDocSearch {
             let crate = await CrateDocManager.getCrateByName(crateName);
             if (crate) {
                 let searchIndex = await CrateDocManager.getCrateSearchIndex(crateName);
-                const cratesVersion = await settings.keepCratesUpToDate ? "latest" : crate.version;
-                searcher = new SingleCrateDocSearch(crateName, cratesVersion, searchIndex);
+                const crateVersion = await settings.keepCratesUpToDate ? "latest" : crate.version;
+                searcher = new DocSearch(
+                    crateName,
+                    searchIndex,
+                    `https://docs.rs/${crateName}/${crateVersion}/`,
+                    await DescShardManager.create(crateName),
+                );
 
                 this.cachedCrateSearcher = searcher;
             } else {
