@@ -43,8 +43,7 @@ export default class RustSearchOmnibox {
 
         omnibox.bootstrap({
             onSearch: async (query) => {
-                const result = await stdSearcher.search(query);
-                return result.others || [];
+                return await stdSearcher.search(query);
             },
             onFormat: formatDoc,
             onAppend: async (query) => {
@@ -86,8 +85,7 @@ export default class RustSearchOmnibox {
             name: "Source code",
             onSearch: async (query) => {
                 query = query.replace(/^s(?:rc)?:/i, "");
-                const result = await stdSearcher.search(query);
-                return result.others || [];
+                return await stdSearcher.search(query);
             },
             onFormat: (index, doc) => {
                 let { content, description } = formatDoc(index, doc);
@@ -110,8 +108,7 @@ export default class RustSearchOmnibox {
             name: "Nightly docs",
             onSearch: async (query) => {
                 query = query.replaceAll("/", "").trim();
-                const result = await nightlySearcher.search(query);
-                return result.others || [];
+                return await nightlySearcher.search(query);
             },
             onFormat: (index, doc) => {
                 let { content, description } = formatDoc(index, doc);

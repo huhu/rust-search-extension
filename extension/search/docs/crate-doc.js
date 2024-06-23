@@ -71,7 +71,6 @@ export default class CrateDocSearch {
         }
 
         let results = await searcher.search(keyword);
-        results = results.others || [];
         // Push result footer.
         results.push({
             content: await searcher.getSearchUrl(keyword),

@@ -23,6 +23,7 @@ export default class DocSearch extends DocSearchV2 {
 
     async search(query) {
         if (!query) return [];
-        return await this.execQuery(DocSearchV2.parseQuery(query), null, this.name);
+        let result = await this.execQuery(DocSearchV2.parseQuery(query), null, this.name);
+        return result.others || [];
     }
 }
