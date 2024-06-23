@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             // Replace all "/" to "\" for Windows.
             path = event.target.value.replaceAll("/", "\\");
         }
-        if (!path.startsWith("file://")) {
+        if (path.startsWith("/")) {
             // Prepend file:// to allow browser open the file url
             path = "file://" + path;
         }
