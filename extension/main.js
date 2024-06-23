@@ -130,12 +130,12 @@ async function start(omnibox) {
                 }
                 case "index-std-stable": {
                     // Update search index after docs updated
-                    stdSearcher.setSearchIndex(newValue);
+                    stdSearcher.setSearchIndex(new Map(newValue));
                     break;
                 }
                 case "index-std-nightly": {
                     // Update search index after docs updated
-                    nightlySearcher.setSearchIndex(newValue);
+                    nightlySearcher.setSearchIndex(new Map(newValue));
                     break;
                 }
                 case "index-book": {

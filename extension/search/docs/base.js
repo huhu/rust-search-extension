@@ -1,10 +1,8 @@
 import DocSearchV2 from "./base-v2.js";
 
 export default class DocSearch extends DocSearchV2 {
+    // The searchIndex should be Map([[crate, shards],) format
     constructor(name, searchIndex, rootPath, descShards) {
-        if (!(searchIndex instanceof Map)) {
-            searchIndex = new Map(Object.entries(searchIndex));
-        }
         super(searchIndex, rootPath, descShards);
         this.name = name;
     }
