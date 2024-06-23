@@ -23,7 +23,7 @@ import {
     INDEX_UPDATE_URL,
     RUST_RELEASE_README_URL,
 } from "./constants.js";
-import RustSearchOmnibox from "./lib.js";
+import { RustSearchOmnibox, getBaseUrl } from "./lib.js";
 
 
 async function start(omnibox) {
@@ -84,7 +84,7 @@ async function start(omnibox) {
     );
 
     let nightlySearcher = new DocSearch("std", await IndexManager.getStdNightlyIndex(), "https://doc.rust-lang.org/nightly/");
-    let stdSearcher = new DocSearch("std", await IndexManager.getStdStableIndex(), isOfflineMode ? offlineDocPath : "https://doc.rust-lang.org/");
+    let stdSearcher = new DocSearch("std", await IndexManager.getStdStableIndex(), await getBaseUrl());
 
     RustSearchOmnibox.run({
         omnibox,
@@ -101,16 +101,18 @@ async function start(omnibox) {
 
     if (!omnibox.extensionMode) return;
 
-    chrome.storage.onChanged.addListener(changes => {
+    chrome.storage.onChanged.addListener(async changes => {
         for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
             console.log('storage key updated:', key);
             switch (key) {
                 case "offline-mode": {
                     isOfflineMode = newValue;
+                    stdSearcher.setRootPath(await getBaseUrl());
                     break;
                 }
                 case "offline-path": {
                     offlineDocPath = newValue;
+                    stdSearcher.setRootPath(await getBaseUrl());
                     break;
                 }
                 case "index-std-stable": {

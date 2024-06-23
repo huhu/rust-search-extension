@@ -41,12 +41,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     const offlineDocPath = document.querySelector('.offline-doc-path');
     offlineDocPath.value = await settings.offlineDocPath;
     offlineDocPath.onchange = async function (event) {
+        let path = event.target.value;
         if (await getPlatformOs() === "win") {
             // Replace all "/" to "\" for Windows.
-            settings.offlineDocPath = event.target.value.replaceAll("/", "\\");
-        } else {
-            settings.offlineDocPath = event.target.value;
+            path = event.target.value.replaceAll("/", "\\");
         }
+        if (!path.startsWith("file://")) {
+            // Prepend file:// to allow browser open the file url
+            path = "file://" + path;
+        }
+
+        event.target.value = path;
+        settings.offlineDocPath = path;
     };
 
     let crateRegistry = document.querySelector("select[name='crate-registry']");

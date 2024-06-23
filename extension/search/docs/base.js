@@ -9,6 +9,10 @@ export default class DocSearch extends DocSearchV2 {
         this.name = name;
     }
 
+    setRootPath(rootPath) {
+        this.rootPath = rootPath;
+    }
+
     setSearchIndex(searchIndex) {
         this.searchIndex = this.buildIndex(searchIndex);
     }

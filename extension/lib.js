@@ -8,7 +8,12 @@ import {
     REDIRECT_URL,
 } from "./constants.js";
 
-export default class RustSearchOmnibox {
+export async function getBaseUrl() {
+    let isOfflineMode = await settings.isOfflineMode;
+    return isOfflineMode ? await settings.offlineDocPath : 'https://doc.rust-lang.org/';
+}
+
+export class RustSearchOmnibox {
     static async run({
         omnibox,
         stdSearcher,
@@ -278,12 +283,11 @@ export default class RustSearchOmnibox {
                     result.push(errorIndex);
                 }
 
-                let isOfflineMode = await settings.isOfflineMode;
-                let baseUrl = isOfflineMode ? await settings.offlineDocPath : 'https://doc.rust-lang.org/';
+                let baseUrl = await getBaseUrl();
                 return result.map(errorCode => {
                     return {
                         content: `${baseUrl}error_codes/${errorCode}.html`,
-                        description: `Open error code <match>${errorCode}</match> on ${isOfflineMode ? 'offline mode' : 'https://doc.rust-lang.org/error_codes/error-index.html'}`,
+                        description: `Open error code <match>${errorCode}</match> on error codes index`,
                     };
                 });
             },
