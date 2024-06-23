@@ -7,6 +7,7 @@ import rfcsIndex from "./index/rfcs.js";
 import rustcIndex from "./index/rustc.js";
 import targetsIndex from "./index/targets.js";
 import searchIndex from "./index/std-docs.js";
+import stdDescShards from "./index/desc-shards/std.js";
 import { mapping, crateIndex } from "./index/crates.js";
 import storage from "./core/storage.js";
 import IndexSetter from "./index-setter.js";
@@ -18,13 +19,32 @@ import IndexSetter from "./index-setter.js";
 
 export default class IndexManager extends IndexSetter {
     static async getStdStableIndex() {
-        // Convert default map searchIndex to Object since rust 1.76.0
-        return await storage.getItem('index-std-stable') || Object.fromEntries(searchIndex);
+        let index = await storage.getItem('index-std-stable');
+        if (index?.length > 0) {
+            return new Map(index);
+        } else {
+            return searchIndex;
+        }
     }
 
     static async getStdNightlyIndex() {
-        // Convert default map searchIndex to Object since rust 1.76.0
-        return await storage.getItem('index-std-nightly') || Object.fromEntries(searchIndex);
+        let index = await storage.getItem('index-std-nightly');
+        if (index?.length > 0) {
+            return new Map(index);
+        } else {
+            // Structure clone search index is required
+            return structuredClone(searchIndex);
+        }
+
+    }
+
+    static async getDescShards(crate) {
+        let descShards = await storage.getItem(`desc-shards-${crate}`);
+        if (descShards) {
+            return new Map(descShards);
+        } else {
+            return stdDescShards;
+        }
     }
 
     static async getBookIndex() {

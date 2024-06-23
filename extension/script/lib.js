@@ -22,6 +22,15 @@ function parseCrateVersionFromDOM() {
     }
 }
 
+function parseCrateTitleFromDOM() {
+    let el = document.querySelector('form a.crate-name');
+    if (el) {
+        return el.getAttribute("title").substring(0, 100);
+    } else {
+        return null;
+    }
+}
+
 function parseCargoFeatures(content) {
     if (!content.version?.features) {
         return [];
@@ -57,16 +66,20 @@ function parseOptionalDependencies(content) {
     return dependencies;
 }
 
+function loadScript({ url, loadCallback, errorCallback }) {
+    const script = document.createElement("script");
+    script.src = url;
+    if (loadCallback !== undefined) {
+        script.onload = loadCallback
+    }
+    if (errorCallback !== undefined) {
+        script.onerror = errorCallback
+    }
+    document.head.append(script)
+}
+
 function injectScripts(paths) {
-    paths.map(path => {
-        let script = document.createElement("script");
-        script.src = chrome.runtime.getURL(path);
-        script.onload = () => {
-            // Remove self after loaded
-            script.remove();
-        };
-        return script;
-    }).forEach(script => {
-        document.body.insertAdjacentElement('beforeBegin', script);
+    paths.forEach(path => {
+        loadScript({ url: chrome.runtime.getURL(path) });
     });
 }

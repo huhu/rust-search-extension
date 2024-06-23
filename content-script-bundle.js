@@ -8,5 +8,5 @@ export {
     storage,
     settings,
     IndexSetter,
-    CrateDocManager
+    CrateDocManager,
 }

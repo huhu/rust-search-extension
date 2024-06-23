@@ -4,11 +4,8 @@ import settings from "../../settings.js";
 
 // A DocSearch dedicated to a single crate based on the search-index.
 class SingleCrateDocSearch extends DocSearch {
-
     constructor(name, version, searchIndex) {
-        super(name, searchIndex, () => {
-            return `https://docs.rs/${name}/${this.version}/`;
-        });
+        super(name, searchIndex, `https://docs.rs/${name}/${version}/`);
         this.version = version;
     }
 }
@@ -21,9 +18,13 @@ export default class CrateDocSearch {
     }
 
     async initAllCrateSearcher() {
-        let searchIndex = Object.create(null)
+        let searchIndex = new Map();
         for (const libName of Object.keys(await CrateDocManager.getCrates())) {
-            searchIndex = Object.assign(searchIndex, await CrateDocManager.getCrateSearchIndex(libName));
+            let crateSearchIndex = await CrateDocManager.getCrateSearchIndex(libName);
+            if (crateSearchIndex) {
+                // merge search index into single map
+                searchIndex = new Map([...searchIndex, ...crateSearchIndex]);
+            }
         }
         this.allCrateSearcher = new SingleCrateDocSearch("~", "*", searchIndex);
     }
@@ -69,10 +70,11 @@ export default class CrateDocSearch {
             }
         }
 
-        let results = searcher.search(keyword);
+        let results = await searcher.search(keyword);
+        results = results.others || [];
         // Push result footer.
         results.push({
-            content: searcher.getSearchUrl(keyword),
+            content: await searcher.getSearchUrl(keyword),
             description: `Search ${keyword ? `<match>${keyword}</match>` : 'keyword'} on <dim>${`https://docs.rs/${crateName}`}</dim> directly`,
         });
         return results;
@@ -84,7 +86,7 @@ export default class CrateDocSearch {
             await this.initAllCrateSearcher();
         }
         let keyword = query.replace("~", "").trim();
-        return this.allCrateSearcher.search(keyword);
+        return await this.allCrateSearcher.search(keyword);
     }
 
     // Invalidate cached search. This is needed if we update crate's search index.

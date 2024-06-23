@@ -30,10 +30,13 @@ window.addEventListener("message", function (event) {
         event.data &&
         event.data.direction === "rust-search-extension:std") {
         let searchIndex = event.data.message.searchIndex;
+        let descShards = event.data.message.descShards;
         if (TARGET === 'stable') {
             rse.IndexSetter.setStdStableIndex(searchIndex);
+            rse.IndexSetter.setDescShards("std-stable", descShards);
         } else {
             rse.IndexSetter.setStdNightlyIndex(searchIndex);
+            rse.IndexSetter.setDescShards("std-nightly", descShards);
         }
         let now = new Date();
         let version = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
