@@ -1,5 +1,3 @@
-import searchState from "./desc-shard.js";
-
 // polyfill
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced
 if (!Array.prototype.toSpliced) {
@@ -1090,7 +1088,7 @@ class RoaringBitmapBits {
 
 
 export default class DocSearchV2 {
-    constructor(rawSearchIndex, rootPath) {
+    constructor(rawSearchIndex, rootPath, searchState) {
         /**
          * @type {Map<String, RoaringBitmap>}
          */
@@ -1112,6 +1110,7 @@ export default class DocSearchV2 {
         this.typeNameIdMap = new Map();
         this.ALIASES = new Map();
         this.rootPath = rootPath;
+        this.searchState = searchState;
 
         /**
          * Special type name IDs for searching by array.
@@ -1722,7 +1721,7 @@ export default class DocSearchV2 {
                 }
             }
             currentIndex += itemTypes.length;
-            searchState.descShards.set(crate, descShardList);
+            this.searchState.descShards.set(crate, descShardList);
         }
         // Drop the (rather large) hash table used for reusing function items
         this.TYPES_POOL = new Map();
@@ -2862,7 +2861,7 @@ export default class DocSearchV2 {
 
             const fetchDesc = alias => {
                 return this.searchIndexEmptyDesc.get(alias.crate).contains(alias.bitIndex) ?
-                    "" : searchState.loadDesc(alias);
+                    "" : this.searchState.loadDesc(alias);
             };
             const [crateDescs, descs] = await Promise.all([
                 Promise.all(crateAliases.map(fetchDesc)),
@@ -3295,7 +3294,7 @@ export default class DocSearchV2 {
             const descs = await Promise.all(list.map(result => {
                 return this.searchIndexEmptyDesc.get(result.crate).contains(result.bitIndex) ?
                     "" :
-                    searchState.loadDesc(result);
+                    this.searchState.loadDesc(result);
             }));
             for (const [i, result] of list.entries()) {
                 result.desc = descs[i];
