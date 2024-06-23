@@ -66,17 +66,11 @@
                         },
                     }, "*");
                 } else { // stable/nightly pages
-                    const STD_CRATES = ['std', 'test', 'proc_macro'];
-
-                    // Remove unnecessary std crate's search index, such as core, alloc, etc
-                    let searchIndex = new Map();
-                    STD_CRATES.forEach(crate => {
-                        searchIndex.set(crate, originalSearchIndex.get(crate));
-                    });
+                    const STD_CRATES = ['std', 'test', 'proc_macro', 'core', 'alloc'];
                     window.postMessage({
                         direction: `rust-search-extension:std`,
                         message: {
-                            searchIndex: Array.from(searchIndex),
+                            searchIndex: Array.from(originalSearchIndex),
                             descShards: await loadDescShard(...STD_CRATES),
                         },
                     }, "*");

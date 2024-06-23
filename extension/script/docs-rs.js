@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (getState(installedVersion) === "outdated" && await rse.settings.keepCratesUpToDate) {
         // Auto update outdated crates if the user has enabled the setting.
-        injectScripts(["script/lib.js", "script/add-search-index.js"]);
+        injectScripts("script/lib.js", "script/add-search-index.js");
     }
 });
 
@@ -279,7 +279,7 @@ function insertAddToExtensionElement(state) {
             await rse.CrateDocManager.removeCrate(libName);
             insertAddToExtensionElement(getState(undefined));
         } else {
-            injectScripts(["script/lib.js", "script/add-search-index.js"]);
+            injectScripts("script/lib.js", "script/add-search-index.js");
         }
     };
     let content, iconAttributes, iconFile;

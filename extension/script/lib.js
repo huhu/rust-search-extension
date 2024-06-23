@@ -78,8 +78,9 @@ function loadScript({ url, loadCallback, errorCallback }) {
     document.head.append(script)
 }
 
-function injectScripts(paths) {
+function injectScripts(...paths) {
     paths.forEach(path => {
+        console.log(`Loading script: ${path}`);
         loadScript({ url: chrome.runtime.getURL(path) });
     });
 }

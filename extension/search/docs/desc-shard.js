@@ -1,14 +1,6 @@
 import CrateDocManager from "../../crate-manager.js";
 import IndexManager from "../../index-manager.js";
 
-export function convertToIndexJS(shards) {
-    let array = new Array();
-    for (let [crate, shard] of Object.entries(shards)) {
-        array.push([crate, shard]);
-    }
-    return `new Map(JSON.parse('${JSON.stringify(array)}'));`;
-}
-
 class DescShardManager {
     constructor() {
         // A dummy descShards map to allow interact in librustdoc's DocSearch js
