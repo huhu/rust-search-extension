@@ -25,7 +25,7 @@ export default class CrateDocManager {
     static async getCrateSearchIndex(name) {
         let searchIndex = await storage.getItem(`@${name}`);
         if (searchIndex) {
-            return searchIndex;
+            return new Map(searchIndex);
         } else {
             let crates = await CrateDocManager.getCrates();
             let crate = Object.entries(crates).find(([_, { crateName }]) => crateName == name);
@@ -43,8 +43,6 @@ export default class CrateDocManager {
     // 2. https://docs.rs/md-5/0.10.5/md5/
     // 
     // Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
-    //
-    // The caller should ensure `searchIndex` is a Map, not a Object.
     static async addCrate({ libName, crateVersion, crateTitle, searchIndex, crateName, descShards }) {
         await storage.setItem(`@${libName}`, searchIndex);
         let doc = crateTitle;
