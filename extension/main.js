@@ -1,5 +1,6 @@
 import settings from "./settings.js";
 import attributesIndex from "./index/attributes.js";
+import searchState from "./search/docs/desc-shard.js";
 import IndexManager from "./index-manager.js";
 import CrateSearch from "./search/crate.js";
 import CaniuseSearch from "./search/caniuse.js";
@@ -178,6 +179,9 @@ async function start(omnibox) {
                         }
                         crateDocSearcher.invalidateCachedSearch();
                         crateDocSearcher.initAllCrateSearcher();
+                    } else if (key.startsWith('desc-shards-')) {
+                        // DescShards index changed, update searchState
+                        searchState.initDescShards();
                     }
                     break;
                 }
