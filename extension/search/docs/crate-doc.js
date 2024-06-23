@@ -96,7 +96,7 @@ export default class CrateDocSearch {
 
     static parseCrateDocsSearchKeyword(query) {
         query = query.replaceAll("@", "").trim();
-        let [crateName, ...keyword] = query.split(/\s|:+/i);
-        return [crateName, keyword.filter(k => k).join('::')];
+        let [crateName, ...keyword] = query.split(/\s/i);
+        return [crateName, keyword.filter(k => k).join('')];
     }
 }
