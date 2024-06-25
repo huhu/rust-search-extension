@@ -4,3 +4,6 @@
 [submodule "docs/themes/juice"]
 	path = docs/themes/juice
 	url = https://github.com/huhu/juice
+[submodule "query.rs"]
+	path = query.rs
+	url = https://github.com/huhu/query.rs

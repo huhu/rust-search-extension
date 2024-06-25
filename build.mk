@@ -1,3 +1,10 @@
+.PHONY: extension/lib
+
+extension/lib: query.rs/web/lib
+	@rm -rf extension/lib
+	@cp -r $< $@
+
+
 extension/script/macro-railroad-wasm.js: macro-railroad/pkg/macro-railroad.js
 	cp $< $@
 

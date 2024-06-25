@@ -1,44 +1,40 @@
-import settings from "./settings.js";
-import attributesIndex from "./index/attributes.js";
-import searchState from "./search/docs/desc-shard.js";
-import IndexManager from "./index-manager.js";
-import CrateSearch from "./search/crate.js";
-import CaniuseSearch from "./search/caniuse.js";
-import BookSearch from "./search/book.js";
-import LintSearch from "./search/lint.js";
-import AttributeSearch from "./search/attribute.js";
-import DocSearch from "./search/docs/base.js";
-import CrateDocSearch from "./search/docs/crate-doc.js";
-import LabelCommand from "./command/label.js";
-import RfcCommand from "./command/rfc.js";
-import RustcCommand from "./command/rustc.js";
-import TargetCommand from "./command/target.js";
-import HelpCommand from "./command/help.js";
-import StableCommand from "./command/stable.js";
-import SimpleCommand from "./core/command/simple.js";
-import OpenCommand from "./core/command/open.js";
-import HistoryCommand from "./core/command/history.js";
-import CommandManager from "./core/command/manager.js";
+import {
+    CrateDocSearch,
+    DocSearch,
+    AttributeSearch,
+    LintSearch,
+    BookSearch,
+    CaniuseSearch,
+    CrateSearch,
+} from "./lib/search/index.js";
+import {
+    LabelCommand,
+    RfcCommand,
+    RustcCommand,
+    TargetCommand,
+    StableCommand,
+    HelpCommand,
+} from "./lib/command/index.js";
+import {
+    SimpleCommand,
+    OpenCommand,
+    HistoryCommand,
+    CommandManager
+} from "./core/index.js";
+import { IndexManager, RustSearchOmnibox, DescShardManager, getBaseUrl } from "./lib/index.js";
 import {
     INDEX_UPDATE_URL,
     RUST_RELEASE_README_URL,
 } from "./constants.js";
-import DescShardManager from "./search/docs/desc-shard.js";
-import { RustSearchOmnibox, getBaseUrl } from "./lib.js";
 
 
 async function start(omnibox) {
-    // All dynamic setting items. Those items will been updated
-    // in chrome.storage.onchange listener callback.
-    let isOfflineMode = await settings.isOfflineMode;
-    let offlineDocPath = await settings.offlineDocPath;
-
     const crateSearcher = new CrateSearch(await IndexManager.getCrateMapping(), await IndexManager.getCrateIndex());
     let caniuseSearcher = new CaniuseSearch(await IndexManager.getCaniuseIndex());
     let bookSearcher = new BookSearch(await IndexManager.getBookIndex());
     let lintSearcher = new LintSearch(await IndexManager.getLintIndex());
 
-    const attributeSearcher = new AttributeSearch(attributesIndex);
+    const attributeSearcher = new AttributeSearch();
     const crateDocSearcher = new CrateDocSearch();
 
     const commandIndex = await IndexManager.getCommandIndex();
@@ -64,7 +60,7 @@ async function start(omnibox) {
         rfcCommand,
         rustcCommand,
         targetCommand,
-        new HelpCommand(),
+        new HelpCommand(["https://rust.extension.sh/", "Open plugin documentation"]),
         new StableCommand(),
         new HistoryCommand(),
         new OpenCommand('stats', 'Open search statistics page.',
@@ -119,12 +115,10 @@ async function start(omnibox) {
             console.log('storage key updated:', key);
             switch (key) {
                 case "offline-mode": {
-                    isOfflineMode = newValue;
                     stdSearcher.setRootPath(await getBaseUrl());
                     break;
                 }
                 case "offline-path": {
-                    offlineDocPath = newValue;
                     stdSearcher.setRootPath(await getBaseUrl());
                     break;
                 }

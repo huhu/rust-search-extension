@@ -1,6 +1,5 @@
 import { Omnibox, Compat } from "./core/index.js";
-import IndexManager from "./index-manager.js";
-import settings from "./settings.js";
+import { settings, IndexManager } from "./lib/index.js";
 import storage from "./core/storage.js";
 import { start } from "./main.js";
 import {
