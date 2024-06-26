@@ -7,9 +7,19 @@ include build.mk
 assert:
 	@test -d extension/manage && echo "Assert extension/manage success!\n" || (echo "No extension/manage found!\n Running `make manage`"; make manage)
 
+extension/lib: query.rs/web/lib
+	@echo "extension/lib"
+	@rm -rf extension/lib
+	@cp -r $< $@
+
 # Build manage css and html
-manage:
-	@cd manage && cargo run
+manage: extension/lib
+	@mkdir -p extension/manage
+	@rm -rf extension/manage/*
+	@cp -r query.rs/web/pages/*.js extension/manage/
+	@cp -r query.rs/web/vendor extension/manage
+	@cp -r query.rs/web/css extension/manage
+	cd templates && ./build.sh
 
 bundle:
 	@echo "Building extension/content_script_bundle.js..."

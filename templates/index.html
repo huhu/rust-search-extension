@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block head %}
-<script type="text/javascript" src="./js/d3.min.js"></script>
-<script type="text/javascript" src="./js/moment.min.js"></script>
+<script type="text/javascript" src="./vendor/d3.min.js"></script>
+<script type="text/javascript" src="./vendor/moment.min.js"></script>
 <link rel="stylesheet" href="../core/omnibox.css">
 <link rel="stylesheet" href="./css/calendar-heatmap.css">
 <link rel="stylesheet" href="./css/charts.css">
@@ -55,5 +55,6 @@
 {% endblock %}
 
 {% block js %}
-<script src="./js/index.js" type="module"></script>
+<script src="./index.js" type="module"></script>
+<script src="./stats.js" type="module"></script>
 {% endblock %}

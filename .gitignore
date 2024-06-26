@@ -11,5 +11,5 @@ docs/static/advisory
 manifest.json
 extension/core
 extension/lib
-extension/manage/*.html
+extension/manage
 macro_railroad/pkg

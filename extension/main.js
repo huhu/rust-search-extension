@@ -28,7 +28,7 @@ import {
 } from "./constants.js";
 
 
-async function start(omnibox) {
+export default async function start(omnibox) {
     const crateSearcher = new CrateSearch(await IndexManager.getCrateMapping(), await IndexManager.getCrateIndex());
     let caniuseSearcher = new CaniuseSearch(await IndexManager.getCaniuseIndex());
     let bookSearcher = new BookSearch(await IndexManager.getBookIndex());
@@ -200,6 +200,4 @@ async function start(omnibox) {
             }
         }
     });
-}
-
-export { start };
+};
