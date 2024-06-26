@@ -152,8 +152,8 @@ impl Task for CratesTask {
                 if !top_crates_id.contains(&row.id) {
                     return;
                 }
-                // Filter out auto-generated google api crates.
-                if row.description.starts_with(GOOGLE_API_CRATES_FILTER_PREFIX) {
+                // Filter out aws_sdk crates and auto-generated google api crates.
+                if row.id.starts_with("aws_sdk_") || row.description.starts_with(GOOGLE_API_CRATES_FILTER_PREFIX) {
                     return;
                 }
                 crates.push(Crate {
