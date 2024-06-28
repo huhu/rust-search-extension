@@ -16,7 +16,7 @@ async function checkAutoUpdate() {
             return;
         }
 
-        Omnibox.navigateToUrl(INDEX_UPDATE_URL);
+        Omnibox.navigateToUrl("https://rust.extension.sh/update");
         await storage.setItem('auto-update-version', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
     }
 }
