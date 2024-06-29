@@ -15,12 +15,12 @@ local description = 'Rust Search Extension - the ultimate search extension for R
 
 local browser = std.extVar('browser');
 
-local host_permissions = ['*://crates.io/api/v1/crates/*', 'https://rust.extension.sh/*'];
+local host_permissions = ['https://rust.extension.sh/*', 'https://query.rs/*'];
 local optional_host_permissions = ['file:///*'];
 local json = if std.member(['chrome', 'edge'], browser) then
   manifest_v3.new(name, keyword, description, version, service_worker='service-worker.js')
 else
-  # Firefox does not support service worker yet.
+  // Firefox does not support service worker yet.
   manifest_v3.new(name, keyword, description, version, background_page='firefox-bg.html')
 ;
 

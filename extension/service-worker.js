@@ -2,9 +2,6 @@ import { Omnibox, Compat } from "./core/index.js";
 import { settings, IndexManager } from "./lib/index.js";
 import storage from "./core/storage.js";
 import start from "./lib/main.js";
-import {
-    INDEX_UPDATE_URL,
-} from "./constants.js";
 
 async function checkAutoUpdate() {
     if (await settings.autoUpdate) {
