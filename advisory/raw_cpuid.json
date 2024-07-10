@@ -1,6 +1,43 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2021-0089",
+      "package": "raw-cpuid",
+      "title": "Optional `Deserialize` implementations lacking validation",
+      "description": "When activating the non-default feature `serialize`, most structs implement\n`serde::Deserialize` without sufficient validation. This allows breaking\ninvariants in safe code, leading to:\n\n* Undefined behavior in `as_string()` methods (which use\n  `std::str::from_utf8_unchecked()` internally).\n* Panics due to failed assertions.\n\nSee https://github.com/gz/rust-cpuid/issues/43.",
+      "date": "2021-01-20",
+      "aliases": [
+        "CVE-2021-45687",
+        "GHSA-jf5h-cf95-w759",
+        "GHSA-w428-f65r-h4q2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gz/rust-cpuid/issues/43",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=9.1.1"
+      ],
+      "unaffected": [
+        "<=3.1.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0013",
       "package": "raw-cpuid",
       "title": "Soundness issues in `raw-cpuid`",
@@ -40,43 +77,6 @@
         ">=9.0.0"
       ],
       "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2021-0089",
-      "package": "raw-cpuid",
-      "title": "Optional `Deserialize` implementations lacking validation",
-      "description": "When activating the non-default feature `serialize`, most structs implement\n`serde::Deserialize` without sufficient validation. This allows breaking\ninvariants in safe code, leading to:\n\n* Undefined behavior in `as_string()` methods (which use\n  `std::str::from_utf8_unchecked()` internally).\n* Panics due to failed assertions.\n\nSee https://github.com/gz/rust-cpuid/issues/43.",
-      "date": "2021-01-20",
-      "aliases": [
-        "CVE-2021-45687",
-        "GHSA-jf5h-cf95-w759",
-        "GHSA-w428-f65r-h4q2"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "memory-corruption",
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/gz/rust-cpuid/issues/43",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=9.1.1"
-      ],
-      "unaffected": [
-        "<=3.1.0"
-      ]
     }
   }
 ]

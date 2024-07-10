@@ -1,13 +1,13 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0117",
+      "id": "RUSTSEC-2021-0118",
       "package": "arrow",
-      "title": "`DecimalArray` does not perform bound checks on accessing values and offsets",
-      "description": "`DecimalArray` performs insufficient bounds checks,\nwhich allows out-of-bounds reads in safe code\nif the length of the backing buffer is not a multiple of 16.",
+      "title": "`FixedSizeBinaryArray` does not perform bound checks on accessing values and offsets",
+      "description": "`FixedSizeBinaryArray` performs insufficient bounds checks, which allows out-of-bounds reads in safe code.",
       "date": "2021-09-14",
       "aliases": [
-        "GHSA-h588-76vg-prgj"
+        "GHSA-qgrp-8f3v-q85p"
       ],
       "related": [],
       "collection": "crates",
@@ -21,7 +21,7 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/apache/arrow-rs/issues/775",
+      "url": "https://github.com/apache/arrow-rs/issues/774",
       "withdrawn": null,
       "license": "CC0-1.0"
     },
@@ -72,13 +72,13 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0118",
+      "id": "RUSTSEC-2021-0117",
       "package": "arrow",
-      "title": "`FixedSizeBinaryArray` does not perform bound checks on accessing values and offsets",
-      "description": "`FixedSizeBinaryArray` performs insufficient bounds checks, which allows out-of-bounds reads in safe code.",
+      "title": "`DecimalArray` does not perform bound checks on accessing values and offsets",
+      "description": "`DecimalArray` performs insufficient bounds checks,\nwhich allows out-of-bounds reads in safe code\nif the length of the backing buffer is not a multiple of 16.",
       "date": "2021-09-14",
       "aliases": [
-        "GHSA-qgrp-8f3v-q85p"
+        "GHSA-h588-76vg-prgj"
       ],
       "related": [],
       "collection": "crates",
@@ -92,7 +92,7 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/apache/arrow-rs/issues/774",
+      "url": "https://github.com/apache/arrow-rs/issues/775",
       "withdrawn": null,
       "license": "CC0-1.0"
     },
