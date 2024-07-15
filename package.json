@@ -1,0 +1,36 @@
+{
+    "name": "rust-search-extension",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite build",
+        "build-lib": "vite build -c vite.lib.config.js",
+        "preview": "vite preview",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+        "test": "vitest",
+        "lint": "eslint ."
+    },
+    "dependencies": {
+        "d3": "^5.16.0",
+        "moment": "^2.30.1",
+        "momentjs": "^2.0.0",
+        "svelte-french-toast": "^1.2.0"
+    },
+    "devDependencies": {
+        "@sveltejs/kit": "^2.0.0",
+        "@sveltejs/vite-plugin-svelte": "^3.0.0",
+        "@types/eslint": "^8.56.7",
+        "eslint": "^9.0.0",
+        "eslint-plugin-svelte": "^2.36.0",
+        "globals": "^15.0.0",
+        "svelte": "^4.2.7",
+        "svelte-check": "^3.6.0",
+        "sveltekit-adapter-chrome-extension": "^2.0.1",
+        "vite": "^5.0.3",
+        "vite-plugin-externals": "^0.6.2",
+        "vitest": "^1.2.0"
+    }
+}
