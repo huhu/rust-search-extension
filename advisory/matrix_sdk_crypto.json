@@ -1,6 +1,47 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2024-0356",
+      "package": "matrix-sdk-crypto",
+      "title": "`UserIdentity::is_verified` not checking verification status of own user identity while performing the check",
+      "description": "The `UserIdentity::is_verified()` method in the matrix-sdk-crypto crate before\nversion 0.7.2 doesn't take into account the verification status of the user's\nown identity while performing the check and may as a result return a value\ncontrary to what is implied by its name and documentation.\n\n## Impact\n\nIf the method is used to decide whether to perform sensitive operations towards\na user identity, a malicious homeserver could manipulate the outcome in order to\nmake the identity appear trusted. This is not a typical usage of the method,\nwhich lowers the impact. The method itself is not used inside the\nmatrix-sdk-crypto crate.",
+      "date": "2024-07-18",
+      "aliases": [
+        "CVE-2024-40648",
+        "GHSA-4qg4-cvh2-crgg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/security/advisories/GHSA-4qg4-cvh2-crgg",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "matrix_sdk_crypto::UserIdentity::is_verified": [
+          "<0.7.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.7.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2022-0085",
       "package": "matrix-sdk-crypto",
       "title": "matrix-sdk Impersonation of room keys",
