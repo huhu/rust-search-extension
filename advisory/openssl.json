@@ -1,6 +1,42 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2024-0357",
+      "package": "openssl",
+      "title": "`MemBio::get_buf` has undefined behavior with empty buffers",
+      "description": "Previously, `MemBio::get_buf` called `slice::from_raw_parts` with a null-pointer, which violates the functions invariants, leading to undefined behavior. In debug builds this would produce an assertion failure. This is now fixed.",
+      "date": "2024-07-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/2266",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::bio::MemBio::get_buf": [
+          "<0.10.66, >=0.8.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.66"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2023-0072",
       "package": "openssl",
       "title": "`openssl` `X509StoreRef::objects` is unsound",
