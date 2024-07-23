@@ -1,19 +1,20 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2023-0011",
+      "id": "RUSTSEC-2023-0008",
       "package": "openssl-src",
-      "title": "Invalid pointer dereference in `d2i_PKCS7` functions",
-      "description": "An invalid pointer dereference on read can be triggered when an\napplication tries to load malformed PKCS7 data with the\n`d2i_PKCS7()`, `d2i_PKCS7_bio()` or `d2i_PKCS7_fp()` functions.\n\nThe result of the dereference is an application crash which could\nlead to a denial of service attack. The TLS implementation in OpenSSL\ndoes not call this function however third party applications might\ncall these functions on untrusted data.",
+      "title": "X.509 Name Constraints Read Buffer Overflow",
+      "description": "A read buffer overrun can be triggered in X.509 certificate verification,\nspecifically in name constraint checking. Note that this occurs\nafter certificate chain signature verification and requires either a\nCA to have signed the malicious certificate or for the application to\ncontinue certificate verification despite failure to construct a path\nto a trusted issuer.\n\nThe read buffer overrun might result in a crash which could lead to\na denial of service attack. In theory it could also result in the disclosure\nof private memory contents (such as private keys, or sensitive plaintext)\nalthough we are not aware of any working exploit leading to memory\ncontents disclosure as of the time of release of this advisory.\n\nIn a TLS client, this can be triggered by connecting to a malicious\nserver. In a TLS server, this can be triggered if the server requests\nclient authentication and a malicious client connects.",
       "date": "2023-02-07",
       "aliases": [
-        "CVE-2023-0216",
-        "GHSA-29xx-hcv2-c4cp"
+        "CVE-2022-4203",
+        "GHSA-w67w-mw4j-8qrv"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "denial-of-service"
+        "denial-of-service",
+        "memory-exposure"
       ],
       "keywords": [],
       "cvss": null,
@@ -32,40 +33,6 @@
       "unaffected": [
         "<300.0.0"
       ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0010",
-      "package": "openssl-src",
-      "title": "Double free after calling `PEM_read_bio_ex`",
-      "description": "The function `PEM_read_bio_ex()` reads a PEM file from a BIO and parses and\ndecodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data.\nIf the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are\npopulated with pointers to buffers containing the relevant decoded data. The\ncaller is responsible for freeing those buffers. It is possible to construct a\nPEM file that results in 0 bytes of payload data. In this case `PEM_read_bio_ex()`\nwill return a failure code but will populate the header argument with a pointer\nto a buffer that has already been freed. If the caller also frees this buffer\nthen a double free will occur. This will most likely lead to a crash. This\ncould be exploited by an attacker who has the ability to supply malicious PEM\nfiles for parsing to achieve a denial of service attack.\n\nThe functions `PEM_read_bio()` and `PEM_read()` are simple wrappers around\n`PEM_read_bio_ex()` and therefore these functions are also directly affected.\n\nThese functions are also called indirectly by a number of other OpenSSL\nfunctions including `PEM_X509_INFO_read_bio_ex()` and\n`SSL_CTX_use_serverinfo_file()` which are also vulnerable. Some OpenSSL internal\nuses of these functions are not vulnerable because the caller does not free the\nheader argument if `PEM_read_bio_ex()` returns a failure code. These locations\ninclude the `PEM_read_bio_TYPE()` functions as well as the decoders introduced in\nOpenSSL 3.0.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2022-4450",
-        "GHSA-v5w6-wcm8-jm4q"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.25, <300.0",
-        ">=300.0.12"
-      ],
-      "unaffected": []
     }
   },
   {
@@ -105,6 +72,109 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2023-0007",
+      "package": "openssl-src",
+      "title": "Timing Oracle in RSA Decryption",
+      "description": "A timing based side channel exists in the OpenSSL RSA Decryption implementation\nwhich could be sufficient to recover a plaintext across a network in a\nBleichenbacher style attack. To achieve a successful decryption an attacker\nwould have to be able to send a very large number of trial messages for\ndecryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5,\nRSA-OEAP and RSASVE.\n\nFor example, in a TLS connection, RSA is commonly used by a client to send an\nencrypted pre-master secret to the server. An attacker that had observed a\ngenuine connection between a client and a server could use this flaw to send\ntrial messages to the server and record the time taken to process them. After a\nsufficiently large number of messages the attacker could recover the pre-master\nsecret used for the original connection and thus be able to decrypt the\napplication data sent over that connection.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2022-4304",
+        "GHSA-p52g-cm5j-mjv4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.25, <300.0",
+        ">=300.0.12"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0010",
+      "package": "openssl-src",
+      "title": "Double free after calling `PEM_read_bio_ex`",
+      "description": "The function `PEM_read_bio_ex()` reads a PEM file from a BIO and parses and\ndecodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data.\nIf the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are\npopulated with pointers to buffers containing the relevant decoded data. The\ncaller is responsible for freeing those buffers. It is possible to construct a\nPEM file that results in 0 bytes of payload data. In this case `PEM_read_bio_ex()`\nwill return a failure code but will populate the header argument with a pointer\nto a buffer that has already been freed. If the caller also frees this buffer\nthen a double free will occur. This will most likely lead to a crash. This\ncould be exploited by an attacker who has the ability to supply malicious PEM\nfiles for parsing to achieve a denial of service attack.\n\nThe functions `PEM_read_bio()` and `PEM_read()` are simple wrappers around\n`PEM_read_bio_ex()` and therefore these functions are also directly affected.\n\nThese functions are also called indirectly by a number of other OpenSSL\nfunctions including `PEM_X509_INFO_read_bio_ex()` and\n`SSL_CTX_use_serverinfo_file()` which are also vulnerable. Some OpenSSL internal\nuses of these functions are not vulnerable because the caller does not free the\nheader argument if `PEM_read_bio_ex()` returns a failure code. These locations\ninclude the `PEM_read_bio_TYPE()` functions as well as the decoders introduced in\nOpenSSL 3.0.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2022-4450",
+        "GHSA-v5w6-wcm8-jm4q"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.25, <300.0",
+        ">=300.0.12"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0011",
+      "package": "openssl-src",
+      "title": "Invalid pointer dereference in `d2i_PKCS7` functions",
+      "description": "An invalid pointer dereference on read can be triggered when an\napplication tries to load malformed PKCS7 data with the\n`d2i_PKCS7()`, `d2i_PKCS7_bio()` or `d2i_PKCS7_fp()` functions.\n\nThe result of the dereference is an application crash which could\nlead to a denial of service attack. The TLS implementation in OpenSSL\ndoes not call this function however third party applications might\ncall these functions on untrusted data.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2023-0216",
+        "GHSA-29xx-hcv2-c4cp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=300.0.12"
+      ],
+      "unaffected": [
+        "<300.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2023-0012",
       "package": "openssl-src",
       "title": "`NULL` dereference validating DSA public key",
@@ -140,42 +210,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2023-0008",
-      "package": "openssl-src",
-      "title": "X.509 Name Constraints Read Buffer Overflow",
-      "description": "A read buffer overrun can be triggered in X.509 certificate verification,\nspecifically in name constraint checking. Note that this occurs\nafter certificate chain signature verification and requires either a\nCA to have signed the malicious certificate or for the application to\ncontinue certificate verification despite failure to construct a path\nto a trusted issuer.\n\nThe read buffer overrun might result in a crash which could lead to\na denial of service attack. In theory it could also result in the disclosure\nof private memory contents (such as private keys, or sensitive plaintext)\nalthough we are not aware of any working exploit leading to memory\ncontents disclosure as of the time of release of this advisory.\n\nIn a TLS client, this can be triggered by connecting to a malicious\nserver. In a TLS server, this can be triggered if the server requests\nclient authentication and a malicious client connects.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2022-4203",
-        "GHSA-w67w-mw4j-8qrv"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service",
-        "memory-exposure"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=300.0.12"
-      ],
-      "unaffected": [
-        "<300.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2023-0009",
       "package": "openssl-src",
       "title": "Use-after-free following `BIO_new_NDEF`",
@@ -189,40 +223,6 @@
       "collection": "crates",
       "categories": [
         "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.25, <300.0",
-        ">=300.0.12"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0007",
-      "package": "openssl-src",
-      "title": "Timing Oracle in RSA Decryption",
-      "description": "A timing based side channel exists in the OpenSSL RSA Decryption implementation\nwhich could be sufficient to recover a plaintext across a network in a\nBleichenbacher style attack. To achieve a successful decryption an attacker\nwould have to be able to send a very large number of trial messages for\ndecryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5,\nRSA-OEAP and RSASVE.\n\nFor example, in a TLS connection, RSA is commonly used by a client to send an\nencrypted pre-master secret to the server. An attacker that had observed a\ngenuine connection between a client and a server could use this flaw to send\ntrial messages to the server and record the time taken to process them. After a\nsufficiently large number of messages the attacker could recover the pre-master\nsecret used for the original connection and thus be able to decrypt the\napplication data sent over that connection.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2022-4304",
-        "GHSA-p52g-cm5j-mjv4"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
       ],
       "keywords": [],
       "cvss": null,
@@ -454,6 +454,41 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2022-0026",
+      "package": "openssl-src",
+      "title": "Incorrect MAC key used in the RC4-MD5 ciphersuite",
+      "description": "The OpenSSL 3.0 implementation of the RC4-MD5 ciphersuite incorrectly uses the\nAAD data as the MAC key. This makes the MAC key trivially predictable.\n\nAn attacker could exploit this issue by performing a man-in-the-middle attack to\nmodify data being sent from one endpoint to an OpenSSL 3.0 recipient such that\nthe modified data would still pass the MAC integrity check.\n\nNote that data sent from an OpenSSL 3.0 endpoint to a non-OpenSSL 3.0 endpoint\nwill always be rejected by the recipient and the connection will fail at that\npoint. Many application protocols require data to be sent from the client to the\nserver first. Therefore, in such a case, only an OpenSSL 3.0 server would be\nimpacted when talking to a non-OpenSSL 3.0 client.\n\nIf both endpoints are OpenSSL 3.0 then the attacker could modify data being\nsent in both directions. In this case both clients and servers could be\naffected, regardless of the application protocol.\n\nNote that in the absence of an attacker this bug means that an OpenSSL 3.0\nendpoint communicating with a non-OpenSSL 3.0 endpoint will fail to complete the\nhandshake when using this ciphersuite.\n\nThe confidentiality of data is not impacted by this issue, i.e. an attacker\ncannot decrypt data that has been encrypted using this ciphersuite - they can\nonly modify it.\n\nIn order for this attack to work both endpoints must legitimately negotiate the\nRC4-MD5 ciphersuite. This ciphersuite is not compiled by default in OpenSSL 3.0,\nand is not available within the default provider or the default ciphersuite\nlist. This ciphersuite will never be used if TLSv1.3 has been negotiated. In\norder for an OpenSSL 3.0 endpoint to use this ciphersuite the following must\nhave occurred:\n\n1. OpenSSL must have been compiled with the (non-default) compile time option\n   enable-weak-ssl-ciphers\n2. OpenSSL must have had the legacy provider explicitly loaded (either through\n   application code or via configuration)\n3. The ciphersuite must have been explicitly added to the ciphersuite list\n4. The libssl security level must have been set to 0 (default is 1)\n5. A version of SSL/TLS below TLSv1.3 must have been negotiated\n6. Both endpoints must negotiate the RC4-MD5 ciphersuite in preference to any\n   others that both endpoints have in common",
+      "date": "2022-05-03",
+      "aliases": [
+        "CVE-2022-1434",
+        "GHSA-638m-m8mh-7gw2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20220503.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=300.0.6"
+      ],
+      "unaffected": [
+        "<300.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2022-0025",
       "package": "openssl-src",
       "title": "Resource leakage when decoding certificates and keys",
@@ -505,41 +540,6 @@
       ],
       "keywords": [],
       "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20220503.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=300.0.6"
-      ],
-      "unaffected": [
-        "<300.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2022-0026",
-      "package": "openssl-src",
-      "title": "Incorrect MAC key used in the RC4-MD5 ciphersuite",
-      "description": "The OpenSSL 3.0 implementation of the RC4-MD5 ciphersuite incorrectly uses the\nAAD data as the MAC key. This makes the MAC key trivially predictable.\n\nAn attacker could exploit this issue by performing a man-in-the-middle attack to\nmodify data being sent from one endpoint to an OpenSSL 3.0 recipient such that\nthe modified data would still pass the MAC integrity check.\n\nNote that data sent from an OpenSSL 3.0 endpoint to a non-OpenSSL 3.0 endpoint\nwill always be rejected by the recipient and the connection will fail at that\npoint. Many application protocols require data to be sent from the client to the\nserver first. Therefore, in such a case, only an OpenSSL 3.0 server would be\nimpacted when talking to a non-OpenSSL 3.0 client.\n\nIf both endpoints are OpenSSL 3.0 then the attacker could modify data being\nsent in both directions. In this case both clients and servers could be\naffected, regardless of the application protocol.\n\nNote that in the absence of an attacker this bug means that an OpenSSL 3.0\nendpoint communicating with a non-OpenSSL 3.0 endpoint will fail to complete the\nhandshake when using this ciphersuite.\n\nThe confidentiality of data is not impacted by this issue, i.e. an attacker\ncannot decrypt data that has been encrypted using this ciphersuite - they can\nonly modify it.\n\nIn order for this attack to work both endpoints must legitimately negotiate the\nRC4-MD5 ciphersuite. This ciphersuite is not compiled by default in OpenSSL 3.0,\nand is not available within the default provider or the default ciphersuite\nlist. This ciphersuite will never be used if TLSv1.3 has been negotiated. In\norder for an OpenSSL 3.0 endpoint to use this ciphersuite the following must\nhave occurred:\n\n1. OpenSSL must have been compiled with the (non-default) compile time option\n   enable-weak-ssl-ciphers\n2. OpenSSL must have had the legacy provider explicitly loaded (either through\n   application code or via configuration)\n3. The ciphersuite must have been explicitly added to the ciphersuite list\n4. The libssl security level must have been set to 0 (default is 1)\n5. A version of SSL/TLS below TLSv1.3 must have been negotiated\n6. Both endpoints must negotiate the RC4-MD5 ciphersuite in preference to any\n   others that both endpoints have in common",
-      "date": "2022-05-03",
-      "aliases": [
-        "CVE-2022-1434",
-        "GHSA-638m-m8mh-7gw2"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
       "informational": null,
       "references": [],
       "source": null,
@@ -628,23 +628,22 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0098",
+      "id": "RUSTSEC-2021-0097",
       "package": "openssl-src",
-      "title": "Read buffer overruns processing ASN.1 strings",
-      "description": "ASN.1 strings are represented internally within OpenSSL as an ASN1_STRING\nstructure which contains a buffer holding the string data and a field holding\nthe buffer length. This contrasts with normal C strings which are represented as\na buffer for the string data which is terminated with a NUL (0) byte.\n\nAlthough not a strict requirement, ASN.1 strings that are parsed using OpenSSL's\nown \"d2i\" functions (and other similar parsing functions) as well as any string\nwhose value has been set with the ASN1_STRING_set() function will additionally\nNUL terminate the byte array in the ASN1_STRING structure.\n\nHowever, it is possible for applications to directly construct valid ASN1_STRING\nstructures which do not NUL terminate the byte array by directly setting the\n\"data\" and \"length\" fields in the ASN1_STRING array. This can also happen by\nusing the `ASN1_STRING_set0()` function.\n\nNumerous OpenSSL functions that print ASN.1 data have been found to assume that\nthe ASN1_STRING byte array will be NUL terminated, even though this is not\nguaranteed for strings that have been directly constructed. Where an application\nrequests an ASN.1 structure to be printed, and where that ASN.1 structure\ncontains ASN1_STRINGs that have been directly constructed by the application\nwithout NUL terminating the \"data\" field, then a read buffer overrun can occur.\n\nThe same thing can also occur during name constraints processing of certificates\n(for example if a certificate has been directly constructed by the application\ninstead of loading it via the OpenSSL parsing functions, and the certificate\ncontains non NUL terminated ASN1_STRING structures). It can also occur in the\n`X509_get1_email()`, `X509_REQ_get1_email()` and `X509_get1_ocsp()` functions.\n\nIf a malicious actor can cause an application to directly construct an\nASN1_STRING and then process it through one of the affected OpenSSL functions\nthen this issue could be hit. This might result in a crash (causing a Denial of\nService attack). It could also result in the disclosure of private memory\ncontents (such as private keys, or sensitive plaintext).",
+      "title": "SM2 Decryption Buffer Overflow",
+      "description": "In order to decrypt SM2 encrypted data an application is expected to call the\nAPI function `EVP_PKEY_decrypt()`. Typically an application will call this\nfunction twice. The first time, on entry, the \"out\" parameter can be NULL and,\non exit, the \"outlen\" parameter is populated with the buffer size required to\nhold the decrypted plaintext. The application can then allocate a sufficiently\nsized buffer and call `EVP_PKEY_decrypt()` again, but this time passing a non-NULL\nvalue for the \"out\" parameter.\n\nA bug in the implementation of the SM2 decryption code means that the\ncalculation of the buffer size required to hold the plaintext returned by the\nfirst call to `EVP_PKEY_decrypt()` can be smaller than the actual size required by\nthe second call. This can lead to a buffer overflow when `EVP_PKEY_decrypt()` is\ncalled by the application a second time with a buffer that is too small.\n\nA malicious attacker who is able present SM2 content for decryption to an\napplication could cause attacker chosen data to overflow the buffer by up to a\nmaximum of 62 bytes altering the contents of other data held after the\nbuffer, possibly changing application behaviour or causing the application to\ncrash. The location of the buffer is application dependent but is typically\nheap allocated.",
       "date": "2021-08-24",
       "aliases": [
-        "CVE-2021-3712",
-        "GHSA-q9wj-f4qw-6vfj"
+        "CVE-2021-3711",
+        "GHSA-5ww6-px42-wc85"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "denial-of-service",
         "crypto-failure"
       ],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H",
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "informational": null,
       "references": [],
       "source": null,
@@ -662,22 +661,23 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0097",
+      "id": "RUSTSEC-2021-0098",
       "package": "openssl-src",
-      "title": "SM2 Decryption Buffer Overflow",
-      "description": "In order to decrypt SM2 encrypted data an application is expected to call the\nAPI function `EVP_PKEY_decrypt()`. Typically an application will call this\nfunction twice. The first time, on entry, the \"out\" parameter can be NULL and,\non exit, the \"outlen\" parameter is populated with the buffer size required to\nhold the decrypted plaintext. The application can then allocate a sufficiently\nsized buffer and call `EVP_PKEY_decrypt()` again, but this time passing a non-NULL\nvalue for the \"out\" parameter.\n\nA bug in the implementation of the SM2 decryption code means that the\ncalculation of the buffer size required to hold the plaintext returned by the\nfirst call to `EVP_PKEY_decrypt()` can be smaller than the actual size required by\nthe second call. This can lead to a buffer overflow when `EVP_PKEY_decrypt()` is\ncalled by the application a second time with a buffer that is too small.\n\nA malicious attacker who is able present SM2 content for decryption to an\napplication could cause attacker chosen data to overflow the buffer by up to a\nmaximum of 62 bytes altering the contents of other data held after the\nbuffer, possibly changing application behaviour or causing the application to\ncrash. The location of the buffer is application dependent but is typically\nheap allocated.",
+      "title": "Read buffer overruns processing ASN.1 strings",
+      "description": "ASN.1 strings are represented internally within OpenSSL as an ASN1_STRING\nstructure which contains a buffer holding the string data and a field holding\nthe buffer length. This contrasts with normal C strings which are represented as\na buffer for the string data which is terminated with a NUL (0) byte.\n\nAlthough not a strict requirement, ASN.1 strings that are parsed using OpenSSL's\nown \"d2i\" functions (and other similar parsing functions) as well as any string\nwhose value has been set with the ASN1_STRING_set() function will additionally\nNUL terminate the byte array in the ASN1_STRING structure.\n\nHowever, it is possible for applications to directly construct valid ASN1_STRING\nstructures which do not NUL terminate the byte array by directly setting the\n\"data\" and \"length\" fields in the ASN1_STRING array. This can also happen by\nusing the `ASN1_STRING_set0()` function.\n\nNumerous OpenSSL functions that print ASN.1 data have been found to assume that\nthe ASN1_STRING byte array will be NUL terminated, even though this is not\nguaranteed for strings that have been directly constructed. Where an application\nrequests an ASN.1 structure to be printed, and where that ASN.1 structure\ncontains ASN1_STRINGs that have been directly constructed by the application\nwithout NUL terminating the \"data\" field, then a read buffer overrun can occur.\n\nThe same thing can also occur during name constraints processing of certificates\n(for example if a certificate has been directly constructed by the application\ninstead of loading it via the OpenSSL parsing functions, and the certificate\ncontains non NUL terminated ASN1_STRING structures). It can also occur in the\n`X509_get1_email()`, `X509_REQ_get1_email()` and `X509_get1_ocsp()` functions.\n\nIf a malicious actor can cause an application to directly construct an\nASN1_STRING and then process it through one of the affected OpenSSL functions\nthen this issue could be hit. This might result in a crash (causing a Denial of\nService attack). It could also result in the disclosure of private memory\ncontents (such as private keys, or sensitive plaintext).",
       "date": "2021-08-24",
       "aliases": [
-        "CVE-2021-3711",
-        "GHSA-5ww6-px42-wc85"
+        "CVE-2021-3712",
+        "GHSA-q9wj-f4qw-6vfj"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
+        "denial-of-service",
         "crypto-failure"
       ],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H",
       "informational": null,
       "references": [],
       "source": null,
@@ -722,39 +722,6 @@
     "versions": {
       "patched": [
         ">=111.14"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2021-0055",
-      "package": "openssl-src",
-      "title": "NULL pointer deref in signature_algorithms processing",
-      "description": "An OpenSSL TLS server may crash if sent a maliciously crafted renegotiation\nClientHello message from a client. If a TLSv1.2 renegotiation ClientHello omits\nthe signature_algorithms extension (where it was present in the initial\nClientHello), but includes a signature_algorithms_cert extension then a NULL\npointer dereference will result, leading to a crash and a denial of service\nattack.\n\nA server is only vulnerable if it has TLSv1.2 and renegotiation enabled (which\nis the default configuration). OpenSSL TLS clients are not impacted by this\nissue.",
-      "date": "2021-05-01",
-      "aliases": [
-        "CVE-2021-3449",
-        "GHSA-83mx-573x-5rw9"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20210325.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.15"
       ],
       "unaffected": []
     }
@@ -825,6 +792,39 @@
       "unaffected": [
         "<111.11"
       ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0055",
+      "package": "openssl-src",
+      "title": "NULL pointer deref in signature_algorithms processing",
+      "description": "An OpenSSL TLS server may crash if sent a maliciously crafted renegotiation\nClientHello message from a client. If a TLSv1.2 renegotiation ClientHello omits\nthe signature_algorithms extension (where it was present in the initial\nClientHello), but includes a signature_algorithms_cert extension then a NULL\npointer dereference will result, leading to a crash and a denial of service\nattack.\n\nA server is only vulnerable if it has TLSv1.2 and renegotiation enabled (which\nis the default configuration). OpenSSL TLS clients are not impacted by this\nissue.",
+      "date": "2021-05-01",
+      "aliases": [
+        "CVE-2021-3449",
+        "GHSA-83mx-573x-5rw9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20210325.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.15"
+      ],
+      "unaffected": []
     }
   },
   {
