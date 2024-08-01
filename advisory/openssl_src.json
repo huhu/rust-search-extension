@@ -1,6 +1,41 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2023-0012",
+      "package": "openssl-src",
+      "title": "`NULL` dereference validating DSA public key",
+      "description": "An invalid pointer dereference on read can be triggered when an\napplication tries to check a malformed DSA public key by the\n`EVP_PKEY_public_check()` function. This will most likely lead\nto an application crash. This function can be called on public\nkeys supplied from untrusted sources which could allow an attacker\nto cause a denial of service attack.\n\nThe TLS implementation in OpenSSL does not call this function\nbut applications might call the function if there are additional\nsecurity requirements imposed by standards such as FIPS 140-3.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2023-0217",
+        "GHSA-vxrh-cpg7-8vjr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=300.0.12"
+      ],
+      "unaffected": [
+        "<300.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2023-0008",
       "package": "openssl-src",
       "title": "X.509 Name Constraints Read Buffer Overflow",
@@ -15,6 +50,110 @@
       "categories": [
         "denial-of-service",
         "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=300.0.12"
+      ],
+      "unaffected": [
+        "<300.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0013",
+      "package": "openssl-src",
+      "title": "`NULL` dereference during PKCS7 data verification",
+      "description": "A `NULL` pointer can be dereferenced when signatures are being\nverified on PKCS7 `signed` or `signedAndEnveloped` data. In case the hash\nalgorithm used for the signature is known to the OpenSSL library but\nthe implementation of the hash algorithm is not available the digest\ninitialization will fail. There is a missing check for the return\nvalue from the initialization function which later leads to invalid\nusage of the digest API most likely leading to a crash.\n\nThe unavailability of an algorithm can be caused by using FIPS\nenabled configuration of providers or more commonly by not loading\nthe legacy provider.\n\nPKCS7 data is processed by the SMIME library calls and also by the\ntime stamp (TS) library calls. The TLS implementation in OpenSSL does\nnot call these functions however third party applications would be\naffected if they call these functions to verify signatures on untrusted\ndata.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2023-0401",
+        "GHSA-vrh7-x64v-7vxq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=300.0.12"
+      ],
+      "unaffected": [
+        "<300.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0007",
+      "package": "openssl-src",
+      "title": "Timing Oracle in RSA Decryption",
+      "description": "A timing based side channel exists in the OpenSSL RSA Decryption implementation\nwhich could be sufficient to recover a plaintext across a network in a\nBleichenbacher style attack. To achieve a successful decryption an attacker\nwould have to be able to send a very large number of trial messages for\ndecryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5,\nRSA-OEAP and RSASVE.\n\nFor example, in a TLS connection, RSA is commonly used by a client to send an\nencrypted pre-master secret to the server. An attacker that had observed a\ngenuine connection between a client and a server could use this flaw to send\ntrial messages to the server and record the time taken to process them. After a\nsufficiently large number of messages the attacker could recover the pre-master\nsecret used for the original connection and thus be able to decrypt the\napplication data sent over that connection.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2022-4304",
+        "GHSA-p52g-cm5j-mjv4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.25, <300.0",
+        ">=300.0.12"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0011",
+      "package": "openssl-src",
+      "title": "Invalid pointer dereference in `d2i_PKCS7` functions",
+      "description": "An invalid pointer dereference on read can be triggered when an\napplication tries to load malformed PKCS7 data with the\n`d2i_PKCS7()`, `d2i_PKCS7_bio()` or `d2i_PKCS7_fp()` functions.\n\nThe result of the dereference is an application crash which could\nlead to a denial of service attack. The TLS implementation in OpenSSL\ndoes not call this function however third party applications might\ncall these functions on untrusted data.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2023-0216",
+        "GHSA-29xx-hcv2-c4cp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
       ],
       "keywords": [],
       "cvss": null,
@@ -72,19 +211,19 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2023-0007",
+      "id": "RUSTSEC-2023-0009",
       "package": "openssl-src",
-      "title": "Timing Oracle in RSA Decryption",
-      "description": "A timing based side channel exists in the OpenSSL RSA Decryption implementation\nwhich could be sufficient to recover a plaintext across a network in a\nBleichenbacher style attack. To achieve a successful decryption an attacker\nwould have to be able to send a very large number of trial messages for\ndecryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5,\nRSA-OEAP and RSASVE.\n\nFor example, in a TLS connection, RSA is commonly used by a client to send an\nencrypted pre-master secret to the server. An attacker that had observed a\ngenuine connection between a client and a server could use this flaw to send\ntrial messages to the server and record the time taken to process them. After a\nsufficiently large number of messages the attacker could recover the pre-master\nsecret used for the original connection and thus be able to decrypt the\napplication data sent over that connection.",
+      "title": "Use-after-free following `BIO_new_NDEF`",
+      "description": "The public API function `BIO_new_NDEF` is a helper function used for streaming\nASN.1 data via a `BIO`. It is primarily used internally to OpenSSL to support the\nSMIME, CMS and PKCS7 streaming capabilities, but may also be called directly by\nend user applications.\n\nThe function receives a `BIO` from the caller, prepends a new `BIO_f_asn1` filter\n`BIO` onto the front of it to form a `BIO` chain, and then returns the new head of\nthe `BIO` chain to the caller. Under certain conditions, for example if a CMS\nrecipient public key is invalid, the new filter `BIO` is freed and the function\nreturns a `NULL` result indicating a failure. However, in this case, the `BIO` chain\nis not properly cleaned up and the `BIO` passed by the caller still retains\ninternal pointers to the previously freed filter `BIO`. If the caller then goes on\nto call `BIO_pop()` on the `BIO` then a use-after-free will occur. This will most\nlikely result in a crash.\n\nThis scenario occurs directly in the internal function `B64_write_ASN1()` which\nmay cause `BIO_new_NDEF()` to be called and will subsequently call `BIO_pop()` on\nthe `BIO`. This internal function is in turn called by the public API functions\n`PEM_write_bio_ASN1_stream`, `PEM_write_bio_CMS_stream`, `PEM_write_bio_PKCS7_stream`,\n`SMIME_write_ASN1`, `SMIME_write_CMS` and `SMIME_write_PKCS7`.\n\nOther public API functions that may be impacted by this include\n`i2d_ASN1_bio_stream`, `BIO_new_CMS`, `BIO_new_PKCS7`, `i2d_CMS_bio_stream` and\n`i2d_PKCS7_bio_stream`.",
       "date": "2023-02-07",
       "aliases": [
-        "CVE-2022-4304",
-        "GHSA-p52g-cm5j-mjv4"
+        "CVE-2023-0215",
+        "GHSA-r7jw-wp68-3xch"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "crypto-failure"
+        "denial-of-service"
       ],
       "keywords": [],
       "cvss": null,
@@ -136,145 +275,6 @@
         ">=300.0.12"
       ],
       "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0011",
-      "package": "openssl-src",
-      "title": "Invalid pointer dereference in `d2i_PKCS7` functions",
-      "description": "An invalid pointer dereference on read can be triggered when an\napplication tries to load malformed PKCS7 data with the\n`d2i_PKCS7()`, `d2i_PKCS7_bio()` or `d2i_PKCS7_fp()` functions.\n\nThe result of the dereference is an application crash which could\nlead to a denial of service attack. The TLS implementation in OpenSSL\ndoes not call this function however third party applications might\ncall these functions on untrusted data.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2023-0216",
-        "GHSA-29xx-hcv2-c4cp"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=300.0.12"
-      ],
-      "unaffected": [
-        "<300.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0012",
-      "package": "openssl-src",
-      "title": "`NULL` dereference validating DSA public key",
-      "description": "An invalid pointer dereference on read can be triggered when an\napplication tries to check a malformed DSA public key by the\n`EVP_PKEY_public_check()` function. This will most likely lead\nto an application crash. This function can be called on public\nkeys supplied from untrusted sources which could allow an attacker\nto cause a denial of service attack.\n\nThe TLS implementation in OpenSSL does not call this function\nbut applications might call the function if there are additional\nsecurity requirements imposed by standards such as FIPS 140-3.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2023-0217",
-        "GHSA-vxrh-cpg7-8vjr"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=300.0.12"
-      ],
-      "unaffected": [
-        "<300.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0009",
-      "package": "openssl-src",
-      "title": "Use-after-free following `BIO_new_NDEF`",
-      "description": "The public API function `BIO_new_NDEF` is a helper function used for streaming\nASN.1 data via a `BIO`. It is primarily used internally to OpenSSL to support the\nSMIME, CMS and PKCS7 streaming capabilities, but may also be called directly by\nend user applications.\n\nThe function receives a `BIO` from the caller, prepends a new `BIO_f_asn1` filter\n`BIO` onto the front of it to form a `BIO` chain, and then returns the new head of\nthe `BIO` chain to the caller. Under certain conditions, for example if a CMS\nrecipient public key is invalid, the new filter `BIO` is freed and the function\nreturns a `NULL` result indicating a failure. However, in this case, the `BIO` chain\nis not properly cleaned up and the `BIO` passed by the caller still retains\ninternal pointers to the previously freed filter `BIO`. If the caller then goes on\nto call `BIO_pop()` on the `BIO` then a use-after-free will occur. This will most\nlikely result in a crash.\n\nThis scenario occurs directly in the internal function `B64_write_ASN1()` which\nmay cause `BIO_new_NDEF()` to be called and will subsequently call `BIO_pop()` on\nthe `BIO`. This internal function is in turn called by the public API functions\n`PEM_write_bio_ASN1_stream`, `PEM_write_bio_CMS_stream`, `PEM_write_bio_PKCS7_stream`,\n`SMIME_write_ASN1`, `SMIME_write_CMS` and `SMIME_write_PKCS7`.\n\nOther public API functions that may be impacted by this include\n`i2d_ASN1_bio_stream`, `BIO_new_CMS`, `BIO_new_PKCS7`, `i2d_CMS_bio_stream` and\n`i2d_PKCS7_bio_stream`.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2023-0215",
-        "GHSA-r7jw-wp68-3xch"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.25, <300.0",
-        ">=300.0.12"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0013",
-      "package": "openssl-src",
-      "title": "`NULL` dereference during PKCS7 data verification",
-      "description": "A `NULL` pointer can be dereferenced when signatures are being\nverified on PKCS7 `signed` or `signedAndEnveloped` data. In case the hash\nalgorithm used for the signature is known to the OpenSSL library but\nthe implementation of the hash algorithm is not available the digest\ninitialization will fail. There is a missing check for the return\nvalue from the initialization function which later leads to invalid\nusage of the digest API most likely leading to a crash.\n\nThe unavailability of an algorithm can be caused by using FIPS\nenabled configuration of providers or more commonly by not loading\nthe legacy provider.\n\nPKCS7 data is processed by the SMIME library calls and also by the\ntime stamp (TS) library calls. The TLS implementation in OpenSSL does\nnot call these functions however third party applications would be\naffected if they call these functions to verify signatures on untrusted\ndata.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2023-0401",
-        "GHSA-vrh7-x64v-7vxq"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=300.0.12"
-      ],
-      "unaffected": [
-        "<300.0.0"
-      ]
     }
   },
   {
@@ -385,6 +385,40 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2022-0032",
+      "package": "openssl-src",
+      "title": "AES OCB fails to encrypt some bytes",
+      "description": "AES OCB mode for 32-bit x86 platforms using the AES-NI assembly optimised\nimplementation will not encrypt the entirety of the data under some\ncircumstances.  This could reveal sixteen bytes of data that was\npreexisting in the memory that wasn't written.  In the special case of\n\"in place\" encryption, sixteen bytes of the plaintext would be revealed.\n\nSince OpenSSL does not support OCB based cipher suites for TLS and DTLS,\nthey are both unaffected.",
+      "date": "2022-07-05",
+      "aliases": [
+        "CVE-2022-2097",
+        "GHSA-3wx7-46ch-7rq2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20220705.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.22, <300.0",
+        ">=300.0.9"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2022-0033",
       "package": "openssl-src",
       "title": "Heap memory corruption with RSA private key operation",
@@ -416,40 +450,6 @@
       "unaffected": [
         "<300.0.8"
       ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2022-0032",
-      "package": "openssl-src",
-      "title": "AES OCB fails to encrypt some bytes",
-      "description": "AES OCB mode for 32-bit x86 platforms using the AES-NI assembly optimised\nimplementation will not encrypt the entirety of the data under some\ncircumstances.  This could reveal sixteen bytes of data that was\npreexisting in the memory that wasn't written.  In the special case of\n\"in place\" encryption, sixteen bytes of the plaintext would be revealed.\n\nSince OpenSSL does not support OCB based cipher suites for TLS and DTLS,\nthey are both unaffected.",
-      "date": "2022-07-05",
-      "aliases": [
-        "CVE-2022-2097",
-        "GHSA-3wx7-46ch-7rq2"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20220705.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.22, <300.0",
-        ">=300.0.9"
-      ],
-      "unaffected": []
     }
   },
   {
@@ -489,22 +489,22 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0025",
+      "id": "RUSTSEC-2022-0027",
       "package": "openssl-src",
-      "title": "Resource leakage when decoding certificates and keys",
-      "description": "The `OPENSSL_LH_flush()` function, which empties a hash table, contains\na bug that breaks reuse of the memory occupied by the removed hash\ntable entries.\n\nThis function is used when decoding certificates or keys. If a long lived\nprocess periodically decodes certificates or keys its memory usage will\nexpand without bounds and the process might be terminated by the operating\nsystem causing a denial of service. Also traversing the empty hash table\nentries will take increasingly more time.\n\nTypically such long lived processes might be TLS clients or TLS servers\nconfigured to accept client certificate authentication.",
+      "title": "`OCSP_basic_verify` may incorrectly verify the response signing certificate",
+      "description": "The function `OCSP_basic_verify` verifies the signer certificate on an OCSP\nresponse. In the case where the (non-default) flag OCSP_NOCHECKS is used then\nthe response will be positive (meaning a successful verification) even in the\ncase where the response signing certificate fails to verify.\n\nIt is anticipated that most users of `OCSP_basic_verify` will not use the\nOCSP_NOCHECKS flag. In this case the `OCSP_basic_verify` function will return\na negative value (indicating a fatal error) in the case of a certificate\nverification failure. The normal expected return value in this case would be 0.",
       "date": "2022-05-03",
       "aliases": [
-        "CVE-2022-1473",
-        "GHSA-g323-fr93-4j3c"
+        "CVE-2022-1343",
+        "GHSA-mfm6-r9g2-q4r7"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "denial-of-service"
+        "crypto-failure"
       ],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
       "informational": null,
       "references": [],
       "source": null,
@@ -524,22 +524,22 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0027",
+      "id": "RUSTSEC-2022-0025",
       "package": "openssl-src",
-      "title": "`OCSP_basic_verify` may incorrectly verify the response signing certificate",
-      "description": "The function `OCSP_basic_verify` verifies the signer certificate on an OCSP\nresponse. In the case where the (non-default) flag OCSP_NOCHECKS is used then\nthe response will be positive (meaning a successful verification) even in the\ncase where the response signing certificate fails to verify.\n\nIt is anticipated that most users of `OCSP_basic_verify` will not use the\nOCSP_NOCHECKS flag. In this case the `OCSP_basic_verify` function will return\na negative value (indicating a fatal error) in the case of a certificate\nverification failure. The normal expected return value in this case would be 0.",
+      "title": "Resource leakage when decoding certificates and keys",
+      "description": "The `OPENSSL_LH_flush()` function, which empties a hash table, contains\na bug that breaks reuse of the memory occupied by the removed hash\ntable entries.\n\nThis function is used when decoding certificates or keys. If a long lived\nprocess periodically decodes certificates or keys its memory usage will\nexpand without bounds and the process might be terminated by the operating\nsystem causing a denial of service. Also traversing the empty hash table\nentries will take increasingly more time.\n\nTypically such long lived processes might be TLS clients or TLS servers\nconfigured to accept client certificate authentication.",
       "date": "2022-05-03",
       "aliases": [
-        "CVE-2022-1343",
-        "GHSA-mfm6-r9g2-q4r7"
+        "CVE-2022-1473",
+        "GHSA-g323-fr93-4j3c"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "crypto-failure"
+        "denial-of-service"
       ],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
       "informational": null,
       "references": [],
       "source": null,
@@ -628,39 +628,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0097",
-      "package": "openssl-src",
-      "title": "SM2 Decryption Buffer Overflow",
-      "description": "In order to decrypt SM2 encrypted data an application is expected to call the\nAPI function `EVP_PKEY_decrypt()`. Typically an application will call this\nfunction twice. The first time, on entry, the \"out\" parameter can be NULL and,\non exit, the \"outlen\" parameter is populated with the buffer size required to\nhold the decrypted plaintext. The application can then allocate a sufficiently\nsized buffer and call `EVP_PKEY_decrypt()` again, but this time passing a non-NULL\nvalue for the \"out\" parameter.\n\nA bug in the implementation of the SM2 decryption code means that the\ncalculation of the buffer size required to hold the plaintext returned by the\nfirst call to `EVP_PKEY_decrypt()` can be smaller than the actual size required by\nthe second call. This can lead to a buffer overflow when `EVP_PKEY_decrypt()` is\ncalled by the application a second time with a buffer that is too small.\n\nA malicious attacker who is able present SM2 content for decryption to an\napplication could cause attacker chosen data to overflow the buffer by up to a\nmaximum of 62 bytes altering the contents of other data held after the\nbuffer, possibly changing application behaviour or causing the application to\ncrash. The location of the buffer is application dependent but is typically\nheap allocated.",
-      "date": "2021-08-24",
-      "aliases": [
-        "CVE-2021-3711",
-        "GHSA-5ww6-px42-wc85"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20210824.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.16"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2021-0098",
       "package": "openssl-src",
       "title": "Read buffer overruns processing ASN.1 strings",
@@ -695,6 +662,39 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2021-0097",
+      "package": "openssl-src",
+      "title": "SM2 Decryption Buffer Overflow",
+      "description": "In order to decrypt SM2 encrypted data an application is expected to call the\nAPI function `EVP_PKEY_decrypt()`. Typically an application will call this\nfunction twice. The first time, on entry, the \"out\" parameter can be NULL and,\non exit, the \"outlen\" parameter is populated with the buffer size required to\nhold the decrypted plaintext. The application can then allocate a sufficiently\nsized buffer and call `EVP_PKEY_decrypt()` again, but this time passing a non-NULL\nvalue for the \"out\" parameter.\n\nA bug in the implementation of the SM2 decryption code means that the\ncalculation of the buffer size required to hold the plaintext returned by the\nfirst call to `EVP_PKEY_decrypt()` can be smaller than the actual size required by\nthe second call. This can lead to a buffer overflow when `EVP_PKEY_decrypt()` is\ncalled by the application a second time with a buffer that is too small.\n\nA malicious attacker who is able present SM2 content for decryption to an\napplication could cause attacker chosen data to overflow the buffer by up to a\nmaximum of 62 bytes altering the contents of other data held after the\nbuffer, possibly changing application behaviour or causing the application to\ncrash. The location of the buffer is application dependent but is typically\nheap allocated.",
+      "date": "2021-08-24",
+      "aliases": [
+        "CVE-2021-3711",
+        "GHSA-5ww6-px42-wc85"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20210824.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.16"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0058",
       "package": "openssl-src",
       "title": "Null pointer deref in `X509_issuer_and_serial_hash()`",
@@ -711,39 +711,6 @@
       ],
       "keywords": [],
       "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20210216.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.14"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2021-0057",
-      "package": "openssl-src",
-      "title": "Integer overflow in CipherUpdate",
-      "description": "Calls to `EVP_CipherUpdate`, `EVP_EncryptUpdate` and `EVP_DecryptUpdate` may overflow\nthe output length argument in some cases where the input length is close to the\nmaximum permissable length for an integer on the platform. In such cases the\nreturn value from the function call will be 1 (indicating success), but the\noutput length value will be negative. This could cause applications to behave\nincorrectly or crash.",
-      "date": "2021-05-01",
-      "aliases": [
-        "CVE-2021-23840",
-        "GHSA-qgm6-9472-pwq7"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
       "informational": null,
       "references": [],
       "source": null,
@@ -823,6 +790,39 @@
     "versions": {
       "patched": [
         ">=111.15"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0057",
+      "package": "openssl-src",
+      "title": "Integer overflow in CipherUpdate",
+      "description": "Calls to `EVP_CipherUpdate`, `EVP_EncryptUpdate` and `EVP_DecryptUpdate` may overflow\nthe output length argument in some cases where the input length is close to the\nmaximum permissable length for an integer on the platform. In such cases the\nreturn value from the function call will be 1 (indicating success), but the\noutput length value will be negative. This could cause applications to behave\nincorrectly or crash.",
+      "date": "2021-05-01",
+      "aliases": [
+        "CVE-2021-23840",
+        "GHSA-qgm6-9472-pwq7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20210216.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.14"
       ],
       "unaffected": []
     }
