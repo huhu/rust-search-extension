@@ -1,32 +1,6 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2020-0147",
-      "package": "rulinalg",
-      "title": "rulinalg is unmaintained, use nalgebra instead",
-      "description": "The `rulinalg` crate is no longer maintained, use [nalgebra](https://crates.io/crates/nalgebra)\ninstead.",
-      "date": "2020-02-11",
-      "aliases": [],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": null,
-      "informational": "unmaintained",
-      "references": [],
-      "source": null,
-      "url": "https://github.com/AtheMathmo/rulinalg/issues/201#issuecomment-584749313",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2020-0023",
       "package": "rulinalg",
       "title": "Lifetime boundary for `raw_slice` and `raw_slice_mut` are incorrect",
@@ -65,6 +39,32 @@
       "unaffected": [
         "<0.4.0"
       ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0147",
+      "package": "rulinalg",
+      "title": "rulinalg is unmaintained, use nalgebra instead",
+      "description": "The `rulinalg` crate is no longer maintained, use [nalgebra](https://crates.io/crates/nalgebra)\ninstead.",
+      "date": "2020-02-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/AtheMathmo/rulinalg/issues/201#issuecomment-584749313",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
     }
   }
 ]

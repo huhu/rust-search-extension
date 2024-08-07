@@ -36,6 +36,74 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2023-0009",
+      "package": "openssl-src",
+      "title": "Use-after-free following `BIO_new_NDEF`",
+      "description": "The public API function `BIO_new_NDEF` is a helper function used for streaming\nASN.1 data via a `BIO`. It is primarily used internally to OpenSSL to support the\nSMIME, CMS and PKCS7 streaming capabilities, but may also be called directly by\nend user applications.\n\nThe function receives a `BIO` from the caller, prepends a new `BIO_f_asn1` filter\n`BIO` onto the front of it to form a `BIO` chain, and then returns the new head of\nthe `BIO` chain to the caller. Under certain conditions, for example if a CMS\nrecipient public key is invalid, the new filter `BIO` is freed and the function\nreturns a `NULL` result indicating a failure. However, in this case, the `BIO` chain\nis not properly cleaned up and the `BIO` passed by the caller still retains\ninternal pointers to the previously freed filter `BIO`. If the caller then goes on\nto call `BIO_pop()` on the `BIO` then a use-after-free will occur. This will most\nlikely result in a crash.\n\nThis scenario occurs directly in the internal function `B64_write_ASN1()` which\nmay cause `BIO_new_NDEF()` to be called and will subsequently call `BIO_pop()` on\nthe `BIO`. This internal function is in turn called by the public API functions\n`PEM_write_bio_ASN1_stream`, `PEM_write_bio_CMS_stream`, `PEM_write_bio_PKCS7_stream`,\n`SMIME_write_ASN1`, `SMIME_write_CMS` and `SMIME_write_PKCS7`.\n\nOther public API functions that may be impacted by this include\n`i2d_ASN1_bio_stream`, `BIO_new_CMS`, `BIO_new_PKCS7`, `i2d_CMS_bio_stream` and\n`i2d_PKCS7_bio_stream`.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2023-0215",
+        "GHSA-r7jw-wp68-3xch"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.25, <300.0",
+        ">=300.0.12"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0010",
+      "package": "openssl-src",
+      "title": "Double free after calling `PEM_read_bio_ex`",
+      "description": "The function `PEM_read_bio_ex()` reads a PEM file from a BIO and parses and\ndecodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data.\nIf the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are\npopulated with pointers to buffers containing the relevant decoded data. The\ncaller is responsible for freeing those buffers. It is possible to construct a\nPEM file that results in 0 bytes of payload data. In this case `PEM_read_bio_ex()`\nwill return a failure code but will populate the header argument with a pointer\nto a buffer that has already been freed. If the caller also frees this buffer\nthen a double free will occur. This will most likely lead to a crash. This\ncould be exploited by an attacker who has the ability to supply malicious PEM\nfiles for parsing to achieve a denial of service attack.\n\nThe functions `PEM_read_bio()` and `PEM_read()` are simple wrappers around\n`PEM_read_bio_ex()` and therefore these functions are also directly affected.\n\nThese functions are also called indirectly by a number of other OpenSSL\nfunctions including `PEM_X509_INFO_read_bio_ex()` and\n`SSL_CTX_use_serverinfo_file()` which are also vulnerable. Some OpenSSL internal\nuses of these functions are not vulnerable because the caller does not free the\nheader argument if `PEM_read_bio_ex()` returns a failure code. These locations\ninclude the `PEM_read_bio_TYPE()` functions as well as the decoders introduced in\nOpenSSL 3.0.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2022-4450",
+        "GHSA-v5w6-wcm8-jm4q"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.25, <300.0",
+        ">=300.0.12"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2023-0008",
       "package": "openssl-src",
       "title": "X.509 Name Constraints Read Buffer Overflow",
@@ -190,74 +258,6 @@
       "categories": [
         "denial-of-service",
         "memory-exposure"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.25, <300.0",
-        ">=300.0.12"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0009",
-      "package": "openssl-src",
-      "title": "Use-after-free following `BIO_new_NDEF`",
-      "description": "The public API function `BIO_new_NDEF` is a helper function used for streaming\nASN.1 data via a `BIO`. It is primarily used internally to OpenSSL to support the\nSMIME, CMS and PKCS7 streaming capabilities, but may also be called directly by\nend user applications.\n\nThe function receives a `BIO` from the caller, prepends a new `BIO_f_asn1` filter\n`BIO` onto the front of it to form a `BIO` chain, and then returns the new head of\nthe `BIO` chain to the caller. Under certain conditions, for example if a CMS\nrecipient public key is invalid, the new filter `BIO` is freed and the function\nreturns a `NULL` result indicating a failure. However, in this case, the `BIO` chain\nis not properly cleaned up and the `BIO` passed by the caller still retains\ninternal pointers to the previously freed filter `BIO`. If the caller then goes on\nto call `BIO_pop()` on the `BIO` then a use-after-free will occur. This will most\nlikely result in a crash.\n\nThis scenario occurs directly in the internal function `B64_write_ASN1()` which\nmay cause `BIO_new_NDEF()` to be called and will subsequently call `BIO_pop()` on\nthe `BIO`. This internal function is in turn called by the public API functions\n`PEM_write_bio_ASN1_stream`, `PEM_write_bio_CMS_stream`, `PEM_write_bio_PKCS7_stream`,\n`SMIME_write_ASN1`, `SMIME_write_CMS` and `SMIME_write_PKCS7`.\n\nOther public API functions that may be impacted by this include\n`i2d_ASN1_bio_stream`, `BIO_new_CMS`, `BIO_new_PKCS7`, `i2d_CMS_bio_stream` and\n`i2d_PKCS7_bio_stream`.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2023-0215",
-        "GHSA-r7jw-wp68-3xch"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.25, <300.0",
-        ">=300.0.12"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0010",
-      "package": "openssl-src",
-      "title": "Double free after calling `PEM_read_bio_ex`",
-      "description": "The function `PEM_read_bio_ex()` reads a PEM file from a BIO and parses and\ndecodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data.\nIf the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are\npopulated with pointers to buffers containing the relevant decoded data. The\ncaller is responsible for freeing those buffers. It is possible to construct a\nPEM file that results in 0 bytes of payload data. In this case `PEM_read_bio_ex()`\nwill return a failure code but will populate the header argument with a pointer\nto a buffer that has already been freed. If the caller also frees this buffer\nthen a double free will occur. This will most likely lead to a crash. This\ncould be exploited by an attacker who has the ability to supply malicious PEM\nfiles for parsing to achieve a denial of service attack.\n\nThe functions `PEM_read_bio()` and `PEM_read()` are simple wrappers around\n`PEM_read_bio_ex()` and therefore these functions are also directly affected.\n\nThese functions are also called indirectly by a number of other OpenSSL\nfunctions including `PEM_X509_INFO_read_bio_ex()` and\n`SSL_CTX_use_serverinfo_file()` which are also vulnerable. Some OpenSSL internal\nuses of these functions are not vulnerable because the caller does not free the\nheader argument if `PEM_read_bio_ex()` returns a failure code. These locations\ninclude the `PEM_read_bio_TYPE()` functions as well as the decoders introduced in\nOpenSSL 3.0.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2022-4450",
-        "GHSA-v5w6-wcm8-jm4q"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
       ],
       "keywords": [],
       "cvss": null,
@@ -454,41 +454,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0026",
-      "package": "openssl-src",
-      "title": "Incorrect MAC key used in the RC4-MD5 ciphersuite",
-      "description": "The OpenSSL 3.0 implementation of the RC4-MD5 ciphersuite incorrectly uses the\nAAD data as the MAC key. This makes the MAC key trivially predictable.\n\nAn attacker could exploit this issue by performing a man-in-the-middle attack to\nmodify data being sent from one endpoint to an OpenSSL 3.0 recipient such that\nthe modified data would still pass the MAC integrity check.\n\nNote that data sent from an OpenSSL 3.0 endpoint to a non-OpenSSL 3.0 endpoint\nwill always be rejected by the recipient and the connection will fail at that\npoint. Many application protocols require data to be sent from the client to the\nserver first. Therefore, in such a case, only an OpenSSL 3.0 server would be\nimpacted when talking to a non-OpenSSL 3.0 client.\n\nIf both endpoints are OpenSSL 3.0 then the attacker could modify data being\nsent in both directions. In this case both clients and servers could be\naffected, regardless of the application protocol.\n\nNote that in the absence of an attacker this bug means that an OpenSSL 3.0\nendpoint communicating with a non-OpenSSL 3.0 endpoint will fail to complete the\nhandshake when using this ciphersuite.\n\nThe confidentiality of data is not impacted by this issue, i.e. an attacker\ncannot decrypt data that has been encrypted using this ciphersuite - they can\nonly modify it.\n\nIn order for this attack to work both endpoints must legitimately negotiate the\nRC4-MD5 ciphersuite. This ciphersuite is not compiled by default in OpenSSL 3.0,\nand is not available within the default provider or the default ciphersuite\nlist. This ciphersuite will never be used if TLSv1.3 has been negotiated. In\norder for an OpenSSL 3.0 endpoint to use this ciphersuite the following must\nhave occurred:\n\n1. OpenSSL must have been compiled with the (non-default) compile time option\n   enable-weak-ssl-ciphers\n2. OpenSSL must have had the legacy provider explicitly loaded (either through\n   application code or via configuration)\n3. The ciphersuite must have been explicitly added to the ciphersuite list\n4. The libssl security level must have been set to 0 (default is 1)\n5. A version of SSL/TLS below TLSv1.3 must have been negotiated\n6. Both endpoints must negotiate the RC4-MD5 ciphersuite in preference to any\n   others that both endpoints have in common",
-      "date": "2022-05-03",
-      "aliases": [
-        "CVE-2022-1434",
-        "GHSA-638m-m8mh-7gw2"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20220503.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=300.0.6"
-      ],
-      "unaffected": [
-        "<300.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2022-0027",
       "package": "openssl-src",
       "title": "`OCSP_basic_verify` may incorrectly verify the response signing certificate",
@@ -540,6 +505,41 @@
       ],
       "keywords": [],
       "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20220503.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=300.0.6"
+      ],
+      "unaffected": [
+        "<300.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0026",
+      "package": "openssl-src",
+      "title": "Incorrect MAC key used in the RC4-MD5 ciphersuite",
+      "description": "The OpenSSL 3.0 implementation of the RC4-MD5 ciphersuite incorrectly uses the\nAAD data as the MAC key. This makes the MAC key trivially predictable.\n\nAn attacker could exploit this issue by performing a man-in-the-middle attack to\nmodify data being sent from one endpoint to an OpenSSL 3.0 recipient such that\nthe modified data would still pass the MAC integrity check.\n\nNote that data sent from an OpenSSL 3.0 endpoint to a non-OpenSSL 3.0 endpoint\nwill always be rejected by the recipient and the connection will fail at that\npoint. Many application protocols require data to be sent from the client to the\nserver first. Therefore, in such a case, only an OpenSSL 3.0 server would be\nimpacted when talking to a non-OpenSSL 3.0 client.\n\nIf both endpoints are OpenSSL 3.0 then the attacker could modify data being\nsent in both directions. In this case both clients and servers could be\naffected, regardless of the application protocol.\n\nNote that in the absence of an attacker this bug means that an OpenSSL 3.0\nendpoint communicating with a non-OpenSSL 3.0 endpoint will fail to complete the\nhandshake when using this ciphersuite.\n\nThe confidentiality of data is not impacted by this issue, i.e. an attacker\ncannot decrypt data that has been encrypted using this ciphersuite - they can\nonly modify it.\n\nIn order for this attack to work both endpoints must legitimately negotiate the\nRC4-MD5 ciphersuite. This ciphersuite is not compiled by default in OpenSSL 3.0,\nand is not available within the default provider or the default ciphersuite\nlist. This ciphersuite will never be used if TLSv1.3 has been negotiated. In\norder for an OpenSSL 3.0 endpoint to use this ciphersuite the following must\nhave occurred:\n\n1. OpenSSL must have been compiled with the (non-default) compile time option\n   enable-weak-ssl-ciphers\n2. OpenSSL must have had the legacy provider explicitly loaded (either through\n   application code or via configuration)\n3. The ciphersuite must have been explicitly added to the ciphersuite list\n4. The libssl security level must have been set to 0 (default is 1)\n5. A version of SSL/TLS below TLSv1.3 must have been negotiated\n6. Both endpoints must negotiate the RC4-MD5 ciphersuite in preference to any\n   others that both endpoints have in common",
+      "date": "2022-05-03",
+      "aliases": [
+        "CVE-2022-1434",
+        "GHSA-638m-m8mh-7gw2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
       "informational": null,
       "references": [],
       "source": null,
@@ -695,6 +695,39 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2021-0057",
+      "package": "openssl-src",
+      "title": "Integer overflow in CipherUpdate",
+      "description": "Calls to `EVP_CipherUpdate`, `EVP_EncryptUpdate` and `EVP_DecryptUpdate` may overflow\nthe output length argument in some cases where the input length is close to the\nmaximum permissable length for an integer on the platform. In such cases the\nreturn value from the function call will be 1 (indicating success), but the\noutput length value will be negative. This could cause applications to behave\nincorrectly or crash.",
+      "date": "2021-05-01",
+      "aliases": [
+        "CVE-2021-23840",
+        "GHSA-qgm6-9472-pwq7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20210216.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.14"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0058",
       "package": "openssl-src",
       "title": "Null pointer deref in `X509_issuer_and_serial_hash()`",
@@ -724,41 +757,6 @@
         ">=111.14"
       ],
       "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2021-0056",
-      "package": "openssl-src",
-      "title": "CA certificate check bypass with X509_V_FLAG_X509_STRICT",
-      "description": "The X509_V_FLAG_X509_STRICT flag enables additional security checks of the\ncertificates present in a certificate chain. It is not set by default.\n\nStarting from OpenSSL version 1.1.1h a check to disallow certificates in\nthe chain that have explicitly encoded elliptic curve parameters was added\nas an additional strict check.\n\nAn error in the implementation of this check meant that the result of a\nprevious check to confirm that certificates in the chain are valid CA\ncertificates was overwritten. This effectively bypasses the check\nthat non-CA certificates must not be able to issue other certificates.\n\nIf a \"purpose\" has been configured then there is a subsequent opportunity\nfor checks that the certificate is a valid CA.  All of the named \"purpose\"\nvalues implemented in libcrypto perform this check.  Therefore, where\na purpose is set the certificate chain will still be rejected even when the\nstrict flag has been used. A purpose is set by default in libssl client and\nserver certificate verification routines, but it can be overridden or\nremoved by an application.\n\nIn order to be affected, an application must explicitly set the\nX509_V_FLAG_X509_STRICT verification flag and either not set a purpose\nfor the certificate verification or, in the case of TLS client or server\napplications, override the default purpose.",
-      "date": "2021-05-01",
-      "aliases": [
-        "CVE-2021-3450",
-        "GHSA-8hfj-xrj2-pm22"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20210325.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.15"
-      ],
-      "unaffected": [
-        "<111.11"
-      ]
     }
   },
   {
@@ -796,35 +794,37 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0057",
+      "id": "RUSTSEC-2021-0056",
       "package": "openssl-src",
-      "title": "Integer overflow in CipherUpdate",
-      "description": "Calls to `EVP_CipherUpdate`, `EVP_EncryptUpdate` and `EVP_DecryptUpdate` may overflow\nthe output length argument in some cases where the input length is close to the\nmaximum permissable length for an integer on the platform. In such cases the\nreturn value from the function call will be 1 (indicating success), but the\noutput length value will be negative. This could cause applications to behave\nincorrectly or crash.",
+      "title": "CA certificate check bypass with X509_V_FLAG_X509_STRICT",
+      "description": "The X509_V_FLAG_X509_STRICT flag enables additional security checks of the\ncertificates present in a certificate chain. It is not set by default.\n\nStarting from OpenSSL version 1.1.1h a check to disallow certificates in\nthe chain that have explicitly encoded elliptic curve parameters was added\nas an additional strict check.\n\nAn error in the implementation of this check meant that the result of a\nprevious check to confirm that certificates in the chain are valid CA\ncertificates was overwritten. This effectively bypasses the check\nthat non-CA certificates must not be able to issue other certificates.\n\nIf a \"purpose\" has been configured then there is a subsequent opportunity\nfor checks that the certificate is a valid CA.  All of the named \"purpose\"\nvalues implemented in libcrypto perform this check.  Therefore, where\na purpose is set the certificate chain will still be rejected even when the\nstrict flag has been used. A purpose is set by default in libssl client and\nserver certificate verification routines, but it can be overridden or\nremoved by an application.\n\nIn order to be affected, an application must explicitly set the\nX509_V_FLAG_X509_STRICT verification flag and either not set a purpose\nfor the certificate verification or, in the case of TLS client or server\napplications, override the default purpose.",
       "date": "2021-05-01",
       "aliases": [
-        "CVE-2021-23840",
-        "GHSA-qgm6-9472-pwq7"
+        "CVE-2021-3450",
+        "GHSA-8hfj-xrj2-pm22"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "denial-of-service"
+        "crypto-failure"
       ],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://www.openssl.org/news/secadv/20210216.txt",
+      "url": "https://www.openssl.org/news/secadv/20210325.txt",
       "withdrawn": null,
       "license": "CC0-1.0"
     },
     "affected": null,
     "versions": {
       "patched": [
-        ">=111.14"
+        ">=111.15"
       ],
-      "unaffected": []
+      "unaffected": [
+        "<111.11"
+      ]
     }
   },
   {

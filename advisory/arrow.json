@@ -1,40 +1,6 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0118",
-      "package": "arrow",
-      "title": "`FixedSizeBinaryArray` does not perform bound checks on accessing values and offsets",
-      "description": "`FixedSizeBinaryArray` performs insufficient bounds checks, which allows out-of-bounds reads in safe code.",
-      "date": "2021-09-14",
-      "aliases": [
-        "GHSA-qgrp-8f3v-q85p"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "memory-exposure"
-      ],
-      "keywords": [
-        "buffer-overflow"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/apache/arrow-rs/issues/774",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=6.4.0"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2021-0116",
       "package": "arrow",
       "title": "`BinaryArray` does not perform bound checks on reading values and offsets",
@@ -59,6 +25,40 @@
       ],
       "source": null,
       "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=6.4.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0118",
+      "package": "arrow",
+      "title": "`FixedSizeBinaryArray` does not perform bound checks on accessing values and offsets",
+      "description": "`FixedSizeBinaryArray` performs insufficient bounds checks, which allows out-of-bounds reads in safe code.",
+      "date": "2021-09-14",
+      "aliases": [
+        "GHSA-qgrp-8f3v-q85p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/apache/arrow-rs/issues/774",
       "withdrawn": null,
       "license": "CC0-1.0"
     },
