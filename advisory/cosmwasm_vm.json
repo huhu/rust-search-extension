@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0361",
+      "package": "cosmwasm-vm",
+      "title": "CWA-2024-004: Gas mispricing in cosmwasm-vm",
+      "description": "Some Wasm operations take significantly more gas than our benchmarks indicated. This can lead to missing the gas target we defined by a factor of ~10x. This means a malicious contract could take 10 times as much time to execute as expected, which can be used to temporarily DoS a chain.\n\nFor more information, see [CWA-2024-004](https://github.com/CosmWasm/advisories/blob/main/CWAs/CWA-2024-004.md).",
+      "date": "2024-08-08",
+      "aliases": [
+        "GHSA-rg2q-2jh9-447q"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "resource-consumption"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/CosmWasm/advisories/blob/main/CWAs/CWA-2024-004.md",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.5.6, <2.0.0",
+        ">=2.0.5, <2.1.0",
+        ">=2.1.2"
+      ],
+      "unaffected": []
+    }
+  }
+]
