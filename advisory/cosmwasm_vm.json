@@ -1,6 +1,43 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2024-0366",
+      "package": "cosmwasm-vm",
+      "title": "CWA-2023-004: Excessive number of function parameters in compiled Wasm",
+      "description": "A specifically crafted Wasm file can cause the VM to consume excessive amounts of memory when compiling a contract.\nThis can lead to high memory usage, slowdowns, potentially a crash and can poison a lock in the VM,\npreventing any further interaction with contracts.\n\nFor more information, see [CWA-2023-004](https://github.com/CosmWasm/advisories/blob/main/CWAs/CWA-2023-004.md).",
+      "date": "2024-08-27",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "resource-consumption",
+        "crash",
+        "deadlock"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/CosmWasm/advisories/blob/main/CWAs/CWA-2023-004.md",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.2.8, <1.3.0",
+        ">=1.3.4, <1.4.0",
+        ">=1.4.2, <1.5.0",
+        ">=1.5.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2024-0361",
       "package": "cosmwasm-vm",
       "title": "CWA-2024-004: Gas mispricing in cosmwasm-vm",
