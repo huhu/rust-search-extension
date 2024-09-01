@@ -1,4 +1,3 @@
-
 ![](assets/rustacean.gif)
 
 # Rust Search Extension
@@ -14,9 +13,11 @@
 [![license-apache](https://img.shields.io/badge/license-Apache-yellow.svg)](https://github.com/huhu/rust-search-extension/blob/master/LICENSE-APACHE)
 [![Discord](https://img.shields.io/discord/711895914494558250?label=chat&logo=discord)](https://discord.gg/xucZNVd)
 
-Search **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly. 
+Search **docs**, **crates**, builtin **attributes**, official **books**, and **error codes**, etc in your address bar instantly.
 
 [https://rust.extension.sh/](https://rust.extension.sh/)
+
+**Query.rs is the next generation search engine for Rust: https://query.rs**
 
 ## Installation
 
@@ -31,7 +32,7 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 - Search Primitive Types and Modules
 - Search Structs, Traits and Enums
 - Search Functions, Methods and Macros
-- Search builtin attributes 
+- Search builtin attributes
 - Search nightly and rustc docs
 - Search crates on https://crates.io or https://lib.rs
 - Search any third-party crate's docs
@@ -48,15 +49,13 @@ Search **docs**, **crates**, builtin **attributes**, official **books**, and **e
 
 ## How to use it
 
-Input keyword **rs** in the address bar, press `Space` to activate the search bar. Then enter any word 
-you want to search, the extension will response the related search results instantly.
+Input keyword **rs** in the address bar, press `Space` to activate the search bar. Then enter any word you want to search, the extension will response the related search results instantly.
 
 ![demonstration.gif](assets/demonstration.gif)
 
 ## Contribution
 
-[jsonnet](https://jsonnet.org/) is required before getting started. To install `jsonnet`, 
-please check `jsonnet`'s [README](https://github.com/google/jsonnet#packages). 
+[jsonnet](https://jsonnet.org/) is required before getting started. To install `jsonnet`, please check `jsonnet`'s [README](https://github.com/google/jsonnet#packages).
 For Linux users, the `snap` is a good choice to [install jsonnet](https://snapcraft.io/install/jsonnet/ubuntu).
 
 ```bash
