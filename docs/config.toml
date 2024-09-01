@@ -22,11 +22,10 @@ highlight_theme = "inspired-github"
 juice_logo_name = "Rust Search Extension"
 juice_logo_path = "logo.png"
 juice_extra_menu = [
-    { title = "Github", link = "https://github.com/huhu/rust-search-extension"}
+    { title = "Query.rs", link = "https://query.rs" },
+    { title = "Github", link = "https://github.com/huhu/rust-search-extension" },
 ]
-juice_exclude_menu = [
-    "Update"
-]
+juice_exclude_menu = ["Update", "Privacy"]
 repository_url = "https://github.com/huhu/rust-search-extension"
 meta_title = "Rust Search Extension: The ultimate search extension for Rust"
 meta_description = "Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly."
