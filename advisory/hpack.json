@@ -1,6 +1,32 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2023-0084",
+      "package": "hpack",
+      "title": "`hpack` is unmaintained",
+      "description": "The `hpack` crate is no longer maintained.\n\nConsider using [fluke-hpack](https://crates.io/crates/fluke-hpack) or\n[httlib-huffman](https://crates.io/crates/httlib-huffman).",
+      "date": "2023-09-15",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mlalic/hpack-rs/issues/8",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2023-0085",
       "package": "hpack",
       "title": "HPACK decoder panics on invalid input",
@@ -22,32 +48,6 @@
       ],
       "source": null,
       "url": "https://github.com/mlalic/hpack-rs/issues/11",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0084",
-      "package": "hpack",
-      "title": "`hpack` is unmaintained",
-      "description": "The `hpack` crate is no longer maintained.\n\nConsider using [fluke-hpack](https://crates.io/crates/fluke-hpack) or\n[httlib-huffman](https://crates.io/crates/httlib-huffman).",
-      "date": "2023-09-15",
-      "aliases": [],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": null,
-      "informational": "unmaintained",
-      "references": [],
-      "source": null,
-      "url": "https://github.com/mlalic/hpack-rs/issues/8",
       "withdrawn": null,
       "license": "CC0-1.0"
     },

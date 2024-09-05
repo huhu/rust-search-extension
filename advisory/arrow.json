@@ -1,13 +1,13 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0116",
+      "id": "RUSTSEC-2021-0117",
       "package": "arrow",
-      "title": "`BinaryArray` does not perform bound checks on reading values and offsets",
-      "description": "`BinaryArray` performs insufficient validation on creation, which allows out-of-bounds reads in safe code.",
+      "title": "`DecimalArray` does not perform bound checks on accessing values and offsets",
+      "description": "`DecimalArray` performs insufficient bounds checks,\nwhich allows out-of-bounds reads in safe code\nif the length of the backing buffer is not a multiple of 16.",
       "date": "2021-09-14",
       "aliases": [
-        "GHSA-r7cj-wmwv-hfw5"
+        "GHSA-h588-76vg-prgj"
       ],
       "related": [],
       "collection": "crates",
@@ -19,12 +19,9 @@
       ],
       "cvss": null,
       "informational": null,
-      "references": [
-        "https://github.com/apache/arrow-rs/issues/772",
-        "https://github.com/apache/arrow-rs/issues/773"
-      ],
+      "references": [],
       "source": null,
-      "url": null,
+      "url": "https://github.com/apache/arrow-rs/issues/775",
       "withdrawn": null,
       "license": "CC0-1.0"
     },
@@ -72,13 +69,13 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0117",
+      "id": "RUSTSEC-2021-0116",
       "package": "arrow",
-      "title": "`DecimalArray` does not perform bound checks on accessing values and offsets",
-      "description": "`DecimalArray` performs insufficient bounds checks,\nwhich allows out-of-bounds reads in safe code\nif the length of the backing buffer is not a multiple of 16.",
+      "title": "`BinaryArray` does not perform bound checks on reading values and offsets",
+      "description": "`BinaryArray` performs insufficient validation on creation, which allows out-of-bounds reads in safe code.",
       "date": "2021-09-14",
       "aliases": [
-        "GHSA-h588-76vg-prgj"
+        "GHSA-r7cj-wmwv-hfw5"
       ],
       "related": [],
       "collection": "crates",
@@ -90,9 +87,12 @@
       ],
       "cvss": null,
       "informational": null,
-      "references": [],
+      "references": [
+        "https://github.com/apache/arrow-rs/issues/772",
+        "https://github.com/apache/arrow-rs/issues/773"
+      ],
       "source": null,
-      "url": "https://github.com/apache/arrow-rs/issues/775",
+      "url": null,
       "withdrawn": null,
       "license": "CC0-1.0"
     },
