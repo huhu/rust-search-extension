@@ -160,46 +160,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2023-0022",
-      "package": "openssl",
-      "title": "`openssl` `X509NameBuilder::build` returned object is not thread safe",
-      "description": "OpenSSL has a `modified` bit that it can set on on `X509_NAME` objects. If this\nbit is set then the object is not thread-safe even when it appears the code is\nnot modifying the value.\n\nThanks to David Benjamin (Google) for reporting this issue.",
-      "date": "2023-03-24",
-      "aliases": [
-        "GHSA-3gxf-9r58-2ghg"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "thread-safety"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/sfackler/rust-openssl/pull/1854",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": {
-      "arch": [],
-      "os": [],
-      "functions": {
-        "openssl::x509::X509NameBuilder::build": [
-          "<0.10.48, >=0.9.7"
-        ]
-      }
-    },
-    "versions": {
-      "patched": [
-        ">=0.10.48"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2023-0024",
       "package": "openssl",
       "title": "`openssl` `X509Extension::new` and `X509Extension::new_nid` null pointer dereference",
@@ -230,6 +190,46 @@
           "<0.10.48, >=0.9.7"
         ],
         "openssl::x509::X509Extension::new_nid": [
+          "<0.10.48, >=0.9.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.48"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0022",
+      "package": "openssl",
+      "title": "`openssl` `X509NameBuilder::build` returned object is not thread safe",
+      "description": "OpenSSL has a `modified` bit that it can set on on `X509_NAME` objects. If this\nbit is set then the object is not thread-safe even when it appears the code is\nnot modifying the value.\n\nThanks to David Benjamin (Google) for reporting this issue.",
+      "date": "2023-03-24",
+      "aliases": [
+        "GHSA-3gxf-9r58-2ghg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/1854",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::X509NameBuilder::build": [
           "<0.10.48, >=0.9.7"
         ]
       }
