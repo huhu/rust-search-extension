@@ -32,7 +32,8 @@
     },
     "versions": {
       "patched": [
-        ">=1.0.0-alpha.1"
+        ">=1.0.0-alpha.1",
+        "^0.10.4"
       ],
       "unaffected": []
     }
