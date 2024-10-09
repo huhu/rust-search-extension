@@ -31,6 +31,40 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2021-0078",
+      "package": "hyper",
+      "title": "Lenient `hyper` header parsing of `Content-Length` could allow request smuggling",
+      "description": "`hyper`'s HTTP header parser accepted, according to RFC 7230, illegal contents inside `Content-Length` headers.\nDue to this, upstream HTTP proxies that ignore the header may still forward them along if it chooses to ignore the error.\n\nTo be vulnerable, `hyper` must be used as an HTTP/1 server and using an HTTP proxy upstream that ignores the header's contents\nbut still forwards it. Due to all the factors that must line up, an attack exploiting this vulnerability is unlikely.",
+      "date": "2021-07-07",
+      "aliases": [
+        "CVE-2021-32715",
+        "GHSA-f3pg-qwvg-p99c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "parsing",
+        "http"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hyperium/hyper/security/advisories/GHSA-f3pg-qwvg-p99c",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.14.10"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0079",
       "package": "hyper",
       "title": "Integer overflow in `hyper`'s parsing of the `Transfer-Encoding` header leads to data loss",
@@ -53,40 +87,6 @@
       "references": [],
       "source": null,
       "url": "https://github.com/hyperium/hyper/security/advisories/GHSA-5h46-h7hh-c6x9",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.14.10"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2021-0078",
-      "package": "hyper",
-      "title": "Lenient `hyper` header parsing of `Content-Length` could allow request smuggling",
-      "description": "`hyper`'s HTTP header parser accepted, according to RFC 7230, illegal contents inside `Content-Length` headers.\nDue to this, upstream HTTP proxies that ignore the header may still forward them along if it chooses to ignore the error.\n\nTo be vulnerable, `hyper` must be used as an HTTP/1 server and using an HTTP proxy upstream that ignores the header's contents\nbut still forwards it. Due to all the factors that must line up, an attack exploiting this vulnerability is unlikely.",
-      "date": "2021-07-07",
-      "aliases": [
-        "CVE-2021-32715",
-        "GHSA-f3pg-qwvg-p99c"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [
-        "parsing",
-        "http"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/hyperium/hyper/security/advisories/GHSA-f3pg-qwvg-p99c",
       "withdrawn": null,
       "license": "CC0-1.0"
     },
