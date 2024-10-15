@@ -1,6 +1,6 @@
-import DocSearchV2 from "./base-v2.js";
+import LibrustDocSearch from "./core.js";
 
-export default class DocSearch extends DocSearchV2 {
+export default class DocSearch extends LibrustDocSearch {
     // The searchIndex should be Map([[crate, shards],) format
     constructor(name, searchIndex, rootPath, descShards) {
         super(searchIndex, rootPath, descShards);
@@ -25,7 +25,7 @@ export default class DocSearch extends DocSearchV2 {
 
     async search(query) {
         if (!query) return [];
-        let result = await this.execQuery(DocSearchV2.parseQuery(query), null, this.name);
+        let result = await this.execQuery(LibrustDocSearch.parseQuery(query), null, this.name);
         return result.others || [];
     }
 }

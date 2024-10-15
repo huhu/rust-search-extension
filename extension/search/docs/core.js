@@ -648,7 +648,7 @@ function createQueryElement(query, parserState, name, generics, isInGenerics) {
     }
     const typeFilter = parserState.typeFilter;
     parserState.typeFilter = null;
-    if (name === "!") {
+    if (name.trim() === "!") {
         if (typeFilter !== null && typeFilter !== "primitive") {
             throw [
                 "Invalid search type: primitive never type ",
@@ -916,10 +916,9 @@ class VlqHexDecoder {
     }
     // call after consuming `{`
     decodeList() {
-        const cb = "}".charCodeAt(0);
         let c = this.string.charCodeAt(this.offset);
         const ret = [];
-        while (c !== cb) {
+        while (c !== 125) { // 125 = "}"
             ret.push(this.decode());
             c = this.string.charCodeAt(this.offset);
         }
@@ -928,14 +927,13 @@ class VlqHexDecoder {
     }
     // consumes and returns a list or integer
     decode() {
-        const [ob, la] = ["{", "`"].map(c => c.charCodeAt(0));
         let n = 0;
         let c = this.string.charCodeAt(this.offset);
-        if (c === ob) {
+        if (c === 123) { // 123 = "{"
             this.offset += 1;
             return this.decodeList();
         }
-        while (c < la) {
+        while (c < 96) { // 96 = "`"
             n = (n << 4) | (c & 0xF);
             this.offset += 1;
             c = this.string.charCodeAt(this.offset);
@@ -948,15 +946,14 @@ class VlqHexDecoder {
     }
     next() {
         const c = this.string.charCodeAt(this.offset);
-        const [zero, ua, la] = ["0", "@", "`"].map(c => c.charCodeAt(0));
         // sixteen characters after "0" are backref
-        if (c >= zero && c < ua) {
+        if (c >= 48 && c < 64) { // 48 = "0", 64 = "@"
             this.offset += 1;
-            return this.backrefQueue[c - zero];
+            return this.backrefQueue[c - 48];
         }
         // special exception: 0 doesn't use backref encoding
         // it's already one character, and it's always nullish
-        if (c === la) {
+        if (c === 96) { // 96 = "`"
             this.offset += 1;
             return this.cons(0);
         }
@@ -1087,7 +1084,7 @@ class RoaringBitmapBits {
 }
 
 
-export default class DocSearchV2 {
+export default class LibrustDocSearch {
     constructor(rawSearchIndex, rootPath, searchState) {
         /**
          * @type {Map<String, RoaringBitmap>}
@@ -1510,7 +1507,6 @@ export default class DocSearchV2 {
         };
 
         const searchIndex = [];
-        const charA = "A".charCodeAt(0);
         let currentIndex = 0;
         let id = 0;
 
@@ -1586,8 +1582,10 @@ export default class DocSearchV2 {
             // An array of [(Number) item index, (Number) path index]
             // Used to de-duplicate inlined and re-exported stuff
             const itemReexports = new Map(crateCorpus.r);
+            // librustdoc changed crateCorpus.i from array to string, we need some compatible code.
+            const newCorpusFormat = typeof crateCorpus.i === "string";
             // an array of (Number) the parent path index + 1 to `paths`, or 0 if none
-            const itemParentIdxs = crateCorpus.i;
+            const itemParentIdxDecoder = new VlqHexDecoder(crateCorpus.i, noop => noop);
             // a map Number, string for impl disambiguators
             const implDisambiguator = new Map(crateCorpus.b);
             // an array of [(Number) item type,
@@ -1634,6 +1632,8 @@ export default class DocSearchV2 {
             // faster analysis operations
             lastPath = "";
             len = itemTypes.length;
+            let lastName = "";
+            let lastWord = "";
             for (let i = 0; i < len; ++i) {
                 const bitIndex = i + 1;
                 if (descIndex >= descShard.len &&
@@ -1649,10 +1649,8 @@ export default class DocSearchV2 {
                     descIndex = 0;
                     descShardList.push(descShard);
                 }
-                let word = "";
-                if (typeof itemNames[i] === "string") {
-                    word = itemNames[i].toLowerCase();
-                }
+                const name = itemNames[i] === "" ? lastName : itemNames[i];
+                const word = itemNames[i] === "" ? lastWord : itemNames[i].toLowerCase();
                 const path = itemPaths.has(i) ? itemPaths.get(i) : lastPath;
                 const type = itemFunctionDecoder.next();
                 if (type !== null) {
@@ -1674,16 +1672,17 @@ export default class DocSearchV2 {
                 }
                 // This object should have exactly the same set of fields as the "crateRow"
                 // object defined above.
+                const itemParentIdx = newCorpusFormat ? itemParentIdxDecoder.next(): crateCorpus.i[i];
                 const row = {
                     crate,
-                    ty: itemTypes.charCodeAt(i) - charA,
-                    name: itemNames[i],
+                    ty: itemTypes.charCodeAt(i) - 65, // 65 = "A"
+                    name: newCorpusFormat? name : itemNames[i],
                     path,
                     descShard,
                     descIndex,
                     exactPath: itemReexports.has(i) ?
                         itemPaths.get(itemReexports.get(i)) : path,
-                    parent: itemParentIdxs[i] > 0 ? paths[itemParentIdxs[i] - 1] : undefined,
+                    parent: itemParentIdx > 0 ? paths[itemParentIdx - 1] : undefined,
                     type,
                     id,
                     word,
@@ -1698,6 +1697,8 @@ export default class DocSearchV2 {
                 if (!this.searchIndexEmptyDesc.get(crate).contains(bitIndex)) {
                     descIndex += 1;
                 }
+                lastName = name;
+                lastWord = word;
             }
 
             if (aliases) {
@@ -1787,6 +1788,7 @@ export default class DocSearchV2 {
                 // Total number of elements (includes generics).
                 totalElems: 0,
                 literalSearch: false,
+                hasReturnArrow: false,
                 error: null,
                 correction: null,
                 proposeCorrectionFrom: null,
@@ -1815,6 +1817,7 @@ export default class DocSearchV2 {
                         continue;
                     } else if (c === "-" || c === ">") {
                         if (isReturnArrow(parserState)) {
+                            query.hasReturnArrow = true;
                             break;
                         }
                         throw ["Unexpected ", c, " (did you mean ", "->", "?)"];
@@ -1881,9 +1884,7 @@ export default class DocSearchV2 {
                     // Get returned elements.
                     getItemsBefore(query, parserState, query.returned, "");
                     // Nothing can come afterward!
-                    if (query.returned.length === 0) {
-                        throw ["Expected at least one item after ", "->"];
-                    }
+                    query.hasReturnArrow = true;
                     break;
                 } else {
                     parserState.pos += 1;
@@ -2087,8 +2088,9 @@ export default class DocSearchV2 {
          * @param {string} preferredCrate
          * @returns {Promise<[ResultObject]>}
          */
-        const sortResults = async (results, isType, preferredCrate) => {
+        const sortResults = async(results, isType, preferredCrate) => {
             const userQuery = parsedQuery.userQuery;
+            const casedUserQuery = parsedQuery.original;
             const result_list = [];
             for (const result of results.values()) {
                 result.item = this.searchIndex[result.id];
@@ -2098,6 +2100,13 @@ export default class DocSearchV2 {
 
             result_list.sort((aaa, bbb) => {
                 let a, b;
+
+                // sort by exact case-sensitive match
+                a = (aaa.item.name !== casedUserQuery);
+                b = (bbb.item.name !== casedUserQuery);
+                if (a !== b) {
+                    return a - b;
+                }
 
                 // sort by exact match with regard to the last word (mismatch goes later)
                 a = (aaa.word !== userQuery);
@@ -2822,7 +2831,7 @@ export default class DocSearchV2 {
             };
         }
 
-        const handleAliases = async (ret, query, filterCrates, currentCrate) => {
+        const handleAliases = async(ret, query, filterCrates, currentCrate) => {
             const lowerQuery = query.toLowerCase();
             // We separate aliases and crate aliases because we want to have current crate
             // aliases to be before the others in the displayed results.
@@ -2964,30 +2973,30 @@ export default class DocSearchV2 {
 
             // fpDist is a minimum possible type distance, where "type distance" is the number of
             // atoms in the function not present in the query
-            const tfpDist = compareTypeFingerprints(
-                fullId,
-                parsedQuery.typeFingerprint,
-            );
-            if (tfpDist !== null) {
-                const in_args = row.type && row.type.inputs
-                    && checkIfInList(row.type.inputs, elem, row.type.where_clause, null, 0);
-                const returned = row.type && row.type.output
-                    && checkIfInList(row.type.output, elem, row.type.where_clause, null, 0);
-                if (in_args) {
-                    results_in_args.max_dist = Math.max(results_in_args.max_dist || 0, tfpDist);
-                    const maxDist = results_in_args.size < MAX_RESULTS ?
-                        (tfpDist + 1) :
-                        results_in_args.max_dist;
-                    addIntoResults(results_in_args, fullId, pos, -1, tfpDist, 0, maxDist);
-                }
-                if (returned) {
-                    results_returned.max_dist = Math.max(results_returned.max_dist || 0, tfpDist);
-                    const maxDist = results_returned.size < MAX_RESULTS ?
-                        (tfpDist + 1) :
-                        results_returned.max_dist;
-                    addIntoResults(results_returned, fullId, pos, -1, tfpDist, 0, maxDist);
-                }
-            }
+            // const tfpDist = compareTypeFingerprints(
+            //     fullId,
+            //     parsedQuery.typeFingerprint,
+            // );
+            // if (tfpDist !== null) {
+            //     const in_args = row.type && row.type.inputs
+            //         && checkIfInList(row.type.inputs, elem, row.type.where_clause, null, 0);
+            //     const returned = row.type && row.type.output
+            //         && checkIfInList(row.type.output, elem, row.type.where_clause, null, 0);
+            //     if (in_args) {
+            //         results_in_args.max_dist = Math.max(results_in_args.max_dist || 0, tfpDist);
+            //         const maxDist = results_in_args.size < MAX_RESULTS ?
+            //             (tfpDist + 1) :
+            //             results_in_args.max_dist;
+            //         addIntoResults(results_in_args, fullId, pos, -1, tfpDist, 0, maxDist);
+            //     }
+            //     if (returned) {
+            //         results_returned.max_dist = Math.max(results_returned.max_dist || 0, tfpDist);
+            //         const maxDist = results_returned.size < MAX_RESULTS ?
+            //             (tfpDist + 1) :
+            //             results_returned.max_dist;
+            //         addIntoResults(results_returned, fullId, pos, -1, tfpDist, 0, maxDist);
+            //     }
+            // }
 
             if (!typePassesFilter(elem.typeFilter, row.ty)) {
                 return;
@@ -3233,7 +3242,7 @@ export default class DocSearchV2 {
                 this.buildFunctionTypeFingerprint(elem, parsedQuery.typeFingerprint, fps);
             }
 
-            if (parsedQuery.foundElems === 1 && parsedQuery.returned.length === 0) {
+            if (parsedQuery.foundElems === 1 && !parsedQuery.hasReturnArrow) {
                 if (parsedQuery.elems.length === 1) {
                     const elem = parsedQuery.elems[0];
                     const length = this.searchIndex.length;
