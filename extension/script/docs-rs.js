@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     advisoryMenu.innerHTML = `<a href="https://rustsec.org/${advisories.length > 0 ? `packages/${crateName}.html` : ""}"
                                 class="pure-menu-link" target="_blank">
-                <span class="fa-svg" aria-hidden="true">${SVG_SHEILD}</span>
+                <span class="fa-svg" aria-hidden="true" style="height:13px;width:13px;display:inline-block;vertical-align:middle;">${SVG_SHEILD}</span>
                 <span class="title">Security ${advisories.length}</span>
                 </a>
                 <div class="pure-menu-children rse-dropdown-content" role="menu">
@@ -313,7 +313,10 @@ function insertAddToExtensionElement(state) {
     }
     li.innerHTML = `<div class="add-to-extension"
                          aria-label="Add to Rust Search Extension">
-                         <span ${iconAttributes}>${iconFile}</span><span class="title"> to Rust Search Extension</span>
+                         <span style="height:13px;width:13px;display:inline-block;vertical-align:middle;" ${iconAttributes}>
+                         ${iconFile}
+                         </span>
+                         <span class="title"> to Rust Search Extension</span>
                     </div>
                     <div class="pure-menu-children" role="menu">
                         <div class="add-to-extension-content" onclick="event.stopPropagation()">
