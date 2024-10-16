@@ -1,0 +1,86 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0071",
+      "package": "time",
+      "title": "Potential segfault in the time crate",
+      "description": "### Impact\n\nUnix-like operating systems may segfault due to dereferencing a dangling pointer in specific circumstances. This requires an environment variable to be set in a different thread than the affected functions. This may occur without the user's knowledge, notably in a third-party library.\n\nThe affected functions from time 0.2.7 through 0.2.22 are:\n\n- `time::UtcOffset::local_offset_at`\n- `time::UtcOffset::try_local_offset_at`\n- `time::UtcOffset::current_local_offset`\n- `time::UtcOffset::try_current_local_offset`\n- `time::OffsetDateTime::now_local`\n- `time::OffsetDateTime::try_now_local`\n\nThe affected functions in time 0.1 (all versions) are:\n\n- `at`\n- `at_utc`\n- `now`\n\nNon-Unix targets (including Windows and wasm) are unaffected.\n\n### Patches\n\nPending a proper fix, the internal method that determines the local offset has been modified to always return `None` on the affected operating systems. This has the effect of returning an `Err` on the `try_*` methods and `UTC` on the non-`try_*` methods.\n\nUsers and library authors with time in their dependency tree should perform `cargo update`, which will pull in the updated, unaffected code.\n\nUsers of time 0.1 do not have a patch and should upgrade to an unaffected version: time 0.2.23 or greater or the 0.3 series.\n\n### Workarounds\n\nA possible workaround for crates affected through the transitive dependency in `chrono`, is to avoid using the default `oldtime` feature dependency of the `chrono` crate by disabling its `default-features` and manually specifying the required features instead.\n\n#### Examples:\n\n`Cargo.toml`:  \n\n```toml\nchrono = { version = \"0.4\", default-features = false, features = [\"serde\"] }\n```\n\n```toml\nchrono = { version = \"0.4.22\", default-features = false, features = [\"clock\"] }\n```\n\nCommandline:  \n\n```bash\ncargo add chrono --no-default-features -F clock\n```\n\nSources:  \n - [chronotope/chrono#602 (comment)](https://github.com/chronotope/chrono/issues/602#issuecomment-1242149249)  \n - [vityafx/serde-aux#21](https://github.com/vityafx/serde-aux/issues/21)",
+      "date": "2020-11-18",
+      "aliases": [
+        "CVE-2020-26235"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "segfault"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/time-rs/time/issues/293",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "linux",
+        "redox",
+        "solaris",
+        "android",
+        "ios",
+        "macos",
+        "netbsd",
+        "openbsd",
+        "freebsd"
+      ],
+      "functions": {
+        "time::OffsetDateTime::now_local": [
+          "<0.2.23"
+        ],
+        "time::OffsetDateTime::try_now_local": [
+          "<0.2.23"
+        ],
+        "time::UtcOffset::current_local_offset": [
+          "<0.2.23"
+        ],
+        "time::UtcOffset::local_offset_at": [
+          "<0.2.23"
+        ],
+        "time::UtcOffset::try_current_local_offset": [
+          "<0.2.23"
+        ],
+        "time::UtcOffset::try_local_offset_at": [
+          "<0.2.23"
+        ],
+        "time::at": [
+          "^0.1"
+        ],
+        "time::at_utc": [
+          "^0.1"
+        ],
+        "time::now": [
+          "^0.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.23"
+      ],
+      "unaffected": [
+        "=0.2.0",
+        "=0.2.1",
+        "=0.2.2",
+        "=0.2.3",
+        "=0.2.4",
+        "=0.2.5",
+        "=0.2.6"
+      ]
+    }
+  }
+]

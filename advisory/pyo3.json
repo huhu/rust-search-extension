@@ -1,0 +1,91 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0378",
+      "package": "pyo3",
+      "title": "Risk of use-after-free in `borrowed` reads from Python weak references",
+      "description": "The family of functions to read \"borrowed\" values from Python weak references\nwere fundamentally unsound, because the weak reference does itself not have\nownership of the value. At any point the last strong reference could\nbe cleared and the borrowed value would become dangling.\n\nIn PyO3 0.22.4 these functions have all been deprecated and patched to leak a\nstrong reference as a mitigation. PyO3 0.23 will remove these functions entirely.",
+      "date": "2024-10-12",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/4590",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pyo3::types::PyWeakrefMethods::get_object_borrowed": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed_as": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed_as_exact": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed_as_unchecked": [
+          "<0.22.4, >=0.22.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.22.4"
+      ],
+      "unaffected": [
+        "<0.22.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0074",
+      "package": "pyo3",
+      "title": "Reference counting error in `From<Py<T>>`",
+      "description": "A bug in `From<Py<T>>` would lead to an extra reference count decrement, often\nleading to use-after-free issues.",
+      "date": "2020-11-28",
+      "aliases": [
+        "CVE-2020-35917",
+        "GHSA-2vx6-fcw6-hpr6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/1297",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.12.4"
+      ],
+      "unaffected": [
+        "<0.12.0"
+      ]
+    }
+  }
+]

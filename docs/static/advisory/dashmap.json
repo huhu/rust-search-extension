@@ -1,0 +1,84 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0002",
+      "package": "dashmap",
+      "title": "Unsoundness in `dashmap` references",
+      "description": "Reference returned by some methods of `Ref` (and similar types) may outlive the `Ref` and escape the lock.\nThis causes undefined behavior and may result in a segfault.\n\nMore information in [`dashmap#167`](https://github.com/xacrimon/dashmap/issues/167) issue.",
+      "date": "2022-01-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "segfault",
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/xacrimon/dashmap/issues/167",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "dashmap::mapref::multiple::RefMulti::key": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::multiple::RefMulti::pair": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::multiple::RefMulti::value": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::multiple::RefMutMulti::key": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::multiple::RefMutMulti::pair": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::multiple::RefMutMulti::pair_mut": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::one::Ref::key": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::one::Ref::pair": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::one::Ref::value": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::one::RefMut::key": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::one::RefMut::pair": [
+          ">=5.0.0"
+        ],
+        "dashmap::mapref::one::RefMut::pair_mut": [
+          ">=5.0.0"
+        ],
+        "dashmap::setref::multiple::RefMulti::key": [
+          ">=5.0.0"
+        ],
+        "dashmap::setref::one::Ref::key": [
+          ">=5.0.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=5.1.0"
+      ],
+      "unaffected": [
+        "<5.0.0"
+      ]
+    }
+  }
+]

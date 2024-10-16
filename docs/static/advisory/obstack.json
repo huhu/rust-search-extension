@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0040",
+      "package": "obstack",
+      "title": "Obstack generates unaligned references",
+      "description": "Obstack generates unaligned references for types that require a large alignment.",
+      "date": "2020-09-03",
+      "aliases": [
+        "CVE-2020-35894"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/petertodd/rust-obstack/issues/4",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

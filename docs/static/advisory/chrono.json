@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0159",
+      "package": "chrono",
+      "title": "Potential segfault in `localtime_r` invocations",
+      "description": "### Impact\n\nUnix-like operating systems may segfault due to dereferencing a dangling pointer in specific circumstances. This requires an environment variable to be set in a different thread than the affected functions. This may occur without the user's knowledge, notably in a third-party library.\n\n### Workarounds\n\nNo workarounds are known.\n\n### References\n\n- [time-rs/time#293](https://github.com/time-rs/time/issues/293)",
+      "date": "2020-11-10",
+      "aliases": [],
+      "related": [
+        "CVE-2020-26235",
+        "RUSTSEC-2020-0071"
+      ],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "segfault"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/chronotope/chrono/issues/499",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.20"
+      ],
+      "unaffected": []
+    }
+  }
+]

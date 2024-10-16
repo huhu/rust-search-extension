@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0093",
+      "package": "crossbeam-deque",
+      "title": "Data race in crossbeam-deque",
+      "description": "In the affected version of this crate, the result of the race condition is that one or more tasks in the worker queue can be popped twice instead of other tasks that are forgotten and never popped. If tasks are allocated on the heap, this can cause double free and a memory leak. If not, this still can cause a logical bug.\n\nCrates using `Stealer::steal`, `Stealer::steal_batch`, or `Stealer::steal_batch_and_pop` are affected by this issue.\n\nCredits to @kmaork for discovering, reporting and fixing the bug.",
+      "date": "2021-07-30",
+      "aliases": [
+        "GHSA-pqqp-xmhj-wgcw",
+        "CVE-2021-32810"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/crossbeam-rs/crossbeam/security/advisories/GHSA-pqqp-xmhj-wgcw",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.4, <0.8.0",
+        ">=0.8.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

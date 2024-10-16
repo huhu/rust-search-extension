@@ -1,0 +1,62 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0011",
+      "package": "rust-crypto",
+      "title": "Miscomputation when performing AES encryption in rust-crypto",
+      "description": "The following Rust program demonstrates some strangeness in AES encryption - if you have an immutable key slice and then operate on that slice, you get different encryption output than if you operate on a copy of that key.\n\nFor these functions, we expect that extending a 16 byte key to a 32 byte key by repeating it gives the same encrypted data, because the underlying rust-crypto functions repeat key data up to the necessary key size for the cipher.\n\n```rust\nuse crypto::{\n    aes, blockmodes, buffer,\n    buffer::{BufferResult, ReadBuffer, WriteBuffer},\n    symmetriccipher,\n};\n\nfn encrypt(\n    key: &[u8],\n    iv: &[u8],\n    data: &str,\n) -> Result<String, symmetriccipher::SymmetricCipherError> {\n    let mut encryptor =\n        aes::cbc_encryptor(aes::KeySize::KeySize256, key, iv, blockmodes::PkcsPadding);\n\n    let mut encrypted_data = Vec::<u8>::new();\n    let mut read_buffer = buffer::RefReadBuffer::new(data.as_bytes());\n    let mut buffer = [0; 4096];\n    let mut write_buffer = buffer::RefWriteBuffer::new(&mut buffer);\n\n    loop {\n        let result = encryptor.encrypt(&mut read_buffer, &mut write_buffer, true)?;\n\n        encrypted_data.extend(\n            write_buffer\n                .take_read_buffer()\n                .take_remaining()\n                .iter()\n                .copied(),\n        );\n\n        match result {\n            BufferResult::BufferUnderflow => break,\n            BufferResult::BufferOverflow => {}\n        }\n    }\n\n    Ok(hex::encode(encrypted_data))\n}\n\nfn working() {\n    let data = \"data\";\n    let iv = [\n        0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE,\n        0xFF,\n    ];\n    let key = [\n        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,\n        0x0F,\n    ];\n    // The copy here makes the code work.\n    let key_copy = key;\n    let key2: Vec<u8> = key_copy.iter().cycle().take(32).copied().collect();\n    println!(\"key1:{} key2: {}\", hex::encode(&key), hex::encode(&key2));\n\n    let x1 = encrypt(&key, &iv, data).unwrap();\n    println!(\"X1: {}\", x1);\n\n    let x2 = encrypt(&key2, &iv, data).unwrap();\n    println!(\"X2: {}\", x2);\n\n    assert_eq!(x1, x2);\n}\n\nfn broken() {\n    let data = \"data\";\n    let iv = [\n        0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE,\n        0xFF,\n    ];\n    let key = [\n        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,\n        0x0F,\n    ];\n    // This operation shouldn't affect the contents of key at all.\n    let key2: Vec<u8> = key.iter().cycle().take(32).copied().collect();\n    println!(\"key1:{} key2: {}\", hex::encode(&key), hex::encode(&key2));\n\n    let x1 = encrypt(&key, &iv, data).unwrap();\n    println!(\"X1: {}\", x1);\n\n    let x2 = encrypt(&key2, &iv, data).unwrap();\n    println!(\"X2: {}\", x2);\n\n    assert_eq!(x1, x2);\n}\n\nfn main() {\n    working();\n    broken();\n}\n```\n\nThe output from this program:\n\n```shell\n     Running `target/host/debug/rust-crypto-test`\nkey1:000102030405060708090a0b0c0d0e0f key2: 000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f\nX1: 90462bbe32965c8e7ea0addbbed4cddb\nX2: 90462bbe32965c8e7ea0addbbed4cddb\nkey1:000102030405060708090a0b0c0d0e0f key2: 000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f\nX1: 26e847e5e7df1947bf82a650548a7d5b\nX2: 90462bbe32965c8e7ea0addbbed4cddb\nthread 'main' panicked at 'assertion failed: `(left == right)`\n  left: `\"26e847e5e7df1947bf82a650548a7d5b\"`,\n right: `\"90462bbe32965c8e7ea0addbbed4cddb\"`', src/main.rs:83:5\n```\n\nNotably, the X1 key in the `broken()` test changes every time after rerunning the program.",
+      "date": "2022-02-28",
+      "aliases": [
+        "GHSA-jp3w-3q88-34cf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "aesni"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2016-0005",
+      "package": "rust-crypto",
+      "title": "rust-crypto is unmaintained; switch to a modern alternative",
+      "description": "The `rust-crypto` crate has not seen a release or GitHub commit since 2016,\nand its author is unresponsive.\n\n*NOTE: The (old) `rust-crypto` crate (with hyphen) should not be confused with\nsimilarly named (new) [RustCrypto GitHub Org] (without hyphen). The GitHub Org\nis actively maintained.*\n\nWe recommend you switch to one of the following crates instead, depending on\nwhich algorithms you need:\n\n- [dalek-cryptography GitHub Org]:\n  - Key agreement: [`x25519-dalek`]\n  - Signature algorithms: [`ed25519-dalek`]\n- [`ring`]:\n  - AEAD algorithms: AES-GCM, ChaCha20Poly1305\n  - Digest algorithms: SHA-256, SHA-384, SHA-512, SHA-512/256 (legacy: SHA-1)\n  - HMAC\n  - Key agreement: ECDH (P-256, P-384), X25519\n  - Key derivation: HKDF\n  - Password hashing: PBKDF2\n  - Signature algorithms: ECDSA (P-256, P-384), Ed25519, RSA (PKCS#1v1.5, PSS)\n- [RustCrypto GitHub Org]:\n  - AEAD algorithms: [`aes-gcm`], [`aes-gcm-siv`], [`aes-siv`], [`chacha20poly1305`], [`xsalsa20poly1305`]\n  - Block ciphers: [`aes`], [`cast5`], [`des`]\n  - Digest algorithms: [`sha2`], [`sha3`], [`blake2`], [`ripemd160`]\n    (legacy: [`sha-1`], [`md-5`])\n  - Key derivation: [`hkdf`]\n  - MACs: [`cmac`], [`hmac`], [`pmac`], [`poly1305`]\n  - Password hashing: [`pbkdf2`]\n  - Stream ciphers: [`aes-ctr`], [`chacha20`], [`hc-256`], [`salsa20`]\n- [`secp256k1`]:\n  - Key agreement: ECDH (secp256k1 only)\n  - Signature algorithms: ECDSA (secp256k1 only)\n- [`orion`]:\n  - AEAD algorithms: ChaCha20Poly1305 (IETF version), XChaCha20Poly1305\n  - Digest algorithms: SHA-512, BLAKE2b\n  - Key derivation: HKDF\n  - MACs: HMAC, Poly1305\n  - Password hashing: PBKDF2\n  - Stream ciphers: ChaCha20 (IETF version), XChaCha20\n\n[dalek-cryptography GitHub Org]: https://github.com/dalek-cryptography\n[RustCrypto GitHub Org]: https://github.com/RustCrypto\n[`aes`]: https://crates.io/crates/aes\n[`aes-ctr`]: https://crates.io/crates/aes-ctr\n[`aes-gcm`]: https://crates.io/crates/aes-gcm\n[`aes-gcm-siv`]: https://crates.io/crates/aes-gcm-siv\n[`aes-siv`]: https://crates.io/crates/aes-siv\n[`blake2`]: https://crates.io/crates/blake2\n[`cast5`]: https://crates.io/crates/cast5\n[`chacha20`]: https://crates.io/crates/chacha20\n[`chacha20poly1305`]: https://crates.io/crates/chacha20poly1305\n[`cmac`]: https://crates.io/crates/cmac\n[`des`]: https://crates.io/crates/des\n[`ed25519-dalek`]: https://crates.io/crates/ed25519-dalek\n[`hc-256`]: https://crates.io/crates/hc-256\n[`hkdf`]: https://crates.io/crates/hkdf\n[`hmac`]: https://crates.io/crates/hmac\n[`pbkdf2`]: https://crates.io/crates/pbkdf2\n[`pmac`]: https://crates.io/crates/pmac\n[`poly1305`]: https://crates.io/crates/poly1305\n[`ring`]: https://crates.io/crates/ring\n[`ripemd160`]: https://crates.io/crates/ripemd160\n[`salsa20`]: https://crates.io/crates/salsa20\n[`secp256k1`]: https://crates.io/crates/secp256k1\n[`sha-1`]: https://crates.io/crates/sha-1\n[`sha2`]: https://crates.io/crates/sha2\n[`sha3`]: https://crates.io/crates/sha3\n[`x25519-dalek`]: https://crates.io/crates/x25519-dalek\n[`xsalsa20poly1305`]: https://crates.io/crates/xsalsa20poly1305\n[`orion`]: https://crates.io/crates/orion",
+      "date": "2016-09-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/DaGenix/rust-crypto/issues/440",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.2.36"
+      ]
+    }
+  }
+]

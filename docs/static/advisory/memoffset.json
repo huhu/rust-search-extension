@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0011",
+      "package": "memoffset",
+      "title": "Flaw in offset_of and span_of causes SIGILL, drops uninitialized memory of arbitrary type on panic in client code",
+      "description": "Affected versions of this crate caused traps and/or memory unsafety by zero-initializing references.\nThey also could lead to uninitialized memory being dropped if the field for which the offset is requested was behind a deref coercion, and that deref coercion caused a panic.\n\nThe flaw was corrected by using `MaybeUninit`.",
+      "date": "2019-07-16",
+      "aliases": [
+        "CVE-2019-15553"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Gilnaa/memoffset/issues/9#issuecomment-505461490",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.0"
+      ],
+      "unaffected": []
+    }
+  }
+]
