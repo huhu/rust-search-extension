@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     advisoryMenu.innerHTML = `<a href="https://rustsec.org/${advisories.length > 0 ? `packages/${crateName}.html` : ""}"
                                 class="pure-menu-link" target="_blank">
-                <span class="fa-svg" aria-hidden="true" style="height:13px;width:13px;display:inline-block;vertical-align:middle;">${SVG_SHEILD}</span>
+                <span class="fa fa-solid fa-svg fa-shield" aria-hidden="true" style="height:13px;width:13px;display:inline-block;vertical-align:middle;"></span>
                 <span class="title">Security ${advisories.length}</span>
                 </a>
                 <div class="pure-menu-children rse-dropdown-content" role="menu">
@@ -281,12 +281,12 @@ function insertAddToExtensionElement(state) {
         } else {
             let svgIcon = document.querySelector(".add-to-extension .fa-svg");
             if (svgIcon) {
-                svgIcon.innerHTML = SVG_SPINNER;
+                svgIcon.className = "fa fa-solid fa-svg fa-spinner";
             }
             injectScripts("script/lib.js", "script/add-search-index.js");
         }
     };
-    let content, iconAttributes, iconFile;
+    let content, iconColor, iconClass;
     if (state === "latest") {
         content = `<p>
                       You already added this crate (v${installedVersion}). Click again to remove it.
@@ -294,28 +294,26 @@ function insertAddToExtensionElement(state) {
                       <span id="rse-here" style="text-decoration: underline; cursor: pointer">here</span>
                       to manage all your indexed crates.
                    </p>`;
-        iconAttributes = `class="fa-svg" style="color:green"`;
-        iconFile = SVG_CHECK_CIRCLE;
+        iconColor = "green";
+        iconClass = "fa-check-circle";
     } else if (state === "outdated") {
         content = `<p>You current version v${installedVersion} is outdated. Click to update to the v${crateVersion}.</p>`;
-        iconAttributes = `class="fa-svg" style="color:#e57300"`;
-        iconFile = SVG_ARROW_UP_CIRCLE;
+        iconColor = "#e57300";
+        iconClass = "fa-circle-arrow-up";
     } else if (state === "error") {
         // The error case: the user fail to install the crate.
         content = `<p>Oops! Some error happened. You can try again. <br><br>Or check the console and file an issue to report the error.</p>`;
-        iconAttributes = `class="fa-svg" style="color:#e62f07"`;
-        iconFile = SVG_ERROR;
+        iconColor = "#e62f07";
+        iconClass = "fa-error";
     } else {
         // The default case: need-to-install.
         content = `<p>Add this crate to Rust Search Extension then you can search it in the address bar.</p>`;
-        iconAttributes = `class="fa-svg" style="color:#121212"`;
-        iconFile = SVG_PLUS_CIRCLE;
+        iconColor = "#121212";
+        iconClass = "fa-plus-circle";
     }
     li.innerHTML = `<div class="add-to-extension"
                          aria-label="Add to Rust Search Extension">
-                         <span style="height:13px;width:13px;display:inline-block;vertical-align:middle;" ${iconAttributes}>
-                         ${iconFile}
-                         </span>
+                         <span style="color:${iconColor};height:13px;width:13px;display:inline-block;vertical-align:middle;" class="fa fa-solid fa-svg ${iconClass}"></span>
                          <span class="title"> to Rust Search Extension</span>
                     </div>
                     <div class="pure-menu-children" role="menu">

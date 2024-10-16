@@ -43,7 +43,7 @@ json
 .setOptionsUi('manage/index.html')
 .addContentScript(
   matches=['*://docs.rs/*'],
-  js=['content-script-bundle.js'] + utils.js_files('script', ['lib', 'docs-rs', 'svgs', 'rust-src-navigate', 'semver']),
+  js=['content-script-bundle.js'] + utils.js_files('script', ['lib', 'docs-rs', 'rust-src-navigate', 'semver']),
   css=['script/docs-rs.css', 'script/details-toggle.css'],
 )
 .addContentScript(
