@@ -20,8 +20,15 @@ local optional_host_permissions = ['file:///*'];
 local json = if std.member(['chrome', 'edge'], browser) then
   manifest_v3.new(name, keyword, description, version, service_worker='service-worker.js')
 else
-  # Firefox does not support service worker yet.
-  manifest_v3.new(name, keyword, description, version, background_page='firefox-bg.html')
+  // Firefox does not support service worker yet.
+  manifest_v3.new(name, keyword, description, version, background_page='firefox-bg.html') { browser_specific_settings: {
+    // Firefox need extension id to be set in the manifest.
+    // https://extensionworkshop.com/documentation/develop/extensions-and-the-add-on-id/
+    gecko: {
+      id: '{04188724-64d3-497b-a4fd-7caffe6eab29}',
+      strict_min_version: '109.0',
+    },
+  } }
 ;
 
 json
