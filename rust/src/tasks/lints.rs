@@ -10,7 +10,7 @@ use tokio::runtime::Runtime;
 use crate::minify::Minifier;
 use crate::tasks::Task;
 
-const LINT_URL: &str = "https://rust-lang.github.io/rust-clippy/master/lints.json";
+const LINT_URL: &str = "https://rust-lang.github.io/rust-clippy/stable/lints.json";
 const LINTS_INDEX_PATH: &str = "../extension/index/lints.js";
 
 /// Lint task
