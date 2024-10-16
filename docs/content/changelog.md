@@ -4,6 +4,25 @@ description = "Changelog"
 weight = 3
 +++
 
+# v2.0.0 - 2024-10-16
+
+- Integrate omnibox search into manage page
+- Split IndexSetter from IndexManager
+- Migrate Firefox version to Manifest V3. close #201
+- Sunset rustc docs search (#281)
+- Support description shards (#285)
+- Support all stdlib crates
+- Bug fix:
+  - chore: fix typo (#273)
+  - Fix offline mode not working on Chrome
+  - Fix search of extern crates (#276)
+  - Fix docs.rs TOC if headings contain inline code (#278)
+  - Fix crate indexing by upgrading item types for old crate doc (#277)
+  - Fix optional dependency nowrap, close #274
+  - Fix source code mode and levenshtein bug
+  - Fix docs.rs svg icons
+
+
 # v1.13.0 - 2024-02-14
 
 - Migrate std docs index to `Map`.
