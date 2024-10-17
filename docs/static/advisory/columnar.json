@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0087",
+      "package": "columnar",
+      "title": "columnar: `Read` on uninitialized buffer may cause UB (ColumnarReadExt::read_typed_vec())",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided `Read` implementation (`ColumnarReadExt::read_typed_vec()`).\n\nArbitrary `Read` implementations can read from the uninitialized buffer (memory exposure) and also can return incorrect number of bytes written to the buffer.\nReading from uninitialized memory produces undefined values that can quickly invoke undefined behavior.",
+      "date": "2021-01-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/frankmcsherry/columnar/issues/6",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

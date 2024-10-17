@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0005",
+      "package": "serde_yaml",
+      "title": "Uncontrolled recursion leads to abort in deserialization",
+      "description": "Affected versions of this crate did not properly check for recursion\nwhile deserializing aliases.\n\nThis allows an attacker to make a YAML file with an alias referring\nto itself causing an abort.\n\nThe flaw was corrected by checking the recursion depth.",
+      "date": "2018-09-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "crash"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dtolnay/serde-yaml/pull/105",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.4"
+      ],
+      "unaffected": [
+        "<0.6.0-rc1"
+      ]
+    }
+  }
+]

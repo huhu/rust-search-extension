@@ -1,0 +1,63 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0006",
+      "package": "cache",
+      "title": "Exposes internally used raw pointer",
+      "description": "Affected versions of this crate dereference a raw pointer that can be modified\nwithout using `unsafe` code.",
+      "date": "2021-01-01",
+      "aliases": [
+        "CVE-2021-25903"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "soundness"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/krl/cache/issues/2",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0128",
+      "package": "cache",
+      "title": "Cache<K>: Send/Sync impls needs trait bounds on `K`",
+      "description": "Affected versions of this crate unconditionally implement Send/Sync for `Cache<K>`.\nThis allows users to insert `K` that is not Send or not Sync.\n\nThis allows users to create data races by using non-Send types like `Arc<Cell<T>>` or `Rc<T>` as `K` in `Cache<K>`. It is also possible to create data races by using types like `Cell<T>` or `RefCell<T>` (types that are `Send` but not `Sync`).\nSuch data races can lead to memory corruption.",
+      "date": "2020-11-24",
+      "aliases": [
+        "CVE-2020-36448"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/krl/cache/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0035",
+      "package": "chunky",
+      "title": "Chunk API does not respect align requirement",
+      "description": "Chunk API does not respect the align requirement of types. Unaligned reference can be created with the API, which is an undefined behavior.",
+      "date": "2020-08-25",
+      "aliases": [
+        "CVE-2020-36433"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/aeplay/chunky/issues/2",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

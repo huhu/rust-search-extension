@@ -1,0 +1,50 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0017",
+      "package": "maligned",
+      "title": "`maligned::align_first` causes incorrect deallocation",
+      "description": "`maligned::align_first` manually allocates with an alignment larger than T, and then uses `Vec::from_raw_parts` on that allocation to get a `Vec<T>`.\n\n[`GlobalAlloc::dealloc`](https://doc.rust-lang.org/std/alloc/trait.GlobalAlloc.html#tymethod.dealloc) requires that the `layout` argument must be the same layout that was used to allocate that block of memory.\n\nWhen deallocating, `Box` and `Vec` may not respect the specified alignment and can cause undefined behavior.",
+      "date": "2023-03-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "unsound",
+        "alloc",
+        "align"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tylerhawkes/maligned/issues/5",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "maligned::align_first": [
+          "*"
+        ],
+        "maligned::align_first_boxed": [
+          "*"
+        ],
+        "maligned::align_first_boxed_cloned": [
+          "*"
+        ],
+        "maligned::align_first_boxed_default": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

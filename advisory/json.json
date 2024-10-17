@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0081",
+      "package": "json",
+      "title": "json is unmaintained",
+      "description": "Last release was almost 3 years ago.\n\nThe maintainer is unresponsive with outstanding issues.\n\nOne of the outstanding issues include [a possible soundness issue](https://github.com/maciejhirsz/json-rust/issues/196).\n\n## Possible Alternative(s)\n\nThe below list has not been vetted in any way and may or may not contain alternatives;\n\n- [jzon](https://crates.io/crates/jzon) maintained fork of json\n- [serde_json](https://crates.io/crates/serde_json)\n- [json-deserializer](https://crates.io/crates/json-deserializer)\n- [simd-json](https://crates.io/crates/simd-json)",
+      "date": "2022-02-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/maciejhirsz/json-rust/issues/196"
+      ],
+      "source": null,
+      "url": "https://github.com/maciejhirsz/json-rust/issues/205",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

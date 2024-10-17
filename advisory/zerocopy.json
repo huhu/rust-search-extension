@@ -1,0 +1,81 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0074",
+      "package": "zerocopy",
+      "title": "Some Ref methods are unsound with some type parameters",
+      "description": "The `Ref` methods `into_ref`, `into_mut`, `into_slice`, and `into_slice_mut` are unsound\nand may allow safe code to exhibit undefined behavior when used with `Ref<B, T>` where `B`\nis [`cell::Ref`](https://doc.rust-lang.org/core/cell/struct.Ref.html) or\n[`cell::RefMut`](https://doc.rust-lang.org/core/cell/struct.RefMut.html). Note that these\nmethods remain sound when used with `B` types other than `cell::Ref` or `cell::RefMut`.\n\nSee https://github.com/google/zerocopy/issues/716 for a more in-depth analysis.\n\nThe current plan is to yank the affected versions soon. See\nhttps://github.com/google/zerocopy/issues/679 for more detail.",
+      "date": "2023-12-14",
+      "aliases": [
+        "GHSA-3mv5-343c-w2qg",
+        "GHSA-rjhf-4mh8-9xjq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "ref",
+        "refcell",
+        "mutable-aliasing"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/google/zerocopy/issues/716",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zerocopy::Ref::into_mut": [
+          ">=0.2.2, <0.2.9",
+          ">=0.3.0, <0.3.2",
+          ">=0.4.0, <0.4.1",
+          ">=0.5.0, <0.5.2",
+          ">=0.6.0, <0.6.6",
+          ">=0.7.0, <0.7.31"
+        ],
+        "zerocopy::Ref::into_mut_slice": [
+          ">=0.2.2, <0.2.9",
+          ">=0.3.0, <0.3.2",
+          ">=0.4.0, <0.4.1",
+          ">=0.5.0, <0.5.2",
+          ">=0.6.0, <0.6.6",
+          ">=0.7.0, <0.7.31"
+        ],
+        "zerocopy::Ref::into_ref": [
+          ">=0.2.2, <0.2.9",
+          ">=0.3.0, <0.3.2",
+          ">=0.4.0, <0.4.1",
+          ">=0.5.0, <0.5.2",
+          ">=0.6.0, <0.6.6",
+          ">=0.7.0, <0.7.31"
+        ],
+        "zerocopy::Ref::into_slice": [
+          ">=0.2.2, <0.2.9",
+          ">=0.3.0, <0.3.2",
+          ">=0.4.0, <0.4.1",
+          ">=0.5.0, <0.5.2",
+          ">=0.6.0, <0.6.6",
+          ">=0.7.0, <0.7.31"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.9, <0.3.0",
+        ">=0.3.2, <0.4.0",
+        ">=0.4.1, <0.5.0",
+        ">=0.5.2, <0.6.0",
+        ">=0.6.6, <0.7.0",
+        ">=0.7.31"
+      ],
+      "unaffected": [
+        "<0.2.2"
+      ]
+    }
+  }
+]
