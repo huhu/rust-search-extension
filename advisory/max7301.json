@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0152",
+      "package": "max7301",
+      "title": "ImmediateIO and TransactionalIO can cause data races",
+      "description": "The `ImmediateIO` and `TransactionalIO` types implement `Sync` for all contained\n`Expander<EI>` types regardless of if the `Expander` itself is safe to use\nacross threads.\n\nAs the `IO` types allow retrieving the `Expander`, this can lead to non-thread\nsafe types being sent across threads as part of the `Expander` leading to data\nraces.",
+      "date": "2020-12-18",
+      "aliases": [
+        "CVE-2020-36472",
+        "GHSA-rmff-f8w9-c9rm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/edarc/max7301/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

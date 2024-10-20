@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0002",
+      "package": "prost",
+      "title": "Parsing a specially crafted message can result in a stack overflow",
+      "description": "Affected versions of this crate contained a bug in which decoding untrusted\ninput could overflow the stack.\n\nOn architectures with stack probes (like x86), this can be used for denial of\nservice attacks, while on architectures without stack probes (like ARM)\noverflowing the stack is unsound and can result in potential memory corruption\n(or even RCE).\n \nThe flaw was quickly corrected by @danburkert and released in version 0.6.1.",
+      "date": "2020-01-16",
+      "aliases": [
+        "CVE-2020-35858",
+        "GHSA-gv73-9mwv-fwgq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "stack overflow"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/danburkert/prost/issues/267",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

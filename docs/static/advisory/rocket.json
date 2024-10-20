@@ -1,0 +1,75 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0044",
+      "package": "rocket",
+      "title": "Use after free possible in `uri::Formatter` on panic",
+      "description": "Affected versions of this crate transmuted a `&str` to a `&'static str` before\npushing it into a `StackVec`, this value was then popped later in the same\nfunction.\n\nThis was assumed to be safe because the reference would be valid while the\nmethod's stack was active. In between the push and the pop, however, a function\n`f` was called that could invoke a user provided function.\n\nIf the user provided panicked, then the assumption used by the function was no\nlonger true and the transmute to `&'static` would create an illegal static\nreference to the string. This could result in a freed string being used during\n(such as in a `Drop` implementation) or after (e.g through `catch_unwind`) the\npanic unwinding.\n\nThis flaw was corrected in commit [e325e2f](https://github.com/SergioBenitez/Rocket/commit/e325e2fce4d9f9f392761e9fb58b418a48cef8bb)\nby using a guard object to ensure that the `&'static str` was dropped inside\nthe function.",
+      "date": "2021-02-09",
+      "aliases": [
+        "CVE-2021-29935"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "use-after-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/SergioBenitez/Rocket/issues/1534",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0028",
+      "package": "rocket",
+      "title": "`LocalRequest::clone` creates multiple mutable references to the same object",
+      "description": "The affected version of `rocket` contains a `Clone` trait implementation of\n`LocalRequest` that reuses the pointer to inner `Request` object.\nThis causes data race in rare combinations of APIs if the original and the\ncloned objects are modified at the same time.",
+      "date": "2020-05-27",
+      "aliases": [
+        "CVE-2020-35882"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/SergioBenitez/Rocket/issues/1312",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rocket::local::LocalRequest::clone": [
+          "<0.4.5, >=0.4.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.5"
+      ],
+      "unaffected": [
+        "<0.4.0"
+      ]
+    }
+  }
+]

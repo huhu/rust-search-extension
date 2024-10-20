@@ -1,0 +1,129 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0014",
+      "package": "rusqlite",
+      "title": "Various memory safety issues",
+      "description": "Several memory safety issues have been uncovered in an audit of\nrusqlite.\n\nSee https://github.com/rusqlite/rusqlite/releases/tag/0.23.0 for a complete list.",
+      "date": "2020-04-23",
+      "aliases": [
+        "CVE-2020-35866",
+        "CVE-2020-35867",
+        "CVE-2020-35868",
+        "CVE-2020-35869",
+        "CVE-2020-35870",
+        "CVE-2020-35871",
+        "CVE-2020-35872",
+        "CVE-2020-35873"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rusqlite/rusqlite/releases/tag/0.23.0",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rusqlite::Connection::get_aux": [
+          "<0.23.0"
+        ],
+        "rusqlite::Connection::set_aux": [
+          "<0.23.0"
+        ],
+        "rusqlite::session::Session::attach": [
+          "<0.23.0"
+        ],
+        "rusqlite::session::Session::diff": [
+          "<0.23.0"
+        ],
+        "rusqlite::trace::log": [
+          "<0.23.0"
+        ],
+        "rusqlite::vtab::create_module": [
+          "<0.23.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.23.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0128",
+      "package": "rusqlite",
+      "title": "Incorrect Lifetime Bounds on Closures in `rusqlite`",
+      "description": "The lifetime bound on several closure-accepting `rusqlite` functions (specifically, functions which register a callback to be later invoked by SQLite) was too relaxed. If a closure referencing borrowed values on the stack is was passed to one of these functions, it could allow Rust code to access objects on the stack after they have been dropped.\n\nThe impacted functions are:\n\n- Under `cfg(feature = \"functions\")`: `Connection::create_scalar_function`, `Connection::create_aggregate_function` and `Connection::create_window_function`.\n- Under `cfg(feature = \"hooks\")`: `Connection::commit_hook`, `Connection::rollback_hook` and `Connection::update_hook`.\n- Under `cfg(feature = \"collation\")`: `Connection::create_collation`.\n\nThe issue exists in all `0.25.*` versions prior to `0.25.4`, and all `0.26.*` versions prior to 0.26.2 (specifically: `0.25.0`, `0.25.1`, `0.25.2`, `0.25.3`, `0.26.0`, and `0.26.1`).\n\nThe fix is available in versions `0.26.2` and newer, and also has been back-ported to `0.25.4`. As it does not exist in `0.24.*`, all affected versions should have an upgrade path to a semver-compatible release.",
+      "date": "2021-12-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "incorrect-lifetime"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rusqlite/rusqlite/issues/1048",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rusqlite::Connection::commit_hook": [
+          ">=0.25.0, <0.25.4",
+          ">=0.26.0, <0.26.2"
+        ],
+        "rusqlite::Connection::create_aggregate_function": [
+          ">=0.25.0, <0.25.4",
+          ">=0.26.0, <0.26.2"
+        ],
+        "rusqlite::Connection::create_collation": [
+          ">=0.25.0, <0.25.4",
+          ">=0.26.0, <0.26.2"
+        ],
+        "rusqlite::Connection::create_scalar_function": [
+          ">=0.25.0, <0.25.4",
+          ">=0.26.0, <0.26.2"
+        ],
+        "rusqlite::Connection::create_window_function": [
+          ">=0.25.0, <0.25.4",
+          ">=0.26.0, <0.26.2"
+        ],
+        "rusqlite::Connection::rollback_hook": [
+          ">=0.25.0, <0.25.4",
+          ">=0.26.0, <0.26.2"
+        ],
+        "rusqlite::Connection::update_hook": [
+          ">=0.25.0, <0.25.4",
+          ">=0.26.0, <0.26.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.26.2",
+        "^0.25.4"
+      ],
+      "unaffected": [
+        "<0.25.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0105",
+      "package": "abi_stable",
+      "title": "Update unsound DrainFilter and RString::retain",
+      "description": "Affected versions of this crate contained code from the Rust standard library that contained soundness bugs rust-lang/rust#60977 (double drop) & rust-lang/rust#78498 (create invalid utf-8 string).\n\nThe flaw was corrected in v0.9.1 by making a similar fix to the one made in the Rust standard library.",
+      "date": "2020-12-21",
+      "aliases": [
+        "CVE-2020-36212",
+        "CVE-2020-36213"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rodrimati1992/abi_stable_crates/issues/44",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

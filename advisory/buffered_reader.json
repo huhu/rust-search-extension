@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0039",
+      "package": "buffered-reader",
+      "title": "Out-of-bounds array access leads to panic",
+      "description": "Affected versions of the crate have a bug where attacker-controlled\ninput can result in the use of an out-of-bound array index.  Rust\ndetects the use of the out-of-bound index and causes the application\nto panic.  An attacker may be able to use this to cause a\ndenial-of-service.  However, it is not possible for an attacker to\nread from or write to the application's address space.",
+      "date": "2023-05-16",
+      "aliases": [
+        "GHSA-29mf-62xx-28jq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://gitlab.com/sequoia-pgp/sequoia/-/tags/buffered-reader%2Fv1.2.0"
+      ],
+      "source": null,
+      "url": "https://lists.sequoia-pgp.org/hyperkitty/list/announce@lists.sequoia-pgp.org/thread/SN2E3QRT4DMQ5JNEK6VIN6DJ5SH766DI/",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.2, <1.1.0",
+        ">=1.1.5, <1.2.0",
+        ">=1.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

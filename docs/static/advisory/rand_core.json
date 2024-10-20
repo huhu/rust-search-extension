@@ -1,0 +1,88 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0023",
+      "package": "rand_core",
+      "title": "Incorrect check on buffer length when seeding RNGs",
+      "description": "Summary: rand_core::le::read_u32_into and read_u64_into have incorrect checks on the source buffer length, allowing the destination buffer to be under-filled.\n\nImplications: some downstream RNGs, including Hc128Rng (but not the more widely used ChaCha*Rng), allow seeding using the SeedableRng::from_seed trait-function with too short keys.",
+      "date": "2021-02-12",
+      "aliases": [
+        "CVE-2021-27378"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-random/rand/pull/1096",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rand_core::le::read_u32_into": [
+          "<0.6.2, >=0.6.0"
+        ],
+        "rand_core::le::read_u64_into": [
+          "<0.6.2, >=0.6.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.2"
+      ],
+      "unaffected": [
+        "<0.6.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0035",
+      "package": "rand_core",
+      "title": "Unaligned memory access",
+      "description": "Affected versions of this crate violated alignment when casting byte slices to\ninteger slices, resulting in undefined behavior.\n\nThe flaw was corrected by Ralf Jung and Diggory Hardy.",
+      "date": "2019-04-19",
+      "aliases": [
+        "GHSA-mmc9-pwm7-qj5w",
+        "CVE-2020-25576"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-random/rand/blob/master/rand_core/CHANGELOG.md#050---2019-06-06",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rand_core::BlockRng::fill_bytes": [
+          "<0.4.2"
+        ],
+        "rand_core::BlockRng::next_u64": [
+          "<0.4.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        "^0.3.1",
+        ">=0.4.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

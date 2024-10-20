@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0021",
+      "package": "rio",
+      "title": "rio allows a use-after-free buffer access when a future is leaked",
+      "description": "When a `rio::Completion` is leaked, its drop code will not run. The drop code\nis responsible for waiting until the kernel completes the I/O operation into, or\nout of, the buffer borrowed by `rio::Completion`. Leaking the struct will allow\none to access and/or drop the buffer, which can lead to a use-after-free,\ndata races or leaking secrets.\n\nUpstream is not interested in fixing the issue.",
+      "date": "2020-05-11",
+      "aliases": [
+        "CVE-2020-35876"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/spacejam/rio/issues/11",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

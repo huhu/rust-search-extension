@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0004",
+      "package": "rustc-serialize",
+      "title": "Stack overflow in rustc_serialize when parsing deeply nested JSON",
+      "description": "When parsing JSON using `json::Json::from_str`, there is no limit to the depth of the stack, therefore deeply nested objects can cause a stack overflow, which aborts the process.\n\nExample code that triggers the vulnerability is\n\n```rust\nfn main() {\n    let _ = rustc_serialize::json::Json::from_str(&\"[0,[\".repeat(10000));\n}\n```\n\n[serde](https://crates.io/crates/serde) is recommended as a replacement to rustc_serialize.",
+      "date": "2022-01-01",
+      "aliases": [
+        "GHSA-2226-4v3c-cff8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "stack overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rustc_serialize::json::Json::from_str": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

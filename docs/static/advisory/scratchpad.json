@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0030",
+      "package": "scratchpad",
+      "title": "move_elements can double-free objects on panic",
+      "description": "Affected versions of `scratchpad` used `ptr::read` to read elements while\ncalling a user provided function `f` on them.\n\nSince the pointer read duplicates ownership, a panic inside the user provided\n`f` function could cause a double free when unwinding.\n\nThe flaw was fixed in commit `891561bea` by removing the unsafe block and using\na plain iterator.",
+      "date": "2021-02-18",
+      "aliases": [
+        "CVE-2021-28031"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/okready/scratchpad/issues/1",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "scratchpad::SliceMoveSource::move_elements": [
+          "<1.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

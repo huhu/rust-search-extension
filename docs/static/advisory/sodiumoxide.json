@@ -1,0 +1,102 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0137",
+      "package": "sodiumoxide",
+      "title": "sodiumoxide is deprecated",
+      "description": "Alternatives may be found - not in any specific order:\n\n- [libsodium-sys-stable](https://crates.io/crates/libsodium-sys-stable)\n- [dryoc](https://crates.io/crates/dryoc)\n- [RustCrypto/nacl-compat](https://github.com/RustCrypto/nacl-compat) (`crypto_box`, `crypto_kx`, `crypto_secretstream`)\n- [RustCrypto/xsalsa20poly1305](https://github.com/RustCrypto/AEADs/tree/master/xsalsa20poly1305) (`crypto_secretbox`)\n- [Signatory](https://crates.io/crates/signatory)\n- [ed25519-compact](https://crates.io/crates/ed25519-compact)\n- [ed25519-dalek](https://github.com/dalek-cryptography/ed25519-dalek)\n- [ring](https://github.com/briansmith/ring)\n\nRecommendations can be also found from:\n\n- [Awesome Rust Cryptography](https://github.com/The-DevX-Initiative/RCIG_Coordination_Repo/blob/main/Awesome_Rust_Cryptography.md) \n\nNo direct maintained fork exists.",
+      "date": "2021-10-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "cryptography"
+      ],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sodiumoxide/sodiumoxide/commit/5bb1dfd2578539b89ffb0cbea25f21f00cfb963e",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2017-0001",
+      "package": "sodiumoxide",
+      "title": "scalarmult() vulnerable to degenerate public keys",
+      "description": "The `scalarmult()` function included in previous versions of this crate\naccepted all-zero public keys, for which the resulting Diffie-Hellman shared\nsecret will always be zero regardless of the private key used.\n\nThis issue was fixed by checking for this class of keys and rejecting them\nif they are used.",
+      "date": "2017-01-26",
+      "aliases": [
+        "CVE-2017-1000168"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "cryptography"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dnaq/sodiumoxide/issues/154",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.0.14"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0026",
+      "package": "sodiumoxide",
+      "title": "generichash::Digest::eq always return true",
+      "description": "PartialEq implementation for generichash::Digest has compared itself to itself.\n\nDigest::eq always returns true and Digest::ne always returns false.",
+      "date": "2019-10-11",
+      "aliases": [
+        "CVE-2019-25002"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "cryptography"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sodiumoxide/sodiumoxide/pull/381",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "sodiumoxide::crypto::generichash::Digest::eq": [
+          "<0.2.5, >=0.2.0"
+        ],
+        "sodiumoxide::crypto::generichash::Digest::ne": [
+          "<0.2.5, >=0.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.5"
+      ],
+      "unaffected": []
+    }
+  }
+]
