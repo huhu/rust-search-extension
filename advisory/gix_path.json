@@ -1,0 +1,158 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0371",
+      "package": "gix-path",
+      "title": "gix-path improperly resolves configuration path reported by Git",
+      "description": "### Summary\n\n`gix-path` runs `git` to find the path of a configuration file associated with the `git` installation, but improperly resolves paths containing unusual or non-ASCII characters, in rare cases enabling a local attacker to inject configuration leading to code execution.\n\n### Details\n\nIn `gix_path::env`, the underlying implementation of the `installation_config` and `installation_config_prefix` functions calls `git config -l --show-origin` to find the path of a file to treat as belonging to the `git` installation.\n\nAffected versions of `gix-path` do not pass `-z`/`--null` to cause `git` to report literal paths ([`650a1b5`](https://github.com/Byron/gitoxide/commit/650a1b5cf25e086197cc55a68525a411e1c28031)). Instead, to cover the occasional case that `git` outputs a quoted path, they attempt to parse the path by stripping the quotation marks:\n\n<https://github.com/Byron/gitoxide/blob/1cfe577d461293879e91538dbc4bbfe01722e1e8/gix-path/src/env/git/mod.rs#L138-L142>\n\nThe problem is that, when a path is quoted, it may change in substantial ways beyond the concatenation of quotation marks. If not reversed, these changes can result in another valid path that is not equivalent to the original.\n\nThis is not limited to paths with unusual characters such as quotation marks or newlines. Unless `git` is explicitly configured with `core.quotePath` set to `false`, it also happens when the path contains most non-ASCII characters, including accented or non-English letters. For example, `é` is transformed to `\\303\\251`, with literal backslashes. (This is an octal representation of the bytes in its UTF-8 encoding. This behavior is not limited to systems that encode paths with UTF-8 on disk.)\n\nRarely, the configuration file `gix-path` wrongly attempts to open can be created by an attacker who has a limited user account on the system. The attacker would often need to request an account username tailored to carrying out the attack.\n\n### PoC\n\n#### Quick demonstration on Unix\n\nOn a Unix-like system in which Git supports no higher scope than `system` for configuration variables (i.e., not on macOS with Apple Git), in a locale that supports UTF-8, with `gitoxide` installed, run:\n\n```sh\nmkdir myrepo\ncd myrepo\ngit init\nprintf '[real]\\n\\trealvar = realval\\n' > 'é'\nprintf '[fake]\\n\\tfakevar = fakeval\\n' > '\\303\\251'\nGIT_CONFIG_SYSTEM='é' gix config\n```\n\nIf the above conditions are satisfied and the `gix` command was built against an affected version of `gix-path`, then the last command's output looks something like this:\n\n```text\n# From '\\303\\251' (GitInstallation)\n[fake]\n        fakevar = fakeval\n\n# From 'é' (System)\n[real]\n        realvar = realval\n\n# From '/home/ubuntu/.gitconfig' (User)\n[init]\n        defaultBranch = main\n\n# From './.git/config' (Local)\n[core]\n        repositoryformatversion = 0\n        filemode = true\n        bare = false\n        logallrefupdates = true\n```\n\n#### Demonstration across user accounts on Windows\n\nOn a test system running Windows on which Git for Windows is *not* installed system-wide—resembling a scenario in which users who wish to use Git are expected to install it themselves for their accounts—create two accounts, with these usernames:\n\n- *Renée*, the target of the attack. This user may be a limited user or an administrator. Its user profile directory is assumed to be `C:\\Users\\Renée`.\n- *Ren*, the user who carries out the attack. This user should be a limited user, since an administrator would not need to exploit this vulnerability to inject configuration. Its user profile directory is assumed to be `C:\\Users\\Ren`.\n\nAs *Ren*, run these commands in PowerShell:\n\n```powershell\n$d = \"$HOME\\303\\251e\\AppData\\Local\\Programs\\Git\\etc\"\nmkdir $d\ngit config --file $d\\gitconfig core.sshCommand calc.exe\nicacls $HOME\\303 /grant 'Renée:(RX)' /T\n```\n\n(The `gitconfig` file can instead be written manually, in which case *Ren* need not have `git`.)\n\nAs *Renée*:\n\n1. Install Git for Windows in the default location for non-systemwide installations, which for that user account is inside `C:\\Users\\Renée\\AppData\\Local\\Programs`. For a non-administrative installation, Git for Windows will pick this location automatically. Allow the installer to place the directory containing `git` in the user's `PATH`, as it does by default.\n\n   (The scenario can be modified for any location the attacker can predict. So, for example, *Renée* can install Git for Windows with [`scoop`](https://scoop.sh/), and *Ren* could carry out the attack with correspondingly modified path components in place of `AppData\\Local\\Programs\\Git`.)\n\n2. Install `gitoxide` using any common technique, such as by [installing Rust](https://www.rust-lang.org/tools/install) and then running `cargo install gitoxide`.\n\n3. Open a PowerShell window and run a `gix` command that attempts to run the SSH client for transport. For example:\n\n   ```pwsh\n   gix clone ssh://localhost/myrepo.git\n   ```\n\n   At least one, and usually two, instances of the Windows calculator will pop up. This happens because `calc.exe` was configured in the fake configuration file the user *Ren* was able to cause to be used, by placing it at the location `gix-path` wrongly resolved the path of *Renée*'s own configuration file to.\n\nThe `gitconfig` file written by the attacker can be adjusted with an arbitrary choice of payload, or to set other configuration variables.\n\n### Impact\n\nOn a single-user system, it is not possible to exploit this, unless `GIT_CONFIG_SYSTEM` and `GIT_CONFIG_GLOBAL` have been set to unusual values or Git has been installed in an unusual way. Such a scenario is not expected.\n\nExploitation is unlikely even on a multi-user system, though it is plausible in some uncommon configurations or use cases. It is especially unlikely with Apple Git on macOS, due to its very high scoped configuration in `/Library` or `/Applications` that would be detected instead, as in [CVE-2024-45305](https://github.com/advisories/GHSA-v26r-4c9c-h3j6).\n\nThe likelihood of exploitation may be higher on Windows, where attacks such as those shown in the Windows proof-of-concept above can be performed due to the status of `\\` as a directory separator, and where there is no restriction on usernames containing accented or non-English letters (though the latter is also permitted on some other systems). Even then, complex user interaction is required. In most cases, a system administrator would have to approve an innocuous-seeming username, and then the targeted user (who could be the same or a different user) would have to use an application that uses `gix-path`.\n\nIn general, exploitation is more likely to succeed if at least one of the following applies:\n\n- Users are expected to install `git` themselves, and are likely to do so in predictable locations.\n- Locations where `git` is installed, whether due to usernames in their paths or otherwise, contain characters that `git` quotes by default in paths, such as non-English letters and accented letters.\n- A custom `system`-scope configuration file is specified with the `GIT_CONFIG_SYSTEM` environment variable, and its path is in an unusual location or has strangely named components.\n- A `system`-scope configuration file is absent, empty, or suppressed by means other than `GIT_CONFIG_NOSYSTEM`. Currently, `gix-path` can treat a `global`-scope configuration file as belonging to the installation if no higher scope configuration file is available. This increases the likelihood of exploitation even on a system where `git` is installed system-wide in an ordinary way.\n\nHowever, exploitation is expected to be very difficult even under any combination of those factors.\n\nAlthough the effect here is similar to [CVE-2022-24765](https://github.com/git-for-windows/git/security/advisories/GHSA-vw2c-22j4-2fh2) once exploited, a greater degree of user interaction would usually be required, and the attack complexity here is much higher because the necessary conditions are uncommon and challenging to predict.",
+      "date": "2024-09-06",
+      "aliases": [
+        "CVE-2024-45405",
+        "GHSA-m8rp-vv92-46c7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "escape-sequences"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/advisories/GHSA-m8rp-vv92-46c7"
+      ],
+      "source": null,
+      "url": "https://github.com/Byron/gitoxide/security/advisories/GHSA-m8rp-vv92-46c7",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "gix_path::env::installation_config": [
+          "*"
+        ],
+        "gix_path::env::installation_config_prefix": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.11"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0367",
+      "package": "gix-path",
+      "title": "gix-path uses local config across repos when it is the highest scope",
+      "description": "### Summary\n\n`gix-path` executes `git` to find the path of a configuration file that belongs to the `git` installation itself, but mistakenly treats the local repository's configuration as system-wide if no higher scoped configuration is found. In rare cases, this causes a less trusted repository to be treated as more trusted, or leaks sensitive information from one repository to another, such as sending credentials to another repository's remote.\n\n### Details\n\nIn `gix_path::env`, the underlying implementation of the `installation_config` and `installation_config_prefix` functions calls `git config -l --show-origin` and parses the first line of the output to extract the path to the configuration file holding the configuration variable of highest [scope](https://git-scm.com/docs/git-config#SCOPES):\n\n<https://github.com/Byron/gitoxide/blob/12251eb052df30105538fa831e641eea557f13d8/gix-path/src/env/git/mod.rs#L91>\n\n<https://github.com/Byron/gitoxide/blob/12251eb052df30105538fa831e641eea557f13d8/gix-path/src/env/git/mod.rs#L112>\n\nWhile the configuration variable of highest scope is not usually in the local scope, there are practical situations where this occurs:\n\n- A configuration file truly associated with the installation is not present on all systems and can occasionally be empty. Likewise, there may be no variables in the global scope.\n- Configuration files associated with those higher scopes may be deliberately skipped by setting the `GIT_CONFIG_SYSTEM` and `GIT_CONFIG_GLOBAL` environment variables to `/dev/null` (or to `NUL` on Windows). This prevents `gix-path` from finding the path of configuration files for those scopes, while not preventing downstream components such as the function in `gix-config` from reporting a local path as being associated with the installation.\n- The `GIT_CONFIG_NOSYSTEM` environment variable can be used to disable configuration associated with the installation. (`GIT_CONFIG_NOSYSTEM=1` is more powerful than `GIT_CONFIG_SYSTEM=/dev/null` on systems where an additional \"unknown\" scope is associated with the installation, as occurs on macOS with Apple Git.) This will cause the local scope to be the highest nonempty scope under even more situations, though in practice it is less dangerous because most, though possibly not all, downstream components would disregard the value.\n\nA user may use either or both of the latter two techniques to turn off an undesired configuration or to create a more replicable environment. Such a user would expect that this results in a more controlled configuration.\n\nOften, when located inside one repository, a user performs operations on that repository or that are not specific to any repository. In such use, local configuration is typically desired or at least acceptable, and mistaking it as coming from another scope is not typically harmful.\n\nHowever, sometimes a user is in one repository and operates on another repository. A major case where this occurs is cloning one repository while located in another. This can be done in an ad-hoc fashion, including when cloning the repository outside of the one we are inside. It may also potentially be automated by an application for purposes such as submodule handling. Two kinds of problems are anticipated:\n\n- A less secure configuration may be set for a specific repository where it is judged acceptable, even though it would not be wanted for other repositories, such as to enable a protocol or set up debugging.\n- More likely, a configuration that supplies secrets for use in one repository's remote can be used to send those secrets to another repository's remote.\n\n### PoC\n\nIn this example, we send mock `Authorization: Basic ...` credentials meant for one repository's remote to another remote, by running `gix` while inside the first repository to clone the second repository.\n\nThese instructions are written for a Unix shell, but they will work in other shells, including in PowerShell on Windows if the method of setting environment variables is adapted and `/dev/null` is replaced with `NUL`. This procedure is likely to demonstrate the problem on all systems *except* macOS. This is due to the high-scoped \"unknown\" configuration that usually accompanies Apple Git, and reflects that gix-path is in practice much less vulnerable on macOS (though still potentially vulnerable).\n\n1. Install [`dummyhttp`](https://crates.io/crates/dummyhttp) to serve as a local HTTP server for the demonstration.\n\n2. Obtain a build of `gitoxide` with the `max` feature set enabled. While this vulnerability affects other builds, this example requires `max` for `http.extraHeader` support.\n\n   Running `cargo install gitoxide` will install such a build though it may build against a patched version of `gix-path`. Cloning the repository ([`12251eb`](https://github.com/Byron/gitoxide/commit/12251eb052df30105538fa831e641eea557f13d8) and earlier are affected) and building with `cargo build` or `cargo install --path .` are also sufficient. In contrast, installing from published binaries with `binstall` or `quickinstall` does not provide the `max` feature, as of this writing.\n\n3. Run: `dummyhttp -i 127.0.0.1 -c 403 -v`\n\n4. In a separate terminal, create a new local repository and set up a mock remote and `http.extraHeader` configuration:\n\n   ```sh\n   git init myrepo\n   cd myrepo\n   git remote add origin http://127.0.0.1:8080/mygit.git\n   git config --local http.extraHeader 'Authorization: Basic abcde'\n   ```\n\n5. Make sure the testing setup is working by running `gix fetch` in the repository and checking that it fails in the expected way. In the terminal where that is run, a message should be shown indicating an HTTP 403 error. The more interesting output is in the terminal where `dummyhttp` is running, which should look like this:\n\n   ```text\n   2024-30-30 03:30:16 127.0.0.1:55689 GET /myrepo.git/info/refs?service=git-upload-pack HTTP/1.1\n   ┌─Incoming request\n   │ GET /myrepo.git/info/refs?service=git-upload-pack HTTP/1.1\n   │ Accept: */*\n   │ Authorization: Basic abcde\n   │ Git-Protocol: version=2\n   │ Host: 127.0.0.1:8080\n   │ User-Agent: git/oxide-0.42.2\n   ┌─Outgoing response\n   │ HTTP/1.1 403 Forbidden\n   │ Content-Length: 9\n   │ Content-Type: text/plain; charset=utf-8\n   │ Date: Fri, 30 Aug 2024 03:30:16 -0400\n   ```\n\n   Some details may differ, especially dates and times. But `Authorization: Basic abcde` should be shown.\n\n6. Now, in the terminal where you ran `gix fetch`, try cloning a separate repository:\n\n   ```sh\n   gix clone http://127.0.0.1:8080/other.git\n   ```\n\n   Check the output appended in the terminal where `dummyhttp` is running. This is to observe that `Authorization: Basic abcde` was rightly *not* sent.\n\n   Alternatively, if it *does* appear, then your system may be in one of the uncommon configurations that is vulnerable without further action.\n\n7. Now rerun that command, but with a modified environment, to cause `gix-path` to wrongly treat configuration from the local scope as being associated with the `git` installation:\n\n   ```sh\n   env GIT_CONFIG_SYSTEM=/dev/null GIT_CONFIG_GLOBAL=/dev/null gix clone http://127.0.0.1:8080/other.git\n   ```\n\n   Check the output appended in the terminal where `dummyhttp` is running. Observe that `Authorization: Basic abcde` was wrongly sent.\n\nWhile this procedure uses the same remote host for both repositories, this is not a required element. If the second repository had a different, untrusted host, the extra header would still be sent.\n\n### Impact\n\nIt is believed to be very difficult to exploit this vulnerability deliberately, due to the need either to anticipate a situation in which higher-scoped configuration variables would be absent, or to arrange for this to happen. Although any operating system may be affected, users running Apple Git on macOS are much less likely to be affected.\n\nIn the example shown above, more secure general practices would avoid it: using a credential manager, or even using `http.<url>.extraHeader` with as specific a `<url>` as possible, rather than the more general `http.extraHeader`. Many scenarios are analogous: if each repository's configuration is as secure as possible for how the repository is used, and secrets are stored securely and separately, then the circumstances under which an unacceptably unsecure configuration is used, or under which a leak of credentials would occur, become unlikely.",
+      "date": "2024-08-31",
+      "aliases": [
+        "CVE-2024-45305",
+        "GHSA-v26r-4c9c-h3j6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "configuration-failure",
+        "information-leak"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:L/I:N/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/advisories/GHSA-v26r-4c9c-h3j6",
+        "https://nvd.nist.gov/vuln/detail/CVE-2024-45305"
+      ],
+      "source": null,
+      "url": "https://github.com/Byron/gitoxide/security/advisories/GHSA-v26r-4c9c-h3j6",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "gix_path::env::installation_config": [
+          "*"
+        ],
+        "gix_path::env::installation_config_prefix": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.10"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0355",
+      "package": "gix-path",
+      "title": "gix-path can use a fake program files location",
+      "description": "### Summary\n\nWhen looking for Git for Windows so it can run it to report its paths, `gix-path` can be tricked into running another `git.exe` placed in an untrusted location by a limited user account.\n\n### Details\n\nWindows permits limited user accounts without administrative privileges to create new directories in the root of the system drive. While `gix-path` first looks for `git` using a `PATH` search, in version 0.10.8 it also has a fallback strategy on Windows of checking [two hard-coded paths](https://github.com/Byron/gitoxide/blob/6cd8b4665bb7582f744c3244abaef812be39ec35/gix-path/src/env/git.rs#L9-L14) intended to be the 64-bit and 32-bit Program Files directories:\n\n```rust\n/// Other places to find Git in.\n#[cfg(windows)]\npub(super) static ALTERNATIVE_LOCATIONS: &[&str] = &[\n    \"C:/Program Files/Git/mingw64/bin\",\n    \"C:/Program Files (x86)/Git/mingw32/bin\",\n];\n```\n\nExisting functions, as well as the newly introduced `exe_invocation` function, were updated to make use of these alternative locations. This causes facilities in `gix_path::env` to directly execute `git.exe` in those locations, as well as to return its path or whatever configuration it reports to callers who rely on it.\n\nAlthough unusual setups where the system drive is not `C:`, or even where Program Files directories have non-default names, are technically possible, the main problem arises on a 32-bit Windows system. Such a system has no `C:\\Program Files (x86)` directory.\n\nA limited user on a 32-bit Windows system can therefore create the `C:\\Program Files (x86)` directory and populate it with arbitrary contents. Once a payload has been placed at the second of the two hard-coded paths in this way, other user accounts including administrators will execute it if they run an application that uses `gix-path` and do not have `git` in a `PATH` directory.\n\n(While having `git` found in a `PATH` search prevents exploitation, merely having it installed in the default location under the real `C:\\Program Files` directory does not. This is because the first hard-coded path's `mingw64` component assumes a 64-bit installation.)\n\n### PoC\n\nOn a 32-bit (x86) Windows 10 system, with or without Git for Windows installed:\n\n1. Create a limited user account in `lusrmgr.msc` or the Settings application.\n2. Log in with that account and, using Windows Explorer or the `mkdir` command in PowerShell, create the directories `C:\\Program Files (x86)\\Git\\mingw32\\bin`. Although a limited user account cannot create regular files directly in `C:\\`, it can create directories including one called `Program Files (x86)`.\n3. Place a copy of `C:\\Windows\\system32\\calc.exe` in `C:\\Program Files (x86)\\Git\\mingw32\\bin` and rename it from `calc.exe` to `git.exe`. A different test payload may be used if preferred, and the executable need not already be signed or trusted.\n4. Log out, and log in as a different user. This user may be an administrator.\n5. If `gitoxide` is not installed, install it. If `cargo install gitoxide` is used for the installation, then the version of `gix-path` used in the installation can be observed.\n6. The vulnerability is only exploitable if `git` cannot be found in a `PATH` search. So, in PowerShell, run `gcm git` to check if `git` is present in the `PATH`. If so, temporarily remove it. One way to do this is for the current shell only, by running `$env:PATH` to inspect it and by assigning `$env:PATH = '...'` where `...` omits directories that contain `git`.\n7. Some commands that can be run outside a repository, and most commands that can be run inside a repository, will run the Calculator or other payload at least once per invocation. Try `gix clone foo` or, inside of a repository, `gix status`, `gix config`, `gix is-changed`, `gix fetch`, `ein t hours`, or `ein t query`. This is not exhaustive; most other `gix` and `ein` commands that access existing repository state or a network resource likewise run the payload.\n\n### Impact\n\nOnly Windows is affected. Exploitation is unlikely except on a 32-bit system. In particular, running a 32-bit build on a 64-bit system is not a risk factor. Furthermore, the attacker must have a user account on the system, though it may be a relatively unprivileged account. Such a user can perform privilege escalation and execute code as another user, though it may be difficult to do so reliably because the targeted user account must run an application or service that uses `gix-path` and must not have `git` in its `PATH`.\n\nThe main exploitable configuration is one where Git for Windows has been installed but not added to `PATH`. This is one of the options in its installer, though not the default option. Alternatively, an affected program that sanitizes its `PATH` to remove seemingly nonessential directories could allow exploitation. But for the most part, if the target user has configured a `PATH` in which the real `git.exe` can be found, then this cannot be exploited.\n\nThis vulnerability is comparable to [CVE-2022-24765](https://github.com/git-for-windows/git/security/advisories/GHSA-vw2c-22j4-2fh2), in which an uncontrolled path like `C:\\.git\\config`, which a limited user can create, could supply configuration used by other users. However, in this case, exploitation is slightly simpler because, rather than using configuration, an executable is directly run.",
+      "date": "2024-07-18",
+      "aliases": [
+        "CVE-2024-40644",
+        "GHSA-mgvv-9p9g-3jv4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "search-path"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:L",
+      "informational": null,
+      "references": [
+        "https://github.com/advisories/GHSA-mgvv-9p9g-3jv4"
+      ],
+      "source": null,
+      "url": "https://github.com/Byron/gitoxide/security/advisories/GHSA-mgvv-9p9g-3jv4",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {
+        "gix_path::env::exe_invocation": [
+          "*"
+        ],
+        "gix_path::env::installation_config": [
+          "*"
+        ],
+        "gix_path::env::installation_config_prefix": [
+          "*"
+        ],
+        "gix_path::env::system_prefix": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.9"
+      ],
+      "unaffected": [
+        "<0.10.8"
+      ]
+    }
+  }
+]

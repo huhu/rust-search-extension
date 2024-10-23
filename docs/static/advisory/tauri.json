@@ -1,0 +1,69 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0091",
+      "package": "tauri",
+      "title": "`tauri` filesystem scope partial bypass",
+      "description": "A bug identified in [this](https://github.com/tauri-apps/tauri/issues/5234) issue allows a partial filesystem scope bypass if glob characters are used within file dialog or drag-and-drop functionalities.\n\n[This](https://github.com/tauri-apps/tauri/pull/5237) PR fixes the issue by escaping glob characters.",
+      "date": "2022-09-19",
+      "aliases": [
+        "CVE-2022-41874",
+        "GHSA-q9wv-22m9-vhqh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:C/C:L/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tauri-apps/tauri/issues/5234",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.7, <1.1.0",
+        ">=1.1.2"
+      ],
+      "unaffected": [
+        "<1.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0088",
+      "package": "tauri",
+      "title": "`tauri`'s `readDir` endpoint allows possible enumeration outside of filesystem scope",
+      "description": "It is possible for `readDir` to incorrectly enumerate files from a symlinked directory if called recursively when specifying an empty string for the dir parameter as outlined in [this](https://github.com/tauri-apps/tauri/issues/4882) issue.\n\nThis is corrected in [this](https://github.com/tauri-apps/tauri/pull/5123) PR by checking if a directory is a symlink before reading from it.",
+      "date": "2022-08-07",
+      "aliases": [
+        "CVE-2022-39215",
+        "GHSA-28m8-9j7v-x499"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tauri-apps/tauri/issues/4882",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

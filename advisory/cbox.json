@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0005",
+      "package": "cbox",
+      "title": "CBox API allows to de-reference raw pointers without `unsafe` code",
+      "description": "`CBox` and `CSemiBox` are part of the public API of the cbox crate\nand they allow to create smart pointers from raw pointers and de-reference\nthem without the need of `unsafe` code.",
+      "date": "2020-03-19",
+      "aliases": [
+        "CVE-2020-35860",
+        "GHSA-3vjm-36rr-7qrq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/TomBebbington/cbox-rs/issues/2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

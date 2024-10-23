@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0129",
+      "package": "kekbit",
+      "title": "ShmWriter allows sending non-Send type across threads",
+      "description": "Affected versions of this crate implement `Send` for `ShmWriter<H>` without requiring `H: Send`. This allows users to send `H: !Send` to other threads, which can potentially lead to data races and undefined behavior.",
+      "date": "2020-12-18",
+      "aliases": [
+        "CVE-2020-36449"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/motoras/kekbit/issues/34",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

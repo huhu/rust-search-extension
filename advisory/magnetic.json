@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0088",
+      "package": "magnetic",
+      "title": "MPMCConsumer/Producer allows sending non-Send type across threads",
+      "description": "Affected versions of this crate unconditionally implemented `Sync` and `Send` traits for `MPMCConsumer` and `MPMCProducer` types.\n\nThis allows users to send types that do not implement `Send` trait across thread boundaries, which can cause a data race.\n\nThe flaw was corrected in the 2.0.1 release by adding `T: Send` bound to affected Sync/Send trait implementations.",
+      "date": "2020-11-29",
+      "aliases": [
+        "CVE-2020-35925",
+        "GHSA-wv4p-jp67-jr97"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/johnshaw/magnetic/issues/9",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

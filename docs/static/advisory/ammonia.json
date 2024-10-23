@@ -1,0 +1,125 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0001",
+      "package": "ammonia",
+      "title": "Uncontrolled recursion leads to abort in HTML serialization",
+      "description": "Affected versions of this crate did use recursion for serialization of HTML\nDOM trees.\n\nThis allows an attacker to cause abort due to stack overflow by providing\na pathologically nested input.\n\nThe flaw was corrected by serializing the DOM tree iteratively instead.",
+      "date": "2019-04-27",
+      "aliases": [
+        "CVE-2019-15542"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "stack-overflow",
+        "crash"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-ammonia/ammonia/blob/master/CHANGELOG.md#210",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ammonia::Document::to_string": [
+          "<2.1.0"
+        ],
+        "ammonia::Document::write_to": [
+          "<2.1.0"
+        ],
+        "ammonia::clean": [
+          "<2.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.1.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0003",
+      "package": "ammonia",
+      "title": "Space bug in `clean_text`",
+      "description": "An incorrect mapping from HTML specification to ASCII codes was used.\nBecause HTML treats the Form Feed as whitespace, code like this has an injection bug:\n\n    let html = format!(\"<div title={}>\", clean_text(user_supplied_string));\n\nApplications are not affected if they quote their attributes, or if they don't use `clean_text` at all.",
+      "date": "2022-01-19",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "html",
+        "xss"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-ammonia/ammonia/pull/147",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ammonia::clean_text": [
+          "<=3.1.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=3.1.3"
+      ],
+      "unaffected": [
+        "<3.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0074",
+      "package": "ammonia",
+      "title": "Incorrect handling of embedded SVG and MathML leads to mutation XSS",
+      "description": "Affected versions of this crate did not account for namespace-related parsing\ndifferences between HTML, SVG, and MathML. Even if the `svg` and `math` elements\nare not allowed, the underlying HTML parser still treats them differently.\nRunning cleanup without accounting for these differing namespaces resulted in an \"impossible\"\nDOM, which appeared \"safe\" when examining the DOM tree, but when serialized and deserialized,\ncould be exploited to inject arbitrary markup.\n\nTo exploit this, the application using this library must allow a tag that is parsed as raw text in HTML.\nThese [elements] are:\n\n* title\n* textarea\n* xmp\n* iframe\n* noembed\n* noframes\n* plaintext\n* noscript\n* style\n* script\n\nApplications that do not explicitly allow any of these tags should not be affected, since none are allowed by default.\n\n[elements]: https://github.com/servo/html5ever/blob/57eb334c0ffccc6f88d563419f0fbeef6ff5741c/html5ever/src/tree_builder/rules.rs",
+      "date": "2021-07-08",
+      "aliases": [
+        "CVE-2021-38193"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "html",
+        "xss"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-ammonia/ammonia/pull/142",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.1.0",
+        ">=2.1.3, <3.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

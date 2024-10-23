@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0139",
+      "package": "dces",
+      "title": "dces' World type can cause data races",
+      "description": "The `World` type in `dces` is marked as `Send` without bounds on its\n`EntityStore` and `ComponentStore`.\n\nThis allows non-thread safe `EntityStore` and `ComponentStore`s to be sent\nacross threads and cause data races.",
+      "date": "2020-12-09",
+      "aliases": [
+        "CVE-2020-36459"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.redox-os.org/redox-os/dces-rust/-/issues/8",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

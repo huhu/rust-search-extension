@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0033",
+      "package": "alg_ds",
+      "title": "Matrix::new() drops uninitialized memory",
+      "description": "`Matrix::new()` internally calls `Matrix::fill_with()` which uses `*ptr = value` pattern to initialize the buffer.\nThis pattern assumes that there is an initialized struct at the address and drops it, which results in dropping of uninitialized struct.",
+      "date": "2020-08-25",
+      "aliases": [
+        "CVE-2020-36432"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.com/dvshapkin/alg-ds/-/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

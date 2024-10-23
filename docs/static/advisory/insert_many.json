@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0042",
+      "package": "insert_many",
+      "title": "insert_many can drop elements twice on panic",
+      "description": "Affected versions of `insert_many` used `ptr::copy` to move over items in a\nvector to make space before inserting, duplicating their ownership. It then\niterated over a provided `Iterator` to insert the new items.\n\nIf the iterator's `.next()` method panics then the vector would drop the same\nelements twice.",
+      "date": "2021-01-26",
+      "aliases": [
+        "CVE-2021-29933"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rphmeier/insert_many/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

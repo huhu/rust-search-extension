@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0040",
+      "package": "arenavec",
+      "title": "panic safety: double drop or uninitialized drop of T upon panic",
+      "description": "Affected versions of this crate did not guard against potential panics that may happen from user-provided functions `T::default()` and `T::drop()`.\n\nPanic within `T::default()` leads to dropping uninitialized `T`, when it is invoked from `common::Slice::<T, H>::new()`.\nPanic within `T::drop()` leads to double drop of `T`, when it is invoked either from `common::SliceVec::<T, H>::resize_with()` or `common::SliceVec::<T, H>::resize()`\n\nEither case causes memory corruption in the heap memory.",
+      "date": "2021-01-12",
+      "aliases": [
+        "CVE-2021-29930",
+        "CVE-2021-29931"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ibabushkin/arenavec/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

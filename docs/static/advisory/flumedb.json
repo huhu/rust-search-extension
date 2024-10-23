@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0086",
+      "package": "flumedb",
+      "title": "`Read` on uninitialized buffer may cause UB ( `read_entry()` )",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided `Read` implementation.\nThere are two of such cases (`go_offset_log::read_entry()` & `offset_log::read_entry()`).\n\nArbitrary `Read` implementations can read from the uninitialized buffer (memory exposure) and also can return incorrect number of bytes written to the buffer.\nReading from uninitialized memory produces undefined values that can quickly invoke undefined behavior.",
+      "date": "2021-01-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/sunrise-choir/flumedb-rs/pull/12"
+      ],
+      "source": null,
+      "url": "https://github.com/sunrise-choir/flumedb-rs/issues/10",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

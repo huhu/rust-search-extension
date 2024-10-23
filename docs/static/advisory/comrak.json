@@ -1,0 +1,68 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0063",
+      "package": "comrak",
+      "title": "XSS in `comrak`",
+      "description": "[comrak](https://github.com/kivikakk/comrak) operates by default in a \"safe\"\nmode of operation where unsafe content, such as arbitrary raw HTML or URLs with\nnon-standard schemes, are not permitted in the output.  This is per the\nreference GFM implementation, [cmark-gfm](https://github.com/github/cmark).\n\nAmpersands were not being correctly escaped in link targets, making it possible\nto fashion unsafe URLs using schemes like `data:` or `javascript:` by entering\nthem as HTML entities, e.g. `&#x64&#x61&#x74&#x61&#x3a`.  The intended\nbehaviour, demonstrated upstream, is that these should be escaped and therefore\nharmless, but this behaviour was broken in comrak.",
+      "date": "2021-05-04",
+      "aliases": [
+        "CVE-2021-38186"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "xss"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/kivikakk/comrak/releases/tag/0.10.1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0026",
+      "package": "comrak",
+      "title": "XSS in `comrak`",
+      "description": "The [comrak](https://github.com/kivikakk/comrak) we were matching unsafe URL prefixes, such as `data:` or `javascript:` , in a case-sensitive manner. This meant prefixes like `Data:` were untouched.",
+      "date": "2021-02-21",
+      "aliases": [
+        "CVE-2021-27671"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "xss"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/kivikakk/comrak/releases/tag/0.9.1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0147",
+      "package": "daemonize",
+      "title": "`daemonize` is Unmaintained",
+      "description": "Last release was over four years ago.\n\nThe crate contains undocumented unsafe behind safe fns.\n\nAn [issue](https://github.com/knsd/daemonize/issues/46) inquiring as to possible updates has gone unanswered by the maintainer.\n\n## Possible Alternatives\n\nThe below list has not been vetted in any way and may or may not contain alternatives:\n\n- [daemonize-me](https://crates.io/crates/daemonize-me)\n- [tetsy-daemonize](https://crates.io/crates/tetsy-daemonize)",
+      "date": "2021-09-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/knsd/daemonize/issues/46",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
