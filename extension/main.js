@@ -114,6 +114,9 @@ async function start(omnibox) {
 
     if (!omnibox.extensionMode) return;
 
+    // NOTE: this kind of async registration is specifically discouraged in manifest v2
+    // not sure if it works properly in v3? https://developer.chrome.com/docs/extensions/mv2/background-pages#listeners
+    // See also https://developer.chrome.com/docs/extensions/develop/migrate/to-service-workers#register-listeners
     chrome.storage.onChanged.addListener(async changes => {
         for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
             console.log('storage key updated:', key);
