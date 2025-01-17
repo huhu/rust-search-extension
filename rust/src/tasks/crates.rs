@@ -54,7 +54,7 @@ impl WordCollector {
 
     fn collect_crate_name(&mut self, name: &str) {
         self.words.extend(
-            name.split(|c| c == '_' || c == '-')
+            name.split(['_', '-'])
                 .filter(|c| c.len() >= 3)
                 .map(String::from)
                 .collect::<Vec<_>>(),

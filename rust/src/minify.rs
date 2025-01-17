@@ -54,7 +54,7 @@ impl<'a> Minifier<'a> {
     #[inline]
     pub fn minify_crate_name(&self, name: &str) -> String {
         let vec: Vec<&str> = name
-            .split(|c| c == '_' || c == '-')
+            .split(['_', '-'])
             .map(|item| self.mapping.get(item).map(Deref::deref).unwrap_or(item))
             .collect();
         vec.join("_")

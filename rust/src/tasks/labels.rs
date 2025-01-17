@@ -59,7 +59,7 @@ impl LabelsTask {
         for page in 1..=MAX_PAGE {
             labels.extend(
                 client
-                    .get(&API.replace("{}", &page.to_string()))
+                    .get(API.replace("{}", &page.to_string()))
                     .send()
                     .await?
                     .json::<Vec<Label>>()
