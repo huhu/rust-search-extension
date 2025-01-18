@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0100",
+      "package": "sha2",
+      "title": "Miscomputed results when using AVX2 backend",
+      "description": "The v0.9.7 release of the `sha2` crate introduced a new AVX2-accelerated\nbackend which was automatically enabled for all x86/x86_64 CPUs where AVX2\nsupport was autodetected at runtime.\n\nThis backend was buggy and would miscompute results for long messages\n(i.e. messages spanning multiple SHA blocks).\n\nThe crate has since been yanked, but any users who upgraded to v0.9.7 should\nimmediately upgrade to v0.9.8 and recompute any hashes which were previously\ncomputed by v0.9.7.",
+      "date": "2021-09-08",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "cryptography"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/hashes/pull/314",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.8"
+      ],
+      "unaffected": [
+        "<0.9.7"
+      ]
+    }
+  }
+]

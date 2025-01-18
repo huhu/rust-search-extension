@@ -1,0 +1,66 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0045",
+      "package": "oqs",
+      "title": "Post-Quantum Key Encapsulation Mechanism SIKE broken",
+      "description": "Wouter Castryck and Thomas Decru presented an efficient key recovery attack on the SIDH protocol.\nAs a result, the secret key of SIKEp751 can be recovered in a matter of hours.\nThe SIKE and SIDH schemes will be removed from oqs 0.7.2.\n\nThe affected schemes are the `oqs::kem::Algorithm::Sike*` and `oqs::kem::Algorithm::Sidh*` enum variants.\n\n[An efficient key recovery attack on SIDH (preliminary version)](https://eprint.iacr.org/2022/975)",
+      "date": "2022-07-30",
+      "aliases": [
+        "GHSA-hrjv-pf36-jpmr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0047",
+      "package": "oqs",
+      "title": "Post-Quantum Signature scheme Rainbow level I parametersets broken",
+      "description": "Ward Beullens found a practical key-recovery attack against Rainbow.\nThe level I parametersets are removed from liboqs starting from version `0.7.2`.\nFind the scientific details in [Breaking Rainbow Takes a Weekend on a Laptop](https://eprint.iacr.org/2022/214).\n\nThis means all the `oqs::sig::Algorithm::RainbowI*` variants are insecure.",
+      "date": "2022-02-25",
+      "aliases": [
+        "GHSA-h864-m8vm-3xvj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/KFgw5_qCXiI?pli=1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

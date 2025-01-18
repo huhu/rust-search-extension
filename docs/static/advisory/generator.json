@@ -1,0 +1,66 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0020",
+      "package": "generator",
+      "title": "fix unsound APIs that could lead to UB",
+      "description": "Affected versions of this crate API could use uninitialized memory with some APIs in special\ncases, like use the API in none generator context. This could lead to UB.\nThe flaw was corrected by <https://github.com/Xudong-Huang/generator-rs/issues/9>\n                          <https://github.com/Xudong-Huang/generator-rs/issues/11>\n                          <https://github.com/Xudong-Huang/generator-rs/issues/13>\n                          <https://github.com/Xudong-Huang/generator-rs/issues/14>                                                  \nThis patch fixes all those issues above.",
+      "date": "2019-09-06",
+      "aliases": [
+        "CVE-2019-16144"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Xudong-Huang/generator-rs/issues/9",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.18"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0151",
+      "package": "generator",
+      "title": "Generators can cause data races if non-Send types are used in their generator functions",
+      "description": "The `Generator` type is an iterable which uses a generator function that yields\nvalues. In affected versions of the crate, the provided function yielding values\nhad no `Send` bounds despite the `Generator` itself implementing `Send`.\n\nThe generator function lacking a `Send` bound means that types that are\ndangerous to send across threads such as `Rc` could be sent as part of a\ngenerator, potentially leading to data races.\n\nThis flaw was fixed in commit [`f7d120a3b`](https://github.com/Xudong-Huang/generator-rs/commit/f7d120a3b724d06a7b623d0a4306acf8f78cb4f0)\nby enforcing that the generator function be bound by `Send`.",
+      "date": "2020-11-16",
+      "aliases": [
+        "CVE-2020-36471"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Xudong-Huang/generator-rs/issues/27",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

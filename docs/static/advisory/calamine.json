@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0015",
+      "package": "calamine",
+      "title": "`Sectors::get` accesses unclaimed/uninitialized memory",
+      "description": "Affected versions of this crate arbitrarily calls `Vec::set_len` to increase length of a vector without claiming more memory for the vector. Affected versions of this crate\nalso calls user-provided `Read` on the uninitialized memory of the vector that was\nextended with `Vec::set_len`.\n\nThis can overwrite active entities in adjacent heap memory and seems to be a major security issue. Also, calling user-provided `Read` on uninitialized memory is defined as UB in Rust.",
+      "date": "2021-01-06",
+      "aliases": [
+        "CVE-2021-26951"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tafia/calamine/issues/199",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.17.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

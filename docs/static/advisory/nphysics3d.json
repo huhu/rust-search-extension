@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0148",
+      "package": "nphysics3d",
+      "title": "nphysics3d is unmaintained",
+      "description": "The maintainer has advised that this crate is passively-maintained and that it\nis being superseded by the [Rapier](https://github.com/dimforge/rapier) project.",
+      "date": "2021-01-29",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dimforge/nphysics",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

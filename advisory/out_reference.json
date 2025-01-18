@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0152",
+      "package": "out-reference",
+      "title": "`out_reference::Out::from_raw` should be `unsafe`",
+      "description": "`Out::from_raw` in affected versions allows writing a value to invalid memory address without requiring `unsafe`.\n\nThe soundness issue has been addressed by making `Out::from_raw` an unsafe function.",
+      "date": "2021-01-20",
+      "aliases": [
+        "GHSA-p7mj-xvxg-grff"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "unsound",
+        "raw-pointer"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustyYato/out-ref/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "out_reference::Out::from_raw": [
+          ">=0.1.0, <0.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": [
+        "<0.1.0"
+      ]
+    }
+  }
+]

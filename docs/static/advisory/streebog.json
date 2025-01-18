@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0030",
+      "package": "streebog",
+      "title": "Incorrect implementation of the Streebog hash functions",
+      "description": "Internal `update-sigma` function was implemented incorrectly and depending on\n`debug-assertions` it could've caused an incorrect result or panic for certain\ninputs.",
+      "date": "2019-10-06",
+      "aliases": [
+        "CVE-2020-25575",
+        "CVE-2019-25006",
+        "CVE-2019-25007"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/hashes/pull/91",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0022",
+      "package": "temporary",
+      "title": "Use of uninitialized memory in temporary",
+      "description": "Uninit memory is used as a RNG seed in temporary\n\nThe following function is used as a way to get entropy from the system, which does operations on and exposes uninit memory, which is UB.\n\n```rust\nfn random_seed(_: &Path, _: &str) -> [u64; 2] {\n    use std::mem::uninitialized as rand;\n    unsafe { [rand::<u64>() ^ 0x12345678, rand::<u64>() ^ 0x87654321] }\n}\n```\n\nThis has been resolved in the 0.6.4 release.\n\nThe crate is not intended to be used outside of a testing environment.\n\nFor a general purpose crate to create temporary directories, [`tempfile`](https://crates.io/crates/tempfile) is an alternative for this crate.",
+      "date": "2018-08-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "uninitialized-memory"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/stainless-steel/temporary/issues/2",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.4"
+      ],
+      "unaffected": [
+        "<0.3.0"
+      ]
+    }
+  }
+]

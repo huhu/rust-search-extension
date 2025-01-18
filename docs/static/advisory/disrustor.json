@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0150",
+      "package": "disrustor",
+      "title": "RingBuffer can create multiple mutable references and cause data races",
+      "description": "The `RingBuffer` type retrieves mutable references from the `DataProvider` in a\nnon-atomic manner, potentially allowing the creation of multiple mutable\nreferences. `RingBuffer` also implements the `Send` and `Sync` traits for all\ntypes `T`.\n\nThis allows undefined behavior from the aliased mutable references as well\nas data races.",
+      "date": "2020-12-17",
+      "aliases": [
+        "CVE-2020-36470"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sklose/disrustor/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0163",
+      "package": "term_size",
+      "title": "`term_size` is unmaintained; use `terminal_size` instead",
+      "description": "The [`term_size`](https://crates.io/crates/term_size) crate is no longer maintained. Consider using\n[`terminal_size`](https://crates.io/crates/terminal_size) instead.",
+      "date": "2020-11-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/clap-rs/term_size-rs/pull/31",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

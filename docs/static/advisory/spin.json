@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0013",
+      "package": "spin",
+      "title": "Wrong memory orderings in RwLock potentially violates mutual exclusion",
+      "description": "Wrong memory orderings inside the RwLock implementation allow for two writers to acquire the lock at the same time. The drop implementation used Ordering::Relaxed, which allows the compiler or CPU to reorder a mutable access on the locked data after the lock has been yielded.\n\nOnly users of the RwLock implementation are affected. Users of Once (including users of lazy_static with the `spin_no_std` feature enabled) are NOT affected.\n\nOn strongly ordered CPU architectures like x86, the only real way that this would lead to a memory corruption is if the compiler reorders an access after the lock is yielded, which is possible but in practice unlikely. It is a more serious issue on weakly ordered architectures such as ARM which, except in the presence of certain instructions, allow the hardware to decide which accesses are seen at what times. Therefore on an ARM system it is likely that using the wrong memory ordering would result in a memory corruption, even if the compiler itself doesn't reorder the memory accesses in a buggy way.\n\nThe flaw was corrected by https://github.com/mvdnes/spin-rs/pull/66.",
+      "date": "2019-08-27",
+      "aliases": [
+        "CVE-2019-16137"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "atomic",
+        "ordering",
+        "spin",
+        "lock",
+        "mutex",
+        "rwlock"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mvdnes/spin-rs/issues/65",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "spin::RwLock::new": [
+          "<0.5.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.5.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

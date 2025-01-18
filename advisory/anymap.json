@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0065",
+      "package": "anymap",
+      "title": "anymap is unmaintained.",
+      "description": "The `anymap` crate does not appear to be maintained, and the most recent\npublished version 0.12.1 includes a soundness bug. This has been\n[fixed](https://github.com/chris-morgan/anymap/pull/32) a few years ago, but\nwas never released.",
+      "date": "2021-05-07",
+      "aliases": [
+        "CVE-2021-38187",
+        "GHSA-hc92-9h3m-c39j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/chris-morgan/anymap/issues/37",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
