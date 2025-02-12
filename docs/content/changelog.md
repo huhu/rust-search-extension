@@ -8,20 +8,23 @@ weight = 3
 
 - Integrate omnibox search into manage page
 - Split IndexSetter from IndexManager
-- Migrate Firefox version to Manifest V3. close #201
-- Sunset rustc docs search (#281)
-- Support description shards (#285)
+- Migrate Firefox version to Manifest V3. close ({{ issue(id=201) }})
+- Sunset rustc docs search ({{ issue(id=281) }})
+- Support description shards ({{ issue(id=285) }})
 - Support all stdlib crates
 - Bug fix:
-  - chore: fix typo (#273)
+  - chore: fix typo ({{ issue(id=273) }})
   - Fix offline mode not working on Chrome
-  - Fix search of extern crates (#276)
-  - Fix docs.rs TOC if headings contain inline code (#278)
-  - Fix crate indexing by upgrading item types for old crate doc (#277)
-  - Fix optional dependency nowrap, close #274
+  - Fix search of extern crates ({{ issue(id=276) }})
+  - Fix docs.rs TOC if headings contain inline code ({{ issue(id=278) }})
+  - Fix crate indexing by upgrading item types for old crate doc ({{ issue(id=277) }})
+  - Fix optional dependency nowrap, close ({{ issue(id=274) }})
   - Fix source code mode and levenshtein bug
   - Fix docs.rs svg icons
 
+## v2.0.1 - 2025-02-12
+
+- Always run initialization code on browser start ({{ issue(id=295) }})
 
 # v1.13.0 - 2024-02-14
 
