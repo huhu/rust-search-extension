@@ -9,7 +9,7 @@ local icons() = {
 };
 
 local name = 'Rust Search Extension';
-local version = '2.0.1';
+local version = '2.0.2';
 local keyword = 'rs';
 local description = 'Rust Search Extension - the ultimate search extension for Rust';
 
