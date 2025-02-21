@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0052",
+      "package": "id-map",
+      "title": "Multiple functions can cause double-frees",
+      "description": "The following functions in the crate are affected:\n\n## `IdMap::clone_from`\n\nThe `clone_from` implementation for `IdMap` drops the values present in the\nmap and then begins cloning values from the other map. If a `.clone()` call\npancics, then the afformentioned dropped elements can be freed again.\n\n## `get_or_insert`\n\n`get_or_insert` reserves space for a value, before calling the user provided\ninsertion function `f`. If the function `f` panics then uninitialized or\npreviously freed memory can be dropped.\n\n## `remove_set`\n\nWhen removing a set of elements, `ptr::drop_in_place` is called on each of the\nelement to be removed. If the `Drop` impl of one of these elements panics then\nthe previously dropped elements can be dropped again.",
+      "date": "2021-02-26",
+      "aliases": [
+        "CVE-2021-30455",
+        "CVE-2021-30456",
+        "CVE-2021-30457",
+        "GHSA-8gmx-cpcg-f8h5",
+        "GHSA-rccq-j2m7-8fwr",
+        "GHSA-vfqx-hv88-f9cv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/andrewhickman/id-map/issues/3",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

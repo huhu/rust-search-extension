@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0050",
+      "package": "dync",
+      "title": "VecCopy allows misaligned access to elements",
+      "description": "`VecCopy::data` is created as a Vec of u8 but can be used to store and retrieve\nelements of different types leading to misaligned access.\n\nThe issue was resolved in v0.5.0 by replacing data being stored by `Vec<u8>` with a custom managed\npointer.  Elements are now stored and retrieved using types with proper alignment corresponding to\noriginal types.",
+      "date": "2020-09-27",
+      "aliases": [
+        "CVE-2020-35903"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/elrnv/dync/issues/4",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

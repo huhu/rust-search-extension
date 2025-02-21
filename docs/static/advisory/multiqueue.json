@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0143",
+      "package": "multiqueue",
+      "title": "Queues allow non-Send types to be sent to other threads, allowing data races",
+      "description": "Affected versions of this crate unconditionally implemented `Send` for types used in queue implementations (`InnerSend<RW, T>`, `InnerRecv<RW, T>`, `FutInnerSend<RW, T>`, `FutInnerRecv<RW, T>`).\n\nThis allows users to send non-Send types to other threads, which can lead to data race bugs or other undefined behavior.",
+      "date": "2020-12-25",
+      "aliases": [
+        "CVE-2020-36463"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/schets/multiqueue/issues/31",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

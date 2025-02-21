@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0051",
+      "package": "outer_cgi",
+      "title": "KeyValueReader passes uninitialized memory to Read instance",
+      "description": "The `KeyValueReader` type in affected versions of this crate set up an\nuninitialized memory buffer and passed them to be read in to a user-provided\n`Read` instance.\n\nThe `Read` instance could read uninitialized memory and cause undefined\nbehavior and miscompilations.\n\nThis issue was fixed in commit [dd59b30](https://github.com/SolraBizna/outer_cgi/commit/dd59b3066e616a08e756f72de8dc3ab11b7036c4)\nby zero-initializing the buffers before passing them.",
+      "date": "2021-01-31",
+      "aliases": [
+        "CVE-2021-30454"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/SolraBizna/outer_cgi/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

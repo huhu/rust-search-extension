@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0009",
+      "package": "basic_dsp_matrix",
+      "title": "panic safety issue in `impl TransformContent<S, D> for [S; (2|3|4)]`",
+      "description": "Affected versions of this crate did not guard against double drop while temporarily duplicating objects' ownership using `ptr::read()`. Upon panic in a user-provided function `conversion`, objects that are copied by `ptr::read()` are dropped twice, leading to memory corruption.\n\nThe flaw was corrected in v0.9.2 by using `ManuallyDrop<T>` to enclose objects that are to be temporarily duplicated.",
+      "date": "2021-01-10",
+      "aliases": [
+        "CVE-2021-25906"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/liebharc/basic_dsp/issues/47",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

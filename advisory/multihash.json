@@ -1,0 +1,50 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0068",
+      "package": "multihash",
+      "title": "Unexpected panic in multihash `from_slice` parsing code",
+      "description": "In versions prior 0.11.3 it's possible to make `from_slice` panic by feeding it certain malformed input.\nIt's never documented that `from_slice` (and `from_bytes` which wraps it) can panic, and its' return type (`Result<Self, DecodeError>`) suggests otherwise.\n\nIn practice, `from_slice`/`from_bytes` is frequently used in networking code (for example [in rust-libp2p](https://github.com/libp2p/rust-libp2p/blob/7b415d5e7040e45c541f76f2c409e63d4d3249c6/core/src/peer_id.rs#L89)) and is being called with unsanitized data from untrusted sources.\nThis can allow attackers to cause DoS by causing an unexpected `panic` in the network client's code.",
+      "date": "2020-11-08",
+      "aliases": [
+        "CVE-2020-35909",
+        "GHSA-h7qh-3h6f-w79p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "parsing",
+        "panic",
+        "untrusted data"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/multiformats/rust-multihash/pull/72",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "multihash::digests::MultihashGeneric::from_bytes": [
+          "<0.11.3"
+        ],
+        "multihash::digests::MultihashRefGeneric::from_slice": [
+          "<0.11.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.11.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

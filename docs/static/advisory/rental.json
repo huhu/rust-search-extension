@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0134",
+      "package": "rental",
+      "title": "rental is unmaintained, author has moved on",
+      "description": "The author encourages users to explore other solutions, or maintain a fork.\n\nMaintained alternatives include:\n\n* [`ouroboros`](https://crates.io/crates/ouroboros)\n* [`fortify`](https://crates.io/crates/fortify)\n* [`escher`](https://crates.io/crates/escher)",
+      "date": "2021-12-27",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/jpernst/rental/commit/213671ab3aab3452efd7e2290c6bb714ee327014",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

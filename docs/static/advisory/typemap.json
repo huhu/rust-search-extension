@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0039",
+      "package": "typemap",
+      "title": "typemap is Unmaintained",
+      "description": "The maintainer seems unreachable.\n\nThe crate may or may not be usable as-is despite no maintenance and may not work in future versions of Rust.\n\nThe last release seems to have been seven years ago.\n\n## Possible Alternative(s)\n\n The below list has not been vetted in any way and may or may not contain alternatives;\n\n - [ttmap](https://crates.io/crates/ttmap)\n - [typemap_rev](https://crates.io/crates/typemap_rev)\n - [typemap-ors](https://crates.io/crates/typemap-ors)",
+      "date": "2019-04-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/rustsec/advisory-db/issues/1088"
+      ],
+      "source": null,
+      "url": "https://github.com/reem/rust-typemap/issues/45",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

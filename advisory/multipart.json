@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0050",
+      "package": "multipart",
+      "title": "multipart is Unmaintained",
+      "description": "The `multipart` crate is unmaintained. The author has archived the github\nrepository.\n\nAlternatives:\n\n- [multer](https://crates.io/crates/multer)\n- [multiparty](https://crates.io/crates/multiparty)",
+      "date": "2023-04-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

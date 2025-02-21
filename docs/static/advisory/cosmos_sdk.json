@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0099",
+      "package": "cosmos_sdk",
+      "title": "Crate has been renamed to `cosmrs`",
+      "description": "The `cosmos_sdk` crate, which provides a basic Rust SDK for the Cosmos ecosystem,\nhas rebranded to “CosmRS” in the spirit of other projects like CosmJS and CosmWasm.\n\nYou can find the new home here:\n\nhttps://github.com/cosmos/cosmos-rust/tree/main/cosmrs\n\nThe new crate name is `cosmrs`:\n\nhttps://crates.io/crates/cosmrs",
+      "date": "2021-08-25",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cosmos/cosmos-rust/issues/113",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

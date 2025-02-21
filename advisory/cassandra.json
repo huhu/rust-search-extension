@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2016-0006",
+      "package": "cassandra",
+      "title": "`cassandra` crate is unmaintained; use `cassandra-cpp` instead",
+      "description": "The `cassandra` crate has not seen a release since December 2016, and its author\nis unresponsive.\n\nThe `cassandra-cpp` crate is a maintained fork:\n\nhttps://github.com/Metaswitch/cassandra-rs",
+      "date": "2016-12-15",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tupshin/cassandra-rs/issues/52",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.8.1"
+      ]
+    }
+  }
+]

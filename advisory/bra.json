@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0008",
+      "package": "bra",
+      "title": "reading on uninitialized buffer can cause UB (`impl<R> BufRead for GreedyAccessReader<R>`)",
+      "description": "Affected versions of this crate creates an uninitialized buffer and passes it to user-provided `Read` implementation.\n\nThis is unsound, because it allows safe Rust code to exhibit an undefined behavior (read from uninitialized memory).\n\nThe flaw was corrected in version 0.1.1 by zero-initializing a newly allocated buffer\nbefore handing it to a user-provided `Read` implementation.",
+      "date": "2021-01-02",
+      "aliases": [
+        "CVE-2021-25905",
+        "GHSA-j8qq-58cr-8cc7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Enet4/bra-rs/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

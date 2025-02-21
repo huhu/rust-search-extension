@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0037",
+      "package": "xsalsa20poly1305",
+      "title": "crate has been renamed to `crypto_secretbox`",
+      "description": "This crate has been forked/renamed from `xsalsa20poly1305` to `crypto_secretbox`.\n\nThe new repository location is at:\n\n<https://github.com/RustCrypto/nacl-compat/tree/master/crypto_secretbox>",
+      "date": "2023-05-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/AEADs/pull/525",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
