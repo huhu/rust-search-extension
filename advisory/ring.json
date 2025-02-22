@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0007",
+      "package": "ring",
+      "title": "*ring* is unmaintained",
+      "description": "The author has announced an indefinite hiatus in its development, noting that\nany reported security vulnerabilities may go unaddressed for prolonged periods\nof time.",
+      "date": "2025-02-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/briansmith/ring/discussions/2414",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
