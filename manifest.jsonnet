@@ -46,7 +46,7 @@ json
 .addHostPermissions(host_permissions)
 .addOptionalHostPermissions(optional_host_permissions)
 .addIcons(icons())
-.addPermissions(['storage', 'unlimitedStorage'])
+.addPermissions(['storage', 'unlimitedStorage', 'alarms'])
 .setOptionsUi('manage/index.html')
 .addContentScript(
   matches=['*://docs.rs/*'],
