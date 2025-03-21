@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0014",
+      "package": "chan",
+      "title": "chan is end-of-life; use crossbeam-channel instead",
+      "description": "**`chan` has reached its end-of-life and is now deprecated.**\n\nThe intended successor of this crate is\n[`crossbeam-channel`](https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-channel).\nIts API is strikingly similar, but comes with a much better `select!` macro,\nbetter performance, a better test suite and an all-around better\nimplementation.",
+      "date": "2018-07-31",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/BurntSushi/chan/commit/0a5c0d4ad4adc90a54ee04a427389acf2e157275",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.1.23"
+      ]
+    }
+  }
+]

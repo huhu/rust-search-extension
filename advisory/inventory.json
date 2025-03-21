@@ -1,0 +1,68 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0058",
+      "package": "inventory",
+      "title": "Exposes reference to non-Sync data to an arbitrary thread",
+      "description": "Affected versions do not enforce a `Sync` bound on the type of caller-provided\nvalue held in the plugin registry. References to these values are made\naccessible to arbitrary threads other than the one that constructed them.\n\nA caller could use this flaw to submit thread-unsafe data into inventory, then\naccess it as a reference simultaneously from multiple threads.\n\nThe flaw was corrected by enforcing that data submitted by the caller into\ninventory is `Sync`.",
+      "date": "2023-09-10",
+      "aliases": [
+        "GHSA-36xm-35qq-795w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [
+        "life-before-main"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dtolnay/inventory/pull/42",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0057",
+      "package": "inventory",
+      "title": "Fails to prohibit standard library access prior to initialization of Rust standard library runtime",
+      "description": "Affected versions allow arbitrary caller-provided code to execute before the\nlifetime of `main`.\n\nIf the caller-provided code accesses particular pieces of the standard library\nthat require an initialized Rust runtime, such as `std::io` or `std::thread`,\nthese may not behave as documented. Panics are likely; UB is possible.\n\nThe flaw was corrected by enforcing that only code written within the\n`inventory` crate, which is guaranteed not to access runtime-dependent parts of\nthe standard library, runs before `main`. Caller-provided code is restricted to\nrunning at compile time.",
+      "date": "2023-09-10",
+      "aliases": [
+        "GHSA-ghc8-5cgm-5rpf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "life-before-main"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dtolnay/inventory/pull/43",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0065",
+      "package": "fake_clock",
+      "title": "crate has been renamed to `sn_fake_clock`",
+      "description": "This crate has been renamed from `fake_clock` to `sn_fake_clock`.\n\nThe new repository location is:\n\n<https://github.com/maidsafe/sn_fake_clock>",
+      "date": "2020-11-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maidsafe/sn_fake_clock/pull/38",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

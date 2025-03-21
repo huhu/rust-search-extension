@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0018",
+      "package": "renderdoc",
+      "title": "Internally mutating methods take immutable ref self",
+      "description": "Affected versions of this crate exposed several methods which took `self` by\nimmutable reference, despite the requesting the RenderDoc API to set a mutable\nvalue internally.\n\nThis is technically unsound and calling these methods from multiple threads\nwithout synchronization could lead to unexpected and unpredictable behavior.\n\nThe flaw was corrected in release 0.5.0.",
+      "date": "2019-09-02",
+      "aliases": [
+        "CVE-2019-16142"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "undefined_behavior"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ebkalderon/renderdoc-rs/pull/32",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "renderdoc::api::RenderDocV110::trigger_multi_frame_capture": [
+          "<0.5.0"
+        ],
+        "renderdoc::api::RenderDocV120::set_capture_file_comments": [
+          "<0.5.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.5.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

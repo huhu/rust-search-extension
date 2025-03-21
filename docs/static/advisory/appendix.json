@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0149",
+      "package": "appendix",
+      "title": "Data race and memory safety issue in `Index`",
+      "description": "The `appendix` crate implements a key-value mapping data structure called\n`Index<K, V>` that is stored on disk. The crate allows for any type to inhabit\nthe generic `K` and `V` type parameters and implements Send and Sync for them\nunconditionally.\n\nUsing a type that is not marked as `Send` or `Sync` with `Index` can allow it\nto be used across multiple threads leading to data races. Additionally using\nreference types for the keys or values will lead to the segmentation faults\nin the crate's code.",
+      "date": "2020-11-15",
+      "aliases": [
+        "CVE-2020-36469"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/krl/appendix/issues/6",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

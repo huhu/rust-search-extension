@@ -1,0 +1,52 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0017",
+      "package": "once_cell",
+      "title": "Panic during initialization of Lazy<T> might trigger undefined behavior",
+      "description": "If during the first dereference of Lazy<T> the initialization function panics,\nsubsequent dereferences will execute `std::hints::unreachable_unchecked`.\n\nApplications with `panic = \"abort\"` are not affected, as there will be no\nsubsequent dereferences.",
+      "date": "2019-09-01",
+      "aliases": [
+        "CVE-2019-16141"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "undefined_behavior"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matklad/once_cell/issues/46",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "once_cell::sync::Lazy::deref": [
+          "<1.0.1, >=0.2.5"
+        ],
+        "once_cell::sync::Lazy::force": [
+          "<1.0.1, >=0.2.5"
+        ],
+        "once_cell::unsync::Lazy::deref": [
+          "<1.0.1, >=0.2.5"
+        ],
+        "once_cell::unsync::Lazy::force": [
+          "<1.0.1, >=0.2.5"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.0.1"
+      ],
+      "unaffected": [
+        "<0.2.5"
+      ]
+    }
+  }
+]

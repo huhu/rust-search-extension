@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0010",
+      "package": "tiberius",
+      "title": "tiberius is unmaintained",
+      "description": "The author of `tiberius` has archived the GitHub repository and left the\nfollowing note:\n\n> I do not have the time to overhaul the library and do not intend to further\n> maintain the 0.3 version relying on the old futures ecosystem.\n\nSuggested alternatives are:\n\n- [`odbc`](https://crates.io/crates/odbc)\n- [`sqlx`](https://github.com/launchbadge/sqlx/issues/116) (forthcoming)",
+      "date": "2020-02-28",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustSec/advisory-db/issues/261",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.3.2"
+      ]
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0133",
+      "package": "scottqueue",
+      "title": "Queue<T> should have a Send bound on its Send/Sync traits",
+      "description": "Affected versions of this crate unconditionally implements `Send`/`Sync` for `Queue<T>`.\n\nThis allows (1) creating data races to a `T: !Sync` and (2) sending `T: !Send` to other threads, resulting in memory corruption or other undefined behavior.",
+      "date": "2020-11-15",
+      "aliases": [
+        "CVE-2020-36453",
+        "GHSA-gvvv-w559-2hg6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rossdylan/rust-scottqueue/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

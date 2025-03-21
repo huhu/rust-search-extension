@@ -1,0 +1,69 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0019",
+      "package": "crossbeam-channel",
+      "title": "Channel creates zero value of any type",
+      "description": "Affected versions of this crate called `mem::zeroed()` to create values of a user-supplied type `T`.\nThis is unsound e.g. if `T` is a reference type (which must be non-null).\n \nThe flaw was corrected by avoiding the use of `mem::zeroed()`, using `MaybeUninit` instead.",
+      "date": "2022-05-10",
+      "aliases": [
+        "GHSA-9g55-pg62-m8hh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/crossbeam-rs/crossbeam/pull/458",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0052",
+      "package": "crossbeam-channel",
+      "title": "Undefined Behavior in bounded channel",
+      "description": "The affected version of this crate's the `bounded` channel incorrectly assumes that `Vec::from_iter` has allocated capacity that same as the number of iterator elements. `Vec::from_iter` does not actually guarantee that and may allocate extra memory. The destructor of the `bounded` channel reconstructs `Vec` from the raw pointer based on the incorrect assumes described above. This is unsound and causing deallocation with the incorrect capacity when `Vec::from_iter` has allocated different sizes with the number of iterator elements.",
+      "date": "2020-06-26",
+      "aliases": [
+        "CVE-2020-15254",
+        "CVE-2020-35904",
+        "GHSA-m8h8-v6jh-c762",
+        "GHSA-v5m7-53cv-f3hx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/crossbeam-rs/crossbeam/pull/533",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.4"
+      ],
+      "unaffected": [
+        "<0.4.3"
+      ]
+    }
+  }
+]

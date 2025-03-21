@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0125",
+      "package": "simple_asn1",
+      "title": "Panic on incorrect date input to `simple_asn1`",
+      "description": "Version 0.6.0 of the `simple_asn1` crate panics on certain malformed\ninputs to its parsing functions, including `from_der` and `der_decode`.\nBecause this crate is frequently used with inputs from the network, this\nshould be considered a security vulnerability.\n\nThe issue occurs when parsing the old ASN.1 \"UTCTime\" time format.  If an\nattacker provides a UTCTime where the first character is ASCII but the\nsecond character is above 0x7f, a string slice operation in the\n`from_der_` function will try to slice into the middle of a UTF-8\ncharacter, and cause a panic.\n\nThis error was introduced in commit\n[`d7d39d709577710e9dc8`](https://github.com/acw/simple_asn1/commit/d7d39d709577710e9dc8833ee57d200eef366db8),\nwhich updated `simple_asn1` to use `time` instead of `chrono` because of\n[`RUSTSEC-2020-159`](https://rustsec.org/advisories/RUSTSEC-2020-0159).\nVersions of `simple_asn1` before 0.6.0 are not affected by this issue.\n\nThe [patch](https://github.com/acw/simple_asn1/pull/28) was applied in\n`simple_asn1` version 0.6.1.",
+      "date": "2021-11-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic",
+        "string_slice"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/acw/simple_asn1/issues/27",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": [
+        "<0.6.0"
+      ]
+    }
+  }
+]
