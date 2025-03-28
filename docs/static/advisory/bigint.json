@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0025",
+      "package": "bigint",
+      "title": "bigint is unmaintained, use uint instead",
+      "description": "The `bigint` crate is not maintained any more and contains several known bugs (including a soundness bug);\nuse [`uint`](https://crates.io/crates/uint) instead.",
+      "date": "2020-05-07",
+      "aliases": [
+        "CVE-2020-35880"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/paritytech/bigint/commit/7e71521a61b009afc94c91135353102658550d42",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0029",
+      "package": "rgb",
+      "title": "Allows viewing and modifying arbitrary structs as bytes",
+      "description": "Affected versions of rgb crate allow viewing and modifying data of any type `T` wrapped in `RGB<T>` as bytes,\nand do not correctly constrain `RGB<T>` and other wrapper structures to the types for which it is safe to do so.\n\nSafety violation possible for a type wrapped in `RGB<T>` and similar wrapper structures:\n\n * If `T` contains padding, viewing it as bytes may lead to exposure of contents of uninitialized memory.\n * If `T` contains a pointer, modifying it as bytes may lead to dereferencing of arbitrary pointers.\n * Any safety and/or validity invariants for `T` may be violated.\n \nThe issue was resolved by requiring all types wrapped in structures provided by RGB crate to implement an unsafe marker trait.",
+      "date": "2020-06-14",
+      "aliases": [
+        "CVE-2020-25016"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "type confusion"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/kornelski/rust-rgb/issues/35",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.20"
+      ],
+      "unaffected": [
+        "<0.5.4"
+      ]
+    }
+  }
+]

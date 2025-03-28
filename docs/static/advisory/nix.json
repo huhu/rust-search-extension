@@ -1,0 +1,54 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0119",
+      "package": "nix",
+      "title": "Out-of-bounds write in nix::unistd::getgrouplist",
+      "description": "On certain platforms, if a user has more than 16 groups, the\n`nix::unistd::getgrouplist` function will call the libc `getgrouplist`\nfunction with a length parameter greater than the size of the buffer it\nprovides, resulting in an out-of-bounds write and memory corruption.\n\nThe libc `getgrouplist` function takes an in/out parameter `ngroups`\nspecifying the size of the group buffer. When the buffer is too small to\nhold all of the requested user's group memberships, some libc\nimplementations, including glibc and Solaris libc, will modify `ngroups`\nto indicate the actual number of groups for the user, in addition to\nreturning an error. The version of `nix::unistd::getgrouplist` in nix\n0.16.0 and up will resize the buffer to twice its size, but will not\nread or modify the `ngroups` variable. Thus, if the user has more than\ntwice as many groups as the initial buffer size of 8, the next call to\n`getgrouplist` will then write past the end of the buffer.\n\nThe issue would require editing /etc/groups to exploit, which is usually\nonly editable by the root user.",
+      "date": "2021-09-27",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "nss"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nix-rust/nix/issues/1541",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "linux",
+        "freebsd",
+        "android",
+        "netbsd",
+        "dragonfly",
+        "openbsd",
+        "fuchsia"
+      ],
+      "functions": {
+        "nix::unistd::getgrouplist": [
+          ">=0.16.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        "^0.20.2",
+        "^0.21.2",
+        "^0.22.2",
+        ">=0.23.0"
+      ],
+      "unaffected": [
+        "<0.16.0"
+      ]
+    }
+  }
+]

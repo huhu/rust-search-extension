@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0103",
+      "package": "autorand",
+      "title": "`impl Random` on arrays can lead to dropping uninitialized memory",
+      "description": "Affected versions of this crate had a panic safety issue to drop partially uninitialized array of `T` upon panic in a user provided function `T::random()`. Dropping uninitialized `T` can potentially cause memory corruption or undefined behavior.\n\nThe flaw was corrected in commit 565d508 by using `MaybeUninit<T>` to avoid possible dropping of uninitialized memory upon panic.",
+      "date": "2020-12-31",
+      "aliases": [
+        "CVE-2020-36210",
+        "GHSA-cgmg-2v6m-fjg7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mersinvald/autorand-rs/issues/5",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0015",
+      "package": "ascii",
+      "title": "Ascii allows out-of-bounds array indexing in safe code",
+      "description": "Affected version of this crate had implementation of `From<&mut AsciiStr>` for `&mut [u8]` and `&mut str`. This can result in out-of-bounds array indexing in safe code.\n\nThe flaw was corrected in commit [8a6c779](https://github.com/tomprogrammer/rust-ascii/pull/63/commits/8a6c7798c202766bd57d70fb8d12739dd68fb9dc) by removing those impls.",
+      "date": "2023-02-25",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "ascii"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tomprogrammer/rust-ascii/issues/64",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.3"
+      ],
+      "unaffected": [
+        "<=0.6.0"
+      ]
+    }
+  }
+]

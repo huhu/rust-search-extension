@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0020",
+      "package": "stb_truetype",
+      "title": "`stb_truetype` crate has been deprecated; use `ttf-parser` instead",
+      "description": "This crate was maintained for use in rusttype which has switched to use [ttf-parser](https://crates.io/crates/ttf-parser)",
+      "date": "2020-04-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.redox-os.org/redox-os/stb_truetype-rs/-/commit/f1f5be4794e87bfc80a4255bc3f23ed75dd77645",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

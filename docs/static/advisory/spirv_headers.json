@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0096",
+      "package": "spirv_headers",
+      "title": "spirv_headers is unmaintained, use spirv instead",
+      "description": "Because of versioning issues; the `spirv_headers` crate is unmaintained. Use [spirv](https://crates.io/crates/spirv)\nfor parsing spirv files.",
+      "date": "2021-08-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gfx-rs/rspirv/issues/197",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
