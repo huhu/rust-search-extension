@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0083",
+      "package": "evm",
+      "title": "evm incorrect state transition",
+      "description": "SputnikVM, also called evm, is a Rust implementation of Ethereum Virtual Machine.\n\nA custom stateful precompile can use the `is_static` parameter to determine if\nthe call is executed in a static context (via `STATICCALL`), and thus decide\nif stateful operations should be done.\n\nPrior to version 0.36.0, the passed `is_static` parameter was incorrect -- it\nwas only set to `true` if the call came from a direct `STATICCALL` opcode.\n\nHowever, once a static call context is entered, it should stay static. The issue\nonly impacts custom precompiles that actually uses `is_static`.\n\nFor those affected, the issue can lead to possible incorrect state transitions.",
+      "date": "2022-10-25",
+      "aliases": [
+        "CVE-2022-39354",
+        "GHSA-hhc4-47rh-cr34"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-blockchain/evm/pull/133",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.36.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

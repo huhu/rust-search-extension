@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0118",
+      "package": "tiny_future",
+      "title": "Future<T> lacks bounds on Send and Sync.",
+      "description": "`tiny_future` contains a light-weight implementation of `Future`s. The `Future`\ntype it has lacked bound on its `Send` and `Sync` traits.\n\nThis allows for a bug where non-thread safe types such as `Cell` can be used in\n`Future`s and cause data races in concurrent programs.\n\nThe flaw was corrected in commit `c791919` by adding trait bounds to `Future`'s\n`Send` and `Sync`.",
+      "date": "2020-12-08",
+      "aliases": [
+        "CVE-2020-36438"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/KizzyCode/tiny_future/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

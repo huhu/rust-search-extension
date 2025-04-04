@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0013",
+      "package": "resolve",
+      "title": "resolve is unmaintained",
+      "description": "resolve crate's GitHub repository is archived with no commits for seven years.\nLatest crates.io release is also seven years old.\n\n## Possible alternatives\n\n * [hickory-resolver](https://crates.io/crates/hickory-resolver)",
+      "date": "2025-02-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/murarth/resolve"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

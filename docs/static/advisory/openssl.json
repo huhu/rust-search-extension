@@ -1,0 +1,67 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0010",
+      "package": "openssl",
+      "title": "Use after free in CMS Signing",
+      "description": "Affected versions of the OpenSSL crate used structures after they'd been freed.",
+      "date": "2018-06-01",
+      "aliases": [
+        "CVE-2018-20997"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/942",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.9"
+      ],
+      "unaffected": [
+        "<0.10.8"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2016-0001",
+      "package": "openssl",
+      "title": "SSL/TLS MitM vulnerability due to insecure defaults",
+      "description": "All versions of rust-openssl prior to 0.9.0 contained numerous insecure defaults\nincluding off-by-default certificate verification and no API to perform hostname\nverification.\n\nUnless configured correctly by a developer, these defaults could allow an attacker\nto perform man-in-the-middle attacks.\n\nThe problem was addressed in newer versions by enabling certificate verification\nby default and exposing APIs to perform hostname verification. Use the\n`SslConnector` and `SslAcceptor` types to take advantage of these new features\n(as opposed to the lower-level `SslContext` type).",
+      "date": "2016-11-05",
+      "aliases": [
+        "CVE-2016-10931"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "ssl",
+        "mitm"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/releases/tag/v0.9.0",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

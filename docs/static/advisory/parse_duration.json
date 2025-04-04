@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0041",
+      "package": "parse_duration",
+      "title": "Denial of service through parsing payloads with too big exponent",
+      "description": "The `parse_duration::parse` function allows for parsing duration strings with exponents like `5e5s` where under the hood, the [`BigInt` type along with the `pow` function are used for such payloads](https://github.com/zeta12ti/parse_duration/blob/26940ab5cd4e3a9d6bd97aa101f8d4bbfd18ee8c/src/parse.rs#L335). Passing an arbitrarily big exponent makes the `parse_duration::parse` function to process the payload for a very long time taking up CPU and memory.\n\nThis allows an attacker to cause a DoS if the `parse_duration::parse` function is used to process untrusted input.",
+      "date": "2021-03-18",
+      "aliases": [
+        "CAN-2021-1000007",
+        "CVE-2021-29932"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "parsing",
+        "untrusted data"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/zeta12ti/parse_duration/issues/21",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "parse_duration::parse": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0058",
+      "package": "inconceivable",
+      "title": "Library exclusively intended to inject UB into safe Rust.",
+      "description": "Quoting from the crate description:\n\n> This crate is created purely to inject undefined behavior into stable, safe rust.\n\nSpecifically, the `inconceivable!` macro is insta-UB if the `ub_inconceivable` feature is enabled by *any* reverse dependency.\nThe value this adds is questionable, and hides `unsafe` code from naive analysis.",
+      "date": "2022-09-28",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "notice",
+      "references": [],
+      "source": null,
+      "url": "https://crates.io/crates/inconceivable",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

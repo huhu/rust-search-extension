@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0050",
+      "package": "reorder",
+      "title": "swap_index can write out of bounds and return uninitialized memory",
+      "description": "`swap_index` takes an iterator and swaps the items with their corresponding\nindexes. It reserves capacity and sets the length of the vector based on the\n`.len()` method of the iterator.\n\nIf the `len()` returned by the iterator is larger than the actual number of\nelements yielded, then `swap_index` creates a vector containing uninitialized\nmembers. If the `len()` returned by the iterator is smaller than the actual\nnumber of members yielded, then `swap_index` can write out of bounds past\nits allocated vector.\n\nAs noted by the Rust documentation, [`len()`](https://doc.rust-lang.org/std/iter/trait.ExactSizeIterator.html#method.len)\nand `size_hint()` are primarily meant for optimization and incorrect values\nfrom their implementations should not lead to memory safety violations.\n\n\n# Patch\n\nA new version crate was pushed that marks this function as unsafe.\n\nreorder = \"1.1.0\"\n\nPrevious versions have also been yanked from crates.io.",
+      "date": "2021-02-24",
+      "aliases": [
+        "CVE-2021-29941",
+        "CVE-2021-29942"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption",
+        "out-of-bounds"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tiby312/reorder/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.1.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

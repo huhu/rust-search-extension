@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0017",
+      "package": "cassandra-cpp",
+      "title": "Non-idiomatic use of iterators leads to use after free",
+      "description": "Code that attempts to use an item (e.g., a row) returned by an iterator after the iterator has advanced to the next item will be accessing freed memory and experience undefined behaviour. Code that uses the item and then advances the iterator is unaffected. This problem has always existed.\n\nThis is a use-after-free bug, so it's rated high severity. If your code uses a pre-3.0.0 version of cassandra-rs, and uses an item returned by a cassandra-rs iterator after calling `next()` on that iterator, then it is vulnerable. However, such code will almost always fail immediately - so we believe it is unlikely that any code using this pattern would have reached production. For peace of mind, we recommend you upgrade anyway.\n\n## Patches\n\nThe problem has been fixed in version 3.0.0 (commit 299e6ac50f87eb2823a373baec37b590a74994ee). Users should upgrade to ensure their code cannot use the problematic pattern. There is an upgrade guide in the project README.\n\n## Workarounds\n\nEnsure all usage fits the expected pattern. For example, use `get_first_row()` rather than an iterator, or completely process an item before advancing the iterator with `next()`.",
+      "date": "2024-02-28",
+      "aliases": [
+        "CVE-2024-27284",
+        "GHSA-x9xc-63hg-vcfq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "memory-safety",
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Metaswitch/cassandra-rs/security/advisories/GHSA-x9xc-63hg-vcfq",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

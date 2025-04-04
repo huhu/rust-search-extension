@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0051",
+      "package": "rustsec",
+      "title": "Obsolete versions of the `rustsec` crate do not support the new V3 advisory format",
+      "description": "If you are seeing this message, you are running an obsolete version of\n`cargo-audit` which does not support the new V3 advisory format.\nThese versions are end-of-life.\n\nThis advisory is a notice that that it will soon be unable to parse the\nadvisory database.\n\nPlease upgrade `cargo-audit` to a newer release.",
+      "date": "2020-10-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustSec/advisory-db/issues/414",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">=0.19.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0056",
+      "package": "clipboard",
+      "title": "clipboard is Unmaintained",
+      "description": "Last release was almost 4 years ago and the repository with outstanding issues and pull requests seems to be abandoned by the maintainer.\n\nIn addition the sole maintainer account may be abandoned that may represent account takeover risk.\n\nCurrent outstanding issues include vulnerable dependencies that all together may mean that security issues may not be addressed now or in the future.\n\n## Possible Alternative(s)\n\nThe below list has not been vetted in any way and may or may not contain alternatives;\n\n- [`arboard`](https://crates.io/crates/arboard)\n- [`clipboard-win`](https://crates.io/crates/clipboard-win) (Windows only)\n- [`copy-pasta`](https://crates.io/crates/copypasta)\n- [`x11-clipboard`](https://crates.io/crates/x11-clipboard) (Linux/BSD only)",
+      "date": "2022-06-25",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/aweinstock314/rust-clipboard/issues/90"
+      ],
+      "source": null,
+      "url": "https://github.com/aweinstock314/rust-clipboard/issues/91",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

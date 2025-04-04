@@ -1,0 +1,81 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0019",
+      "package": "xcb",
+      "title": "Multiple soundness issues",
+      "description": "## Calls `std::str::from_utf8_unchecked()` without any checks\n\nThe function `xcb::xproto::GetAtomNameReply::name()` calls\n`std::str::from_utf8_unchecked()` on the raw bytes that were received from the\nX11 server without any validity checks. The X11 server only prevents interior\nnull bytes, but otherwise allows any X11 client to create an atom for arbitrary\nbytes.\n\nThis issue is tracked here: https://github.com/rust-x-bindings/rust-xcb/issues/96\n\n## `xcb::xproto::GetPropertyReply::value()` allows arbitrary return types\n\nThe function `xcb::xproto::GetPropertyReply::value()` returns a slice of type\n`T` where `T` is an unconstrained type parameter. The raw bytes received from\nthe X11 server are interpreted as the requested type.\n\nThe users of the `xcb` crate are advised to only call this function with the\nintended types. These are `u8`, `u16`, and `u32`.\n\nThis issue is tracked here: https://github.com/rust-x-bindings/rust-xcb/issues/95\n\n## Out of bounds read in `xcb::xproto::change_property()`\n\n`xcb::xproto::change_property` has (among others) the arguments `format: u8` and\n`data: &[T]`. The intended use is one of the following cases:\n- `format = 8` and `T = u8`\n- `format = 16` and `T = u16`\n- `format = 32` and `T = u32`\nHowever, this constraint is not enforced. For example, it is possible to call\nthe function with `format = 32` and `T = u8`. In this case, a read beyond the\nend of the `data` slice is performed and the bytes are sent to the X11 server.\n\nThe users of the `xcb` crate are advised to only call this function with one of\nthe intended argument combinations.\n\nThis issue is tracked here: https://github.com/rust-x-bindings/rust-xcb/issues/94\n\n## 'Safe' wrapper around `std::mem::transmute()`\n\nThe function `xcb::base::cast_event()` takes a reference to a\n`xcb::base::GenericEvent` and returns a reference to an arbitrary type, as\nrequested by the caller (or found via type interference). The function is\nimplemented as a direct call to `std::mem::transmute()`. Since the return type\nis not constrained, this allows transmution to an incorrect type or a type that\nis larger than the X11 event that was passed in.\n\nX11 events are mostly always 32 bytes large and this function works as intended.\n\nUsers are advised to only cast to the event structs provided by the `xcb` crate\n(and hope for the best).\n\nThis issue is tracked here: https://github.com/rust-x-bindings/rust-xcb/issues/78",
+      "date": "2021-02-04",
+      "aliases": [
+        "CVE-2021-26955",
+        "CVE-2021-26956",
+        "CVE-2021-26957",
+        "CVE-2021-26958",
+        "GHSA-2xpg-3hx4-fm9r",
+        "GHSA-3288-cwgw-ch86",
+        "GHSA-3cj3-jrrp-9rxf",
+        "GHSA-mp6r-fgw2-rxfx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/rust-x-bindings/rust-xcb/issues/78",
+        "https://github.com/rust-x-bindings/rust-xcb/issues/94",
+        "https://github.com/rust-x-bindings/rust-xcb/issues/95",
+        "https://github.com/rust-x-bindings/rust-xcb/issues/96"
+      ],
+      "source": null,
+      "url": "https://github.com/RustSec/advisory-db/issues/653",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0097",
+      "package": "xcb",
+      "title": "Soundness issue with base::Error",
+      "description": "`base::Error` type contains public field named `ptr`.\nWith this definition, it is possible to create a `base::Error` with an invalid pointer and trigger memory safety errors\nsuch as use-after-free or double-free with safe Rust.\n\nThe users of `xcb` crate are advised not to manipulate the field.",
+      "date": "2020-12-10",
+      "aliases": [
+        "CVE-2020-36205",
+        "GHSA-c8hq-x4mm-p6q6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-x-bindings/rust-xcb/issues/93",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

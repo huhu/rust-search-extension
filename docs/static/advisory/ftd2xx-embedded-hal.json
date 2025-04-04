@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0005",
+      "package": "ftd2xx-embedded-hal",
+      "title": "crate has been renamed to `ftdi-embedded-hal`",
+      "description": "This crate has been renamed from `ftd2xx-embedded-hal` to `ftdi-embedded-hal`.\n\nThe new repository location is:\n\n<https://github.com/ftdi-rs/ftdi-embedded-hal>",
+      "date": "2022-01-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/newAM/ftd2xx-embedded-hal/pull/40",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

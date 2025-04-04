@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0079",
+      "package": "elf_rs",
+      "title": "ELF header parsing library doesn't check for valid offset",
+      "description": "The crate has several unsafe sections that don't perform proper pointer validation.\n\nAn example can be found in the following function:\n\n```\nfn section_header_raw(&self) -> &[ET::SectionHeader] {\n    let sh_off = self.elf_header().section_header_offset() as usize;\n    let sh_num = self.elf_header().section_header_entry_num() as usize;\n    unsafe {\n        let sh_ptr = self.content().as_ptr().add(sh_off);\n        from_raw_parts(sh_ptr as *const ET::SectionHeader, sh_num)\n    }\n}\n```\n\nWhile this will work perfectly fine *if* the ELF header is valid, malicious or\nmalformed input can contain a section header offset of an arbitrary size, meaning\nthat the resultant pointer in the unsafe block can point to an artibrary address\nin the address space of the process.\n\nThis can result in unpredictable behaviour, and in our fuzz testing, we discovered\nthat it's trivial to cause SIGABRT (signal 6), or SEGV (signal 11).\n\nThe function should either be marked as unsafe, with a note that the caller is responsible\nfor providing only valid inputs, or it should ideally do the due diligence to ensure that the\noffset doesn't exceed the bounds of the header (and add additional checks as necessary).",
+      "date": "2022-10-31",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "elf",
+        "header"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/vincenthouyi/elf_rs/issues/11",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.0"
+      ],
+      "unaffected": []
+    }
+  }
+]
