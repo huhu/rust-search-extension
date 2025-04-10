@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2017-0003",
+      "package": "security-framework",
+      "title": "Hostname verification skipped when custom root certs used",
+      "description": "If custom root certificates were registered with a `ClientBuilder`, the\nhostname of the target server would not be validated against its presented leaf\ncertificate.\n\nThis issue was fixed by properly configuring the trust evaluation logic to\nperform that check.",
+      "date": "2017-03-15",
+      "aliases": [
+        "CVE-2017-18588"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "mitm"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-security-framework/pull/27",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.12"
+      ],
+      "unaffected": []
+    }
+  }
+]

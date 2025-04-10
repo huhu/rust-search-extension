@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0012",
+      "package": "cdr",
+      "title": "Reading uninitialized memory can cause UB (`Deserializer::read_vec`)",
+      "description": "`Deserializer::read_vec()` created an uninitialized buffer and passes it to a user-provided `Read` implementation (`Deserializer.reader.read_exact()`).\n\nPassing an uninitialized buffer to an arbitrary `Read` implementation is currently defined as undefined behavior in Rust. Official documentation for the `Read` trait explains the following: \"It is your responsibility to make sure that buf is initialized before calling read. Calling read with an uninitialized buf (of the kind one obtains via MaybeUninit<T>) is not safe, and can lead to undefined behavior.\"\n\nThe flaw was corrected in commit ce310f7 by zero-initializing the newly allocated buffer before handing it to `Deserializer.reader.read_exact()`.",
+      "date": "2021-01-02",
+      "aliases": [
+        "CVE-2021-26305"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hrektts/cdr-rs/issues/10",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.4"
+      ],
+      "unaffected": []
+    }
+  }
+]
