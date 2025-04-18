@@ -1,0 +1,98 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0107",
+      "package": "ckb",
+      "title": "Miner fails to get block template when a cell used as a cell dep has been destroyed.",
+      "description": "## Impact\n\nThe RPC get_block_template fails when a cell has been used as a cell dep and an input in the different transactions.\n\nSay cell C is used as a dep group in the transaction A, and is destroyed in the transaction B.\n\nThe node adds transaction A first, then B into the transaction pool. They are both valid. But when generating the block template, if the fee rate of B is higher, it comes before A, which will invalidate A. Currently the RPC get_block_template will fail instead of dropping A.\n\n## Patch\n\nFirst, the get_block_template should not fail but dropping the conflict transactions.\n\nThen we can propose solution to this issue. Here is an example. When a transaction is added to the pool, the pool must consider it depending on all the transactions which dep cell (direct or indirect via dep group) has been destroyed in this transaction. Because future transactions using the destroyed cells as dep will be rejected, the spending transaction only need to wait for all the existing dep transactions on chain.\n\n## Workaround\n\n    Submit transaction B when A is already on chain.\n    Let B depend on A explicitly, there are several solutions:\n        a. Add any output cell on A as a dep cell or input in B.\n        b. Merge A and B. CKB allows using the same cell as both dep and input in the same transaction.\n    Ensure the fee rate of B is less than A so A always has higher priority.",
+      "date": "2021-07-25",
+      "aliases": [
+        "CVE-2021-45698",
+        "GHSA-8gjm-h3xj-mp6w",
+        "GHSA-v666-6w97-pcwm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nervosnetwork/ckb/security/advisories/GHSA-v666-6w97-pcwm",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.40.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0108",
+      "package": "ckb",
+      "title": "Remote memory exhaustion in ckb",
+      "description": "In the ckb sync protocol, SyncState maintains a HashMap called 'misbehavior' that keeps a score of a peer's violations of the protocol. This HashMap is keyed to PeerIndex (an alias for SessionId), and entries are never removed from it. SessionId is an integer that increases monotonically with every new connection.\n\nA remote attacker can manipulate this HashMap to grow forever, resulting in degraded performance and ultimately a panic on allocation failure or being killed by the OS, depending on the platform.\n\nThis is a critical severity security bug. It could be exploited to create a targeted or network-wide denial of service, to reduce the hash power of the network as part of a 51% attack, and perhaps in other creative ways.",
+      "date": "2021-07-25",
+      "aliases": [
+        "CVE-2021-45699",
+        "GHSA-2969-8hh9-57jc",
+        "GHSA-48vq-8jqv-gm6f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nervosnetwork/ckb/security/advisories/GHSA-48vq-8jqv-gm6f",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.40.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0109",
+      "package": "ckb",
+      "title": "Process crashes when the cell used as DepGroup is not alive",
+      "description": "It's easy to create a malign transaction which uses the dead cell as the DepGroup in the DepCells. The transaction can crash all the receiving nodes.",
+      "date": "2021-07-25",
+      "aliases": [
+        "CVE-2021-45700",
+        "GHSA-45p7-c959-rgcm",
+        "GHSA-cw98-cx2m-9qqg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nervosnetwork/ckb/security/advisories/GHSA-45p7-c959-rgcm",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.40.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

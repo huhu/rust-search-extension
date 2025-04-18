@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0144",
+      "package": "lzw",
+      "title": "lzw is unmaintained",
+      "description": "The author of the `lzw` crate is unresponsive.\n\nMaintained alternatives:\n\n- [`weezl`](https://crates.io/crates/weezl)",
+      "date": "2020-02-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nwin/lzw/issues/2",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.10.0"
+      ]
+    }
+  }
+]

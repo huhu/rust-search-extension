@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0002",
+      "package": "interfaces2",
+      "title": "interfaces2 is unmaintained, use interfaces instead",
+      "description": "The `interfaces2` crate is not maintained any more;\nuse [`interfaces`](https://crates.io/crates/interfaces) instead.",
+      "date": "2021-01-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/aep/interfaces-rs",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

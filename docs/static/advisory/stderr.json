@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0109",
+      "package": "stderr",
+      "title": "stderr is unmaintained; use eprintln instead",
+      "description": "The `stderr` crate is no longer maintained by its current owner. \n\nThe author recommends using the `eprintln` macro from the standard library as a\nreplacement.",
+      "date": "2020-12-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/biluohc/stderr/issues/5",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

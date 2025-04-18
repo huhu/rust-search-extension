@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0396",
+      "package": "conrod_core",
+      "title": "`conrod_core` is unmaintained",
+      "description": "The `conrod_core` crate is no longer maintained.\n\nThe author suggests [`egui`](https://crates.io/crates/egui) as a potential alternative.",
+      "date": "2024-01-26",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PistonDevelopers/conrod/issues/1454",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

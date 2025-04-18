@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0012",
+      "package": "os_str_bytes",
+      "title": "Relies on undefined behavior of `char::from_u32_unchecked`",
+      "description": "The Windows implementation of this crate relied on the behavior of\n`std::char::from_u32_unchecked` when its safety clause is violated.\nEven though this worked with Rust versions up to 1.42 (at least),\nthat behavior could change with any new Rust version, possibly leading\na security issue.\n\nThe flaw was corrected in version 2.0.0.",
+      "date": "2020-04-24",
+      "aliases": [
+        "CVE-2020-35865",
+        "GHSA-q948-x8rf-888m"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dylni/os_str_bytes/pull/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]
