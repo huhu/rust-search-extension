@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0127",
+      "package": "v9",
+      "title": "SyncRef's clone() and debug() allow data races",
+      "description": "Affected versions of this crate unconditionally implement `Sync` for `SyncRef<T>`.\nThis definition allows data races if `&T` is accessible through `&SyncRef`.\n\n`SyncRef<T>` derives `Clone` and `Debug`, and the default implementations of those traits access `&T` by invoking `T::clone()` & `T::fmt()`. It is possible to create data races & undefined behavior by concurrently invoking `SyncRef<T>::clone()` or `SyncRef<T>::fmt()` from multiple threads with `T: !Sync`.",
+      "date": "2020-12-18",
+      "aliases": [
+        "CVE-2020-36447"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/purpleposeidon/v9/commit/18847c50e5d36561cc91c996c3539ddb1eacf6c7"
+      ],
+      "source": null,
+      "url": "https://github.com/purpleposeidon/v9/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.43"
+      ],
+      "unaffected": []
+    }
+  }
+]

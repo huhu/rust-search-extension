@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0067",
+      "package": "cranelift-codegen",
+      "title": "Memory access due to code generation flaw in Cranelift module",
+      "description": "There is a bug in 0.73.0 of the Cranelift x64 backend that can create a\nscenario that could result in a potential sandbox escape in a WebAssembly\nmodule. Users of versions 0.73.0 of Cranelift should upgrade to either 0.73.1\nor 0.74 to remediate this vulnerability. Users of Cranelift prior to 0.73.0\nshould update to 0.73.1 or 0.74 if they were not using the old default backend.\n\nMore details can be found in the GitHub Security Advisory at:\n\n<https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-hpqh-2wqx-7qp5>",
+      "date": "2021-05-21",
+      "aliases": [
+        "CVE-2021-32629",
+        "GHSA-hpqh-2wqx-7qp5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "miscompile",
+        "sandbox",
+        "wasm"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-hpqh-2wqx-7qp5",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [
+        "x86"
+      ],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.73.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0075",
+      "package": "ark-r1cs-std",
+      "title": "Flaw in `FieldVar::mul_by_inverse` allows unsound R1CS constraint systems",
+      "description": "Versions `0.2.0` to `0.3.0` of ark-r1cs-std did not enforce any constraints in the `FieldVar::mul_by_inverse` method, allowing a malicious prover to produce an unsound proof that passes all verifier checks.\nThis method was used primarily in scalar multiplication for [`short_weierstrass::ProjectiveVar`](https://docs.rs/ark-r1cs-std/0.3.0/ark_r1cs_std/groups/curves/short_weierstrass/struct.ProjectiveVar.html).\n\nThis bug was fixed in commit `47ddbaa`, and was released as part of version `0.3.1` on `crates.io`.",
+      "date": "2021-07-08",
+      "aliases": [
+        "CVE-2021-38194",
+        "GHSA-qj3v-q2vj-4c8h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "r1cs",
+        "zksnark",
+        "arkworks"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/arkworks-rs/r1cs-std/pull/70",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ark_r1cs_std::FieldVar::mul_by_inverse": [
+          "<0.3.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

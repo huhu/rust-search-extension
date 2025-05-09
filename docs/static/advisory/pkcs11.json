@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0034",
+      "package": "pkcs11",
+      "title": "Safety issues in `pkcs11`",
+      "description": "### Impact\n\nThe interface of `pkcs11` is subject to a number of safety issues, mainly related to handling of raw pointers. Despite presenting a safe interface, many of the functions and methods that rely on inputs which contain pointers (attributes and mechanisms in particular) can lead to segmentation faults and undefined behaviour when those pointers get dereferenced. For more details see the issues referenced below.\n\nOther problems that have been identified by the community include use-after-free ([mheese/rust-pkcs11#53](https://github.com/mheese/rust-pkcs11/pull/53)) and unsound uses of `transmute_copy` ([mheese/rust-pkcs11#55](https://github.com/mheese/rust-pkcs11/issues/55)).\n\n### Workarounds\n\nUsers of the crate need to be _extremely_ careful in all the calls made to avoid segmentation faults and undefined behaviour due to use of stale pointers. Whenever a pointer is derived from a value and passed to the library, that value's lifetime must be guaranteed to outlast all calls that rely on the pointer. For example, users should **avoid** creating or converting values within a separate scope (say, in a dedicated function), deriving a pointer, then extracting the pointer from that scope leaving the value to get dropped before passing the pointer to `pkcs11`.\n\n### References\n\n- [mheese/rust-pkcs11#38](https://github.com/mheese/rust-pkcs11/issues/38)\n- [mheese/rust-pkcs11#53](https://github.com/mheese/rust-pkcs11/pull/53)\n- [mheese/rust-pkcs11#55](https://github.com/mheese/rust-pkcs11/issues/55)\n- [mheese/rust-pkcs11#54](https://github.com/mheese/rust-pkcs11/issues/54)\n- [mheese/rust-pkcs11#50](https://github.com/mheese/rust-pkcs11/issues/50)",
+      "date": "2022-07-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption",
+        "crypto-failure"
+      ],
+      "keywords": [
+        "segfault",
+        "undefined behaviour"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mheese/rust-pkcs11/issues/57",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

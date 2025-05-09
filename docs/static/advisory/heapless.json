@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0145",
+      "package": "heapless",
+      "title": "Use-after-free when cloning a partially consumed `Vec` iterator",
+      "description": "The `IntoIter` `Clone` implementation clones the whole underlying `Vec`.\nIf the iterator is partially consumed the consumed items will be copied, thus creating a use-after-free access.\n\nA proof of concept is available in the original bug report.",
+      "date": "2020-11-02",
+      "aliases": [
+        "CVE-2020-36464"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "use-after-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/japaric/heapless/issues/181",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::vec::IntoIter::clone": [
+          "<=0.6"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

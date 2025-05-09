@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0063",
+      "package": "linked_list_allocator",
+      "title": "Multiple vulnerabilities resulting in out-of-bounds writes",
+      "description": "* The heap initialization methods were missing a minimum size check for the given heap size argument. This could lead to **out-of-bound writes** when a heap was initialized with a size smaller than `3 * size_of::<usize>` because of metadata write operations.\n* When calling `Heap::extend` with a size smaller than two `usize`s (e.g., 16 on `x86_64`), the size was erroneously rounded up to the minimum size, which could result in an **out-of-bounds write**.\n* Calling `Heap::extend` on an empty heap tried to construct a heap starting at address 0, which is also an **out-of-bounds write**.\n  * One specific way to trigger this accidentally is to call `Heap::new` (or a similar constructor) with a heap size that is smaller than two `usize`s. This was treated as an empty heap as well.\n* Calling `Heap::extend` on a heap whose size is not a multiple of the size of two `usize`s resulted in unaligned writes. It also left the heap in an unexpected state, which might lead to subsequent issues. We did not find a way to exploit this undefined behavior yet (apart from DoS on platforms that fault on unaligned writes).",
+      "date": "2022-09-07",
+      "aliases": [
+        "CVE-2022-36086"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/advisories/GHSA-xg8p-34w2-j49j",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

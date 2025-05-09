@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0104",
+      "package": "gfwx",
+      "title": "ImageChunkMut needs bounds on its Send and Sync traits",
+      "description": "In the affected versions of this crate, `ImageChunkMut<'_, T>` unconditionally implements `Send` and `Sync`, allowing to create data races.\n\nThis can result in a memory corruption or undefined behavior when non thread-safe types are moved and referenced across thread boundaries.\n\nThe flaw was corrected in commit e7fb2f5 by adding `T: Send` bound to the `Send` impl and adding `T: Sync` bound to the `Sync` impl.",
+      "date": "2020-12-08",
+      "aliases": [
+        "CVE-2020-36211"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Devolutions/gfwx-rs/issues/7",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

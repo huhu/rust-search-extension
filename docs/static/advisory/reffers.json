@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0094",
+      "package": "reffers",
+      "title": "Unsound: can make `ARefss` contain a !Send, !Sync object.",
+      "description": "`ARefss<'a, V>` is a type that is assumed to contain objects that are `Send + Sync`.\n\nIn the affected versions of this crate,\n`Send`/`Sync` traits are unconditionally implemented for `ARefss<'a, V>`.\n\nBy using the `ARefss::map()` API, we can insert a `!Send` or `!Sync` object into `ARefss<'a, V>`. After that, it is possible to create a data race to the inner object of `ARefss<'a, V>`, which can lead to undefined behavior & memory corruption.\n\nThe flaw was corrected in commit 6dd7ca0 (https://github.com/diwic/reffers-rs/commit/6dd7ca0d50f2464df708975cdafcfaeeb6d41c66) by adding trait bound `V: Send + Sync` to `ARefss::map()` API.",
+      "date": "2020-12-01",
+      "aliases": [
+        "CVE-2020-36203"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diwic/reffers-rs/issues/7",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

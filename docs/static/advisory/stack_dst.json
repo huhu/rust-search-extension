@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0033",
+      "package": "stack_dst",
+      "title": "push_cloned can drop uninitialized memory or double free on panic",
+      "description": "Affected versions of `stack_dst` used a `push_inner` function that increased\nthe internal length of the array and then called `val.clone()`.\n\nIf the `val.clone()` call panics, the stack could drop an already dropped\nelement or drop uninitialized memory.\n\nThis issue was fixed in `2a4d538` by increasing the length of the array after\nelements are cloned.",
+      "date": "2021-02-22",
+      "aliases": [
+        "CVE-2021-28034",
+        "CVE-2021-28035"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/thepowersgang/stack_dst-rs/issues/5",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "stack_dst::StackA::push_cloned": [
+          "<0.6.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": []
+    }
+  }
+]
