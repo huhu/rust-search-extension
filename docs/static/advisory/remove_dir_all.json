@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0018",
+      "package": "remove_dir_all",
+      "title": "Race Condition Enabling Link Following and Time-of-check Time-of-use (TOCTOU)",
+      "description": "The remove_dir_all crate is a Rust library that offers additional features over the Rust\nstandard library fs::remove_dir_all function.\n\nIt was possible to trick a privileged process doing a recursive delete in an\nattacker controlled directory into deleting privileged files, on all operating systems.\n\nFor instance, consider deleting a tree called 'etc' in a parent directory\ncalled 'p'. Between calling `remove_dir_all(\"a\")` and remove_dir_all(\"a\")\nactually starting its work, the attacker can move 'p' to 'p-prime', and\nreplace 'p' with a symlink to '/'. Then the privileged process deletes 'p/etc'\nwhich is actually /etc, and now your system is broken. There are some\nmitigations for this exact scenario, such as CWD relative file lookup, but\nthey are not guaranteed - any code using absolute paths will not have that\nprotection in place.\n\nThe same attack could be performed at any point in the directory tree being\ndeleted: if 'a' contains a child directory called 'etc', attacking the\ndeletion by replacing 'a' with a link is possible.\n\nThe new code in this release mitigates the attack within the directory tree\nbeing deleted by using file-handle relative operations: to open 'a/etc', the\npath 'etc' relative to 'a' is opened, where 'a' is represented by a file\ndescriptor (Unix) or handle (Windows). With the exception of the entry points\ninto the directory deletion logic, this is robust against manipulation of the\ndirectory hierarchy, and remove_dir_all will only delete files and directories\ncontained in the tree it is deleting.\n\nThe entry path however is a challenge - as described above, there are some\npotential mitigations, but since using them must be done by the calling code,\nit is hard to be confident about the security properties of the path based\ninterface.\n\nThe new extension trait `RemoveDir` provides an interface where it is much\nharder to get it wrong.\n\n`somedir.remove_dir_contents(\"name-of-child\")`.\n\nCallers can then make their own security evaluation about how to securely get\na directory handle. That is still not particularly obvious, and we're going to\nfollow up with a helper of some sort (probably in the `fs_at` crate). Once\nthat is available, the path based entry points will get deprecated.\n\nIn the interim, processes that might run with elevated privileges should\nfigure out how to securely identify the directory they are going to delete, to\navoid the initial race. Pragmatically, other processes should be fine with the\npath based entry points : this is the same interface `std::fs::remove_dir_all`\noffers, and an unprivileged process running in an attacker controlled\ndirectory can't do anything that the attacker can't already do.",
+      "date": "2023-02-24",
+      "aliases": [
+        "GHSA-mc8h-8q98-g5hr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "TOCTOU"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/advisories/GHSA-mc8h-8q98-g5hr"
+      ],
+      "source": null,
+      "url": "https://github.com/XAMPPRocky/remove_dir_all/commit/7247a8b6ee59fc99bbb69ca6b3ca4bfd8c809ead",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "remove_dir_all::ensure_empty_dir": [
+          "<0.8.0"
+        ],
+        "remove_dir_all::remove_dir_all": [
+          "<0.8.0"
+        ],
+        "remove_dir_all::remove_dir_contents": [
+          "<0.8.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

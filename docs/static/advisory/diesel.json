@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0037",
+      "package": "diesel",
+      "title": "Fix a use-after-free bug in diesels Sqlite backend",
+      "description": "We've misused `sqlite3_column_name`. The\n[SQLite](https://www.sqlite.org/c3ref/column_name.html) documentation\nstates that the following:\n\n> The returned string pointer is valid until either the prepared statement\n> is destroyed by sqlite3_finalize() or until the statement is automatically\n> reprepared by the first call to sqlite3_step() for a particular\n> run or until the next call to sqlite3_column_name()\n> or sqlite3_column_name16() on the same column.\n\nAs part of our `query_by_name` infrastructure we've first received all\nfield names for the prepared statement and stored them as string slices\nfor later use. After that we called `sqlite3_step()` for the first time,\nwhich invalids the pointer and therefore the stored string slice.",
+      "date": "2021-03-05",
+      "aliases": [
+        "CVE-2021-28305"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use after free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/2663",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::SqliteConnection::query_by_name": [
+          "<1.4.6"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.4.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

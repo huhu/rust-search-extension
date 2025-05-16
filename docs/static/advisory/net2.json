@@ -1,0 +1,60 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0016",
+      "package": "net2",
+      "title": "`net2` crate has been deprecated; use `socket2` instead",
+      "description": "The [`net2`](https://crates.io/crates/net2) crate has been deprecated\nand users are encouraged to considered [`socket2`](https://crates.io/crates/socket2) instead.",
+      "date": "2020-05-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/deprecrated/net2-rs/commit/3350e3819adf151709047e93f25583a5df681091",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0078",
+      "package": "net2",
+      "title": "`net2` invalidly assumes the memory layout of std::net::SocketAddr",
+      "description": "The [`net2`](https://crates.io/crates/net2) crate has assumed `std::net::SocketAddrV4`\nand `std::net::SocketAddrV6` have the same memory layout as the system C representation\n`sockaddr`. It has simply casted the pointers to convert the socket addresses to the\nsystem representation. The standard library does not say anything about the memory\nlayout, and this will cause invalid memory access if the standard library\nchanges the implementation. No warnings or errors will be emitted once the\nchange happens.",
+      "date": "2020-11-07",
+      "aliases": [
+        "CVE-2020-35919"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory",
+        "layout",
+        "cast"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/deprecrated/net2-rs/issues/105",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.36"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0043",
+      "package": "uu_od",
+      "title": "PartialReader passes uninitialized memory to user-provided Read",
+      "description": "Affected versions of this crate passed an uniniitalized buffer to a\nuser-provided `Read` instance in `PartialReader::read`.\n\nThis can result in safe `Read` implementations reading from the uninitialized\nbuffer leading to undefined behavior.\n\nThe flaw was fixed in commit [`39d62c6`](https://github.com/uutils/coreutils/commit/39d62c6c1f809022c903180471c10fde6ecd12d1)\nby zero-initializing the passed buffer.",
+      "date": "2021-02-17",
+      "aliases": [
+        "CVE-2021-29934",
+        "GHSA-w9vv-q986-vj7x"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/uutils/coreutils/issues/1729",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.0.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

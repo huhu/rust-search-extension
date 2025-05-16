@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0073",
+      "package": "candid",
+      "title": "Infinite decoding loop through specially crafted payload",
+      "description": "The Candid library causes a Denial of Service while parsing a specially crafted payload with `empty` data type. For example, if the payload is `record { * ; empty }` and  the canister interface expects `record { * }` then the rust candid decoder treats `empty` as an extra field required by the type.  The problem with type `empty` is that the candid rust library wrongly categorizes `empty` as a recoverable error when skipping the field and thus causing an infinite decoding loop. \n\nCanisters using affected versions of candid are exposed to denial of service by causing the decoding to run indefinitely until the canister traps due to reaching maximum instruction limit per execution round. Repeated exposure to the payload will result in degraded performance of the canister.\n\nFor asset canister users, `dfx` versions `>= 0.14.4` to `<= 0.15.2-beta.0` ships asset canister with an affected version of candid.\n\n### Unaffected \n- Rust canisters using candid `< 0.9.0` or `>= 0.9.10` \n- Rust canister interfaces of type other than `record { * }`\n- Motoko based canisters\n- dfx (for asset canister) `<= 0.14.3` or `>= 0.15.2`\n\n### References\n-  [GitHub Security Advisory (GHSA-7787-p7x6-fq3j)](https://github.com/dfinity/candid/security/advisories/GHSA-7787-p7x6-fq3j)\n-  [dfinity/candid/pull/478](https://github.com/dfinity/candid/pull/478)\n-  [Candid Library Reference](https://internetcomputer.org/docs/current/references/candid-ref)\n-  [Candid Specification](https://github.com/dfinity/candid/blob/master/spec/Candid.md)\n-  [Internet Computer Specification](https://internetcomputer.org/docs/current/references/ic-interface-spec)",
+      "date": "2023-12-08",
+      "aliases": [
+        "CVE-2023-6245",
+        "GHSA-7787-p7x6-fq3j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "candid",
+        "canister",
+        "icp"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dfinity/candid/pull/478",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "candid::Decode": [
+          ">=0.9.0, <0.9.10"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.10"
+      ],
+      "unaffected": [
+        "<0.9.0"
+      ]
+    }
+  }
+]

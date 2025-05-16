@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0066",
+      "package": "evm-core",
+      "title": "Denial of service on EVM execution due to memory over-allocation",
+      "description": "Prior to the patch, when executing specific EVM opcodes related\nto memory operations that use `evm_core::Memory::copy_large`, the\ncrate can over-allocate memory when it is not needed, making it\npossible for an attacker to perform denial-of-service attack.\n\nThe flaw was corrected in commit `19ade85`.",
+      "date": "2021-05-11",
+      "aliases": [
+        "GHSA-773q-5334-5gf9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-blockchain/evm",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.1",
+        "^0.25.1",
+        "^0.24.1",
+        "^0.23.1",
+        "^0.21.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

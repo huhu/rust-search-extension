@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0083",
+      "package": "blurhash",
+      "title": "blurhash: panic on parsing crafted blurhash inputs",
+      "description": "## Impact\nThe blurhash parsing code may panic due to multiple panic-guarded out-of-bounds accesses on untrusted input.\n\nIn a typical deployment, this may get triggered by feeding a maliciously crafted blurhashes over the network. These may include:\n- UTF-8 compliant strings containing multi-byte UTF-8 characters\n\n## Patches\nThe patches were released under version 0.2.0, which may require user intervention because of slight API churn.",
+      "date": "2023-09-19",
+      "aliases": [
+        "CVE-2023-42447",
+        "cxvp-82cq-57h2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic",
+        "untrusted input",
+        "parsing"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-42447"
+      ],
+      "source": null,
+      "url": "https://github.com/whisperfish/blurhash-rs/security/advisories/GHSA-cxvp-82cq-57h2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "blurhash::decode": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0067",
+      "package": "fehler",
+      "title": "`fehler` is unmaintained; use `culpa` instead",
+      "description": "The [`fehler`](https://crates.io/crates/fehler) crate is no longer maintained.\nConsider using [`culpa`](https://crates.io/crates/culpa) instead.",
+      "date": "2023-10-12",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/withoutboats/fehler/issues/66",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0003",
+      "package": "protobuf",
+      "title": "Out of Memory in stream::read_raw_bytes_into()",
+      "description": "Affected versions of this crate called Vec::reserve() on user-supplied input.\n\nThis allows an attacker to cause an Out of Memory condition while calling the\nvulnerable method on untrusted data.",
+      "date": "2019-06-08",
+      "aliases": [
+        "CVE-2019-15544"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "oom",
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/stepancheg/rust-protobuf/issues/411",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "protobuf::stream::read_raw_bytes_into": [
+          "<2.6.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        "^1.7.5",
+        ">=2.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]
