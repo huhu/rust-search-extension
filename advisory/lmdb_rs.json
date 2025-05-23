@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0047",
+      "package": "lmdb-rs",
+      "title": "impl `FromMdbValue` for bool is unsound",
+      "description": "The implementation of `FromMdbValue` have several unsoundness issues. First of all, it allows to reinterpret arbitrary bytes as a bool and could make undefined behavior happen with safe function. Secondly, it allows transmuting pointer without taking memory layout into consideration. The details of reproducing the bug were included in url above.",
+      "date": "2023-06-26",
+      "aliases": [
+        "GHSA-f9g6-fp84-fv92"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "unsound"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/vhbit/lmdb-rs/issues/67",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

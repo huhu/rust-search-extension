@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0024",
+      "package": "rustsec-example-crate",
+      "title": "Test advisory with associated example crate",
+      "description": "This is a test advisory useful for verifying RustSec tooling and vulnerability\ndetection pipelines are working correctly. Aside from the fact that it is filed\nagainst an example crate, it is otherwise considered by the Advisory Database\nitself to be a normal security advisory.\n\nIt's filed against `rustsec-example-crate`, an otherwise completely empty crate\nwith no functionality or code, which has three releases:\n\n- [v0.0.0] - *unaffected* by this advisory (but *yanked* from crates.io)\n- [v0.0.1] - *vulnerable* according to this advisory\n- [v1.0.0] - *patched* by this advisory\n\n[v0.0.0]: https://crates.io/crates/rustsec-example-crate/0.0.0\n[v0.0.1]: https://crates.io/crates/rustsec-example-crate/0.0.1\n[v1.0.0]: https://crates.io/crates/rustsec-example-crate/1.0.0",
+      "date": "2019-10-08",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustSec/advisory-db/issues/158",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.0"
+      ],
+      "unaffected": [
+        "<0.0.1"
+      ]
+    }
+  }
+]

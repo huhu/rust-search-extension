@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0019",
+      "package": "kuchiki",
+      "title": "`kuchiki` is unmaintained",
+      "description": "The `kuchiki` repo was marked as archived in [this](https://github.com/kuchiki-rs/kuchiki/commit/f92e4c047fdc30619555da282ac7ccce1d313aa6) commit.\n\n## Possible Alternatives\n\nPossible alternatives may include:\n\n- [html5ever](https://crates.io/crates/html5ever)\n- [xml-rs](https://crates.io/crates/xml-rs)",
+      "date": "2023-01-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/kuchiki-rs/kuchiki/commit/f92e4c047fdc30619555da282ac7ccce1d313aa6",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

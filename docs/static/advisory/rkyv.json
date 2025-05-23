@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0054",
+      "package": "rkyv",
+      "title": "Archives may contain uninitialized memory",
+      "description": "`rkyv` is a serialization framework that writes struct-compatible memory to be stored or\ntransmitted. During serialization, struct padding bytes and unused enum bytes may not be\ninitialized. These bytes may be written to disk or sent over unsecured channels.",
+      "date": "2021-04-28",
+      "aliases": [
+        "CVE-2021-31919"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "uninitialized",
+        "memory",
+        "information",
+        "leak"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/djkoloski/rkyv/issues/113",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rkyv::Archive::resolve": [
+          "<0.6.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

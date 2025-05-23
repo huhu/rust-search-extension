@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0103",
+      "package": "molecule",
+      "title": " Partial read is incorrect in molecule",
+      "description": "Anyone who uses total_size(..) function to partial read the length of any FixVec will get an incorrect result, due to an incorrect implementation. This has been resolved in the 0.7.2 release.",
+      "date": "2021-07-30",
+      "aliases": [
+        "CVE-2021-45697",
+        "GHSA-6p3c-v8vc-c244",
+        "GHSA-82hm-vh7g-hrh9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nervosnetwork/molecule/security/advisories/GHSA-82hm-vh7g-hrh9",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

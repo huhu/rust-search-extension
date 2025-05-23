@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0385",
+      "package": "cw0",
+      "title": "`cw0` is unmaintained",
+      "description": "The crate `cw0` was first [renamed to `utils`](https://github.com/CosmWasm/cw-plus/pull/508) in 2021 and [then to `cw-utils`](https://github.com/CosmWasm/cw-plus/pull/598) because `utils` was already claimed on crates.io.\n\nThe crate `cw0` is not maintained anymore since then and should be replaced with `cw-utils`.",
+      "date": "2024-08-26",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/CosmWasm/cw-plus/issues/471",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

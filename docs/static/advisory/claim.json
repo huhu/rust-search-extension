@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0077",
+      "package": "claim",
+      "title": "`claim` is Unmaintained",
+      "description": "The last release was in February 2021, almost two years ago.\n\nThe maintainer has been unresponsive regarding this crate for over a year.\n\nA pending issue with `claim`'s dependencies has made the crate [difficult to use](https://github.com/svartalf/rust-claim/issues/9).\n\n## Possible Alternative(s)\n\nThe below list has not been vetted in any way and may or may not contain alternatives;\n\n- [`claims`](https://crates.io/crates/claims), a direct fork of the `claim` crate",
+      "date": "2022-12-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/svartalf/rust-claim/issues/12",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

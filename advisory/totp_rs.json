@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0018",
+      "package": "totp-rs",
+      "title": "Timing attack",
+      "description": "Affecting versions did not compare tokens in constant time, which could make it possible for an attacker to guess the 2fa token of a user.\n\nThis has been fixed by using using the crate constant_time_eq for comparison.",
+      "date": "2022-05-09",
+      "aliases": [
+        "CVE-2022-29185",
+        "GHSA-8vxv-2g8p-2249"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "side-channel",
+        "timing-attack"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/constantoine/totp-rs/security/advisories/GHSA-8vxv-2g8p-2249",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "totp_rs::TOTP::check": [
+          "<1.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.1.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

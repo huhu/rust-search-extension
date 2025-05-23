@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0423",
+      "package": "gtk-layer-shell-sys",
+      "title": "gtk-layer-shell-sys GTK3 bindings - no longer maintained",
+      "description": "The gtk-layer-shell-sys GTK3 bindings are no longer maintained.\n\nThe maintainers have archived the repository, and added a note to the crate\ndescription and its README.md that the crates are no longer maintained.\n\nPlease take a look at [gtk4-layer-shell](https://github.com/pentamassiv/gtk4-layer-shell-gir) instead.\n```",
+      "date": "2024-12-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "gtk",
+        "gtk-rs",
+        "gnome",
+        "GUI"
+      ],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/pentamassiv/gtk-layer-shell-gir/commit/094c356273f209e04bf481fb404dc17990ae76e0",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

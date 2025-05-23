@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0001",
+      "package": "mdbook",
+      "title": "XSS in mdBook's search page",
+      "description": "> This is a cross-post of [the official security advisory][ml]. The official post\n> contains a signed version with our PGP key, as well.\n\n[ml]: https://groups.google.com/g/rustlang-security-announcements/c/3-sO6of29O0\n\nThe Rust Security Response Working Group was recently notified of a security\nissue affecting the search feature of mdBook, which could allow an attacker to\nexecute arbitrary JavaScript code on the page.\n\nThe CVE for this vulnerability is [CVE-2020-26297][1].\n\n## Overview\n\nThe search feature of mdBook (introduced in version 0.1.4) was affected by a\ncross site scripting vulnerability that allowed an attacker to execute\narbitrary JavaScript code on an user's browser by tricking the user into typing\na malicious search query, or tricking the user into clicking a link to the\nsearch page with the malicious search query prefilled.\n\nmdBook 0.4.5 fixes the vulnerability by properly escaping the search query.\n\n## Mitigations\n\nOwners of websites built with mdBook have to upgrade to mdBook 0.4.5 or greater\nand rebuild their website contents with it. It's possible to install mdBook\n0.4.5 on the local system with:\n\n```\ncargo install mdbook --version 0.4.5 --force\n```\n\n## Acknowledgements\n\nThanks to Kamil Vavra for responsibly disclosing the vulnerability to us\naccording to [our security policy][2].\n\n## Timeline of events\n\nAll times are listed in UTC.\n\n* 2020-12-30 20:14 - The issue is reported to the Rust Security Response WG\n* 2020-12-30 20:32 - The issue is acknowledged and the investigation began\n* 2020-12-30 21:21 - Found the cause of the vulnerability and prepared the patch\n* 2021-01-04 15:00 - Patched version released and vulnerability disclosed\n\n[1]: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26297\n[2]: https://www.rust-lang.org/policies/security",
+      "date": "2021-01-04",
+      "aliases": [
+        "CVE-2020-26297"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "xss"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://groups.google.com/g/rustlang-security-announcements/c/3-sO6of29O0",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.5"
+      ],
+      "unaffected": [
+        "<=0.1.3"
+      ]
+    }
+  }
+]
