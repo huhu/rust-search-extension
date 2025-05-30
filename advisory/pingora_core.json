@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0037",
+      "package": "pingora-core",
+      "title": "Pingora Request Smuggling and Cache Poisoning",
+      "description": "Pingora versions prior to 0.5.0 which used the caching functionality in pingora-proxy did not properly drain the downstream request body on cache hits.\n\nThis allows an attacker to craft malicious HTTP/1.1 requests which could lead to request smuggling or cache poisoning.\n\nThis flaw was corrected in commit fda3317ec822678564d641e7cf1c9b77ee3759ff by ensuring that the downstream request body is always drained before a connection can be reused.\n\nSee [the blog post](https://blog.cloudflare.com/resolving-a-request-smuggling-vulnerability-in-pingora/) for more information.",
+      "date": "2025-05-22",
+      "aliases": [
+        "CVE-2025-4366"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "request-smuggling",
+        "cache-poisoning"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://blog.cloudflare.com/resolving-a-request-smuggling-vulnerability-in-pingora/",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0067",
+      "package": "lzf",
+      "title": " Invalid use of `mem::uninitialized` causes `use-of-uninitialized-value`",
+      "description": "The compression and decompression function used `mem:uninitialized`\nto create an array of uninitialized values, to later write values into it.\nThis later leads to reads from uninitialized memory.\n\nThe flaw was corrected in commit b633bf265e41c60dfce3be7eac4e4dd5e18d06cf\nby using a heap-allocated `Vec` and removing out use of `mem::uninitialized`.\nThe fix was released in v0.3.2 and v1.0.0\n\nSubsequently the crate was deprecated and its use is discouraged.",
+      "date": "2022-10-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "uninitialized-memory"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/badboy/lzf-rs/issues/9",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "lzf::compress": [
+          "<0.3.2"
+        ],
+        "lzf::decompress": [
+          "<0.3.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0014",
+      "package": "marc",
+      "title": "Record::read : Custom `Read` on uninitialized buffer may cause UB",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided `Read` implementation. (`Record::read()`)\n\nArbitrary `Read` implementations can read from the uninitialized buffer (memory exposure) and also can return incorrect number of bytes written to the buffer.\nReading from uninitialized memory produces undefined values that can quickly invoke undefined behavior.\n\nThis flaw was fixed in commit 6299af0 by zero-initializing the newly allocated memory (via `data.resize(len, 0)`) instead of exposing uninitialized memory (`unsafe { data.set_len(len) }`).",
+      "date": "2021-01-26",
+      "aliases": [
+        "CVE-2021-26308",
+        "GHSA-3mf3-2gv9-h39j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/blackbeam/rust-marc/issues/7",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

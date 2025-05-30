@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0007",
+      "package": "bitvec",
+      "title": "use-after or double free of allocated memory",
+      "description": "Conversion of `BitVec` to `BitBox` did not account for allocation movement.\n\nThe flaw was corrected by using the address after resizing, rather than the original base address.",
+      "date": "2020-03-27",
+      "aliases": [
+        "CVE-2020-35862",
+        "GHSA-7cjc-hvxf-gqh7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/myrrlyn/bitvec/issues/55",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bitvec::vec::BitVec::into_boxed_bitslice": [
+          "<0.17.4, >=0.11.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.17.4"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  }
+]

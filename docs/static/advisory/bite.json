@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0153",
+      "package": "bite",
+      "title": "`read` on uninitialized buffer may cause UB (bite::read::BiteReadExpandedExt::read_framed_max)",
+      "description": "Affected versions of this crate calls a user provided `Read` implementation on an uninitialized buffer.\n\n`Read` on uninitialized buffer is defined as undefined behavior in Rust.",
+      "date": "2020-12-31",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hinaria/bite/issues/1",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

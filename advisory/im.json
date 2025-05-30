@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0096",
+      "package": "im",
+      "title": "TreeFocus lacks bounds on its Send and Sync traits",
+      "description": "Affected versions of `im` contains `TreeFocus` that unconditionally implements `Send` and `Sync`.\n\nThis allows a data race in safe Rust code if `TreeFocus` is extracted from `Focus` type.\nTypical users that only use `Focus` type are not affected.",
+      "date": "2020-11-09",
+      "aliases": [
+        "CVE-2020-36204",
+        "GHSA-q9h2-4xhf-23xx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodil/im-rs/issues/157",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=15.1.0"
+      ],
+      "unaffected": [
+        "<12.0.0"
+      ]
+    }
+  }
+]

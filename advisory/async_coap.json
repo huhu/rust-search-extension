@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0124",
+      "package": "async-coap",
+      "title": "ArcGuard's Send and Sync should have bounds on RC",
+      "description": "Affected versions of this crate implement Send/Sync for `ArcGuard<RC, T>` with no trait bounds on `RC`. This allows users to send `RC: !Send` to other threads and also allows users to concurrently access `Rc: !Sync` from multiple threads.\n\nThis can result in memory corruption from data race or other undefined behavior caused by sending `T: !Send` to other threads (e.g. dropping `MutexGuard<T>` in another thread that didn't lock its mutex).",
+      "date": "2020-12-08",
+      "aliases": [
+        "CVE-2020-36444",
+        "GHSA-9j8q-m9x5-9g6j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/google/rust-async-coap/issues/33",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

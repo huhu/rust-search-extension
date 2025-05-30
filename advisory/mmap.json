@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0394",
+      "package": "mmap",
+      "title": "mmap unmaintained",
+      "description": "The `mmap` crate is unmaintained as its [repository has been archived](https://github.com/rbranson/rust-mmap) on Feb 10, 2022.\nThe main alternative seems to be `memmap2` crate.",
+      "date": "2024-06-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rbranson/rust-mmap",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0127",
+      "package": "serde_cbor",
+      "title": "serde_cbor is unmaintained",
+      "description": "The `serde_cbor` crate is unmaintained. The author has archived the github repository.\n\nAlternatives proposed by the author:\n\n * [`ciborium`](https://crates.io/crates/ciborium)\n * [`minicbor`](https://crates.io/crates/minicbor)",
+      "date": "2021-08-15",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/pyfisch/cbor",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0025",
+      "package": "serde_cbor",
+      "title": "Flaw in CBOR deserializer allows stack overflow",
+      "description": "Affected versions of this crate did not properly check if semantic tags were nested excessively during deserialization.\n\nThis allows an attacker to craft small (< 1 kB) CBOR documents that cause a stack overflow.\n \nThe flaw was corrected by limiting the allowed number of nested tags.",
+      "date": "2019-10-03",
+      "aliases": [
+        "CVE-2019-25001",
+        "GHSA-xr7r-88qv-q7hm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "stack-overflow",
+        "crash",
+        "denial-of-service"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/pyfisch/cbor/releases/tag/v0.10.2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

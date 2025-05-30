@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0112",
+      "package": "tectonic_xdv",
+      "title": "`Read` on uninitialized buffer may cause UB ('tectonic_xdv' crate)",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided `Read` implementation.\n\nArbitrary `Read` implementations can read from the uninitialized buffer (memory exposure) and also can return incorrect number of bytes written to the buffer. Reading from uninitialized memory produces undefined values that can quickly invoke undefined behavior.\n\nThe problem was fixed in commit `cdff034` by zero-initializing the buffer before passing it to a user-provided `Read` implementation.",
+      "date": "2021-02-17",
+      "aliases": [
+        "CVE-2021-45703",
+        "GHSA-6692-8qqf-79jc",
+        "GHSA-qwvx-c8j7-5g75"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tectonic-typesetting/tectonic/issues/752",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.12"
+      ],
+      "unaffected": []
+    }
+  }
+]
