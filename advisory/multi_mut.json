@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0169",
+      "package": "multi_mut",
+      "title": "multi_mut is Unmaintained",
+      "description": "Last release was about 6 years ago.\n\nThere is an outstanding [soundness issue](https://github.com/golddranks/multi_mut/issues/1).\n\nThe maintainer has not responded for two years to the existing soundness issue.\n\nRust compiler has enabled errors relating to LLVM noalias rules and may not\ncompile anymore where as the old compiler versions had turned these off.\n\nThe maintainer has stated:\n\n> I will take no responsibility of undefined behaviour possibly caused by this crate.\n\nThis crate may or may not be suitable for use anymore given the outstanding issues.",
+      "date": "2020-02-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/rust-lang/rust/issues/39155",
+        "https://www.reddit.com/r/rust/comments/5ofuun/multi_mut_multiple_mutable_references_to_hashmap/"
+      ],
+      "source": null,
+      "url": "https://github.com/golddranks/multi_mut/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

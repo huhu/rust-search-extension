@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0003",
+      "package": "rust_sodium",
+      "title": "rust_sodium is unmaintained; switch to a modern alternative",
+      "description": "The `rust_sodium` crate is no longer maintained by its current owner, who\nadvise in the repository readme that they are looking for\nsomeone else to take ownership of it.\n\nWe recommend you switch to an alternative crate such as:\n- [`sodiumoxide`](https://crates.io/crates/sodiumoxide)",
+      "date": "2020-01-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maidsafe/rust_sodium/pull/117",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.10.2"
+      ]
+    }
+  }
+]

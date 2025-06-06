@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0042",
+      "package": "stack",
+      "title": "Missing check in ArrayVec leads to out-of-bounds write.",
+      "description": "ArrayVec::insert allows insertion of an element into the array object into the\nspecified index. Due to a missing check on the upperbound of this index, it is\npossible to write out of bounds.",
+      "date": "2020-09-24",
+      "aliases": [
+        "CVE-2020-35895"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/arcnmx/stack-rs/issues/4",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

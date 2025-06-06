@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0085",
+      "package": "binjs_io",
+      "title": "'Read' on uninitialized memory may cause UB",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided `Read` implementation. The crate currently contains 4 occurrences of such cases.\n\nArbitrary `Read` implementations can read from the uninitialized buffer (memory exposure) and also can return incorrect number of bytes written to the buffer.\nReading from uninitialized memory produces undefined values that can quickly invoke undefined behavior.",
+      "date": "2021-01-03",
+      "aliases": [
+        "CVE-2021-45683",
+        "GHSA-c6px-4grw-hrjr",
+        "GHSA-cw4j-cf6c-mmfv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/binast/binjs-ref/issues/460",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,98 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0104",
+      "package": "pleaser",
+      "title": "File exposure in pleaser",
+      "description": "pleaser before 0.4 allows a local unprivileged attacker to gain knowledge about the existence of files or directories in privileged locations via the search_path function, the --check option, or the -d option.",
+      "date": "2021-05-27",
+      "aliases": [
+        "CVE-2021-31153",
+        "GHSA-f3fg-5j9p-vchc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-31153",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0102",
+      "package": "pleaser",
+      "title": "Permissions bypass in pleaser",
+      "description": "pleaseedit in pleaser before 0.4 uses predictable temporary filenames in /tmp and the target directory. This allows a local attacker to gain full root privileges by staging a symlink attack.",
+      "date": "2021-05-27",
+      "aliases": [
+        "CVE-2021-31154",
+        "GHSA-pp74-39w2-v4w9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-31154",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0101",
+      "package": "pleaser",
+      "title": "Permissions bypass in pleaser",
+      "description": "Failure to normalize the umask in pleaser before 0.4 allows a local attacker to gain full root privileges if they are allowed to execute at least one command.",
+      "date": "2021-05-27",
+      "aliases": [
+        "CVE-2021-31155",
+        "GHSA-vc5p-j8vw-mc6x"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-31155",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

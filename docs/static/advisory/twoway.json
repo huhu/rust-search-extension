@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0146",
+      "package": "twoway",
+      "title": "Crate `twoway` deprecated by the author",
+      "description": "The commit [`e99b3c7`](https://github.com/bluss/twoway/commit/e99b3c718df1117ad7f54c33f6540c8f46cc17dd) releasing version 0.2.2 explicitly deprecates `twoway` in favour of [`memchr`](https://crates.io/crates/memchr) crate.",
+      "date": "2021-05-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/bluss/twoway/commit/e99b3c718df1117ad7f54c33f6540c8f46cc17dd"
+      ],
+      "source": null,
+      "url": "https://github.com/bluss/twoway",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

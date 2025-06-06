@@ -1,0 +1,89 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0034",
+      "package": "http",
+      "title": "HeaderMap::Drain API is unsound",
+      "description": "Affected versions of this crate incorrectly used raw pointer,\nwhich introduced unsoundness in its public safe API.\n\n[Failing to drop the Drain struct causes double-free](https://github.com/hyperium/http/issues/354),\nand [it is possible to violate Rust's alias rule and cause data race with Drain's Iterator implementation](https://github.com/hyperium/http/issues/355).\n\nThe flaw was corrected in 0.1.20 release of `http` crate.",
+      "date": "2019-11-16",
+      "aliases": [
+        "CVE-2019-25009"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free",
+        "unsound"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "http::header::HeaderMap::drain": [
+          "<0.1.20"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.20"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0033",
+      "package": "http",
+      "title": "Integer Overflow in HeaderMap::reserve() can cause Denial of Service",
+      "description": "`HeaderMap::reserve()` used `usize::next_power_of_two()` to calculate the increased capacity.\nHowever, `next_power_of_two()` silently overflows to 0 if given a sufficiently large number\nin release mode.\n\nIf the map was not empty when the overflow happens,\nthe library will invoke `self.grow(0)` and start infinite probing.\nThis allows an attacker who controls the argument to `reserve()`\nto cause a potential denial of service (DoS).\n\nThe flaw was corrected in 0.1.20 release of `http` crate.",
+      "date": "2019-11-16",
+      "aliases": [
+        "CVE-2020-25574",
+        "CVE-2019-25008"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "http",
+        "integer-overflow",
+        "DoS"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hyperium/http/issues/352",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "http::header::HeaderMap::reserve": [
+          "<0.1.20"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.20"
+      ],
+      "unaffected": []
+    }
+  }
+]

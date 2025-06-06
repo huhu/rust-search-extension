@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0008",
+      "package": "simd-json",
+      "title": "Flaw in string parsing can lead to crashes due to invalid memory access.",
+      "description": "The affected version of this crate did not guard against accessing memory\nbeyond the range of its input data. A pointer cast to read the data into\na 256-bit register could lead to a segmentation fault when the end plus\nthe 32 bytes (256 bit) read would overlap into the next page during string\nparsing.\n\n```\npage   |  ...  page 1  ...  | ... page 2  ... |\ndata   | x[n * 32 byte]xx__ |                 |\naccess | ..][ 32 byte ]     |                 |\nsegflt |               [ 32 | byte ]          |\n```\n\nThis allows an attacker to eventually crash a service.\n\nThe flaw was corrected by using a padding buffer for the last read from the\ninput. So that we are we never read over the boundary of the input data.",
+      "date": "2019-06-24",
+      "aliases": [
+        "CVE-2019-15550",
+        "GHSA-gwfj-pw2x-h6c2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "simd"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Licenser/simdjson-rs/pull/27",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [
+        "x86",
+        "x86_64"
+      ],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.15"
+      ],
+      "unaffected": [
+        "<=0.1.13"
+      ]
+    }
+  }
+]

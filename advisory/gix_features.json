@@ -1,0 +1,74 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0021",
+      "package": "gix-features",
+      "title": "SHA-1 collision attacks are not detected",
+      "description": "### Summary\ngitoxide uses SHA-1 hash implementations without any collision detection, leaving it vulnerable to hash collision attacks.\n\n### Details\ngitoxide uses the `sha1_smol` or `sha1` crate, both of which implement standard SHA-1 without any mitigations for collision attacks. This means that two distinct Git objects with colliding SHA-1 hashes would break the Git object model and integrity checks when used with gitoxide.\n\nThe SHA-1 function is considered cryptographically insecure. However, in the wake of the SHAttered attacks, this issue was mitigated in Git 2.13.0 in 2017 by using the [sha1collisiondetection](https://github.com/crmarcstevens/sha1collisiondetection) algorithm by default and producing an error when known SHA-1 collisions are detected. Git is in the process of migrating to using SHA-256 for object hashes, but this has not been rolled out widely yet and gitoxide does not support SHA-256 object hashes.\n\n### PoC\nThe following program demonstrates the problem, using the two [SHAttered PDFs](https://shattered.io/):\n\n```rust\nuse sha1_checked::{CollisionResult, Digest};\n\nfn sha1_oid_of_file(filename: &str) -> gix::ObjectId {\n    let mut hasher = gix::features::hash::hasher(gix::hash::Kind::Sha1);\n    hasher.update(&std::fs::read(filename).unwrap());\n    gix::ObjectId::Sha1(hasher.digest())\n}\n\nfn sha1dc_oid_of_file(filename: &str) -> Result<gix::ObjectId, String> {\n    // Matches Git’s behaviour.\n    let mut hasher = sha1_checked::Builder::default().safe_hash(false).build();\n    hasher.update(&std::fs::read(filename).unwrap());\n    match hasher.try_finalize() {\n        CollisionResult::Ok(digest) => Ok(gix::ObjectId::Sha1(digest.into())),\n        CollisionResult::Mitigated(_) => unreachable!(),\n        CollisionResult::Collision(digest) => Err(format!(\n            \"Collision attack: {}\",\n            gix::ObjectId::Sha1(digest.into()).to_hex()\n        )),\n    }\n}\n\nfn main() {\n    dbg!(sha1_oid_of_file(\"shattered-1.pdf\"));\n    dbg!(sha1_oid_of_file(\"shattered-2.pdf\"));\n    dbg!(sha1dc_oid_of_file(\"shattered-1.pdf\"));\n    dbg!(sha1dc_oid_of_file(\"shattered-2.pdf\"));\n}\n```\n\nThe output is as follows:\n\n```\n[src/main.rs:24:5] sha1_oid_of_file(\"shattered-1.pdf\") = Sha1(38762cf7f55934b34d179ae6a4c80cadccbb7f0a)\n[src/main.rs:25:5] sha1_oid_of_file(\"shattered-2.pdf\") = Sha1(38762cf7f55934b34d179ae6a4c80cadccbb7f0a)\n[src/main.rs:26:5] sha1dc_oid_of_file(\"shattered-1.pdf\") = Err(\n    \"Collision attack: 38762cf7f55934b34d179ae6a4c80cadccbb7f0a\",\n)\n[src/main.rs:27:5] sha1dc_oid_of_file(\"shattered-2.pdf\") = Err(\n    \"Collision attack: 38762cf7f55934b34d179ae6a4c80cadccbb7f0a\",\n)\n```\n\nThe latter behaviour matches Git.\n\nSince the SHAttered PDFs are not in a valid format for Git objects, a direct proof‐of‐concept using higher‐level APIs cannot be immediately demonstrated without significant computational resources.\n\n### Impact\nAn attacker with the ability to mount a collision attack on SHA-1 like the [SHAttered](https://shattered.io/) or [SHA-1 is a Shambles](https://sha-mbles.github.io/) attacks could create two distinct Git objects with the same hash. This is becoming increasingly affordable for well‐resourced attackers, with the Shambles researchers in 2020 estimating $45k for a chosen‐prefix collision or $11k for a classical collision, and projecting less than $10k for a chosen‐prefix collision by 2025. The result could be used to disguise malicious repository contents, or potentially exploit assumptions in the logic of programs using gitoxide to cause further vulnerabilities.\n\nThis vulnerability affects any user of gitoxide, including `gix-*` library crates, that reads or writes Git objects.",
+      "date": "2025-04-03",
+      "aliases": [
+        "CVE-2025-31130",
+        "GHSA-2frx-2596-x5r6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "hash-collision",
+        "sha-1",
+        "weak-hash"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/advisories/GHSA-2frx-2596-x5r6",
+        "https://nvd.nist.gov/vuln/detail/CVE-2025-31130"
+      ],
+      "source": null,
+      "url": "https://github.com/GitoxideLabs/gitoxide/security/advisories/GHSA-2frx-2596-x5r6",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "gix_features::hash::Hasher::digest": [
+          "<0.41.0"
+        ],
+        "gix_features::hash::Hasher::update": [
+          "<0.41.0"
+        ],
+        "gix_features::hash::Write::flush": [
+          "<0.41.0"
+        ],
+        "gix_features::hash::Write::new": [
+          "<0.41.0"
+        ],
+        "gix_features::hash::Write::write": [
+          "<0.41.0"
+        ],
+        "gix_features::hash::bytes": [
+          "<0.41.0"
+        ],
+        "gix_features::hash::bytes_of_file": [
+          "<0.41.0"
+        ],
+        "gix_features::hash::bytes_with_hasher": [
+          "<0.41.0"
+        ],
+        "gix_features::hash::hasher": [
+          "<0.41.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.41.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

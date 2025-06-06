@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0046",
+      "package": "rocksdb",
+      "title": "Out-of-bounds read when opening multiple column families with TTL",
+      "description": "Affected versions of this crate called the RocksDB C API\n`rocksdb_open_column_families_with_ttl()` with a pointer to a single integer\nTTL value, but one TTL value for each column family is expected.\n\nThis is only relevant when using\n`rocksdb::DBWithThreadMode::open_cf_descriptors_with_ttl()` with multiple\ncolumn families.\n\nThis bug has been fixed in v0.19.0.",
+      "date": "2022-05-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "out-of-bounds read"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-rocksdb/rust-rocksdb/pull/616",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rocksdb::DBWithThreadMode::open_cf_descriptors_with_ttl": [
+          "<0.19.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.19.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

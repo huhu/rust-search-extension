@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0070",
+      "package": "nalgebra",
+      "title": "VecStorage Deserialize Allows Violation of Length Invariant",
+      "description": "The `Deserialize` implementation for `VecStorage` did not maintain the invariant that the number of elements must equal `nrows * ncols`. Deserialization of specially crafted inputs could allow memory access beyond allocation of the vector.\n\nThis flaw was introduced in v0.11.0 ([`086e6e`](https://github.com/dimforge/nalgebra/commit/086e6e719f53fecba6dadad2e953a487976387f5)) due to the addition of an automatically derived implementation of `Deserialize` for `MatrixVec`. `MatrixVec` was later renamed to `VecStorage` in v0.16.13 ([`0f66403`](https://github.com/dimforge/nalgebra/commit/0f66403cbbe9eeac15cedd8a906c0d6a3d8841f2)) and continued to use the automatically derived implementation of `Deserialize`.\n\nThis flaw was corrected in commit [`5bff536`](https://github.com/dimforge/nalgebra/commit/5bff5368bf38ddfa31416e4ae9897b163031a513) by returning an error during deserialization if the number of elements does not exactly match the expected size.",
+      "date": "2021-06-06",
+      "aliases": [
+        "CVE-2021-38190"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "memory-safety"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dimforge/nalgebra/issues/883",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.27.1"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  }
+]

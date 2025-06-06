@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0016",
+      "package": "quickersort",
+      "title": "quickersort is deprecated and unmaintained",
+      "description": "The author of the `quickersort` crate has deprecated it and does not recommend using it anymore.\n\nEverything in it has been incorporated into [std::sort_unstable] in the standard library as of Rust 1.20.\n\n[std::sort_unstable]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.sort_unstable",
+      "date": "2018-06-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/notriddle/quickersort/commit/0bc164366315801f0c6b31f4081b7df9fc894076",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">3.0.1"
+      ]
+    }
+  }
+]

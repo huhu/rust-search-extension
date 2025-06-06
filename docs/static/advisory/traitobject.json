@@ -1,0 +1,65 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0144",
+      "package": "traitobject",
+      "title": "traitobject is Unmaintained",
+      "description": "Crate `traitobject` has not had a release for over five years.\n\nIn addition there is an existing security advisory that has not been addressed:\n\n - [RUSTSEC-2020-0027](https://rustsec.org/advisories/RUSTSEC-2020-0027)\n\n## Possible Alternative(s)\n\n The below list has not been vetted in any way and may or may not contain alternatives;\n\n - [destructure_traitobject]\n\n[destructure_traitobject]: https://crates.io/crates/destructure_traitobject",
+      "date": "2021-10-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://rustsec.org/advisories/RUSTSEC-2020-0027"
+      ],
+      "source": null,
+      "url": "https://github.com/reem/rust-traitobject/issues/7",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0027",
+      "package": "traitobject",
+      "title": "traitobject assumes the layout of fat pointers",
+      "description": "This crate gets the data pointer from fat pointers assuming that the first\nelement in a fat pointer is the data pointer. This is currently true, but\nit may change in a future Rust version, leading to memory corruption.\n\nThis has been fixed in the master branch of the crate, but is has not\nbeen released into crates.io.",
+      "date": "2020-06-01",
+      "aliases": [
+        "CVE-2020-35881"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/reem/rust-traitobject/issues/7",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "traitobject::data": [],
+        "traitobject::data_mut": []
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
