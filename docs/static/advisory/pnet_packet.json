@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0167",
+      "package": "pnet_packet",
+      "title": "`pnet_packet` buffer overrun in `set_payload` setters",
+      "description": "As indicated by this [issue](https://github.com/libpnet/libpnet/issues/449#issuecomment-663355987), a buffer overrun is possible in the `set_payload` setter of the various mutable \"Packet\" struct setters. The offending `set_payload` functions were defined within the struct `impl` blocks in earlier versions of the package, and later by the `packet` macro.\n\nFixed in the `packet` macro by [this](https://github.com/libpnet/libpnet/pull/455) PR.",
+      "date": "2020-06-19",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.0/AV:L/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/libpnet/libpnet/issues/449",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.27.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

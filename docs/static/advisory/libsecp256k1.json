@@ -1,0 +1,75 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0076",
+      "package": "libsecp256k1",
+      "title": "libsecp256k1 allows overflowing signatures",
+      "description": "libsecp256k1 accepts signatures whose R or S parameter is larger than the\nsecp256k1 curve order, which differs from other implementations. This could\nlead to invalid signatures being verified.\n\nThe error is resolved in 0.5.0 by adding a `check_overflow` flag.",
+      "date": "2021-07-13",
+      "aliases": [
+        "CVE-2021-38195"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/paritytech/libsecp256k1/pull/67",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0027",
+      "package": "libsecp256k1",
+      "title": "Flaw in Scalar::check_overflow allows side-channel timing attack",
+      "description": "Versions of `libsecp256k1` prior to `0.3.1` did not execute\nScalar::check_overflow in constant time.\n\nThis allows an attacker to potentially leak information via a timing attack.\n\nThe flaw was corrected by modifying Scalar::check_overflow to execute in\nconstant time.",
+      "date": "2019-10-14",
+      "aliases": [
+        "CVE-2019-25003"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "crypto",
+        "sidechannel"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libsecp256k1::Scalar::check_overflow": [
+          "<0.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0084",
+      "package": "safe_authenticator",
+      "title": "crate has been superseded by `sn_client`",
+      "description": "This crate has been superseded by `sn_client`.\n\nThe new repository location is:\n\n<https://github.com/maidsafe/sn_client>",
+      "date": "2020-12-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maidsafe/sn_client/pull/1267",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

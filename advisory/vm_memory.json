@@ -1,0 +1,91 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0056",
+      "package": "vm-memory",
+      "title": "Default functions in VolatileMemory trait lack bounds checks, potentially leading to out-of-bounds memory accesses",
+      "description": "An issue was discovered in the default implementations of the `VolatileMemory::{get_atomic_ref, aligned_as_ref, aligned_as_mut, get_ref, get_array_ref}` trait functions, which allows out-of-bounds memory access if the `VolatileMemory::get_slice` function returns a `VolatileSlice` whose length is less than the function’s `count` argument. No implementations of `get_slice` provided in `vm_memory` are affected. Users of custom `VolatileMemory` implementations may be impacted if the custom implementation does not adhere to `get_slice`'s documentation.\n\nThe issue started in version 0.1.0 but was fixed in version 0.12.2 by inserting a check that verifies that the `VolatileSlice` returned by `get_slice` is of the correct length.",
+      "date": "2023-09-01",
+      "aliases": [
+        "CVE-2023-41051",
+        "GHSA-49hh-fprx-m68g"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:L",
+      "informational": "unsound",
+      "references": [
+        "https://github.com/rust-vmm/vm-memory/commit/aff1dd4a5259f7deba56692840f7a2d9ca34c9c8"
+      ],
+      "source": null,
+      "url": "https://github.com/rust-vmm/vm-memory/issues/250",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "vm_memory::volatile_memory::VolatileMemory::aligned_as_mut": [
+          "<0.12.2"
+        ],
+        "vm_memory::volatile_memory::VolatileMemory::aligned_as_ref": [
+          "<0.12.2"
+        ],
+        "vm_memory::volatile_memory::VolatileMemory::get_array_ref": [
+          "<0.12.2"
+        ],
+        "vm_memory::volatile_memory::VolatileMemory::get_atomic_ref": [
+          "<0.12.2"
+        ],
+        "vm_memory::volatile_memory::VolatileMemory::get_ref": [
+          "<0.12.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.12.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0157",
+      "package": "vm-memory",
+      "title": "Improper Synchronization and Race Condition in vm-memory",
+      "description": "rust-vmm vm-memory before 0.1.1 and 0.2.x before 0.2.1 allows attackers to cause a denial of service (loss of IP networking) because read_obj and write_obj do not properly access memory. This affects aarch64 (with musl or glibc) and x86_64 (with musl).",
+      "date": "2020-06-02",
+      "aliases": [
+        "CVE-2020-13759",
+        "GHSA-mm4m-qg48-f7wc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-13759",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.1",
+        "^0.1.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

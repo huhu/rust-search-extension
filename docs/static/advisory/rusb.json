@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0098",
+      "package": "rusb",
+      "title": "UsbContext trait did not require implementers to be Send and Sync.",
+      "description": "Affected versions of `rusb` did not require `UsbContext` to implement `Send`\nand `Sync`. However, through `Device` and `DeviceHandle` it is possible to use\n`UsbContext`s across threads.\n\nThis issue allows non-thread safe `UsbContext` types to be used concurrently\nleading to data races and memory corruption.\n\nThe issue was fixed by adding `Send` and `Sync` bounds to `UsbContext`.",
+      "date": "2020-12-18",
+      "aliases": [
+        "CVE-2020-36206"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/a1ien/rusb/issues/44",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

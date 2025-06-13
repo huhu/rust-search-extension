@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0029",
+      "package": "truetype",
+      "title": "Tape::take_bytes exposes uninitialized memory to a user-provided Read",
+      "description": "Affected versions of this crate passed an unininitialized buffer to a\nuser-provided `Read` instance in `Tape::take_bytes`.\n\nThis can result in safe `Read` implementations reading from the uninitialized\nbuffer leading to undefined behavior.\n\nThe flaw was corrected in commit `1f2dc7f37dd` by removing the unsafe block\nand zero-initializing the buffer.",
+      "date": "2021-02-17",
+      "aliases": [
+        "CVE-2021-28030"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodoni/truetype/issues/11",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.30.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

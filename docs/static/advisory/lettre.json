@@ -1,0 +1,108 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0069",
+      "package": "lettre",
+      "title": "Argument injection in sendmail transport",
+      "description": "Affected versions of lettre allowed argument injection\nto the sendmail command. It was possible, using forged `to` addresses,\nto pass arbitrary arguments to the sendmail executable.\n\nDepending on the implementation (original sendmail, postfix, exim, etc.)\nit could be possible in some cases to write email data into arbitrary files (using sendmail's\nlogging features).\n \nThe flaw is corrected by modifying the executed command to stop parsing arguments\nbefore passing the destination addresses.\n\nNOTE: This vulnerability only affects the `sendmail` transport. Others, including `smtp`, are not\naffected.\n\nThis vulnerability was reported by vin01.",
+      "date": "2020-11-11",
+      "aliases": [
+        "CVE-2020-28247"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "file-disclosure"
+      ],
+      "keywords": [
+        "email",
+        "sendmail"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lettre/lettre/pull/508/commits/bbe7cc5381c5380b54fb8bbb4f77a3725917ff0b",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "lettre::sendmail::SendmailTransport::send": [
+          "<0.10.0-alpha.1"
+        ],
+        "lettre::transport::sendmail::SendmailTransport::send": [
+          ">=0.10.0-alpha.1, <=0.10.0-alpha.3"
+        ],
+        "lettre::transport::sendmail::SendmailTransport::send_raw": [
+          ">=0.10.0-alpha.1, <=0.10.0-alpha.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.0-alpha.4",
+        "<0.10.0-alpha.1, >=0.9.5",
+        "<0.9.0, >=0.8.4",
+        "<0.8.0, >=0.7.1"
+      ],
+      "unaffected": [
+        "<0.7.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0069",
+      "package": "lettre",
+      "title": "SMTP command injection in body",
+      "description": "Affected versions of lettre allowed SMTP command injection through an attacker's controlled message body. The module for escaping lines starting with a period wouldn't catch a period that was placed after a double CRLF sequence, allowing the attacker to end the current message and write arbitrary SMTP commands after it.\n\nThe flaw is fixed by correctly handling consecutive CRLF sequences.",
+      "date": "2021-05-22",
+      "aliases": [
+        "GHSA-qc36-q22q-cjw3",
+        "CVE-2021-38189"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "email",
+        "smtp"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lettre/lettre/pull/627/commits/93458d01fed0ec81c0e7b4e98e6f35961356fae2",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "lettre::smtp::SmtpTransport::send": [
+          "<0.10.0-alpha.1"
+        ],
+        "lettre::transport::smtp::SmtpTransport::send": [
+          ">=0.10.0-alpha.1, <0.10.0-rc.3"
+        ],
+        "lettre::transport::smtp::SmtpTransport::send_raw": [
+          ">=0.10.0-alpha.1, <0.10.0-rc.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.0-rc.3",
+        "<0.10.0-alpha.1, >=0.9.6"
+      ],
+      "unaffected": [
+        "<0.7.0"
+      ]
+    }
+  }
+]

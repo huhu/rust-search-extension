@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0054",
+      "package": "wee_alloc",
+      "title": "wee_alloc is Unmaintained",
+      "description": "Two of the maintainers have indicated that the crate may not be maintained.\n\nThe crate has open issues including memory leaks and may not be suitable for production use.\n\nIt may be best to switch to the default Rust standard allocator on wasm32 targets.\n\nLast release seems to have been three years ago.\n\n## Possible Alternative(s)\n\n The below list has not been vetted in any way and may or may not contain alternatives;\n\n - Rust standard [default allocator] on wasm32-target\n\n## Honorable Mention(s)\n\n The below may serve to educate on potential future alternatives:\n\n - [lol_alloc](https://crates.io/crates/lol_alloc)\n\n[default allocator]: https://github.com/alexcrichton/dlmalloc-rs",
+      "date": "2022-05-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://www.reddit.com/r/rust/comments/x1cle0/dont_use_wee_alloc_in_production_code_targeting/",
+        "https://github.com/rustwasm/wee_alloc/issues/85",
+        "https://github.com/rustwasm/wee_alloc/issues/106"
+      ],
+      "source": null,
+      "url": "https://github.com/rustwasm/wee_alloc/issues/107",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

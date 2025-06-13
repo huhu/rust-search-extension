@@ -1,0 +1,68 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0030",
+      "package": "rulex",
+      "title": "Stack overflow during recursive expression parsing",
+      "description": "When parsing untrusted rulex expressions, the stack may overflow, possibly\nenabling a Denial of Service attack. This happens when parsing an expression\nwith several hundred levels of nesting, causing the process to abort\nimmediately.\n\nThe flaw was corrected in commits `60aa2dc03a` by adding a check to recursion\ndepth.",
+      "date": "2022-05-21",
+      "aliases": [
+        "CVE-2022-31099",
+        "GHSA-v78m-2q7v-fjqp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rulex-rs/rulex/security/advisories/GHSA-v78m-2q7v-fjqp",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0031",
+      "package": "rulex",
+      "title": "Panic due to improper UTF-8 indexing",
+      "description": "When parsing untrusted rulex expressions, rulex may panic, possibly enabling\na Denial of Service attack. This happens when the expression contains a multi-\nbyte UTF-8 code point in a string literal or after a backslash, because rulex\ntries to slice into the code point and panics as a result.\n\nThe flaw was corrected in commits `fac6d58b25` and `330b3534e7` by using\n`len_utf8()` to derive character width in bytes instead of assuming ASCII\nencoding of 1 byte per char.",
+      "date": "2022-05-21",
+      "aliases": [
+        "CVE-2022-31100",
+        "GHSA-8v9w-p43c-r885"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rulex-rs/rulex/security/advisories/GHSA-8v9w-p43c-r885",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

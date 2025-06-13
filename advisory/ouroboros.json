@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0042",
+      "package": "ouroboros",
+      "title": "Ouroboros is Unsound",
+      "description": "## Summary\n\nOuroboros has a soundness problem, but a fix has been implemented in 0.16.0.\n\n## More details:\n\nIn 0.15.0, Ouroboros works internally by creating a struct where all \nuses of 'this are replaced by 'static. However, a recent addition to \nMiri checks that references passed to functions are valid during the \nentire execution of the function, even when those references are \npassed inside a struct. This poses an issue for dropping \nself-referencing values, as the reference becomes invalid during the \ndropping process. Effectively, since self-referencing structs are \nnot allowed in vanilla Rust, there is no allowance for dropping data\nduring a function that has also been given a reference to that data. \nThere's usually no way to pass a and &a to the same function.\n\nA fix was attempted, where the struct would be turned in to a raw \nbyte array and only transformed back into the underlying data type \ninside each function. This is allowable as a reference can be \ncreated and die over the body of a function, as long as the \nreference was created inside the function. However, this is also \nnot sound if the original struct contains padding. There is no \nway to initialize padding bytes to a known value that Miri will \naccept, so when it is cast to an array some of the bytes contain \nuninitialized values. This is not acceptable (despite the fact \nthat these bytes are never read) due to the potential for \noptimizations that may read from the uninitialized bytes. Besides \nwhich, this fix does not allow for template or constant parameters \nas there is no way to check the size of a templated type without \ngiving specific, concrete values for the template parameters.\n\nThe final solution was to use this fix while wrapping the raw byte\narray in `MaybeUninit<>`.",
+      "date": "2023-06-11",
+      "aliases": [
+        "GHSA-87mf-9wg6-ppf8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/joshua-maros/ouroboros/issues/88",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.16.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

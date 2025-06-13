@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2016-0003",
+      "package": "portaudio",
+      "title": "HTTP download and execution allows MitM RCE",
+      "description": "The build script in the portaudio crate will attempt to download via HTTP\nthe portaudio source and build it.\n\nA Mallory in the middle can intercept the download with their own archive\nand get RCE.",
+      "date": "2016-08-01",
+      "aliases": [
+        "CVE-2016-10933"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "ssl",
+        "mitm"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustAudio/rust-portaudio/issues/144",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0041",
+      "package": "matrix-sdk-crypto",
+      "title": "matrix-sdk-crypto vulnerable to encrypted event sender spoofing by homeserver administrator",
+      "description": "matrix-sdk-crypto versions 0.8.0 up to and including 0.11.0 does not correctly validate\nthe sender of an encrypted event. Accordingly, a malicious homeserver operator\ncan modify events served to clients, making those events appear to the recipient\nas if they were sent by another user.\n\nAlthough the CVSS score is 4.9 (AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N), we\nconsider this a High severity security issue.",
+      "date": "2025-06-11",
+      "aliases": [
+        "CVE-2025-48937",
+        "GHSA-x958-rvg6-956w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/security/advisories/GHSA-x958-rvg6-956w",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.1"
+      ],
+      "unaffected": [
+        "<0.8.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0356",
+      "package": "matrix-sdk-crypto",
+      "title": "`UserIdentity::is_verified` not checking verification status of own user identity while performing the check",
+      "description": "The `UserIdentity::is_verified()` method in the matrix-sdk-crypto crate before\nversion 0.7.2 doesn't take into account the verification status of the user's\nown identity while performing the check and may as a result return a value\ncontrary to what is implied by its name and documentation.\n\n## Impact\n\nIf the method is used to decide whether to perform sensitive operations towards\na user identity, a malicious homeserver could manipulate the outcome in order to\nmake the identity appear trusted. This is not a typical usage of the method,\nwhich lowers the impact. The method itself is not used inside the\nmatrix-sdk-crypto crate.",
+      "date": "2024-07-18",
+      "aliases": [
+        "CVE-2024-40648",
+        "GHSA-4qg4-cvh2-crgg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/security/advisories/GHSA-4qg4-cvh2-crgg",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "matrix_sdk_crypto::UserIdentity::is_verified": [
+          "<0.7.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.7.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0434",
+      "package": "matrix-sdk-crypto",
+      "title": " Missing facility to signal rotation of a verified cryptographic identity",
+      "description": "Versions of the matrix-sdk-crypto Rust crate before 0.8.0 lack a dedicated\nmechanism to notify that a user's cryptographic identity has changed from a\nverified to an unverified one, which could cause client applications relying on\nthe SDK to overlook such changes.\n\nmatrix-sdk-crypto 0.8.0 adds a new `VerificationLevel::VerificationViolation`\nenum variant which indicates that a previously verified identity has been\nchanged.",
+      "date": "2024-01-07",
+      "aliases": [
+        "CVE-2024-52813",
+        "GHSA-r5vf-wf4h-82gg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "notice",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/security/advisories/GHSA-r5vf-wf4h-82gg",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0085",
+      "package": "matrix-sdk-crypto",
+      "title": "matrix-sdk Impersonation of room keys",
+      "description": "When the user receives a forwarded room key, the software accepts it without\nchecking who the room key came from. This allows homeservers to try to insert\nroom keys of questionable validity, potentially mounting an impersonation attack.",
+      "date": "2022-09-29",
+      "aliases": [
+        "CVE-2022-39252",
+        "GHSA-vp68-2wrm-69qm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/matrix-org/matrix-rust-sdk/commit/41449d2cc360e347f5d4e1c154ec1e3185f11acd"
+      ],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/commit/093fb5d0aa21c0b5eaea6ec96b477f1075271cbb",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]
