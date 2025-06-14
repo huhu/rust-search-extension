@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0005",
+      "package": "threadalone",
+      "title": "Unsound sending of non-Send types across threads",
+      "description": "Affected versions can run the `Drop` impl of a non-Send type on a different\nthread than it was created on.\n\nThe flaw occurs when a stderr write performed by the `threadalone` crate fails,\nfor example because stderr is redirected to a location on a filesystem that is\nfull, or because stderr is a pipe that has been closed by the reader.\n\nDropping a non-Send type on the wrong thread is unsound. If used with a type\nsuch as a pthread-based `MutexGuard`, [the consequence is undefined\nbehavior][mutexguard]. If used with `Rc`, there would be a data race on the\nreference count, which is likewise undefined behavior.\n\n[mutexguard]: https://github.com/rust-lang/rust/issues/23465#issuecomment-82730326",
+      "date": "2024-01-07",
+      "aliases": [
+        "GHSA-w59h-378f-2frm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cr0sh/threadalone/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

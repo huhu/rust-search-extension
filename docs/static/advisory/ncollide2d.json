@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0151",
+      "package": "ncollide2d",
+      "title": "ncollide2d is unmaintained",
+      "description": "The maintainer has advised that this crate is passively-maintained and that it\nis being superseded by the [Parry](https://github.com/dimforge/parry) project.",
+      "date": "2021-01-29",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dimforge/ncollide",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

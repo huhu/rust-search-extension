@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0162",
+      "package": "tokio-proto",
+      "title": "`tokio-proto` is deprecated/unmaintained",
+      "description": "The [`tokio-proto`](https://crates.io/crates/tokio-proto) crate has been deprecated, and [its GitHub repository](https://github.com/tokio-rs/tokio-proto) has been archived.\nUsers may be interested in [`tokio-tower`](https://crates.io/crates/tokio-tower) instead, per https://github.com/tokio-rs/tokio/issues/118#issuecomment-452969665",
+      "date": "2020-02-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tokio-rs/tokio-proto/commit/56c720ea3c74efa8f39e36c24e609628222b16a1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0111",
+      "package": "may_queue",
+      "title": "may_queue's Queue lacks Send/Sync bound for its Send/Sync trait.",
+      "description": "Affected versions of `may_queue` implements `Send`/`Sync` for its `Queue` type without restricting it to `Send`able types and `Sync`able types.\n\nThis allows non-`Sync` types such as `Cell` to be shared across threads leading to undefined behavior and memory corruption in concurrent programs.",
+      "date": "2020-11-10",
+      "aliases": [
+        "CVE-2020-36217"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Xudong-Huang/may/issues/88",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0359",
+      "package": "gix-attributes",
+      "title": "The kstring integration in gix-attributes is unsound",
+      "description": "`gix-attributes` (in [`state::ValueRef`](https://github.com/Byron/gitoxide/blob/gix-attributes-v0.22.2/gix-attributes/src/state.rs#L19-L27)) unsafely creates a `&str` from a `&[u8]` containing non-UTF8 data, with the justification that so long as nothing reads the `&str` and relies on it being UTF-8 in the `&str`, there is no UB:\n\n```rust\n// SAFETY: our API makes accessing that value as `str` impossible, so illformed UTF8 is never exposed as such.\n```\n\nThe problem is that the non-UTF8 `str` **is** exposed to outside code: first to the `kstring` crate itself, which requires UTF-8 in its documentation and may have UB as a consequence of this, but also to `serde`, where it propagates to e.g. `serde_json`, `serde_yaml`, etc., where the same problems occur.\n\nThis is not sound, and it could cause further UB down the line in these places that can view the `&str`.\n\n*Thanks to [Devin Jeanpierre](https://github.com/ssbr) for discovering and reporting this issue.*",
+      "date": "2024-07-24",
+      "aliases": [
+        "GHSA-cx7h-h87r-jpgr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/GitoxideLabs/gitoxide/issues/1460",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.22.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

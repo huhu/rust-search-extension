@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0052",
+      "package": "os_socketaddr",
+      "title": "`os_socketaddr` invalidly assumes the memory layout of std::net::SocketAddr",
+      "description": "The [`os_socketaddr`](https://crates.io/crates/os_socketaddr) crate has assumed\n`std::net::SocketAddrV4` and `std::net::SocketAddrV6` have the same memory layout as the system C\nrepresentation `sockaddr`. It has simply casted the pointers to convert the socket addresses to the\nsystem representation.\n\nThese layout were [changed into idiomatic rust types](https://github.com/rust-lang/rust/pull/78802)\nin nightly `std`. Starting from rustc 1.64 the affected versions of this crate will have undefined\nbehaviour.",
+      "date": "2022-08-26",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory",
+        "layout",
+        "cast"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/a-ba/os_socketaddr/issues/3",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

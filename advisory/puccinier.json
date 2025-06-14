@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0331",
+      "package": "puccinier",
+      "title": "Puccinier is unmainted.",
+      "description": "The tool has been deprecated in favor of Catppuccin's new tool, [whiskers](https://github.com/catppuccin/toolbox/tree/main/whiskers) [(crates.io)](https://crates.io/crates/catppuccin-whiskers).",
+      "date": "2024-03-31",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/catppuccin/toolbox/issues/66",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

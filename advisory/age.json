@@ -1,0 +1,87 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0433",
+      "package": "age",
+      "title": "Malicious plugin names, recipients, or identities can cause arbitrary binary execution",
+      "description": "A plugin name containing a path separator may allow an attacker to execute an arbitrary\nbinary.\n\nSuch a plugin name can be provided through an attacker-controlled input to the following\n`age` APIs when the `plugin` feature flag is enabled:\n- [`age::plugin::Identity::from_str`](https://docs.rs/age/0.11.0/age/plugin/struct.Identity.html#impl-FromStr-for-Identity)\n  (or equivalently [`str::parse::<age::plugin::Identity>()`](https://doc.rust-lang.org/stable/core/primitive.str.html#method.parse))\n- [`age::plugin::Identity::default_for_plugin`](https://docs.rs/age/0.11.0/age/plugin/struct.Identity.html#method.default_for_plugin)\n- [`age::plugin::IdentityPluginV1::new`](https://docs.rs/age/0.11.0/age/plugin/struct.IdentityPluginV1.html#method.new)\n  (the `plugin_name` argument)\n- [`age::plugin::Recipient::from_str`](https://docs.rs/age/0.11.0/age/plugin/struct.Recipient.html#impl-FromStr-for-Recipient)\n  (or equivalently [`str::parse::<age::plugin::Recipient>()`](https://doc.rust-lang.org/stable/core/primitive.str.html#method.parse))\n- [`age::plugin::RecipientPluginV1::new`](https://docs.rs/age/0.11.0/age/plugin/struct.RecipientPluginV1.html#method.new)\n  (the `plugin_name` argument)\n\nOn UNIX systems, a directory matching `age-plugin-*` needs to exist in the working\ndirectory for the attack to succeed.\n\nThe binary is executed with a single flag, either `--age-plugin=recipient-v1` or\n`--age-plugin=identity-v1`. The standard input includes the recipient or identity string,\nand the random file key (if encrypting) or the header of the file (if decrypting). The\nformat is constrained by the [age-plugin](https://c2sp.org/age-plugin) protocol.\n\nAn equivalent issue was fixed in [the reference Go implementation of age](https://github.com/FiloSottile/age),\nsee advisory [GHSA-32gq-x56h-299c](https://github.com/FiloSottile/age/security/advisories/GHSA-32gq-x56h-299c).\n\nThanks to ⬡-49016 for reporting this issue.",
+      "date": "2024-12-18",
+      "aliases": [
+        "GHSA-4fg7-vxc8-qx5w"
+      ],
+      "related": [
+        "GHSA-32gq-x56h-299c"
+      ],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/str4d/rage/security/advisories/GHSA-4fg7-vxc8-qx5w",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "age::plugin::Identity::default_for_plugin": [
+          ">=0.7.0, <0.7.2",
+          ">=0.8.0, <0.8.2",
+          ">=0.9.0, <0.9.3",
+          "^0.10.0",
+          "^0.11.0"
+        ],
+        "age::plugin::Identity::from_str": [
+          "^0.6.0",
+          ">=0.7.0, <0.7.2",
+          ">=0.8.0, <0.8.2",
+          ">=0.9.0, <0.9.3",
+          "^0.10.0",
+          "^0.11.0"
+        ],
+        "age::plugin::IdentityPluginV1::new": [
+          "^0.6.0",
+          ">=0.7.0, <0.7.2",
+          ">=0.8.0, <0.8.2",
+          ">=0.9.0, <0.9.3",
+          "^0.10.0",
+          "^0.11.0"
+        ],
+        "age::plugin::Recipient::from_str": [
+          "^0.6.0",
+          ">=0.7.0, <0.7.2",
+          ">=0.8.0, <0.8.2",
+          ">=0.9.0, <0.9.3",
+          "^0.10.0",
+          "^0.11.0"
+        ],
+        "age::plugin::RecipientPluginV1::new": [
+          "^0.6.0",
+          ">=0.7.0, <0.7.2",
+          ">=0.8.0, <0.8.2",
+          ">=0.9.0, <0.9.3",
+          "^0.10.0",
+          "^0.11.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.1, <0.7.0",
+        ">=0.7.2, <0.8.0",
+        ">=0.8.2, <0.9.0",
+        ">=0.9.3, <0.10.0",
+        ">=0.10.1, <0.11.0",
+        ">=0.11.1"
+      ],
+      "unaffected": [
+        "<0.6.0"
+      ]
+    }
+  }
+]

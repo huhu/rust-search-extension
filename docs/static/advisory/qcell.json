@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0007",
+      "package": "qcell",
+      "title": "A malicious coder can get unsound access to TCell or TLCell memory",
+      "description": "This is impossible to do by accident, but by carefully constructing\nmarker types to be covariant, a malicious coder can cheat the\nsingleton check in `TCellOwner` and `TLCellOwner`, giving unsound\naccess to cell memory.  This could take the form of getting two\nmutable references to the same memory, or a mutable reference and an\nimmutable reference.\n\nThe fix is for the crate to internally force the marker type to be\ninvariant.  This blocks the conversion between covariant types which\nRust normally allows.",
+      "date": "2022-01-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "unsound"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/uazu/qcell/issues/20",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

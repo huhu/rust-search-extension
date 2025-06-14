@@ -1,0 +1,52 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0123",
+      "package": "fruity",
+      "title": "Converting `NSString` to a String Truncates at Null Bytes",
+      "description": "Methods of [`NSString`] for conversion to a string may return a partial result.\nSince they call [`CStr::from_ptr`] on a pointer to the string buffer, the\nstring is terminated at the first null byte, which might not be the end of the\nstring.\n\nIn addition to the vulnerable functions listed for this issue, the\nimplementations of [`Display`], [`PartialEq`], [`PartialOrd`], and [`ToString`]\nfor [`NSString`] are also affected, since they call those functions.\n\n## Impact\n\nSince [`NSString`] is commonly used as the type for paths by the [Foundation]\nframework, null byte truncation might allow for easily bypassing file extension\nchecks. For example, if a file name is provided by a user and validated to have\none of a specific set of extensions, with validation taking place before\ntruncation, an attacker can add an accepted extension after a null byte (e.g.,\n`file.exe\\0.txt`). After truncation, the file name used by the application\nwould be `file.exe`.\n\nIt would be better to generate unique names for files, instead of using\nuser-provided names, but not all applications take this approach.\n\n## Example:\n\n```rust\nlet string = NSString::from_str(\"null\\0byte\");\nprintln!(\"{}\", string);\n```\n\nThat example only prints the string \"null\".\n\n[`CStr::from_ptr`]: https://doc.rust-lang.org/std/ffi/struct.CStr.html#method.from_ptr\n[`Display`]: https://doc.rust-lang.org/std/fmt/trait.Display.html\n[Foundation]: https://developer.apple.com/documentation/foundation\n[`NSString`]: https://docs.rs/fruity/0.2.0/fruity/foundation/struct.NSString.html\n[`PartialEq`]: https://doc.rust-lang.org/std/cmp/trait.PartialEq.html\n[`PartialOrd`]: https://doc.rust-lang.org/std/cmp/trait.PartialOrd.html\n[`ToString`]: https://doc.rust-lang.org/std/string/trait.ToString.html",
+      "date": "2021-11-14",
+      "aliases": [
+        "CVE-2021-43620",
+        "GHSA-h352-g5vw-3926"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nvzqz/fruity/issues/14",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "fruity::foundation::NSString::to_str": [
+          "<0.3.0, >=0.1.0"
+        ],
+        "fruity::foundation::NSString::to_str_with_nul": [
+          "<0.3.0, >=0.1.0"
+        ],
+        "fruity::foundation::NSString::to_string": [
+          "<0.3.0, >=0.1.0"
+        ],
+        "fruity::foundation::NSString::to_string_with_nul": [
+          "<0.3.0, >=0.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.0"
+      ],
+      "unaffected": [
+        "<0.1.0"
+      ]
+    }
+  }
+]

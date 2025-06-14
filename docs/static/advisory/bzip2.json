@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0004",
+      "package": "bzip2",
+      "title": "bzip2 Denial of Service (DoS)",
+      "description": "Working with specific payloads can cause a Denial of Service (DoS) vector.\n\nBoth `Decompress` and `Compress` implementations can enter into infinite loops\ngiven specific payloads entered that trigger it.\n\nThe issue is described in great detail in the [bzip2 repository issue](https://github.com/alexcrichton/bzip2-rs/pull/86).\n\nThanks to bjrjk for finding and providing the patch for the issue and the\nmaintainer responsibly responding to release a fix quickly.\n\nUsers who use the crate with untrusted data should update the `bzip2` to 0.4.4.",
+      "date": "2023-01-09",
+      "aliases": [
+        "CVE-2023-22895",
+        "GHSA-96jv-r488-c2rj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/alexcrichton/bzip2-rs/pull/86",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

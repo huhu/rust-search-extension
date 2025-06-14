@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0113",
+      "package": "atomic-option",
+      "title": "AtomicOption should have Send + Sync bound on its type argument.",
+      "description": "In the affected versions of this crate,\n`AtomicOption<T>` unconditionally implements `Sync`.\n\nThis allows programmers to move non-Sync types across thread boundaries (e.g. `Rc<T>`, `Arc<Cell<T>>`), which can lead to data races and undefined behavior. \nIt is also possible to send non-Send types like `std::sync::MutexGuard` to other threads, which can lead to undefined behavior.",
+      "date": "2020-10-31",
+      "aliases": [
+        "CVE-2020-36219"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/reem/rust-atomic-option/issues/4",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

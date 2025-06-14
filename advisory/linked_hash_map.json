@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0026",
+      "package": "linked-hash-map",
+      "title": "linked-hash-map creates uninitialized NonNull pointer",
+      "description": "Affected versions of this crate called `mem::uninitialized()` to create a `NonNull<T>`,\nwhich is undefined behavior.\n \nThe flaw was corrected by avoiding the use of `mem::uninitialized()`.",
+      "date": "2020-06-23",
+      "aliases": [
+        "CVE-2020-25573",
+        "GHSA-r43h-gmrm-h5c9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/contain-rs/linked-hash-map/pull/100",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.3"
+      ],
+      "unaffected": []
+    }
+  }
+]
