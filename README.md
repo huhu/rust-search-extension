@@ -83,4 +83,5 @@ You can contact us on Discord Channel: https://discord.gg/xucZNVd
 
 Thanks for the sponsorship from these great companies.
 
+[![](https://geddle.com/logo-white.svg)](https://geddle.com/?from=rust-search-extension)
 [![](docs/static/bytebase.svg)](https://bytebase.com/?from=rust-search-extension)

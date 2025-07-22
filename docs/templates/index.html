@@ -104,11 +104,142 @@
 {% endblock %}
 
 {% block footer %}
-<iframe id="footer" src="https://huhu.io/extension-footer.html"
-        style="display:block;width:100%;border:none;"></iframe>
-<script>
-    window.onmessage = e => {
-        e.data.hasOwnProperty("frameHeight") && (document.getElementById("footer").style.height = `${e.data.frameHeight}px`)
+<footer
+    style="display: flex; flex-direction: column; font-family: 'Open Sans', sans-serif; background-color: #020f1c; padding: 2rem;">
+    <div
+        style="display: flex; flex-direction: column; margin-bottom: 5rem; font-size: 1.125rem; line-height: 1.75rem; color: #9ca3af; align-items: center; text-align: center;">
+        Thanks for the sponsorship from
+        <span>
+            <a target="_blank" href="https://geddle.com/?from=rust-search-extension">
+                <img style="margin: 1rem; height: 55px;" src="https://geddle.com/logo-white.svg" alt="geddle">
+            </a>
+        </span>
+        and
+        <span>
+            <a target="_blank" href="https://bytebase.com?utm_source=rust-search-extension">
+                <img style="margin: 1rem; height: 40px;" src="https://huhu.io/img/bytebase-light.svg" alt="bytebase">
+            </a>
+        </span>
+    </div>
+    <div
+        style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly; width: 100%;">
+        <div style="margin-bottom: 2.5rem;">
+            <a target="_parent" href="/" style="font-size: 36px;font-weight: 600;display: flex;align-items: center;margin: 0 40px; line-height: 2.5rem; color: inherit; text-decoration: none;">HUHU</a>
+            <div
+                style="display: flex; justify-content: space-between; margin-top: 1rem; margin-bottom: 1rem; width: 10rem;">
+                <a href="https://github.com/huhu" target="_parent">
+                    <img style="width: 1.5rem;" src="https://huhu.io/img/github.svg" alt="Github">
+                </a>
+                <a href="https://twitter.com/_huhuio" target="_parent">
+                    <img style="width: 1.5rem;" src="https://huhu.io/img/twitter.svg" alt="Twitter">
+                </a>
+                <a href="https://discord.gg/xucZNVd" target="_parent">
+                    <img style="width: 1.5rem;" src="https://huhu.io/img/discord.svg" alt="Discord">
+                </a>
+            </div>
+        </div>
+        <div style="align-self: flex-start;">
+            <div style="font-size: 1.125rem; line-height: 1.75rem; font-weight: 700; margin-bottom: 1.25rem;">All our
+                extensions</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://rust.extension.sh" target="_parent">
+                        Rust Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://go.extension.sh" target="_parent">
+                        Go Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://cpp.extension.sh" target="_parent">
+                        C/C++ Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://k8s.extension.sh" target="_parent">
+                        K8S Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://js.extension.sh" target="_parent">
+                        JS Search Extension
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="align-self: flex-start;">
+            <div
+                style="font-size: 1.125rem; line-height: 1.75rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1.25rem;">
+                Connect</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://huhu.io/about" target="_parent">About Huhu</a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://geddle.com">Geddle</a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://arrfounder.com">Arrfounder</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div style="align-self: flex-start; margin-top: 2.5rem;">
+        <small style="color: #9ca3af;">
+            Copyright © 2025 <a href="https://huhu.io" target="_parent" style="color: #9ca3af;">Huhu.io</a>
+        </small>
+    </div>
+</footer>
+
+<style>
+    /* Ensure font inheritance for all child elements */
+    footer * {
+        font-family: inherit;
     }
-</script>
+
+    /* Media query for responsive design */
+    @media (min-width: 768px) {
+
+        footer>div:first-child {
+            flex-direction: row !important;
+        }
+
+        footer>div:nth-child(2) {
+            flex-direction: row !important;
+        }
+
+        footer>div:nth-child(2)>div:first-child {
+            text-align: center;
+            margin-bottom: 0 !important;
+            margin-right: 6rem !important;
+        }
+
+        footer>div:nth-child(2)>div:nth-child(3) {
+            align-self: flex-start !important;
+        }
+
+        footer>div:nth-child(2)>div:nth-child(3)>div:first-child {
+            margin-top: 0 !important;
+        }
+
+        footer>div:last-child {
+            align-self: center !important;
+        }
+    }
+
+    /* Hover effects for links */
+    a:hover {
+        opacity: 0.8;
+    }
+</style>
 {% endblock footer %}

@@ -22,6 +22,7 @@ highlight_theme = "inspired-github"
 juice_logo_name = "Rust Search Extension"
 juice_logo_path = "logo.png"
 juice_extra_menu = [
+    { title = "Geddle", link = "https://geddle.com" },
     { title = "Query.rs", link = "https://query.rs" },
     { title = "Github", link = "https://github.com/huhu/rust-search-extension" },
 ]
