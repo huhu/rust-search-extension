@@ -78,5 +78,5 @@ $ make edge # For Edge version
 
 感谢下列优秀企业的赞助
 
-[![](https://geddle.com/logo-white.svg)](https://geddle.com/?from=rust-search-extension)
+[![](https://geddle.com/logo.svg)](https://geddle.com/?from=rust-search-extension)
 [![](docs/static/bytebase.svg)](https://bytebase.com/?from=rust-search-extension)
