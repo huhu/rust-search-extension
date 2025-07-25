@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0053",
+      "package": "algorithmica",
+      "title": "'merge_sort::merge()' crashes with double-free for `T: Drop`",
+      "description": "In the affected versions of this crate, `merge_sort::merge()` wildly duplicates and drops ownership of `T` without guarding against double-free. Due to such implementation,\nsimply invoking `merge_sort::merge()` on `Vec<T: Drop>` can cause **double free** bugs.",
+      "date": "2021-03-07",
+      "aliases": [
+        "CVE-2021-31996",
+        "GHSA-jh37-772x-4hpw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/AbrarNitk/algorithmica/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

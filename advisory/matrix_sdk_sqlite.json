@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0043",
+      "package": "matrix-sdk-sqlite",
+      "title": "matrix-sdk-sqlite: SQL injection vulnerability in `SqliteEventCacheStore::find_event_with_relations`",
+      "description": "The `SqliteEventCacheStore::find_event_with_relations` function constructs SQL\nqueries using `format!()` with unescaped input, allowing an attacker to inject\narbitrary SQL. This results in a SQL injection vulnerability.",
+      "date": "2025-07-11",
+      "aliases": [
+        "CVE-2025-53549",
+        "GHSA-275g-g844-73jh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "sql-injection"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/security/advisories/GHSA-275g-g844-73jh",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "matrix_sdk_sqlite::SqliteEventCacheStore::find_event_relations": [
+          ">=0.11.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.13.0"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  }
+]

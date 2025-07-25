@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0066",
+      "package": "safe_bindgen",
+      "title": "crate has been renamed to `sn_bindgen`",
+      "description": "This crate has been renamed from `safe_bindgen` to `sn_bindgen`.\n\nThe new repository location is:\n\n<https://github.com/maidsafe/sn_bindgen>",
+      "date": "2020-11-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maidsafe/sn_bindgen/pull/67",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
