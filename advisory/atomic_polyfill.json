@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0089",
+      "package": "atomic-polyfill",
+      "title": "atomic-polyfill is unmaintained",
+      "description": "The author has archived the GitHub repository and mentions deprecation in\nproject's\n[README](https://github.com/embassy-rs/atomic-polyfill/blob/48e55c166684f37af0b00fbee5a0809b1a2bae8e/README.md).\n\n## Possible alternatives\n\n * [portable-atomic](https://crates.io/crates/portable-atomic)",
+      "date": "2023-07-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/embassy-rs/atomic-polyfill/commit/48e55c166684f37af0b00fbee5a0809b1a2bae8e",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

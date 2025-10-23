@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0073",
+      "package": "alloc-cortex-m",
+      "title": "crate has been renamed to `embedded-alloc`",
+      "description": "This crate has been renamed from `alloc-cortex-m` to `embedded-alloc`.\n\nThe new repository location is:\n\n<https://github.com/rust-embedded/embedded-alloc>",
+      "date": "2022-12-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/embedded-alloc/pull/56",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

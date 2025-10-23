@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0028",
+      "package": "buf_redux",
+      "title": "buf_redux is Unmaintained",
+      "description": "Last release was over three years ago.\n\nThe maintainer(s) have been unreachable to respond to any issues that may or may not include security issues.\n\nThe repository is now archived and there is no security policy in place to contact the maintainer(s) otherwise.\n\nThe safety-undocumented unsafe in the crate may or may not be safe to use.\n\nThe crate also has a current future incompatibility warning [buf_redux/23](https://github.com/abonander/buf_redux/issues/23).\n\n## Possible Alternatives\n\nThe below may or may not provide alternative(s)\n\n- Rust alloc / std vec::Vec, collections::VecDeque\n- [buffer-redux](https://crates.io/crates/buffer-redux) - fork\n- [bytes](https://crates.io/crates/bytes)\n- [crates.io search for 'buffer'](https://crates.io/keywords/buffer)",
+      "date": "2023-01-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/abonander/buf_redux/issues",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

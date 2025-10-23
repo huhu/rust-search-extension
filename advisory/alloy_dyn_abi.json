@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0073",
+      "package": "alloy-dyn-abi",
+      "title": "DoS vulnerability on `alloy_dyn_abi::TypedData` hashing",
+      "description": "An uncaught panic triggered by malformed input to `alloy_dyn_abi::TypedData` could lead to a denial-of-service (DoS) via `eip712_signing_hash()`.\n\nSoftware with high availability requirements such as network services may be particularly impacted. If in use, external auto-restarting mechanisms can partially mitigate the availability issues unless repeated attacks are possible.\n\nThe vulnerability was patched by adding a check to ensure the element is not empty before accessing its first element; an error is returned if it is empty. The fix is included in version [v1.4.1](https://crates.io/crates/alloy-dyn-abi/1.4.1) and backported to [v0.8.26](https://crates.io/crates/alloy-dyn-abi/0.8.26).\n\nThere is no known workaround that mitigates the vulnerability. Upgrading to a patched version is the recommended course of action.\n\nReported by [Christian Reitter](https://github.com/cr-tk) & [Zeke Mostov](https://github.com/emostov) from [Turnkey](https://www.turnkey.com/).",
+      "date": "2025-10-15",
+      "aliases": [
+        "CVE-2025-62370",
+        "GHSA-pgp9-98jm-wwq2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "uncaught-panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/alloy-rs/core/security/advisories/GHSA-pgp9-98jm-wwq2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "alloy_dyn_abi::eip712::Resolver::encode_type": [
+          "<0.8.26",
+          ">=1.0.0, <1.4.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.26, <1.0.0",
+        ">=1.4.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

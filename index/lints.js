@@ -1,0 +1,1 @@
+const lintsIndex={};export default lintsIndex;

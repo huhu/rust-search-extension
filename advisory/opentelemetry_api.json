@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0387",
+      "package": "opentelemetry_api",
+      "title": "`opentelemetry_api` has been merged into the `opentelemetry` crate",
+      "description": "Last release was on 2023-07-30.\n`opentelemetry_api` has been moved into the [`opentelemetry` crate](https://crates.io/crates/opentelemetry).\n\nPlease use the `opentelemetry` crate going forward.",
+      "date": "2024-07-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/open-telemetry/opentelemetry-rust/pull/1226",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0029",
+      "package": "chacha20",
+      "title": "ChaCha20 counter overflow can expose repetitions in the keystream",
+      "description": "The ChaCha20 stream cipher can produce a maximum of 2^32 blocks (~256GB)\nbefore the 32-bit counter overflows. Releases of the `chacha20` crate prior\nto v0.2.3 allow generating keystreams larger than this, including seeking\npast the limit. When this occurs, the keystream is duplicated, with failure\nmodes similar to nonce reuse (i.e. exposure of the XOR of two plaintexts).\n\nThe v0.2.3 release now panics in this event, rather than exposing the\nduplicated keystream. Note this is a \"hot fix\" solution to the problem\nand future releases will pursue returning an error in this case.\n\nUsers of the `chacha20poly1305` crate are unaffected by this as this crate\nproperly asserts the length of the plaintext is less than the maximum allowed\n(`P_MAX` as described in RFC 8439 Section 2.8).",
+      "date": "2019-10-22",
+      "aliases": [
+        "CVE-2019-25005",
+        "GHSA-j2r6-2m5c-vgh5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/stream-ciphers/pull/64",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0080",
+      "package": "parity-util-mem",
+      "title": "parity-util-mem Unmaintained",
+      "description": "The crate has been deprecated and will receive no updates with no repository source.\n\nThe crate has [a warning](https://crates.io/crates/parity-util-mem) surrounding it's use related to global allocator use that may lead to UB.",
+      "date": "2022-11-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/paritytech/parity-common/issues/607",
+        "https://github.com/paritytech/parity-common/pull/697"
+      ],
+      "source": null,
+      "url": "https://github.com/paritytech/parity-common/pull/696",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
