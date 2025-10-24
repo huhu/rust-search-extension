@@ -70,6 +70,20 @@ $ make firefox # For Firefox version
 $ make edge # For Edge version
 ```
 
+## Build Instructions
+
+To build packages for different browsers, use the `make pack` command followed by the target browser name.
+
+### Syntax
+
+```bash
+make pack chrome
+
+make pack firefox
+
+make pack edge
+```
+
 ## Get involved
 
 You can contact us on Discord Channel: https://discord.gg/xucZNVd
