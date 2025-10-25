@@ -36,6 +36,39 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2025-0112",
+      "package": "wasmtime",
+      "title": "Possible host crash with host-to-wasm component intrinsics",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-4h67-722j-5pmc\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2025-07-18",
+      "aliases": [
+        "CVE-2025-62711",
+        "GHSA-4h67-722j-5pmc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-4h67-722j-5pmc",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=38.0.3"
+      ],
+      "unaffected": [
+        "<38.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2024-0438",
       "package": "wasmtime",
       "title": "Wasmtime doesn't fully sandbox all the Windows device filenames",
