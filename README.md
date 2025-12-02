@@ -55,13 +55,16 @@ Input keyword **rs** in the address bar, press `Space` to activate the search ba
 
 ## Contribution
 
-[jsonnet](https://jsonnet.org/) is required before getting started. To install `jsonnet`, please check `jsonnet`'s [README](https://github.com/google/jsonnet#packages).
-For Linux users, the `snap` is a good choice to [install jsonnet](https://snapcraft.io/install/jsonnet/ubuntu).
+[jsonnet](https://jsonnet.org/) is required before getting started. To install `jsonnet`, please check `jsonnet`'s [README](https://github.com/google/go-jsonnet).
 
 ```bash
+# install jsonnet
+
 $ git clone --recursive https://github.com/huhu/rust-search-extension
 Cloning into 'rust-search-extension'...
 $ cd rust-search-extension
+
+$ npm install -g esbuild web-ext
 
 $ make chrome # For Chrome version
 
