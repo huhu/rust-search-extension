@@ -149,7 +149,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: dev-drprasad/delete-older-releases@v0.3.2
         with:
-          keep_latest: 7
+          keep_latest: 1
           delete_tag_pattern: nightly
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
