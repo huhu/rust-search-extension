@@ -104,6 +104,14 @@ jobs:
           draft: false
           prerelease: true
 
+      - name: Find built packages
+        if: github.event_name != 'pull_request'
+        id: find_packages
+        run: |
+          echo "chrome_package=$(ls web-ext-artifacts/chrome-rust-search-extension-*.zip)" >> $GITHUB_OUTPUT
+          echo "firefox_package=$(ls web-ext-artifacts/firefox-rust-search-extension-*.zip)" >> $GITHUB_OUTPUT
+          echo "edge_package=$(ls web-ext-artifacts/edge-rust-search-extension-*.zip)" >> $GITHUB_OUTPUT
+
       - name: Upload Chrome Release Asset
         if: github.event_name != 'pull_request'
         uses: actions/upload-release-asset@v1
@@ -111,7 +119,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./web-ext-artifacts/chrome-rust-search-extension-*.zip
+          asset_path: ${{ steps.find_packages.outputs.chrome_package }}
           asset_name: chrome-rust-search-extension-nightly-${{ steps.date.outputs.date }}.zip
           asset_content_type: application/zip
 
@@ -122,7 +130,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./web-ext-artifacts/firefox-rust-search-extension-*.zip
+          asset_path: ${{ steps.find_packages.outputs.firefox_package }}
           asset_name: firefox-rust-search-extension-nightly-${{ steps.date.outputs.date }}.zip
           asset_content_type: application/zip
 
@@ -133,7 +141,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./web-ext-artifacts/edge-rust-search-extension-*.zip
+          asset_path: ${{ steps.find_packages.outputs.edge_package }}
           asset_name: edge-rust-search-extension-nightly-${{ steps.date.outputs.date }}.zip
           asset_content_type: application/zip
 
