@@ -5,6 +5,10 @@ on:
     # Run at 00:00 UTC every day
     - cron: '0 0 * * *'
   workflow_dispatch: # Allow manual triggering
+  pull_request:
+    branches:
+      - main
+      - master
 
 jobs:
   build:
@@ -51,15 +55,26 @@ jobs:
       - name: Build Edge package
         run: make pack edge
 
+      - name: Upload build artifacts (PR only)
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-packages
+          path: web-ext-artifacts/*.zip
+          retention-days: 7
+
       - name: Get current date
+        if: github.event_name != 'pull_request'
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
       - name: Get short commit SHA
+        if: github.event_name != 'pull_request'
         id: sha
         run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Create Release
+        if: github.event_name != 'pull_request'
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -90,6 +105,7 @@ jobs:
           prerelease: true
 
       - name: Upload Chrome Release Asset
+        if: github.event_name != 'pull_request'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -100,6 +116,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload Firefox Release Asset
+        if: github.event_name != 'pull_request'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -110,6 +127,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload Edge Release Asset
+        if: github.event_name != 'pull_request'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -120,6 +138,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Clean up old nightly releases
+        if: github.event_name != 'pull_request'
         uses: dev-drprasad/delete-older-releases@v0.3.2
         with:
           keep_latest: 7
