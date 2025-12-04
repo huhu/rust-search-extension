@@ -1,0 +1,55 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0113",
+      "package": "shaman",
+      "title": "soundness issue and unmaintained",
+      "description": "`shaman::cryptoutil::write_u64v_le` and other functions mentioned above cannot garantee memory safety of get_unchecked later if both length are zero.\n\n`shaman` is unmaintained.",
+      "date": "2025-05-06",
+      "aliases": [
+        "GHSA-7vjm-6qgq-3mrq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://crates.io/crates/shaman",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "shaman::cryptoutil::read_u32v_be": [
+          "<=0.1.0"
+        ],
+        "shaman::cryptoutil::read_u32v_le": [
+          "<=0.1.0"
+        ],
+        "shaman::cryptoutil::read_u64v_be": [
+          "<=0.1.0"
+        ],
+        "shaman::cryptoutil::read_u64v_le": [
+          "<=0.1.0"
+        ],
+        "shaman::cryptoutil::write_u32v_le": [
+          "<=0.1.0"
+        ],
+        "shaman::cryptoutil::write_u64v_le": [
+          "<=0.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

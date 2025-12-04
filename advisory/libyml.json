@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0067",
+      "package": "libyml",
+      "title": "`libyml::string::yaml_string_extend` is unsound and unmaintained",
+      "description": "In version 0.0.4, `libyml::string::yaml_string_extend` was revised resulting in undefined behaviour, which is unsound.\n\nThe GitHub project for `libyml` was archived after unsoundness issues were raised.\n\nIf you rely on this crate, it is highly recommended switching to a maintained alternative.\n\n## Recommended alternatives\n\n- [`libyaml-safer`](https://crates.io/crates/libyaml-safer) \n- [`unsafe-libyaml-norway`](https://crates.io/crates/unsafe-libyaml-norway) - Maintained fork of `unsafe-libyaml`",
+      "date": "2025-09-11",
+      "aliases": [
+        "GHSA-gfxp-f68g-8x78"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/issues/2395",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

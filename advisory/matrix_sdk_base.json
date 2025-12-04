@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0065",
+      "package": "matrix-sdk-base",
+      "title": "matrix-sdk-base: Panic in the `RoomMember::normalized_power_level()` method",
+      "description": "In matrix-sdk-base before 0.14.1, calling the\n`RoomMember::normalized_power_level()` method can cause a panic if a room member\nhas a power level of `Int::Min`.",
+      "date": "2025-09-11",
+      "aliases": [
+        "CVE-2025-59047",
+        "GHSA-qhj8-q5r6-8q6j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/security/advisories/GHSA-qhj8-q5r6-8q6j",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "matrix_sdk_base::RoomMember::normalized_power_level": [
+          "<=0.14.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.14.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0365",
+      "package": "diesel",
+      "title": "Binary Protocol Misinterpretation caused by Truncating or Overflowing Casts",
+      "description": "The following presentation at this year's DEF CON was brought to our attention on the Diesel Gitter Channel:\n\n> SQL Injection isn't Dead: Smuggling Queries at the Protocol Level  \n> <http://web.archive.org/web/20240812130923/https://media.defcon.org/DEF%20CON%2032/DEF%20CON%2032%20presentations/DEF%20CON%2032%20-%20Paul%20Gerste%20-%20SQL%20Injection%20Isn't%20Dead%20Smuggling%20Queries%20at%20the%20Protocol%20Level.pdf>  \n> (Archive link for posterity.)\nEssentially, encoding a value larger than 4GiB can cause the length prefix in the protocol to overflow, \ncausing the server to interpret the rest of the string as binary protocol commands or other data.\n\nIt appears Diesel _does_ perform truncating casts in a way that could be problematic, \nfor example: <https://github.com/diesel-rs/diesel/blob/ae82c4a5a133db65612b7436356f549bfecda1c7/diesel/src/pg/connection/stmt/mod.rs#L36>\n\nThis code has existed essentially since the beginning, \nso it is reasonable to assume that all published versions `<= 2.2.2` are affected.\n\n## Mitigation\n\nThe prefered migration to the outlined problem is to update to a Diesel version newer than 2.2.2, which includes \nfixes for the problem. \n\nAs always, you should make sure your application is validating untrustworthy user input. \nReject any input over 4 GiB, or any input that could _encode_ to a string longer than 4 GiB. \nDynamically built queries are also potentially problematic if it pushes the message size over this 4 GiB bound.\n\nFor web application backends, consider adding some middleware that limits the size of request bodies by default.\n\n## Resolution\n\nDiesel now uses `#[deny]` directives for the following Clippy lints:\n\n* [`cast_possible_truncation`](https://rust-lang.github.io/rust-clippy/master/#/cast_possible_truncation)\n* [`cast_possible_wrap`](https://rust-lang.github.io/rust-clippy/master/#/cast_possible_wrap)\n* [`cast_sign_loss`](https://rust-lang.github.io/rust-clippy/master/#/cast_sign_loss)\n\nto prevent casts that will lead to precision loss or other trunctations. Additionally we performed an \naudit of the relevant code.\n\nA fix is included in the `2.2.3` release.",
+      "date": "2024-08-23",
+      "aliases": [
+        "GHSA-wq9x-qwcq-mmgf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "sql",
+        "injection",
+        "overflow",
+        "truncation"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/4170",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.2.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0037",
+      "package": "diesel",
+      "title": "Fix a use-after-free bug in diesels Sqlite backend",
+      "description": "We've misused `sqlite3_column_name`. The\n[SQLite](https://www.sqlite.org/c3ref/column_name.html) documentation\nstates that the following:\n\n> The returned string pointer is valid until either the prepared statement\n> is destroyed by sqlite3_finalize() or until the statement is automatically\n> reprepared by the first call to sqlite3_step() for a particular\n> run or until the next call to sqlite3_column_name()\n> or sqlite3_column_name16() on the same column.\n\nAs part of our `query_by_name` infrastructure we've first received all\nfield names for the prepared statement and stored them as string slices\nfor later use. After that we called `sqlite3_step()` for the first time,\nwhich invalids the pointer and therefore the stored string slice.",
+      "date": "2021-03-05",
+      "aliases": [
+        "CVE-2021-28305",
+        "GHSA-j8q9-5rp9-4mv9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use after free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/2663",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::SqliteConnection::query_by_name": [
+          "<1.4.6"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.4.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

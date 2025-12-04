@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0050",
+      "package": "interledger-packet",
+      "title": "Interledger is Unmaintained",
+      "description": "Interledger family of crates is not being actively maintained anymore.\n\nThe owner of the published crate does not appear to be responsive.\n\nThere is an outstanding concern around username comparison.\n\nThis concern may or may not be resolved by bumping up the dependencies of the project.",
+      "date": "2022-08-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/interledger-rs/interledger-rs/pull/744"
+      ],
+      "source": null,
+      "url": "https://github.com/interledger-rs/interledger-rs/issues/745",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

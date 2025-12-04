@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0338",
+      "package": "cosmwasm-std",
+      "title": "Arithmetic overflows in cosmwasm-std",
+      "description": "Some mathematical operations in `cosmwasm-std` use wrapping math instead of\npanicking on overflow for very big numbers. This can lead to wrong calculations in contracts\nthat use these operations.\n\nAffected functions:\n\n- `Uint{256,512}::pow` / `Int{256,512}::pow`\n- `Int{256,512}::neg`\n\nAffected if `overflow-checks = true` is not set:\n\n- `Uint{64,128}::pow` / `Int{64,128}::pow`\n- `Int{64,128}::neg`",
+      "date": "2024-04-24",
+      "aliases": [
+        "CVE-2024-58263",
+        "GHSA-8724-5xmm-w5xq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "overflow",
+        "integer",
+        "arithmetic"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/CosmWasm/advisories/blob/main/CWAs/CWA-2024-002.md",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.4.4, <1.5.0",
+        ">=1.5.4, <2.0.0",
+        ">=2.0.2"
+      ],
+      "unaffected": [
+        "<1.3.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,97 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0072",
+      "package": "wrflib",
+      "title": "soundness issue and unmaintained",
+      "description": "All functions under `wrflib::byte_extract` are simply wrapper of unsafe pointer offset and lacks sufficient checks to it pointer and offset parameter.\n\n`wrflib` is unmaintained.",
+      "date": "2025-10-02",
+      "aliases": [
+        "GHSA-466c-pfvv-v83g"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cruise-automation/webviz-rust-framework",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "wrflib::byte_extract::get_f32_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_f32_le_as_f32": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_f64_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_f64_le_as_f32": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_i16_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_i16_le_as_f32": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_i32_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_i32_le_as_f32": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_i64_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_i64_le_as_f32": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_i8_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_i8_le_as_f32": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_u16_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_u16_le_as_f32": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_u32_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_u32_le_as_f32": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_u64_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_u64_le_as_f32": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_u8_le": [
+          "<=0.0.3"
+        ],
+        "wrflib::byte_extract::get_u8_le_as_f32": [
+          "<=0.0.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0009",
+      "package": "ring",
+      "title": "Some AES functions may panic when overflow checking is enabled.",
+      "description": "`ring::aead::quic::HeaderProtectionKey::new_mask()` may panic when overflow\nchecking is enabled. In the QUIC protocol, an attacker can induce this panic by\nsending a specially-crafted packet. Even unintentionally it is likely to occur\nin 1 out of every 2**32 packets sent and/or received.\n\nOn 64-bit targets operations using `ring::aead::{AES_128_GCM, AES_256_GCM}` may\npanic when overflow checking is enabled, when encrypting/decrypting approximately\n68,719,476,700 bytes (about 64 gigabytes) of data in a single chunk. Protocols\nlike TLS and SSH are not affected by this because those protocols break large\namounts of data into small chunks. Similarly, most applications will not\nattempt to encrypt/decrypt 64GB of data in one chunk.\n\nOverflow checking is not enabled in release mode by default, but\n`RUSTFLAGS=\"-C overflow-checks\"` or `overflow-checks = true` in the Cargo.toml\nprofile can override this. Overflow checking is usually enabled by default in\ndebug mode.",
+      "date": "2025-03-06",
+      "aliases": [
+        "CVE-2025-4432",
+        "GHSA-4p46-pwfr-66x6",
+        "GHSA-c86p-w88r-qvqr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/briansmith/ring/blob/main/RELEASES.md#version-01712-2025-03-05",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.17.12"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0010",
+      "package": "ring",
+      "title": "Versions of *ring* prior to 0.17 are unmaintained.",
+      "description": "*ring* 0.16.20 was released over 4 years ago and isn't maintained, tested, etc.\n\nAdditionally, the project's general policy is to only patch the latest release,\nwhich is 0.17.12 now. It will be difficult for anybody to backport future fixes\nto versions earlier than 0.17.10 due to license changes.",
+      "date": "2025-03-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/briansmith/ring/discussions/2450",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">=0.17"
+      ]
+    }
+  }
+]

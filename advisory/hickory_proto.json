@@ -1,0 +1,51 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0006",
+      "package": "hickory-proto",
+      "title": "Hickory DNS failure to verify self-signed RRSIG for DNSKEYs",
+      "description": "Summary\n\nThe DNSSEC validation routines treat entire RRsets of DNSKEY records as trusted once they have established trust in only one of the DNSKEYs. As a result, if a zone includes a DNSKEY with a public key that matches a configured trust anchor, all keys in that zone will be trusted to authenticate other records in the zone. There is a second variant of this vulnerability involving DS records, where an authenticated DS record covering one DNSKEY leads to trust in signatures made by an unrelated DNSKEY in the same zone.\n\nDetails\n\nverify_dnskey_rrset() will return Ok(true) if any record's public key matches a trust anchor. This results in verify_rrset() returning a Secure proof. This ultimately results in successfully verifying a response containing DNSKEY records. verify_default_rrset() looks up DNSKEY records by calling handle.lookup(), which takes the above code path. There's a comment following this that says \"DNSKEYs were already validated by the inner query in the above lookup\", but this is not the case. To fully verify the whole RRset of DNSKEYs, it would be necessary to check self-signatures by the trusted key over the other keys. Later in verify_default_rrset(), verify_rrset_with_dnskey() is called multiple times with different keys and signatures, and if any call succeeds, then its Proof is returned.\n\nSimilarly, verify_dnskey_rrset() returns Ok(false) if any DNSKEY record is covered by a DS record. A comment says \"If all the keys are valid, then we are secure\", but this is only checking that one key is authenticated by a DS in the parent zone's delegation point. This time, after control flow returns to verify_rrset(), it will call verify_default_rrset(). The special handling for DNSKEYs in verify_default_rrset() will then call verify_rrset_with_dnskey() using each KSK DNSKEY record, and if one call succeeds, return its Proof. If there are multiple KSK DNSKEYs in the RRset, then this leads to another authentication break. We need to either pass the authenticated DNSKEYs from the DS covering check to the RRSIG validation, or we need to perform this RRSIG validation of the DNSKEY RRset inside verify_dnskey_rrset() and cut verify_default_rrset() out of DNSKEY RRset validation entirely.",
+      "date": "2025-02-07",
+      "aliases": [
+        "GHSA-v7pc-74h8-xq2h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "dnssec"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/security/advisories/GHSA-37wc-h8xc-5hc4",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "hickory_proto::dnssec::DnssecDnsHandle::send": [
+          ">=0.25.0-alpha.5"
+        ],
+        "hickory_proto::xfer::DnssecDnsHandle::send": [
+          ">=0.24.3",
+          "<0.25.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        "^0.24.3",
+        ">=0.25.0-alpha.5"
+      ],
+      "unaffected": [
+        "<0.8.0"
+      ]
+    }
+  }
+]

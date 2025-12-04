@@ -1,0 +1,91 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0049",
+      "package": "scratchpad",
+      "title": "User-defined implementations of the safe trait scratchpad::Tracking can cause heap buffer overflows",
+      "description": "The `get` and `set` methods of the public trait `scratchpad::Tracking` interact with unsafe code regions in the crate, and they influence the computation of addresses returned as raw pointers. However, the trait itself is not marked as unsafe, meaning users may provide custom implementations under the assumption that the crate upholds all safety guarantees.\n\nThis becomes problematic because even safe implementations of `get` and `set`-written without using any unsafe code-can still result in ill-formed raw pointers. These pointers may later be dereferenced within safe APIs of the crate (e.g., `marker::MarkerBack::allocate_slice_copy`), potentially leading to arbitrary memory access or heap buffer overflows.\n\nAccording to the [penultimate commit](https://github.com/okready/scratchpad/commit/957dee1a3902f48600b06910e8e0b1d5ee7dab83), the crate is in maintenance mode awaiting a cleanup that will reduce the area of unsafe code. Note that the last commits to the repository are from 4 years ago.",
+      "date": "2025-08-14",
+      "aliases": [
+        "GHSA-77h3-w9rx-hj3q"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "buffer-overflow",
+        "raw-pointer"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/okready/scratchpad/issues/2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "scratchpad::Tracking::get": [
+          "<=1.3.1"
+        ],
+        "scratchpad::Tracking::set": [
+          "<=1.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0030",
+      "package": "scratchpad",
+      "title": "move_elements can double-free objects on panic",
+      "description": "Affected versions of `scratchpad` used `ptr::read` to read elements while\ncalling a user provided function `f` on them.\n\nSince the pointer read duplicates ownership, a panic inside the user provided\n`f` function could cause a double free when unwinding.\n\nThe flaw was fixed in commit `891561bea` by removing the unsafe block and using\na plain iterator.",
+      "date": "2021-02-18",
+      "aliases": [
+        "CVE-2021-28031",
+        "GHSA-3qm2-rfqw-fmrw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/okready/scratchpad/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "scratchpad::SliceMoveSource::move_elements": [
+          "<1.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

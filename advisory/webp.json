@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0443",
+      "package": "webp",
+      "title": "webp crate may expose memory contents when encoding an image",
+      "description": "Affected versions of this crate did not check that the input slice passed to `\"webp::Encoder::encode()` is large enough for the specified image dimensions.\n\nIf the input slice is too short, the library will read out of bounds of the buffer and encode other memory contents as an image, resulting in memory exposure or a segmentation fault.\n\nThe flaw was corrected in [pull request #44](https://github.com/jaredforth/webp/pull/44) by always validating the input buffer size when constructing the encoder.",
+      "date": "2024-09-06",
+      "aliases": [
+        "GHSA-9q78-27f3-2jmh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/jaredforth/webp/issues/40",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

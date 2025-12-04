@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0131",
+      "package": "rtvm-interpreter",
+      "title": "Lack of sufficient checks in public API",
+      "description": "The affected function is unsound due to insufficient checks on public struct field.",
+      "date": "2025-10-31",
+      "aliases": [
+        "GHSA-pq5v-rwp8-p7gm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://crates.io/crates/rtvm-interpreter/4.0.0",
+        "https://docs.rs/rtvm-interpreter/latest/src/rtvm_interpreter/interpreter.rs.html"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rtvm_interpreter::Interpreter::program_counter": [
+          "<=4.0.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

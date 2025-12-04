@@ -1,0 +1,62 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0068",
+      "package": "cocoon",
+      "title": "Sequential calls of encryption API (`encrypt`, `wrap`, and `dump`) result in nonce reuse",
+      "description": "**Problem**: Trying to create a new encrypted message with the same cocoon\nobject generates the same ciphertext. It mostly affects `MiniCocoon` and\n`Cocoon` objects with custom seeds and RNGs (where `StdRng` is used under\nthe hood).\n\n**Note**: The issue does **NOT** affect objects created with **`Cocoon::new`**\nwhich utilizes `ThreadRng`.\n\n**Cause**: `StdRng` produces the same nonce because `StdRng::clone` resets its\nstate.\n\n**Measure**: Make encryption API mutable (`encrypt`, `wrap`, and `dump`).\n\n**Workaround**: Create a new cocoon object with a new **seed** per each\nencryption.\n\n## How to Reproduce\n\n```rust\nlet cocoon = MiniCocoon::from_password(b\"password\", &[1; 32]);\nlet mut data1 = \"my secret data\".to_owned().into_bytes();\nlet _ = cocoon.encrypt(&mut data1)?;\n\nlet mut data2 = \"my secret data\".to_owned().into_bytes();\nlet _ = cocoon.encrypt(&mut data2)?;\n\n// data1: [23, 217, 251, 151, 179, 62, 85, 15, 253, 92, 192, 112, 200, 52]\n// data2: [23, 217, 251, 151, 179, 62, 85, 15, 253, 92, 192, 112, 200, 52]\n```\n\n## Workaround\n\nFor `cocoon <= 0.3.3`, create a new cocoon with a different **seed**\nper each `encrypt`/`wrap`/`dump` call.\n\n```rust\nlet cocoon = MiniCocoon::from_password(b\"password\", &[1; 32]);\nlet mut data1 = \"my secret data\".to_owned().into_bytes();\nlet _ = cocoon.encrypt(&mut data1)?;\n\n// Another seed: &[2; 32].\nlet cocoon = MiniCocoon::from_password(b\"password\", &[2; 32]);\nlet mut data2 = \"my secret data\".to_owned().into_bytes();\nlet _ = cocoon.encrypt(&mut data2)?;\n\n// data1: [23, 217, 251, 151, 179, 62, 85, 15, 253, 92, 192, 112, 200, 52]\n// data2: [53, 223, 209, 96, 130, 99, 209, 108, 83, 189, 123, 81, 19, 1]\n```",
+      "date": "2023-10-15",
+      "aliases": [
+        "CVE-2024-21530",
+        "GHSA-6878-6wc2-pf5h",
+        "GHSA-r2jw-c95q-rj29"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "nonce",
+        "stream-cipher"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/fadeevab/cocoon/issues/22",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "cocoon::Cocoon::dump": [
+          "<=0.3.3"
+        ],
+        "cocoon::Cocoon::encrypt": [
+          "<=0.3.3"
+        ],
+        "cocoon::Cocoon::wrap": [
+          "<=0.3.3"
+        ],
+        "cocoon::MiniCocoon::dump": [
+          "<=0.3.3"
+        ],
+        "cocoon::MiniCocoon::encrypt": [
+          "<=0.3.3"
+        ],
+        "cocoon::MiniCocoon::wrap": [
+          "<=0.3.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

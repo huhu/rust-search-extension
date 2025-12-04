@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0094",
+      "package": "mimalloc",
+      "title": "Mimalloc Can Allocate Memory with Bad Alignment",
+      "description": "This crate depended on a promise regarding alignments made by the author of the mimalloc allocator to avoid using aligned allocation functions where possible for performance reasons.\nSince then, the mimalloc allocator's logic changed, making it break this promise.\nThis caused this crate to return memory with an incorrect alignment for some allocations, particularly those with large alignments.\nThe flaw was fixed by always using the aligned allocation functions.",
+      "date": "2022-11-23",
+      "aliases": [
+        "GHSA-g23h-7vf9-xc25"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/purpleprotocol/mimalloc_rust/issues/87",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.39"
+      ],
+      "unaffected": []
+    }
+  }
+]

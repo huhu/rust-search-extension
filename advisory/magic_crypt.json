@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0430",
+      "package": "magic-crypt",
+      "title": "Use of insecure cryptographic algorithms",
+      "description": "This crate uses a number of cryptographic algorithms that are no longer\nconsidered secure and it uses them in ways that do not guarantee the integrity\nof the encrypted data.\n\n`MagicCrypt64` uses the insecure DES block cipher in CBC mode without\nauthentication. This allows for practical brute force and padding oracle\nattacks and does not protect the integrity of the encrypted data. Key and IV\nare generated from user input using CRC64, which is not at all a key derivation\nfunction.\n\n`MagicCrypt64`, `MagicCrypt128`, `MagicCrypt192`, and `MagicCrypt256` are all\nvulnerable to padding-oracle attacks. None of them protect the integrity of the\nciphertext. Furthermore, none use password-based key derivation functions, even\nthough the key is intended to be generated from a password.\n\nEach of the implementations are unsound in that they use uninitialized memory\nwithout `MaybeUninit` or equivalent structures.\n\nFor more information, visit the [issue](https://github.com/magiclen/rust-magiccrypt/issues/17).",
+      "date": "2024-12-28",
+      "aliases": [
+        "GHSA-gmx7-gr5q-85w5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "crypto",
+        "unsound"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/magiclen/rust-magiccrypt/issues/17",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

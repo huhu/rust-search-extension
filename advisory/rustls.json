@@ -1,0 +1,84 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0399",
+      "package": "rustls",
+      "title": "rustls network-reachable panic in `Acceptor::accept`",
+      "description": "A bug introduced in rustls 0.23.13 leads to a panic if the received\nTLS ClientHello is fragmented.  Only servers that use\n`rustls::server::Acceptor::accept()` are affected.\n\nServers that use `tokio-rustls`'s `LazyConfigAcceptor` API are affected.\n\nServers that use `tokio-rustls`'s `TlsAcceptor` API are not affected.\n\nServers that use `rustls-ffi`'s `rustls_acceptor_accept` API are affected.",
+      "date": "2024-11-22",
+      "aliases": [
+        "CVE-2024-11738",
+        "GHSA-qg5g-gv98-5ffh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/issues/2227",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.18"
+      ],
+      "unaffected": [
+        ">=0.23, <0.23.13",
+        "<0.23"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0336",
+      "package": "rustls",
+      "title": "`rustls::ConnectionCommon::complete_io` could fall into an infinite loop based on network input",
+      "description": "If a `close_notify` alert is received during a handshake, `complete_io`\ndoes not terminate.\n\nCallers which do not call `complete_io` are not affected.\n\n`rustls-tokio` and `rustls-ffi` do not call `complete_io`\nand are not affected.\n\n`rustls::Stream` and `rustls::StreamOwned` types use\n`complete_io` and are affected.",
+      "date": "2024-04-19",
+      "aliases": [
+        "CVE-2024-32650",
+        "GHSA-6g7w-8wpp-frhj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/security/advisories/GHSA-6g7w-8wpp-frhj",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rustls::ConnectionCommon::complete_io": [
+          "<=0.23.4",
+          "<=0.22.3",
+          "<=0.21.10",
+          "^0.20"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.23.5",
+        ">=0.22.4, <0.23.0",
+        ">=0.21.11, <0.22.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

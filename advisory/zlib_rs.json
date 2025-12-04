@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0401",
+      "package": "zlib-rs",
+      "title": "Denial of service because of stack overflow with malicious decompression input",
+      "description": "A denial of service vulnerability was found in zlib-rs, triggered by specially constructed input. This input causes a stack overflow, resulting in the process using zlib-rs to crash.\n\n### Impact\n\nDue to the way LLVM handles the zlib-rs codebase, tail calls were not guaranteed. This caused certain input patterns to result in a large number of stack frames being required, quickly resulting in a stack overflow. These are unlikely to occur in practice, but a dedicated attacker can construct malicious input files.\n\nAfter stack overflows were found by @inahga with a fuzzer, we dove into the assembly, and found some cases where the stack grew\n\n```asm\n.LBB109_326:\n    mov rdi, rbx\n    call zlib_rs::inflate::State::type_do\n    jmp .LBB109_311\n\n.LBB109_311:\n    lea rsp, [rbp - 40]\n    pop rbx\n    pop r12\n    pop r13\n    pop r14\n    pop r15\n    pop rbp\n    .cfi_def_cfa rsp, 8\n    ret\n```\n\nLLVM wants to centralize the cleanup before the return (many other blocks jump to `LBB109_311`), thereby invalidating a tail call to `type_do`. We were not able to get rid of this call without introducing one elsewhere: we just don't currently have the power to tell LLVM what we want it to do.\n\nSo, we switch back to loop+match waiting for changes to rust to make a more efficient implementation possible. Performance-wise, the damage is relatively minimal: we're just slower in cases where we already were slower than C. We are faster in cases where the relevant code is barely touched (in these cases the logic quickly moves into a hot inner loop and just spends most of its time there).\n\n### Patches\nVersion 0.4.0 patches the problem and is no longer vulnerable.\n\n### Workarounds\nUsers of zlib-rs should upgrade to the latest version. Users could alternatively run zlib-rs in a separate process to prevent a stack overflow crashing the entire program. In some situations a signal handler can be used to catch a stack overflow happening.",
+      "date": "2024-11-14",
+      "aliases": [
+        "GHSA-j3px-q95c-9683"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "stack-overflow"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/trifectatechfoundation/zlib-rs/security/advisories/GHSA-j3px-q95c-9683",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zlib_rs::inflate::inflate": [
+          "<=0.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

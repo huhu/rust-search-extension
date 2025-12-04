@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0391",
+      "package": "paillier-zk",
+      "title": "Ambiguous challenge derivation",
+      "description": "Challenge derivation in non-interactive ZK proofs was ambiguous and that could lead\nto security vulnerability (however, it's unknown if it could be exploited).",
+      "date": "2024-07-18",
+      "aliases": [
+        "GHSA-fpr5-jp2j-4q2f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "mpc",
+        "tss",
+        "zkp"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dfns/paillier-zk/pull/49",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

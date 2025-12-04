@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0398",
+      "package": "sharks",
+      "title": "Bias of Polynomial Coefficients in Secret Sharing",
+      "description": "Affected versions of this crate allowed for a bias when generating random\npolynomials for Shamir Secret Sharing, where instead of being within the range\n`[0, 255]` they were instead in the range `[1, 255]`. A description from\nCure53, who originally found the issue, is available:\n\n> The correct method to select a random polynomial would be to select\nall coefficients (including the most significant coefficient) uniformly\nin the range 0..255 (inclusive). Otherwise, knowledge that a coefficient\nin a polynomial cannot be 0 permits the exclusion of single byte values\nfor the shared secret given one share less than required. [...]\nExploiting this weakness necessitates sharing the same secret multiple\ntimes. In this scenario, an attacker could exclude an exponential number\nof values for each of the shared bytes until sufficiently few values\nremain for brute forcing.  Cure53 estimates that under ideal\ncircumstances (e.g., a 2-out-of-N scheme) a shared secret can be\nreconstructed if the same secret has been distributed 500-1500 times.\n\nSecrets that have been shared a low amount of times (ideally, once) would not\nbe impacted. However, secrets that are repeatedly shared may be vulnerable,\nespecially if the shares are still available, and should be rotated.\n\nThe vulnerability does not impact reconstitution of secrets: secrets that have\nalready been split can be recombined without issue.\n\nThe flaw can be corrected by changing the lower bound of the polynomial\ncoefficient range in the `sharks::math::random_polynomial` function to `0`. The\n`blahaj` crate has been made available with a fixed version of the code, after\nattempts to reach the maintainer of the `sharks` crate were unsuccessful.",
+      "date": "2024-11-16",
+      "aliases": [
+        "GHSA-jp37-5qhw-mffw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "shamir",
+        "cryptography",
+        "sss"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://git.distrust.co/public/blahaj/commit/4faab1cd33d455f0ca2ccc7208093fd6c18e0767",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0016",
+      "package": "pared",
+      "title": "Use after free in `Parc` and `Prc` due to missing lifetime constraints",
+      "description": "Affected versions of this crate didn't provide sufficient lifetime constraints to conversion\nfunctions from `alloc::sync::Arc` and `alloc::rc::Rc`, which made it possible to create\nprojections of these reference counted pointers. Unlike the original reference counted pointers,\nthese projections could outlive original data's lifetimes.\n\nThis projected pointer could cause the original `Arc`'s or `Rc`'s `Drop::drop` to get called at\na point where the original data was no longer valid, leading to a potential use after free.\n\nThe affected functions were\n- `pared::prc::Prc::from_rc`\n- `pared::prc::Prc::project`\n- `pared::prc::Prc::try_from_rc`\n- `pared::sync::Parc::from_arc`\n- `pared::sync::Parc::project`\n- `pared::sync::Parc::try_from_arc`\n\nThis flaw was fixed in [108f540ea8acb6073751a1aa386085c1cdc4fd1e](https://github.com/radekvit/pared/commit/108f540ea8acb6073751a1aa386085c1cdc4fd1e)\nby requiring that the type stored in the `Arc`s and `Rc`s passed to these functions contain `T: 'static`.",
+      "date": "2025-03-13",
+      "aliases": [
+        "GHSA-vgmh-mqm4-8j88"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/radekvit/pared/issues/2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pared::prc::Prc::from_rc": [
+          "<0.4.0"
+        ],
+        "pared::prc::Prc::project": [
+          "<0.4.0"
+        ],
+        "pared::prc::Prc::try_from_rc": [
+          "<0.4.0"
+        ],
+        "pared::sync::Parc::from_arc": [
+          "<0.4.0"
+        ],
+        "pared::sync::Parc::project": [
+          "<0.4.0"
+        ],
+        "pared::sync::Parc::try_from_arc": [
+          "<0.4.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

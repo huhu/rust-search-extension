@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0015",
+      "package": "web-push",
+      "title": "Denial of Service via malicious Web Push endpoint",
+      "description": "Prior to version 0.10.3, the built-in clients of the `web-push` crate\neagerly allocated memory based on the `Content-Length` header returned by the\nWeb Push endpoint. Malicious Web Push endpoints could return a large\n`Content-Length` without ever having to send as much data, leading to\ndenial of service by memory exhaustion.\n\nServices providing Web Push notifications typically allow the user to\nregister an arbitrary endpoint, so the endpoint should not be trusted.\n\nThe fixed version 0.10.3 now limits the amount of memory it will allocate\nfor each response, limits the amount of data it will read from the endpoint,\nand returns an error if the endpoint sends too much data.\n\nAs before, it is recommended that services add a timeout for each request\nto Web Push endpoints.",
+      "date": "2025-02-16",
+      "aliases": [
+        "CVE-2025-53604",
+        "GHSA-287x-9rff-qvcg",
+        "GHSA-fc83-9jwq-gc2m"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic",
+        "oom"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/pimeys/rust-web-push/pull/68",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0031",
+      "package": "tanton_engine",
+      "title": "Unsound public API in unmaintained crate",
+      "description": "The following functions in the `tanton_engine` crate are unsound due to lack of sufficient boundary\nchecks in public API:\n\n- `Stack::offset()`\n- `ThreadStack::get()`\n- `RootMoveList::insert_score_depth()`\n- `RootMoveList::insert_score()`\n\nThe tanton_engine crate is no longer maintained, so there are no plans to fix this issue.",
+      "date": "2025-04-24",
+      "aliases": [
+        "GHSA-m2xr-2vj4-wh94"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tanton_engine::RootMoveList::insert_score": [
+          "^1.0.0"
+        ],
+        "tanton_engine::RootMoveList::insert_score_depth": [
+          "^1.0.0"
+        ],
+        "tanton_engine::Stack::offset": [
+          "^1.0.0"
+        ],
+        "tanton_engine::ThreadStack::get": [
+          "^1.0.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

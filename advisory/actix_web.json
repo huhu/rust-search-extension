@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0019",
+      "package": "actix-web",
+      "title": "Multiple memory safety issues",
+      "description": "Affected versions contain multiple memory safety issues, such as:\n\n - Unsoundly coercing immutable references to mutable references\n - Unsoundly extending lifetimes of strings\n - Adding the `Send` marker trait to objects that cannot be safely sent between threads\n\nThis may result in a variety of memory corruption scenarios, most likely use-after-free.\n \nA significant refactoring effort has been conducted to resolve these issues.",
+      "date": "2018-06-08",
+      "aliases": [
+        "CVE-2018-25024",
+        "CVE-2018-25025",
+        "CVE-2018-25026",
+        "GHSA-7x36-h62w-vw65",
+        "GHSA-9qj6-4rfq-vm84",
+        "GHSA-fgfm-hqjw-3265",
+        "GHSA-w65j-g6c7-g3m4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-web/issues/289",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.15"
+      ],
+      "unaffected": []
+    }
+  }
+]

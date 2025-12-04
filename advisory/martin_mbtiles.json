@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0094",
+      "package": "martin-mbtiles",
+      "title": "`martin-mbtiles` has been renamed to `mbtiles`",
+      "description": "Please use the `mbtiles` crate going forward.",
+      "date": "2023-10-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maplibre/martin/commit/8a8814e7cc97d44f4d194586b3e9deb904c99488",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

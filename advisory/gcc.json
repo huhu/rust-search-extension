@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0121",
+      "package": "gcc",
+      "title": "gcc crate is unmaintained",
+      "description": "The `gcc` crate is deprecated and no longer actively maintained. If you rely on this crate, consider switching to a recommended alternative.\n\n## Recommended alternatives\n\n- [`cc`](https://crates.io/crates/cc)",
+      "date": "2025-11-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://crates.io/crates/gcc",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0044",
+      "package": "slice-ring-buffer",
+      "title": "Four unique double-free vulnerabilities triggered via safe APIs",
+      "description": "The crate [`slice-ring-buffer`](https://crates.io/crates/slice-ring-buffer) was developed as a fork of [`slice-deque`](https://crates.io/crates/slice-deque) to continue maintenance and provide security patches, since the latter has been officially unmaintained ([RUSTSEC-2020-0158](https://rustsec.org/advisories/RUSTSEC-2020-0158.html)).\n\nWhile `slice-ring-buffer` has addressed some previously reported memory safety issues inherited from its fork origin ([RUSTSEC-2021-0047](https://rustsec.org/advisories/RUSTSEC-2021-0047.html)), it still retains multiple unresolved memory corruption vulnerabilities.\n\nSpecifically, we have discovered four new memory safety bugs, each resulting in double-free violations that can occur when only safe APIs are invoked. These vulnerabilities correspond to four distinct safe APIs in the crate, each exposing unsound and vulnerable behavior due to incorrect usage of unsafe code internally.\n\nUnfortunately, the maintainer doesn't have much availability to resolve these issues so there's no concrete timeline for fixes. Community contributions towards fixing these vulnerabilities would be much appreciated.",
+      "date": "2025-06-16",
+      "aliases": [
+        "GHSA-7mcq-f592-pf7v"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/LiquidityC/slice_ring_buffer/issues/12",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "slice_ring_buffer::IntoIter::clone": [
+          "<=0.3.4"
+        ],
+        "slice_ring_buffer::SliceRingBuffer::extend_from_slice": [
+          "<=0.3.4"
+        ],
+        "slice_ring_buffer::SliceRingBuffer::insert": [
+          "<=0.3.4"
+        ],
+        "slice_ring_buffer::SliceRingBuffer::shrink_to_fit": [
+          "<=0.3.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

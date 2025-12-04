@@ -1,0 +1,51 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0132",
+      "package": "maxminddb",
+      "title": "`Reader::open_mmap` unsoundly marks unsafe memmap operation as safe",
+      "description": "maxminddb prior to version 0.27 declared `Reader::open_mmap` as safe \ndespite wrapping an inherently unsafe memmap2 operation with no\nextra step done to guarantee safety. This could have led to undefined\nbehaviour if the file were to be modified on disk while the memory map\nwas still active.",
+      "date": "2025-11-28",
+      "aliases": [
+        "GHSA-mj73-j457-8x9q"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "mmap"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/oschwald/maxminddb-rust/commit/98f0e4fff9678c841ed33f3b8a46322f6163c32a"
+      ],
+      "source": null,
+      "url": "https://github.com/oschwald/maxminddb-rust/issues/86",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "maxminddb::Reader::open": [
+          "<0.12.0, >=0.11.0"
+        ],
+        "maxminddb::Reader::open_mmap": [
+          "<0.27.0, >=0.11.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.27.0"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  }
+]

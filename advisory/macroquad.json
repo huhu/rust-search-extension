@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0035",
+      "package": "macroquad",
+      "title": "Multiple soundness issues in `macroquad`",
+      "description": "Several soundness issues have been reported. Resolving them doesn't seem to be considered a priority. In particular, unprincipled use of\nmutable statics is pervasive throughout the library, making it possible to cause use-after-free in safe code.\n\nCurrently, no fixed version is available.",
+      "date": "2025-04-23",
+      "aliases": [
+        "GHSA-gg76-hg3v-5q6c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "buffer overflow",
+        "use-after-free",
+        "undefined behavior"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/not-fl3/macroquad/issues/333",
+        "https://github.com/not-fl3/macroquad/issues/634",
+        "https://github.com/not-fl3/macroquad/issues/746",
+        "https://github.com/not-fl3/macroquad/issues/723"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

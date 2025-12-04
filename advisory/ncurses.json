@@ -1,0 +1,121 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0108",
+      "package": "ncurses",
+      "title": "Uninitialized memory exposure in string reading functions",
+      "description": "Multiple string reading functions expose uninitialized memory by setting length to capacity when no null terminator is found.\n\nThis allows reading uninitialized memory which may contain sensitive data from previous allocations.\n\nThe ncurses-rs repository is archived and unmaintained.",
+      "date": "2025-10-21",
+      "aliases": [
+        "GHSA-x77x-7mmh-cxv3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "memory-safety",
+        "soundness"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustSec/advisory-db/pull/2427",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ncurses::inchnstr": [
+          "<=6.0.1"
+        ],
+        "ncurses::inchstr": [
+          "<=6.0.1"
+        ],
+        "ncurses::innstr": [
+          "<=6.0.1"
+        ],
+        "ncurses::mvwinchnstr": [
+          "<=6.0.1"
+        ],
+        "ncurses::mvwinchstr": [
+          "<=6.0.1"
+        ],
+        "ncurses::mvwinnstr": [
+          "<=6.0.1"
+        ],
+        "ncurses::winchnstr": [
+          "<=6.0.1"
+        ],
+        "ncurses::winchstr": [
+          "<=6.0.1"
+        ],
+        "ncurses::winnstr": [
+          "<=6.0.1"
+        ],
+        "ncurses::winstr": [
+          "<=6.0.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0006",
+      "package": "ncurses",
+      "title": "Buffer overflow and format vulnerabilities in functions exposed without unsafe",
+      "description": "`ncurses` exposes functions from the ncurses library which:\n\n- Pass buffers without length to C functions that may write an arbitrary amount of\n  data, leading to a buffer overflow. (`instr`, `mvwinstr`, etc)\n- Passes rust &str to strings expecting C format arguments, allowing hostile\n  input to execute a format string attack, which trivially allows writing\n  arbitrary data to stack memory (functions in the `printw` family).",
+      "date": "2019-06-15",
+      "aliases": [
+        "CVE-2019-15547",
+        "CVE-2019-15548",
+        "GHSA-32v7-ghpr-c8hg",
+        "GHSA-g7r5-x7cr-vm3v"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustSec/advisory-db/issues/106",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ncurses::instr": [
+          ">=0"
+        ],
+        "ncurses::mvprintw": [
+          ">=0"
+        ],
+        "ncurses::mvwinstr": [
+          ">=0"
+        ],
+        "ncurses::mvwprintw": [
+          ">=0"
+        ],
+        "ncurses::printw": [
+          ">=0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

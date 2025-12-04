@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0154",
+      "package": "fuser",
+      "title": "Uninitalized memory read & leak caused by fuser crate",
+      "description": "During creation of new libfuse session with `fuse_session_new` operation list was passed as NULL incorrectly. libfuse expects this argument to always point to list of operations. This caused uninitialized memory read and leaks in libfuse.so",
+      "date": "2021-09-10",
+      "aliases": [
+        "GHSA-cvmj-47v9-35m9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "fuse"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/libfuse/libfuse/pull/1330"
+      ],
+      "source": null,
+      "url": "https://github.com/cberner/fuser/pull/390",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "fuser::Session::new": [
+          ">=0.5.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.16.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

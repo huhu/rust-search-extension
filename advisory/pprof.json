@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0408",
+      "package": "pprof",
+      "title": "Unsound usages of `std::slice::from_raw_parts`",
+      "description": "The library breaks the safety assumptions when using unsafe API `std::slice::from_raw_parts`. First, when using the API in iterator implementation (`TempFdArrayIterator.next`), generic type could be any type, which would create and pass a misaligned pointer to the unsafe API. Second, when validating the address, the code passed the type `c_void`, which could also be any type, leading to potential uninitialized memory exposure.  \n\nTwo unsound usages here highlight the necessity for developers to perform type checks before doing type conversion with unsafe API.  \n\nThe panic caused by the misalignment causes several downstream applications (e.g., `greptimedb`) to crash when using `pprof::report::ReportBuilder::build`.  \n\nThis was patched in 0.14.0.  \n\nThe developer also suggested moving to [pprof2](https://crates.io/crates/pprof2).",
+      "date": "2024-12-04",
+      "aliases": [
+        "GHSA-gw5w-5j7f-jmjj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "align",
+        "uninitialized"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/tikv/pprof-rs/pull/255"
+      ],
+      "source": null,
+      "url": "https://github.com/tikv/pprof-rs/issues/232",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pprof::report::ReportBuilder::build": [
+          "<0.14.0"
+        ],
+        "pprof::validate": [
+          "<0.14.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.14.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

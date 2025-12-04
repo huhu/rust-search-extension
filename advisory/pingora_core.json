@@ -1,0 +1,75 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0070",
+      "package": "pingora-core",
+      "title": "Pingora MadeYouReset HTTP/2 vulnerability",
+      "description": "Pingora deployments using versions prior to 0.6.0 that include HTTP/2 server support may be affected by the vulnerability described in CVE-2025-8671. Under certain conditions, Pingora applications may allocate buffers before the HTTP/2 reset and resulting stream cancellation is processed by the server. Repeated resets can force excessive memory consumption and lead to denial-of-service.\n\nOn affected versions, malicious clients could trigger unusually high memory consumption, which may result in service instability or process termination.\n\nThis issue is addressed by ensuring Pingora uses patched versions of HTTP/2 dependencies that include reset-handling safeguards to release connection resources before excessive memory buildup. Users are requested to upgrade to versions >= 0.6.0, which incorporates the required fixes.",
+      "date": "2025-09-17",
+      "aliases": [
+        "CVE-2025-8671"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "http",
+        "http2",
+        "h2"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2025-8671",
+        "https://blog.cloudflare.com/madeyoureset-an-http-2-vulnerability-thwarted-by-rapid-reset-mitigations/"
+      ],
+      "source": null,
+      "url": "https://github.com/cloudflare/pingora/security/advisories/GHSA-393w-9x6h-8gc7",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0037",
+      "package": "pingora-core",
+      "title": "Pingora Request Smuggling and Cache Poisoning",
+      "description": "Pingora versions prior to 0.5.0 which used the caching functionality in pingora-proxy did not properly drain the downstream request body on cache hits.\n\nThis allows an attacker to craft malicious HTTP/1.1 requests which could lead to request smuggling or cache poisoning.\n\nThis flaw was corrected in commit fda3317ec822678564d641e7cf1c9b77ee3759ff by ensuring that the downstream request body is always drained before a connection can be reused.\n\nSee [the blog post](https://blog.cloudflare.com/resolving-a-request-smuggling-vulnerability-in-pingora/) for more information.",
+      "date": "2025-05-22",
+      "aliases": [
+        "CVE-2025-4366",
+        "GHSA-93c7-7xqw-w357"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "request-smuggling",
+        "cache-poisoning"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://blog.cloudflare.com/resolving-a-request-smuggling-vulnerability-in-pingora/",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

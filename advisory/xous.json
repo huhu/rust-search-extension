@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0431",
+      "package": "xous",
+      "title": "Unsound usages of `core::slice::from_raw_parts`",
+      "description": "We consider `as_slice` and `as_slice_mut` unsound because: the pointer with any bit patterns could be cast to the slice of arbitrary types. The pointer could be created by unsafe new and deprecated `from_parts`. We consider that `from_parts` should be removed in latest version because it will help trigger unsoundness in `as_slice`. With new declared as unsafe, `as_slice` should also declared as unsafe.  \n\nThis was patched in by marking two functions as `unsafe`.",
+      "date": "2024-12-23",
+      "aliases": [
+        "GHSA-gv7f-5qqh-vxfx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/betrusted-io/xous-core/pull/411"
+      ],
+      "source": null,
+      "url": "https://github.com/betrusted-io/xous-core/issues/410",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "xous::definitions::MemoryRange::as_slice": [
+          "<0.9.51"
+        ],
+        "xous::definitions::MemoryRange::as_slice_mut": [
+          "<0.9.51"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.51"
+      ],
+      "unaffected": []
+    }
+  }
+]

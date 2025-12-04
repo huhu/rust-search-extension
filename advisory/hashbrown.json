@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0402",
+      "package": "hashbrown",
+      "title": "Borsh serialization of HashMap is non-canonical",
+      "description": "The borsh serialization of the HashMap did not follow the borsh specification.\nIt potentially produced non-canonical encodings dependent on insertion order.\nIt also did not perform canonicty checks on decoding.\n\nThis can result in consensus splits and cause equivalent objects to be\nconsidered distinct.\n\nThis was patched in 0.15.1.",
+      "date": "2024-10-11",
+      "aliases": [
+        "GHSA-wwq9-3cpr-mm53"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "borsh"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/hashbrown/issues/576",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "hashbrown::HashMap::borsh_serialize": [
+          "=0.15.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.15.1"
+      ],
+      "unaffected": [
+        "<0.15.0"
+      ]
+    }
+  }
+]

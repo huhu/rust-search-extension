@@ -1,0 +1,91 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0040",
+      "package": "users",
+      "title": "`root` appended to group listings",
+      "description": "Affected versions append `root` to group listings, unless the correct listing\nhas exactly 1024 groups.\n\nThis affects both:\n\n- The supplementary groups of a user\n- The group access list of the current process\n\nIf the caller uses this information for access control, this may lead to\nprivilege escalation.\n\nThis crate is not currently maintained, so a patched version is not available.\n\nVersions older than 0.8.0 do not contain the affected functions, so downgrading\nto them is a workaround.\n\n## Recommended alternatives\n- [`uzers`](https://crates.io/crates/uzers) (an actively maintained fork of the `users` crate)\n- [`sysinfo`](https://crates.io/crates/sysinfo)",
+      "date": "2025-01-15",
+      "aliases": [
+        "CVE-2025-5791",
+        "GHSA-m65q-v92h-cm7q"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ogham/rust-users/issues/44",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<0.8.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0059",
+      "package": "users",
+      "title": "Unaligned read of `*const *const c_char` pointer",
+      "description": "Affected versions dereference a potentially unaligned pointer. The pointer is\ncommonly unaligned in practice, resulting in undefined behavior.\n\nIn some build modes, this is observable as a panic followed by abort. In other\nbuild modes the UB may manifest in some other way, including the possibility of\nworking correctly in some architectures.\n\nThe crate is not currently maintained, so a patched version is not available.\n\n## Recommended alternatives\n- [`uzers`](https://crates.io/crates/uzers) (an actively maintained fork of the `users` crate)\n- [`sysinfo`](https://crates.io/crates/sysinfo)",
+      "date": "2023-09-10",
+      "aliases": [
+        "GHSA-jcr6-4frq-9gjj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "unaligned-read"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ogham/rust-users/issues/55",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0040",
+      "package": "users",
+      "title": "`users` crate is unmaintained",
+      "description": "The `users` crate hasn't seen any action since 2020-10-08. The developer seems [MIA] since.\n\n## Recommended alternatives\n- [`uzers`]\n- [`sysinfo`]\n\n[MIA]: https://github.com/ogham/rust-users/issues/54\n[`uzers`]: https://crates.io/crates/uzers\n[`sysinfo`]: https://crates.io/crates/sysinfo",
+      "date": "2023-06-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ogham/rust-users/issues/54",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
