@@ -6,7 +6,9 @@
       "title": "Incorrect calculation on aarch64",
       "description": "On platforms without the `core::arch::aarch64::vxarq_u64` intrinsic, an unverified fallback in `libcrux-intrinsics` v0.0.3\npassed incorrect arguments and produced wrong results. This corrupted SHA-3 digests and caused `libcrux-ml-kem` and\n`libcrux-ml-dsa` to sample incorrectly, yielding incorrect shared secrets and invalid signatures.\n\nThe issue has been fixed in v0.0.4.",
       "date": "2025-12-04",
-      "aliases": [],
+      "aliases": [
+        "GHSA-2cgv-28vr-rv6j"
+      ],
       "related": [],
       "collection": "crates",
       "categories": [

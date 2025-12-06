@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0134",
+      "package": "rustls-pemfile",
+      "title": "rustls-pemfile is unmaintained",
+      "description": "The rustls-pemfile crate is no longer maintained. The repository has been archived since August\n2025, and users are encouraged to depend directly on the underlying PEM parsing code included\nin rustls-pki-types since 1.9.0. The latest version of rustls-pemfile is in fact a thin wrapper\naround the same code used in rustls-pki-types, so migrating should be straightforward.\n\nThe new API is represented by the [`PemObject`][PemObject] trait, which provides methods for\nreading a single or multiple PEM objects from a file or byte slice.\n\n[PemObject]: https://docs.rs/rustls-pki-types/latest/rustls_pki_types/pem/trait.PemObject.html",
+      "date": "2025-11-28",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/pemfile/issues/61",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
