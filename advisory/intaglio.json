@@ -1,0 +1,56 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0048",
+      "package": "intaglio",
+      "title": "Unsoundness in `intern` methods on `intaglio` symbol interners",
+      "description": "Affected versions of this crate have a stacked borrows violation when creating\nreferences to interned contents. All interner types are affected.\n\nThe flaw was corrected in version 1.9.0 by reordering move and borrowing\noperations and storing interned contents by raw pointer instead of as a `Box`.",
+      "date": "2023-07-26",
+      "aliases": [
+        "GHSA-gch5-hwqf-mxhp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/artichoke/intaglio/issues/235",
+        "https://github.com/artichoke/intaglio/pull/236",
+        "https://github.com/artichoke/intaglio/releases/tag/v1.9.0"
+      ],
+      "source": null,
+      "url": "https://github.com/artichoke/intaglio/pull/236",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "intaglio::SymbolTable::intern": [
+          "<1.9.0"
+        ],
+        "intaglio::bytes::SymbolTable::intern": [
+          "<1.9.0"
+        ],
+        "intaglio::cstr::SymbolTable::intern": [
+          "<1.9.0, >=1.5.0"
+        ],
+        "intaglio::osstr::SymbolTable::intern": [
+          "<1.9.0, >=1.5.0"
+        ],
+        "intaglio::path::SymbolTable::intern": [
+          "<1.9.0, >=1.5.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.9.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

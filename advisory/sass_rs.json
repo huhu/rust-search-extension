@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0136",
+      "package": "sass-rs",
+      "title": "`sass-rs` has been deprecated",
+      "description": "The `sass-rs` crate is not maintained anymore as libsass is deprecated.\nConsider using https://github.com/connorskees/grass or https://github.com/kaj/rsass instead.\n(Author's recommendation.)",
+      "date": "2021-04-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "sass",
+        "scss",
+        "libsass"
+      ],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/compass-rs/sass-rs/issues/83",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

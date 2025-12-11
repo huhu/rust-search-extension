@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0120",
+      "package": "libsbc",
+      "title": "`Decoder<R>` can carry `R: !Send` to other threads",
+      "description": "Affected versions of this crate implements `Send` for `Decoder<R>` for any `R: Read`. This allows `Decoder<R>` to contain `R: !Send` and carry (move) it to another thread.\n\nThis can result in undefined behavior such as memory corruption from data race on `R`, or dropping `R = MutexGuard<_>` from a thread that didn't lock the mutex.\n\nThe flaw was corrected in commit a34d6e1 by adding trait bound `R: Send` to the `Send` impl for `Decoder<R>`.",
+      "date": "2020-11-10",
+      "aliases": [
+        "CVE-2020-36440",
+        "GHSA-f6g6-54hm-fhxv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mvertescher/libsbc-rs/issues/4",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

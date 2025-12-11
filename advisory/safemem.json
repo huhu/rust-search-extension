@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0081",
+      "package": "safemem",
+      "title": "safemem is unmaintained",
+      "description": "The latest crates.io release was in 2019. The repository has been archived by the author.\n\n## Migration\n\n- `safemem::copy_over(slice, src_idx, dest_idx, len);` can be replaced with `slice.copy_within(src_idx..src_idx+len, dest_idx);` as of `rust 1.37.0`.\n- `safemem::write_bytes(slice, byte);` can be replaced with `slice.fill(byte);` as of `rust 1.50.0`\n- `safemem::prepend(slice, vec);` can be replaced with\n\n  ```rust\n  let old_len = vec.len();\n  vec.extend_from_slice(slice);\n  vec.rotate_left(old_len);\n  ```\n  \n  as of `rust 1.26.0`",
+      "date": "2023-02-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/abonander/safemem",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

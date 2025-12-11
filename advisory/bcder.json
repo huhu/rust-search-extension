@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0062",
+      "package": "bcder",
+      "title": "BER/CER/DER decoder panics on invalid input",
+      "description": "Due to insufficient checking of input data, decoding certain data sequences\ncan lead to _bcder_ panicking rather than returning an error. This can affect\nboth the actual decoding stage as well as accessing content of types that\nutilized delayed decoding.\n\nbcder 0.7.3 fixes these issues by more thoroughly checking inputs and\nreturning errors as expected.",
+      "date": "2023-09-13",
+      "aliases": [
+        "CVE-2023-39914",
+        "GHSA-6jmw-6mxw-w4jc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "example",
+        "freeform",
+        "keywords"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/NLnetLabs/bcder/pull/74"
+      ],
+      "source": null,
+      "url": "https://nlnetlabs.nl/downloads/bcder/CVE-2023-39914.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

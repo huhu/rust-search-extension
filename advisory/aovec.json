@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0099",
+      "package": "aovec",
+      "title": "Aovec<T> lacks bound on its Send and Sync traits allowing data races",
+      "description": "`aovec::Aovec<T>` is a vector type that implements `Send` and `Sync` for all\ntypes `T`.\n\nThis allows non-Send types such as `Rc` and non-Sync types such as `Cell` to\nbe used across thread boundaries which can trigger undefined behavior and\nmemory corruption.",
+      "date": "2020-12-10",
+      "aliases": [
+        "CVE-2020-36207",
+        "GHSA-g489-xrw3-3v8w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,95 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0060",
+      "package": "futures-task",
+      "title": "futures_task::waker may cause a use-after-free if used on a type that isn't 'static",
+      "description": "Affected versions of the crate did not properly implement a `'static` lifetime bound on the `waker` function.\nThis resulted in a use-after-free if `Waker::wake()` is called after original data had been dropped.\n\nThe flaw was corrected by adding `'static` lifetime bound to the data `waker` takes.",
+      "date": "2020-09-04",
+      "aliases": [
+        "CVE-2020-35906",
+        "GHSA-r93v-9p5q-vhpf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "arbitrary code execution",
+        "memory-corruption",
+        "memory-management"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/futures-rs/pull/2206",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "futures_task::waker": [
+          ">=0.3.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.6"
+      ],
+      "unaffected": [
+        "<=0.2.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0061",
+      "package": "futures-task",
+      "title": "futures_task::noop_waker_ref can segfault due to dereferencing a NULL pointer",
+      "description": "Affected versions of the crate used a `UnsafeCell` in thread-local storage to return a noop waker reference,\nassuming that the reference would never be returned from another thread.\n\nThis resulted in a segmentation fault crash if `Waker::wake_by_ref()` was called on a waker returned from another thread due to \nit attempting to dereference a pointer that wasn't accessible from the main thread.\n\nReproduction Example (from issue):\n```rust\nuse futures_task::noop_waker_ref;\nfn main() {\n    let waker = std::thread::spawn(|| noop_waker_ref()).join().unwrap();\n    waker.wake_by_ref();\n}\n```\n\nThe flaw was corrected by using a `OnceCell::Lazy<>` wrapper around the noop waker instead of thread-local storage.",
+      "date": "2020-05-03",
+      "aliases": [
+        "CVE-2020-35907",
+        "GHSA-p9m5-3hj7-cp5r"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "NULL pointer dereference",
+        "memory-management"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/futures-rs/issues/2091",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "futures_task::noop_waker_ref": [
+          ">=0.3.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0011",
+      "package": "plutonium",
+      "title": "Library exclusively intended to obfuscate code.",
+      "description": "This crate allows you to write safe functions with unsafe bodies without the `unsafe` keyword.\n\nThe value this adds is questionable, and hides `unsafe` usages from naive analysis.",
+      "date": "2020-04-23",
+      "aliases": [
+        "GHSA-gfg9-x6px-r7gr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "notice",
+      "references": [],
+      "source": null,
+      "url": "https://docs.rs/plutonium",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

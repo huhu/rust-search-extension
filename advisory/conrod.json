@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0397",
+      "package": "conrod",
+      "title": "`conrod` is unmaintained",
+      "description": "The crate `conrod` has been [deprecated] since version 0.62.0 released in December 2018. The functionality was split across multiple different crates, with the core functionality being transferred to `conrod_core`. An overview can be found in the [conrod repository].\n\nIf you have this crate in your dependency tree, this is very likely by mistake and should be corrected.\n\n[deprecated]: https://crates.io/crates/conrod/\n[conrod repository]: https://github.com/PistonDevelopers/conrod",
+      "date": "2024-01-26",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://crates.io/crates/conrod",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

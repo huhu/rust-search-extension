@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0030",
+      "package": "totally-safe-transmute",
+      "title": "totally-safe-transmute allows transmuting any type to any other type in safe Rust",
+      "description": "This crate is a toy and should never be used.\n\nIt showcases a known soundness issue (https://github.com/rust-lang/rust/issues/32670) that will never get fixed. In short, Linux provides a file called `/proc/self/mem` which can be used by a program to modify its own memory. This library modifies an enum variant number by accessing its own memory as a file to effectively transmute a variable.\n\nSee also <https://doc.rust-lang.org/std/os/unix/io/index.html#procselfmem-and-similar-os-features>",
+      "date": "2025-02-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "soundness-hole"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ben0x539/totally-safe-transmute",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

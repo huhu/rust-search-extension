@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0053",
+      "package": "mapr",
+      "title": "mapr is Unmaintained",
+      "description": "The `mapr` fork has been merged back into upstream fork `memmap2`.\n\nThe maintainer(s) have advised `mapr` is deprecated and will not\nreceive any maintenance in favor of using `memmap2`.\n\n## Possible Alternative(s)\n\n The below list has not been vetted in any way and may or may not contain alternatives;\n\n - [`memmap2`](https://github.com/RazrFalcon/memmap2-rs)",
+      "date": "2022-08-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/pull/1381",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

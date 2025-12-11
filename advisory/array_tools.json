@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0132",
+      "package": "array-tools",
+      "title": "`FixedCapacityDequeLike::clone()` can cause dropping uninitialized memory",
+      "description": "Affected versions of this crate don't guard against panics, so that partially uninitialized buffer is dropped when user-provided `T::clone()` panics in `FixedCapacityDequeLike<T, A>::clone()`. This causes memory corruption.",
+      "date": "2020-12-31",
+      "aliases": [
+        "CVE-2020-36452",
+        "GHSA-6wp2-fw3v-mfmc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/L117/array-tools/issues/2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

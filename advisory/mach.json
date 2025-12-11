@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0168",
+      "package": "mach",
+      "title": "mach is unmaintained",
+      "description": "Last release was almost 4 years ago.\n\nMaintainer(s) seem to be completely unreachable. \n\n## Possible Alternative(s)\n\nThese may or may not be suitable alternatives and have not been vetted in any way;\n- [mach2](https://crates.io/crates/mach2) - direct fork",
+      "date": "2020-07-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/fitzgen/mach/issues/63",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

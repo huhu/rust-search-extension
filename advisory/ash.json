@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0090",
+      "package": "ash",
+      "title": "Reading on uninitialized memory may cause UB ( `util::read_spv()` )",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided `Read` implementation.\n\nArbitrary `Read` implementations can read from the uninitialized buffer (memory exposure) and also can return incorrect number of bytes written to the buffer.\nReading from uninitialized memory produces undefined values that can quickly invoke undefined behavior.",
+      "date": "2021-01-07",
+      "aliases": [
+        "CVE-2021-45688",
+        "GHSA-64wv-8vwp-xgw2",
+        "GHSA-qj69-c89v-jwq2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/MaikKlein/ash/issues/354",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.33.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

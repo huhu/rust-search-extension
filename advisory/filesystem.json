@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0015",
+      "package": "filesystem",
+      "title": "filesystem-rs may be implicitly unmaintained",
+      "description": "The last release was over 5 years ago, and the last commit was over 4 years ago.\n\nThe maintainer(s) have not responded to a pull request to update dependencies that are themselves unmaintained, and which poses the question of maintenance.",
+      "date": "2024-01-25",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/iredelmeier/filesystem-rs/pull/29",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

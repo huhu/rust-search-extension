@@ -1,0 +1,90 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0053",
+      "package": "arenavec",
+      "title": "Multiple memory corruption vulnerabilities in safe APIs",
+      "description": "The crate has the following vulnerabilities:\n\n- The public trait `arenavec::common::AllocHandle` allows the return of raw pointers through its methods `allocate` and `allocate_or_extend`. However, the trait is not marked as unsafe, meaning users of the crate may implement it under the assumption that the library safely handles the returned raw pointers. These raw pointers can later be dereferenced within safe APIs of the crate-such as `arenavec::common::SliceVec::push`-potentially leading to arbitrary memory access.\n\n- The safe API `arenavec::common::SliceVec::reserve` can reach the private function `arenavec::common::allocate_inner`. Incorrect behavior in `allocate_inner` may result in a `SliceVec` with an increased capacity, even though the underlying memory has not actually been expanded. This mismatch between `SliceVec.capacity` and the actual reserved memory can lead to a heap buffer overflow.\n\n- The safe API `arenavec::common::SliceVec::split_off` can duplicate the ownership of the elements in `self` (of type `SliceVec`) if they implement the `Drop` trait. Specifically, when `at == 0`, the method returns a new `SliceVec` with the same length as `self`. Since both `self` and the returned object point to the same heap memory, dropping one will deallocate the shared memory. When the other is subsequently dropped, it will attempt to free the same memory again, resulting in a double free violation.",
+      "date": "2025-08-14",
+      "aliases": [
+        "GHSA-3632-54q8-m96x"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "buffer-overflow",
+        "double-free",
+        "raw-pointer"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/ibabushkin/arenavec/issues/5",
+        "https://github.com/ibabushkin/arenavec/issues/6"
+      ],
+      "source": null,
+      "url": "https://github.com/ibabushkin/arenavec/issues/4",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "arenavec::common::AllocHandle::allocate": [
+          "<=0.1.1"
+        ],
+        "arenavec::common::AllocHandle::allocate_or_extend": [
+          "<=0.1.1"
+        ],
+        "arenavec::common::SliceVec::split_off": [
+          "<=0.1.1"
+        ],
+        "arenavec::common::allocate_inner": [
+          "<=0.1.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0040",
+      "package": "arenavec",
+      "title": "panic safety: double drop or uninitialized drop of T upon panic",
+      "description": "Affected versions of this crate did not guard against potential panics that may happen from user-provided functions `T::default()` and `T::drop()`.\n\nPanic within `T::default()` leads to dropping uninitialized `T`, when it is invoked from `common::Slice::<T, H>::new()`.\nPanic within `T::drop()` leads to double drop of `T`, when it is invoked either from `common::SliceVec::<T, H>::resize_with()` or `common::SliceVec::<T, H>::resize()`\n\nEither case causes memory corruption in the heap memory.",
+      "date": "2021-01-12",
+      "aliases": [
+        "CVE-2021-29930",
+        "CVE-2021-29931",
+        "GHSA-327x-39hh-65wf",
+        "GHSA-955p-rc5h-hg6h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ibabushkin/arenavec/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

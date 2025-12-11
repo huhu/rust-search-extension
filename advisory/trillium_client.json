@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0008",
+      "package": "trillium-client",
+      "title": "Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Request/Response Splitting')",
+      "description": "### Summary\nInsufficient validation of outbound header values may lead to request splitting or response splitting attacks in scenarios where attackers have sufficient control over outbound headers.\n\n### Details\nOutbound `trillium_http::HeaderValue` and `trillium_http::HeaderName` can be constructed infallibly and were not checked for illegal bytes when sending requests. Thus, if an attacker has sufficient control over header values (or names) in a request that they could inject `\\r\\n` sequences, they could get the client and server out of sync, and then pivot to gain control over other parts of requests or responses. (i.e. exfiltrating data from other requests, SSRF, etc.)\n\n### Patches\n\n#### trillium-client >= 0.5.4:\n* If any header name or header value is invalid in the client request headers, awaiting the client Conn returns an `Error::MalformedHeader` prior to any network access.\n\n### Workarounds\n\ntrillium client applications should sanitize or validate untrusted input that is included in header values and header names. Carriage return, newline, and null characters are not allowed.\n\n### Impact\n\nThis only affects use cases where attackers have control of outbound headers, and can insert \"\\r\\n\" sequences. Specifically, if untrusted and unvalidated input is inserted into header names or values.\n\n### Credit\n\nDiscovered and reported by [@divergentdave](https://github.com/divergentdave)",
+      "date": "2024-01-23",
+      "aliases": [
+        "GHSA-9f9p-cp3c-72jf",
+        "CVE-2024-23644"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "http",
+        "request",
+        "splitting"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/trillium-rs/trillium/security/advisories/GHSA-9f9p-cp3c-72jf",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.5.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

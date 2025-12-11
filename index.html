@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rust Search Extension - The ultimate search extension for Rust</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color: #F9BB2D;
+        /* Primary theme text color */
+        --primary-text-color: #121212;
+        /* Primary theme link color */
+        --primary-link-color: #dd4814;
+        /* Secondary color: the background body color*/
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #303030;
+        --toc-highlight-text-color: #d46e13;
+        /* Font used for headers (h1 & h2) */
+        --header-font-family: "Fira Sans", sans-serif;
+        /* Font used for text */
+        --text-font-family: "Fira Sans", sans-serif;
+    }
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7JXVGPGFS"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-Z7JXVGPGFS');
+</script>
+    
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/juice.css">
+    
+<meta name="keywords"
+      content="rust, rust-lang, crates, cargo, docs, crates.io, docs.rs, search extension">
+<meta itemprop="name"
+      content="Rust Search Extension: The ultimate search extension for Rust">
+<meta itemprop="description"
+      content="Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.">
+<meta itemprop="image" content="https://rust.extension.sh/banner.png">
+
+<meta property="og:url" content="https://rust.extension.sh">
+<meta property="og:type" content="website">
+<meta property="og:title"
+      content="Rust Search Extension: The ultimate search extension for Rust">
+<meta property="og:description"
+      content="Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.">
+<meta property="og:image" content="https://rust.extension.sh/banner.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@_huhuio">
+<meta name="twitter:creator" content="@_huhuio">
+<meta name="twitter:title"
+      content="Rust Search Extension: The ultimate search extension for Rust">
+<meta name="twitter:description"
+      content="Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.">
+<meta name="twitter:image" content="https://rust.extension.sh/banner.png">
+<link rel="stylesheet" href="/index.css">
+<link rel="stylesheet" href="/carbon.css">
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+</head>
+
+<body>
+    
+
+    <header class="pos-absolute" style="background-color: transparent">
+        
+
+<a href="/">
+    <div class="logo">
+        <img src="/logo.png" alt="logo">
+        Rust Search Extension
+    </div>
+</a>
+
+<nav>
+    
+    
+    
+    
+    
+    
+    <a class="nav-item subtitle-text" href="/testimonial/">Testimonial</a>
+    
+    
+    
+    
+    <a class="nav-item subtitle-text" href="/faq/">FAQ</a>
+    
+    
+    
+    
+    <a class="nav-item subtitle-text" href="/changelog/">Changelog</a>
+    
+    
+    
+    
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https://geddle.com">Geddle</a>
+        
+        <a class="nav-item subtitle-text" href="https://query.rs">Query.rs</a>
+        
+        <a class="nav-item subtitle-text" href="https://github.com/huhu/rust-search-extension">Github</a>
+        
+    
+</nav>
+
+    </header>
+
+    <div class="hero">
+        
+<section style="padding:10px">
+    <h1 class="text-center heading-text">
+        The ultimate search extension for Rust
+    </h1>
+    <h3 class="text" style="text-align: center;">
+        Search <b>docs</b>, <b>crates</b>, builtin <b>attributes</b>, official <b>books</b>, and
+        <b>error codes</b>, etc in your address bar instantly. Input keyword <b>rs</b> then press
+        <code>Space</code>
+        to get started. Just that easy!
+    </h3>
+    <div style="text-align: center;">
+        <a class="github-button" href="https://github.com/huhu/rust-search-extension" data-size="large" data-show-count="true"
+            aria-label="Star huhu/rust-search-extension on GitHub">Star</a>
+        <a class="github-button" href="https://github.com/huhu/rust-search-extension/fork" data-size="large"
+            data-show-count="true" aria-label="Fork huhu/rust-search-extension on GitHub">Fork</a>
+    </div>
+    <div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center">
+        <a class="subtitle-text" style="text-decoration: underline; margin: 10px"
+           href="https://github.com/huhu/rust-search-extension/releases">
+            Current version 2.0.2
+        </a>
+        <a class="btn-download chrome"
+           href="https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh"
+           target="_blank">
+            Install to Chrome
+        </a>
+        <a class="btn-download firefox" href="https://addons.mozilla.org/firefox/addon/rust-search-extension/"
+           target="_blank">
+            Install to Firefox
+        </a>
+        <a class="btn-download edg"
+           href="https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe"
+           target="_blank">
+            Install to Edge
+        </a>
+    </div>
+</section>
+<img class="demonstration-gif" src="/demonstration.gif" alt="demonstration-gif">
+
+<div class="explore-more text bounce"
+     onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+    Explore More ⇩
+</div>
+
+<script>
+    function mobilizeDownloadButton() {
+        let navigator = window.navigator.userAgent.toLocaleLowerCase();
+        if (window.innerWidth < 768) {
+            document.querySelectorAll('.btn-download').forEach((element) => {
+                element.classList.add('hide');
+            });
+            let target = ['firefox', 'edg'].find(item => navigator.includes(item)) || 'chrome';
+            document.querySelector(`.${target}`).classList.remove('hide');
+        } else {
+            document.querySelectorAll('.btn-download').forEach((element) => {
+                element.classList.remove('hide');
+            });
+        }
+    }
+
+    mobilizeDownloadButton();
+    window.onresize = function () {
+        mobilizeDownloadButton();
+    };
+</script>
+
+    </div>
+
+    
+
+    <main>
+        
+        
+        
+        
+        
+        <div class="toc">
+            <div class="toc-sticky">
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#pagination">Pagination</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#search-docs">Search docs</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#search-primitive-types-and-modules"><small>- Search Primitive Types and Modules</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#search-structs-traits-and-enums"><small>- Search Structs, Traits and Enums</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#search-functions-methods-and-macros"><small>- Search Functions, Methods and Macros</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#search-nightly-docs"><small>- Search nightly docs</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#search-rustc-docs"><small>- Search rustc docs</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#search-with-type-mode"><small>- Search with type mode</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#source-code-mode"><small>- Source code mode</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#offline-mode-search-local-rust-docs"><small>- Offline mode: search local Rust docs</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#search-external-crate-docs"><small>- Search external crate docs</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#search-builtin-attributes">Search builtin attributes</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#search-top-20k-crates">Search top 20K crates</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#search-compiler-error-code">Search compiler error code</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#search-rust-book-chapters">Search Rust book chapters</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#search-cargo-clippy-lints">Search Cargo Clippy lints</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#search-caniuse-rs">Search Caniuse.rs</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#commands-system">Commands system</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#rust-docs-enhancement">Rust docs enhancement</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#make-all-since-and-issue-linkable"><small>- Make all &quot;since&quot; and &quot;issue&quot; linkable</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#docs-rs-enhancement">Docs.rs enhancement</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#display-feature-flags"><small>- Display Feature Flags</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#display-security-advisory"><small>- Display Security Advisory</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#add-your-favorite-crate-to-extension"><small>- Add your favorite crate to extension</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#show-table-of-content"><small>- Show Table of Content</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#searching-statistics">Searching statistics</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/#miscellaneous">Miscellaneous</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#manage-your-indexed-crates"><small>- Manage your indexed crates</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#import-export-your-data"><small>- Import&#x2F;Export your data</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#customize-crates-searching-platform"><small>- Customize crates searching platform</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/#open-repository-quickly"><small>- Open repository quickly</small></a>
+                </div>
+                
+                
+                
+            </div>
+        </div>
+        
+        
+
+        <div class="content text">
+            
+            <div id="features" class="heading-text">Overview</div>
+            <h1 id="pagination">Pagination</h1>
+<p>You can press <code>space</code> after the keyword, then increase or decrease the number of <strong>-</strong> (hyphen) to page down or page up.</p>
+<h1 id="search-docs">Search docs</h1>
+<p>We support search all kinds of Rust docs blaze-fastly. Those docs including:</p>
+<ul>
+<li>The <strong>stable</strong>/<strong>nightly</strong> documentation of official crates (including <strong>std</strong>, <strong>proc_macro</strong>, <strong>test</strong>).</li>
+<li>All external docs on <a href="https://docs.rs">docs.rs</a>.</li>
+<li>All <strong>rustc</strong> crates docs.</li>
+</ul>
+<blockquote>
+<p>We'll sync the latest <strong>std</strong>/<strong>nightly</strong> search index automatically every day to ensure the docs freshness.
+There is no extension updating required to get the latest search index since v1.0.</p>
+</blockquote>
+<h2 id="search-primitive-types-and-modules">Search Primitive Types and Modules</h2>
+<p><img src="/primary-module.gif" alt="GIF" /></p>
+<h2 id="search-structs-traits-and-enums">Search Structs, Traits and Enums</h2>
+<p><img src="/struct-traits.gif" alt="GIF" /></p>
+<h2 id="search-functions-methods-and-macros">Search Functions, Methods and Macros</h2>
+<p><img src="/function-macros.gif" alt="GIF" /></p>
+<h2 id="search-nightly-docs">Search nightly docs</h2>
+<p>You can prefix a <strong>/</strong> (slash) before the keyword to search nightly docs.</p>
+<h2 id="search-rustc-docs">Search rustc docs</h2>
+<p>You can prefix a <strong>//</strong> (double slash) before the keyword to search all of
+crates <a href="https://doc.rust-lang.org/nightly/nightly-rustc/">docs of <strong>rustc</strong></a>,
+such as <em>rustc_mir</em>, <em>rustc_hir</em>, or <em>rustc_ast</em>, etc.</p>
+<blockquote>
+<p>It makes no sense to have a built-in search-index of <strong>rustc</strong> since the <strong>rustc</strong> is changed
+very frequently. Therefore, you need to open the <strong>rustc</strong> docs page in advance to sync the
+search-index before you search <strong>rustc</strong> docs. However, the search-index of <strong>rustc</strong> is very big,
+we never persist it to the local storage (due to the limited storage size available
+to browser extension).</p>
+</blockquote>
+<p><img src="/search-rustc-docs.png" alt="IMG" /></p>
+<h2 id="search-with-type-mode">Search with type mode</h2>
+<p>You can prefix a type to get the exclusive search result. Those type keywords including:</p>
+<ul>
+<li><strong>mod</strong></li>
+<li><strong>struct</strong></li>
+<li><strong>enum</strong></li>
+<li><strong>fn</strong></li>
+<li><strong>trait</strong></li>
+<li><strong>type</strong></li>
+<li><strong>macro</strong></li>
+<li><strong>const</strong></li>
+</ul>
+<p>For example, <code>fn:asref</code> to search function or <code>trait:iterator</code> to search trait.</p>
+<p><img src="/type-mode.gif" alt="GIF" /></p>
+<h2 id="source-code-mode">Source code mode</h2>
+<p>Since <strong>v1.2</strong>, we can straight open the source code page for our docs search result.
+Simply prefix <code>src:</code> (or <code>s:</code>, an alias to <code>src:</code>) before the keyword, you'll be
+redirected to the correct source code line of your search result after you press <code>Enter</code>.
+For example, input <code>src:try_fold</code> or <code>s:try_fold</code>, you'll open the source code line of <code>std::iter::Iterator::try_fold()</code>.</p>
+<h2 id="offline-mode-search-local-rust-docs">Offline mode: search local Rust docs</h2>
+<p>You can run command <code>rustup doc --std</code> to open the offline std docs.
+To enable the offline mode, you should check the checkbox and input the offline docs path on the settings page.</p>
+<p>Use <code>rustup doc --std --path</code> to find your doc directory, on my machine, this
+command gives:</p>
+<pre data-lang="shell" style="background-color:#ffffff;color:#323232;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ rustup doc --std --path
+</span><span>/home/steve/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html
+</span></code></pre>
+<p>Remove the tailing <code>std/index.html</code> from the returned path, and the remaining
+path is your doc directory.</p>
+<ul>
+<li>
+<p>For Chrome/Edge users:
+Prepend <code>file://</code> before your doc directory, and input it to the input box on the
+settings page. Then <a href="https://developer.chrome.com/docs/extensions/develop/concepts/declare-permissions#allow_access_to_file_urls_and_incognito_pages">enable access to file URLs</a> on the extension's details page.</p>
+<p><img src="/offline-mode-chrome.gif" alt="GIF" /></p>
+</li>
+<li>
+<p>For Firefox users:
+Refers to <a href="/faq/#caveats">Any workaround to support offline mode on Firefox?</a></p>
+<p><img src="/offline-mode-firefox.gif" alt="GIF" /></p>
+</li>
+</ul>
+<h2 id="search-external-crate-docs">Search external crate docs</h2>
+<p>After you <a href="/#add-your-favorite-crate-to-extension">add the crate to extension</a>, you can prefix <strong>@crate-name</strong> to search
+the docs exclusive to that crate. For example, input <code>@tokio spawn</code> to search docs of <strong>tokio</strong>.</p>
+<p><img src="/search-crate-docs.gif" alt="GIF" /></p>
+<p><strong>~</strong> is another pretty prefix to search the external crate docs. Unlike the <strong>@</strong> prefix, <strong>~</strong>
+gives you the power to search docs across all your favorite crates effortlessly.</p>
+<p>For example, input <code>~spawn</code>, you can get results related to "spawn" from all your favorite crates
+(e.g. <strong>tokio</strong>, <strong>async_std</strong>, <strong>smol</strong>, and <strong>futures</strong> ).</p>
+<p><img src="/tide-search.png" alt="IMG" /></p>
+<h1 id="search-builtin-attributes">Search builtin attributes</h1>
+<p>Search builtin attributes (such as <code>derive</code>, <code>non_exhaustive</code>) are also supported,
+by default, the result is mixed with other related docs or crates though.</p>
+<p>If you prefer to search attribute exclusively, prefix a <strong>#</strong> (pound sign) before the keyword to narrow the result.</p>
+<p><img src="/search-attributes.gif" alt="GIF" /></p>
+<h1 id="search-top-20k-crates">Search top 20K crates</h1>
+<p>We build top 20K crates index once a day to help you search crates instantly.
+You can prefix an <strong>!</strong> (exclamation mark) before the keyword to search <a href="https://docs.rs">docs.rs</a> exclusively,
+prefix one more <strong>!</strong> (double exclamation marks) to open <a href="https://crates.io">crates.io</a> page,
+prefix <strong>!!!</strong> (triple exclamation marks) to open crate's repository (See <a href="/#open-repository-quickly">Open repository quickly</a>).</p>
+<p><img src="/search-crates.gif" alt="GIF" /></p>
+<h1 id="search-compiler-error-code">Search compiler error code</h1>
+<p><img src="/error-index.gif" alt="GIF" /></p>
+<h1 id="search-rust-book-chapters">Search Rust book chapters</h1>
+<p>You can search all of Rust book chapters too! The result will show the title of the related page,
+parent chapter, and grandparent chapter. Don't forget the <strong>%</strong> is the prefix to perform the book searching.</p>
+<p><img src="/search-book.png" alt="IMG" /></p>
+<h1 id="search-cargo-clippy-lints">Search Cargo Clippy lints</h1>
+<p><strong>&gt;</strong> (right angle bracket) is also a great prefix to help you search <a href="https://rust-lang.github.io/rust-clippy/master/">Cargo Clippy lints</a> exclusively.</p>
+<p><img src="/search-clippy-lints.png" alt="IMG" /></p>
+<h1 id="search-caniuse-rs">Search Caniuse.rs</h1>
+<p>You can search <a href="https://caniuse.rs">caniuse.rs</a> with <strong>?</strong> prefix.</p>
+<p><img src="/search-caniuse.png" alt="IMG" /></p>
+<h1 id="commands-system">Commands system</h1>
+<p>The command system brings a handy set of useful and convenient commands to you.
+Each command starts with a <strong>:</strong> (colon), followed by the name, and function differently in individual.
+Those commands including but not limited to:</p>
+<ul>
+<li><strong>:help</strong> - Show the help messages.</li>
+<li><strong>:cargo</strong> - Search useful third-party cargo subcommands.</li>
+<li><strong>:yet</strong> - Search Are We Yet websites.</li>
+<li><strong>:book</strong> - Search Rust books.</li>
+<li><strong>:book/zh</strong> - Search Chinese Rust books.</li>
+<li><strong>:stable</strong> - Show stable Rust scheduled release date.</li>
+<li><strong>:label</strong> - Search issue labels of rust-lang repository.</li>
+<li><strong>:tool</strong> - Show useful rust tools.</li>
+<li><strong>:mirror</strong> - Search Rust mirror websites.</li>
+<li><strong>:stats</strong> - Open search statistics page.</li>
+<li><strong>:update</strong> - Open the <a href="/update">update page</a> to sync the latest index automatically.</li>
+<li><strong>:release</strong> - Open rust-lang repository <a href="https://github.com/rust-lang/rust/blob/master/RELEASES.md">release page</a>.</li>
+<li><strong>:rfc</strong> - Search Rust RFCs.</li>
+<li><strong>:rustc</strong> - Search rustc codegen options and lints.</li>
+<li><strong>:target</strong> - Search rust target for three tiers.</li>
+<li><strong>:history</strong> - Show your local search history.</li>
+</ul>
+<p><img src="/command-system.gif" alt="IMG" /></p>
+<h1 id="rust-docs-enhancement">Rust docs enhancement</h1>
+<h2 id="make-all-since-and-issue-linkable">Make all "since" and "issue" linkable</h2>
+<ul>
+<li><strong>"issue"</strong> links to Github issue (works in source code page)</li>
+</ul>
+<p><img src="/since-issue-links.png" alt="" /></p>
+<h1 id="docs-rs-enhancement">Docs.rs enhancement</h1>
+<h2 id="display-feature-flags">Display Feature Flags</h2>
+<p>Docs.rs don't display the crate's feature flags, which is inconvenient. So Rust Search Extension fills the gap.</p>
+<p><img src="/optional-dependencies.png" alt="IMG" /></p>
+<p>Also, we support optional dependencies.</p>
+<h2 id="display-security-advisory">Display Security Advisory</h2>
+<p><img src="/security-advisory-menu.png" alt="" /></p>
+<h2 id="add-your-favorite-crate-to-extension">Add your favorite crate to extension</h2>
+<p>By clicking the <code>+ to Rust Search Extension</code> button, you can add the crate to the extension, which brings the
+search capability for this crate on the address bar.</p>
+<h2 id="show-table-of-content">Show Table of Content</h2>
+<p><img src="/docs-rs-toc.png" alt="IMG" /></p>
+<h1 id="searching-statistics">Searching statistics</h1>
+<p>Searching statistics page provides a set of useful charts to visualize your search history. This gives you a
+powerful insight view on how frequency you search, how much valuable time you saved.</p>
+<p>These charts including:</p>
+<ul>
+<li>A calendar heatmap represents your searching history in the last year</li>
+<li>A percentage chart reflects each category weight you searched</li>
+<li>Weekly, daily, and hourly bar chart tells you searching frequency in different time dimensionality</li>
+<li>Top searched crates chart gives you the rank of personal crate searching</li>
+</ul>
+<p><img src="/statistic-1.png" alt="IMG" />
+<img src="/statistic-2.png" alt="IMG" /></p>
+<h1 id="miscellaneous">Miscellaneous</h1>
+<h2 id="manage-your-indexed-crates">Manage your indexed crates</h2>
+<p><img src="/crate-manage.png" alt="IMG" /></p>
+<h2 id="import-export-your-data">Import/Export your data</h2>
+<p><img src="/import-export.png" alt="IMG" /></p>
+<h2 id="customize-crates-searching-platform">Customize crates searching platform</h2>
+<p>You can customize your preferred crates searching platform such as <a href="https://crates.io">crates.io</a>(default)
+or <a href="https://lib.rs">lib.rs</a> on the settings page.</p>
+<h2 id="open-repository-quickly">Open repository quickly</h2>
+<p>You can prefix <strong>!!!</strong> (triple !) to open crate's repository quickly.
+For example, input <code>!!!tokio</code> then enter, the extension will obtain the repository url then redirect to
+the github repository page of <strong>tokio</strong> effortlessly.</p>
+
+            
+        </div>
+
+        
+<div class="sidebar">
+    <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEBIL27E&placement=extensionsh" id="_carbonads_js"></script>
+</div>
+
+    </main>
+
+    
+<footer
+    style="display: flex; flex-direction: column; font-family: 'Open Sans', sans-serif; background-color: #020f1c; padding: 2rem;">
+    <div
+        style="display: flex; flex-direction: column; margin-bottom: 5rem; font-size: 1.125rem; line-height: 1.75rem; color: #9ca3af; align-items: center; text-align: center;">
+        Thanks for the sponsorship from
+        <span>
+            <a target="_blank" href="https://geddle.com/?from=rust-search-extension">
+                <img style="margin: 1rem; height: 55px;" src="https://geddle.com/logo-white.svg" alt="geddle">
+            </a>
+        </span>
+        and
+        <span>
+            <a target="_blank" href="https://bytebase.com?utm_source=rust-search-extension">
+                <img style="margin: 1rem; height: 40px;" src="https://huhu.io/img/bytebase-light.svg" alt="bytebase">
+            </a>
+        </span>
+    </div>
+    <div
+        style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly; width: 100%;">
+        <div style="margin-bottom: 2.5rem;">
+            <a target="_parent" href="/" style="font-size: 36px;font-weight: 600;display: flex;align-items: center;margin: 0 40px; line-height: 2.5rem; color: inherit; text-decoration: none;">HUHU</a>
+            <div
+                style="display: flex; justify-content: space-between; margin-top: 1rem; margin-bottom: 1rem; width: 10rem;">
+                <a href="https://github.com/huhu" target="_parent">
+                    <img style="width: 1.5rem;" src="https://huhu.io/img/github.svg" alt="Github">
+                </a>
+                <a href="https://twitter.com/_huhuio" target="_parent">
+                    <img style="width: 1.5rem;" src="https://huhu.io/img/twitter.svg" alt="Twitter">
+                </a>
+                <a href="https://discord.gg/xucZNVd" target="_parent">
+                    <img style="width: 1.5rem;" src="https://huhu.io/img/discord.svg" alt="Discord">
+                </a>
+            </div>
+        </div>
+        <div style="align-self: flex-start;">
+            <div style="font-size: 1.125rem; line-height: 1.75rem; font-weight: 700; margin-bottom: 1.25rem;">All our
+                extensions</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://rust.extension.sh" target="_parent">
+                        Rust Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://go.extension.sh" target="_parent">
+                        Go Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://cpp.extension.sh" target="_parent">
+                        C/C++ Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://k8s.extension.sh" target="_parent">
+                        K8S Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://js.extension.sh" target="_parent">
+                        JS Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://new.extension.sh" target="_parent">
+                        Newkit Extension
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="align-self: flex-start;">
+            <div
+                style="font-size: 1.125rem; line-height: 1.75rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1.25rem;">
+                Connect</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://huhu.io/about" target="_parent">About Huhu</a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://geddle.com">Geddle</a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://arrfounder.com">Arrfounder</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div style="align-self: flex-start; margin-top: 2.5rem;">
+        <small style="color: #9ca3af;">
+            Copyright © 2025 <a href="https://huhu.io" target="_parent" style="color: #9ca3af;">Huhu.io</a>
+        </small>
+    </div>
+</footer>
+
+<style>
+    /* Ensure font inheritance for all child elements */
+    footer * {
+        font-family: inherit;
+    }
+
+    /* Media query for responsive design */
+    @media (min-width: 768px) {
+
+        footer>div:first-child {
+            flex-direction: row !important;
+        }
+
+        footer>div:nth-child(2) {
+            flex-direction: row !important;
+        }
+
+        footer>div:nth-child(2)>div:first-child {
+            text-align: center;
+            margin-bottom: 0 !important;
+            margin-right: 6rem !important;
+        }
+
+        footer>div:nth-child(2)>div:nth-child(3) {
+            align-self: flex-start !important;
+        }
+
+        footer>div:nth-child(2)>div:nth-child(3)>div:first-child {
+            margin-top: 0 !important;
+        }
+
+        footer>div:last-child {
+            align-self: center !important;
+        }
+    }
+
+    /* Hover effects for links */
+    a:hover {
+        opacity: 0.8;
+    }
+</style>
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>

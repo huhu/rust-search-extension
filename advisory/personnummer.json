@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0166",
+      "package": "personnummer",
+      "title": "personnummer Input validation error",
+      "description": "Swedish personal identity is in the form of YYMMDD-XXXX\n\nAn issue arises from the regular expression allowing the first three digits in\nthe last four digits of the personnummer to be 000, which is invalid.\n\nTo mitigate this without upgrading, a check on the last four digits can be made\nto make sure it's not 000x.\n\nThe affected version should not be relied on without the mitigation to check\nthat the swedish personal identity number is valid.",
+      "date": "2020-09-04",
+      "aliases": [
+        "GHSA-28r9-pq4c-wp3c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "notice",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/personnummer/rust/pull/4",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.0.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

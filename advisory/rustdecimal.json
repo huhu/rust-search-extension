@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0042",
+      "package": "rustdecimal",
+      "title": "malicious crate `rustdecimal`",
+      "description": "The Rust Security Response WG and the crates.io team [were notified][1] on\n2022-05-02 of the existence of the malicious crate `rustdecimal`, which\ncontained malware. The crate name was intentionally similar to the name of the\npopular [`rust_decimal`][2] crate, hoping that potential victims would misspell\nits name (an attack called \"typosquatting\").\n\nTo protect the security of the ecosystem, the crates.io team permanently\nremoved the crate from the registry as soon as it was made aware of the\nmalware. An analysis of all the crates on crates.io was also performed, and no\nother crate with similar code patterns was found.\n\nKeep in mind that the [`rust_decimal`][2] crate was **not** compromised, and it\nis still safe to use.\n\n## Analysis of the crate\n\nThe crate had less than 500 downloads since its first release on 2022-03-25,\nand no crates on the crates.io registry depended on it.\n\nThe crate contained identical source code and functionality as the legit\n`rust_decimal` crate, except for the `Decimal::new` function.\n\nWhen the function was called, it checked whether the `GITLAB_CI` environment\nvariable was set, and if so it downloaded a binary payload into\n`/tmp/git-updater.bin` and executed it. The binary payload supported both Linux\nand macOS, but not for Windows.\n\nAn analysis of the binary payload was not possible, as the download URL didn't\nwork anymore when the analysis was performed.\n\n## Recommendations\n\nIf your project or organization is running GitLab CI, we strongly recommend\nchecking whether your project or one of its dependencies depended on the\n`rustdecimal` crate, starting from 2022-03-25. If you notice a dependency on\nthat crate, you should consider your CI environment to be compromised.\n\nIn general, we recommend regularly auditing your dependencies, and only\ndepending on crates whose author you trust. If you notice any suspicious\nbehavior in a crate's source code please follow [the Rust security\npolicy][3] and report it to the Rust Security Response WG.\n\n## Acknowledgements\n\nWe want to thank GitHub user [`@safinaskar`][4] for identifying the\nmalicious crate in [this GitHub issue][1].\n\n[1]: https://github.com/paupino/rust-decimal/issues/514#issuecomment-1115408888\n[2]: https://crates.io/crates/rust_decimal\n[3]: https://www.rust-lang.org/policies/security\n[4]: https://github.com/safinaskar",
+      "date": "2022-05-10",
+      "aliases": [
+        "GHSA-7pwq-f4pq-78gm",
+        "MAL-2022-1"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "typosquatting"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://groups.google.com/g/rustlang-security-announcements/c/5DVtC8pgJLw?pli=1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

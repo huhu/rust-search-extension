@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0062",
+      "package": "matrix-sdk",
+      "title": "matrix-sdk 0.6.0 logs access tokens",
+      "description": "When sending Matrix requests using an affected version of `matrix-sdk` in an application that\nwrites logs using `tracing-subscriber` (in a way that includes fields of tracing spans such as\n`tracing_subscriber`s default text output from the `fmt` module), these logs will contain the\nuser's access token.",
+      "date": "2022-10-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/issues/1110",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.2"
+      ],
+      "unaffected": [
+        "<0.6.0"
+      ]
+    }
+  }
+]

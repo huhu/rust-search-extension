@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0358",
+      "package": "object_store",
+      "title": "Apache Arrow Rust Object Store: AWS WebIdentityToken exposure in log files",
+      "description": "Exposure of temporary credentials in logs in Apache Arrow Rust Object Store,\nversion 0.10.1 and earlier on all platforms using AWS WebIdentityTokens.\n\nOn certain error conditions, the logs may contain the OIDC token passed to\n[AssumeRoleWithWebIdentity](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithWebIdentity.html).\nThis allows someone with access to the logs to impersonate that identity,\nincluding performing their own calls to AssumeRoleWithWebIdentity, until the\nOIDC token expires. Typically OIDC tokens are valid for up to an hour, although\nthis will vary depending on the issuer.\n\nUsers are recommended to use a different AWS authentication mechanism, disable\nlogging or upgrade to version 0.10.2, which fixes this issue.\n\n## Details\n\nWhen using AWS WebIdentityTokens with the `object_store` crate, in the event of\na failure and automatic retry, the underlying `reqwest` error, including the\nfull URL with the credentials, potentially in the parameters, is written to the\nlogs.\n\nThanks to Paul Hatcherian for reporting this vulnerability",
+      "date": "2024-07-23",
+      "aliases": [
+        "CVE-2024-41178",
+        "GHSA-c2hf-vcmr-qjrf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "information",
+        "leak",
+        "aws",
+        "oidc",
+        "logs"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:L/I:N/A:N",
+      "informational": null,
+      "references": [
+        "https://www.openwall.com/lists/oss-security/2024/07/23/3"
+      ],
+      "source": null,
+      "url": "https://github.com/apache/arrow-rs/pull/6074",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.2"
+      ],
+      "unaffected": [
+        "<0.5.0"
+      ]
+    }
+  }
+]

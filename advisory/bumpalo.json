@@ -1,0 +1,82 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0078",
+      "package": "bumpalo",
+      "title": "Use-after-free due to a lifetime error in `Vec::into_iter()`",
+      "description": "In affected versions of this crate, the lifetime of the iterator produced by\n`Vec::into_iter()` is not constrained to the lifetime of the `Bump` that\nallocated the vector's memory. Using the iterator after the `Bump` is dropped\ncauses use-after-free accesses.\n\nThe following example demonstrates memory corruption arising from a misuse of\nthis unsoundness.\n\n```rust\nuse bumpalo::{collections::Vec, Bump};\n\nfn main() {\n    let bump = Bump::new();\n    let mut vec = Vec::new_in(&bump);\n    vec.extend([0x01u8; 32]);\n    let into_iter = vec.into_iter();\n    drop(bump);\n\n    for _ in 0..100 {\n        let reuse_bump = Bump::new();\n        let _reuse_alloc = reuse_bump.alloc([0x41u8; 10]);\n    }\n\n    for x in into_iter {\n        print!(\"0x{:02x} \", x);\n    }\n    println!();\n}\n```\n\nThe issue was corrected in version 3.11.1 by adding a lifetime to the `IntoIter`\ntype, and updating the signature of `Vec::into_iter()` to constrain this\nlifetime.",
+      "date": "2022-01-14",
+      "aliases": [
+        "GHSA-f85w-wvc7-crwc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/fitzgen/bumpalo/blob/main/CHANGELOG.md#3111",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bumpalo::collections::vec::Vec::into_iter": [
+          "<3.11.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=3.11.1"
+      ],
+      "unaffected": [
+        "<1.1.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0006",
+      "package": "bumpalo",
+      "title": "Flaw in `realloc` allows reading unknown memory",
+      "description": "When `realloc`ing, if we allocate new space, we need to copy the old\nallocation's bytes into the new space. There are `old_size` number of bytes in\nthe old allocation, but we were accidentally copying `new_size` number of bytes,\nwhich could lead to copying bytes into the realloc'd space from past the chunk\nthat we're bump allocating out of, from unknown memory.\n\nIf an attacker can cause `realloc`s, and can read the `realoc`ed data back,\nthis could allow them to read things from other regions of memory that they\nshouldn't be able to. For example, if some crypto keys happened to live in\nmemory right after a chunk we were bump allocating out of, this could allow\nthe attacker to read the crypto keys.\n\nBeyond just fixing the bug and adding a regression test, I've also taken two\nadditional steps:\n\n1. While we were already running the testsuite under `valgrind` in CI, because\n   `valgrind` exits with the same code that the program did, if there are\n   invalid reads/writes that happen not to trigger a segfault, the program can\n   still exit OK and we will be none the wiser. I've enabled the\n   `--error-exitcode=1` flag for `valgrind` in CI so that tests eagerly fail\n   in these scenarios.\n\n2. I've written a quickcheck test to exercise `realloc`. Without the bug fix\n   in this patch, this quickcheck immediately triggers invalid reads when run\n   under `valgrind`. We didn't previously have quickchecks that exercised\n   `realloc` because `realloc` isn't publicly exposed directly, and instead\n   can only be indirectly called. This new quickcheck test exercises `realloc`\n   via `bumpalo::collections::Vec::resize` and\n   `bumpalo::collections::Vec::shrink_to_fit` calls.",
+      "date": "2020-03-24",
+      "aliases": [
+        "CVE-2020-35861",
+        "GHSA-vqx7-pw4r-29rr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/fitzgen/bumpalo/issues/69",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.2.1"
+      ],
+      "unaffected": [
+        "<3.0.0"
+      ]
+    }
+  }
+]

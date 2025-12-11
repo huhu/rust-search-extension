@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0060",
+      "package": "libwebp-sys2",
+      "title": "libwebp: OOB write in BuildHuffmanTable",
+      "description": "[Google](https://chromereleases.googleblog.com/2023/09/stable-channel-update-for-desktop_11.html) and [Mozilla](https://www.mozilla.org/en-US/security/advisories/mfsa2023-40/) have released security advisories for RCE due to heap overflow in libwebp. Google warns the vulnerability has been exploited in the wild.\n\nlibwebp needs to be updated to 1.3.2 to include a patch for \"OOB write in BuildHuffmanTable\".",
+      "date": "2023-09-12",
+      "aliases": [
+        "CVE-2023-4863",
+        "CVE-2023-5129",
+        "GHSA-j7hp-h8jx-5ppr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "webp"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.8"
+      ],
+      "unaffected": []
+    }
+  }
+]

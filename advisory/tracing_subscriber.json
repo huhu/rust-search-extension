@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0055",
+      "package": "tracing-subscriber",
+      "title": "Logging user input may result in poisoning logs with ANSI escape sequences",
+      "description": "Previous versions of tracing-subscriber were vulnerable to ANSI escape sequence injection attacks. Untrusted user input containing ANSI escape sequences could be injected into terminal output when logged, potentially allowing attackers to:\n\n- Manipulate terminal title bars\n- Clear screens or modify terminal display\n- Potentially mislead users through terminal manipulation\n\nIn isolation, impact is minimal, however security issues have been found in terminal emulators that enabled an attacker to use ANSI escape sequences via logs to exploit vulnerabilities in the terminal emulator.\n\nThis was patched in [PR #3368](https://github.com/tokio-rs/tracing/pull/3368) to escape ANSI control characters from user input.",
+      "date": "2025-08-29",
+      "aliases": [
+        "CVE-2025-58160",
+        "GHSA-xwfj-jgwm-7wp5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/advisories/GHSA-xwfj-jgwm-7wp5",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.20"
+      ],
+      "unaffected": []
+    }
+  }
+]

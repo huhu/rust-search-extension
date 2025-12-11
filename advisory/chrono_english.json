@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0395",
+      "package": "chrono-english",
+      "title": "The maintainer of chrono-english is unresponsive",
+      "description": "All versions will encounter compilation errors with a chrono version `>0.4.35`, due\nto backward incompatible API changes.\n\nUser conradludgade reworked the original crate and created a fork with the same API\nsurface called [interim](https://github.com/conradludgate/interim).\n\nThe fork is better structured and passes the same test suite as chrono-english,\nensuring backward compatibility.",
+      "date": "2024-06-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/stevedonovan/chrono-english/issues/29",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

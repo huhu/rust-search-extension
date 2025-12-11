@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0102",
+      "package": "late-static",
+      "title": "LateStatic has incorrect Sync bound",
+      "description": "Affected versions of this crate implemented `Sync` for `LateStatic` with `T: Send`, so that it is possible to create a data race to a type `T: Send + !Sync` (e.g. `Cell<T>`).\n\nThis can result in a memory corruption or other kinds of undefined behavior.\n\nThe flaw was corrected in commit 11f396c by replacing the `T: Send` bound to `T: Sync` bound in the `Sync` impl for `LateStatic<T>`.",
+      "date": "2020-11-10",
+      "aliases": [
+        "CVE-2020-36209",
+        "GHSA-wr55-mf5c-hhwm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Richard-W/late-static/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

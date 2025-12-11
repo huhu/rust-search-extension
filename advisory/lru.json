@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0130",
+      "package": "lru",
+      "title": "Use after free in lru crate",
+      "description": "Lru crate has use after free vulnerability.\n\nLru crate has two functions for getting an iterator. Both iterators give\nreferences to key and value. Calling specific functions, like pop(), will remove\nand free the value, and but it's still possible to access the reference of value\nwhich is already dropped causing use after free.",
+      "date": "2021-12-21",
+      "aliases": [
+        "CVE-2021-45720",
+        "GHSA-qqmc-hwqp-8g2w",
+        "GHSA-v362-2895-h9r2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/jeromefroe/lru-rs/issues/120",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "lru::LruCache::iter": [
+          "<0.7.1"
+        ],
+        "lru::LruCache::iter_mut": [
+          "<0.7.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.7.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

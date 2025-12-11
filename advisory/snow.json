@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0011",
+      "package": "snow",
+      "title": "Unauthenticated Nonce Increment in snow",
+      "description": "There was a logic bug where unauthenticated payloads could still cause a nonce\nincrement in snow's internal state. For an attacker with privileges to inject\npackets into the channel over which the Noise session operates, this could\nallow a denial-of-service attack which could prevent message delivery by\nsending garbage data.\n\nNote that this only affects those who are using the stateful TransportState,\nnot those using StatelessTransportState.\n\nThis has been patched in version 0.9.5, and all users are recommended to\nupdate.",
+      "date": "2024-01-23",
+      "aliases": [
+        "CVE-2024-58265",
+        "GHSA-7g9j-g5jg-3vv3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure",
+        "denial-of-service"
+      ],
+      "keywords": [
+        "noise",
+        "nonce",
+        "state"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mcginty/snow/security/advisories/GHSA-7g9j-g5jg-3vv3",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

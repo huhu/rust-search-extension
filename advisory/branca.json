@@ -1,0 +1,50 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0075",
+      "package": "branca",
+      "title": "Unexpected panic when decoding tokens",
+      "description": "Prior to `0.10.0` it was possible to have both decoding functions panic unexpectedly,\nby supplying tokens with an incorrect base62 encoding.\n\nThe documentation stated that an error should have been reported instead.",
+      "date": "2020-11-29",
+      "aliases": [
+        "CVE-2020-35918",
+        "GHSA-c9rv-3jmq-527w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "decoding",
+        "panic",
+        "untrusted data"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/return/branca/issues/24",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "branca::Branca::decode": [
+          "<0.10.0"
+        ],
+        "branca::decode": [
+          "<0.10.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

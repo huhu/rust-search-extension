@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0008",
+      "package": "openh264-sys2",
+      "title": "Openh264 Decoding Functions Heap Overflow Vulnerability",
+      "description": "OpenH264 recently reported a [heap overflow](https://github.com/cisco/openh264/security/advisories/GHSA-m99q-5j7x-7m9x) that was fixed in upstream [63db555](https://github.com/cisco/openh264/commit/63db555e30986e3a5f07871368dc90ae78c27449) and [integrated into](https://github.com/ralfbiedert/openh264-rs/commit/3a822fff0b4c9a984622ca2b179fe8898ac54b14) our 0.6.6 release. For users relying on Cisco's pre-compiled DLL, we also published 0.8.0, which is compatible with their latest fixed DLL version  2.6.0. \n\nIn other words:\n- if you rely on our `source` feature only, >=0.6.6 should be safe,\n- if you rely on `libloading`, you must upgrade to 0.8.0 _and_ use their latest DLL >=2.6.0. \n\nUsers handling untrusted video files should update immediately.",
+      "date": "2025-02-24",
+      "aliases": [
+        "GHSA-5pmw-9j92-3c4c"
+      ],
+      "related": [
+        "CVE-2025-27091"
+      ],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "openh264"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/cisco/openh264/pull/3818/"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

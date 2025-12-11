@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0010",
+      "package": "libflate",
+      "title": "MultiDecoder::read() drops uninitialized memory of arbitrary type on panic in client code",
+      "description": "Affected versions of libflate have set a field of an internal structure with a generic type to an uninitialized value in `MultiDecoder::read()` and reverted it to the original value after the function completed. However, execution of `MultiDecoder::read()` could be interrupted by a panic in caller-supplied `Read` implementation. This would cause `drop()` to be called on uninitialized memory of a generic type implementing `Read`.\n\nThis is equivalent to a use-after-free vulnerability and could allow an attacker to gain arbitrary code execution.\n\nThe flaw was corrected by aborting immediately instead of unwinding the stack in case of panic within `MultiDecoder::read()`. The issue was discovered and fixed by Shnatsel.",
+      "date": "2019-07-04",
+      "aliases": [
+        "CVE-2019-15552",
+        "GHSA-rpcm-whqc-jfw8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "drop",
+        "use-after-free"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sile/libflate/issues/35",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libflate::gzip::MultiDecoder::read": [
+          "<0.1.25, >=0.1.14"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.25"
+      ],
+      "unaffected": [
+        "<0.1.14"
+      ]
+    }
+  }
+]

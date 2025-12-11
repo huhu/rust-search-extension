@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0122",
+      "package": "beef",
+      "title": "beef::Cow lacks a Sync bound on its Send trait allowing for data races",
+      "description": "Affected versions of this crate did not have a `T: Sync` bound in the `Send` impl for `Cow<'_, T, U>`. This allows users to create data races by making `Cow` contain types that are (Send && !Sync) like `Cell<_>` or `RefCell<_>`.\n\nSuch data races can lead to memory corruption.\n\nThe flaw was corrected in commit d1c7658 by adding trait bounds `T: Sync` and `T::Owned: Send` to the `Send` impl for `Cow<'_, T, U>`.",
+      "date": "2020-10-28",
+      "aliases": [
+        "CVE-2020-36442",
+        "GHSA-m7w4-8wp8-m2xq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maciejhirsz/beef/issues/37",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

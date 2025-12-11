@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0006",
+      "package": "yaml-rust",
+      "title": "Uncontrolled recursion leads to abort in deserialization",
+      "description": "Affected versions of this crate did not prevent deep recursion while\ndeserializing data structures.\n\nThis allows an attacker to make a YAML file with deeply nested structures\nthat causes an abort while deserializing it.\n\nThe flaw was corrected by checking the recursion depth.\n\nNote: `clap 2.33` is not affected by this because it uses `yaml-rust`\nin a way that doesn't trigger the vulnerability. More specifically:\n\n1. The input to the YAML parser is always trusted - is included at compile\ntime via `include_str!`.\n\n2. The nesting level is never deep enough to trigger the overflow in practice\n(at most 5).",
+      "date": "2018-09-17",
+      "aliases": [
+        "CVE-2018-20993"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "crash"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/chyh1990/yaml-rust/pull/109",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

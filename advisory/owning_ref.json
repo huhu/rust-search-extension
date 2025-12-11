@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0040",
+      "package": "owning_ref",
+      "title": "Multiple soundness issues in `owning_ref`",
+      "description": "- `OwningRef::map_with_owner` is [unsound](https://github.com/Kimundi/owning-ref-rs/issues/77) and may result in a use-after-free.\n- `OwningRef::map` is [unsound](https://github.com/Kimundi/owning-ref-rs/issues/71) and may result in a use-after-free.\n- `OwningRefMut::as_owner` and `OwningRefMut::as_owner_mut` are [unsound](https://github.com/Kimundi/owning-ref-rs/issues/61) and may result in a use-after-free.\n- The crate [violates Rust's aliasing rules](https://github.com/Kimundi/owning-ref-rs/issues/49), which may cause miscompilations on recent compilers that emit the LLVM `noalias` attribute.\n\n`safer_owning_ref` is a replacement crate which fixes these issues.\nNo patched versions of the original crate are available, and the maintainer is unresponsive.",
+      "date": "2022-01-26",
+      "aliases": [
+        "GHSA-9qxh-258v-666c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/Kimundi/owning-ref-rs/issues/49",
+        "https://github.com/Kimundi/owning-ref-rs/issues/61",
+        "https://github.com/Kimundi/owning-ref-rs/issues/71",
+        "https://github.com/Kimundi/owning-ref-rs/issues/77"
+      ],
+      "source": null,
+      "url": "https://github.com/noamtashma/owning-ref-unsoundness",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

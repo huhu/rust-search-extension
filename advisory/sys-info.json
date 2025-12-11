@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0100",
+      "package": "sys-info",
+      "title": "Double free when calling `sys_info::disk_info` from multiple threads",
+      "description": "Affected versions of `sys-info` use a static, global, list to store temporary disk information while running. The function that cleans up this list,\n`DFCleanup`, assumes a single threaded environment and will try to free the same memory twice in a multithreaded environment.\n\nThis results in consistent double-frees and segfaults when calling `sys_info::disk_info` from multiple threads at once.\n\nThe issue was fixed by moving the global variable into a local scope.\n\n## Safer Alternatives:\n - [`sysinfo`](https://crates.io/crates/sysinfo)",
+      "date": "2020-05-31",
+      "aliases": [
+        "CVE-2020-36434"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "concurrency",
+        "double free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/FillZpp/sys-info-rs/issues/63",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "linux"
+      ],
+      "functions": {
+        "sys_info::disk_info": [
+          "<=0.1.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

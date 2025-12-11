@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0043",
+      "package": "ws",
+      "title": "Insufficient size checks in outgoing buffer in ws allows remote attacker to run the process out of memory",
+      "description": "Affected versions of this crate did not properly check and cap the growth of the outgoing buffer.\n\nThis allows a remote attacker to take down the process by growing the buffer of their (single) connection until the process runs out of memory it can allocate and is killed.\n\nThe flaw was corrected in the [`parity-ws` fork](https://crates.io/crates/parity-ws) (>=0.10.0) by [disconnecting a client when the buffer runs full](https://github.com/housleyjk/ws-rs/pull/328).",
+      "date": "2020-09-25",
+      "aliases": [
+        "CVE-2020-35896",
+        "GHSA-rh7x-ppxx-p34c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "websocket",
+        "dos",
+        "ddos",
+        "oom",
+        "memory",
+        "remotely"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/housleyjk/ws-rs/issues/291",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

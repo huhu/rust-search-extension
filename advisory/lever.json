@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0137",
+      "package": "lever",
+      "title": "AtomicBox<T> lacks bound on its Send and Sync traits allowing data races",
+      "description": "`AtomicBox<T>` is a `Box` type designed to be used across threads, however, it\nimplements the `Send` and `Sync` traits for all types `T`.\n\nThis allows non-Send types such as `Rc` and non-Sync types such as `Cell` to\nbe used across thread boundaries which can trigger undefined behavior and\nmemory corruption.",
+      "date": "2020-11-10",
+      "aliases": [
+        "CVE-2020-36457",
+        "GHSA-9pp4-8p8v-g78w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/vertexclique/lever/issues/15",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

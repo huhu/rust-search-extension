@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0146",
+      "package": "generic-array",
+      "title": "arr! macro erases lifetimes",
+      "description": "Affected versions of this crate allowed unsoundly extending\nlifetimes using `arr!` macro. This may result in a variety of\nmemory corruption scenarios, most likely use-after-free.",
+      "date": "2020-04-09",
+      "aliases": [
+        "CVE-2020-36465"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "soundness"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/fizyk20/generic-array/issues/98",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.4, <0.9.0",
+        ">=0.9.1, <0.10.0",
+        ">=0.10.1, <0.11.0",
+        ">=0.11.2, <0.12.0",
+        ">=0.12.4, <0.13.0",
+        ">=0.13.3"
+      ],
+      "unaffected": [
+        "<0.8.0"
+      ]
+    }
+  }
+]

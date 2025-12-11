@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0363",
+      "package": "sqlx",
+      "title": "Binary Protocol Misinterpretation caused by Truncating or Overflowing Casts",
+      "description": "The following presentation at this year's DEF CON was brought to our attention on the SQLx Discord:\n\n> SQL Injection isn't Dead: Smuggling Queries at the Protocol Level  \n> <http://web.archive.org/web/20240812130923/https://media.defcon.org/DEF%20CON%2032/DEF%20CON%2032%20presentations/DEF%20CON%2032%20-%20Paul%20Gerste%20-%20SQL%20Injection%20Isn't%20Dead%20Smuggling%20Queries%20at%20the%20Protocol%20Level.pdf>  \n> (Archive link for posterity.)\n\nEssentially, encoding a value larger than 4GiB can cause the length prefix in the protocol to overflow, \ncausing the server to interpret the rest of the string as binary protocol commands or other data.\n\nIt appears SQLx _does_ perform truncating casts in a way that could be problematic, \nfor example: <https://github.com/launchbadge/sqlx/blob/6f2905695b9606b5f51b40ce10af63ac9e696bb8/sqlx-postgres/src/arguments.rs#L163>\n\nThis code has existed essentially since the beginning, \nso it is reasonable to assume that all published versions `<= 0.8.0` are affected.\n\n## Mitigation\n\nAs always, you should make sure your application is validating untrustworthy user input. \nReject any input over 4 GiB, or any input that could _encode_ to a string longer than 4 GiB. \nDynamically built queries are also potentially problematic if it pushes the message size over this 4 GiB bound.\n\n[`Encode::size_hint()`](https://docs.rs/sqlx/latest/sqlx/trait.Encode.html#method.size_hint) \ncan be used for sanity checks, but do not assume that the size returned is accurate. \nFor example, the `Json<T>` and `Text<T>` adapters have no reasonable way to predict or estimate the final encoded size, \nso they just return `size_of::<T>()` instead.\n\nFor web application backends, consider adding some middleware that limits the size of request bodies by default.\n\n## Resolution\n\n`sqlx 0.8.1` has been released with the fix: <https://github.com/launchbadge/sqlx/blob/main/CHANGELOG.md#081---2024-08-23>\n\nPostgres users are advised to upgrade ASAP as a possible exploit has been demonstrated:\n<https://github.com/launchbadge/sqlx/issues/3440#issuecomment-2307956901>\n\nMySQL and SQLite do not _appear_ to be exploitable, but upgrading is recommended nonetheless.",
+      "date": "2024-08-15",
+      "aliases": [
+        "GHSA-xmrp-424f-vfpx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "sql",
+        "injection",
+        "overflow",
+        "truncation"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/launchbadge/sqlx/issues/3440",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

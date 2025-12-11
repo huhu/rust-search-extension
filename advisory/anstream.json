@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0404",
+      "package": "anstream",
+      "title": "Unsoundness in anstream",
+      "description": "When given a valid UTF8 string \"ö\\x1b😀\", the function in\ncrates/anstream/src/adapter/strip.rs will be confused. The UTF8\nbytes are \\xc3\\xb6 then \\x1b then \\xf0\\x9f\\x98\\x80.\n\nWhen looping over \"non-printable bytes\" \\x1b\\xf0 will be\nconsidered as some non-printable sequence.\n\nThis will produce a broken str from the incorrectly segmented\nbytes via str::from_utf8_unchecked, and that should never happen.\n\nFull credit goes to @Ralith who reviewed this code and\nasked @burakemir to follow up.",
+      "date": "2024-09-08",
+      "aliases": [
+        "GHSA-2rxc-gjrp-vjhx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-cli/anstyle/issues/156",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "anstream::adapter::strip_str": [
+          "<0.6.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.8"
+      ],
+      "unaffected": []
+    }
+  }
+]

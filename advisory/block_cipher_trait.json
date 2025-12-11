@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0018",
+      "package": "block-cipher-trait",
+      "title": "crate has been renamed to `block-cipher`",
+      "description": "This crate has been renamed from `block-cipher-trait` to `block-cipher`.\n\nThe new repository location is at:\n\n<https://github.com/RustCrypto/traits/tree/master/block-cipher>",
+      "date": "2020-05-26",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/traits/pull/139",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

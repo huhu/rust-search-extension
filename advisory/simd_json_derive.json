@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0087",
+      "package": "simd-json-derive",
+      "title": "`MaybeUninit` misuse in `simd-json-derive`",
+      "description": "An invalid use of `MaybeUninit::uninit().assume_init()` in `simd-json-derive`'s derive macro can cause undefined behavior. The original code used `MaybeUninit` to avoid initialisation of the struct and then set the fields using `ptr::write`. The undefined behavior triggered by this misuse of `MaybeUninit` can lead to invlaid memory access and panics in binaries compiled in release mode (aka simd-json-derive prior to version 0.12 has UB and optimizes into some nonsense)\n\nThe `0.12.0` removes this section of code, avoiding the use of MaybeUninit alltogether.",
+      "date": "2023-10-14",
+      "aliases": [
+        "GHSA-pqpw-89w5-82v5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "panic",
+        "undefined behavior"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/simd-lite/simd-json-derive/issues/67",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.12.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

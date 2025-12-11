@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0141",
+      "package": "dotenv",
+      "title": "dotenv is Unmaintained",
+      "description": "dotenv by description is meant to be used in development or testing only.\n\nUsing this in production may or may not be advisable.\n\n## Alternatives\n\nThe below may or may not be feasible alternative(s):\n- [dotenvy](https://crates.io/crates/dotenvy)",
+      "date": "2021-12-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dotenv-rs/dotenv/issues/74",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

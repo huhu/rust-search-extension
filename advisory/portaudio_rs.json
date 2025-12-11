@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0022",
+      "package": "portaudio-rs",
+      "title": "Stream callback function is not unwind safe",
+      "description": "Affected versions of this crate is not panic safe within callback functions `stream_callback` and `stream_finished_callback`.\n\nThe call to user-provided closure might panic before a `mem::forget` call, which then causes a use after free that grants attacker to control the callback function pointer.\n\nThis allows an attacker to construct an arbitrary code execution .\n \nThe flaw was reported by Phosphorus15.",
+      "date": "2019-09-14",
+      "aliases": [
+        "CVE-2019-16881",
+        "GHSA-qpjr-ch72-2qq4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "audio",
+        "ffi"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mvdnes/portaudio-rs/issues/20",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

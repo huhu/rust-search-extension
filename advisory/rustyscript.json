@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0405",
+      "package": "rustyscript",
+      "title": "op_panic in the base runtime can force a panic in the runtime's containing thread",
+      "description": "Affected versions use deno_core releases that expose `Deno.core.ops.op_panic` to the JS runtime in the base core\n\nThis function when called triggers a manual panic in the thread containing the runtime.\n\nIt can be fixed by stubbing out the exposed op:\n```javascript\nDeno.core.ops.op_panic = (msg) => { throw new Error(msg) };\n```",
+      "date": "2024-07-18",
+      "aliases": [
+        "GHSA-fwfx-rrv8-crpf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rscarson/rustyscript/issues/174",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": [
+        "<=0.3.0"
+      ]
+    }
+  }
+]

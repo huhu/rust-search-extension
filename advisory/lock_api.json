@@ -1,0 +1,66 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0070",
+      "package": "lock_api",
+      "title": "Some lock_api lock guard objects can cause data races",
+      "description": "Affected versions of lock_api had unsound implementations of the `Send` or\n`Sync` traits for some guard objects, namely:\n\n* MappedMutexGuard\n* MappedRwLockReadGuard\n* MappedRwLockWriteGuard\n* RwLockReadGuard\n* RwLockWriteGuard\n\nThese guards could allow data races through types that are not safe to `Send`\nacross thread boundaries in safe Rust code.\n\nThis issue was fixed by changing the trait bounds on the `Mapped` guard types\nand removing the `Sync` trait for the `RwLock` guards.",
+      "date": "2020-11-08",
+      "aliases": [
+        "CVE-2020-35910",
+        "CVE-2020-35911",
+        "CVE-2020-35912",
+        "CVE-2020-35913",
+        "CVE-2020-35914",
+        "GHSA-5wg8-7c9q-794v",
+        "GHSA-gmv4-vmx3-x9f3",
+        "GHSA-hj9h-wrgg-hgmx",
+        "GHSA-ppj3-7jw3-8vc4",
+        "GHSA-vh4p-6j7g-f4j9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Amanieu/parking_lot/pull/262",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "lock_api::MappedMutexGuard": [
+          ">=0.1.0"
+        ],
+        "lock_api::MappedRwLockReadGuard": [
+          ">=0.1.0"
+        ],
+        "lock_api::MappedRwLockWriteGuard": [
+          ">=0.1.0"
+        ],
+        "lock_api::RwLockReadGuard": [
+          ">=0.1.0"
+        ],
+        "lock_api::RwLockWriteGuard": [
+          ">=0.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

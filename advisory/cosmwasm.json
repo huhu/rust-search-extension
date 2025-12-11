@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0004",
+      "package": "cosmwasm",
+      "title": "`cosmwasm` is unmaintained",
+      "description": "The crate `cosmwasm` is [not used anymore] since spring 2020.\nThe functionality was split in multiple different crates, such as the standard library `cosmwasm-std` and the virtual machine `cosmwasm-vm`. An overview can be found in the [cosmwasm repository].\n\nIf you have this crate in your dependency tree, this is very likely by mistake and should be corrected.\n\n[not used anymore]: https://github.com/CosmWasm/cosmwasm/issues/1430\n[cosmwasm repository]: https://github.com/CosmWasm/cosmwasm",
+      "date": "2024-01-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/CosmWasm/cosmwasm/issues/1430",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

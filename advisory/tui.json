@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0049",
+      "package": "tui",
+      "title": "`tui` is unmaintained; use `ratatui` instead",
+      "description": "The [`tui`](https://crates.io/crates/tui) crate is no longer maintained.\n\nConsider using the [`ratatui`](https://crates.io/crates/ratatui) crate instead.",
+      "date": "2023-08-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/fdehau/tui-rs/issues/654",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0014",
+      "package": "generational-arena",
+      "title": "`generational-arena` is unmaintained",
+      "description": "The `generational-arena` crate's repository has been archived and is no longer maintained.\n\n## Alternatives\n - [slotmap](https://crates.io/crates/slotmap)",
+      "date": "2024-02-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/fitzgen/generational-arena/issues/55",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

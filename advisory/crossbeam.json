@@ -1,0 +1,102 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0029",
+      "package": "crossbeam",
+      "title": "`MsQueue` `push`/`pop` use the wrong orderings",
+      "description": "Affected versions of this crate use orderings which are too weak to support this data structure.\nIt is likely this has caused memory corruption in the wild: <https://github.com/crossbeam-rs/crossbeam/issues/97#issuecomment-412785919>.",
+      "date": "2022-06-07",
+      "aliases": [
+        "GHSA-rwf4-gx62-rqfw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety",
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/crossbeam-rs/crossbeam/pull/98",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0020",
+      "package": "crossbeam",
+      "title": "`SegQueue` creates zero value of any type",
+      "description": "Affected versions of this crate called `mem::zeroed()` to create values of a user-supplied type `T`.\nThis is unsound e.g. if `T` is a reference type (which must be non-null).\n \nThe flaw was corrected by avoiding the use of `mem::zeroed()`, using `MaybeUninit` instead.",
+      "date": "2022-05-10",
+      "aliases": [
+        "GHSA-8gj8-hv75-gp94"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/crossbeam-rs/crossbeam/pull/458",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0009",
+      "package": "crossbeam",
+      "title": "MsQueue and SegQueue suffer from double-free",
+      "description": "Even if an element is popped from a queue, crossbeam would run its\ndestructor inside the epoch-based garbage collector. This is a source\nof double frees.\n\nThe flaw was corrected by wrapping elements inside queues in a\n`ManuallyDrop`.\n\nThanks to @c0gent for reporting the issue.",
+      "date": "2018-12-09",
+      "aliases": [
+        "CVE-2018-20996",
+        "GHSA-c3cw-c387-pj65"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "concurrency",
+        "memory-management",
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/crossbeam-rs/crossbeam-epoch/issues/82",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.1"
+      ],
+      "unaffected": [
+        "<0.4.0"
+      ]
+    }
+  }
+]

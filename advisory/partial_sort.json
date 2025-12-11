@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0016",
+      "package": "partial_sort",
+      "title": "Possible out-of-bounds read in release mode",
+      "description": "Affected versions of this crate were using a debug assertion to validate the\n`last` parameter of `partial_sort()`. This would allow invalid inputs to cause\nan out-of-bounds read instead of immediately panicking, when compiled without\ndebug assertions.\n\nAll writes are bounds-checked, so the out-of-bounds memory access is read-only.\nThis also means that the first attempted out-of-bounds write will panic,\nlimiting the possible reads.\n\nThe accessible region is further limited by an initial bounds-checked read\nat `(last / 2) - 1`, i.e., it is proportional to the size of the vector.\n\nThis bug has been fixed in v0.2.0.",
+      "date": "2023-02-20",
+      "aliases": [
+        "GHSA-5x36-7567-3cw6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "out-of-bounds read"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sundy-li/partial_sort/issues/7",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

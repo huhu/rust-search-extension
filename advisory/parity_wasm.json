@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0061",
+      "package": "parity-wasm",
+      "title": "Crate `parity-wasm` deprecated by the author",
+      "description": "[This PR](https://github.com/paritytech/parity-wasm/pull/334) explicitly deprecates `parity-wasm`.\nThe author recommends switching to [wasm-tools](https://github.com/bytecodealliance/wasm-tools).",
+      "date": "2022-10-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/paritytech/parity-wasm/pull/334",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

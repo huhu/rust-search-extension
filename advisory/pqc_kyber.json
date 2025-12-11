@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0079",
+      "package": "pqc_kyber",
+      "title": "KyberSlash: division timings depending on secrets",
+      "description": "Various Kyber software libraries in various environments leak secret information into timing, specifically because\n\n * these libraries include a line of code that divides a secret numerator by a public denominator,\n * the number of CPU cycles for division in various environments varies depending on the inputs to the division, and\n * this variation appears within the range of numerators used in these libraries.\n\nThe KyberSlash pages track which Kyber [libraries](https://kyberslash.cr.yp.to/libraries.html) have this issue, and include a [FAQ](https://kyberslash.cr.yp.to/faq.html) about the issue.\n\n## Author\n\nThe KyberSlash pages were written by Daniel J. Bernstein. The FAQ originally said \"I\", but some people seemed to have trouble finding this authorship statement, so the FAQ now says \"Bernstein\" instead.\n\n## URL\n\nThe permanent link for the KyberSlash pages is [https://kyberslash.cr.yp.to](https://kyberslash.cr.yp.to).\n\n## Mitigation status in `pqc_kyber` crate\n\nThe issue has not been resolved in the upstream `pqc_kyber` crate.\n\nA third-party fork that mitigates this attack vector has been published as [`safe_pqc_kyber`](https://crates.io/crates/safe_pqc_kyber).\n\n## Alternatives\n\nThe [`ml-kem`](https://crates.io/crates/ml-kem) crate is a maintained\nalternative pure Rust implementation of ML-KEM / Kyber.",
+      "date": "2023-12-01",
+      "aliases": [
+        "GHSA-x5j2-g63m-f8g4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "timing-attack"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://kyberslash.cr.yp.to/faq.html",
+        "https://kyberslash.cr.yp.to/libraries.html",
+        "https://github.com/bwesterb/argyle-kyber/commit/b5c6ad13f4eece80e59c6ebeafd787ba1519f5f6"
+      ],
+      "source": null,
+      "url": "https://github.com/Argyle-Software/kyber/issues/108",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

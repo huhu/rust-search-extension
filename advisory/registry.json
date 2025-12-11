@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0026",
+      "package": "registry",
+      "title": "registry is unmaintained",
+      "description": "The author has archived the GitHub repository and mentions deprecation in\nproject's\n[README](https://github.com/bbqsrc/registry-rs/blob/41dc296c786e5943d3238535e45e1df60b258050/README.md).\n\n## Possible alternatives\n\n * [windows-registry](https://crates.io/crates/windows-registry)",
+      "date": "2025-01-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bbqsrc/registry-rs/commit/41dc296c786e5943d3238535e45e1df60b258050",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

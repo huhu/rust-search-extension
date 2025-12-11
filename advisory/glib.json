@@ -1,0 +1,54 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0429",
+      "package": "glib",
+      "title": "Unsoundness in `Iterator` and `DoubleEndedIterator` impls for `glib::VariantStrIter`",
+      "description": "The `VariantStrIter::impl_get` function (called internally by implementations of the `Iterator` and `DoubleEndedIterator` traits for this type) was unsound, resulting in undefined behaviour.\n\nAn immutable reference `&p` to a `*mut libc::c_char` pointer initialized to `NULL` was passed as an argument to a C function that that mutates the pointer behind `&p` in-place (i.e. as an out-argument), which was unsound. After changes in recent versions of the Rust compiler, these unsound writes through `&p` now seem to be completely disregarded when building the `glib` crate with optimizations.\n\nThis subsequently caused all calls of `VariantStrIter::impl_get` to violate the safety requirements of the `std::ffi::CStr::from_ptr` function - which requires its argument to be a valid pointer to a C-style string - resulting in crashes due to `NULL` pointer dereferences.\n\nThis was fixed by passing the out-argument pointer explitly as `&mut p` instead of `&p`.\n\nThis issue has been present since this code was initially added in `glib` v0.15.0. The mismatch in mutability was likely missed (and not raised as an error by the compiler) because the C function wrapped by `VariantStrIter::impl_get` is variadic (`glib_sys::g_variant_get_child`), and the pointer in question is one of the variadic arguments.",
+      "date": "2024-03-30",
+      "aliases": [
+        "GHSA-wrw7-89jp-8q8g"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gtk-rs/gtk-rs-core/pull/1343",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "glib::VariantStrIter::last": [
+          ">=0.15.0, <0.20.0"
+        ],
+        "glib::VariantStrIter::next": [
+          ">=0.15.0, <0.20.0"
+        ],
+        "glib::VariantStrIter::next_back": [
+          ">=0.15.0, <0.20.0"
+        ],
+        "glib::VariantStrIter::nth": [
+          ">=0.15.0, <0.20.0"
+        ],
+        "glib::VariantStrIter::nth_back": [
+          ">=0.15.0, <0.20.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.20.0"
+      ],
+      "unaffected": [
+        "<0.15.0"
+      ]
+    }
+  }
+]

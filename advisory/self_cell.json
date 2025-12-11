@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0070",
+      "package": "self_cell",
+      "title": "Insufficient covariance check makes self_cell unsound",
+      "description": "All public versions prior to `1.02` used an insufficient check to ensure that\nusers correctly marked the dependent type as either `covariant` or\n`not_covariant`. This allowed users to mark a dependent as covariant even though\nits type was not covariant but invariant, for certain invariant types involving\ntrait object lifetimes. One example for such a dependent type is `type\nDependent<'a> = RefCell<Box<dyn fmt::Display + 'a>>`. Such a type allowed\nunsound usage in purely safe user code that leads to undefined behavior. The\npatched versions now produce a compile time error if such a type is marked as\n`covariant`.",
+      "date": "2023-11-10",
+      "aliases": [
+        "GHSA-48m6-wm5p-rr6h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "unsound",
+        "self_cell",
+        "self-referential"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Voultapher/self_cell/issues/49",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.3, <1.0.0",
+        ">=1.0.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

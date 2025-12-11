@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0052",
+      "package": "webpki",
+      "title": "webpki: CPU denial of service in certificate path building",
+      "description": "When this crate is given a pathological certificate chain to validate, it will\nspend CPU time exponential with the number of candidate certificates at each\nstep of path building.\n\nBoth TLS clients and TLS servers that accept client certificate are affected.\n\nThis was previously reported in\n<https://github.com/briansmith/webpki/issues/69> and re-reported recently\nby Luke Malinowski.\n\nwebpki 0.22.1 included a partial fix and webpki 0.22.2 added further fixes.",
+      "date": "2023-08-22",
+      "aliases": [
+        "GHSA-8qv2-5vq6-g2g7"
+      ],
+      "related": [
+        "CVE-2018-16875"
+      ],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "certificate",
+        "path building",
+        "x509"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.22.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

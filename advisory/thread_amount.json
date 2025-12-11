@@ -1,0 +1,56 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0125",
+      "package": "thread-amount",
+      "title": "Resource Exhaustion (Memory and Handle Leaks) on Windows and macOS",
+      "description": "Affected versions of this crate contain resource leaks when querying thread counts on Windows and Apple platforms.\n\n### Windows\nThe `thread_amount` function calls `CreateToolhelp32Snapshot` but fails to close the returned `HANDLE` using `CloseHandle`. Repeated calls to this function will cause the handle count of the process to grow indefinitely, eventually leading to system instability or process termination when the handle limit is reached.\n\n### macOS / iOS\nThe `thread_amount` function calls `task_threads` (via Mach kernel APIs) which allocates memory for the thread list. The function fails to deallocate this memory using `vm_deallocate`. Repeated calls will result in a steady memory leak, eventually causing the process to be killed by the OOM (Out of Memory) killer.\n\n### Impact\nLong-running applications (such as servers, daemons, or monitoring tools) that use this crate to periodically check thread counts will eventually crash due to resource exhaustion.\n\n### Mitigation\nUpgrade to version `0.2.2` or later, which properly releases OS resources.",
+      "date": "2025-11-22",
+      "aliases": [
+        "GHSA-jf9p-2fv9-2jp2",
+        "CVE-2025-65947"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "memory-leak",
+        "handle-leak",
+        "resource-exhaustion",
+        "windows",
+        "macos"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/jzeuzs/thread-amount/pull/29",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows",
+        "macos",
+        "ios"
+      ],
+      "functions": {
+        "thread_amount::is_single_threaded": [
+          "<0.2.2"
+        ],
+        "thread_amount::thread_amount": [
+          "<0.2.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

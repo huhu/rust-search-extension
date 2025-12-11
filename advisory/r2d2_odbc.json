@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0036",
+      "package": "r2d2_odbc",
+      "title": "project abandoned",
+      "description": "The `r2d2-odbc-api` crate might be an alternative.",
+      "date": "2022-01-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Koka/r2d2-odbc/issues/128#issuecomment-958629171",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

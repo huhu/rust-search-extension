@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0108",
+      "package": "eventio",
+      "title": "Soundness issue: Input<R> can be misused to create data race to an object",
+      "description": "`Input<R>` implements `Send` without requiring `R: Send`.\n\nAffected versions of this crate allows users to send non-Send types to other threads,\nwhich can lead to undefined behavior such as data race and memory corruption.\n\nThe flaw was corrected in version 0.5.1 by adding `R: Send` bound to the `Send` impl of `Input<R>`.",
+      "date": "2020-12-20",
+      "aliases": [
+        "CVE-2020-36216",
+        "GHSA-69vj-xx27-g45w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/petabi/eventio/issues/33",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0035",
+      "package": "enumflags2",
+      "title": "Adverserial use of `make_bitflags!` macro can cause undefined behavior",
+      "description": "The macro relied on an expression of the form `Enum::Variant` always being a\nvariant of the enum. However, it may also be an associated integer constant, in\nwhich case there's no guarantee that the value of said constant consists only of\nbits valid for this bitflag type.\n\nThus, code like this could create an invalid `BitFlags<Test>`, which would cause\niterating over it to trigger undefined behavior. As the debug formatter\ninternally iterates over the value, it is also affected.\n\n```rust\nuse enumflags2::{bitflags, make_bitflags};\n\n#[bitflags]\n#[repr(u8)]\n#[derive(Copy, Clone, Debug)]\nenum Test {\n    A = 1,\n    B = 2,\n}\n\nimpl Test {\n    const C: u8 = 69;\n}\n\nfn main() {\n    let x = make_bitflags!(Test::{C});\n    // printing or iterating over x is UB\n}\n```",
+      "date": "2023-04-17",
+      "aliases": [
+        "GHSA-qvc4-78gw-pv8p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/meithecatte/enumflags2/releases/tag/v0.7.7",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.7"
+      ],
+      "unaffected": [
+        "<0.7.0"
+      ]
+    }
+  }
+]

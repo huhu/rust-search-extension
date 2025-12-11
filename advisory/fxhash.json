@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0057",
+      "package": "fxhash",
+      "title": "fxhash - no longer maintained",
+      "description": "The fxhash crate is no longer maintained.\n\nThe repository is stale and owner is no longer active on GitHub.\n\nPlease take a look at [rustc-hash](https://github.com/rust-lang/rustc-hash) instead.\n```",
+      "date": "2025-09-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cbreeden/fxhash/issues/20",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0013",
+      "package": "safe-transmute",
+      "title": "Vec-to-vec transmutations could lead to heap overflow/corruption",
+      "description": "Affected versions of this crate switched the length and capacity arguments in the Vec::from_raw_parts() constructor,\nwhich could lead to memory corruption or data leakage.\n\nThe flaw was corrected by using the constructor correctly.",
+      "date": "2018-11-27",
+      "aliases": [
+        "CVE-2018-21000"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nabijaczleweli/safe-transmute-rs/pull/36",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.1"
+      ],
+      "unaffected": [
+        "<0.4.0"
+      ]
+    }
+  }
+]

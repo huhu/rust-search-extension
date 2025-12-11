@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0032",
+      "package": "redox_uefi_std",
+      "title": "Safe API can cause heap-buffer-overflow",
+      "description": "ffi::nstr() should be marked unsafe, since a pointer to a buffer without a trailing 0 value will cause a heap buffer overflow.",
+      "date": "2025-03-27",
+      "aliases": [
+        "GHSA-58xc-hpvq-8473"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "out-of-bounds read"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.redox-os.org/redox-os/uefi/-/commit/b711d47e815665b0ec8949e39292ad8e3fdd0756",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "redox_uefi_std::ffi::nstr": [
+          ">=0.1.8, <0.1.14"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.14"
+      ],
+      "unaffected": [
+        "<0.1.8"
+      ]
+    }
+  }
+]

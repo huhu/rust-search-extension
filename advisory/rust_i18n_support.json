@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0007",
+      "package": "rust-i18n-support",
+      "title": "Use-after-free when setting the locale",
+      "description": "Version 3.0.0 introduced an `AtomicStr` type, that is used to store the current locale.\nIt stores the locale as a raw pointer to an `Arc<String>`.\nThe locale can be read with `AtomicStr::as_str()`.\n`AtomicStr::as_str()` does not increment the usage counter of the `Arc`.\n\nIf the locale is changed in one thread, another thread can have a stale -- possibly already freed --\nreference to the stored string.",
+      "date": "2024-01-19",
+      "aliases": [
+        "GHSA-c8v3-jhv9-4ppc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/longbridgeapp/rust-i18n/pull/72",
+        "https://github.com/longbridgeapp/rust-i18n/releases/tag/v3.0.1"
+      ],
+      "source": null,
+      "url": "https://github.com/longbridgeapp/rust-i18n/issues/71",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rust_i18n_support::AtomicStr::as_str": [
+          "<3.0.1, >=3.0.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=3.0.1"
+      ],
+      "unaffected": [
+        "<3.0.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0078",
+      "package": "tracing",
+      "title": "Potential stack use-after-free in `Instrumented::into_inner`",
+      "description": "The implementation of the [`Instrumented::into_inner`] method in affected\nversions of this crate contains undefined behavior due to incorrect use of\n[`std::mem::forget`] The function creates `*const` pointers to `self`, calls\n[`mem::forget(self)`][`std::mem::forget`], and then moves values out of those\npointers using [`std::ptr::read`].\n\n```rust\n// To manually destructure `Instrumented` without `Drop`, we\n// move it into a ManuallyDrop and use pointers to its fields\nlet span: *const Span = &this.span;\nlet inner: *const ManuallyDrop<T> = &this.inner;\nmem::forget(self);\n// SAFETY: Those pointers are valid for reads, because `Drop` didn't\n//         run, and properly aligned, because `Instrumented` isn't\n//         `#[repr(packed)]`.\nlet _span = unsafe { span.read() };\nlet inner = unsafe { inner.read() };\n```\n\nHowever, the [`mem::forget` documentation][`std::mem::forget`] states:\n\n> Any resources the value manages, such as heap memory or a file handle, will\n> linger forever in an unreachable state. **However, it does not guarantee that\n> pointers to this memory will remain valid.**\n\nThis means that these pointers are no longer valid. This could result in a stack\nuse-after-free if LLVM chooses to reuse `self`'s stack slot for a rebinding\nafter the call to [`std::mem::forget`].\n\nThis undefined behavior has not been observed to cause miscompilation as of Rust\n1.73.0. However, any use of this method with the affected versions of `tracing`\nare unsound.\n\nThe flaw was corrected in commit [20a1762] ([PR #2765]) by replacing the use of\n[`std::mem::forget`] with `std::mem::ManuallyDrop`, ensuring that the stack slot\nis not reused and the pointers remain valid when they are read. The fix is\npublished in `tracing` [v0.1.40]. Affected versions have been yanked from\ncrates.io.\n\nThanks to [Taylor Cramer] and [Manish Goregaokar] for finding and correcting\nthis issue!\n\n[`Instrumented::into_inner`]:\n    https://docs.rs/tracing/latest/tracing/instrument/struct.Instrumented.html#method.into_inner\n[`std::mem::forget`]: https://doc.rust-lang.org/std/mem/fn.forget.html\n[`std::ptr::read`]:\n    https://doc.rust-lang.org/std/primitive.pointer.html#method.read-1\n[20a1762]:\n    https://github.com/tokio-rs/tracing/commit/20a1762b3fd5f1fafead198fd18e469c68683721\n[PR #2765]: https://github.com/tokio-rs/tracing/pull/2765\n[v0.1.40]: https://crates.io/crates/tracing/0.1.40\n[Taylor Cramer]: https://github.com/cramertj\n[Manish Goregaokar]: https://github.com/manishearth",
+      "date": "2023-10-19",
+      "aliases": [
+        "GHSA-8f24-6m29-wm2r"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tokio-rs/tracing/pull/2765",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tracing::instrument::Instrumented::into_inner": [
+          ">=0.1.38",
+          "<0.1.40"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.40"
+      ],
+      "unaffected": [
+        "<=0.1.37"
+      ]
+    }
+  }
+]

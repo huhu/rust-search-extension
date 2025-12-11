@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0026",
+      "package": "git-path",
+      "title": "Gitoxide has renamed its crates.",
+      "description": "All crates in the gitoxide project have been renamed from git-<crate> to\ngix-<crate>. The git- prefixed crates are no longer being updated. Switch\nto using gix-path to continue receiving updates.",
+      "date": "2023-03-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Byron/gitoxide/pull/741",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

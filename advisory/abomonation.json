@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0120",
+      "package": "abomonation",
+      "title": "abomonation transmutes &T to and from &[u8] without sufficient constraints",
+      "description": "This transmute is at the core of the abomonation crates. It's so easy to use it to violate alignment requirements that no test in the crate's test suite passes under miri.\nThe use of this transmute in serialization/deserialization also incorrectly assumes that the layout of a repr(Rust) type is stable.\nThis transmute can also disclose both the contents of padding bytes which may be an information leak and the contents of pointers, which may be used to defeat ASLR.",
+      "date": "2021-10-17",
+      "aliases": [
+        "CVE-2021-45708",
+        "GHSA-5vwc-r48g-wj6c",
+        "GHSA-hfxp-p695-629x"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/TimelyDataflow/abomonation/issues/23",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

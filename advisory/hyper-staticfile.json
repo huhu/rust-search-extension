@@ -1,0 +1,74 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0069",
+      "package": "hyper-staticfile",
+      "title": "Improper validation of Windows paths could lead to directory traversal attack",
+      "description": "Path resolution in `hyper-staticfile` didn't correctly validate Windows paths\nmeaning paths like `/foo/bar/c:/windows/web/screen/img101.png` would be allowed\nand respond with the contents of `c:/windows/web/screen/img101.png`. Thus users\ncould potentially read files anywhere on the filesystem.\n\nThis only impacts Windows. Linux and other unix likes are not impacted by this.",
+      "date": "2022-11-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "directory traversal",
+        "http"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/stephank/hyper-staticfile/issues/35",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        "^0.9.2",
+        ">=0.10.0-alpha.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0072",
+      "package": "hyper-staticfile",
+      "title": "Location header incorporates user input, allowing open redirect",
+      "description": "When `hyper-staticfile` performs a redirect for a directory request (e.g. a\nrequest for `/dir` that redirects to `/dir/`), the `Location` header value was\nderived from user input (the request path), simply appending a slash. The\nintent was to perform an origin-relative redirect, but specific inputs\nallowed performing a scheme-relative redirect instead.\n\nAn attacker could craft a special URL that would appear to be for the correct\ndomain, but immediately redirects to a malicious domain. Such a URL can benefit\nphishing attacks, for example an innocent looking link in an email.",
+      "date": "2022-12-23",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "open redirect",
+        "http"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/stephank/hyper-staticfile/commit/f12cadc6666c6f555d29725f5bc45da2103f24ea",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.9.4",
+        ">=0.10.0-alpha.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

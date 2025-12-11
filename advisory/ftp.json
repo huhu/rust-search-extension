@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0043",
+      "package": "ftp",
+      "title": "ftp is unmaintained, use suppaftp instead",
+      "description": "The [`ftp`](https://crates.io/crates/ftp) crate is not maintained any more;\nuse [`suppaftp`](https://crates.io/crates/suppaftp) instead.",
+      "date": "2023-02-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "ssl",
+        "wont-build"
+      ],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/mattnenterprise/rust-ftp/issues/91",
+        "https://github.com/mattnenterprise/rust-ftp/issues/84"
+      ],
+      "source": null,
+      "url": "https://github.com/mattnenterprise/rust-ftp/pull/92",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

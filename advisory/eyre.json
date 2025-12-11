@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0021",
+      "package": "eyre",
+      "title": "Parts of Report are dropped as the wrong type during downcast",
+      "description": "In affected versions, after a `Report` is constructed using `wrap_err` or\n`wrap_err_with` to attach a message of type `D` onto an error of type `E`, then\nusing `downcast` to recover ownership of either the value of type `D` or the\nvalue of type `E`, one of two things can go wrong:\n\n- If downcasting to `E`, there remains a value of type `D` to be dropped. It is\n  incorrectly \"dropped\" by running `E`'s drop behavior, rather than `D`'s. For\n  example if `D` is `&str` and `E` is `std::io::Error`, there would be a call of\n  `std::io::Error::drop` in which the reference received by the `Drop` impl does\n  not refer to a valid value of type `std::io::Error`, but instead to `&str`.\n\n- If downcasting to `D`, there remains a value of type `E` to be dropped. When\n  `D` and `E` do not happen to be the same size, `E`'s drop behavior is\n  incorrectly executed in the wrong location. The reference received by the\n  `Drop` impl may point left or right of the real `E` value that is meant to be\n  getting dropped.\n\nIn both cases, when the `Report` contains an error `E` that has nontrivial drop\nbehavior, the most likely outcome is memory corruption.\n\nWhen the `Report` contains an error `E` that has trivial drop behavior (for\nexample a `Utf8Error`) but where `D` has nontrivial drop behavior (such as\n`String`), the most likely outcome is that downcasting to `E` would leak `D`.",
+      "date": "2024-03-05",
+      "aliases": [
+        "GHSA-4v52-7q2x-v4xj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/eyre-rs/eyre/issues/141",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "eyre::Report::downcast": [
+          ">=0.6.9, <0.6.12"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.12"
+      ],
+      "unaffected": [
+        "<0.6.9"
+      ]
+    }
+  }
+]

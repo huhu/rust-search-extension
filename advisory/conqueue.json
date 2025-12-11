@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0117",
+      "package": "conqueue",
+      "title": "QueueSender<T>/QueueReceiver<T>: Send/Sync impls need `T: Send`",
+      "description": "Affected versions of this crate unconditionally implemented `Send`/`Sync` for `QueueSender<T>`,\nallowing to send non-Send `T` to other threads by invoking `(&QueueSender<T>).send()`.\n\nThis fails to prevent users from creating data races by sending types like `Rc<T>` or `Arc<Cell<T>>` to other threads, which can lead to memory corruption.\n\nThe flaw was corrected in commit 1e462c3 by imposing `T: Send` to both `Send`/`Sync` impls for `QueueSender<T>`/`QueueReceiver<T>`.",
+      "date": "2020-11-24",
+      "aliases": [
+        "CVE-2020-36437",
+        "GHSA-368f-29c3-4f2r"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/longshorej/conqueue/issues/9",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

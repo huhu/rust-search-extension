@@ -1,0 +1,68 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0048",
+      "package": "actix-http",
+      "title": "Use-after-free in BodyStream due to lack of pinning",
+      "description": "Affected versions of this crate did not require the buffer wrapped in `BodyStream` to be pinned,\nbut treated it as if it had a fixed location in memory. This may result in a use-after-free.\n \nThe flaw was corrected by making the trait `MessageBody` require `Unpin`\nand making `poll_next()` function accept `Pin<&mut Self>` instead of `&mut self`.",
+      "date": "2020-01-24",
+      "aliases": [
+        "CVE-2020-35901"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-web/issues/1321",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0-alpha.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0081",
+      "package": "actix-http",
+      "title": "Potential request smuggling capabilities due to lack of input validation",
+      "description": "Affected versions of this crate did not properly detect invalid requests that could allow HTTP/1 request smuggling (HRS) attacks when running alongside a vulnerable front-end proxy server. This can result in leaked internal and/or user data, including credentials, when the front-end proxy is also vulnerable.\n\nPopular front-end proxies and load balancers already mitigate HRS attacks so it is recommended that they are also kept up to date; check your specific set up. You should upgrade even if the front-end proxy receives exclusively HTTP/2 traffic and connects to the back-end using HTTP/1; several downgrade attacks are known that can also expose HRS vulnerabilities.",
+      "date": "2021-06-16",
+      "aliases": [
+        "CVE-2021-38512"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "smuggling",
+        "http",
+        "reverse proxy",
+        "request smuggling"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^2.2.1",
+        ">=3.0.0-beta.9"
+      ],
+      "unaffected": []
+    }
+  }
+]

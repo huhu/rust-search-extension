@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0047",
+      "package": "slab",
+      "title": "Out-of-bounds access in `get_disjoint_mut` due to incorrect bounds check",
+      "description": "## Impact\nThe `get_disjoint_mut` method in slab v0.4.10 incorrectly checked if indices were within the slab's capacity instead of its length, allowing access to uninitialized memory. This could lead to undefined behavior or potential crashes.\n\n## Patches\nThis has been fixed in slab v0.4.11.\n\n## Workarounds\nAvoid using `get_disjoint_mut` with indices that might be beyond the slab's actual length, or upgrade to v0.4.11 or later.\n\n## References\n* [https://github.com/tokio-rs/slab/pull/152](https://github.com/tokio-rs/slab/pull/152)",
+      "date": "2025-08-12",
+      "aliases": [
+        "CVE-2025-55159",
+        "GHSA-qx2v-8332-m4fv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-exposure",
+        "bounds-check"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/tokio-rs/slab/pull/152"
+      ],
+      "source": null,
+      "url": "https://github.com/tokio-rs/slab/security/advisories/GHSA-qx2v-8332-m4fv",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "slab::Slab::get_disjoint_mut": [
+          "=0.4.10"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.11"
+      ],
+      "unaffected": [
+        "<0.4.10"
+      ]
+    }
+  }
+]

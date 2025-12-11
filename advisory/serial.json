@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2017-0008",
+      "package": "serial",
+      "title": "`serial` crate is unmaintained",
+      "description": "The [`serial`](https://crates.io/crates/serial) crate is no longer maintained.\n\nLast release was on 2017-07-02.\n\n## Possible alternatives\n\nConsider using an alternative, for instance the blocking librarys:\n\n- [serial2](https://crates.io/crates/serial2)\n- [serialport](https://crates.io/crates/serialport)\n\nor async alternatives:\n\n- [mio-serial](https://crates.io/crates/mio-serial)\n- [tokio-serial](https://crates.io/crates/tokio-serial)",
+      "date": "2017-07-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dcuddeback/serial-rs/issues/71",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

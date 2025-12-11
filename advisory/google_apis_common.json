@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0066",
+      "package": "google-apis-common",
+      "title": "The `google-apis-rs` project is now unmaintained",
+      "description": "Instead, please start using and migrate to the [official Google Rust bindings](https://github.com/googleapis/google-cloud-rust).",
+      "date": "2025-09-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/Byron/google-apis-rs/discussions/559"
+      ],
+      "source": null,
+      "url": "https://crates.io/crates/google-apis-common",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

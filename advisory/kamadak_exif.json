@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0143",
+      "package": "kamadak-exif",
+      "title": "kamadak-exif DoS with untrusted PNG data",
+      "description": "Attacker crafted data can cause a infinite loop leading to DoS if used with untrusted data.",
+      "date": "2021-01-04",
+      "aliases": [
+        "CVE-2021-21235",
+        "GHSA-px9g-8hgv-jvg2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "untrusted-data",
+        "dos"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/kamadak/exif-rs/commit/1b05eab57e484cd7d576d4357b9cda7fdc57df8c",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "kamadak_exif::Reader::read_from_container": [
+          ">=0.5.2, <0.5.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.5.3"
+      ],
+      "unaffected": [
+        "<0.5.2"
+      ]
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0160",
+      "package": "shamir",
+      "title": "Threshold value is ignored (all shares are n=3)",
+      "description": "Affected versions of this crate did not properly calculate secret shares requirements.\n\nThis reduces the security of the algorithm by restricting the crate to always\nusing a threshold value of three, rather than a configurable limit.\n\nThe flaw was corrected by correctly configuring the threshold.",
+      "date": "2020-01-21",
+      "aliases": [
+        "GHSA-978j-88f3-p5j3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Nebulosus/shamir/issues/3",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

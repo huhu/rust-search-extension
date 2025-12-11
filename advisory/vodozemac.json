@@ -1,0 +1,71 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0354",
+      "package": "vodozemac",
+      "title": " Usage of non-constant time base64 decoder could lead to leakage of secret key material",
+      "description": "Versions before 0.7.0 of vodozemac use a non-constant time base64 implementation\nfor importing key material for Megolm group sessions and `PkDecryption` Ed25519\nsecret keys. This flaw might allow an attacker to infer some information about\nthe secret key material through a side-channel attack.\n\n## Impact\n\nThe use of a non-constant time base64 implementation might allow an attacker to\nobserve timing variations in the encoding and decoding operations of the secret\nkey material. This could potentially provide insights into the underlying secret\nkey material.\n\nThe impact of this vulnerability is considered low because exploiting the\nattacker is required to have access to high precision timing measurements, as\nwell as repeated access to the base64 encoding or decoding processes.\nAdditionally, the estimated leakage amount is bounded and low according to the\nreferenced paper[[1]].\n\n[1]: https://arxiv.org/abs/2108.04600",
+      "date": "2024-07-17",
+      "aliases": [
+        "CVE-2024-40640",
+        "GHSA-j8cm-g7r6-hfpq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure",
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/vodozemac/security/advisories/GHSA-j8cm-g7r6-hfpq",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0342",
+      "package": "vodozemac",
+      "title": "Degraded secret zeroization capabilities",
+      "description": "Versions 0.5.0 and 0.5.1 of vodozemac have degraded secret zeroization capabilities,\ndue to changes in third-party cryptographic dependencies (the Dalek crates),\nwhich moved secret zeroization capabilities behind a feature flag while\nvodozemac disabled the default feature set.\n\n## Impact\n\nThe degraded zeroization capabilities could result in the production of more\nmemory copies of encryption secrets and secrets could linger in memory longer\nthan necessary. This marginally increases the risk of sensitive data exposure.\n\nOverall, we consider the impact of this issue to be low. Although cryptographic\nbest practices recommend the clearing of sensitive information from memory once\nit's no longer needed, the inherent limitations of Rust regarding absolute\nzeroization reduce the practical severity of this lapse.",
+      "date": "2024-05-02",
+      "aliases": [
+        "CVE-2024-34063",
+        "GHSA-c3hm-hxwf-g5c6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/vodozemac/security/advisories/GHSA-c3hm-hxwf-g5c6",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": [
+        "<0.5.0"
+      ]
+    }
+  }
+]

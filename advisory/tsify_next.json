@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0048",
+      "package": "tsify-next",
+      "title": "tsify-next is unmaintained, use tsify instead",
+      "description": "The `tsify-next` crate is not maintained any more; use [`tsify`](https://crates.io/crates/tsify) instead.",
+      "date": "2025-07-29",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/siefkenj/tsify/issues/57"
+      ],
+      "source": null,
+      "url": "https://github.com/siefkenj/tsify/pull/56",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

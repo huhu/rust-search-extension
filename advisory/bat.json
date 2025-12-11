@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0106",
+      "package": "bat",
+      "title": "Uncontrolled Search Path Element in sharkdp/bat",
+      "description": "bat on windows before 0.18.2 executes programs named less.exe from the current working directory. This can lead to unintended code execution.",
+      "date": "2021-07-15",
+      "aliases": [
+        "CVE-2021-36753",
+        "GHSA-p24j-h477-76q3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-36753",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.18.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

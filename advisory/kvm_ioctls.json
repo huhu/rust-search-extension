@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0428",
+      "package": "kvm-ioctls",
+      "title": "Undefined behaviour in `kvm_ioctls::ioctls::vm::VmFd::create_device`",
+      "description": "An issue was identified in the `VmFd::create_device function`, leading to undefined behavior and miscompilations on rustc 1.82.0 and newer due to the function's violation of Rust's pointer safety rules.\n\nThe function downcasted a mutable reference to its `struct kvm_create_device` argument to an immutable pointer, and then proceeded to pass this pointer to a mutating system call. Rustc 1.82.0 and newer elides subsequent reads of this structure's fields, meaning code will not see the value written by the kernel into the `fd` member. Instead, the code will observe the value that this field was initialized to prior to calling `VmFd::create_device` (usually, 0).\n\nThe issue started in kvm-ioctls 0.1.0 and was fixed in 0.19.1 by correctly using\na mutable pointer.",
+      "date": "2024-12-05",
+      "aliases": [
+        "GHSA-3qx8-rv27-j6gp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "unsound",
+        "1.82"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-vmm/kvm/pull/298",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "linux"
+      ],
+      "functions": {
+        "kvm_ioctls::ioctls::vm::VmFd::create_device": [
+          "<=0.19.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.19.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

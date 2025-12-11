@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0027",
+      "package": "async-nats",
+      "title": "TLS certificate common name validation bypass",
+      "description": "The NATS official Rust clients are vulnerable to MitM when using TLS.\n\nThe common name of the server's TLS certificate is validated against\nthe `host`name provided by the server's plaintext `INFO` message\nduring the initial connection setup phase. A MitM proxy can tamper with\nthe `host` field's value by substituting it with the common name of a\nvalid certificate it controls, fooling the client into accepting it.\n\n## Reproduction steps\n\n1. The NATS Rust client tries to establish a new connection\n2. The connection is intercepted by a MitM proxy\n3. The proxy makes a separate connection to the NATS server\n4. The NATS server replies with an `INFO` message\n5. The proxy reads the `INFO`, alters the `host` JSON field and passes\n   the tampered `INFO` back to the client\n6. The proxy upgrades the client connection to TLS, presenting a certificate issued\n   by a certificate authority present in the client's keychain.\n   In the previous step the `host` was set to the common name of said certificate\n7. `rustls` accepts the certificate, having verified that the common name matches the\n   attacker-controlled value it was given\n9. The client has been fooled by the MitM proxy into accepting the attacker-controlled certificate",
+      "date": "2023-03-24",
+      "aliases": [
+        "GHSA-f5v5-ccqc-6w36"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "tls",
+        "mitm"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nats-io/nats.rs/commit/817a7b942c462fa9d9938dcb62124173634132fb#diff-767d442397fcaaf2f83e8f924d4a70317a2ce4703a49964d6007707949cfa5f5L303-R304",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.29.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

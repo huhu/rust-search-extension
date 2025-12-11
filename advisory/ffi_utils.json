@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0064",
+      "package": "ffi_utils",
+      "title": "crate has been renamed to `sn_ffi_utils`",
+      "description": "This crate has been renamed from `ffi_utils` to `sn_ffi_utils`.\n\nThe new repository location is:\n\n<https://github.com/maidsafe/sn_ffi_utils>",
+      "date": "2020-11-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maidsafe/sn_ffi_utils/pull/45",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0155",
+      "package": "acc_reader",
+      "title": "`Read` on uninitialized buffer in `fill_buf()` and `read_up_to()`",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided `Read` implementation.\n\nArbitrary `Read` implementations can read from the uninitialized buffer (memory exposure) and also can return incorrect number of bytes written to the buffer.\nReading from uninitialized memory produces undefined values that can quickly invoke undefined behavior.",
+      "date": "2020-12-27",
+      "aliases": [
+        "CVE-2020-36513",
+        "CVE-2020-36514",
+        "GHSA-799f-r78p-gq9c",
+        "GHSA-hv9v-7w3v-rj6f",
+        "GHSA-p4cr-64x4-f92f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/netvl/acc_reader/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

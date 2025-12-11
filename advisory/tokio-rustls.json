@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0019",
+      "package": "tokio-rustls",
+      "title": "tokio-rustls reads may cause excessive memory usage",
+      "description": "`tokio-rustls` does not call `process_new_packets` immediately after `read`,\nso the expected termination condition `wants_read` always returns true.\nAs long as new incoming data arrives faster than it is processed\nand the reader does not return pending, data will be buffered.\n\nThis may cause DoS.",
+      "date": "2020-05-19",
+      "aliases": [
+        "CVE-2020-35875"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "tls",
+        "ssl",
+        "DoS"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tokio-rs/tls/pull/14",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.12.3, <0.13.0",
+        ">=0.13.1"
+      ],
+      "unaffected": [
+        "<0.12"
+      ]
+    }
+  }
+]

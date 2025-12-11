@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Changelog | Rust Search Extension - The ultimate search extension for Rust </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color: #F9BB2D;
+        /* Primary theme text color */
+        --primary-text-color: #121212;
+        /* Primary theme link color */
+        --primary-link-color: #dd4814;
+        /* Secondary color: the background body color*/
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #303030;
+        --toc-highlight-text-color: #d46e13;
+        /* Font used for headers (h1 & h2) */
+        --header-font-family: "Fira Sans", sans-serif;
+        /* Font used for text */
+        --text-font-family: "Fira Sans", sans-serif;
+    }
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7JXVGPGFS"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-Z7JXVGPGFS');
+</script>
+    
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/juice.css">
+    
+<meta name="keywords"
+      content="rust, rust-lang, crates, cargo, docs, crates.io, docs.rs, search extension">
+<meta itemprop="name"
+      content="Rust Search Extension: The ultimate search extension for Rust">
+<meta itemprop="description"
+      content="Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.">
+<meta itemprop="image" content="https://rust.extension.sh/banner.png">
+
+<meta property="og:url" content="https://rust.extension.sh">
+<meta property="og:type" content="website">
+<meta property="og:title"
+      content="Rust Search Extension: The ultimate search extension for Rust">
+<meta property="og:description"
+      content="Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.">
+<meta property="og:image" content="https://rust.extension.sh/banner.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@_huhuio">
+<meta name="twitter:creator" content="@_huhuio">
+<meta name="twitter:title"
+      content="Rust Search Extension: The ultimate search extension for Rust">
+<meta name="twitter:description"
+      content="Search docs, crates, builtin attributes, official books, and error codes, etc in your address bar instantly.">
+<meta name="twitter:image" content="https://rust.extension.sh/banner.png">
+<link rel="stylesheet" href="/index.css">
+<link rel="stylesheet" href="/carbon.css">
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+</head>
+
+<body>
+    
+<header class="box-shadow">
+    
+
+<a href="/">
+    <div class="logo">
+        <img src="/logo.png" alt="logo">
+        Rust Search Extension
+    </div>
+</a>
+
+<nav>
+    
+    
+    
+    
+    
+    
+    <a class="nav-item subtitle-text" href="/testimonial/">Testimonial</a>
+    
+    
+    
+    
+    <a class="nav-item subtitle-text" href="/faq/">FAQ</a>
+    
+    
+    
+    
+    <a class="nav-item subtitle-text" href="/changelog/">Changelog</a>
+    
+    
+    
+    
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https://geddle.com">Geddle</a>
+        
+        <a class="nav-item subtitle-text" href="https://query.rs">Query.rs</a>
+        
+        <a class="nav-item subtitle-text" href="https://github.com/huhu/rust-search-extension">Github</a>
+        
+    
+</nav>
+
+</header>
+
+
+    <main>
+        
+        
+        
+        
+        
+        <div class="toc">
+            <div class="toc-sticky">
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v2-0-0-2024-10-16">v2.0.0 - 2024-10-16</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v2-0-1-2025-02-12"><small>- v2.0.1 - 2025-02-12</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-13-0-2024-02-14">v1.13.0 - 2024-02-14</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-12-0-2023-07-15">v1.12.0 - 2023-07-15</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-11-0-2023-04-22">v1.11.0 - 2023-04-22</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v1-11-1-2023-04-22"><small>- v1.11.1 - 2023-04-22</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-10-0-2023-03-25">v1.10.0 - 2023-03-25</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-9-0-2022-11-20">v1.9.0 - 2022-11-20</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v1-9-1-2022-11-27"><small>- v1.9.1 - 2022-11-27</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-8-2022-08-15">v1.8 - 2022-08-15</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v1-8-1-2022-08-17"><small>- v1.8.1 - 2022-08-17</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v1-8-2-2022-10-30"><small>- v1.8.2 - 2022-10-30</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-7-2022-06-06">v1.7 - 2022-06-06</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-6-2022-03-02">v1.6 - 2022-03-02</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-5-2022-01-25">v1.5 - 2022-01-25</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v1-5-1-2022-02-01"><small>- v1.5.1 - 2022-02-01</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-4-2021-10-30">v1.4 - 2021-10-30</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v1-4-1-2021-12-30"><small>- v1.4.1 - 2021-12-30</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-3-2021-08-01">v1.3 - 2021-08-01</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v1-3-1-2021-08-06"><small>- v1.3.1 - 2021-08-06</small></a>
+                </div>
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v1-3-2-2021-08-07"><small>- v1.3.2 - 2021-08-07</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-2-2021-03-26">v1.2 - 2021-03-26</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v1-2-1-2021-04-30"><small>- v1.2.1 - 2021-04-30</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-1-2021-01-06">v1.1 - 2021-01-06</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v1-0-2020-10-30">v1.0 - 2020-10-30</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-11-2020-08-27">v0.11 - 2020-08-27</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-10-2020-06-04">v0.10 - 2020-06-04</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-9-2020-04-24">v0.9 - 2020-04-24</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-8-2020-03-02">v0.8 - 2020-03-02</a>
+                </div>
+                
+                
+                <div class="toc-item-child">
+                    <a class="subtext" href="/changelog/#v0-8-1-2020-03-12"><small>- v0.8.1 - 2020-03-12</small></a>
+                </div>
+                
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-7-2020-02-04">v0.7 - 2020-02-04</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-6-2020-01-20">v0.6 - 2020-01-20</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-5-2019-11-08">v0.5 - 2019-11-08</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-4-2019-11-01">v0.4 - 2019-11-01</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-3-2019-10-29">v0.3 - 2019-10-29</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-2-2019-02-03">v0.2 - 2019-02-03</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="/changelog/#v0-1-2018-11-29">v0.1 - 2018-11-29</a>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        
+
+        <div class="content text">
+            
+<div class="heading-text">Changelog</div>
+<h1 id="v2-0-0-2024-10-16">v2.0.0 - 2024-10-16</h1>
+<ul>
+<li>Integrate omnibox search into manage page</li>
+<li>Split IndexSetter from IndexManager</li>
+<li>Migrate Firefox version to Manifest V3. close (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/201">#201</a>)</li>
+<li>Sunset rustc docs search (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/281">#281</a>)</li>
+<li>Support description shards (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/285">#285</a>)</li>
+<li>Support all stdlib crates</li>
+<li>Bug fix:
+<ul>
+<li>chore: fix typo (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/273">#273</a>)</li>
+<li>Fix offline mode not working on Chrome</li>
+<li>Fix search of extern crates (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/276">#276</a>)</li>
+<li>Fix docs.rs TOC if headings contain inline code (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/278">#278</a>)</li>
+<li>Fix crate indexing by upgrading item types for old crate doc (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/277">#277</a>)</li>
+<li>Fix optional dependency nowrap, close (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/274">#274</a>)</li>
+<li>Fix source code mode and levenshtein bug</li>
+<li>Fix docs.rs svg icons</li>
+</ul>
+</li>
+</ul>
+<h2 id="v2-0-1-2025-02-12">v2.0.1 - 2025-02-12</h2>
+<ul>
+<li>Always run initialization code on browser start (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/295">#295</a>)</li>
+</ul>
+<h1 id="v1-13-0-2024-02-14">v1.13.0 - 2024-02-14</h1>
+<ul>
+<li>Migrate std docs index to <code>Map</code>.</li>
+<li>Remove const links feature, fix issue links. close (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/261">#261</a>)</li>
+<li>Improve docs.rs TOC highlight. (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/268">#268</a>)</li>
+<li>Remove domain expired book</li>
+<li>Fix <code>getVar()</code> value null bug</li>
+<li>Load search index for <code>rustc</code></li>
+<li>Update to latest search index</li>
+</ul>
+<h1 id="v1-12-0-2023-07-15">v1.12.0 - 2023-07-15</h1>
+<ul>
+<li>Update search index</li>
+<li>docs: add doc on how to enable offline mode (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/253">#253</a>)</li>
+<li>Fix macro diagram not showing in some crates (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/256">#256</a>)</li>
+<li>Fix redirection issue when searching in <code>std</code> documentation (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/258">#258</a>)</li>
+<li>Fix <code>getVars()</code>, close <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/259">#259</a></li>
+<li>Fix html escape lint descriptions</li>
+<li>Fix call start() twice. Close <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/260">#260</a>.</li>
+</ul>
+<p>Thanks for the contrubtiosn from <a href="https://github.com/Devin-Yeung">@Devin-Yeung</a> and <a href="https://github.com/SteveLauC">@SteveLauC</a>.</p>
+<h1 id="v1-11-0-2023-04-22">v1.11.0 - 2023-04-22</h1>
+<ul>
+<li>Support keep crates up-to-date settings (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/248">#248</a>)
+<blockquote>
+<p><img src="/keep-crates-up-to-date.png" alt="" /></p>
+</blockquote>
+</li>
+<li>Support new format of <code>itemPaths</code> in search index (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/246">#246</a>)</li>
+<li>Bugfix:
+<ul>
+<li>Fix ampersand (&amp;) escaping</li>
+</ul>
+</li>
+</ul>
+<p>Thanks for the contributions from <a href="https://github.com/shwin0901">@shwin0901</a>.</p>
+<h2 id="v1-11-1-2023-04-22">v1.11.1 - 2023-04-22</h2>
+<ul>
+<li>Fix search functions not working bug after upgrade to v1.11.0</li>
+</ul>
+<h1 id="v1-10-0-2023-03-25">v1.10.0 - 2023-03-25</h1>
+<ul>
+<li>Add security advisory menu to docs.rs (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/239">#239</a>)
+<blockquote>
+<p><img src="/security-advisory-menu.png" alt="" /></p>
+</blockquote>
+</li>
+<li>Support statistics by year (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/221">#221</a>)</li>
+<li>Support new error-index page (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/192">#192</a>)</li>
+<li>Support new search index format since 1.69 (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/233">#233</a>)</li>
+<li>Bugfix:
+<ul>
+<li>Make "add to extension" button vertically centered (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/220">#220</a>)</li>
+<li>Fix <code>resourcePath()</code> null bug. Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/219">#219</a></li>
+<li>Fix cargo book command (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/231">#231</a>) (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/234">#234</a>)</li>
+<li>Fix error code autoincreament bug</li>
+<li>Fix can't add crates: Redeclaration of const storage (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/243">#243</a>)</li>
+</ul>
+</li>
+<li>Remove:
+<ul>
+<li>Remove :blog command (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/240">#240</a>)</li>
+<li>Remove GitHub release page enhancement (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/241">#241</a>)</li>
+<li>Remove search rust version feature</li>
+</ul>
+</li>
+</ul>
+<p>Thanks for the contributions from <a href="https://github.com/shwin0901">@shwin0901</a>, <a href="https://github.com/duskmoon314">@duskmoon314</a>, and <a href="https://github.com/isunjn">@isunjn</a>.</p>
+<h1 id="v1-9-0-2022-11-20">v1.9.0 - 2022-11-20</h1>
+<ul>
+<li>Migrate to <code>chrome.storage.onChange</code> event to avoid adding docs index failure (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/206">#206</a>).</li>
+<li>Support search space-separated keywords.</li>
+<li>Cache feature flags in session storage.</li>
+<li>New commands:
+<ul>
+<li><code>:rustc</code> - Search rustc codegen options and lints.</li>
+<li><code>:target</code> - Search rust target for three tiers.
+<img src="/target-command.png" alt="" /></li>
+</ul>
+</li>
+<li>Add a pagination tip in the last page item.</li>
+<li>Remove prefix for RFC (??) &amp; Improve docs (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/197">#197</a>).</li>
+<li>Condense attributes and crates index size.</li>
+<li>Make feature flag's name sticky left.</li>
+<li>Bugfix:
+<ul>
+<li>Fix error code regex.</li>
+<li>Fix incorrect export of stats/history (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/203">#203</a>) (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/204">#204</a>).</li>
+<li>fix docs.rs show features (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/209">#209</a>).</li>
+<li>Fix source code navigate bug. Fix (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/212">#212</a>).</li>
+<li>Fix GitHub release page TOC compatibility (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/214">#214</a>).</li>
+</ul>
+</li>
+</ul>
+<p>Thanks for the contributions from <a href="https://github.com/shwin0901">@shwin0901</a>, <a href="https://github.com/light4">@light4</a>, and <a href="https://github.com/xxchan">@xxchan</a>.</p>
+<h2 id="v1-9-1-2022-11-27">v1.9.1 - 2022-11-27</h2>
+<ul>
+<li>Revert invalid levenshtein algorithm fix</li>
+<li>Feat rustc search appendix</li>
+</ul>
+<h1 id="v1-8-2022-08-15">v1.8 - 2022-08-15</h1>
+<ul>
+<li>Migrate to Manifest V3 (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/179">#179</a>).</li>
+<li>Integrate <a href="https://github.com/lukaslueg/macro_railroad_ext">macro_railroad_ext</a> (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/183">#183</a>). Kudos to <a href="https://github.com/lukaslueg">@lukaslueg</a>.
+<blockquote>
+<p><img src="/railroad.jpg" alt="" /></p>
+</blockquote>
+</li>
+<li>Support options page. Fixes (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/133">#133</a>).</li>
+<li>Replace 'crate:check' action with <code>chrome.storage</code> API query.</li>
+<li>Support the new search-index loading, see <a href="https://github.com/rust-lang/rust/pull/98124">rust-lang/rust#98124</a>.</li>
+<li>Add more books into <code>:book</code> command.</li>
+<li>Add <code>:book/zh</code> command to list Chinese books. (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/175">#175</a>).</li>
+<li>Adjust margin of add to extension button (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/178">#178</a>).</li>
+<li>Remove uninstall url. Close <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/188">#188</a>.</li>
+<li>Bugfix:
+<ul>
+<li>Fix default <code>offlineDocPath</code> undefine bug.</li>
+<li>Don't load search index in non-rust doc pages.</li>
+<li>Invalid cached crate searcher after crate search index updated or removed.</li>
+</ul>
+</li>
+</ul>
+<p>Thanks for the contributions from <a href="https://github.com/C-Dao">@C-Dao</a>, <a href="https://github.com/zjp-CN">@zjp-CN</a>, and <a href="https://github.com/ZhangHanDong">@ZhangHanDong</a>.</p>
+<h2 id="v1-8-1-2022-08-17">v1.8.1 - 2022-08-17</h2>
+<ul>
+<li>Remove <code>file:///*</code> permission. Fixes (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/190">#190</a>).</li>
+<li>Add <em>Show Macro Railroad</em> options.</li>
+<li>Use rustwiki Chinese CDN. (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/190">#190</a>)</li>
+</ul>
+<p>Thanks for the contributions from <a href="https://github.com/PureWhiteWu">@PureWhiteWu</a>.</p>
+<h2 id="v1-8-2-2022-10-30">v1.8.2 - 2022-10-30</h2>
+<ul>
+<li>Fix book index object field (<code>constructor</code>) conflicts bug</li>
+</ul>
+<h1 id="v1-7-2022-06-06">v1.7 - 2022-06-06</h1>
+<ul>
+<li>Remove the <code>tabs</code> permission requirement.</li>
+<li>Migrate <code>localStorage</code> to <code>chrome.storage</code> API (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/155">#155</a>, <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/157">#157</a>, <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/158">#158</a>).</li>
+<li>Support update blog command posts index in <a href="/update">update page</a>.</li>
+<li>Bugfix:
+<ul>
+<li>Fix docs.rs TOC max-width and padding.</li>
+<li>Only render <code>.top-doc</code> headings as TOC. Fixes <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/152">#152</a>.</li>
+<li>Don't reposition feature flag menu. Fixes <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/154">#154</a>.</li>
+<li>Fix search base iterate issue (<a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/159">#159</a>).</li>
+</ul>
+</li>
+</ul>
+<h1 id="v1-6-2022-03-02">v1.6 - 2022-03-02</h1>
+<ul>
+<li>Show optional dependencies in feature flags menu. Fixes <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/29">#29</a>.
+<blockquote>
+<p><img src="/optional-dependencies.png" alt="" /></p>
+</blockquote>
+</li>
+<li>Fix latest version parsing for crates with hyphens. Thanks the contribution <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/147">#147</a> from <a href="https://github.com/rrbutani">@rrbutani</a>.</li>
+</ul>
+<h1 id="v1-5-2022-01-25">v1.5 - 2022-01-25</h1>
+<ul>
+<li>Support customize default search items in settings. Fixes <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/141">#141</a>.
+<blockquote>
+<p><img src="/configure-default-search.png" alt="" /></p>
+</blockquote>
+</li>
+<li>Add docs outline highlight. Thanks the contribution <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/140">#140</a> from <a href="https://github.com/NaturelLee">@NaturelLee</a>.</li>
+<li>Bugfix:
+<ul>
+<li>Fix update label/rfc index bug.</li>
+<li>Fix add to extension button toggle float issue.</li>
+<li>Fix crate version parse bug.</li>
+<li>Fix docs.rs TOC render and UI.</li>
+</ul>
+</li>
+</ul>
+<h2 id="v1-5-1-2022-02-01">v1.5.1 - 2022-02-01</h2>
+<ul>
+<li>Improve <code>impl</code> blocks highlight effects. Fixes <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/144">#144</a>, <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/145">#145</a>.</li>
+</ul>
+<h1 id="v1-4-2021-10-30">v1.4 - 2021-10-30</h1>
+<ul>
+<li>
+<p>New commands:</p>
+<ul>
+<li><code>:rfc</code>: show all Rust RFC list. Kudos to <a href="https://github.com/nrc">nrc</a>'s <a href="https://github.com/nrc/rfc-index">rfc-index</a> repository.</li>
+</ul>
+</li>
+<li>
+<p>Improvements:</p>
+<ul>
+<li>Error code search supports offline mode.</li>
+<li>Expand the <code>:stable</code> command result to 100 versions.
+<blockquote>
+<p>What a coincidence! Rust will release <strong>v1.87.0</strong> on its <strong>10th</strong> anniversary day!</p>
+<p><img src="/stable-command.png" alt="" /></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>Bugfix:</p>
+<ul>
+<li>Fix docs.rs TOC overlap issue.</li>
+<li>Fix weeks, hours, and dates statistics bug.</li>
+<li>Fix percent statistics NAN bug. fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/125">#125</a>.</li>
+<li>Fix <strong>%</strong> books search some invalid urls bug.</li>
+</ul>
+</li>
+</ul>
+<h2 id="v1-4-1-2021-12-30">v1.4.1 - 2021-12-30</h2>
+<ul>
+<li>Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/134">#134</a>, get the <code>searchIndexJs</code> from <code>window.searchIndexJs</code>.</li>
+<li>Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/135">#135</a>, docs.rs latest version path compatibility.</li>
+<li>Filter out auto-generated google api crates. Fixes <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/138">#138</a>.</li>
+</ul>
+<h1 id="v1-3-2021-08-01">v1.3 - 2021-08-01</h1>
+<ul>
+<li>Unify <strong>Settings</strong>, <strong>Statistics</strong> into <strong>manage pages</strong>, additionally, you can also:
+<ul>
+<li>Manage your all indexed crates.</li>
+<li><strong>Import/Export</strong> your settings, search history, statistics, and crates data.</li>
+</ul>
+</li>
+<li>Support offline mode in Windows.</li>
+<li>Show <strong>Table of Content</strong> in <a href="https://docs.rs">docs.rs</a>.</li>
+<li>Improvements:
+<ul>
+<li>Only keep the latest 100 search histories.</li>
+<li>Ignore legacy rust std docs, such as <a href="https://doc.rust-lang.org/0.12.0/std/index.html">v0.12.0</a>.</li>
+</ul>
+</li>
+<li>Bugfix:
+<ul>
+<li>Fix fail to add some crate into the extension issue. Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/114">#114</a>, <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/119">#119</a>, <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/120">#120</a>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="v1-3-1-2021-08-06">v1.3.1 - 2021-08-06</h2>
+<ul>
+<li>Fix docs.rs <strong>Table of Content</strong> render issues. <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/122">#122</a>, <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/123">#123</a></li>
+<li>Fix manage crates page UI issue.</li>
+</ul>
+<h2 id="v1-3-2-2021-08-07">v1.3.2 - 2021-08-07</h2>
+<ul>
+<li>Fix the stupid bug: missing the manage pages. <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/124">#124</a></li>
+</ul>
+<h1 id="v1-2-2021-03-26">v1.2 - 2021-03-26</h1>
+<ul>
+<li>Support prefix <code>//</code> (double slash) to search <a href="https://doc.rust-lang.org/nightly/nightly-rustc/">rustc crates docs</a>. 👉 <a href="/#search-rustc-docs">Learn more</a>.</li>
+<li>Support search released Rust versions quickly. 👉 <a href="/#search-rust-version">Learn more</a>.</li>
+<li>Add source code mode (with <code>src:</code> or with alias <code>s:</code>) to open the source code page directly. 👉 <a href="/#source-code-mode">Learn more</a>.</li>
+<li>New commands:
+<ul>
+<li><code>:blog</code>: show all Rust release blog posts.</li>
+</ul>
+</li>
+<li>Improvements:
+<ul>
+<li>Add a reminder for Firefox offline mode on the popup page. Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/94">#94</a>.</li>
+<li>Add fallback search strategy for @crate search. Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/96">#96</a>.</li>
+<li>Only open update page once a day if the auto-update is on. Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/97">#97</a>.</li>
+<li>Add more useful tips for the <code>:help</code> command.</li>
+<li>Compress history's JSON data slightly.</li>
+</ul>
+</li>
+<li>Bugfix:
+<ul>
+<li>Fix the compatibility for the new style of search-index.js format. Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/106">#106</a>.</li>
+<li>Fix the compatibility of search-index.js on-demand load mode. See this commit <a href="https://github.com/huhu/rust-search-extension/commit/eefa192c90450ac6340c3eedf2ad6c9cf1dc7f13">eefa192c</a>.</li>
+<li>Add validation when auto index std search-index. Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/99">#99</a>.</li>
+<li>Fix compatibility issue of the new const-since link in Rust docs page.</li>
+<li>Fix search statistics bug for <a href="https://docs.rs/releases">https://docs.rs/releases</a> data.</li>
+</ul>
+</li>
+</ul>
+<h2 id="v1-2-1-2021-04-30">v1.2.1 - 2021-04-30</h2>
+<ul>
+<li>Fix wrongly load searchIndexJS bug. <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/114">#114</a>.</li>
+<li>Improve error user experience when adding search index to the extension.</li>
+<li>Fix the compatibility of Github markdown file's sticky header.</li>
+</ul>
+<h1 id="v1-1-2021-01-06">v1.1 - 2021-01-06</h1>
+<ul>
+<li>Docs.rs is now the <code>!</code> search, crates.io is <code>!!</code>. See issue <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/85">#85</a>.</li>
+<li>Refactor search statistics page (finer granularity for search metrics)</li>
+<li>Add a table of content for the rust-lang repository release page. (New permission required, see <a href="/faq/#why-the-extension-requires-access-to-github-com">FAQ</a>)</li>
+<li>docs.rust-lang.org enhancement: in stable/nightly docs page and source code pages, link all <code>"since"</code> and <code>"issue"</code> tags to corresponding URLs</li>
+<li>Show a crate's Cargo.toml quick link when feature flag is empty</li>
+<li>New commands:
+<ul>
+<li><code>:cargo</code>: show all useful cargo subcommands</li>
+<li><code>:release</code>: open rust-lang repository release page</li>
+</ul>
+</li>
+<li>Bugfix:
+<ul>
+<li>Fix dark theme color compatibility in docs.rs</li>
+<li>Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/89">#89</a>, official feature flags menu compatibility</li>
+<li>Fix <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/84">#84</a>, feature flags not working in some crate's docs.rs page</li>
+</ul>
+</li>
+</ul>
+<h1 id="v1-0-2020-10-30">v1.0 - 2020-10-30</h1>
+<p>Finally, we reach <strong>v1.0</strong>! 🎉🎉</p>
+<ul>
+<li>Support sync stable/nightly std search index automatically. There is no extension updating required to get the latest search index after v1.0.</li>
+<li>Support prefix <strong>?</strong> and <strong>??</strong> to search <a href="https://caniuse.rs">caniuse.rs</a> and RFC respectively. Thanks the PR <a href="https:&#x2F;&#x2F;github.com&#x2F;huhu&#x2F;rust-search-extension/issues/77">#77</a> from <a href="https://github.com/aquarhead">@aquarhead</a>.</li>
+<li>Upload the latest index files to the <a href="/update">update page</a> once a day, those index including:
+<ul>
+<li>Command index</li>
+<li>Book index</li>
+<li>Clippy lint index</li>
+<li>Caniuse index</li>
+<li>Github <em>rust-lang/rust</em> repository label index</li>
+<li>Top 20K crate index</li>
+</ul>
+</li>
+<li>Support configure auto index-updating in the popup page</li>
+<li>New commands:
+<ul>
+<li><code>:stats</code>: open search statistics page</li>
+<li><code>:update</code>: open the <a href="/update">update page</a> to sync the latest index automatically</li>
+</ul>
+</li>
+<li>Bugfix:
+<ul>
+<li>Fix docs.rs SVG icon missing issue</li>
+<li>Fix docs.rs new header bar UI compatibility</li>
+</ul>
+</li>
+</ul>
+<h1 id="v0-11-2020-08-27">v0.11 - 2020-08-27</h1>
+<ul>
+<li>New domain: change rust-search-extension.now.sh to <a href="https://rust.extension.sh">rust.extension.sh</a> 🎉🎉</li>
+<li>Bump std search index version to <strong>v1.46.0</strong></li>
+<li>Support prefix <strong>/</strong> to search nightly docs</li>
+<li>New commands:
+<ul>
+<li><code>:mirror</code>: show all rust mirror websites</li>
+</ul>
+</li>
+<li>Improve error code regex</li>
+<li>Update the latest attribute index</li>
+</ul>
+<h1 id="v0-10-2020-06-04">v0.10 - 2020-06-04</h1>
+<ul>
+<li>Bump std search index version to <strong>v1.44.0</strong></li>
+<li>Support prefix <strong>~</strong> to search all added crate's docs collectively</li>
+<li>Support prefix <strong>!!!</strong> (triple !) to open crate's repository effortlessly</li>
+<li>Support customize <a href="https://crates.io">crates.io</a>(default) or <a href="https://lib.rs">lib.rs</a> for crates searching</li>
+<li>Add search statistics page, including calendar heatmap, daily|weekly|hourly search bar charts, and top searched crates, etc</li>
+<li>Improve searching speed, approximately 10% faster than the previous version</li>
+<li>New commands:
+<ul>
+<li><code>:tool</code>: search rust tools</li>
+</ul>
+</li>
+<li>Bugfix:
+<ul>
+<li>Fix std doc offline mode bug</li>
+<li>Fix wrong Add button state in docs.rs's src page issue</li>
+</ul>
+</li>
+</ul>
+<h1 id="v0-9-2020-04-24">v0.9 - 2020-04-24</h1>
+<ul>
+<li>Bump std search index version to <strong>v1.43.0</strong></li>
+<li>Support add crates to Rust Search Extension in docs.rs page，then you can use <strong>@crate-name</strong> to search that crate's docs.</li>
+<li>Support prefix <strong>&gt;</strong> to search <a href="https://rust-lang.github.io/rust-clippy/master/">Cargo Clippy lints</a></li>
+<li>New commands:
+<ul>
+<li><code>:label</code>: search rust-lang issue label</li>
+</ul>
+</li>
+<li>Dark mode supported</li>
+<li><a href="https://microsoftedge.microsoft.com/addons/detail/olemfibpaicdoooacpfffccidjjagmoe">Microsoft Edge</a> version is available</li>
+</ul>
+<h1 id="v0-8-2020-03-02">v0.8 - 2020-03-02</h1>
+<ul>
+<li>Bump crates index number from top 10K to top 20K</li>
+<li>Support display crate's <strong>Feature flags</strong> in <a href="https://docs.rs">docs.rs</a> page</li>
+<li>Support prefix <strong>!!</strong> (double exclamation mark) to search crates with <a href="https://docs.rs">docs.rs</a> url</li>
+<li>Support prefix <strong>%</strong> (percent mark) to search Rust official book chapters</li>
+<li>Builtin command system
+<ul>
+<li><code>:help</code> command to show all help messages</li>
+<li><code>:book</code> command to show all Rust official books</li>
+<li><code>:stable</code> command to show stable Rust scheduled release date in the next year</li>
+<li><code>:yet</code> command to show all <strong>Are We Yet</strong> websites</li>
+<li><code>:history</code> command to show your local search history</li>
+</ul>
+</li>
+<li>Support page down the result with page-turner <strong>-</strong> (hyphen)</li>
+<li>Support open in new tab by using <code>Cmd</code>/<code>Alt</code> + <code>Enter</code></li>
+<li>Add <a href="/privacy/">Privacy Policy</a></li>
+</ul>
+<h2 id="v0-8-1-2020-03-12">v0.8.1 - 2020-03-12</h2>
+<ul>
+<li>Bump std search index to <strong>v1.42.0</strong></li>
+<li>Fix crate search name unnecessary replacement issue</li>
+<li>Fix <code>:stable</code> command version calculation bug</li>
+<li>Fix sync latest crates index bug</li>
+</ul>
+<h1 id="v0-7-2020-02-04">v0.7 - 2020-02-04</h1>
+<ul>
+<li>Bump search-index to version <strong>v1.41.0</strong></li>
+<li>Support search rust builtin attributes instantly</li>
+<li>Announcing on <a href="https://www.reddit.com/r/rust/comments/eymfxu/announcing_rustsearchextension_v07_search_std/">Reddit post</a>, get 200+ upvotes!</li>
+<li>Be included in <a href="https://this-week-in-rust.org/blog/2020/02/04/this-week-in-rust-324/">This Week in Rust 324</a></li>
+</ul>
+<h1 id="v0-6-2020-01-20">v0.6 - 2020-01-20</h1>
+<ul>
+<li>Bump search-index to version <strong>v1.40.0</strong></li>
+<li>Support search top 10K crates instantly</li>
+<li>Support update the latest crates index on popup page automatically. (Chrome only)</li>
+</ul>
+<h1 id="v0-5-2019-11-08">v0.5 - 2019-11-08</h1>
+<p>The version <strong>v0.5</strong> was released at <code>2019-11-08</code>.</p>
+<ul>
+<li>Bump search-index to version <strong>v1.39.0</strong></li>
+<li>Fix escape bug on Firefox</li>
+</ul>
+<h1 id="v0-4-2019-11-01">v0.4 - 2019-11-01</h1>
+<p><strong>v0.4</strong> was a minor bug fix version released at <code>2019-11-01</code>.</p>
+<ul>
+<li>Fix offline mode search bug</li>
+<li>Offline doc path support <code>file://</code> and <code>http://</code></li>
+</ul>
+<h1 id="v0-3-2019-10-29">v0.3 - 2019-10-29</h1>
+<p>After long time inactivity. The <strong>v0.3</strong> gets released at <code>2019-10-29</code> with an announcing on <a href="https://www.reddit.com/r/rust/comments/dp1ru6/i_published_a_handy_chromefirefox_extension_to/">Reddit post</a>.</p>
+<ul>
+<li>Bump search-index to stable version <strong>v1.38.0</strong></li>
+<li>Support search <a href="https://doc.rust-lang.org/error-index.html">Compiler Error Index</a> with error code</li>
+<li>Published to Firefox <a href="https://addons.mozilla.org/en-US/firefox/addon/rust-search-extension/">AMO</a></li>
+</ul>
+<h1 id="v0-2-2019-02-03">v0.2 - 2019-02-03</h1>
+<p>The version <strong>v0.2</strong> was released at <code>2019-02-03</code>.</p>
+<ul>
+<li>Update search-index to version <strong>v1.32.0</strong></li>
+<li>Support configure offline doc path</li>
+</ul>
+<h1 id="v0-1-2018-11-29">v0.1 - 2018-11-29</h1>
+<p>The first version <strong>v0.1</strong> was released at <code>2018-11-29</code> with a debut show on <a href="https://internals.rust-lang.org/t/a-handy-browser-extension-to-search-crates-and-official-docs-in-address-bar-omnibox/8920">Rust Internals Forum</a>.</p>
+<p>This version only ships the very basic capabilities, including:</p>
+<ul>
+<li>Integrate Rust stable <strong>v1.31.0</strong> search-index</li>
+<li>Support search docs in the address bar.</li>
+<li>Support search crates on <a href="https://crates.io">https://crates.io</a></li>
+<li>Available on <a href="https://chrome.google.com/webstore/detail/rust-search-extension/ennpfpdlaclocpomkiablnmbppdnlhoh">Chrome Webstore</a></li>
+<li>Support Firefox but didn't publish it to <a href="https://addons.mozilla.org/">AMO</a> yet</li>
+</ul>
+
+
+        </div>
+
+        
+<div class="sidebar">
+    <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEBIL27E&placement=extensionsh" id="_carbonads_js"></script>
+</div>
+
+    </main>
+
+    
+<footer
+    style="display: flex; flex-direction: column; font-family: 'Open Sans', sans-serif; background-color: #020f1c; padding: 2rem;">
+    <div
+        style="display: flex; flex-direction: column; margin-bottom: 5rem; font-size: 1.125rem; line-height: 1.75rem; color: #9ca3af; align-items: center; text-align: center;">
+        Thanks for the sponsorship from
+        <span>
+            <a target="_blank" href="https://geddle.com/?from=rust-search-extension">
+                <img style="margin: 1rem; height: 55px;" src="https://geddle.com/logo-white.svg" alt="geddle">
+            </a>
+        </span>
+        and
+        <span>
+            <a target="_blank" href="https://bytebase.com?utm_source=rust-search-extension">
+                <img style="margin: 1rem; height: 40px;" src="https://huhu.io/img/bytebase-light.svg" alt="bytebase">
+            </a>
+        </span>
+    </div>
+    <div
+        style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly; width: 100%;">
+        <div style="margin-bottom: 2.5rem;">
+            <a target="_parent" href="/" style="font-size: 36px;font-weight: 600;display: flex;align-items: center;margin: 0 40px; line-height: 2.5rem; color: inherit; text-decoration: none;">HUHU</a>
+            <div
+                style="display: flex; justify-content: space-between; margin-top: 1rem; margin-bottom: 1rem; width: 10rem;">
+                <a href="https://github.com/huhu" target="_parent">
+                    <img style="width: 1.5rem;" src="https://huhu.io/img/github.svg" alt="Github">
+                </a>
+                <a href="https://twitter.com/_huhuio" target="_parent">
+                    <img style="width: 1.5rem;" src="https://huhu.io/img/twitter.svg" alt="Twitter">
+                </a>
+                <a href="https://discord.gg/xucZNVd" target="_parent">
+                    <img style="width: 1.5rem;" src="https://huhu.io/img/discord.svg" alt="Discord">
+                </a>
+            </div>
+        </div>
+        <div style="align-self: flex-start;">
+            <div style="font-size: 1.125rem; line-height: 1.75rem; font-weight: 700; margin-bottom: 1.25rem;">All our
+                extensions</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://rust.extension.sh" target="_parent">
+                        Rust Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://go.extension.sh" target="_parent">
+                        Go Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://cpp.extension.sh" target="_parent">
+                        C/C++ Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://k8s.extension.sh" target="_parent">
+                        K8S Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://js.extension.sh" target="_parent">
+                        JS Search Extension
+                    </a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://new.extension.sh" target="_parent">
+                        Newkit Extension
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="align-self: flex-start;">
+            <div
+                style="font-size: 1.125rem; line-height: 1.75rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1.25rem;">
+                Connect</div>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://huhu.io/about" target="_parent">About Huhu</a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://geddle.com">Geddle</a>
+                </li>
+                <li style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <a style="font-size: 0.875rem; line-height: 1.25rem; color: #9ca3af; text-decoration: none;"
+                        href="https://arrfounder.com">Arrfounder</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div style="align-self: flex-start; margin-top: 2.5rem;">
+        <small style="color: #9ca3af;">
+            Copyright © 2025 <a href="https://huhu.io" target="_parent" style="color: #9ca3af;">Huhu.io</a>
+        </small>
+    </div>
+</footer>
+
+<style>
+    /* Ensure font inheritance for all child elements */
+    footer * {
+        font-family: inherit;
+    }
+
+    /* Media query for responsive design */
+    @media (min-width: 768px) {
+
+        footer>div:first-child {
+            flex-direction: row !important;
+        }
+
+        footer>div:nth-child(2) {
+            flex-direction: row !important;
+        }
+
+        footer>div:nth-child(2)>div:first-child {
+            text-align: center;
+            margin-bottom: 0 !important;
+            margin-right: 6rem !important;
+        }
+
+        footer>div:nth-child(2)>div:nth-child(3) {
+            align-self: flex-start !important;
+        }
+
+        footer>div:nth-child(2)>div:nth-child(3)>div:first-child {
+            margin-top: 0 !important;
+        }
+
+        footer>div:last-child {
+            align-self: center !important;
+        }
+    }
+
+    /* Hover effects for links */
+    a:hover {
+        opacity: 0.8;
+    }
+</style>
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>

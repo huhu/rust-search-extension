@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0105",
+      "package": "direct_ring_buffer",
+      "title": "Uninitialized memory exposure in create_ring_buffer",
+      "description": "The safe function `create_ring_buffer` allocates a buffer using `Vec::with_capacity` followed by `set_len`, creating a `Box<[T]>` containing uninitialized memory.\n\nThis leads to undefined behavior when functions like `write_slices` create typed slices (e.g., `&mut [bool]`) over the uninitialized memory, violating Rust's validity invariants. The issue has been confirmed using Miri.\n\nFixed in version 0.2.2 by using `resize_with` to properly initialize the buffer with `T::default()`, adding a `T: Default` bound to ensure sound initialization.",
+      "date": "2025-10-21",
+      "aliases": [
+        "GHSA-fp5x-7m4q-449f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "uninitialized-memory",
+        "soundness"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/ain1084/direct_ring_buffer/pull/2"
+      ],
+      "source": null,
+      "url": "https://github.com/ain1084/direct_ring_buffer/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "direct_ring_buffer::create_ring_buffer": [
+          "<=0.2.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.2"
+      ],
+      "unaffected": []
+    }
+  }
+]
