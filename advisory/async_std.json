@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0052",
+      "package": "async-std",
+      "title": "async-std has been discontinued",
+      "description": "The `async-std` has been discontinued.\n\nAlternatives:\n\n- [smol](https://crates.io/crates/smol)",
+      "date": "2025-08-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/async-rs/async-std",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

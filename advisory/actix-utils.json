@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0045",
+      "package": "actix-utils",
+      "title": "bespoke Cell implementation allows obtaining several mutable references to the same data",
+      "description": "The custom implementation of a Cell primitive in the affected versions of this crate\ndoes not keep track of mutable references to the underlying data.\n\nThis allows obtaining several mutable references to the same object\nwhich may result in arbitrary memory corruption, most likely use-after-free.\n\nThe flaw was corrected by switching from a bespoke `Cell<T>` implementation to `Rc<RefCell<T>>`.",
+      "date": "2020-01-08",
+      "aliases": [
+        "CVE-2020-35898"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-net/issues/160",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

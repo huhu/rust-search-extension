@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0040",
+      "package": "boxfnonce",
+      "title": "`boxfnonce` obsolete with release of Rust 1.35.0",
+      "description": "[This](https://github.com/stbuehler/rust-boxfnonce/commit/058ac7e1a7d732076da9d8a37baa66bcb67758d8) commit marks the `boxfnonce` crate as obsolete and the GitHub repo has since been archived.\n\nThe functionality of `boxfnonce` has been added to Rust since 1.35.0. Use `Box<dyn FnOnce(...) -> ...>`.",
+      "date": "2019-06-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/stbuehler/rust-boxfnonce/commit/058ac7e1a7d732076da9d8a37baa66bcb67758d8",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

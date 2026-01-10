@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0033",
+      "package": "scanner",
+      "title": "Public API without sufficient bounds checking",
+      "description": "`Match::get()` and `Match::ptr()` lack sufficient bounds checks, leading to potential out of bounds reads.",
+      "date": "2025-03-27",
+      "aliases": [
+        "GHSA-79m9-55jc-p6mw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "out-of-bounds read"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/pombredanne/scanner-rs/pull/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "scanner::Match::get": [
+          "<=0.1.0"
+        ],
+        "scanner::Match::ptr": [
+          "<=0.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

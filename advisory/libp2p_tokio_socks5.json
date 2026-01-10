@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0334",
+      "package": "libp2p-tokio-socks5",
+      "title": "`libp2p-tokio-socks5` is unmaintained",
+      "description": "Note the repository was archived without an issue so we link directly\nto the commit that marked the repository as unmaintained.\n\nTo the best of the original authors knowledge the crate has no\nvulnerabilities as of the last release, it is just unmaintained due to\nlaziness - new maintainer welcome.",
+      "date": "2024-04-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/comit-network/rust-libp2p-tokio-socks5/commit/e1fdc92ca69ffd254824ab80fbad5660f4aac911",
+      "withdrawn": null,
+      "license": "CC-BY-4.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

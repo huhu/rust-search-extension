@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0065",
+      "package": "tungstenite",
+      "title": "Tungstenite allows remote attackers to cause a denial of service",
+      "description": "The Tungstenite crate through 0.20.0 for Rust allows remote attackers to cause\na denial of service (minutes of CPU consumption) via an excessive length of an\nHTTP header in a client handshake. The length affects both how many times a parse\nis attempted (e.g., thousands of times) and the average amount of data for each\nparse attempt (e.g., millions of bytes).",
+      "date": "2023-09-25",
+      "aliases": [
+        "CVE-2023-43669",
+        "GHSA-9mcr-873m-xcxp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/snapview/tungstenite-rs/issues/376",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.20.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

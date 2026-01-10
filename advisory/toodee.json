@@ -1,0 +1,94 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0062",
+      "package": "toodee",
+      "title": "Heap Buffer Overflow in the DrainCol Destructor",
+      "description": "An off-by-one error in the `DrainCol::drop` destructor could cause an unsafe memory copy\noperation to exceed the bounds of the associated vector.\n\nThe error was related to the size of the data being copied in one of the `ptr::copy`\ninvocations inside the destructor.\n\nWhen removing the first column from a TooDee object, the DrainCol return object could cause\na heap buffer overflow vulnerability when it is dropped.\n\nThe issue was fixed in commit `e6e16d5` by reducing the copied size by one.",
+      "date": "2025-05-22",
+      "aliases": [
+        "GHSA-pfp7-vxgr-83pw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "memory-safety",
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/antonmarsden/toodee/issues/26",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "toodee::DrainCol::drop": [
+          ">=0.2.0, <=0.5.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": [
+        "<0.2.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0028",
+      "package": "toodee",
+      "title": "Multiple memory safety issues in insert_row",
+      "description": "When inserting rows from an iterator at a particular index, `toodee` would shift\nitems over, duplicating their ownership. The space reserved for the new elements\nwas based on the `len()` returned by the `ExactSizeIterator`.\n\nThis could result in elements in the array being freed twice if the iterator\npanics. Uninitialized or previously freed elements could also be exposed if the\n`len()` didn't match the number of elements.\n\nThese issues were fixed in commit `ced70c17` by temporarily setting the length\nof the array smaller while processing it and adding assertions on the number\nof elements returned by the iterator.",
+      "date": "2021-02-19",
+      "aliases": [
+        "CVE-2021-28028",
+        "CVE-2021-28029",
+        "GHSA-wcvp-r8j8-47pc",
+        "GHSA-xm9m-2vj8-fmfr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/antonmarsden/toodee/issues/13",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "toodee::TooDee::insert_row": [
+          "<0.3.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

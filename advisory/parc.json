@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0134",
+      "package": "parc",
+      "title": "`LockWeak<T>` allows to create data race to `T`.",
+      "description": "In the affected versions of this crate, `LockWeak<T>` unconditionally implemented `Send` with no trait bounds on `T`. `LockWeak<T>` doesn't own `T` and only provides `&T`.\n\nThis allows concurrent access to a non-Sync `T`, which can cause undefined behavior like data races.",
+      "date": "2020-11-14",
+      "aliases": [
+        "CVE-2020-36454",
+        "GHSA-29v7-3v4c-gf38",
+        "GHSA-xwxc-j97j-84gf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hyyking/rustracts/pull/6",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

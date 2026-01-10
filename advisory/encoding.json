@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0153",
+      "package": "encoding",
+      "title": "`encoding` is unmaintained",
+      "description": "Last release was on 2016-08-28. The [issue](https://github.com/lifthrasiir/rust-encoding/issues/127) inquiring as to the status of the crate has gone unanswered by the maintainer.\n\n## Possible alternatives\n\n- [encoding_rs](https://crates.io/crates/encoding_rs)",
+      "date": "2021-12-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lifthrasiir/rust-encoding/issues/127",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

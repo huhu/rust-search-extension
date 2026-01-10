@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0043",
+      "package": "tower-http",
+      "title": "Improper validation of Windows paths could lead to directory traversal attack",
+      "description": "`tower_http::services::fs::ServeDir` didn't correctly validate Windows paths\nmeaning paths like `/foo/bar/c:/windows/web/screen/img101.png` would be allowed\nand respond with the contents of `c:/windows/web/screen/img101.png`. Thus users\ncould potentially read files anywhere on the filesystem.\n\nThis only impacts Windows. Linux and other unix likes are not impacted by this.\n\nSee [tower-http#204] for more details.\n\n[tower-http#204]: https://github.com/tower-rs/tower-http/pull/204",
+      "date": "2022-01-21",
+      "aliases": [
+        "GHSA-qrqq-9c63-xfrg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "directory traversal",
+        "http"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tower-rs/tower-http/pull/204",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.1",
+        ">=0.1.3, <0.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

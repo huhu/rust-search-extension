@@ -1,0 +1,75 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0041",
+      "package": "trust-dns-server",
+      "title": "Remote Attackers can cause Denial-of-Service (packet loops) with crafted DNS packets",
+      "description": "trust-dns and trust-dns-server are vulnerable to remotely triggered denial-of-service attacks, consuming both network and CPU resources.\nDNS messages with the QR=1 bit set are responded to with a `FormErr` response.\nThis allows creating a traffic loop, in which these `FormErr` responses are sent nonstop between vulnerable servers.\n\nThere are two scenarios how this can be exploited: 1) Create a loop between two instances of trust-dns, consuming network resources, or 2) consuming the CPU of a single instance.\n\nWith two instances *A* and *B* an attacker sends a DNS query with a spoofed source IP address to *A*.\n*A* replies with a `FormErr` to *B*.\nNow both servers with ping-pong the message back and forth until by chance the packet is dropped in the network.\nMultiple spoofed packets can be sent by the attacker, increasing resource consumption.\n\nA single server can get locked up replying to itself.\nSame setup as above, but now *A* sends the reply to itself.\nThe packet is sent out as fast as the CPU and network stack manage.\nThis locks up a CPU core.\nMultiple packets from the attacker consume multiple CPU cores.",
+      "date": "2023-06-01",
+      "aliases": [
+        "GHSA-5fm9-h728-fwpj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "packet loop"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bluejekyll/trust-dns/pull/1952",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.22.1",
+        ">=0.23.0-alpha.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0001",
+      "package": "trust-dns-server",
+      "title": "Stack overflow when resolving additional records from MX or SRV null targets",
+      "description": "There's a stack overflow leading to a crash and potential DOS when processing\nadditional records for return of MX or SRV record types from the server.\n\nThis is only possible when a zone is configured with a null target for MX or SRV records, i.e. '.'.\n\nExample effected zone record:\n```text\nno-service 86400 IN MX 0 .\n```\n\nPrior to 0.16.0 the additional record processing was not supported by trust-dns-server. There\nAre no known issues with upgrading from 0.16 or 0.17 to 0.18.1. The remidy should be to upgrade to\n0.18.1. If unable to do so, MX, SRV or other record types with a target to the null type, should be avoided.",
+      "date": "2020-01-06",
+      "aliases": [
+        "CVE-2020-35857",
+        "GHSA-4cww-f7w5-x525"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "stack-overflow",
+        "crash"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bluejekyll/trust-dns/issues/980",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.18.1"
+      ],
+      "unaffected": [
+        "<0.16.0"
+      ]
+    }
+  }
+]

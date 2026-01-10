@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0051",
+      "package": "dlopen_derive",
+      "title": "`dlopen_derive` is unmaintained",
+      "description": "`dlopen_derive` hasn't been updated since June 9, 2019.\n\n`dlopen_derive` depends on [`quote = \"0.6.12\"`] and [`syn = \"0.15.34\"`]. Versions `1.0.0` of these dependencies were published on August 13, 2019. The `0.*` versions haven't received updates since.\n\nNote that `dlopen` is an unmaintained crate from the same repository as `dlopen_derive`. However, migrating away from `dlopen_derive` implies migrating away from `dlopen`, as well.\n\n## Recommended alternatives\n\n- [`dlopen2_derive`] (and `dlopen2`)\n\n[`dlopen2_derive`]: https://github.com/OpenByteDev/dlopen2\n[`quote = \"0.6.12\"`]: https://github.com/dtolnay/quote/releases/tag/0.6.12\n[`syn = \"0.15.34\"`]: https://github.com/dtolnay/syn/releases/tag/0.15.34",
+      "date": "2023-07-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/szymonwieloch/rust-dlopen/issues/47",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

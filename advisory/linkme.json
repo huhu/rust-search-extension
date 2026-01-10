@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0407",
+      "package": "linkme",
+      "title": "Fails to ensure slice elements match the slice's declared type",
+      "description": "Affected versions allow populating a DistributedSlice of T with elements of an\narbitrary other type that coerces to T. For example, elements of type `&&str`\ncould end up in a slice of type `[&str]`, since `&&str` coerces to `&str` via a\nderef coercion.\n\nThe flaw was corrected by implementing typechecking for distributed slice\nelements in such a way that coercion no longer occurs. The element's type must\nbe a subtype of the slice's declared element type.",
+      "date": "2024-03-05",
+      "aliases": [
+        "GHSA-f95p-4cv5-8w8x"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dtolnay/linkme/issues/82",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.24"
+      ],
+      "unaffected": []
+    }
+  }
+]

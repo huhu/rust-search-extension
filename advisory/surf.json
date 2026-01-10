@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0036",
+      "package": "surf",
+      "title": "surf is unmaintained",
+      "description": "The developer has indicated that the crate is unmaintained.\n\nThe last release is over three years old (from 2021), the crate depends on the\ndeprecated `async-std` crate and on a very old version of `rustls` for TLS\nsupport.\n\n## Possible alternatives\n\n- [reqwest](https://crates.io/crates/reqwest)\n- [ureq](https://crates.io/crates/ureq)",
+      "date": "2025-05-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/http-rs/surf/issues/352"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

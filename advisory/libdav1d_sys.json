@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0016",
+      "package": "libdav1d-sys",
+      "title": "dav1d AV1 decoder integer overflow",
+      "description": "An integer overflow in dav1d AV1 decoder that can occur when decoding videos with large frame size. This can lead to memory corruption within the AV1 decoder. We recommend upgrading to version 0.7.0 of libdav1d-sys, which includes dav1d 1.4.0",
+      "date": "2024-02-19",
+      "aliases": [
+        "GHSA-mc39-h54g-pvw6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "integer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.cvedetails.com/cve/CVE-2024-1580/",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.7.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

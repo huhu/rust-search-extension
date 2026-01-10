@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0148",
+      "package": "cgc",
+      "title": "Multiple soundness issues in `Ptr`",
+      "description": "Affected versions of this crate have the following issues:\n\n1. `Ptr` implements `Send` and `Sync` for all types, this can lead to data\n   races by sending non-thread safe types across threads.\n\n2. `Ptr::get` violates mutable alias rules by returning multiple mutable\n   references to the same object.\n\n3. `Ptr::write` uses non-atomic writes to the underlying pointer. This means\n   that when used across threads it can lead to data races.",
+      "date": "2020-12-10",
+      "aliases": [
+        "CVE-2020-36466",
+        "CVE-2020-36467",
+        "CVE-2020-36468",
+        "GHSA-f3mq-99jr-ww4r",
+        "GHSA-f9xr-3m55-5q2v",
+        "GHSA-pwhf-7427-9vv2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "aliasing",
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/playXE/cgc/issues/5",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

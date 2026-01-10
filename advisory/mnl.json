@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0142",
+      "package": "mnl",
+      "title": "Segmentation fault and invalid memory read in `mnl::cb_run`",
+      "description": "The function `mnl::cb_run` is marked as safe but exhibits unsound behavior when processing malformed Netlink message buffers.\n\nPassing a crafted byte slice to `mnl::cb_run` can trigger memory violations. The function does not sufficiently validate the input buffer structure before processing, leading to out-of-bounds reads.\n\nThis vulnerability allows an attacker to cause a Denial of Service (segmentation fault) or potentially read unmapped memory by providing a malformed Netlink message.",
+      "date": "2025-10-18",
+      "aliases": [
+        "GHSA-585q-cm62-757j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mullvad/mnl-rs/issues/15",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

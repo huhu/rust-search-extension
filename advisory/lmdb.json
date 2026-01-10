@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0001",
+      "package": "lmdb",
+      "title": "lmdb is unmaintained, use lmdb-rkv instead",
+      "description": "The lmdb crate hasn't had any updates since August 2018.\n\nMozilla's [lmdb-rkv](https://github.com/mozilla/lmdb-rs) fork of the crate has received additional maintenance work beyond that and is the best available replacement.",
+      "date": "2022-01-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/danburkert/lmdb-rs",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

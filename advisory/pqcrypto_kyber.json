@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0381",
+      "package": "pqcrypto-kyber",
+      "title": "Replaced by `pqcrypto-mlkem`",
+      "description": "This crate has been replaced by `pqcrypto-mlkem`, which provides a\nFIPS203-compatible implementation of ML-KEM.",
+      "date": "2024-10-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

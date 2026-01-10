@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0125",
+      "package": "convec",
+      "title": "convec::ConVec<T> unconditionally implements Send/Sync",
+      "description": "Affected versions of this crate unconditionally implement Send/Sync for `ConVec<T>`.\nThis allows users to insert `T` that is not Send or not Sync.\n\nThis allows users to create data races by using non-Send types like `Arc<Cell<_>>` or `Rc<_>` as `T` in `ConVec<T>`. It is also possible to create data races by using types like `Cell<_>` or `RefCell<_>` as `T` (types that are `Send` but not `Sync`).\nSuch data races can lead to memory corruption.",
+      "date": "2020-11-24",
+      "aliases": [
+        "CVE-2020-36445",
+        "GHSA-rpxm-vmr7-5f5f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/krl/convec/issues/2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

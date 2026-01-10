@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0390",
+      "package": "minitrace",
+      "title": "minitrace is Unmaintained",
+      "description": "The minitrace maintainers have decided to continue the development of minitrace under a new organizational structure to improve community governance.\n\nIn the meantime, minitrace will no longer be maintained. For more details, refer to [tikv/minitrace-rust#229](https://github.com/tikv/minitrace-rust/issues/229).\n\n## Possible Alternative(s)\n\n[fastrace](https://github.com/fast/fastrace) is maintained by the same team responsible for minitrace, and users are encouraged to migrate to fastrace.",
+      "date": "2024-08-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tikv/minitrace-rust/issues/229",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

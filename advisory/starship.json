@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0446",
+      "package": "starship",
+      "title": "Shell expansion in custom commands",
+      "description": "## Summary\n\nUndocumented and unpredictable shell expansion and/or quoting\nrules make it easily to accidentally cause shell injection\nwhen using custom commands with starship in bash.\n\n## Details\n\nI wanted to show the git commit name in my prompt (I use bash), so I added a command:\n\n```\n[custom.git_commit_name]\ncommand = 'git show -s --format=\"%<(25,mtrunc)%s\"'\nstyle = \"italic\"\nwhen = true\n```\n\nTo my surprise, when I had a commit with backticks in it,\nthe backticks were expanded. e.g.:\n\n```\ntouch foo\ngit add foo\ngit commit -m '`ls`'\n```\n\nThankfully I noticed it on my own commit before checking out\nsomeone's code whose commit message was\n\n`rm -rf /important/stuff`\n\nThe documentation says:\n\nCommand output is printed unescaped to the prompt\n\n```\n    Whatever output the command generates is printed unmodified in the prompt.\n    This means if the output contains special sequences that are interpreted\n    by your shell they will be expanded when displayed. These special\n    sequences are shell specific, e.g. you can write a command module that\n    writes bash sequences, e.g. \\h, but this module will not work in a fish\n    or zsh shell.\n\n    Format strings can also contain shell specific prompt sequences, e.g. Bash, Zsh.\n```\n\nHowever, it doesn't specifically mention shell injection with $()\nand backticks; it just mentions the prompt escape sequences, and\nthe link doesn't suggest any shell injection possibilities either.\n\nFurthermore, I can't even figure out how to properly escape things,\nbecause simply changing the command to\n\n```\ncommand = 'printf %q \"$(git show -s --format=\"%<(25,mtrunc)%s\")\"'\n```\n\ndoesn't work, as it's also adding a backslash before spaces. I also\ntried `use_stdin=false`\n\nI'm not 100% sure this qualifies as a vulnerability, but I feel it is not\ndocumented well enough to warn unsuspecting users, and it certainly is\nnot documented how to properly quote things, because after 15-30 minutes\nof trying, I can't figure it out.\n\nI see some past commits about fixing shell injection with $, and it does\nseem like the problem doesn't exist in build-in modules like git branch.\n\n## PoC\n\nHave some custom command which prints out information from a potentially untrusted/unverified source.\n\n```\n[custom.git_commit_name]\ncommand = 'git show -s --format=\"%<(25,mtrunc)%s\"'\nstyle = \"italic\"\nwhen = true\n```\n\n## Impact\n\nPeople with custom commands, so the scope is limited, and without knowledge\nof people's commands, it could be hard to target people. The only one I saw\nin the example custom commands that may be vulnerable is the playerctl one.",
+      "date": "2024-07-26",
+      "aliases": [
+        "CVE-2024-41815",
+        "GHSA-vx24-x4mv-vwr5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/starship/starship/security/advisories/GHSA-vx24-x4mv-vwr5",
+      "withdrawn": null,
+      "license": "CC-BY-4.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.20.0"
+      ],
+      "unaffected": [
+        "<=1.0.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0012",
+      "package": "serde-json-wasm",
+      "title": "Stack overflow during recursive JSON parsing",
+      "description": "When parsing untrusted, deeply nested JSON, the stack may overflow,\npossibly enabling a Denial of Service attack.\nThis was fixed by adding a check for recursion depth.",
+      "date": "2024-01-24",
+      "aliases": [
+        "CVE-2024-58264",
+        "GHSA-rr69-rxr6-8qwf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "stack-overflow",
+        "json"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.1",
+        ">=0.5.2, <1.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

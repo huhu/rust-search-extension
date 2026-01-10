@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0372",
+      "package": "ic-cdk",
+      "title": "Memory leak when calling a canister method via `ic_cdk::call`",
+      "description": "When a canister method is called via `ic_cdk::call*`, a new Future `CallFuture` is created  and can be awaited by the caller to get the execution result. Internally, the state of the Future is tracked and stored in a struct called `CallFutureState`.  A bug in the polling implementation of the `CallFuture` allows multiple references to be held for this internal state and not all references were dropped before the `Future` is resolved. Since we have unaccounted references held, a copy of the internal state ended up being persisted in the canister's heap and thus causing a memory leak. \n\n### Impact\nCanisters built in Rust with `ic_cdk` and `ic_cdk_timers` are affected. If these canisters call a canister method, use timers or heartbeat, they will likely leak a small amount of memory on every such operation. **In the worst case, this could lead to heap memory exhaustion triggered by an attacker.**\n\nMotoko based canisters are not affected by the bug.\n\n### Patches\nThe patch has been backported to all minor versions between `>= 0.8.0, <= 0.15.0`. The patched versions available are `0.8.2, 0.9.3, 0.10.1, 0.11.6, 0.12.2, 0.13.5, 0.14.1, 0.15.1` and their previous versions have been yanked. \n\n### Workarounds\nThere are no known workarounds at the moment. Developers are recommended to upgrade their canister as soon as possible to the latest available patched version of `ic_cdk` to avoid running out of Wasm heap memory. \n\n> Upgrading the canisters (without updating `ic_cdk`) also frees the leaked memory but it's only a temporary solution.\n\n### Referencesas\n- [dfinity/cdk-rs/pull/509](https://github.com/dfinity/cdk-rs/pull/509)\n- [ic_cdk docs](https://docs.rs/ic-cdk/latest/ic_cdk/)\n- [Internet Computer Specification](https://internetcomputer.org/docs/current/references/ic-interface-spec)",
+      "date": "2024-09-05",
+      "aliases": [
+        "CVE-2024-7884",
+        "GHSA-rwq6-crjg-9cpw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "canister",
+        "icp",
+        "cdk"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dfinity/cdk-rs/pull/509",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.8.2",
+        "^0.9.3",
+        "^0.10.1",
+        "^0.11.6",
+        "^0.12.2",
+        "^0.13.5",
+        "^0.14.1",
+        "^0.15.1",
+        ">=0.16.0"
+      ],
+      "unaffected": [
+        "<0.8.0"
+      ]
+    }
+  }
+]

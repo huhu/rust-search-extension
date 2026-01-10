@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0011",
+      "package": "fil-ocl",
+      "title": "EventList's From<EventList> conversions can double drop on panic.",
+      "description": "Affected versions of this crate read from a container using `ptr::read` in\n`From<EventList>`, and then call a user specified `Into<Event>` function.\n\nThis issue can result in a double-free if the user provided function panics.",
+      "date": "2021-01-04",
+      "aliases": [
+        "CVE-2021-25908",
+        "GHSA-x3v2-fgr6-3wmm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cogciprocate/ocl/issues/194",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<0.12.0"
+      ]
+    }
+  }
+]

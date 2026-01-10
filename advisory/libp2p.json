@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0084",
+      "package": "libp2p",
+      "title": "libp2p Lack of resource management DoS",
+      "description": "libp2p allows a potential attacker to cause victim p2p node to run out of memory\n\nThe out of memory failure can cause crashes where libp2p is intended to be used\nwithin large scale networks leading to potential Denial of Service (DoS) vector\n\nUsers should upgrade or reference the [DoS mitigation strategies](https://docs.libp2p.io/reference/dos-mitigation/).",
+      "date": "2022-07-12",
+      "aliases": [
+        "CVE-2022-23486",
+        "GHSA-jvgw-gccv-q5p8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/libp2p/rust-libp2p/security/advisories/GHSA-jvgw-gccv-q5p8",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.45.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0044",
+      "package": "atom",
+      "title": "Unsafe Send implementation in Atom allows data races",
+      "description": "The `atom` crate contains a security issue revolving around its implementation\nof the Send trait. It incorrectly allows any arbitrary type to be sent across\nthreads potentially leading to use-after-free issues through memory races.",
+      "date": "2020-09-21",
+      "aliases": [
+        "CVE-2020-35897",
+        "GHSA-9cg2-2j2h-59v9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/slide-rs/atom/issues/13",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

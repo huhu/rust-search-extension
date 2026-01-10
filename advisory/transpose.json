@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0080",
+      "package": "transpose",
+      "title": "Buffer overflow due to integer overflow in `transpose`",
+      "description": "Given the function `transpose::transpose`:\n```rust\nfn transpose<T: Copy>(input: &[T], output: &mut [T], input_width: usize, input_height: usize)\n```\n\nThe safety check `input_width * input_height == output.len()` can fail due to `input_width * input_height` overflowing in such a way that it equals `output.len()`.\nAs a result of failing the safety check, memory past the end of `output` is written to. This only occurs in release mode since `*` panics on overflow in debug mode.\n\nExploiting this issue requires the caller to pass `input_width` and `input_height` arguments such that multiplying them overflows, and the overflown result equals the lengths of input and output slices.",
+      "date": "2023-12-18",
+      "aliases": [
+        "CVE-2023-53156",
+        "GHSA-5gmm-6m36-r7jh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ejmahler/transpose/issues/11",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "transpose::transpose": [
+          ">=0.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

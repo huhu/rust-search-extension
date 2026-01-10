@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0347",
+      "package": "zerovec",
+      "title": "Incorrect usage of `#[repr(packed)]`",
+      "description": "The affected versions make unsafe memory accesses under the assumption that `#[repr(packed)]` has a guaranteed field order. \n\nThe Rust specification does not guarantee this, and https://github.com/rust-lang/rust/pull/125360 (1.80.0-beta) starts \nreordering fields of `#[repr(packed)]` structs, leading to illegal memory accesses.\n\nThe patched versions `0.9.7` and `0.10.4` use `#[repr(C, packed)]`, which guarantees field order.",
+      "date": "2024-07-01",
+      "aliases": [
+        "GHSA-xrv3-jmcp-374j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.4",
+        ">=0.9.7, <0.10.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0122",
+      "package": "cargo-asm",
+      "title": "cargo-asm crate is unmaintained",
+      "description": "The `cargo-asm` crate is deprecated and no longer actively maintained. If you rely on this crate, consider switching to a recommended alternative.\n\n## Recommended alternatives\n\n- [`cargo-show-asm`](https://crates.io/crates/cargo-show-asm)",
+      "date": "2025-11-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gnzlbg/cargo-asm/issues/244",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

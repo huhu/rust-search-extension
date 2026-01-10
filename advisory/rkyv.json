@@ -1,0 +1,82 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0001",
+      "package": "rkyv",
+      "title": "Potential Undefined Behaviors in `Arc<T>`/`Rc<T>` impls of `from_value` on OOM",
+      "description": "The `SharedPointer::alloc` implementation for `sync::Arc<T>` and `rc::Rc<T>` in `rkyv/src/impls/alloc/rc/atomic.rs` (and `rc.rs`) does not check if the allocator returns a null pointer on OOM (Out of Memory).\n\nThis null pointer can flow through to `SharedPointer::from_value`, which calls `Box::from_raw(ptr)` with the null pointer. This triggers undefined behavior when utilizing safe deserialization APIs (such as `rkyv::from_bytes` or `rkyv::deserialize_using`) if an OOM condition occurs during the allocation of the shared pointer.\n\nThe issue is reachable through safe code and violates Rust's safety guarantees.",
+      "date": "2026-01-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "oom",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rkyv/rkyv/issues/644",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.46, <0.8.0",
+        ">=0.8.13"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0054",
+      "package": "rkyv",
+      "title": "Archives may contain uninitialized memory",
+      "description": "`rkyv` is a serialization framework that writes struct-compatible memory to be stored or\ntransmitted. During serialization, struct padding bytes and unused enum bytes may not be\ninitialized. These bytes may be written to disk or sent over unsecured channels.",
+      "date": "2021-04-28",
+      "aliases": [
+        "CVE-2021-31919",
+        "GHSA-w5cr-frph-hw7f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "uninitialized",
+        "memory",
+        "information",
+        "leak"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/djkoloski/rkyv/issues/113",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rkyv::Archive::resolve": [
+          "<0.6.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

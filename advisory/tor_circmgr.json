@@ -1,0 +1,86 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0340",
+      "package": "tor-circmgr",
+      "title": "Tor path lengths too short when \"full Vanguards\" configured",
+      "description": "## Description\n\nWhen building anonymizing circuits to or from an onion service with \nfull vanguards enabled, \nthe circuit manager code would build the circuits with one hop too few.\n\n## Impact\n\nThis makes users of this code more vulnerable to some kinds of traffic analysis\nwhen they run or visit onion services.\n\n## Vulnerable configurations and use cases\n\nArti configured with \"full vangaurds\" is vulnerable.\n\nOnly users who make connections to Onion Services\n(Tor Hidden Services) are affected.\nNote, however, that when used as a browser proxy,\nmalicious web pages can typically make such connections.\n\n## Mitigation\n\nPreventing access to Tor Hidden Services will avoid the problem,\nwith corresponding loss of functionality.\nThis can be achieved in the Arti configuration file with:\n\n```\n[address_filter]\nallow_onion_addrs = false\n```\n\nChanging the configuration (eg to turn off vanguards)\nreclassifies the behaviour as \"as configured\",\nbut reduces security rather than improving it,\nso is not a mitigation.\n\n## Resolution\n\nRebuild `arti` (or other affected applications)\nwith a fixed version of `tor-circmgr`:\n0.18.1 or later.\n\nThe fixed `tor-circmgr` is on crates.io and available in\n[the upstream git repository](https://gitlab.torproject.org/tpo/core/arti)\nat signed tag `arti-v1.2.3`.\n\n### Note about older versions\n\nEven though earlier versions are classified as \"not affected\",\nthis is because in those versions the Vanguards feature\nis experimental, or absent.\nDowngrading worsens security, rather than improving it.\n\n## References\n\n * [arti#1400](https://gitlab.torproject.org/tpo/core/arti/-/issues/1400):\n   the ticket in the Arti bugtracker.\n * [TROVE](https://gitlab.torproject.org/tpo/core/team/-/wikis/NetworkTeam/TROVE)\n   Tor Project vulnerability database.\n * [arti#1409](https://gitlab.torproject.org/tpo/core/arti/-/issues/1409):\n   the similar bug with the vanguards lite feature.",
+      "date": "2024-05-15",
+      "aliases": [
+        "CVE-2024-35312",
+        "CVE-2024-35313",
+        "GHSA-9328-gcfq-p269",
+        "GHSA-c96h-cxx6-rmg9",
+        "TROVE-2024-004"
+      ],
+      "related": [
+        "TROVE-2024-003"
+      ],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "tor",
+        "privacy",
+        "information-leak"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.torproject.org/tpo/core/arti/-/issues/1409",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.18.1"
+      ],
+      "unaffected": [
+        "<0.18.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0339",
+      "package": "tor-circmgr",
+      "title": "Tor path lengths too short when \"Vanguards lite\" configured",
+      "description": "## Description\n\nWhen building anonymizing circuits to or from an onion service with \n'lite' vanguards (the default) enabled, \nthe circuit manager code would build the circuits with one hop too few.\n\n## Impact\n\nThis makes users of this code more vulnerable to some kinds of traffic analysis\nwhen they run or visit onion services.\n\n## Vulnerable configurations and use cases\n\nArti configured with \"vangaurds lite\" is vulnerable;\nthis is the default.\n\nOnly users who make connections to Onion Services\n(Tor Hidden Services) are affected.\nNote, however, that when used as a browser proxy,\nmalicious web pages can typically make such connections.\n\n## Mitigation\n\nEnable the \"full vanguards\" feature.\nThis has some cost in terms of performance, reliability,\nand impact on the Tor Network.\n\n(Arti configured with \"full vanguards\" has a similar bug,\nTROVE-2024-04,\nso this will not deliver the full incressed security of \"full vanguards\";\nbut the security level of affected versions of Arti\nconfigured with \"full vanguards\" still exceeds\nthe intended security level of the \"vanguards lite\" configuration.)\n\nAlternatively,\npreventing access to Tor Hidden Services will avoid the problem,\nwith corresponding loss of functionality.\nThis can be achieved in the Arti configuration file with:\n\n```\n[address_filter]\nallow_onion_addrs = false\n```\n\n## Resolution\n\nRebuild `arti` (or other affected applications)\nwith a fixed version of `tor-circmgr`:\n0.18.1 or later.\n\nThe fixed `tor-circmgr` is on crates.io and available in\n[the upstream git repository](https://gitlab.torproject.org/tpo/core/arti)\nat signed tag `arti-v1.2.3`.\n\n### Note about older versions\n\nEven though earlier versions are classified as \"not affected\",\nthis is because in those versions the Vanguards feature\nis experimental, or absent.\nDowngrading worsens security, rather than improving it.\n\n## References\n\n * [arti#1409](https://gitlab.torproject.org/tpo/core/arti/-/issues/1409):\n   the ticket in the Arti bugtracker.\n * [TROVE](https://gitlab.torproject.org/tpo/core/team/-/wikis/NetworkTeam/TROVE)\n   Tor Project vulnerability database.\n * [arti#1400](https://gitlab.torproject.org/tpo/core/arti/-/issues/1400):\n   the similar bug with the full vanguards feature.",
+      "date": "2024-05-15",
+      "aliases": [
+        "CVE-2024-35312",
+        "CVE-2024-35313",
+        "GHSA-9328-gcfq-p269",
+        "GHSA-c96h-cxx6-rmg9",
+        "TROVE-2024-003"
+      ],
+      "related": [
+        "TROVE-2024-004"
+      ],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "tor",
+        "privacy",
+        "information-leak"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.torproject.org/tpo/core/arti/-/issues/1409",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.18.1"
+      ],
+      "unaffected": [
+        "<0.18.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0034",
+      "package": "fast_id_map",
+      "title": "soundness issue and unmaintained",
+      "description": "`FastMap::get()` lacks sufficient checks to its parameter index and is used to unsafely get a `Vec` element.\n\n`fast_id_map` is unmaintained.",
+      "date": "2025-05-06",
+      "aliases": [
+        "GHSA-4h96-mv53-2c86"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Bruce0203/fast_map",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "fast_id_map::FastMap::get": [
+          "<=0.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

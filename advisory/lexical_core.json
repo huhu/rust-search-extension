@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0086",
+      "package": "lexical-core",
+      "title": "Multiple soundness issues",
+      "description": "`RUSTSEC-2024-0377` contains multiple soundness issues:\n\n 1. [Bytes::read() allows creating instances of types with invalid bit patterns](https://github.com/Alexhuszagh/rust-lexical/issues/102)\n 1. [BytesIter::read() advances iterators out of bounds](https://github.com/Alexhuszagh/rust-lexical/issues/101)\n 1. [The `BytesIter` trait has safety invariants but is public and not marked `unsafe`](https://github.com/Alexhuszagh/rust-lexical/issues/104)\n 1. [`write_float()` calls `MaybeUninit::assume_init()` on uninitialized data, which is is not allowed by the Rust abstract machine](https://github.com/Alexhuszagh/rust-lexical/issues/95)\n 1. [`radix()` calls `MaybeUninit::assume_init()` on uninitialized data, which is is not allowed by the Rust abstract machine](https://github.com/Alexhuszagh/rust-lexical/issues/126)\n\nVersion 1.0 fixes these issues, removes the vast majority of `unsafe` code, and also fixes some correctness issues.",
+      "date": "2023-09-03",
+      "aliases": [
+        "GHSA-2326-pfpj-vx3h"
+      ],
+      "related": [
+        "RUSTSEC-2023-0055"
+      ],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/Alexhuszagh/rust-lexical/issues/102",
+        "https://github.com/Alexhuszagh/rust-lexical/issues/101",
+        "https://github.com/Alexhuszagh/rust-lexical/issues/95",
+        "https://github.com/Alexhuszagh/rust-lexical/issues/104",
+        "https://github.com/Alexhuszagh/rust-lexical/issues/126"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

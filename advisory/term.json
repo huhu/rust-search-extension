@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0015",
+      "package": "term",
+      "title": "term is looking for a new maintainer",
+      "description": "The author of the `term` crate does not have time to maintain it and is looking\nfor a new maintainer.\n\nSome maintained alternatives you can potentially switch to instead, depending\non your needs:\n\n- [`crossterm`](https://github.com/crossterm-rs/crossterm)\n- [`termcolor`](https://crates.io/crates/termcolor)\n- [`yansi`](https://crates.io/crates/yansi)",
+      "date": "2018-11-19",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Stebalien/term/issues/93",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.6.1"
+      ]
+    }
+  }
+]

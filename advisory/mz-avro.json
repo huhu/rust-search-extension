@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0138",
+      "package": "mz-avro",
+      "title": "Incorrect use of `set_len` allows for un-initialized memory",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided `Read` \nimplementation.\n\nArbitrary `Read` implementations can read from the uninitialized buffer (memory exposure)\nand also can return incorrect number of bytes written to the buffer.\nReading from uninitialized memory produces undefined values that can quickly invoke\nundefined behavior.\n\nNote: there is only UB in the case where a user provides a struct whose `Read`\nimplementation inspects the buffer passed to `read_exact` before writing to it.\nThis is an unidiomatic (albeit possible) `Read` implementation.\n\nSee https://github.com/MaterializeInc/materialize/issues/8669 for details.",
+      "date": "2021-10-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/MaterializeInc/materialize/issues/8669",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,99 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0369",
+      "package": "phonenumber",
+      "title": "phonenumber:  panic on parsing crafted phonenumber inputs",
+      "description": "### Impact\n\nThe phonenumber parsing code may panic due to a reachable `assert!` guard on the phonenumber string.\n\nIn a typical deployment of rust-phonenumber, this may get triggered by feeding a maliciously crafted phonenumber, e.g. over the network, specifically strings of the form `+dwPAA;phone-context=AA`, where the \"number\" part potentially parses as a number larger than 2^56.\n\nSince f69abee1/0.3.4/#52.\n\n0.2.x series is not affected.\n\n### Patches\nPatches have been published as version `0.3.6+8.13.36`.",
+      "date": "2024-07-07",
+      "aliases": [
+        "CVE-2024-39697",
+        "GHSA-mjw4-jj88-v687"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic",
+        "untrusted input",
+        "parsing"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-39697"
+      ],
+      "source": null,
+      "url": "https://github.com/whisperfish/rust-phonenumber/security/advisories/GHSA-mjw4-jj88-v687",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "phonenumber::parse": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.6"
+      ],
+      "unaffected": [
+        "<0.3.3"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0082",
+      "package": "phonenumber",
+      "title": "phonenumber:  panic on parsing crafted RF3966 phonenumber inputs",
+      "description": "### Impact\nThe phonenumber parsing code may panic due to a panic-guarded out-of-bounds access on the phonenumber string.\n\nIn a typical deployment of `rust-phonenumber`, this may get triggered by feeding a maliciously crafted phonenumber over the network, specifically the string `.;phone-context=`.\n\n### Patches\nPatches will be published as version `0.3.3+8.13.9` and backported as `0.2.5+8.11.3`.",
+      "date": "2023-09-19",
+      "aliases": [
+        "CVE-2023-42444",
+        "whhr-7f2w-qqj2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic",
+        "untrusted input",
+        "parsing"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-42444"
+      ],
+      "source": null,
+      "url": "https://github.com/whisperfish/rust-phonenumber/security/advisories/GHSA-whhr-7f2w-qqj2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "phonenumber::parse": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.5, <0.3.0",
+        ">=0.3.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

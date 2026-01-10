@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0406",
+      "package": "ic-stable-structures",
+      "title": "BTreeMap memory leak when deallocating nodes with overflows",
+      "description": "When storing unbounded types in a `BTreeMap`, a node is represented as a linked list of \"memory chunks\". In some cases, when we deallocate a node only the first memory chunk is deallocated, and the rest of the memory chunks remain (incorrectly) allocated, causing a memory leak.\n\nIn the worst case, depending on how a canister uses the `BTreeMap`, an adversary could interact with the canister through its API and trigger interactions with the map that keep consuming memory due to the memory leak. This could potentially lead to using an excessive amount of memory, or even running out of memory. \n\nThis issue has been fixed in [dfinity/stable-structures/pull/212](https://github.com/dfinity/stable-structures/pull/212) by changing the logic for deallocating nodes to ensure that all of a node's memory chunks are deallocated. Tests have been added to prevent regressions of this nature moving forward.\n\n**Note:** Users of stable-structure < 0.6.0 are not affected.\n\n### Workarounds\nUsers who are not storing unbounded types in `BTreeMap` are not affected and do not need to upgrade. Otherwise, an upgrade to version `0.6.4` is necessary.\n\n### References\n-  [GitHub Security Advisory (GHSA-3rcq-39xp-7xjp)](https://github.com/dfinity/stable-structures/security/advisories/GHSA-3rcq-39xp-7xjp)\n-  [dfinity/stable-structures/pull/212](https://github.com/dfinity/stable-structures/pull/212)\n-  [Stable Structures Documentation](https://docs.rs/ic-stable-structures/0.6.4/ic_stable_structures/)\n-  [Stable Memory on the Internet Computer](https://internetcomputer.org/docs/current/developer-docs/smart-contracts/maintain/storage#stable-memory)",
+      "date": "2024-05-17",
+      "aliases": [
+        "CVE-2024-4435",
+        "GHSA-3rcq-39xp-7xjp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "canister",
+        "icp",
+        "memory leak",
+        "stable memory"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dfinity/stable-structures/pull/212",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.4"
+      ],
+      "unaffected": [
+        "<0.6.0"
+      ]
+    }
+  }
+]

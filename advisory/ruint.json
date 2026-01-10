@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0137",
+      "package": "ruint",
+      "title": "Unsoundness of safe `reciprocal_mg10`",
+      "description": "The function `reciprocal_mg10` is marked as safe but can trigger undefined behavior (out-of-bounds access) because it relies on `debug_assert!` for safety checks instead of `assert!`.\n\nWhen compiled in release mode, the `debug_assert!` is optimized out, potentially allowing invalid inputs to cause memory corruption.",
+      "date": "2025-12-22",
+      "aliases": [
+        "GHSA-9fjq-45qv-pcm7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "soundness",
+        "out-of-bounds"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/recmo/uint/issues/550",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ruint::algorithms::div::reciprocal_mg10": [
+          "<1.17.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.17.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

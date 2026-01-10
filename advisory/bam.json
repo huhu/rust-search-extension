@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0027",
+      "package": "bam",
+      "title": "Loading a bgzip block can write out of bounds if size overflows.",
+      "description": "Affected versions of `bam` set the length of an internal buffer using\n`self.compressed.set_len(block_size - HEADER_SIZE - MIN_EXTRA_SIZE)` and then\nwrote into it. While `block_size` was constrained to a proper maximum, when it\nwas too small the subtraction could overflow negatively to a large number past\nthe capacity of `self.compressed`.\n\nThis can result in memory corruption in the form of writing out of bounds when\nloading a `bgzip` file with a small `block_size`.\n\nCommit `061eee38d4` fixed this issue by checking for the underflow when setting\nthe buffer size.",
+      "date": "2021-01-07",
+      "aliases": [
+        "CVE-2021-28027",
+        "GHSA-cpqj-r29q-chrh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.com/tprodanov/bam/-/issues/4",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bam::bgzip::Block::load": [
+          "<0.1.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

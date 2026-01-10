@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0054",
+      "package": "mail-internals",
+      "title": "Use-after-free in `vec_insert_bytes`",
+      "description": "Incorrect reallocation logic in the function [`vec_insert_bytes`](https://docs.rs/mail-internals/0.2.3/mail_internals/utils/fn.vec_insert_bytes.html) causes a use-after-free.\n\nThis function does not have to be called directly to trigger the vulnerability because many methods on [`EncodingWriter`](https://docs.rs/mail-internals/0.2.3/mail_internals/encoder/struct.EncodingWriter.html) call this function internally.\n\nThe mail-\\* suite is unmaintained and the upstream sources have been actively vandalised.\nA fixed `mail-internals-ng` (and `mail-headers-ng` and `mail-core-ng`) crate has been published which fixes this, and a dependency on another unsound crate.",
+      "date": "2023-08-07",
+      "aliases": [
+        "GHSA-rcx8-48pc-v9q8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "mail",
+        "mail-api"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://git.sr.ht/~nabijaczleweli/mail-internals.crate/commit/05443c864b204e7f1512caf2d53e8cce4dd340fc",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "mail_internals::utils::vec_insert_bytes": [
+          ">=0.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

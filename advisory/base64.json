@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2017-0004",
+      "package": "base64",
+      "title": "Integer overflow leads to heap-based buffer overflow in encode_config_buf",
+      "description": "Affected versions of this crate suffered from an integer overflow bug when\ncalculating the size of a buffer to use when encoding base64 using the\n`encode_config_buf` and `encode_config` functions.  If the input string\nwas large, this would cause a buffer to be allocated that was too small.\nSince this function writes to the buffer using unsafe code, it would\nallow an attacker to write beyond the buffer, causing memory corruption\nand possibly the execution of arbitrary code.\n\nThis flaw was corrected by using checked arithmetic to calculate\nthe size of the buffer.",
+      "date": "2017-05-03",
+      "aliases": [
+        "CVE-2017-1000430",
+        "GHSA-x67x-vg9m-65c3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/alicemaz/rust-base64/commit/24ead980daf11ba563e4fb2516187a56a71ad319",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

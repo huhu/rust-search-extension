@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0005",
+      "package": "grcov",
+      "title": "Out of bounds write triggered by crafted coverage data",
+      "description": "Function `grcov::covdir::get_coverage` uses the `unsafe` function `get_unchecked_mut`\nwithout validating that the index is in bounds.\n\nThis results in memory corruption, and could potentially allow arbitrary code execution\nprovided that an attacker can feed the tool crafted coverage data.",
+      "date": "2025-01-13",
+      "aliases": [
+        "GHSA-qm2p-4w45-v2vr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1917475",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "grcov::covdir::get_coverage": [
+          "<=0.8.20"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">0.8.20"
+      ],
+      "unaffected": []
+    }
+  }
+]

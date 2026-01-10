@@ -1,0 +1,71 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0003",
+      "package": "fast-float",
+      "title": "Segmentation fault due to lack of bound check",
+      "description": "In this case, the \"fast_float::common::AsciiStr::first\" method within the \"AsciiStr\" struct \nuses the unsafe keyword to reading from memory without performing bounds checking. \nSpecifically, it directly dereferences a pointer offset by \"self.ptr\".\nBecause of the above reason, the method accesses invalid memory address when it takes an empty string as its input.\nThis approach violates Rust’s memory safety guarantees, as it can lead to invalid memory access if empty buffer is provided.\n\nNo patched version for fast-float crate has been released, but a patch is available in the fast-float2 fork.",
+      "date": "2025-01-13",
+      "aliases": [
+        "GHSA-8655-xgh5-5vvq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/aldanor/fast-float-rust/issues/38",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "fast_float::common::AsciiStr::first": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0379",
+      "package": "fast-float",
+      "title": "Multiple soundness issues",
+      "description": "`fast-float` contains multiple soundness issues:\n\n 1. [Undefined behavior when checking input length](https://github.com/aldanor/fast-float-rust/issues/28), which has been merged but no package [pubished](https://github.com/aldanor/fast-float-rust/issues/35).\n 1. [Many functions marked as safe with non-local safety guarantees](https://github.com/aldanor/fast-float-rust/issues/37)\n\nThe library is also unmaintained.\n\n## Alternatives\n\nFor quickly parsing floating-point numbers third-party crates are generally no longer needed. A fast float parsing algorithm by the author of `lexical` has been [merged](https://github.com/rust-lang/rust/pull/86761) into libcore. When requiring direct parsing from bytes and/or partial parsers, the [`fast-float2`](https://crates.io/crates/fast-float2) fork of `fast-float` containing these security patches and reduces overall usage of unsafe.",
+      "date": "2024-10-31",
+      "aliases": [
+        "GHSA-x8jh-xj3x-gx3c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/aldanor/fast-float-rust/issues/28",
+        "https://github.com/aldanor/fast-float-rust/issues/37"
+      ],
+      "source": null,
+      "url": "https://github.com/aldanor/fast-float-rust/issues/35",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

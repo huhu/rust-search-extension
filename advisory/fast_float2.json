@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0002",
+      "package": "fast-float2",
+      "title": "Segmentation fault due to lack of bound check",
+      "description": "In this case, the \"fast_float2::common::AsciiStr::first\" method within the \"AsciiStr\" struct \nuses the unsafe keyword to reading from memory without performing bounds checking. \nSpecifically, it directly dereferences a pointer offset by \"self.ptr\".\nBecause of the above reason, the method accesses invalid memory address when it takes an empty string as its input.\nThis approach violates Rust’s memory safety guarantees, as it can lead to invalid memory access if empty buffer is provided.",
+      "date": "2025-01-13",
+      "aliases": [
+        "GHSA-jqcp-xc3v-f446"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/aldanor/fast-float-rust/issues/38",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "fast_float2::common::AsciiStr::first": [
+          "<0.2.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

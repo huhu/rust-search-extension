@@ -1,0 +1,119 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0332",
+      "package": "h2",
+      "title": "Degradation of service in h2 servers with CONTINUATION Flood",
+      "description": "An attacker can send a flood of CONTINUATION frames, causing `h2` to process them indefinitely.\nThis results in an increase in CPU usage.\n\nTokio task budget helps prevent this from a complete denial-of-service, as the server can still\nrespond to legitimate requests, albeit with increased latency.\n\nMore details at \"https://seanmonstar.com/blog/hyper-http2-continuation-flood/.\n\nPatches available for 0.4.x and 0.3.x versions.",
+      "date": "2024-04-03",
+      "aliases": [
+        "GHSA-q6cp-qfwq-4gcv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "http",
+        "http2",
+        "h2"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://seanmonstar.com/blog/hyper-http2-continuation-flood/"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.3.26",
+        ">=0.4.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0003",
+      "package": "h2",
+      "title": "Resource exhaustion vulnerability in h2 may lead to Denial of Service (DoS)",
+      "description": "An attacker with an HTTP/2 connection to an affected endpoint can send a steady stream of invalid frames to force the\ngeneration of reset frames on the victim endpoint.\nBy closing their recv window, the attacker could then force these resets to be queued in an unbounded fashion,\nresulting in Out Of Memory (OOM) and high CPU usage.\n\nThis fix is corrected in [hyperium/h2#737](https://github.com/hyperium/h2/pull/737), which limits the total number of\ninternal error resets emitted by default before the connection is closed.",
+      "date": "2024-01-17",
+      "aliases": [
+        "GHSA-8r5v-vm4m-4g25"
+      ],
+      "related": [
+        "CVE-2019-9514"
+      ],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "http",
+        "http2",
+        "h2"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-002.md"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.3.24",
+        ">=0.4.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0034",
+      "package": "h2",
+      "title": "Resource exhaustion vulnerability in h2 may lead to Denial of Service (DoS)",
+      "description": "If an attacker is able to flood the network with pairs of `HEADERS`/`RST_STREAM` frames, such that the `h2` application is not able to accept them faster than the bytes are received, the pending accept queue can grow in memory usage. Being able to do this consistently can result in excessive memory use, and eventually trigger Out Of Memory.\n\nThis flaw is corrected in [hyperium/h2#668](https://github.com/hyperium/h2/pull/668), which restricts remote reset stream count by default.",
+      "date": "2023-04-14",
+      "aliases": [
+        "CVE-2023-26964",
+        "GHSA-f8vr-r385-rh5r"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "http",
+        "http2",
+        "h2"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hyperium/hyper/issues/2877",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.17"
+      ],
+      "unaffected": []
+    }
+  }
+]

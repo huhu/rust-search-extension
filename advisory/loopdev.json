@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0088",
+      "package": "loopdev",
+      "title": "`loopdev` crate is unmaintained; use 'loopdev-3` instead.",
+      "description": "The `loopdev` crate was last released in Oct, 2021. It has been unable to\nbuild in Fedora 38 and above since April, 2023.\n\nThe `loopdev-3` crate is a maintained fork:\n\nhttps://github.com/stratis-storage/loopdev-3",
+      "date": "2023-11-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mdaffin/loopdev/issues/62",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

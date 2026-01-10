@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0056",
+      "package": "stdweb",
+      "title": "stdweb is unmaintained",
+      "description": "The author of the `stdweb` crate is unresponsive.\n\nMaintained alternatives:\n\n- [`wasm-bindgen`](https://github.com/rustwasm/wasm-bindgen)\n- [`js-sys`](https://github.com/rustwasm/wasm-bindgen/tree/master/crates/js-sys)\n- [`web-sys`](https://github.com/rustwasm/wasm-bindgen/tree/master/crates/web-sys)",
+      "date": "2020-05-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/koute/stdweb/issues/403",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.4.20"
+      ]
+    }
+  }
+]

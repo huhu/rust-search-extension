@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0368",
+      "package": "olm-sys",
+      "title": "olm-sys: wrapped library unmaintained, potentially vulnerable",
+      "description": "After several cryptographic vulnerabilities in `libolm` were disclosed publicly, the Matrix Foundation has [officially deprecated the library](https://matrix.org/blog/2024/08/libolm-deprecation/). `olm-sys` is a thin wrapper around `libolm` and is now deprecated and potentially vulnerable in kind.\n\nUsers of `olm-sys` and its higher-level abstraction, `olm-rs`, are highly encouraged to switch to [`vodozemac`](https://crates.io/crates/vodozemac) as soon as possible. It is the successor effort to `libolm` and is written in Rust.",
+      "date": "2024-09-02",
+      "aliases": [
+        "GHSA-p2q9-36vw-c468"
+      ],
+      "related": [
+        "CVE-2024-45191",
+        "CVE-2024-45192",
+        "CVE-2024-45193"
+      ],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://matrix.org/blog/2024/08/libolm-deprecation/"
+      ],
+      "source": null,
+      "url": "https://gitlab.gnome.org/BrainBlasted/olm-sys/-/issues/12",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

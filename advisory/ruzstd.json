@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0400",
+      "package": "ruzstd",
+      "title": "`ruzstd` uninit and out-of-bounds memory reads",
+      "description": "Affected versions of `ruzstd` miscalculate the length of the allocated\nand init section of its internal `RingBuffer`, leading to uninitialized\nor out-of-bounds reads in `copy_bytes_overshooting` of up to 15 bytes.\n\nThis may result in up to 15 bytes of memory contents being written\ninto the decoded data when decompressing a crafted archive.\nThis may occur multiple times per archive.",
+      "date": "2024-11-28",
+      "aliases": [
+        "GHSA-x3f4-45xf-rjm7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/KillingSpark/zstd-rs/pull/76"
+      ],
+      "source": null,
+      "url": "https://github.com/KillingSpark/zstd-rs/issues/75",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.3"
+      ],
+      "unaffected": [
+        "<0.7.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0343",
+      "package": "nano-id",
+      "title": "Reduced entropy due to inadequate character set usage",
+      "description": "## Description\n\nAffected versions of the nano-id crate incorrectly generated IDs using a reduced character set in the `nano_id::base62` and `nano_id::base58` functions. Specifically, the `base62` function used a character set of 32 symbols instead of the intended 62 symbols, and the `base58` function used a character set of 16 symbols instead of the intended 58 symbols. Additionally, the `nano_id::gen` macro is also affected when a custom character set that is not a power of 2 in size is specified.\n\nIt should be noted that `nano_id::base64` is not affected by this vulnerability.\n\n## Impact\n\nThis can result in a significant reduction in entropy, making the generated IDs predictable and vulnerable to brute-force attacks when the IDs are used in security-sensitive contexts such as session tokens or unique identifiers.\n\n## Patches\n\nThe flaws were corrected in commit [a9022772b2f1ce38929b5b81eccc670ac9d3ab23](https://github.com/viz-rs/nano-id/commit/a9022772b2f1ce38929b5b81eccc670ac9d3ab23) by updating the the `nano_id::gen` macro to use all specified characters correctly.\n\n## PoC\n\n```rust\nuse std::collections::BTreeSet;\n\nfn main() {\n    test_base58();\n    test_base62();\n}\n\nfn test_base58() {\n    let mut produced_symbols = BTreeSet::new();\n\n    for _ in 0..100_000 {\nid = \"RUSTSEC-2024-0343\"\n        for c in id.chars() {\n            produced_symbols.insert(c);\n        }\n    }\n\n    println!(\n        \"{} symbols generated from nano_id::base58\",\n        produced_symbols.len()\n    );\n}\n\nfn test_base62() {\n    let mut produced_symbols = BTreeSet::new();\n\n    for _ in 0..100_000 {\nid = \"RUSTSEC-2024-0343\"\n        for c in id.chars() {\n            produced_symbols.insert(c);\n        }\n    }\n\n    println!(\n        \"{} symbols generated from nano_id::base62\",\n        produced_symbols.len()\n    );\n}\n```",
+      "date": "2024-06-03",
+      "aliases": [
+        "GHSA-2hfw-w739-p7x5",
+        "GHSA-9hc7-6w9r-wj94",
+        "CVE-2024-36400"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "nano_id::base58": [
+          "<0.4.0"
+        ],
+        "nano_id::base62": [
+          "<0.4.0"
+        ],
+        "nano_id::gen": [
+          "<0.4.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

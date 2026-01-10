@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0006",
+      "package": "thread_local",
+      "title": "Data race in `Iter` and `IterMut`",
+      "description": "In the affected version of this crate, `{Iter, IterMut}::next` used a weaker memory ordering when loading values than what was required, exposing a potential data race\nwhen iterating over a `ThreadLocal`'s values.\n\nCrates using `Iter::next`, or `IterMut::next` are affected by this issue.",
+      "date": "2022-01-23",
+      "aliases": [
+        "GHSA-9hpw-r23r-xgm5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Amanieu/thread_local-rs/issues/33",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.1.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

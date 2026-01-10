@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0341",
+      "package": "tls-listener",
+      "title": "Slow loris vulnerability with default configuration",
+      "description": "tls-listener is a rust lang wrapper around a connection listener to support TLS. With the default configuration of tls-listener, a malicious user can open 6.4 `TcpStream`s a second, sending 0 bytes, and can trigger a DoS. The default configuration options make any public service using `TlsListener::new()` vulnerable to a slow-loris DoS attack. This impacts any publicly accessible service using the default configuration of tls-listener in versions prior to 0.10.0. Users are advised to upgrade. Users unable to upgrade may mitigate this by passing a large value, such as `usize::MAX` as the parameter to `Builder::max_handshakes`.",
+      "date": "2024-03-15",
+      "aliases": [
+        "CVE-2024-28854",
+        "GHSA-2qph-qpvm-2qf7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tmccombs/tls-listener/security/advisories/GHSA-2qph-qpvm-2qf7",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tls_listener::TlsListener::new": [
+          "<0.10.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

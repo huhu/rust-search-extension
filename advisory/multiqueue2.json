@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0106",
+      "package": "multiqueue2",
+      "title": "Queues allow non-Send types to be sent to other threads, allowing data races",
+      "description": "Affected versions of this crate unconditionally implemented `Send` for types used in queue implementations (`InnerSend<RW, T>`, `InnerRecv<RW, T>`, `FutInnerSend<RW, T>`, `FutInnerRecv<RW, T>`).\n\nThis allows users to send non-Send types to other threads, which can lead to data race bugs or other undefined behavior.\n\nThe flaw was corrected in v0.1.7 by adding `T: Send` bound to to the `Send` impl of four data types explained above.",
+      "date": "2020-12-19",
+      "aliases": [
+        "CVE-2020-36214",
+        "GHSA-jphw-p3m6-pj3c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/abbychau/multiqueue2/issues/10",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.7"
+      ],
+      "unaffected": []
+    }
+  }
+]

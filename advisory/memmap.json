@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0077",
+      "package": "memmap",
+      "title": "memmap is unmaintained",
+      "description": "The author of the `memmap` crate is unresponsive.\n\nMaintained alternatives:\n\n- [`memmap2`](https://github.com/RazrFalcon/memmap2-rs)",
+      "date": "2020-12-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/danburkert/memmap-rs/issues/90",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">0.7.0"
+      ]
+    }
+  }
+]

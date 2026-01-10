@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0075",
+      "package": "unsafe-libyaml",
+      "title": "Unaligned write of u64 on 32-bit and 16-bit platforms",
+      "description": "Affected versions allocate memory using the alignment of `usize` and write data\nto it of type `u64`, without using `core::ptr::write_unaligned`. In platforms\nwith sub-64bit alignment for `usize` (including wasm32 and x86) these writes\nare insufficiently aligned some of the time.\n\nIf using an ordinary optimized standard library, the bug exhibits Undefined\nBehavior so may or may not behave in any sensible way, depending on\noptimization settings and hardware and other things. If using a Rust standard\nlibrary built with debug assertions enabled, the bug manifests deterministically\nin a crash (non-unwinding panic) saying _\"ptr::write requires that the pointer\nargument is aligned and non-null\"_.\n\nNo 64-bit platform is impacted by the bug.\n\nThe flaw was corrected by allocating with adequately high alignment on all\nplatforms.",
+      "date": "2023-12-20",
+      "aliases": [
+        "GHSA-r24f-hg58-vfrw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "unaligned-write"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dtolnay/unsafe-libyaml/issues/21",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.10"
+      ],
+      "unaffected": []
+    }
+  }
+]

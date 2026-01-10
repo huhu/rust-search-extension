@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0060",
+      "package": "orbtk",
+      "title": "orbtk is Unmaintained",
+      "description": "The `orbtk` crate is no longer maintained.\n\nAlternatives proposed by the authors:\n\n * [`iced`](https://crates.io/crates/iced)\n * [`slint`](https://crates.io/crates/slint)",
+      "date": "2022-10-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/redox-os/orbtk/blob/eba9e77821551076bbf1d9f7ab44d788150e3446/README.md#orbtk-is-sunsetting",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

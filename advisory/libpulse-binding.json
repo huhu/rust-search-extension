@@ -1,0 +1,107 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0020",
+      "package": "libpulse-binding",
+      "title": "Possible use-after-free with `proplist::Iterator`",
+      "description": "Affected versions contained a possible use-after-free issue with property list iteration\ndue to a lack of a lifetime constraint tying the lifetime of a `proplist::Iterator` to the\n`Proplist` object for which it was created. This made it possible for users, without\nexperiencing a compiler error/warning, to destroy the `Proplist` object before the iterator,\nthus destroying the underlying C object the iterator works upon, before the iterator may be\nfinished with it.\n\nThis impacts all versions of the crate before `2.5.0` back to `1.0.5`. Before version\n`1.0.5` the function that produces the iterator was broken to the point of being useless.",
+      "date": "2018-12-22",
+      "aliases": [
+        "GHSA-6gvc-4jvj-pwq4",
+        "CVE-2018-25001"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/advisories/GHSA-6gvc-4jvj-pwq4",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.5.0"
+      ],
+      "unaffected": [
+        "<1.0.5"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0038",
+      "package": "libpulse-binding",
+      "title": "Fix for UB in failure to catch panics crossing FFI boundaries",
+      "description": "Affected versions of this crate failed to catch panics crossing FFI boundaries via callbacks, which\nis a form of UB. This flaw was corrected by [this commit][1] which was included in version 2.6.0.\n\n[1]: https://github.com/jnqnfe/pulse-binding-rust/commit/7fd282aef7787577c385aed88cb25d004b85f494",
+      "date": "2019-03-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/jnqnfe/pulse-binding-rust/commit/7fd282aef7787577c385aed88cb25d004b85f494",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.6.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0021",
+      "package": "libpulse-binding",
+      "title": "Use-after-free with objects returned by `Stream`'s `get_format_info` and `get_context` methods",
+      "description": "Affected versions contained a pair of use-after-free issues with the objects returned by the `get_format_info` and `get_context` methods of `Stream` objects. These objects were mistakenly being constructed without setting an important flag to prevent destruction of the underlying C objects they reference upon their own destruction.",
+      "date": "2018-06-15",
+      "aliases": [
+        "GHSA-ghpq-vjxw-ch5w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/jnqnfe/pulse-binding-rust/security/advisories/GHSA-ghpq-vjxw-ch5w",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libpulse_binding::stream::Stream::get_context": [
+          "<1.2.1"
+        ],
+        "libpulse_binding::stream::Stream::get_format_info": [
+          "<1.2.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.2.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

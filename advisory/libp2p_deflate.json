@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0123",
+      "package": "libp2p-deflate",
+      "title": "Contents of uninitialized memory exposed in DeflateOutput's AsyncRead implementation",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided trait function `AsyncRead::poll_read()`.\n\nArbitrary `AsyncRead::poll_read()` implementations can read from the uninitialized buffer (memory exposure) and also can return incorrect number of bytes written to the buffer.\nReading from uninitialized memory produces undefined values that can quickly invoke undefined behavior.\n\nThe flaw was fixed in commit 5ba266a by ensuring the newly allocated part of the buffer is zero-initialized before passing it to a user-provided `AsyncRead::poll_read()`.",
+      "date": "2020-01-24",
+      "aliases": [
+        "CVE-2020-36443",
+        "GHSA-gvcp-948f-8f2p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/libp2p/rust-libp2p/issues/1932",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.27.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

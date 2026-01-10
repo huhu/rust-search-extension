@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0115",
+      "package": "zeroize_derive",
+      "title": "`#[zeroize(drop)]` doesn't implement `Drop` for `enum`s",
+      "description": "Affected versions of this crate did not implement `Drop` when `#[zeroize(drop)]` was used on an `enum`.\n\nThis can result in memory not being zeroed out after dropping it, which is exactly what is intended when adding this attribute.\n\nThe flaw was corrected in version 1.2 and `#[zeroize(drop)]` on `enum`s now properly implements `Drop`.",
+      "date": "2021-09-24",
+      "aliases": [
+        "CVE-2021-45706",
+        "GHSA-c5hx-w945-j4pq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/iqlusioninc/crates/issues/876",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.1.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

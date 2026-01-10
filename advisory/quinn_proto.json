@@ -1,0 +1,75 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0373",
+      "package": "quinn-proto",
+      "title": "`Endpoint::retry()` calls can lead to panicking",
+      "description": "In 0.11.0, we overhauled the server-side `Endpoint` implementation to enable\nmore careful handling of incoming connection attempts. However, some of the\ncode paths that cleaned up state after connection attempts were processed\nconfused the initial destination connection ID with the destination connection\nID of a substantial package. This resulted in the internal `Endpoint` state\nbecoming inconsistent, which could then lead to a panic.\n\nhttps://github.com/quinn-rs/quinn/commit/e01609ccd8738bd438d86fa7185a0f85598cb58f\n\nThanks to [@finbear](https://github.com/finnbear) for reporting and investingating,\nand to [@BiagoFesta](https://github.com/BiagoFesta) for coordinating.",
+      "date": "2024-09-02",
+      "aliases": [
+        "GHSA-vr26-jcq5-fjj8",
+        "CVE-2024-45311"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.7"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0063",
+      "package": "quinn-proto",
+      "title": "Denial of service in Quinn servers",
+      "description": "Receiving QUIC frames containing a frame with unknown frame type could lead to a panic.\nUnfortunately this is issue was not found by our fuzzing infrastructure.\n\nThanks to the QUIC Tester research group for reporting this issue.",
+      "date": "2023-09-21",
+      "aliases": [
+        "CVE-2023-42805",
+        "GHSA-q8wc-j5m9-27w3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/1667",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.9.5",
+        ">=0.10.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

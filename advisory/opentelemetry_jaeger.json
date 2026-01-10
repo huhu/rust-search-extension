@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0123",
+      "package": "opentelemetry-jaeger",
+      "title": "opentelemetry-jaeger crate is unmaintained",
+      "description": "The `opentelemetry-jaeger` crate is deprecated and no longer actively maintained.\n\nThe Jaeger propagator implementation has been migrated to\n[opentelemetry-jaeger-propagator](https://crates.io/crates/opentelemetry-jaeger-propagator).\n\nMore information and examples of using OTLP with Jaeger can be found in\n[Introducing native support for OpenTelemetry in Jaeger](https://medium.com/jaegertracing/introducing-native-support-for-opentelemetry-in-jaeger-eb661be8183c)\nand\n[Exporting OTLP traces to Jaeger](https://github.com/open-telemetry/opentelemetry-rust/tree/main/examples/tracing-jaeger).",
+      "date": "2025-11-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://crates.io/crates/opentelemetry-jaeger",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0389",
+      "package": "openslide",
+      "title": "`openslide` is unmaintained",
+      "description": "The [`openslide`](https://crates.io/crates/openslide) crate is no longer maintained.\n\nLast release was on 2018-11-20.\n\n## Possible alternatives\n\nConsider using an alternative, for instance:\n\n- [openslide-rs](https://crates.io/crates/openslide-rs)\n- [pamly](https://crates.io/crates/pamly)",
+      "date": "2024-07-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ojskrede/openslide-rust/issues/4",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

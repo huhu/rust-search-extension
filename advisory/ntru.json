@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0032",
+      "package": "ntru",
+      "title": "Unsound FFI: Wrong API usage causes write past allocated area",
+      "description": "The following usage causes undefined behavior.\n```rust\nlet kp: ntru::types::KeyPair = …;\nkp.get_public().export(Default::default())\n```\n\nWhen compiled with debug assertions, the code above will trigger a `attempt to subtract with overflow` panic before UB occurs.\nOther mistakes (e.g. using `EncParams` from a different key) may always trigger UB.\n\nLikely, older versions of this crate are also affected, but have not been tested.",
+      "date": "2023-03-22",
+      "aliases": [
+        "GHSA-fq33-vmhv-48xh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "ffi",
+        "buffer overflow"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/FrinkGlobal/ntru-rs/issues/8",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ntru::types::PrivateKey::export": [
+          ">=0.4.3"
+        ],
+        "ntru::types::PublicKey::export": [
+          ">=0.4.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0007",
+      "package": "asn1_der",
+      "title": "Processing of maliciously crafted length fields causes memory allocation SIGABRTs",
+      "description": "Affected versions of this crate tried to preallocate a vector for an arbitrary amount of bytes announced by the ASN.1-DER length field without further checks.\n\nThis allows an attacker to trigger a SIGABRT by creating length fields that announce more bytes than the allocator can provide.\n \nThe flaw was corrected by not preallocating memory.",
+      "date": "2019-06-13",
+      "aliases": [
+        "CVE-2019-15549",
+        "GHSA-v5r6-6r3c-wqxc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "dos"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/KizzyCode/asn1_der/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

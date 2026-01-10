@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0096",
+      "package": "aes-gcm",
+      "title": "Plaintext exposed in decrypt_in_place_detached even on tag verification failure",
+      "description": "## Summary\n\nIn the AES GCM implementation of decrypt_in_place_detached,\nthe decrypted ciphertext (i.e. the correct plaintext) is\nexposed even if tag verification fails.\n\n## Impact\n\nIf a program using the aes-gcm crate's decrypt_in_place*\nAPIs accesses the buffer after decryption failure, it will\ncontain a decryption of an unauthenticated input. Depending\non the specific nature of the program this may enable\nChosen Ciphertext Attacks (CCAs) which can cause a\ncatastrophic breakage of the cipher including full\nplaintext recovery.\n\n## Details\n\nAs seen in the implementation of decrypt_in_place_detached for\nAES GCM, if the tag verification fails, an error is returned.\nBecause the decryption of the ciphertext is done in place,\nthe plaintext contents are now exposed via buffer.\n\nThis should ideally not be the case - as noted in page 17 of\nNIST's publication Recommendation for Block Cipher Modes of\nOperation: Galois/Counter Mode (GCM) and GMAC:\n\nIn Step 8, the result of Step 7 is compared with the\nauthentication tag that was received as an input: if\nthey are identical, then the plaintext is returned;\notherwise,FAIL is returned.\n\nThis is seems correctly addressed in the AES GCM SIV\nimplementation, where the decrypted buffer is encrypted\nagain before the error is returned - this fix is\nstraightforward to implement in AES GCM. To ensure that\nthese types of cases are covered during testing, it\nwould be valuable to add test cases like 23, 24 etc\nfrom project wycheproof to ensure that when a bad tag\nis used, there is an error on decryption and that the\nplaintext value is not exposed.\n\n## PoC\n\nTo reproduce this issue, I'm using test case 23 from\nproject wycheproof.\n\n```\n    let key = GenericArray::from_slice(&hex!(\"000102030405060708090a0b0c0d0e0f\"));\n    let nonce = GenericArray::from_slice(&hex!(\"505152535455565758595a5b\"));\n    let tag = GenericArray::from_slice(&hex!(\"d9847dbc326a06e988c77ad3863e6083\")); // bad tag\n    let mut ct = hex!(\"eb156d081ed6b6b55f4612f021d87b39\");\n    let msg = hex!(\"202122232425262728292a2b2c2d2e2f\");\n    let aad = hex!(\"\");\n    let cipher = Aes128Gcm::new(&key);\n    let _plaintext = cipher.decrypt_in_place_detached(&nonce, &aad, &mut ct, &tag);\n    assert_eq!(ct, msg);\n```",
+      "date": "2023-11-22",
+      "aliases": [
+        "CVE-2023-42811",
+        "GHSA-423w-p2w9-r7vq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:U/C:L/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/AEADs/security/advisories/GHSA-423w-p2w9-r7vq",
+      "withdrawn": null,
+      "license": "CC-BY-4.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "aes_gcm::AeadInPlace::decrypt_in_place_detached": [
+          ">=0.10.0, <0.10.3"
+        ],
+        "aes_gcm::AesGcm::decrypt_in_place_detached": [
+          ">=0.10.0, <0.10.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.3"
+      ],
+      "unaffected": [
+        "<0.10.0"
+      ]
+    }
+  }
+]

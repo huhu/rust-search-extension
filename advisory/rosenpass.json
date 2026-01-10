@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0077",
+      "package": "rosenpass",
+      "title": "Remotely exploitable DoS condition in Rosenpass <=0.2.0",
+      "description": "Affected version do this crate did not validate the size of buffers when attempting to decode messages.\n\nThis allows an attacker to trigger a panic by sending a UDP datagram with a 1 byte payload over network.\n\nThis flaw was corrected by validating the size of the buffers before attempting to decode the message.",
+      "date": "2023-11-04",
+      "aliases": [
+        "CVE-2023-53157",
+        "GHSA-6ggr-cwv4-g7qg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "remote",
+        "single-byte"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/rosenpass/rosenpass/commit/93439858d1c44294a7b377f775c4fc897a370bb2"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

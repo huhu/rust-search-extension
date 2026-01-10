@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0042",
+      "package": "static-alloc",
+      "title": "Uninitialized read after allocating MemBump",
+      "description": "The affected function, `MemBump::new()`, would allocate memory without\ninitializing it. Subsequently calling the created value's various `alloc`\nmethods would then read and write the start of that memory as a `Cell` which is\nundefined behavior. Instead, it should zero initialize the start of the\nallocated memory.\n\nFor instance, some values could violate the internal invariants of the type and\ncause an assertion failure. Nevertheless, no deterministic read is known to\ncause further uninitialized memory to be exposed.\n\nAffected downstream users that can not upgrade are advised to call\n`MemBump::reset` immediately after allocation to manually perform the missing\nwrite of the counter best-as-possible.\n\nThe flaw was corrected in commit d8d6a7d096d3aaafd963b356a8f1bbd8d26fd967 by\nzeroing the Cell at the start of the allocated memory.",
+      "date": "2025-07-11",
+      "aliases": [
+        "GHSA-xrrq-rrgq-h89w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "initialization"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/197g/static-alloc/issues/81",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "static_alloc::unsync::MemBump::new": [
+          ">=0.2.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.6"
+      ],
+      "unaffected": [
+        "<=0.2.1"
+      ]
+    }
+  }
+]

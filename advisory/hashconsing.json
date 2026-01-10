@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0107",
+      "package": "hashconsing",
+      "title": "hashconsing's HConsed lacks Send/Sync bound for its Send/Sync trait.",
+      "description": "Affected versions of `hashconsing` implements `Send`/`Sync` for its `HConsed` type without restricting it to `Send`able types and `Sync`able types.\n\nThis allows non-`Sync` types such as `Cell` to be shared across threads leading to undefined behavior and memory corruption in concurrent programs.",
+      "date": "2020-11-10",
+      "aliases": [
+        "CVE-2020-36215",
+        "GHSA-rw2c-c256-3r53"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/AdrienChampion/hashconsing/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.1.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

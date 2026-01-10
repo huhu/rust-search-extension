@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0392",
+      "package": "cggmp21-keygen",
+      "title": "Ambiguous challenge derivation",
+      "description": "Challenge derivation in non-interactive ZK proofs was ambiguous and that could lead\nto security vulnerability (however, it's unknown if it could be exploited).",
+      "date": "2024-07-18",
+      "aliases": [
+        "GHSA-7jjx-3qw9-j6h6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "mpc",
+        "tss",
+        "zkp"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dfns/cggmp21/pull/103",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

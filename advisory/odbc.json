@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0039",
+      "package": "odbc",
+      "title": "project abandoned",
+      "description": "Alternatives:\n- `odbc-api`\n- `rs-odbc`",
+      "date": "2022-01-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Koka/odbc-rs/commit/f9e5f77fac0a6328f9759e6e0f9e10c16509aebb",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

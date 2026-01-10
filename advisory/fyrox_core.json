@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0435",
+      "package": "fyrox-core",
+      "title": "Unsound usages of `Vec::from_raw_parts`",
+      "description": "The library provides a public safe API `transmute_vec_as_bytes`, which incorrectly assumes that any generic type `T` could have stable layout, causing to uninitialized memory exposure if the users pass any types with padding bytes as `T` and cast it to `u8` pointer.  \n\nIn the [issue](https://github.com/FyroxEngine/Fyrox/issues/630), we develop a PoC to show passing struct type to `transmute_vec_as_bytes` could lead to undefined behavior with `Vec::from_raw_parts`.  \n\nThe developers provide a patch by changing trait of `Copy` to `Pod`, which can make sure `T` should be plain data. This was patched in the latest version of [master](https://github.com/FyroxEngine/Fyrox/blob/3f9ad6f9667047dac051b0e97d544e5b38e5ae72/fyrox-core/src/lib.rs#L351-L360) branch, but still not on the latest release (0.28.1).",
+      "date": "2024-12-19",
+      "aliases": [
+        "GHSA-h7h7-6mx3-r89v"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "uninitialized"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/FyroxEngine/Fyrox/pull/662"
+      ],
+      "source": null,
+      "url": "https://github.com/FyroxEngine/Fyrox/issues/630",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "fyrox_core::transmute_vec_as_bytes": [
+          ">=0.28.1, <=0.36"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.36"
+      ],
+      "unaffected": []
+    }
+  }
+]

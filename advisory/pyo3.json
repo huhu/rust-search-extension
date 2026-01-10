@@ -1,0 +1,178 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0020",
+      "package": "pyo3",
+      "title": "Risk of buffer overflow in `PyString::from_object`",
+      "description": "`PyString::from_object` took `&str` arguments and forwarded them directly to the Python C API without checking for terminating nul bytes. This could lead the Python interpreter to read beyond the end of the `&str` data and potentially leak contents of the out-of-bounds read (by raising a Python exception containing a copy of the data including the overflow).\n\nIn PyO3 0.24.1 this function will now allocate a `CString` to guarantee a terminating nul bytes. PyO3 0.25 will likely offer an alternative API which takes `&CStr` arguments.",
+      "date": "2025-04-01",
+      "aliases": [
+        "GHSA-pph8-gcv7-4qj5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/issues/5005",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pyo3::types::PyString::from_object": [
+          "<0.24.1"
+        ],
+        "pyo3::types::PyString::from_object_bound": [
+          "<0.24.1",
+          ">=0.21.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.24.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0409",
+      "package": "pyo3",
+      "title": "Build corruption when using `PYO3_CONFIG_FILE` environment variable",
+      "description": "In PyO3 0.23.0 the `PYO3_CONFIG_FILE` environment variable used to configure builds regressed such that changing the environment variable would no longer trigger PyO3 to reconfigure and recompile. In combination with workflows using tools such as `maturin` to build for multiple versions in a single build, this leads to Python wheels being compiled against the wrong Python API version.\n\nAll users who distribute artefacts for multiple Python versions are encouraged to update and rebuild with PyO3 0.23.3. Affected wheels produced from PyO3 0.23.0 through 0.23.2 are highly unstable and will crash the Python interpreter in unpredictable ways.",
+      "date": "2024-12-04",
+      "aliases": [
+        "GHSA-vxcf-c7mx-pg53"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-corruption",
+        "ffi",
+        "corrupted-build"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/issues/4757",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.3"
+      ],
+      "unaffected": [
+        "<0.23.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0378",
+      "package": "pyo3",
+      "title": "Risk of use-after-free in `borrowed` reads from Python weak references",
+      "description": "The family of functions to read \"borrowed\" values from Python weak references\nwere fundamentally unsound, because the weak reference does itself not have\nownership of the value. At any point the last strong reference could\nbe cleared and the borrowed value would become dangling.\n\nIn PyO3 0.22.4 these functions have all been deprecated and patched to leak a\nstrong reference as a mitigation. PyO3 0.23 will remove these functions entirely.",
+      "date": "2024-10-12",
+      "aliases": [
+        "CVE-2024-9979",
+        "GHSA-6jgw-rgmm-7cv6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/4590",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pyo3::types::PyWeakrefMethods::get_object_borrowed": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed_as": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed_as_exact": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed_as_unchecked": [
+          "<0.22.4, >=0.22.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.22.4"
+      ],
+      "unaffected": [
+        "<0.22.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0074",
+      "package": "pyo3",
+      "title": "Reference counting error in `From<Py<T>>`",
+      "description": "A bug in `From<Py<T>>` would lead to an extra reference count decrement, often\nleading to use-after-free issues.",
+      "date": "2020-11-28",
+      "aliases": [
+        "CVE-2020-35917",
+        "GHSA-2vx6-fcw6-hpr6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/1297",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.12.4"
+      ],
+      "unaffected": [
+        "<0.12.0"
+      ]
+    }
+  }
+]

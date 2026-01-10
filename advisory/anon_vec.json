@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0039",
+      "package": "anon-vec",
+      "title": "Lack of sufficient checks in public API",
+      "description": "The following functions in the anon-vec crate are unsound due to insufficient checks on their\narguments::\n\n- `AnonVec::get_ref()`\n- `AnonVec::get_mut()`\n- `AnonVec::remove_get()`\n\nThe crate was built as a learning project and is not being maintained.",
+      "date": "2025-05-06",
+      "aliases": [
+        "GHSA-pr59-jjr4-gcf6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RylanYancey/anon-vec",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "anon_vec::AnonVec::get_mut": [
+          "<=0.1.1"
+        ],
+        "anon_vec::AnonVec::get_ref": [
+          "<=0.1.1"
+        ],
+        "anon_vec::AnonVec::remove_get": [
+          "<=0.1.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

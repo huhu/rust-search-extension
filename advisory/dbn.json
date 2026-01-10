@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0377",
+      "package": "dbn",
+      "title": "Heap Buffer overflow using c_chars_to_str function",
+      "description": "The `heap-buffer-overflow` is triggered in the `strlen()` function when handling the `c_chars_to_str` function in the dbn crate. This vulnerability occurs because the `CStr::from_ptr()` function in Rust assumes that the provided C string is null-terminated. However, there is no guarantee that the input chars array passed to the c_chars_to_str function is properly null-terminated.\n\nIf the chars array does not contain a null byte (\\0), strlen() will continue to read beyond the bounds of the buffer in search of a null terminator. This results in an out-of-bounds memory read and can lead to a heap-buffer-overflow, potentially causing memory corruption or exposing sensitive information.",
+      "date": "2024-10-07",
+      "aliases": [
+        "GHSA-pfr9-2p92-qrhq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "Heap-Buffer-Overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/databento/dbn/issues/67",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">0.22.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

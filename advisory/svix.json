@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0010",
+      "package": "svix",
+      "title": "Improper comparison of different-length signatures",
+      "description": "The `Webhook::verify` function incorrectly compared signatures of\ndifferent lengths - the two signatures would only be compared up to\nthe length of the shorter signature. This allowed an attacker to\npass in `v1,` as the signature, which would always pass verification.",
+      "date": "2024-02-06",
+      "aliases": [
+        "CVE-2024-21491",
+        "GHSA-747x-5m58-mq97",
+        "GHSA-w277-wpqf-rcfv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/svix/svix-webhooks/pull/1190",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "svix::webhooks::Webhook::verify": [
+          "<1.17.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.17.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

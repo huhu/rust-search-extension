@@ -1,0 +1,61 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0320",
+      "package": "yaml-rust",
+      "title": "yaml-rust is unmaintained.",
+      "description": "The maintainer seems [unreachable](https://github.com/chyh1990/yaml-rust/issues/197).\n\nMany issues and pull requests have been submitted over the years\nwithout any [response](https://github.com/chyh1990/yaml-rust/issues/160).\n\n## Alternatives\n\nConsider switching to the actively maintained `yaml-rust2` fork of the original project:\n\n- [yaml-rust2](https://github.com/Ethiraric/yaml-rust2)\n- [yaml-rust2 @ crates.io](https://crates.io/crates/yaml-rust2)",
+      "date": "2024-03-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/issues/1921",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0006",
+      "package": "yaml-rust",
+      "title": "Uncontrolled recursion leads to abort in deserialization",
+      "description": "Affected versions of this crate did not prevent deep recursion while\ndeserializing data structures.\n\nThis allows an attacker to make a YAML file with deeply nested structures\nthat causes an abort while deserializing it.\n\nThe flaw was corrected by checking the recursion depth.\n\nNote: `clap 2.33` is not affected by this because it uses `yaml-rust`\nin a way that doesn't trigger the vulnerability. More specifically:\n\n1. The input to the YAML parser is always trusted - is included at compile\ntime via `include_str!`.\n\n2. The nesting level is never deep enough to trigger the overflow in practice\n(at most 5).",
+      "date": "2018-09-17",
+      "aliases": [
+        "CVE-2018-20993",
+        "GHSA-hv87-47h9-jcvq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "crash"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/chyh1990/yaml-rust/pull/109",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

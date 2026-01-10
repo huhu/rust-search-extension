@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0059",
+      "package": "servo-fontconfig",
+      "title": "servo-fontconfig crate is unmaintained",
+      "description": "The `servo-fontconfig` crate is no longer actively maintained.  If you rely on this crate, consider switching to a maintained alternative.\n\n## Recommended alternatives\n\n- [`fontconfig-rs`](https://crates.io/crates/fontconfig-rs)",
+      "date": "2025-09-08",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/issues/1998",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0019",
+      "package": "array-init-cursor",
+      "title": "`array-init-cursor` in version 0.2.0 and below is unsound when used with types that implement `Drop`",
+      "description": "The `Drop` implementation will get run twice when using the cursor.\n\nThis issue does not affect you, if you are using only using the crate with\ntypes that are `Copy` such as `u8`.\n\nThis issue also does not affect you, if you are only depending on it through\nthe crate `planus`.",
+      "date": "2025-03-27",
+      "aliases": [
+        "GHSA-67r5-rqwv-9p9q"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/planus-org/planus/issues/293",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0014",
+      "package": "cortex-m-rt",
+      "title": "Miscompilation in cortex-m-rt 0.7.1 and 0.7.2",
+      "description": "Version 0.7.1 of the `cortex-m-rt` crate introduced a regression causing the stack to NOT be eight-byte aligned prior to calling `main` (or any other specified entrypoint), violating the [stack ABI of AAPCS32], the default ABI used by all Cortex-M targets. This regression is also present in version 0.7.2 of the `cortex-m-rt` crate.\n\nThis regression can cause certain compiler optimizations (which assume the eight-byte alignment) to produce incorrect behavior at runtime. This incorrect behavior has been [observed in real-world applications].\n\n**It is advised that ALL users of `v0.7.1` and `v0.7.2` of the `cortex-m-rt` crate update to the latest version (`v0.7.3`), AS SOON AS POSSIBLE.** Users of `v0.7.0` and prior versions of `cortex-m-rt` are not affected by this regression.\n\nIt will be necessary to rebuild all affected firmware binaries, and flash or deploy the new firmware binaries to affected devices.\n\n[stack ABI of AAPCS32]: https://github.com/ARM-software/abi-aa/blob/edd7460d87493fff124b8b5713acf71ffc06ee91/aapcs32/aapcs32.rst#6212stack-constraints-at-a-public-interface\n[observed in real-world applications]: https://github.com/peter9477/test2",
+      "date": "2023-02-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/cortex-m/discussions/469",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.3"
+      ],
+      "unaffected": [
+        "<=0.7.0"
+      ]
+    }
+  }
+]

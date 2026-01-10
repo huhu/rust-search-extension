@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0027",
+      "package": "mp3-metadata",
+      "title": "Panic in mp3-metadata due to the lack of bounds checking",
+      "description": "The `get_id3()` methods used by `mp3_metadata::read_from_slice()` does not perform adequate bounds\nchecking when recreating the tag due to the use of desynchronization.\n\nFixed in [Fix index error](https://github.com/GuillaumeGomez/mp3-metadata/pull/37), released as\npart of 0.4.0.",
+      "date": "2025-04-28",
+      "aliases": [
+        "GHSA-927q-g9w9-pm54"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/GuillaumeGomez/mp3-metadata/issues/36",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "mp3_metadata::read_from_slice": [
+          "<0.4.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

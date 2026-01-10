@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0120",
+      "package": "json5",
+      "title": "json5 crate is unmaintained",
+      "description": "The `json5` crate is no longer actively maintained.  If you rely on this crate, consider switching to a recommended alternative.\n\n## Recommended alternatives\n\n- [`serde_json5`](https://crates.io/crates/serde_json5)\n- [`jsonc-parser`](https://crates.io/crates/jsonc-parser)\n- [`json-five`](https://crates.io/crates/json-five)",
+      "date": "2025-11-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/callum-oakley/json5-rs/issues/51",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

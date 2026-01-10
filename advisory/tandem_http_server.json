@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0115",
+      "package": "tandem_http_server",
+      "title": "tandem_http_server is unmaintained",
+      "description": "The tandem crates in [https://github.com/sine-fdn](github.com/sine-fdn) are no longer maintained by the SINE Foundation. The repository has been archived.\n\n## Recommended alternative\nWe are continuing our work on SMPC by implementing our secure multi-party computation engine [Polytune](https://github.com/sine-fdn/polytune).",
+      "date": "2025-11-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sine-fdn/tandem/commit/4b3fe27190f20602dc3d9dbfcf36f72ca8b2c538",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

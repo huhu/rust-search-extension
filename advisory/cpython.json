@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0076",
+      "package": "cpython",
+      "title": "`cpython` is unmaintained",
+      "description": "The `cpython` crate and the underlying `python3-sys` and `python27-sys` crates have been marked as [no longer actively maintained] by the developer.\n\nThere are also open issues for unsound code that is currently in these crates:\n\n- [cpython#265]: Using some string functions causes segmentation faults on big-endian architectures. Due to incorrect bitfield manipulations, it is possible to create invalid Python objects that crash the Python interpreter.\n- [cpython#294]: Python 3.12 is not supported. Due to ABI changes in Python 3.12, calling some string functions will result in invalid Python objects and / or cause out-of-bounds memory accesses.\n\n## Recommended alternatives\n\n- [`pyo3`] (version 0.19.2 and newer)\n\nThe `pyo3` crate is actively maintained. Preliminary support for Python 3.12 was added in version 0.19.2, and version 0.20.0 was released with full support for Python 3.12.\n\nBoth versions implement string functions correctly on big-endian architectures. The endianness issue affecting the `cpython` crate was fixed in recent versions of `pyo3`.\n\n[no longer actively maintained]: https://github.com/dgrunwald/rust-cpython/commit/e815555\n[cpython#265]: https://github.com/dgrunwald/rust-cpython/issues/265\n[cpython#294]: https://github.com/dgrunwald/rust-cpython/issues/294\n[`pyo3`]: https://crates.io/crates/pyo3",
+      "date": "2023-11-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/dgrunwald/rust-cpython/issues/265",
+        "https://github.com/dgrunwald/rust-cpython/issues/294"
+      ],
+      "source": null,
+      "url": "https://github.com/dgrunwald/rust-cpython/commit/e815555",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,93 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0013",
+      "package": "libgit2-sys",
+      "title": "Memory corruption, denial of service, and arbitrary code execution in libgit2",
+      "description": "The [libgit2](https://github.com/libgit2/libgit2/) project fixed three security issues in the 1.7.2 release. These issues are:\n\n* The `git_revparse_single` function can potentially enter an infinite loop on a well-crafted input, potentially causing a Denial of Service. This function is exposed in the `git2` crate via the [`Repository::revparse_single`](https://docs.rs/git2/latest/git2/struct.Repository.html#method.revparse_single) method.\n* The `git_index_add` function may cause heap corruption and possibly lead to arbitrary code execution. This function is exposed in the `git2` crate via the [`Index::add`](https://docs.rs/git2/latest/git2/struct.Index.html#method.add) method.\n* The smart transport negotiation may experience an out-of-bounds read when a remote server did not advertise capabilities.\n\nThe `libgit2-sys` crate bundles libgit2, or optionally links to a system libgit2 library. In either case, versions of the libgit2 library less than 1.7.2 are vulnerable. The 0.16.2 release of `libgit2-sys` bundles the fixed version of 1.7.2, and requires a system libgit2 version of at least 1.7.2.\n\nIt is recommended that all users upgrade.",
+      "date": "2024-02-06",
+      "aliases": [
+        "GHSA-22q8-ghmq-63vf"
+      ],
+      "related": [
+        "CVE-2024-24575",
+        "CVE-2024-24577",
+        "GHSA-54mf-x2rh-hq9v",
+        "GHSA-j2v7-4f6v-gpg8"
+      ],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service",
+        "code-execution",
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L",
+      "informational": null,
+      "references": [
+        "https://github.com/libgit2/libgit2/releases/tag/v1.7.2"
+      ],
+      "source": null,
+      "url": "https://github.com/rust-lang/git2-rs/pull/1017",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libgit2_sys::git_index_add": [
+          "<0.16.2"
+        ],
+        "libgit2_sys::git_revparse_single": [
+          "<0.16.2, >=0.13.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.16.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0003",
+      "package": "libgit2-sys",
+      "title": "git2 does not verify SSH keys by default",
+      "description": "The git2 and libgit2-sys crates are Rust wrappers around the\n[libgit2]() C library. It was discovered that libgit2 1.5.0\nand below did not verify SSH host keys when establishing an SSH connection,\nexposing users of the library to Man-In-the-Middle attacks.\n\nThe libgit2 team assigned [CVE-2023-22742][libgit2-advisory] to this\nvulnerability. The following versions of the libgit2-sys Rust crate have been\nreleased:\n\n* libgit2-sys 0.14.2, updating the underlying libgit2 C library to version 1.5.1.\n* libgit2-sys 0.13.5, updating the underlying libgit2 C library to version 1.4.5.\n\nA new git2 crate version has also been released, 0.16.1. This version only\nbumps its libgit2-sys dependency to ensure no vulnerable libgit2-sys versions\nare used, but contains no code changes: if you update the libgit2-sys version\nthere is no need to also update the git2 crate version.\n\n[You can learn more about this vulnerability in libgit2's advisory][libgit2-advisory]\n\n[libgit2]: https://libgit2.org/\n[libgit2-advisory]: https://github.com/libgit2/libgit2/security/advisories/GHSA-8643-3wh5-rmjq",
+      "date": "2023-01-20",
+      "aliases": [
+        "CVE-2023-22742",
+        "GHSA-m4ch-rfv5-x5g3",
+        "GHSA-8643-3wh5-rmjq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "ssh",
+        "mitm",
+        "git"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/git2-rs/security/advisories/GHSA-m4ch-rfv5-x5g3",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.13.5, <0.14.0",
+        ">=0.14.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

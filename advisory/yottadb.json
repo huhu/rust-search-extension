@@ -1,0 +1,54 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0022",
+      "package": "yottadb",
+      "title": "Use-after-free in `subscript_next` and `subscript_prev` wrappers",
+      "description": "Affected versions of this crate had an unsound implementation which could pass\na pointer to freed memory to `ydb_subscript_next_st` and\n`ydb_subscript_prev_st` if the variable and subscripts did not have enough\nmemory allocated on the first call to hold the next variable in the database.\n\nFor example, the following code had undefined behavior:\n\n```rust\nlet mut key = Key::variable(String::from(\"a\"));\nKey::variable(\"averylongkeywithlotsofletters\")\n    .set_st(YDB_NOTTP, Vec::new(), b\"some val\")\n    .unwrap();\nkey.sub_next_self_st(YDB_NOTTP, Vec::new()).unwrap();\n```\n\n`yottadb` has no reverse-dependencies on crates.io and there are no known\ninstances of this API being used incorrectly in practice. The fix is backwards\ncompatible.\n\nThe flaw was corrected by recalculating the pointer each time it was reallocated.",
+      "date": "2021-02-09",
+      "aliases": [
+        "CVE-2021-27377",
+        "GHSA-9658-c26v-7qvf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.com/YottaDB/Lang/YDBRust/-/issues/40",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "yottadb::Key::sub_next_self_st": [
+          "<1.2.0"
+        ],
+        "yottadb::Key::sub_prev_self_st": [
+          "<1.2.0"
+        ],
+        "yottadb::KeyContext::sub_next_self_st": [
+          "<1.2.0"
+        ],
+        "yottadb::KeyContext::sub_prev_self_st": [
+          "<1.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

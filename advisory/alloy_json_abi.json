@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0362",
+      "package": "alloy-json-abi",
+      "title": "Stack overflow when parsing specially crafted JSON ABI strings",
+      "description": "Affected versions of the `alloy-json-abi` crate did not properly handle parsing of malformatted JSON ABI strings. The `JsonAbi::parse` method can be tricked into a stack overflow when processing specially crafted input. \n\nThis stack overflow can lead to a crash of the application using this crate, potentially causing a denial of service.\n\nThe flaw was corrected in commit 4790c47.",
+      "date": "2024-07-30",
+      "aliases": [
+        "GHSA-8327-84cj-8xjm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "stack-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/alloy-rs/core/issues/702",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.7"
+      ],
+      "unaffected": []
+    }
+  }
+]

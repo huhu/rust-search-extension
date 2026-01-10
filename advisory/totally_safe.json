@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0029",
+      "package": "totally-safe",
+      "title": "totally-safe introduces memory vulnerabilities in safe Rust",
+      "description": "`totally-safe` provides unsound APIs that exploit a soundness bug in rustc: https://github.com/rust-lang/rust/issues/25860",
+      "date": "2025-02-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "soundness-hole"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/viktorlott/totally-safe",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

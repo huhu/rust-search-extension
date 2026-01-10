@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0139",
+      "package": "theshit",
+      "title": "theshit vulnerable to unsafe loading of user-owned Python rules when running as root",
+      "description": "The application loads custom Python rules and configuration files from user-writable locations (e.g., `~/.config/theshit/`) without validating ownership or permissions when executed with elevated privileges.\n\nIf the tool is invoked with `sudo` or otherwise runs with an effective UID of root, it continues to trust configuration files originating from the unprivileged user's environment. This allows a local attacker to inject arbitrary Python code via a malicious rule or configuration file, which is then executed with root privileges.\n\nThe patch introduces strict ownership and permission checks for all configuration files and custom rules. The application now enforces that rules are only loaded if they are owned by the effective user executing the tool.\n\nWhen executed with elevated privileges (`EUID=0`), the application refuses to load any files that are not owned by root or that are writable by non-root users. When executed as a non-root user, it similarly refuses to load rules owned by other users. This prevents both vertical and horizontal privilege escalation via execution of untrusted code.",
+      "date": "2025-12-30",
+      "aliases": [
+        "CVE-2025-69257",
+        "GHSA-95qg-89c2-w5hj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation",
+        "code-execution"
+      ],
+      "keywords": [
+        "pyo3",
+        "lpe"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/AsfhtgkDavid/theshit/commit/8e0b565e7876a83b0e1cfbacb8af39dadfdcc500"
+      ],
+      "source": null,
+      "url": "https://github.com/advisories/GHSA-95qg-89c2-w5hj",
+      "withdrawn": null,
+      "license": "CC-BY-4.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "theshit::fix::python::process_python_rules": [
+          "<0.1.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0114",
+      "package": "va-ts",
+      "title": "`Demuxer` can carry non-Send types across thread boundaries",
+      "description": "In the affected versions of this crate, `Demuxer<T>` unconditionally implemented `Send` with no trait bounds on `T`.\n\nThis allows sending a non-Send type `T` across thread boundaries, which can cause undefined behavior like unlocking a mutex from a thread that didn't lock the mutex, or memory corruption from data race.\n\nThe flaw was corrected in commit 0562cbf by adding a `T: Send` bound to the `Send` impl for `Demuxer<T>`.",
+      "date": "2020-12-22",
+      "aliases": [
+        "CVE-2020-36220"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/video-audio/va-ts/issues/4",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.0.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

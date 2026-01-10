@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0165",
+      "package": "mozjpeg",
+      "title": "mozjpeg DecompressScanlines::read_scanlines is Unsound",
+      "description": "This issue and vector is similar to [RUSTSEC-2020-0029] of `rgb` crate which `mozjpeg` depends on.\n\nAffected versions of `mozjpeg` crate allow creating instances of any type `T` from bytes,\nand do not correctly constrain `T` to the types for which it is safe to do so.\n\nExamples of safety violation possible for a type `T`:\n\n* `T` contains a reference type, and it constructs a pointer to an invalid, arbitrary memory address.\n* `T` requires a safety and/or validity invariant for its construction that may be violated.\n\nThe issue was fixed in 0.8.19 by using safer types and involving `rgb` dependency bump.\n\n[RUSTSEC-2020-0029]: https://rustsec.org/advisories/RUSTSEC-2020-0029.html",
+      "date": "2020-07-04",
+      "aliases": [
+        "GHSA-v8gq-5grq-9728"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "type confusion"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/kornelski/rust-rgb/issues/35",
+        "https://rustsec.org/advisories/RUSTSEC-2020-0029.html"
+      ],
+      "source": null,
+      "url": "https://github.com/ImageOptim/mozjpeg-rust/issues/10",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "mozjpeg::DecompressScanlines::read_scanlines": [
+          "<0.8.19"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.19"
+      ],
+      "unaffected": []
+    }
+  }
+]

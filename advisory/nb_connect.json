@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0021",
+      "package": "nb-connect",
+      "title": "`nb-connect` invalidly assumes the memory layout of std::net::SocketAddr",
+      "description": "The [`nb-connect`](https://crates.io/crates/nb-connect) crate has assumed `std::net::SocketAddrV4`\nand `std::net::SocketAddrV6` have the same memory layout as the system C representation\n`sockaddr`. It has simply casted the pointers to convert the socket addresses to the\nsystem representation. The standard library does not say anything about the memory\nlayout, and this will cause invalid memory access if the standard library\nchanges the implementation. No warnings or errors will be emitted once the\nchange happens.",
+      "date": "2021-02-14",
+      "aliases": [
+        "CVE-2021-27376",
+        "GHSA-rm4w-6696-r77p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory",
+        "layout",
+        "cast"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/smol-rs/nb-connect/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

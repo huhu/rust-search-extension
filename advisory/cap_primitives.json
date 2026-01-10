@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0445",
+      "package": "cap-primitives",
+      "title": "cap-primitives doesn't fully sandbox all the Windows device filenames",
+      "description": "## Impact\n\ncap-primitives's filesystem sandbox implementation on Windows blocks\naccess to special device filenames such as \"COM1\", \"COM2\",\n\"LPT0\", \"LPT1\", and so on, however it did not block access\nto the special device filenames which use superscript digits,\nsuch as \"COM¹\", \"COM²\", \"LPT⁰\", \"LPT¹\", and so on. Untrusted\nfilesystem paths could bypass the sandbox and access devices\nthrough those special device filenames with superscript\ndigits, and through them provide access peripheral devices\nconnected to the computer, or network resources mapped to\nthose devices. This can include modems, printers, network\nprinters, and any other device connected to a serial or\nparallel port, including emulated USB serial ports.\n\n## Patches\n\nThe bug is fixed in #371, which is published in\ncap-primitives 3.4.1, cap-std 3.4.1, and cap-async-std 3.4.1.\n\n## Workarounds\n\nThere are no known workarounds for this issue.\nAffected Windows users are recommended to upgrade.",
+      "date": "2024-11-05",
+      "aliases": [
+        "CVE-2024-51756",
+        "GHSA-hxf5-99xg-86hw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "path traversal"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/bytecodealliance/cap-std/pull/371",
+        "https://nvd.nist.gov/vuln/detail/CVE-2024-51756"
+      ],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/cap-std/security/advisories/GHSA-hxf5-99xg-86hw",
+      "withdrawn": null,
+      "license": "CC-BY-4.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=3.4.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

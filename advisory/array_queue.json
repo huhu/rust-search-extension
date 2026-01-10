@@ -1,0 +1,83 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0054",
+      "package": "array-queue",
+      "title": "ArrayQueue::push_front is not panic-safe",
+      "description": "The safe API `array_queue::ArrayQueue::push_front` can lead to deallocating uninitialized memory if a panic occurs while invoking the `clone` method on the passed argument.\n\nSpecifically, `push_front` receives an argument that is intended to be cloned and pushed, whose type implements the `Clone` trait. Furthermore, the method updates the queue's `start` index before initializing the slot for the newly pushed element. User-defined implementations of `Clone` may include a `clone` method that can panic. If such a panic occurs during initialization, the structure is left with an advanced `start` index pointing to an uninitialized slot. When `ArrayQueue` is later dropped, its destructor treats that slot as initialized and attempts to drop it, resulting in an attempt to free uninitialized memory.\n\nThe bug was fixed in commit `728fe1b`.",
+      "date": "2025-08-14",
+      "aliases": [
+        "GHSA-xqjr-wfx3-gmxv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "panic-safety",
+        "uninitialized-memory"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/raviqqe/array-queue/issues/3",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "array_queue::ArrayQueue::push_front": [
+          ">=0.3.0, <=0.3.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": [
+        "<0.3.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0047",
+      "package": "array-queue",
+      "title": "array_queue pop_back() may cause a use-after-free",
+      "description": "array_queue implements a circular queue that wraps around an array. However, it\nfails to properly index into the array in the `pop_back` function allowing the\nreading of previously dropped or uninitialized memory.",
+      "date": "2020-09-26",
+      "aliases": [
+        "CVE-2020-35900",
+        "GHSA-75cq-g75g-rxff"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption",
+        "uninitialized-memory",
+        "use-after-free"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/raviqqe/array-queue/issues/2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<0.3.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0056",
+      "package": "adler",
+      "title": "adler crate is unmaintained, use adler2 instead",
+      "description": "The `adler` crate is no longer actively maintained. If you rely on this crate, consider switching to a maintained alternative.\n\n## Recommended alternatives\n\n- [`adler2`](https://crates.io/crates/adler2)",
+      "date": "2025-09-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/jonas-schievink/adler",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

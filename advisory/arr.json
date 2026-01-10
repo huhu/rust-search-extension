@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0034",
+      "package": "arr",
+      "title": "Multiple security issues including data race, buffer overflow, and uninitialized memory drop",
+      "description": "`arr` crate contains multiple security issues. Specifically,\n\n1. It incorrectly implements Sync/Send bounds, which allows to smuggle non-Sync/Send types across the thread boundary.\n2. `Index` and `IndexMut` implementation does not check the array bound.\n3. `Array::new_from_template()` drops uninitialized memory.",
+      "date": "2020-08-25",
+      "aliases": [
+        "CVE-2020-35886",
+        "CVE-2020-35887",
+        "CVE-2020-35888",
+        "GHSA-36xw-hgfv-jwm7",
+        "GHSA-c7fw-cr3w-wvfc",
+        "GHSA-fhvj-7f9p-w788"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sjep/array/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0016",
+      "package": "ms3d",
+      "title": "`IoReader::read()`: user-provided `Read` on uninitialized buffer may cause UB",
+      "description": "Affected versions of this crate passes an uninitialized buffer to a user-provided `Read` implementation.\n\nArbitrary `Read` implementations can read from the uninitialized buffer (memory exposure) and also can return incorrect number of bytes written to the buffer.\nReading from uninitialized memory produces undefined values that can quickly invoke undefined behavior.\n\nThe flaw was fixed in commit 599313b by zero-initializing the buffer (via `self.buf.resize(len, 0)`) before passing it to `Read`.",
+      "date": "2021-01-26",
+      "aliases": [
+        "CVE-2021-26952",
+        "GHSA-9f5r-vqm5-m342"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/andrewhickman/ms3d/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

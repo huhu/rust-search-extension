@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0092",
+      "package": "concread",
+      "title": "Send/Sync bound needed on V in `impl Send/Sync for ARCache<K, V>`",
+      "description": "Affected versions of this crate unconditionally implemented `Send`/`Sync` traits for `ARCache<K, V>` type.\n\nThis allows users to send/access types that do not implement `Send`/`Sync`, which can cause a data race.\n\nThe flaw was corrected in the 0.2.6 release by adding bounds `K: Send + Sync` & `V: Send + Sync` to affected `Send`/`Sync` trait implementations.",
+      "date": "2020-11-13",
+      "aliases": [
+        "CVE-2020-35928",
+        "GHSA-4xj5-vv9x-63jp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/kanidm/concread/issues/48",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

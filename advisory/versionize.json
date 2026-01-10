@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0030",
+      "package": "versionize",
+      "title": "`Versionize::deserialize` implementation for `FamStructWrapper<T>` is lacking bound checks, potentially leading to out of bounds memory accesses",
+      "description": "An issue was discovered in the `Versionize::deserialize` implementation provided by the `versionize` crate for `vmm_sys_util::fam::FamStructWrapper`, which can lead to out of bounds memory accesses. The impact started with version 0.1.1. The issue was corrected in version 0.1.10 by inserting a check that verifies, for any deserialized header, the lengths of compared flexible arrays are equal and aborting deserialization otherwise.",
+      "date": "2023-03-24",
+      "aliases": [
+        "CVE-2023-28448",
+        "GHSA-8vxc-r5wp-vgvc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:N/I:L/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/firecracker-microvm/versionize/pull/53",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "linux"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.10"
+      ],
+      "unaffected": []
+    }
+  }
+]

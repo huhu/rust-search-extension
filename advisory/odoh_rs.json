@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0095",
+      "package": "odoh-rs",
+      "title": "Invalid Slice Split Results in Server Panic",
+      "description": "A vulnerability was discovered in the odoh-rs rust crate that stems\nfrom faulty logic during the parsing of encrypted queries. This\nissue specifically occurs when processing encrypted query data\nreceived from remote clients.\n\n## Impact\n\nAn attacker with knowledge of this vulnerability could craft and send\nspecially designed encrypted queries to targeted ODOH servers running\nwith odoh-rs. Upon successful exploitation, the server will crash\nabruptly, disrupting its normal operation and rendering the service\ntemporarily unavailable.\n\n## Patches\n\nUsers are encouraged to update their odoh-rs's rust crate to v1.0.2.",
+      "date": "2023-08-03",
+      "aliases": [
+        "CVE-2023-3766",
+        "GHSA-gpcv-p28p-fv2p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/cloudflare/odoh-rs/pull/28"
+      ],
+      "source": null,
+      "url": "https://github.com/cloudflare/odoh-rs/security/advisories/GHSA-gpcv-p28p-fv2p",
+      "withdrawn": null,
+      "license": "CC-BY-4.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

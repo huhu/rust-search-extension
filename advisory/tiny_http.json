@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0031",
+      "package": "tiny_http",
+      "title": "HTTP Request smuggling through malformed Transfer Encoding headers",
+      "description": "HTTP pipelining issues and request smuggling attacks are possible due to incorrect \nTransfer encoding header parsing.\n\nIt is possible conduct HTTP request smuggling attacks (CL:TE/TE:TE) by sending invalid Transfer Encoding headers. \n\nBy manipulating the HTTP response the attacker could poison a web-cache, perform an XSS attack, or obtain sensitive information \nfrom requests other than their own.",
+      "date": "2020-06-16",
+      "aliases": [
+        "CVE-2020-35884",
+        "GHSA-7v2r-wxmg-mgvc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "http",
+        "request-smuggling"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tiny-http/tiny-http/issues/173",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0",
+        "^0.6.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

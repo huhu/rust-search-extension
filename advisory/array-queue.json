@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0047",
+      "package": "array-queue",
+      "title": "array_queue pop_back() may cause a use-after-free",
+      "description": "array_queue implements a circular queue that wraps around an array. However, it\nfails to properly index into the array in the `pop_back` function allowing the\nreading of previously dropped or uninitialized memory.",
+      "date": "2020-09-26",
+      "aliases": [
+        "CVE-2020-35900"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption",
+        "uninitialized-memory",
+        "use-after-free"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/raviqqe/array-queue/issues/2",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<0.3.0"
+      ]
+    }
+  }
+]

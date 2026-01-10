@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0374",
+      "package": "ouch",
+      "title": "Segmentation fault due to use of uninitialized memory",
+      "description": "When trying to decompress a file using \"ouch\", we can reach the function \"ouch::archive::zip::convert_zip_date_time\".\nIn the function, there is a unsafe function, \"transmute\". Once the \"transmute\" function is called to convert the type of \"month\" object,\nthe address of the object is changed to the uninitialized memory region. \nAfter that, when other function tries to dereference \"month\", segmentation fault occurs.",
+      "date": "2024-09-22",
+      "aliases": [
+        "GHSA-2wq5-g96f-mv3v"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ouch-org/ouch/issues/707",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ouch::archive::zip::convert_zip_date_time": [
+          "<=0.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

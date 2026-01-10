@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0023",
+      "package": "static_type_map",
+      "title": "`static_type_map` has been renamed to `erased_set`",
+      "description": "Please use the `erased_set` crate going forward:\n\n<https://github.com/malobre/erased_set>\n\nThere will be no further releases of `static_type_map`.",
+      "date": "2022-05-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/malobre/erased_set/issues/6",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

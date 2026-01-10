@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0103",
+      "package": "coreos-installer",
+      "title": "Incorrect signature verification on gzip-compressed install images",
+      "description": "The coreos-installer is a program to fetch a disk image and\nstream it to a target disk.\n\nDuring the installation process the installation image gpg\nsignatures are verified.\n\nThe signature verification can be bypassed for gzip-compressed\nimages due to a flaw in gzip coreos-installer wrapper.\n\nWhen the decoder encounters the gzip trailer, it signals EOF\nto its output and does not continue reading from its input.\nAs a result, earlier wrappers don't notice that they've reached\nEOF.\n\nIn particular, the GPG wrapper does not check the exit code of GPG.\n\nThus, if an attacker can substitute an attacker-controlled\ngzipped disk image, installation will complete successfully\nwithout a valid signature.\n\nThis vulnerability impacts only specific, User-Provisioned\nInfrastructure (UPI) installation methods where coreos-installer\nis used and where gzip-compressed images are configured as\nthe installation source.\n\nThe Installer-Provisioned Infrastructure (IPI) bare-metal\ninstalls do use coreos-installer, but this installation\nmethod uses an install image embedded in the live OS image\n(ISO or PXE image), therefore is not affected by this\nvulnerability.\n\nThis vulnerability is specific to some upstream Fedora\nCoreOS installation flows.",
+      "date": "2022-03-04",
+      "aliases": [
+        "CVE-2021-20319",
+        "GHSA-3r3g-g73x-g593"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2021-20319"
+      ],
+      "source": null,
+      "url": "https://bugzilla.redhat.com/show_bug.cgi?id=2011862",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

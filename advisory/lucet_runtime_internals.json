@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0004",
+      "package": "lucet-runtime-internals",
+      "title": "sigstack allocation bug can cause memory corruption or leak",
+      "description": "An embedding using affected versions of lucet-runtime configured to use\nnon-default Wasm globals sizes of more than 4KiB, or compiled in debug mode\nwithout optimizations, could leak data from the signal handler stack to guest\nprograms. This can potentially cause data from the embedding host to leak to\nguest programs or cause corruption of guest program memory.\n\nThis flaw was resolved by correcting the sigstack allocation logic.",
+      "date": "2020-01-24",
+      "aliases": [
+        "CVE-2020-35859",
+        "GHSA-3933-wvjf-pcvc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/lucet/pull/401",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "<0.5.0, >=0.4.3",
+        ">=0.5.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

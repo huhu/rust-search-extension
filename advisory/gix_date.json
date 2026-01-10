@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0140",
+      "package": "gix-date",
+      "title": "Non-utf8 String can be created with `TimeBuf::as_str`",
+      "description": "The function `gix_date::parse::TimeBuf::as_str` can create an illegal string containing non-utf8 characters. This violates the safety invariant of `TimeBuf` and can lead to undefined behavior when consuming the string.\n\nThe bug can be prevented by adding `str::from_utf8` to the function `TimeBuf::write`.",
+      "date": "2025-12-29",
+      "aliases": [
+        "GHSA-6mw6-mj76-grwc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "utf8",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/GitoxideLabs/gitoxide/issues/2305",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "gix_date::parse::TimeBuf::as_str": [
+          "<=0.11.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.12.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

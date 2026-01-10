@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0333",
+      "package": "rsa-export",
+      "title": "`rsa-export` is unmaintained",
+      "description": "This crate has been deprecated in favour of using the native support for exporting RSA keys into the standard PEM format.  \nSee [docs.rs documentation].\n\nIn addition to that, the operations in this crate (arithmetic and Base64 encoding) are not done in constant-time, \npotentially [exposing the user to sidechannel attacks].\n\n[docs.rs documentation]: https://docs.rs/rsa/0.9.6/rsa/index.html#pkcs8-rsa-key-encoding\n[exposing the user to sidechannel attacks]: https://arxiv.org/pdf/2108.04600.pdf",
+      "date": "2024-04-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://crates.io/crates/rsa-export/0.3.3",
+        "https://gitlab.com/smallglitch/rsa-export/-/commit/e29f17170d655a6f62eca8bf1f64ef0ce5807058"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

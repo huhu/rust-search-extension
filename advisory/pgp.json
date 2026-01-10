@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0447",
+      "package": "pgp",
+      "title": "Panics on Malformed Untrusted Input",
+      "description": "During a security audit, Radically Open Security discovered\nseveral reachable edge cases which allow an attacker to\ntrigger rpgp crashes by providing crafted data.\n\n## Impact\n\nWhen processing malformed input, rpgp can run into Rust panics which halt\nthe program.\n\nThis can happen in the following scenarios:\n\n * Parsing OpenPGP messages from binary or armor format\n * Decrypting OpenPGP messages via decrypt_with_password()\n * Parsing or converting public keys\n * Parsing signed cleartext messages from armor format\n * Using malformed private keys to sign or encrypt\n\nGiven the affected components, we consider most attack vectors to be\nreachable by remote attackers during typical use cases of the rpgp\nlibrary. The attack complexity is low since the malformed messages\nare generic, short, and require no victim-specific knowledge.\n\nThe result is a denial-of-service impact via program termination.\nThere is no impact to confidentiality or integrity security properties.\n\n## Versions and Patches\n\nAll recent versions are affected by at least some of the above mentioned\nissues.\n\nThe vulnerabilities have been fixed with version 0.14.1. We recommend\nall users to upgrade to this version.\n\n## References\n\nThe security audit was made possible by the NLnet Foundation\nNGI Zero Core grant program for rpgp.",
+      "date": "2024-12-05",
+      "aliases": [
+        "CVE-2024-53856",
+        "GHSA-9rmp-2568-59rv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/radicallyopensecurity/ros-website/blob/8169b16fc138a0b0dde14dd0e222d1279701b4d3/ros-public-reports/ROS%20-%20NLNet%20-%20rPGP%20-%202024.pdf"
+      ],
+      "source": null,
+      "url": "https://github.com/rpgp/rpgp/security/advisories/GHSA-9rmp-2568-59rv",
+      "withdrawn": null,
+      "license": "CC-BY-4.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.14.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

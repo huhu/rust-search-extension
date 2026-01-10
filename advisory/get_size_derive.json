@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0427",
+      "package": "get-size-derive",
+      "title": "get-size-derive is unmaintained",
+      "description": "get-size-derive's maintainer seems to be unreachable, with no commits and releases pushed for 1 year and no activity on the GitHub repo.\n\nget-size-derive also depends on `attribute-derive ^0.6` a version of the crate which uses the yanked crate `proc-macro-error`.\n\n## Possible Alternative(s)\n\n- [get-size-derive2](https://crates.io/crates/get-size-derive2)",
+      "date": "2024-09-15",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/DKerp/get-size/issues/22",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

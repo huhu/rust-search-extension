@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0032",
+      "package": "byte_struct",
+      "title": "Deserializing an array can drop uninitialized memory on panic",
+      "description": "The `read_bytes_default_le` function for `[T; n]` arrays, used to deserialize\narrays of `T` from bytes created a `[T; n]` array with `std::mem::uninitialized`\nand then called `T`'s deserialization method.\n\nIf `T`'s deserialization method panicked, the uninitialized memory could drop\ninvalid objects.\n\nThis flaw was corrected in `a535678` by removing the unsafe block and using\na `.map` function to deserialize each element of the array instead.",
+      "date": "2021-03-01",
+      "aliases": [
+        "CVE-2021-28033",
+        "GHSA-8fgg-5v78-6g76"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/wwylele/byte-struct-rs/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

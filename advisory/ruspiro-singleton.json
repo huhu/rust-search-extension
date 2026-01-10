@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0115",
+      "package": "ruspiro-singleton",
+      "title": "Singleton lacks bounds on Send and Sync.",
+      "description": "`Singleton<T>` is meant to be a static object that can be initialized lazily. In\norder to satisfy the requirement that `static` items must implement `Sync`,\n`Singleton` implemented both `Sync` and `Send` unconditionally.\n\nThis allows for a bug where non-`Sync` types such as `Cell` can be used in\nsingletons and cause data races in concurrent programs.\n\nThe flaw was corrected in commit `b0d2bd20e` by adding trait bounds, requiring\nthe contaiend type to implement `Sync`.",
+      "date": "2020-11-16",
+      "aliases": [
+        "CVE-2020-36435"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RusPiRo/ruspiro-singleton/issues/10",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

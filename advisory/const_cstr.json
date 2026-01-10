@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0020",
+      "package": "const-cstr",
+      "title": "const-cstr is Unmaintained",
+      "description": "Last release was about five years ago.\n\nThe maintainer(s) have been unreachable to respond to any issues that may or may not include security issues.\n\nThe repository is now archived and there is no security policy in place to contact the maintainer(s) otherwise.\n\nNo direct fork exist.\n\n# const-cstr is Unsound\n\nThe crate violates the safety contract of [ffi::CStr::from_bytes_with_nul_unchecked](https://doc.rust-lang.org/std/ffi/struct.CStr.html#method.from_bytes_with_nul_unchecked) used in `ConstCStr::as_cstr`\n\nNo interior nul bytes checking is done either by the constructor or the canonical macro to create the `ConstCStr`\n\n# const-cstr Panic\n\nAdditionally the crate may cause runtime panics if statically compiled and ran with any untrusted data that is not nul-terminated.\n\nThis is however unlikely but the the crate should not be used for untrusted data in context where panic may create a DoS vector.\n\n## Possible Alternatives\n\nThe below may or may not provide alternative(s)\n\n- [const_str::cstr!](https://docs.rs/const-str/latest/const_str/macro.cstr.html)\n- [cstr::cstr!](https://crates.io/crates/cstr)",
+      "date": "2023-03-12",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/abonander/const-cstr",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

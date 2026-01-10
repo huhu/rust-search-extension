@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0068",
+      "package": "serde_yml",
+      "title": "serde_yml crate is unsound and unmaintained",
+      "description": "Using `serde_yml::ser::Serializer.emitter` can cause a segmentation fault, which is unsound.\n\nThe GitHub project for `serde_yml` was archived after unsoundness issues were raised.\n\nIf you rely on this crate, it is highly recommended switching to a maintained alternative.\n\n## Recommended alternatives\n\n- [`serde_norway`](https://crates.io/crates/serde_norway) - Maintained fork of `serde_yaml`, using `unsafe-libyaml-norway`\n- [`serde_yaml_ng`](https://crates.io/crates/serde_yaml_ng) - Maintained fork of `serde_yaml`, using unmaintained `unsafe-libyaml`\n\n## Incomplete pure Rust alternatives\n\nThese implementation do not rely on C `libyaml`.\n\n- [`serde_yaml2`](https://crates.io/crates/serde_yaml2)\n- [`yaml-peg`](https://crates.io/crates/yaml-peg)",
+      "date": "2025-09-11",
+      "aliases": [
+        "GHSA-hhw4-xg65-fp2x"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/issues/2395",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0111",
+      "package": "tokio-tar",
+      "title": "`tokio-tar` parses PAX extended headers incorrectly, allows file smuggling",
+      "description": "The archive reader incorrectly handles PAX extended headers, when the ustar\nheader incorrectly specifies zero size (`size=000000000000`), while a PAX\nheader specifies a non-zero size, `tokio-tar::Archive` is going to read the\nfile content as tar entry header.\n\nThis can be used by a tar file to present different content to `tokio-tar`\ncompared to other tar reader implementations.\n\nThis bug is also known as `CVE-2025-62518` and `GHSA-j5gw-2vrg-8fgx`, as those\ncrates share a common ancestor codebase.\n\nThe `tokio-tar` crate is archived and no longer maintained, we recommend you\nswitch to an alternative crate such as:\n- [`astral-tokio-tar`](https://crates.io/crates/astral-tokio-tar)",
+      "date": "2025-10-21",
+      "aliases": [],
+      "related": [
+        "CVE-2025-62518",
+        "GHSA-j5gw-2vrg-8fgx"
+      ],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "unsound",
+        "parsing",
+        "smuggling",
+        "file-smuggling",
+        "unmaintained"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://edera.dev/stories/tarmageddon",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tokio_tar::Archive::new": [
+          "<=0.3.1"
+        ],
+        "tokio_tar::ArchiveBuilder::new": [
+          "<=0.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

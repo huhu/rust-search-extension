@@ -1,0 +1,74 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0135",
+      "package": "matrix-sdk-base",
+      "title": "matrix-sdk-base: Denial of service due to custom `m.room.join_rules` events",
+      "description": "The matrix-sdk-base crate is unable to handle responses that include custom\nm.room.join_rules values due to a serialization bug.\n\nThis can be exploited to cause a denial-of-service condition, if a user is\ninvited to a room with non-standard join rules, the crate's sync process will\nstall, preventing further processing for all rooms.",
+      "date": "2025-12-08",
+      "aliases": [
+        "CVE-2025-66622",
+        "GHSA-jj6p-3m75-g2p3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/security/advisories/GHSA-jj6p-3m75-g2p3",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.16.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0065",
+      "package": "matrix-sdk-base",
+      "title": "matrix-sdk-base: Panic in the `RoomMember::normalized_power_level()` method",
+      "description": "In matrix-sdk-base before 0.14.1, calling the\n`RoomMember::normalized_power_level()` method can cause a panic if a room member\nhas a power level of `Int::Min`.",
+      "date": "2025-09-11",
+      "aliases": [
+        "CVE-2025-59047",
+        "GHSA-qhj8-q5r6-8q6j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/security/advisories/GHSA-qhj8-q5r6-8q6j",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "matrix_sdk_base::RoomMember::normalized_power_level": [
+          "<=0.14.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.14.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

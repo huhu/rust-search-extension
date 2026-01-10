@@ -1,0 +1,79 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0009",
+      "package": "libp2p-core",
+      "title": "Failure to verify the public key of a `SignedEnvelope` against the `PeerId` in a `PeerRecord`",
+      "description": "Affected versions of this crate did not check that the public key the signature was created with matches the peer ID of the peer record. \nAny combination was considered valid.\n\nThis allows an attacker to republish an existing `PeerRecord` with a different `PeerId`.",
+      "date": "2022-02-07",
+      "aliases": [
+        "GHSA-wc36-xgcc-jwpr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libp2p_core::PeerRecord::from_signed_envelope": [
+          ">=0.30.0-rc.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        "^0.30.2",
+        ">=0.31.1"
+      ],
+      "unaffected": [
+        "<0.30.0-rc.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0004",
+      "package": "libp2p-core",
+      "title": "Failure to properly verify ed25519 signatures makes any signature valid",
+      "description": "Affected versions of this crate did not properly verify ed25519 signatures.\nAny signature with a correct length was considered valid.\n\nThis allows an attacker to impersonate any node identity.",
+      "date": "2019-05-15",
+      "aliases": [
+        "CVE-2019-15545",
+        "GHSA-4q4x-67hx-5mpg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.7.1",
+        ">=0.8.1"
+      ],
+      "unaffected": [
+        "<0.3"
+      ]
+    }
+  }
+]

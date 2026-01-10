@@ -1,0 +1,85 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0050",
+      "package": "id-map",
+      "title": "IdMap::from_iter may lead to uninitialized memory being freed on drop",
+      "description": "Due to a flaw in the constructor `id_map::IdMap::from_iter`, ill-formed objects may be created in which the amount of actually initialized memory is less than what is expected by the fields of `IdMap`. Specifically, the field `ids` is initialized based on the capacity of the vector `values`, which is constructed from the provided iterator. However, the length of this vector may be smaller than its capacity.\n\nIn such cases, when the resulting `IdMap` is dropped, its destructor incorrectly assumes that `values` contains `ids.len() == values.capacity()` initialized elements and attempts to iterate over and drop them. This leads to dereferencing and attempting to free uninitialized memory, resulting in undefined behavior and potential segmentation faults.\n\nThe bug was fixed in commit `fab6922`, and all unsafe code was removed from the crate.\n\nNote that the maintainer recommends using the following alternatives:\n- [slab](https://crates.io/crates/slab)\n- [slotmap](https://crates.io/crates/slotmap)",
+      "date": "2025-08-14",
+      "aliases": [
+        "GHSA-qq4c-hm99-979m"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "uninitialized-memory"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/andrewhickman/id-map/issues/4",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "id_map::IdMap::from_iter": [
+          ">=0.1.6, <=0.2.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.2"
+      ],
+      "unaffected": [
+        "<0.1.6"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0052",
+      "package": "id-map",
+      "title": "Multiple functions can cause double-frees",
+      "description": "The following functions in the crate are affected:\n\n## `IdMap::clone_from`\n\nThe `clone_from` implementation for `IdMap` drops the values present in the\nmap and then begins cloning values from the other map. If a `.clone()` call\npancics, then the afformentioned dropped elements can be freed again.\n\n## `get_or_insert`\n\n`get_or_insert` reserves space for a value, before calling the user provided\ninsertion function `f`. If the function `f` panics then uninitialized or\npreviously freed memory can be dropped.\n\n## `remove_set`\n\nWhen removing a set of elements, `ptr::drop_in_place` is called on each of the\nelement to be removed. If the `Drop` impl of one of these elements panics then\nthe previously dropped elements can be dropped again.",
+      "date": "2021-02-26",
+      "aliases": [
+        "CVE-2021-30455",
+        "CVE-2021-30456",
+        "CVE-2021-30457",
+        "GHSA-8gmx-cpcg-f8h5",
+        "GHSA-rccq-j2m7-8fwr",
+        "GHSA-vfqx-hv88-f9cv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/andrewhickman/id-map/issues/3",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

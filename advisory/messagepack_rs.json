@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0092",
+      "package": "messagepack-rs",
+      "title": "Deserialization functions pass uninitialized memory to user-provided Read",
+      "description": "Affected versions of this crate passed an uninitialized buffer to a\nuser-provided `Read` instance in:\n\n* `deserialize_binary`\n* `deserialize_string`\n* `deserialize_extension_others`\n* `deserialize_string_primitive`\n\nThis can result in safe `Read` implementations reading from the uninitialized\nbuffer leading to undefined behavior.",
+      "date": "2021-01-26",
+      "aliases": [
+        "CVE-2021-45690",
+        "CVE-2021-45691",
+        "CVE-2021-45692",
+        "CVE-2021-45693",
+        "GHSA-hr52-f9vp-582c",
+        "GHSA-jqjj-r4qp-x2gh",
+        "GHSA-jwfh-j623-m97h",
+        "GHSA-m325-rxjv-pwph",
+        "GHSA-vw5m-qw2r-m923"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/otake84/messagepack-rs/issues/2",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

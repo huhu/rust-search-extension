@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2017-0007",
+      "package": "lz4-compress",
+      "title": "lz4-compress is unmaintained",
+      "description": "[According to the developers](https://gitlab.redox-os.org/redox-os/tfs/issues/89) this crate is no longer maintained.\n\nThe suggested alternative is [`lz4-compression`](https://crates.io/crates/lz4-compression), a maintained fork of `lz4-compress`.\n\nSee also [lz-fear](https://crates.io/crates/lz-fear) which is compatible with the reference LZ4 implementation in C, but not with lz4-compress.",
+      "date": "2017-04-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.redox-os.org/redox-os/tfs/issues/89",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

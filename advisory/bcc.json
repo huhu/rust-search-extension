@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0383",
+      "package": "bcc",
+      "title": "bcc is unmaintained",
+      "description": "bcc will no longer be maintained as declared by the developer. Users are recommended to use libbpf-rs instead. See [libbpf-rs](https://github.com/libbpf/libbpf-rs).",
+      "date": "2024-09-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-bpf/rust-bcc/issues/200",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

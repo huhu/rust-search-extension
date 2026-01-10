@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0045",
+      "package": "static_cell",
+      "title": "ConstStaticCell could have been used to pass non-Send values to another thread",
+      "description": "`ConstStaticCell<T>` could have been used to pass non-`Send` values to another thread, because `T` was not required to be `Send` while `ConstStaticCell` is `Send`.\n\nThis was corrected by introducing a `T: Send` bound.",
+      "date": "2025-07-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "send",
+        "thread-safety"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/embassy-rs/static-cell/issues/19",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "static_cell::ConstStaticCell::new": [
+          "=2.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.1.1"
+      ],
+      "unaffected": [
+        "<=2.0.0"
+      ]
+    }
+  }
+]

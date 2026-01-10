@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0041",
+      "package": "sized-chunks",
+      "title": "Multiple soundness issues in Chunk and InlineArray",
+      "description": "Chunk:\n\n* Array size is not checked when constructed with `unit()` and `pair()`.\n* Array size is not checked when constructed with `From<InlineArray<A, T>>`.\n* `Clone` and `insert_from` are not panic-safe; A panicking iterator causes memory safety issues with them.\n\nInlineArray:\n\n* Generates unaligned references for types with a large alignment requirement.",
+      "date": "2020-09-06",
+      "aliases": [
+        "CVE-2020-25791",
+        "CVE-2020-25792",
+        "CVE-2020-25793",
+        "CVE-2020-25794",
+        "CVE-2020-25795",
+        "CVE-2020-25796",
+        "GHSA-64gv-qg2v-vxv6",
+        "GHSA-9p9m-9xww-qjcx",
+        "GHSA-fqpx-cq8x-9wp4",
+        "GHSA-mp6f-p9gp-vpj9",
+        "GHSA-rfgg-vccr-m46m",
+        "GHSA-x54v-qxxr-93qc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodil/sized-chunks/issues/11",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

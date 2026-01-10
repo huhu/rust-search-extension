@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0037",
+      "package": "pnet",
+      "title": "Compiler optimisation for next_with_timeout in pnet::transport::IcmpTransportChannelIterator flaws to SEGFAULT",
+      "description": "Affected versions of this crate were optimized out by compiler,\nwhich caused dereference of uninitialized file descriptor which caused segfault.",
+      "date": "2019-06-11",
+      "aliases": [
+        "CVE-2019-25054",
+        "GHSA-24g6-5rx7-58wj",
+        "GHSA-r6ff-2q3c-v3pv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "segfault"
+      ],
+      "cvss": "CVSS:3.0/AV:L/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/libpnet/libpnet/issues/449",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pnet::transport::IcmpTransportChannelIterator": [
+          "<0.27.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.27.2"
+      ],
+      "unaffected": []
+    }
+  }
+]
