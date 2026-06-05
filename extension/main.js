@@ -1,6 +1,5 @@
 import settings from "./settings.js";
 import attributesIndex from "./index/attributes.js";
-import searchState from "./search/docs/desc-shard.js";
 import IndexManager from "./index-manager.js";
 import CrateSearch from "./search/crate.js";
 import CaniuseSearch from "./search/caniuse.js";
@@ -133,12 +132,24 @@ async function start(omnibox) {
                 }
                 case "index-std-stable": {
                     // Update search index after docs updated
-                    stdSearcher.setSearchIndex(new Map(newValue));
+                    const searchIndex = new Map(newValue);
+                    if (IndexManager.isLegacyRustdocSearchIndex(searchIndex)) {
+                        stdSearcher.setSearchIndex(searchIndex);
+                    } else {
+                        console.warn("Ignoring incompatible stable rustdoc search index update.");
+                        chrome.storage.local.remove(key);
+                    }
                     break;
                 }
                 case "index-std-nightly": {
                     // Update search index after docs updated
-                    nightlySearcher.setSearchIndex(new Map(newValue));
+                    const searchIndex = new Map(newValue);
+                    if (IndexManager.isLegacyRustdocSearchIndex(searchIndex)) {
+                        nightlySearcher.setSearchIndex(searchIndex);
+                    } else {
+                        console.warn("Ignoring incompatible nightly rustdoc search index update.");
+                        chrome.storage.local.remove(key);
+                    }
                     break;
                 }
                 case "index-book": {
@@ -185,6 +196,11 @@ async function start(omnibox) {
                 }
                 case "index-target": {
                     targetCommand = new TargetCommand(newValue);
+                    break;
+                }
+                case "crates":
+                case "keep-crates-up-to-date": {
+                    crateDocSearcher.invalidateCachedSearch();
                     break;
                 }
                 default: {

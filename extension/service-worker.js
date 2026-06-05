@@ -50,21 +50,30 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
 });
 
-let isInited = false;
+let initPromise = null;
 async function init() {
-    if (isInited) {
-        return;
-    }
+  if (initPromise) {
+    return await initPromise;
+  }
 
+  initPromise = (async () => {
     const defaultSuggestion = `Search std <match>docs</match>, external <match>docs</match> (~,@), <match>crates</match> (!), <match>attributes</match> (#), <match>books</match> (%), clippy <match>lints</match> (>), and <match>error codes</match>, etc in your address bar instantly!`;
     const omnibox = Omnibox.extension({ defaultSuggestion, maxSuggestionSize: Compat.omniboxPageSize() });
     await start(omnibox);
     await checkAutoUpdate();
+  })();
+
+  try {
+    return await initPromise;
+  } catch (error) {
+    initPromise = null;
+    throw error;
+  }
 }
 
-if (!isInited) {
-    init();
-}
+init().catch(error => {
+  console.error("Failed to initialize Rust Search Extension:", error);
+});
 
 chrome.runtime.onInstalled.addListener(init);
 chrome.runtime.onStartup.addListener(init);

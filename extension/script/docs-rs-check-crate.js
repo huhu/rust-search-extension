@@ -1,5 +1,17 @@
 (function () {
-    if (!window.searchState?.descShards) {
+    function getVar(name) {
+        const el = document.querySelector("head > meta[name='rustdoc-vars']") ||
+            document.getElementById("rustdoc-vars");
+        return el ? el.attributes["data-" + name]?.value : null;
+    }
+
+    const hasOnDemandSearchIndex = !!(
+        getVar("root-path") &&
+        getVar("resource-suffix") &&
+        getVar("stringdex-js")
+    );
+
+    if (!window.searchState?.descShards && !hasOnDemandSearchIndex) {
         let button = document.querySelector(".add-to-extension");
         if (button) {
             button.classList.add("add-to-extension-disabled");

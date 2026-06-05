@@ -21,21 +21,51 @@ export default class IndexManager extends IndexSetter {
     static async getStdStableIndex() {
         let index = await storage.getItem('index-std-stable');
         if (index?.length > 0) {
-            return new Map(index);
+            const searchIndex = new Map(index);
+            if (IndexManager.isLegacyRustdocSearchIndex(searchIndex)) {
+                return searchIndex;
+            }
+            console.warn("Ignoring incompatible cached stable rustdoc search index.");
+            await storage.removeItem('index-std-stable');
         } else {
             return searchIndex;
         }
+        return searchIndex;
     }
 
     static async getStdNightlyIndex() {
         let index = await storage.getItem('index-std-nightly');
         if (index?.length > 0) {
-            return new Map(index);
+            const searchIndex = new Map(index);
+            if (IndexManager.isLegacyRustdocSearchIndex(searchIndex)) {
+                return searchIndex;
+            }
+            console.warn("Ignoring incompatible cached nightly rustdoc search index.");
+            await storage.removeItem('index-std-nightly');
         } else {
             // Structure clone search index is required
             return structuredClone(searchIndex);
         }
+        return structuredClone(searchIndex);
 
+    }
+
+    static isLegacyRustdocSearchIndex(index) {
+        if (!(index instanceof Map)) {
+            return false;
+        }
+
+        for (const crateCorpus of index.values()) {
+            if (!crateCorpus || !Array.isArray(crateCorpus.p)) {
+                return false;
+            }
+            for (const path of crateCorpus.p) {
+                if (!Array.isArray(path) || typeof path[1] !== "string") {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     static async getDescShards(crate) {

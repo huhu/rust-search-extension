@@ -1,4 +1,70 @@
 (async function () {
+    function buildOnDemandSearchMetadata() {
+        const rootPath = getVar("root-path");
+        const staticRootPath = getVar("static-root-path");
+        const stringdexJs = getVar("stringdex-js");
+        const resourceSuffix = getVar("resource-suffix");
+        if (!rootPath || !staticRootPath || !stringdexJs || !resourceSuffix) {
+            return null;
+        }
+
+        return {
+            rootPath: new URL(rootPath, location.href).href,
+            stringdexUrl: new URL(stringdexJs, new URL(staticRootPath, location.href)).href,
+            rootIndexUrl: new URL(
+                `${rootPath}search.index/root${resourceSuffix}.js`,
+                location.href,
+            ).href,
+            searchIndexBaseUrl: new URL(`${rootPath}search.index/`, location.href).href,
+            rustdocVersion: getVar("rustdoc-version"),
+            resourceSuffix,
+        };
+    }
+
+    function sendOnDemandSearchIndex(metadata) {
+        let [crateName, crateVersion, libName] = location.pathname.slice(1).split("/");
+        if (crateVersion === 'latest') {
+            crateVersion = parseCrateVersionFromDOM();
+        }
+
+        window.postMessage({
+            direction: "rust-search-extension:docs.rs",
+            message: {
+                libName,
+                crateName,
+                crateVersion,
+                crateTitle: parseCrateTitleFromDOM(),
+                ...metadata,
+            },
+        }, "*");
+    }
+
+    const onDemandSearchMetadata = location.hostname === "docs.rs" ?
+        buildOnDemandSearchMetadata() :
+        null;
+    if (onDemandSearchMetadata) {
+        sendOnDemandSearchIndex(onDemandSearchMetadata);
+        return;
+    }
+
+    function isLegacyRustdocSearchIndex(index) {
+        if (!(index instanceof Map)) {
+            return false;
+        }
+
+        for (const crateCorpus of index.values()) {
+            if (!crateCorpus || !Array.isArray(crateCorpus.p)) {
+                return false;
+            }
+            for (const path of crateCorpus.p) {
+                if (!Array.isArray(path) || typeof path[1] !== "string") {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     async function loadDesc(descShard) {
         if (descShard.promise === null) {
             descShard.promise = new Promise((resolve, reject) => {
@@ -66,6 +132,11 @@
                         },
                     }, "*");
                 } else { // stable/nightly pages
+                    if (!isLegacyRustdocSearchIndex(originalSearchIndex)) {
+                        console.warn("Skip incompatible rustdoc search index.");
+                        return;
+                    }
+
                     const STD_CRATES = ['std', 'test', 'proc_macro', 'core', 'alloc'];
                     window.postMessage({
                         direction: `rust-search-extension:std`,
