@@ -33,8 +33,12 @@ deploy() {
     git ls-files -s | awk '$1 == "160000"' >&2
     exit 1
   fi
-  git commit -m "Deploy new version docs"
-  git push --force "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "${BRANCH}"
+  if git diff --cached --quiet; then
+    echo "No docs changes to publish"
+  else
+    git commit -m "Deploy new version docs"
+    git push --force "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "${BRANCH}"
+  fi
 
   echo "Deploy complete"
 }
