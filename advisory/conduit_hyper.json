@@ -20,9 +20,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/conduit-rust/conduit-hyper/security/advisories/GHSA-9398-5ghf-7pr6",
+      "url": "https://github.com/conduit-rust/conduit-hyper/commit/4d225a53206505d39438ec6694e15f49c038baff",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

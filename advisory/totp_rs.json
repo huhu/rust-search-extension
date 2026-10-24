@@ -23,9 +23,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/constantoine/totp-rs/security/advisories/GHSA-8vxv-2g8p-2249",
+      "url": "https://github.com/constantoine/totp-rs/issues/13",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

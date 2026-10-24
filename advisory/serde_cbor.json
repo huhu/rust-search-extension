@@ -17,7 +17,8 @@
       "source": null,
       "url": "https://github.com/pyfisch/cbor",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -52,7 +53,8 @@
       "source": null,
       "url": "https://github.com/pyfisch/cbor/releases/tag/v0.10.2",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

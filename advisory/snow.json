@@ -25,9 +25,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/mcginty/snow/security/advisories/GHSA-7g9j-g5jg-3vv3",
+      "url": "https://github.com/mcginty/snow/commit/12e8ae55547ae297d5f70599e5c884ea891303eb",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

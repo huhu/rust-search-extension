@@ -24,7 +24,8 @@
       "source": null,
       "url": "https://github.com/andrewhickman/id-map/issues/4",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -74,7 +75,8 @@
       "source": null,
       "url": "https://github.com/andrewhickman/id-map/issues/3",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

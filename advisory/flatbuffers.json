@@ -19,7 +19,8 @@
       "source": null,
       "url": "https://github.com/google/flatbuffers/issues/6627",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -50,7 +51,8 @@
       "source": null,
       "url": "https://github.com/google/flatbuffers/issues/5825",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -94,7 +96,8 @@
       "source": null,
       "url": "https://github.com/google/flatbuffers/issues/5530",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

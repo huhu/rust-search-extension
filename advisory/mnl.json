@@ -4,7 +4,7 @@
       "id": "RUSTSEC-2025-0142",
       "package": "mnl",
       "title": "Segmentation fault and invalid memory read in `mnl::cb_run`",
-      "description": "The function `mnl::cb_run` is marked as safe but exhibits unsound behavior when processing malformed Netlink message buffers.\n\nPassing a crafted byte slice to `mnl::cb_run` can trigger memory violations. The function does not sufficiently validate the input buffer structure before processing, leading to out-of-bounds reads.\n\nThis vulnerability allows an attacker to cause a Denial of Service (segmentation fault) or potentially read unmapped memory by providing a malformed Netlink message.",
+      "description": "The function `mnl::cb_run` is marked as safe but exhibits unsound behavior when processing malformed Netlink message buffers.\n\nPassing a crafted byte slice to `mnl::cb_run` can trigger memory violations. The function does not sufficiently validate the input buffer structure before processing, leading to out-of-bounds reads.\n\nThis vulnerability allows an attacker to cause a Denial of Service (segmentation fault) or potentially read unmapped memory by providing a malformed Netlink message.\n\nThe underlying issue is a bug in `libmnl` where during validation `nlh->nlmsg_len` is cast to an `int` and becomes negative if `nlmsg_len` is greater than `INT_MAX`. This causes the validation to succeed even if the buffer is too small for the message. This has been fixed in `libmnl` but still affects version 1.0.5.\n\nThe issue in `mnl` was fixed in commit `cd51bdc` by checking the validity of netlink messages passed to `mnl::cb_run`.",
       "date": "2025-10-18",
       "aliases": [
         "GHSA-585q-cm62-757j"
@@ -21,11 +21,14 @@
       "source": null,
       "url": "https://github.com/mullvad/mnl-rs/issues/15",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
-      "patched": [],
+      "patched": [
+        ">=0.3.1"
+      ],
       "unaffected": []
     }
   }

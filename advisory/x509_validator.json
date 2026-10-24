@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0312",
+      "package": "x509-validator",
+      "title": "Excluded iPAddress name constraints with an all-zero mask are not applied",
+      "description": "An `excluded_subtrees` iPAddress name constraint with an all-zero mask\n(`0.0.0.0/0` or `::/0`) does not restrict iPAddress SANs in certificates issued\nbeneath it. The mask check treated an all-zero mask as matching nothing, when a\n`/0` prefix matches every address of its family, so the exclusion was silently\nignored.\n\nCA/Browser Forum Baseline Requirements §7.1.2.5.2 require exactly these\nexclusions on every technically constrained sub-CA that may not issue for IP\naddresses. As a result, anyone holding (or having compromised) the key of such\na sub-CA can issue a certificate for an arbitrary IP address, and `Validator`\nwith `RFC5280Policy` and `ServerIdentityPolicy` accepts it for that address. A\n`permitted_subtrees` dNSName entry on the same issuer does not prevent this,\nbecause iPAddress SANs are a different name form.\n\nAll users of `Validator` with `RFC5280Policy` are affected when a chain can\ncontain a name-constrained issuer with an all-zero iPAddress exclusion.\n\nThe issue is fixed in x509-validator 0.3.1 (commit\n[da661f8](https://github.com/namecare/x509-validator/commit/da661f8ecee820e05d089a76ecb654ff52a2c987)).\nUsers should upgrade to 0.3.1 or later.",
+      "date": "2026-09-24",
+      "aliases": [
+        "GHSA-39mm-4q6x-3vrx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "x509",
+        "name-constraints",
+        "certificate-validation",
+        "tls"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/namecare/x509-validator/commit/da661f8ecee820e05d089a76ecb654ff52a2c987",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

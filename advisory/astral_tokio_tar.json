@@ -1,6 +1,148 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0145",
+      "package": "astral-tokio-tar",
+      "title": "PAX Header Desynchronization in astral-tokio-tar",
+      "description": "Versions of astral-tokio-tar prior to 0.6.2 contain a PAX header interpretation bug that allows manipulated entries to be made selectively visible or invisible during extraction with astral-tokio-tar versus other tar implementations. An attacker could use this differential to smuggle unexpected files onto a victim's filesystem.",
+      "date": "2026-05-18",
+      "aliases": [
+        "GHSA-3cv2-h65g-fgmm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "tar",
+        "chmod"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/astral-sh/tokio-tar/pull/82",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0112",
+      "package": "astral-tokio-tar",
+      "title": "PAX Header Desynchronization in astral-tokio-tar",
+      "description": "Versions of astral-tokio-tar prior to 0.6.1 contain a PAX header interpretation\nbug that allows manipulated entries to be made selectively visible or invisible\nduring extraction with astral-tokio-tar versus other tar implementations.\nAn attacker could use this differential to smuggle unexpected files onto a\nvictim's filesystem.",
+      "date": "2026-04-27",
+      "aliases": [
+        "GHSA-fp55-jw48-c537"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "parser-differential",
+        "smuggling"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/astral-sh/tokio-tar/commit/6f4f9ebc180f4d39d66d9c584a3796c0b9ae34c1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0113",
+      "package": "astral-tokio-tar",
+      "title": "`unpack_in` can chmod arbitrary directories by following symlinks",
+      "description": "In versions 0.6.0 and earlier of astral-tokio-tar, the unpack_in API could\ninadvertently modify the permissions of external (i.e. non-archive) directories\noutside of the archive. An attacker could use this to contrite a tar archive\nthat maliciously changes directory permissions outside of its intended\nhierarchy. This flaw only affects directories; individual file permissions\ncannot be modified via it.\n\nSee GHSA-j4xf-2g29-59ph for the equivalent flaw in the tar crate.",
+      "date": "2026-04-27",
+      "aliases": [
+        "GHSA-xx64-wwv2-hcqq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "tar",
+        "chmod"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/astral-sh/tokio-tar/commit/f1fa37043a6fe798dcd1fd4b3000d889ac35b183",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0066",
+      "package": "astral-tokio-tar",
+      "title": "Insufficient validation of PAX extensions during extraction",
+      "description": "In versions 0.5.6 and earlier of astral-tokio-tar, malformed PAX extensions\nwere silently skipped when parsing tar archives. This silent skipping (rather\nthan rejection) of invalid PAX extensions could be used as a building block for\na parser differential, for example by silently skipping a malformed GNU \"long\nlink\" extension so that a subsequent parser would misinterpret the extension.\n\nIn practice, exploiting this behavior in astral-tokio-tar requires a secondary\nmisbehaving tar parser, i.e. one that insufficiently validates malformed PAX\nextensions and interprets them rather than skipping or erroring on them. This\nvulnerability is considered low-severity as it requires a separate\nvulnerability against any unrelated tar parser.\n\nThis issue has been fixed in version 0.6.0.",
+      "date": "2026-03-17",
+      "aliases": [
+        "GHSA-6gx3-4362-rf54",
+        "CVE-2026-32766"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "tar"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:U",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2025-0110",
       "package": "astral-tokio-tar",
       "title": "astral-tokio-tar Vulnerable to PAX Header Desynchronization",
@@ -23,9 +165,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/advisories/GHSA-j5gw-2vrg-8fgx",
+      "url": "https://github.com/astral-sh/tokio-tar/commit/22b3f884adb7a2adf1d3a8d03469533f5cbc8318",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

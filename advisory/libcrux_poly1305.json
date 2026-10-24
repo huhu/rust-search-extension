@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0073",
+      "package": "libcrux-poly1305",
+      "title": "Panic in Standalone MAC Operations",
+      "description": "An incorrect constant for the key length in libcrux-poly1305 caused\nthe standalone MAC function `libcrux_poly1305::mac` to always panic\nwith an out-of-bounds memory access.\n\n## Impact\nApplications wishing to use libcrux-poly1305 as a standalone MAC would\nexperience panics. The use of libcrux-poly1305 in\nlibcrux-chacha20poly1305 is unaffected.\n\n## Mitigation\nStarting from version `0.0.5`, the correct value is used for the key\nlength constant.",
+      "date": "2026-03-04",
+      "aliases": [
+        "GHSA-pv9v-5j35-xwcr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1351",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_poly1305::mac": [
+          "<=0.0.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

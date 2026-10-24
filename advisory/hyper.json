@@ -19,7 +19,8 @@
       "source": null,
       "url": "https://github.com/hyperium/hyper/pull/2545",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -52,9 +53,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/hyperium/hyper/security/advisories/GHSA-5h46-h7hh-c6x9",
+      "url": "https://github.com/hyperium/hyper/commit/efd9a9821fd2f1ae04b545094de76a435b62e70f",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -86,9 +88,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/hyperium/hyper/security/advisories/GHSA-f3pg-qwvg-p99c",
+      "url": "https://github.com/hyperium/hyper/commit/1fb719e0b61a4f3d911562a436a2ff05fd7cb759",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -122,9 +125,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/hyperium/hyper/security/advisories/GHSA-6hfq-h8hq-87mf",
+      "url": "https://github.com/hyperium/hyper/commit/8f93123efef5c1361086688fe4f34c83c89cec02",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -164,7 +168,8 @@
       "source": null,
       "url": "https://github.com/hyperium/hyper/issues/1925",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -197,7 +202,8 @@
       "source": null,
       "url": "https://github.com/hyperium/hyper/wiki/Security-001",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -236,7 +242,8 @@
       "source": null,
       "url": "https://github.com/hyperium/hyper/blob/master/CHANGELOG.md#v094-2016-05-09",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

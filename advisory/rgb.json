@@ -22,7 +22,8 @@
       "source": null,
       "url": "https://github.com/kornelski/rust-rgb/issues/35",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

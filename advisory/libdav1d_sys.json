@@ -23,7 +23,8 @@
       "source": null,
       "url": "https://www.cvedetails.com/cve/CVE-2024-1580/",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

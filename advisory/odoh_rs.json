@@ -22,9 +22,10 @@
         "https://github.com/cloudflare/odoh-rs/pull/28"
       ],
       "source": null,
-      "url": "https://github.com/cloudflare/odoh-rs/security/advisories/GHSA-gpcv-p28p-fv2p",
+      "url": "https://github.com/cloudflare/odoh-rs/pull/28",
       "withdrawn": null,
-      "license": "CC-BY-4.0"
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

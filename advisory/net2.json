@@ -26,7 +26,8 @@
       "source": null,
       "url": "https://github.com/deprecrated/net2-rs/issues/105",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -54,7 +55,8 @@
       "source": null,
       "url": "https://github.com/deprecrated/net2-rs/commit/3350e3819adf151709047e93f25583a5df681091",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

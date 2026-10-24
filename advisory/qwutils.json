@@ -25,7 +25,8 @@
       "source": null,
       "url": "https://github.com/qwertz19281/rust_utils/issues/3",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

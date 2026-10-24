@@ -1,6 +1,56 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0272",
+      "package": "stack_dst",
+      "title": "Panic-safety unsoundness in `Stack::pop`, `Fifo::pop_front` and `Value::replace_stable` (use-after-free / double-free)",
+      "description": "Three removal and replacement paths destroy an initialized value before\ncommitting the metadata change that removes it. Destruction runs `T::drop()`,\nwhich is user code and may panic. If it does, the commit is skipped and the\ncontainer still claims ownership of the already-destroyed value, so its own\ndestructor drops that value a second time.\n\n`Stack::pop` drops the top value before reducing `next_ofs`. `Stack`'s\ndestructor pops in a loop, so an unchanged `next_ofs` re-drops the same value.\n\n`Fifo::pop_front` (via `pop_front_inner`) drops the front value before advancing\n`read_pos`. An unchanged `read_pos` still points at the destroyed value.\n\n`Value::replace_stable` drops the existing value before writing the replacement.\nIf the destructor panics the replacement is never written, but the backing\nstorage still holds the old value's metadata.\n\nThis is separate from RUSTSEC-2021-0033, which covered a clone panic on\ninsertion in `push_cloned` and was fixed in 0.6.1.\n\n## Impact\n\nA heap-owning value is freed twice, corrupting the allocator. Reachable from\nsafe Rust with any element type whose `Drop` can panic — no `unsafe` on the\ncaller's side.\n\n* CWE-415 (Double Free)\n* CWE-416 (Use-After-Free)\n\nConfirmed under AddressSanitizer, which reports `attempting double-free` on all\nthree paths.\n\n## Fix\n\nFixed in 0.8.2.",
+      "date": "2026-08-27",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "panic-safety",
+        "memory-safety",
+        "use-after-free",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/thepowersgang/stack_dst-rs/issues/16",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "stack_dst::Fifo::pop_front": [
+          "<0.8.2"
+        ],
+        "stack_dst::Stack::pop": [
+          "<0.8.2"
+        ],
+        "stack_dst::Value::replace_stable": [
+          "<0.8.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0033",
       "package": "stack_dst",
       "title": "push_cloned can drop uninitialized memory or double free on panic",
@@ -27,7 +77,8 @@
       "source": null,
       "url": "https://github.com/thepowersgang/stack_dst-rs/issues/5",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

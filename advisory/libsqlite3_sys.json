@@ -23,7 +23,8 @@
       "source": null,
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35737",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

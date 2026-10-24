@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0130",
+      "package": "caja",
+      "title": "Out-of-bounds read/write in `Index` and `IndexMut` implementations",
+      "description": "The `Index` and `IndexMut` implementations for `Caja` use unchecked pointer\narithmetic without bounds validation. Creating a `Caja` with a small key and\nthen accessing an out-of-range index causes out-of-bounds reads or writes\nbeyond the allocated memory.\n\nThis can be triggered through safe public APIs — the `[]` indexing operator\non a `Caja` with an out-of-range index — with no `unsafe` required from the\ncaller.",
+      "date": "2026-05-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "out-of-bounds"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/EmanuelGCC/Caja/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

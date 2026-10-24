@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0103",
+      "package": "thin-vec",
+      "title": "Use-After-Free and Double Free in IntoIter::drop When Element Drop Panics",
+      "description": "A Double Free / Use-After-Free (UAF) vulnerability has been identified in the\n`IntoIter::drop` and `ThinVec::clear` implementations of the `thin-vec` crate.\nBoth vulnerabilities share the same root cause and can trigger memory\ncorruption using only safe Rust code - no unsafe blocks required. Undefined\nBehavior has been confirmed via Miri and AddressSanitizer (ASAN).\n\n## Details\n\nWhen a **panic occurs** during sequential element deallocation, the subsequent\nlength cleanup code (`set_len(0)`) is never executed. During stack unwinding,\nthe container is dropped again, causing already-freed memory to be re-freed\n(Double Free / UAF).\n\n### Vulnerability 1 - `IntoIter::drop`\n\n`IntoIter::drop` transfers ownership of the internal buffer via `mem::replace`,\nthen sequentially frees elements via `ptr::drop_in_place`. If a panic occurs\nduring element deallocation, `set_len_non_singleton(0)` is never reached.\nDuring unwinding, `vec` is dropped again, re-freeing already-freed elements.\nThe standard library's `std::vec::IntoIter` prevents this with a **DropGuard\npattern**, but thin-vec lacks this defense.\n\n### PoC\n\n```rust\nuse thin_vec::ThinVec;\n\nstruct PanicBomb(String);\n\nimpl Drop for PanicBomb {\n    fn drop(&mut self) {\n        if self.0 == \"panic\" {\n            panic!(\"panic!\");\n        }\n        println!(\"Dropping: {}\", self.0);\n    }\n}\n\nfn main() {\n    let mut v = ThinVec::new();\n    v.push(PanicBomb(String::from(\"normal1\")));\n    v.push(PanicBomb(String::from(\"panic\")));  // trigger element\n    v.push(PanicBomb(String::from(\"normal2\")));\n\n    let mut iter = v.into_iter();\n    iter.next();\n    // When iter is dropped: panic occurs at \"panic\" element\n    // → During unwinding, Double Drop is triggered on \"normal1\" (already freed)\n}\n```\n\n### Vulnerability 2 - `ThinVec::clear`\n\n`clear()` calls `ptr::drop_in_place(&mut self[..])` followed by\n`self.set_len(0)` to reset the length. If a panic occurs during element\ndeallocation, `set_len(0)` is never executed. When the `ThinVec` itself is\nsubsequently dropped, already-freed elements are freed again.\n\n### PoC\n\n```rust\nuse thin_vec::ThinVec;\nuse std::panic;\n\nstruct Poison(Box<usize>, &'static str);\n\nimpl Drop for Poison {\n    fn drop(&mut self) {\n        if self.1 == \"panic\" {\n            panic!(\"panic!\");\n        }\n        println!(\"Dropping: {}\", self.0);\n    }\n}\n\nfn main() {\n    let mut v = ThinVec::new();\n    v.push(Poison(Box::new(1), \"normal1\")); // index 0\n    v.push(Poison(Box::new(2), \"panic\"));   // index 1 → panic triggered here\n    v.push(Poison(Box::new(3), \"normal2\")); // index 2\n\n    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| {\n        v.clear();\n        // panic occurs at \"panic\" element during clear()\n        // → set_len(0) is never called\n        // → already-freed elements are re-freed when v goes out of scope\n    }));\n}\n```\n\n## Prerequisites\n\n1. `ThinVec` stores heap-owning types (`String`, `Vec`, `Box`, etc.)\n2. (Vulnerability 1) An iterator is created via `into_iter()` and dropped before being fully consumed, or\n   (Vulnerability 2) `clear()` is called while a remaining element's `Drop` implementation can panic\n3. The `Drop` implementation of a remaining element triggers a panic\n\nWhen combined with `Box<dyn Trait> types`, an exploit primitive enabling\nArbitrary Code Execution (ACE) via heap spray and vtable hijacking has been\nconfirmed. If the freed fat pointer slot (16 bytes) at the point of Double Drop\nis reclaimed by an attacker-controlled fake vtable, subsequent Drop calls can\nbe redirected to attacker-controlled code.",
+      "date": "2026-04-14",
+      "aliases": [
+        "CVE-2026-6654",
+        "GHSA-xphw-cqx3-667j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free",
+        "use-after-free"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mozilla/thin-vec/commit/df64748355222525c344ecd9d2c9f59a662e1678",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.16"
+      ],
+      "unaffected": []
+    }
+  }
+]

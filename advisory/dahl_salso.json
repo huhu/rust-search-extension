@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0129",
+      "package": "dahl-salso",
+      "title": "Buffer overflow in `Clusterings::from_i32_column_major_order()`",
+      "description": "The `from_i32_column_major_order` method can create inconsistent internal\nstate. When `labels` length and `n_items` mismatch, `n_clusterings` becomes\n`labels.len() / n_items` (truncated), but subsequent calls to `label()` use\nindices that exceed the internal data bounds, causing a buffer overflow.\n\nFor example, `Clusterings::from_i32_column_major_order(&[1,2,3,4,5], 3)`\ncreates clusterings with `n_clusterings = 5/3 = 1`. Then\n`clusterings.label(1, 0)` accesses index `1*3 = 3`, but only 3 elements\nexist (indices 0,1,2), causing out-of-bounds access.\n\nThis can be triggered through safe public APIs —\n`from_i32_column_major_order()` and `label()` — with no `unsafe` required\nfrom the caller.",
+      "date": "2026-05-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "out-of-bounds",
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dbdahl/rust-dahl-salso/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.8"
+      ],
+      "unaffected": []
+    }
+  }
+]

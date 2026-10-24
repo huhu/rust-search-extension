@@ -24,7 +24,8 @@
       "source": null,
       "url": "https://github.com/RustSec/advisory-db/pull/2427",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -90,7 +91,8 @@
       "source": null,
       "url": "https://github.com/RustSec/advisory-db/issues/106",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

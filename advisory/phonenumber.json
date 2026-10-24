@@ -26,9 +26,10 @@
         "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-39697"
       ],
       "source": null,
-      "url": "https://github.com/whisperfish/rust-phonenumber/security/advisories/GHSA-mjw4-jj88-v687",
+      "url": "https://github.com/whisperfish/rust-phonenumber/issues/69",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -57,7 +58,7 @@
       "date": "2023-09-19",
       "aliases": [
         "CVE-2023-42444",
-        "whhr-7f2w-qqj2"
+        "GHSA-whhr-7f2w-qqj2"
       ],
       "related": [],
       "collection": "crates",
@@ -75,9 +76,10 @@
         "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-42444"
       ],
       "source": null,
-      "url": "https://github.com/whisperfish/rust-phonenumber/security/advisories/GHSA-whhr-7f2w-qqj2",
+      "url": "https://github.com/whisperfish/rust-phonenumber/commit/2dd44be94539c051b4dee55d1d9d349bd7bedde6",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

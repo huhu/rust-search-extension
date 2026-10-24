@@ -23,7 +23,8 @@
       "source": null,
       "url": "https://github.com/jnqnfe/pulse-binding-rust/commit/7fd282aef7787577c385aed88cb25d004b85f494",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -55,9 +56,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/advisories/GHSA-6gvc-4jvj-pwq4",
+      "url": "https://github.com/jnqnfe/pulse-binding-rust/commit/9e31c82d71749619387cb9d0c9698134d05b28c9",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -93,9 +95,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/jnqnfe/pulse-binding-rust/security/advisories/GHSA-ghpq-vjxw-ch5w",
+      "url": "https://github.com/jnqnfe/pulse-binding-rust/commit/e6930e16573f0b6d12d6628ba5de59147d6f9e95",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

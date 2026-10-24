@@ -23,7 +23,8 @@
       "source": null,
       "url": "https://github.com/briansmith/ring/blob/main/RELEASES.md#version-01712-2025-03-05",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -51,7 +52,8 @@
       "source": null,
       "url": "https://github.com/briansmith/ring/discussions/2450",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

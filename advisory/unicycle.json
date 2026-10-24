@@ -1,6 +1,51 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0298",
+      "package": "unicycle",
+      "title": "Use-after-free when a future's `Drop` panics while the container is dropped",
+      "description": "`Storage::clear` walks the slab, empties each entry and frees the `Task`\nallocation once its reference count reaches zero. `self.tasks.set_len(0)` only\nruns after the loop.\n\nEmptying an entry drops the user future it holds, and `T` carries no bounds\nexcluding a panicking `Drop`. If one unwinds, the length is never committed and\n`self.tasks` still holds the pointers already processed. `Drop for Storage`\ncalls `clear` again, and the second pass dereferences `(*task.as_ptr()).entry`\non allocations the first pass already freed — a use-after-free (CWE-416)\nreachable from safe Rust.\n\n`Storage` is reached only through `Unordered`, whose `Drop` calls `clear`. No\nparticular method call is needed; dropping the container is enough.\n\n## Mitigation\n\nUpdate to 0.10.3.",
+      "date": "2026-09-12",
+      "aliases": [
+        "GHSA-8gw6-724c-9h38"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "use-after-free",
+        "panic-safety"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/udoprog/unicycle/commit/4f1492a266824f8aa66fd6b27fa6188bf826bdfd",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "unicycle::Unordered::drop": [
+          "<0.10.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2020-0116",
       "package": "unicycle",
       "title": "PinSlab<T> and Unordered<T, S> need bounds on their Send/Sync traits",
@@ -23,7 +68,8 @@
       "source": null,
       "url": "https://github.com/udoprog/unicycle/issues/8",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

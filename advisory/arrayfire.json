@@ -25,7 +25,8 @@
       "source": null,
       "url": "https://github.com/arrayfire/arrayfire-rust/pull/177",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [
@@ -40,9 +41,7 @@
       "patched": [
         ">=3.6.0"
       ],
-      "unaffected": [
-        "<=3.5.0"
-      ]
+      "unaffected": []
     }
   }
 ]

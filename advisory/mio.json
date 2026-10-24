@@ -18,9 +18,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/tokio-rs/mio/security/advisories/GHSA-r8w9-5wcg-vfj7",
+      "url": "https://github.com/tokio-rs/mio/pull/1760",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -67,7 +68,8 @@
       "source": null,
       "url": "https://github.com/tokio-rs/mio/issues/1386",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -1,0 +1,90 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0148",
+      "package": "boxlite",
+      "title": "OCI layer symlink escape → arbitrary host write",
+      "description": "Affected versions of `boxlite` extract OCI image layer tarballs without\nfully containing path resolution to the extraction root. A crafted layer\ncontaining a symlink whose target is an absolute on-host path (e.g.\n`escape -> /tmp`) followed by a file entry that resolves through that\nsymlink (e.g. `escape/<path>/pwned.txt`) caused the extractor to write\nthe payload to the host filesystem outside the intended rootfs directory.\n\nThe fix in v0.9.0 routes every destructive filesystem operation through a\n`SafeRoot` handle (`openat2(RESOLVE_IN_ROOT)` on Linux, lexical fallback\nelsewhere) so that no tar entry can resolve outside the extraction root,\neven with adversarial symlinks placed by earlier entries in the same\nlayer.\n\nThis is a container-escape during image extraction, exploitable by any\nuser who pulls or loads a malicious OCI image — including via\n`SimpleBox(rootfs_path=...)` from an untrusted local layout.",
+      "date": "2026-05-16",
+      "aliases": [
+        "CVE-2026-46703",
+        "GHSA-f396-4rp4-7v2j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation",
+        "file-disclosure"
+      ],
+      "keywords": [
+        "sandbox",
+        "container",
+        "oci",
+        "tar",
+        "symlink",
+        "path-traversal"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/boxlite-ai/boxlite/pull/429",
+        "https://github.com/boxlite-ai/boxlite/pull/446",
+        "https://github.com/boxlite-ai/boxlite/pull/461"
+      ],
+      "source": null,
+      "url": "https://github.com/boxlite-ai/boxlite/pull/429",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0147",
+      "package": "boxlite",
+      "title": "Read-only volume remount bypass via guest CAP_SYS_ADMIN",
+      "description": "Affected versions of `boxlite` mount host directories shared via virtiofs\nas guest-side read-only by setting `MS_RDONLY` from the guest. Because the\ndefault guest capability set included `CAP_SYS_ADMIN`, untrusted code\nrunning inside a sandbox could execute `mount -o remount,rw <path>` to\nre-flag the share as read-write and then write through to the host\nfilesystem — fully escaping the read-only contract `boxlite` advertised\nto callers.\n\nThe fix in v0.9.0 enforces read-only at the hypervisor level via\n`krun_add_virtiofs3` (so the guest's `MS_RDONLY` is no longer the\nauthoritative gate) and drops `CAP_SYS_ADMIN` from the default guest\ncapability set (matching Docker's defaults).\n\nThis is a sandbox-escape bug: `boxlite` is a sandboxing runtime, so the\nread-only invariant is part of its security contract. CVSS rated 10.0 by\nthe upstream advisory.",
+      "date": "2026-05-16",
+      "aliases": [
+        "CVE-2026-46695",
+        "GHSA-g6ww-w5j2-r7x3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "sandbox",
+        "container",
+        "vm",
+        "virtiofs",
+        "mount"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/boxlite-ai/boxlite/pull/454"
+      ],
+      "source": null,
+      "url": "https://github.com/boxlite-ai/boxlite/pull/454",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

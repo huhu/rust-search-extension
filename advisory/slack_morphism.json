@@ -20,7 +20,8 @@
       "source": null,
       "url": "https://github.com/abdolence/slack-morphism-rust/commit/65ef9fac4f39c4e171e2952a6cf029bb0d059a89",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -51,7 +52,8 @@
       "source": null,
       "url": "https://github.com/abdolence/slack-morphism-rust/pull/133",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

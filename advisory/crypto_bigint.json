@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0387",
+      "package": "crypto-bigint",
+      "title": "Multiple timing variability issues in operations intended to be constant-time",
+      "description": "## Summary\n\nSeveral operations intended to be constant-time could execute secret-dependent\nbranches, depending on the compiler and target CPU. These include subtraction,\nzero counting, division, and Montgomery multiplication.\n\nAdditionally, `UintRef` equality could terminate at the first unequal limb,\nand `BoxedMontyForm::invert` branched on whether an inverse exists.\n\n## Impact\n\nApplications using affected operations on secret integers may leak information\nthrough timing or microarchitectural side channels. This includes information\nabout intermediate arithmetic values, matching limbs, and invertibility.\n\nSuch leakage could potentially enable recovery of cryptographic secrets.\nPractical exploitability depends on the downstream algorithm, compiler, target\nCPU, and an attacker's ability to observe the side channel.\n\n## Resolution\n\nUpgrade to v0.7.6, which removes the identified branches, updates `ctutils` to\ninclude its constant-time fixes, and adds BINSEC-based regression checks using\n`cargo checkct` for arithmetic on multiple targets.",
+      "date": "2026-10-23",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/crypto-bigint/pull/1365",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

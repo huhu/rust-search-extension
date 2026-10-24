@@ -20,9 +20,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/Byron/gitoxide/security/advisories/GHSA-98p4-xjmm-8mfh",
+      "url": "https://github.com/Byron/gitoxide/pull/1032",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -57,7 +58,8 @@
       "source": null,
       "url": "https://github.com/Byron/gitoxide/pull/1032",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

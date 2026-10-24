@@ -26,7 +26,8 @@
       "source": null,
       "url": "https://github.com/tokio-rs/tls/pull/14",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

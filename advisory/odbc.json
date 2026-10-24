@@ -17,7 +17,8 @@
       "source": null,
       "url": "https://github.com/Koka/odbc-rs/commit/f9e5f77fac0a6328f9759e6e0f9e10c16509aebb",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

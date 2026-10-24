@@ -1,0 +1,87 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0042",
+      "package": "aws-lc-fips-sys",
+      "title": "CRL Distribution Point Scope Check Logic Error in AWS-LC",
+      "description": "A logic error in CRL distribution point matching in AWS-LC allows a revoked\ncertificate to bypass revocation checks during certificate validation, when\nthe application enables CRL checking and uses partitioned CRLs with Issuing\nDistribution Point (IDP) extensions.\n\nCustomers of AWS services do not need to take action. `aws-lc-fips-sys`\ncontains code from AWS-LC. Applications using `aws-lc-fips-sys` should\nupgrade to the most recent release of `aws-lc-fips-sys`.\n\n## Workarounds\n\nApplications can workaround this issue if they do not enable CRL checking\n(`X509_V_FLAG_CRL_CHECK`). Applications using complete (non-partitioned)\nCRLs without IDP extensions are also not affected.\n\nOtherwise, there is no workaround and applications using `aws-lc-fips-sys`\nshould upgrade to the most recent releases of `aws-lc-fips-sys`.",
+      "date": "2026-03-19",
+      "aliases": [
+        "CVE-2026-4428",
+        "GHSA-9f94-5g5w-gf6r"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "crl",
+        "revocation",
+        "bypass"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/aws/aws-lc-rs/security/advisories/GHSA-9f94-5g5w-gf6r"
+      ],
+      "source": null,
+      "url": "https://aws.amazon.com/security/security-bulletins/2026-010-AWS",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.13.13"
+      ],
+      "unaffected": [
+        "<0.13.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0043",
+      "package": "aws-lc-fips-sys",
+      "title": "Timing Side-Channel in AES-CCM Tag Verification in AWS-LC",
+      "description": "Observable timing discrepancy in AES-CCM decryption in AWS-LC allows an\nunauthenticated user to potentially determine authentication tag validity\nvia timing analysis.\n\nThe impacted implementations are through the EVP CIPHER API:\n`EVP_aes_128_ccm`, `EVP_aes_192_ccm`, and `EVP_aes_256_ccm`.\n\nCustomers of AWS services do not need to take action. `aws-lc-fips-sys`\ncontains code from AWS-LC. Applications using `aws-lc-fips-sys` should\nupgrade to the most recent release of `aws-lc-fips-sys`.\n\n## Workarounds\n\nIn the special cases of using AES-CCM with (M=4, L=2), (M=8, L=2), or\n(M=16, L=2), applications can workaround this issue by using AES-CCM\nthrough the EVP AEAD API using implementations\n`EVP_aead_aes_128_ccm_bluetooth`, `EVP_aead_aes_128_ccm_bluetooth_8`,\nand `EVP_aead_aes_128_ccm_matter` respectively.\n\nOtherwise, there is no workaround and applications using `aws-lc-fips-sys`\nshould upgrade to the most recent release of `aws-lc-fips-sys`.",
+      "date": "2026-03-02",
+      "aliases": [
+        "CVE-2026-3337",
+        "GHSA-65p9-r9h6-22vj",
+        "GHSA-frmv-5gcm-jwxh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "aes-ccm",
+        "timing",
+        "side-channel"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/aws/aws-lc-rs/security/advisories/GHSA-65p9-r9h6-22vj"
+      ],
+      "source": null,
+      "url": "https://aws.amazon.com/security/security-bulletins/2026-005-AWS",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.13.12"
+      ],
+      "unaffected": [
+        "<0.13.0"
+      ]
+    }
+  }
+]

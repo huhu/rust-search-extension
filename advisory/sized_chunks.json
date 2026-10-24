@@ -1,6 +1,93 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0255",
+      "package": "sized-chunks",
+      "title": "Panic-safety unsoundness in `Chunk`, `RingBuffer`, and `InlineArray` (use-after-free / double-free)",
+      "description": "Several methods in `sized-chunks` drop elements before updating the length/boundary metadata. If an element's `Drop` panics during the drop, the metadata update is skipped, so the container still treats the already-dropped elements as live. When the container's own `Drop` runs, those elements are visited again — a use-after-free / double-free reachable from safe Rust.\n\nThe `RingBuffer` methods require the `ringbuffer` feature. This is distinct from RUSTSEC-2020-0041 (`Chunk::clone` / `insert_from`, fixed in 0.6.3); the methods here are still affected in 0.7.0. The repository is archived with issues/PRs disabled and no fix available.\n\n## Impact\n\n- **CWE-415 (Double Free):** the same allocation is freed twice.\n- **CWE-416 (Use-After-Free):** a freed allocation is accessed during a repeated `Drop`.\n\nReachable entirely from safe Rust via `catch_unwind` with element types whose `Drop` can panic.",
+      "date": "2026-08-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "panic-safety",
+        "memory-safety",
+        "use-after-free",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "sized_chunks::Chunk::clear": [
+          "<=0.7.0"
+        ],
+        "sized_chunks::Chunk::drop_left": [
+          "<=0.7.0"
+        ],
+        "sized_chunks::Chunk::drop_right": [
+          "<=0.7.0"
+        ],
+        "sized_chunks::InlineArray::clear": [
+          "<=0.7.0"
+        ],
+        "sized_chunks::RingBuffer::clear": [
+          "<=0.7.0"
+        ],
+        "sized_chunks::RingBuffer::drop_left": [
+          "<=0.7.0"
+        ],
+        "sized_chunks::RingBuffer::drop_right": [
+          "<=0.7.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0251",
+      "package": "sized-chunks",
+      "title": "sized-chunks is unmaintained",
+      "description": "The sized-chunks crate is unmaintained; all versions are affected. The\nGitHub repository was archived by the owner on 2026-05-03.\n\nRecommended alternative:\n\n* [imbl-sized-chunks](https://crates.io/crates/imbl-sized-chunks), a popular fork of this crate",
+      "date": "2026-05-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodil/sized-chunks",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2020-0041",
       "package": "sized-chunks",
       "title": "Multiple soundness issues in Chunk and InlineArray",
@@ -30,7 +117,8 @@
       "source": null,
       "url": "https://github.com/bodil/sized-chunks/issues/11",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

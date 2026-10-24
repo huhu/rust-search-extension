@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0150",
+      "package": "audiopus_sys",
+      "title": "audiopus_sys is unmaintained",
+      "description": "audiopus_sys is implicitly unmaintained and holds a reference to CMake versions with which CMake 4.0 is not backwards compatible, causing cargo builds to error. An effort to contact the maintainer was made on June 10th, 2025 with no reply. A separate 2025 PR was made (from a different user) addressing the CMake 4.0 issue with no reply. The last commit to audiopus_sys is dated 5 years ago.",
+      "date": "2026-05-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/rustsec/advisory-db/issues/2704",
+        "https://github.com/Lakelezz/audiopus_sys/pull/23"
+      ],
+      "source": null,
+      "url": "https://github.com/Lakelezz/audiopus_sys/issues/22",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

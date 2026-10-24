@@ -8,7 +8,7 @@
       "date": "2023-09-19",
       "aliases": [
         "CVE-2023-42447",
-        "cxvp-82cq-57h2"
+        "GHSA-cxvp-82cq-57h2"
       ],
       "related": [],
       "collection": "crates",
@@ -26,9 +26,10 @@
         "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-42447"
       ],
       "source": null,
-      "url": "https://github.com/whisperfish/blurhash-rs/security/advisories/GHSA-cxvp-82cq-57h2",
+      "url": "https://github.com/whisperfish/blurhash-rs/commit/e1b3209734d2a2704ed5ddcf61dc0beab6caa64d",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

@@ -1,6 +1,121 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0373",
+      "package": "ammonia",
+      "title": "Missing case-insensitive matching for CSS url function",
+      "description": "URL filtering, such as relative URLs and URL scheme limits,\nis not always applied when CSS sanitization is used.\n\nWhen the inner URL is quoted, CSS `url(\"\")` is matched case-sensitively,\nwhen it should be matched case-insensitively.\nAs a result, while `url(\"\")` gets the intended domain name filtering,\n`URL(\"\")` does not.\n\nThe following example shows how an application needs to be configured\nto trigger this bug.\n\n```rust\nlet mut builder = Builder::new();\n// allow inline styles\nbuilder.filter_style_properties(hashset![\"background-image\"]);\nbuilder.add_generic_attributes(&[\"style\"]);\n// notice that \"http\" URLs aren't allowed\nbuilder.url_schemes([\"cid\"].into());\n\n// attacker-controlled, presumably\nlet cleaned = builder.clean(r#\"<div style='background:URL(\"https://evil.com/ping\");'>\"#);\n\n// this is the expected result\nassert_eq!(String::from(&cleaned), r#\"<div style=\"\">ok</p>\"#);\n\n// this is the result that the vulnerable version actually gets\nassert_eq!(String::from(&cleaned), r#\"<div style=\"background-image:URL(&quot;https://evil.com/ping&quot;);\">ok</p>\"#);\n```\n\nThis can be used to inject tracking pixels where the application intended to prevent them.\nIt does not allow XSS, and its usefulness for data exfiltration is limited.\n\n---\n\nThis vulnerability was reported by [Louis Li](https://github.com/zhixuli0406).",
+      "date": "2026-10-16",
+      "aliases": [
+        "GHSA-x43w-36pp-96g3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "css",
+        "html"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-ammonia/ammonia/pull/267",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.2.4",
+        ">=4.1.8, <4.2.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0213",
+      "package": "ammonia",
+      "title": "XSS in ammonia via SVG `animate` and `set` animation tags",
+      "description": "The following SVG will produce a link with a javascript scheme.\nIf the user clicks this link, they will run it.\n\n```xml\n<svg xmlns=\"http://www.w3.org/2000/svg\">\n  <a>\n    <set attributeName=\"href\" to=\"javascript:alert('SET_XSS')\"></set>\n    <text y=\"30\">Click set</text>\n  </a>\n</svg>\n```\n\nAmmonia did not apply attribute filters based on `attributeName`,\nso the contents of the `to`, `from`, and `values` tags were not sanitized as URLs.\n\nApplications that do not explicitly allow either of these tags should not be affected,\nsince neither are allowed by default.\n\n---\n\n**Discovered by:** [Younghun Ko (@koyokr)](https://github.com/koyokr)",
+      "date": "2026-07-21",
+      "aliases": [
+        "CVE-2026-102342",
+        "GHSA-m6mh-2hw2-555x"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "html",
+        "xss"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.1.4",
+        ">=4.0.3, <4.1.0",
+        ">=3.3.3, <4.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0193",
+      "package": "ammonia",
+      "title": "mXSS in ammonia via MathML `annotation-xml` encoding strip",
+      "description": "If a certain set of MathML tags are enabled, an attacker can inject arbitrary JavaScript code into the user's browser.\n\nThe `annotation-xml` tag has slightly different behavior than the other \"integration point\"\ntags in MathML and SVG, but ammonia didn't handle it, so it didn't correctly\nstrip the namespace-incompatible tags.\n\nThis vulnerability only has an effect when the `math` and `annotation-xml` tags\nare both enabled, but the `encoding` attribute is disabled, because it relies\non the following sequence of steps:\n\n1. User writes code like `<math><annotation-xml encoding=\"text/html\"><gadget></annotation-xml></math>`.\n2. Namespace filtering checks the DOM, and it passes. `<gadget>` is parsed as HTML.\n3. Attribute filter strips it down to `<math><annotation-xml><gadget></annotation-xml></math>`. Because the encoding attribute is gone, `<gadget>` is now parsed as MathML.\n4. The gadget is written in such a way that it exploits the parsing differences between HTML and MathML.\n\nAdditionally, the gadget can only be written using a tag that is parsed as raw text in HTML.\nThese [elements] are:\n\n* title\n* textarea\n* xmp\n* iframe\n* noembed\n* noframes\n* plaintext\n* noscript\n* style\n* script\n\nApplications that do not explicitly allow any of these tags should not be affected, since none are allowed by default.\n\n[elements]: https://github.com/servo/html5ever/blob/045a0378f2b0f8d4a350793899cf722a2a9b3d11/html5ever/src/tree_builder/rules.rs\n\n---\n\n**Discovered by:** [Ivan Ivančić](https://ivan09999.github.io/ammonia-mxss) · **Date:** 2026-06-29 · Found via local differential analysis and source review of ammonia's sanitisation pipeline; no third-party systems were tested.",
+      "date": "2026-06-30",
+      "aliases": [
+        "GHSA-9jh8-v38h-cvhr",
+        "CVE-2026-63430"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "html",
+        "xss"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.1.3",
+        ">=4.0.2, <4.1.0",
+        ">=3.3.2, <4.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2025-0071",
       "package": "ammonia",
       "title": "Incorrect handling of embedded SVG and MathML leads to mutation XSS after removal",
@@ -24,7 +139,8 @@
       "source": null,
       "url": null,
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -61,7 +177,8 @@
       "source": null,
       "url": "https://github.com/rust-ammonia/ammonia/pull/147",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -79,6 +196,80 @@
       "unaffected": [
         "<3.0.0"
       ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0158",
+      "package": "ammonia",
+      "title": "XSS in ammonia via SVG `animateMotion`, `animateTransform`, and/or `animateColor` tags",
+      "description": "The neutralization that ammonia applied to `animate` and `set` was not applied to other forms of SVG animation, which can be used for XSS.\n\nThe following SVG will produce a link with a javascript scheme.\nIf the user clicks this link, they will run it.\n\n```xml\n<svg xmlns=\"http://www.w3.org/2000/svg\">\n  <a>\n    <animateMotion attributeName=\"href\" to=\"javascript:alert('SET_XSS')\"></animateMotion>\n    <text y=\"30\">Click set</text>\n  </a>\n</svg>\n```\n\nAmmonia did not apply attribute filters based on `attributeName`,\nso the contents of the `to`, `from`, and `values` tags were not sanitized as URLs.\n\nApplications that do not explicitly allow any of these tags should not be affected,\nsince none are allowed by default.\n\n---\n\nThis vulnerability was reported by [ucsurf](https://uc.surf).",
+      "date": "2021-10-10",
+      "aliases": [
+        "GHSA-f2pc-rwv3-69mv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "html",
+        "xss"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-ammonia/ammonia/pull/261",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.2.3",
+        ">=4.1.7, <4.2.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0157",
+      "package": "ammonia",
+      "title": "Incorrect escaping for `url(\"\")` functions in CSS style attributes",
+      "description": "In some cases, quotation marks in CSS url() functions are not escaped. This allows CSS injection. This feature is not enabled by default, so an application is vulnerable if, and only if, the style attribute is allowed and filter_style_properties is used.\n\nAs an example, this snippet:\n\n```html\n<div style='background:url(\"cid:\\\");EVIL_CSS_HERE;background:url(\\\"cid:\")'>\n```\n\nWould erroneously \"sanitize\" to:\n\n```html\n<div style='background:url(\"cid:\");EVIL_CSS_HERE;background:url(\"cid:\")'>\n```\n\n---\n\nThis vulnerability was reported by Uttej Badwane",
+      "date": "2021-10-10",
+      "aliases": [
+        "GHSA-69v2-w9vg-4g83"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "html",
+        "clickjacking"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-ammonia/ammonia/pull/259",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.2.3",
+        ">=4.1.7, <4.2.0"
+      ],
+      "unaffected": []
     }
   },
   {
@@ -107,7 +298,8 @@
       "source": null,
       "url": "https://github.com/rust-ammonia/ammonia/pull/142",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -142,7 +334,8 @@
       "source": null,
       "url": "https://github.com/rust-ammonia/ammonia/blob/master/CHANGELOG.md#210",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

@@ -24,7 +24,8 @@
       "source": null,
       "url": "https://github.com/fitzgen/bumpalo/blob/main/CHANGELOG.md#3111",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -67,7 +68,8 @@
       "source": null,
       "url": "https://github.com/fitzgen/bumpalo/issues/69",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

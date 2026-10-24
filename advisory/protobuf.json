@@ -26,7 +26,8 @@
       "source": null,
       "url": "https://github.com/stepancheg/rust-protobuf/issues/749",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -70,7 +71,8 @@
       "source": null,
       "url": "https://github.com/stepancheg/rust-protobuf/issues/411",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

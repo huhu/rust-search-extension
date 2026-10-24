@@ -1,38 +1,6 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0109",
-      "package": "ckb",
-      "title": "Process crashes when the cell used as DepGroup is not alive",
-      "description": "It's easy to create a malign transaction which uses the dead cell as the DepGroup in the DepCells. The transaction can crash all the receiving nodes.",
-      "date": "2021-07-25",
-      "aliases": [
-        "CVE-2021-45700",
-        "GHSA-45p7-c959-rgcm",
-        "GHSA-cw98-cx2m-9qqg"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/nervosnetwork/ckb/security/advisories/GHSA-45p7-c959-rgcm",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.40.0"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2021-0108",
       "package": "ckb",
       "title": "Remote memory exhaustion in ckb",
@@ -51,9 +19,43 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/nervosnetwork/ckb/security/advisories/GHSA-48vq-8jqv-gm6f",
+      "url": null,
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.40.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0109",
+      "package": "ckb",
+      "title": "Process crashes when the cell used as DepGroup is not alive",
+      "description": "It's easy to create a malign transaction which uses the dead cell as the DepGroup in the DepCells. The transaction can crash all the receiving nodes.",
+      "date": "2021-07-25",
+      "aliases": [
+        "CVE-2021-45700",
+        "GHSA-45p7-c959-rgcm",
+        "GHSA-cw98-cx2m-9qqg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -83,9 +85,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/nervosnetwork/ckb/security/advisories/GHSA-v666-6w97-pcwm",
+      "url": "https://github.com/nervosnetwork/ckb/commit/e5b45795375d7dc2a689fb46790caca5c2653638",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

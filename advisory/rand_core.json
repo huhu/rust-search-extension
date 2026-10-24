@@ -22,7 +22,8 @@
       "source": null,
       "url": "https://github.com/rust-random/rand/pull/1096",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -66,7 +67,8 @@
       "source": null,
       "url": "https://github.com/rust-random/rand/blob/master/rand_core/CHANGELOG.md#050---2019-06-06",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

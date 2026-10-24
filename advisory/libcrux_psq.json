@@ -1,0 +1,74 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0025",
+      "package": "libcrux-psq",
+      "title": "Panic in `libcrux-psq` on decryption of malformed AES-GCM ciphertext",
+      "description": "The latest releases of the libcrux-psq crate contains the following\nbug-fix:\n\n[#1319](https://github.com/cryspen/libcrux/pull/1319): Propagate\nAEADError instead of panicking\n\nThe issue fixed in\n[#1319](https://github.com/cryspen/libcrux/pull/1319) was first\nreported by Nadim Kobeissi.",
+      "date": "2026-02-08",
+      "aliases": [
+        "CVE-2026-76234",
+        "GHSA-435g-fcv3-8j26"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1319",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_psq::Channel::read_message": [
+          "<=0.0.6"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0024",
+      "package": "libcrux-psq",
+      "title": "Incorrect X25519 clamping check rejects all secrets on import",
+      "description": "The latest releases of the libcrux-psq crate contains the following\nbug-fix:\n\n[#1301](https://github.com/cryspen/libcrux/pull/1301): Fix broken\nclamping check for imported X25519 secret keys",
+      "date": "2026-01-26",
+      "aliases": [
+        "CVE-2026-76234",
+        "GHSA-435g-fcv3-8j26"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1301",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.0.7"
+      ],
+      "unaffected": []
+    }
+  }
+]

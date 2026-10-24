@@ -1,6 +1,46 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0141",
+      "package": "lettre",
+      "title": "TLS hostname verification disabled when using Boring TLS backend",
+      "description": "An inverted-boolean bug in lettre's `boring-tls` integration silently\ndisables TLS hostname verification for callers using the default (strict)\nconfiguration. An on-path attacker presenting any chain-valid certificate\nfor any domain can intercept SMTP submission, including PLAIN/LOGIN\ncredentials and message contents, against any lettre user built with the\n`boring-tls` feature. Other TLS backends (`native-tls`, `rustls`) are\nunaffected.\n\nThe bug was introduced in v0.10.1 and persists through v0.11.21 (latest).",
+      "date": "2026-05-14",
+      "aliases": [
+        "CVE-2026-46428",
+        "GHSA-4pj9-g833-qx53"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "tls",
+        "smtp",
+        "mitm"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:N/SC:L/SI:L/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lettre/lettre/commit/f5efffc88360dbdbfcef80f465e42d5bce68ca35",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.22"
+      ],
+      "unaffected": [
+        "<0.10.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0069",
       "package": "lettre",
       "title": "SMTP command injection in body",
@@ -25,7 +65,8 @@
       "source": null,
       "url": "https://github.com/lettre/lettre/pull/627/commits/93458d01fed0ec81c0e7b4e98e6f35961356fae2",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -79,7 +120,8 @@
       "source": null,
       "url": "https://github.com/lettre/lettre/pull/508/commits/bbe7cc5381c5380b54fb8bbb4f77a3725917ff0b",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

@@ -23,7 +23,8 @@
       "source": null,
       "url": "https://github.com/apache/arrow-rs/issues/774",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -60,7 +61,8 @@
       "source": null,
       "url": null,
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -94,7 +96,8 @@
       "source": null,
       "url": "https://github.com/apache/arrow-rs/issues/775",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -22,9 +22,10 @@
         "https://github.com/radicallyopensecurity/ros-website/blob/8169b16fc138a0b0dde14dd0e222d1279701b4d3/ros-public-reports/ROS%20-%20NLNet%20-%20rPGP%20-%202024.pdf"
       ],
       "source": null,
-      "url": "https://github.com/rpgp/rpgp/security/advisories/GHSA-9rmp-2568-59rv",
+      "url": "https://github.com/rpgp/rpgp/commit/91b9f517f3bc38e7b14518a156bff81ee69301fc",
       "withdrawn": null,
-      "license": "CC-BY-4.0"
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

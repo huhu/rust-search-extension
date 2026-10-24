@@ -20,9 +20,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/awslabs/tough/security/advisories/GHSA-5q2r-92f9-4m49",
+      "url": "https://github.com/awslabs/tough/commit/c1c950682d765ebc661f70381f947bc28b8b058c",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

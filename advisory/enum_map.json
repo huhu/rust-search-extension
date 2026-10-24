@@ -1,6 +1,41 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0218",
+      "package": "enum-map",
+      "title": "`Enum` trait allows type confusion when manually implemented",
+      "description": "Affected versions of this crate did not require the element type of the `Array` associated type in the `Enum` trait to match the array's generic parameter `V`.\n\nThis can result in type confusion, and consequently memory corruption, when a manual `Enum` implementation declares an `Array<V>` whose elements are not actually of type `V`:\n\n```rust\nstruct IntentionallyWrong;\n\nimpl Enum for IntentionallyWrong {\n    type Array<V> = [String; 4];\n\n    fn from_usize(_: usize) -> Self {\n        IntentionallyWrong\n    }\n\n    fn into_usize(self) -> usize {\n        0\n    }\n}\n\nenum_map! { IntentionallyWrong => 42 };\n```\n\nThe flaw was corrected in commit [7a8b815432](https://codeberg.org/sugar700/enum-map/commit/7a8b8154323d426415a10accf104cd05c394cda9) by adding a `Value = V` bound to the `Array` type in the `Enum` trait.",
+      "date": "2026-07-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/rustsec/advisory-db/issues/3060"
+      ],
+      "source": null,
+      "url": "https://codeberg.org/sugar700/enum-map/src/branch/master/CHANGELOG.md#version-310",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.1.0"
+      ],
+      "unaffected": [
+        "<3.0.0-0.gat.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2022-0010",
       "package": "enum-map",
       "title": "enum_map macro can cause UB when `Enum` trait is incorrectly implemented",
@@ -23,7 +58,8 @@
       "source": null,
       "url": "https://gitlab.com/KonradBorowski/enum-map/-/blob/master/CHANGELOG.md#version-202",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

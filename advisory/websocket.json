@@ -22,9 +22,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/websockets-rs/rust-websocket/security/advisories/GHSA-qrjv-rf5q-qpxc",
+      "url": "https://github.com/websockets-rs/rust-websocket/commit/cbf6e9983e839d2ecad86de8cd1b3f20ed43390b",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

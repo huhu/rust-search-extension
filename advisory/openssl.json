@@ -21,7 +21,8 @@
       "source": null,
       "url": "https://github.com/sfackler/rust-openssl/pull/2390",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -71,9 +72,10 @@
         "https://github.com/sfackler/rust-openssl/pull/2360"
       ],
       "source": null,
-      "url": "https://github.com/sfackler/rust-openssl/security/advisories/GHSA-rpmj-rpgj-qmpm",
+      "url": "https://github.com/sfackler/rust-openssl/pull/2360",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -111,7 +113,8 @@
       "source": null,
       "url": "https://github.com/sfackler/rust-openssl/pull/2266",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -151,7 +154,8 @@
       "source": null,
       "url": "https://github.com/sfackler/rust-openssl/issues/2096",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -192,7 +196,8 @@
       "source": null,
       "url": "https://github.com/sfackler/rust-openssl/issues/1965",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -232,7 +237,8 @@
       "source": null,
       "url": "https://github.com/sfackler/rust-openssl/pull/1854",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -272,7 +278,8 @@
       "source": null,
       "url": "https://github.com/sfackler/rust-openssl/pull/1854",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -315,7 +322,8 @@
       "source": null,
       "url": "https://github.com/sfackler/rust-openssl/pull/1854",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -359,7 +367,8 @@
       "source": null,
       "url": "https://github.com/sfackler/rust-openssl/pull/942",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -395,7 +404,8 @@
       "source": null,
       "url": "https://github.com/sfackler/rust-openssl/releases/tag/v0.9.0",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

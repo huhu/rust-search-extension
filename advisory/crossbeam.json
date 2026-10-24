@@ -22,7 +22,8 @@
       "source": null,
       "url": "https://github.com/crossbeam-rs/crossbeam/pull/98",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -52,7 +53,8 @@
       "source": null,
       "url": "https://github.com/crossbeam-rs/crossbeam/pull/458",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -67,7 +69,7 @@
       "id": "RUSTSEC-2018-0009",
       "package": "crossbeam",
       "title": "MsQueue and SegQueue suffer from double-free",
-      "description": "Even if an element is popped from a queue, crossbeam would run its\ndestructor inside the epoch-based garbage collector. This is a source\nof double frees.\n\nThe flaw was corrected by wrapping elements inside queues in a\n`ManuallyDrop`.\n\nThanks to @c0gent for reporting the issue.",
+      "description": "Even if an element is popped from a queue, crossbeam would run its\ndestructor inside the epoch-based garbage collector. This is a source\nof double frees.\n\nThe flaw was corrected by wrapping elements inside queues in a\n`ManuallyDrop`.\n\nThanks to [@c0gent](https://github.com/c0gent) for reporting the issue.",
       "date": "2018-12-09",
       "aliases": [
         "CVE-2018-20996",
@@ -87,7 +89,8 @@
       "source": null,
       "url": "https://github.com/crossbeam-rs/crossbeam-epoch/issues/82",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

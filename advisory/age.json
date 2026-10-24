@@ -21,9 +21,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/str4d/rage/security/advisories/GHSA-4fg7-vxc8-qx5w",
+      "url": "https://github.com/str4d/rage/commit/703152ecfa86f27952a35b57dd525ed39396a227",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

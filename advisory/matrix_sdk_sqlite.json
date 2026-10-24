@@ -22,9 +22,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/matrix-org/matrix-rust-sdk/security/advisories/GHSA-275g-g844-73jh",
+      "url": "https://github.com/matrix-org/matrix-rust-sdk/pull/4849",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

@@ -1,6 +1,71 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0220",
+      "package": "ruint",
+      "title": "Uint shift operations: incorrect overflow flags and truncated shift amounts",
+      "description": "`Uint::overflowing_shl`/`overflowing_shr` returned false-negative overflow\nflags. `overflowing_shl` missed bits shifted above `BITS` but within the top\nlimb (non-limb-aligned widths such as `U160`), and limbs wholly discarded by\nshifts >= 64; `overflowing_shr` missed wholly discarded low limbs. Shifted\nvalues were correct; only the flag was wrong.\n\nThe wrong flag propagates: `checked_shl`/`checked_shr` return `Some` instead\nof `None`, `strict_*` fail to panic, and `saturating_*` return a wrapped\nvalue instead of saturating. The incorrect `checked_shl` result causes\n`to_base_be` (and string formatting) to loop forever on no-alloc builds for\nnon-limb-aligned widths — a denial of service if formatting is reachable\nfrom untrusted input.\n\nSeparately, `wrapping_shl`/`wrapping_shr` on 64/128/256-bit types truncated\nthe shift amount modulo 2^32, so shifts >= 2^32 returned an incorrectly\nwrapped value instead of zero; on 32-bit targets the generic path also\ntruncated 64-bit shift amounts.\n\nCallers using checked or saturating shift semantics on untrusted shift\namounts may compute incorrect results.",
+      "date": "2026-07-08",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "shift",
+        "overflow",
+        "arithmetic",
+        "infinite-loop"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/alloy-rs/ruint/pull/603",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ruint::Uint::checked_shl": [
+          "<1.20.0"
+        ],
+        "ruint::Uint::checked_shr": [
+          "<1.20.0"
+        ],
+        "ruint::Uint::overflowing_shl": [
+          "<1.20.0"
+        ],
+        "ruint::Uint::overflowing_shr": [
+          "<1.20.0"
+        ],
+        "ruint::Uint::saturating_shl": [
+          "<1.20.0"
+        ],
+        "ruint::Uint::saturating_shr": [
+          "<1.20.0"
+        ],
+        "ruint::Uint::wrapping_shl": [
+          "<1.20.0"
+        ],
+        "ruint::Uint::wrapping_shr": [
+          "<1.20.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.20.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2025-0137",
       "package": "ruint",
       "title": "Unsoundness of safe `reciprocal_mg10`",
@@ -24,7 +89,8 @@
       "source": null,
       "url": "https://github.com/recmo/uint/issues/550",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

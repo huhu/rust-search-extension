@@ -23,9 +23,10 @@
         "https://nvd.nist.gov/vuln/detail/CVE-2024-51756"
       ],
       "source": null,
-      "url": "https://github.com/bytecodealliance/cap-std/security/advisories/GHSA-hxf5-99xg-86hw",
+      "url": "https://github.com/bytecodealliance/cap-std/pull/371",
       "withdrawn": null,
-      "license": "CC-BY-4.0"
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

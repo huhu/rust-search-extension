@@ -19,7 +19,8 @@
       "source": null,
       "url": "https://github.com/matrix-org/matrix-rust-sdk/issues/1110",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

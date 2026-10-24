@@ -22,7 +22,8 @@
       "source": null,
       "url": "https://gitlab.com/sequoia-pgp/sequoia/-/blob/b59886e5e7bdf7169ed330f309a6633d131776e5/openpgp/NEWS#L7-L26",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -65,7 +66,8 @@
       "source": null,
       "url": "https://gitlab.com/sequoia-pgp/sequoia/-/issues/1106",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -112,7 +114,8 @@
       "source": null,
       "url": "https://lists.sequoia-pgp.org/hyperkitty/list/announce@lists.sequoia-pgp.org/thread/SN2E3QRT4DMQ5JNEK6VIN6DJ5SH766DI/",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

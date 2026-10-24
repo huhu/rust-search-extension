@@ -1,0 +1,72 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0296",
+      "package": "unzip",
+      "title": "`unzip` is unmaintained",
+      "description": "The [unzip](https://crates.io/crates/unzip) crate has only ever released a single\nversion, `0.1.0` (published 2017-12-23), and has seen no further activity. It\nappears to be unmaintained, and its known path-traversal (\"zip-slip\")\nvulnerability will not be fixed.\n\nConsider migrating to an actively maintained alternative such as\n[zip](https://crates.io/crates/zip).",
+      "date": "2026-09-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://crates.io/crates/unzip",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0297",
+      "package": "unzip",
+      "title": "`unzip`: archive extraction is vulnerable to path traversal (zip-slip)",
+      "description": "### Summary\n\n`Unzipper::unzip` extracts each archive entry to a path built from the entry's\n**raw, attacker-controlled name** without any traversal check. A ZIP archive whose\nentry names contain `../` components (or an absolute path) can therefore cause\nfiles to be written **outside** the destination directory chosen by the caller —\na \"zip-slip\" / directory-traversal arbitrary file write (CWE-22 / CWE-23 /\nCWE-36).\n\n### Affected versions\n\nAll published versions are affected. `unzip` has only ever released `0.1.0`\n(published 2017-12-23) and appears unmaintained, so **no fixed version is\navailable**.\n\n### Proof of concept\n\nA malicious archive with a single entry named `../ESCAPED.txt` extracted via\n`Unzipper::unzip` writes `ESCAPED.txt` one level above the destination directory.",
+      "date": "2026-09-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "zip-slip",
+        "path-traversal",
+        "directory-traversal",
+        "arbitrary-file-write",
+        "zip"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://crates.io/crates/unzip",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "unzip::Unzipper::unzip": [
+          "^0.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -24,7 +24,8 @@
       "source": null,
       "url": "https://github.com/nats-io/nats.rs/commit/817a7b942c462fa9d9938dcb62124173634132fb#diff-767d442397fcaaf2f83e8f924d4a70317a2ce4703a49964d6007707949cfa5f5L303-R304",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

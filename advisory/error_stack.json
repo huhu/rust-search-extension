@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0198",
+      "package": "error-stack",
+      "title": "`Report::frames_mut` allows aliased mutable references",
+      "description": "Affected versions of this crate return an iterator from\n`Report::frames_mut` whose `&mut Frame` items have lifetimes independent\nof the iterator, so all yielded references can be held at the same time.\nA yielded frame's sources are also yielded by the iterator and reachable\nthrough the parent frame via `Frame::sources_mut`, allowing safe code to\nobtain two live mutable references to the same frame. This is undefined\nbehavior and can be used to cause a segmentation fault (see reproducer in\nthe linked issue). Versions 0.1.0 and 0.1.1 are affected through\n`Frame::source_mut` instead of `Frame::sources_mut`.\n\nThe flaw is fixed in 0.8.0 by replacing the iterator with internal\niteration: `Report::frames_mut` now takes a visitor closure, so mutable\naccess to a frame is scoped and cannot overlap with access to its\nsources.",
+      "date": "2026-07-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "aliasing"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/hashintel/hash/pull/8946"
+      ],
+      "source": null,
+      "url": "https://github.com/hashintel/hash/issues/8945",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "error_stack::Report::frames_mut": [
+          "*"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

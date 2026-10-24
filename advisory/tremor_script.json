@@ -26,7 +26,8 @@
       "source": null,
       "url": "https://github.com/tremor-rs/tremor-runtime/pull/1217",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -1,6 +1,42 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2025-0129",
+      "package": "cggmp21",
+      "title": "Missing check in ZK proof in CGGMP21 Threshold Signing Protocol",
+      "description": "Vulnerability concerns a missing check in the ZK proof that enables an attack in which single malicious signer can reconstruct full private key.\n\n### Patches\n* `cggmp21 v0.6.3` is a patch release that contains a fix that introduces this specific missing check.\n* However, we recommend upgrading to `cggmp24 v0.7.0-alpha.2` in which we've introduced many other security checks as a precaution. Follow the [migration guidelines](https://github.com/LFDT-Lockness/cggmp21/blob/v0.7.0-alpha.2/CGGMP21_MIGRATION.md) to upgrade.\n\n### References\nRead our [blog post](https://www.dfns.co/article/cggmp21-vulnerabilities-patched-and-explained) to learn more.",
+      "date": "2025-11-24",
+      "aliases": [
+        "CVE-2025-66016",
+        "GHSA-m95p-425x-x889"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "zk-proof"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.dfns.co/article/cggmp21-vulnerabilities-patched-and-explained",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2025-0127",
       "package": "cggmp21",
       "title": "CGGMP21 presignatures can be used in the way that significantly reduces security",
@@ -26,46 +62,12 @@
       "source": null,
       "url": "https://www.dfns.co/article/cggmp21-vulnerabilities-patched-and-explained",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
       "patched": [],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2025-0129",
-      "package": "cggmp21",
-      "title": "Missing check in ZK proof in CGGMP21 Threshold Signing Protocol",
-      "description": "Vulnerability concerns a missing check in the ZK proof that enables an attack in which single malicious signer can reconstruct full private key.\n\n### Patches\n* `cggmp21 v0.6.3` is a patch release that contains a fix that introduces this specific missing check.\n* However, we recommend upgrading to `cggmp24 v0.7.0-alpha.2` in which we've introduced many other security checks as a precaution. Follow the [migration guidelines](https://github.com/LFDT-Lockness/cggmp21/blob/v0.7.0-alpha.2/CGGMP21_MIGRATION.md) to upgrade.\n\n### References\nRead our [blog post](https://www.dfns.co/article/cggmp21-vulnerabilities-patched-and-explained) to learn more.",
-      "date": "2025-11-24",
-      "aliases": [
-        "CVE-2025-66016",
-        "GHSA-m95p-425x-x889"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [
-        "zk-proof"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.dfns.co/article/cggmp21-vulnerabilities-patched-and-explained",
-      "withdrawn": null,
-      "license": "CC0-1.0"
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.6.3"
-      ],
       "unaffected": []
     }
   },
@@ -95,7 +97,8 @@
       "source": null,
       "url": "https://github.com/dfns/cggmp21/pull/103",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -20,9 +20,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/RustCrypto/AEADs/security/advisories/GHSA-423w-p2w9-r7vq",
+      "url": "https://github.com/RustCrypto/AEADs/pull/551",
       "withdrawn": null,
-      "license": "CC-BY-4.0"
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

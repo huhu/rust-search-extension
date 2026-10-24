@@ -20,9 +20,10 @@
       "informational": "unsound",
       "references": [],
       "source": null,
-      "url": "https://github.com/advisories/GHSA-875g-mfp6-g7f9",
+      "url": "https://github.com/rust-vmm/vmm-sys-util/commit/30172fca2a8e0a38667d934ee56682247e13f167",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

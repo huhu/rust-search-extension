@@ -21,7 +21,8 @@
       "source": null,
       "url": "https://github.com/alloy-rs/core/issues/702",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

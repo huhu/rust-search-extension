@@ -1,6 +1,43 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0258",
+      "package": "h2",
+      "title": "h2 unbounded empty DATA frames",
+      "description": "The h2 crate, used internally by hyper, had a flaw that would accept and queue empty DATA frames without limit.\nIf streams were not actively drained, this could lead to unbounded memory usage, or a panic if the length overflows.\n\nLow severity.\n\nPatched in v0.4.16.",
+      "date": "2026-08-17",
+      "aliases": [
+        "GHSA-q83h-524g-xf6h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "http",
+        "http2",
+        "h2"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hyperium/h2/pull/935",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.16"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2024-0332",
       "package": "h2",
       "title": "Degradation of service in h2 servers with CONTINUATION Flood",
@@ -27,7 +64,8 @@
       "source": null,
       "url": null,
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -68,7 +106,8 @@
       "source": null,
       "url": null,
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -106,7 +145,8 @@
       "source": null,
       "url": "https://github.com/hyperium/hyper/issues/2877",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -27,7 +27,8 @@
       "source": null,
       "url": "https://github.com/http-rs/async-h1/releases/tag/v2.3.0",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

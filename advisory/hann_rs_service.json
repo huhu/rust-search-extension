@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0123",
+      "package": "hann-rs-service",
+      "title": "`hann-rs-service` was removed from crates.io for malicious code",
+      "description": "This crate was part of a typosquatting malware cluster published by the user\n`TerryDavisSoldier` to run an arbitrary malware payload on Windows hosts.\n\nThis advisory is to retrospectively document this attempted attack. The version\ninformation and download records of the malicious crate are no longer\navailable. The related malicious crates have been yanked, and the malicious\naccount has been banned.",
+      "date": "2023-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

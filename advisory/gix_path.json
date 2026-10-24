@@ -25,9 +25,10 @@
         "https://github.com/advisories/GHSA-m8rp-vv92-46c7"
       ],
       "source": null,
-      "url": "https://github.com/Byron/gitoxide/security/advisories/GHSA-m8rp-vv92-46c7",
+      "url": "https://github.com/Byron/gitoxide/commit/650a1b5cf25e086197cc55a68525a411e1c28031",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -73,9 +74,10 @@
         "https://nvd.nist.gov/vuln/detail/CVE-2024-45305"
       ],
       "source": null,
-      "url": "https://github.com/Byron/gitoxide/security/advisories/GHSA-v26r-4c9c-h3j6",
+      "url": "https://github.com/Byron/gitoxide/commit/12251eb052df30105538fa831e641eea557f13d8",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -122,9 +124,10 @@
         "https://github.com/advisories/GHSA-mgvv-9p9g-3jv4"
       ],
       "source": null,
-      "url": "https://github.com/Byron/gitoxide/security/advisories/GHSA-mgvv-9p9g-3jv4",
+      "url": "https://github.com/GitoxideLabs/gitoxide/commit/15235bf7968042da0493d431bbc955d6f9f54188",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0187",
+      "package": "lopdf",
+      "title": "Stack overflow in lopdf via deeply nested PDF objects",
+      "description": "`lopdf::Document::load_mem` (and the other `load*` entry points) parses nested PDF arrays and dictionaries with unbounded recursion. A small crafted PDF whose Catalog contains a deeply nested array (`/X [[[ … ]]]`, on the order of 10,000 levels) exhausts the call stack and aborts the process with `SIGABRT`.\n\nBecause this is a stack-overflow abort rather than a `panic!`, it cannot be caught with `catch_unwind`: any service that parses untrusted PDF input with lopdf can be crashed by a ~21 KB file, resulting in a denial of service.\n\nConfirmed on lopdf 0.41.0 and earlier; fixed in 0.42.0. Default configuration, no features changed.\n\n## Proof of concept\n\n```rust\nfn main() {\n    let bytes = std::fs::read(\"poc.pdf\").unwrap(); // ~10,380-deep nested array in the Catalog\n    let _ = lopdf::Document::load_mem(&bytes);     // stack overflow -> SIGABRT\n}\n```\n\nAn equivalent PoC is a minimal PDF whose Catalog `/X` value is `\"[\" * 10380 + \"]\" * 10380`.\n\n## Suggested fix\n\nEnforce a maximum object-nesting depth in the parser and return an `Err` instead of recursing without bound.",
+      "date": "2026-06-21",
+      "aliases": [
+        "GHSA-6fj4-rcr3-r7rr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dos",
+        "stack-overflow",
+        "recursion",
+        "untrusted-input",
+        "pdf"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/J-F-Liu/lopdf/issues/502",
+        "https://github.com/J-F-Liu/lopdf/pull/503",
+        "https://github.com/J-F-Liu/lopdf/commit/c755394"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.42.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -17,7 +17,8 @@
       "source": null,
       "url": "https://github.com/BurntSushi/chan/commit/0a5c0d4ad4adc90a54ee04a427389acf2e157275",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

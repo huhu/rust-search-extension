@@ -22,9 +22,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/hyperium/tonic/security/advisories/GHSA-4jwc-w2hc-78qv",
+      "url": "https://github.com/hyperium/tonic/issues/1897",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

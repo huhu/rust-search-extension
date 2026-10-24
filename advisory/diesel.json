@@ -1,6 +1,274 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0172",
+      "package": "diesel",
+      "title": "Possible use after free when deserializing a SQLite database via `SqliteConnection::deserialize_readonly_database`",
+      "description": "Diesel allows loading a SQLite database from a byte buffer, represented as `&[u8]`, at runtime via the `SqliteConnection::deserialize_readonly_database` function. In previous versions of Diesel, this buffer was passed directly to libsqlite3. Since libsqlite3 requires the buffer to remain alive for as long as the database connection is open and Diesel did not ensure this as part of its safe API, callers of `SqliteConnection::deserialize_readonly_database` could drop the buffer prematurely. This prematurely drop caused libsqlite3 to operate on freed memory.\n\nThis vulnerability affects users of `SqliteConnection::deserialize_readonly_database` who drop the buffer passed to the function before they drop the database connection.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to Diesel version 2.3.10 or newer, which includes a fix for the problem. Alternatively users need to take to keep the buffer alive until the connection is dropped.\n\n## Resolution\n\nDiesel now stores a copy of the buffer inside of the `SqliteConnection` object itself to keep it alive as long as the underlying libsqlite3 connection exists.",
+      "date": "2026-06-05",
+      "aliases": [
+        "GHSA-ggxf-9f6j-w742"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/commit/1bc2ea46d9840e8d9af844239d3c84f37fe7d84b",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::sqlite::SqliteConnection::deserialize_readonly_database": [
+          "<2.3.10"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.10"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0134",
+      "package": "diesel",
+      "title": "Unsound access to padding bytes while serializing date/time values using the Mysql backend",
+      "description": "Diesel relies on libmysqlclient for interacting with Mysql compatible databases. This library requires to provide date/time values according to the byte layout of their `MYSQL_TIME` type.\n\nDiesel replicated this type as `#[repr(C)]` struct, populated all the fields of this struct and then casted this value to an array of bytes. As this cast exposes padding bytes contained in this struct, this is undefined behaviour.\n\nThis vulnerability affects any user serializing date/time values using the Mysql backend.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to Diesel version 2.3.8 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel now manually serializes the relevant data without accessing the padding bytes.",
+      "date": "2026-04-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/5042",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::serialize::ToSql<Date,Mysql>": [
+          "<2.3.8"
+        ],
+        "diesel::serialize::ToSql<DateTime,Mysql>": [
+          "<2.3.8"
+        ],
+        "diesel::serialize::ToSql<Time,Mysql>": [
+          "<2.3.8"
+        ],
+        "diesel::serialize::ToSql<Timestamp,Mysql>": [
+          "<2.3.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.8"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0135",
+      "package": "diesel",
+      "title": "Unsound transmute while debug/display printing batch Insert statements in Diesel's SQLite backend",
+      "description": "Diesel allows users to output the generated SQL for any query DSL construct via th `diesel::debug_query` function as `Display` and `Debug` output.\n\nFor the particular implementation used by batch Insert statements in the SQLite backend Diesel relied on an unspecified transmute between types with a `#[repr(rust)]` layout. This is formally undefined behaviour as the compiler is free to change the layout of these types at any time. \n\nThis vulnerability affects users that print out batch insert statements constructed using an array/vector of values without default values using `diesel::debug_query` on the SQLite backend.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to Diesel version 2.3.8 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel now uses a sound cast instead.",
+      "date": "2026-04-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/5042",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::debug_query": [
+          "<2.3.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.8"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0136",
+      "package": "diesel",
+      "title": "Command injection in Diesel's implementation of `COPY FROM`/`COPY TO`",
+      "description": "Diesel allows users to configure various options for PostgreSQL's `COPY FROM` and `COPY TO` statements. These configurations are partially provided as strings or characters. \n\nDiesel did not check if any these user-provided options contain a quote character `'`, which can lead to the injection of additional options in the current `COPY FROM`/`COPY TO` statement. \n\nThis vulnerability affects any user of `COPY FROM`/`COPY TO` that passes user-provided input to any of the affected functions. It can result in modifications of options in the current statement, but it is not possible inject additional statements.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to Diesel version 2.3.8 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel now correctly escapes any quotes contained in the provided arguments.",
+      "date": "2026-04-24",
+      "aliases": [
+        "GHSA-m9p2-fxp5-v3fp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/5042",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::pg::CopyFromQuery::with_default": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyFromQuery::with_delimiter": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyFromQuery::with_escape": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyFromQuery::with_null": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyFromQuery::with_quote": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyToQuery::with_delimiter": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyToQuery::with_escape": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyToQuery::with_null": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyToQuery::with_quote": [
+          "<2.3.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.8"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0137",
+      "package": "diesel",
+      "title": "Possible unaligned data access for implementations of `SqliteAggregate`",
+      "description": "Diesel allows to register custom aggregate SQL functions for SQLite via the `SqliteAggregate` interface.\n\nTo store an instance of the custom aggregate processor Diesel relied on the `sqlite3_aggregate_context` function provided by sqlite. This function doesn't provide any guarantees about alignment of the returned allocation, which in turn can lead to problems if the type implementing requires a special alignment, e.g. via a custom `#[align(x)]` attribute on the type implementing this trait. This affects any user of `SqliteAggregate` that registers the custom aggregate function with an SQLite connection, while using a non-standard alignment on the type implementing this trait.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to a Diesel version 2.3.8 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel now allocates the corresponding memory on Rust side to get a correctly aligned allocation.",
+      "date": "2026-04-24",
+      "aliases": [
+        "GHSA-q8x8-jrhj-fh9p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/5042",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::sqlite::SqliteAggregate": [
+          "<2.3.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.8"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0111",
+      "package": "diesel",
+      "title": "Possible UTF-8 corruption in Diesels SQLite backend",
+      "description": "Diesel uses the `sqlite3_value_text` function to receive strings from SQLite while deserializing query results. We misinterpreted the corresponding [SQLite](https://sqlite.org/c3ref/value_blob.html) documentation that this function always returns a UTF-8 encoded string values as `*const c_char`. Based on that we used `str::from_utf8_unchecked` to construct a Rust string slice without any additional UTF-8 checks in place. It turned out that this function doesn't always return correct UTF-8 strings. For field of the SQLite side storage type `BLOB` this pointer can contain arbitrary bytes, which makes the usage of `str::from_utf8_unchecked` unsound as this violates the safety contract of `str` to only contain valid UTF-8 encoded Strings.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to a Diesel version 2.3.8 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel now correctly checks whether the provides byte buffer is actually valid UTF-8, instead of relying on SQLite's documentation. This fix is included in the `2.3.8` release.",
+      "date": "2026-04-24",
+      "aliases": [
+        "GHSA-h5x4-m2qf-r4f2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/5042",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::deserialize::FromSql::<Text,Sqlite>::from_sql": [
+          "<2.3.8"
+        ],
+        "diesel::sqlite::SqliteValue::read_str": [
+          "<2.3.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.8"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2024-0365",
       "package": "diesel",
       "title": "Binary Protocol Misinterpretation caused by Truncating or Overflowing Casts",
@@ -26,7 +294,8 @@
       "source": null,
       "url": "https://github.com/diesel-rs/diesel/pull/4170",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -61,7 +330,8 @@
       "source": null,
       "url": "https://github.com/diesel-rs/diesel/pull/2663",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

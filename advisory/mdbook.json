@@ -23,7 +23,8 @@
       "source": null,
       "url": "https://groups.google.com/g/rustlang-security-announcements/c/3-sO6of29O0",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

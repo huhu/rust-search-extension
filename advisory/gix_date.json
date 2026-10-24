@@ -7,6 +7,7 @@
       "description": "The function `gix_date::parse::TimeBuf::as_str` can create an illegal string containing non-utf8 characters. This violates the safety invariant of `TimeBuf` and can lead to undefined behavior when consuming the string.\n\nThe bug can be prevented by adding `str::from_utf8` to the function `TimeBuf::write`.",
       "date": "2025-12-29",
       "aliases": [
+        "CVE-2026-0810",
         "GHSA-6mw6-mj76-grwc"
       ],
       "related": [],
@@ -24,14 +25,15 @@
       "source": null,
       "url": "https://github.com/GitoxideLabs/gitoxide/issues/2305",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
       "os": [],
       "functions": {
         "gix_date::parse::TimeBuf::as_str": [
-          "<=0.11.1"
+          "<=0.11.1, >=0.10.0"
         ]
       }
     },

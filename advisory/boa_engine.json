@@ -25,9 +25,10 @@
         "https://github.com/boa-dev/boa/commit/69ea2f52ed976934bff588d6b566bae01be313f7"
       ],
       "source": null,
-      "url": "https://github.com/boa-dev/boa/security/advisories/GHSA-f67q-wr6w-23jq",
+      "url": "https://github.com/boa-dev/boa/commit/69ea2f52ed976934bff588d6b566bae01be313f7",
       "withdrawn": null,
-      "license": "CC-BY-4.0"
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

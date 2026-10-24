@@ -30,7 +30,8 @@
       "source": null,
       "url": "https://github.com/rust-lang/git2-rs/pull/1017",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -77,9 +78,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/rust-lang/git2-rs/security/advisories/GHSA-m4ch-rfv5-x5g3",
+      "url": "https://github.com/rust-lang/git2-rs/commit/87934f87d36753ed702792ec063be7246444a8e1",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -1,0 +1,96 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0004",
+      "package": "triton-vm",
+      "title": "Triton VM Soundness Vulnerability due to Improper Sampling of Randomness",
+      "description": "In affected versions of Triton VM, the verifier failed to correctly sample randomness in the FRI sub-protocol.\n\nMalicious provers can exploit this to craft proofs for arbitrary statements that this verifier accepts as valid, undermining soundness.\n\nProtocols that rely on proofs and the supplied verifier of the affected versions of Triton VM are completely broken. Protocols implementing their own verifier might be unaffected.\n\nThe flaw was corrected in commit 3a045d63, where the relevant randomness is sampled correctly.",
+      "date": "2026-01-21",
+      "aliases": [
+        "GHSA-rjr4-v43m-pxq6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "proof-system",
+        "unsound",
+        "fiat-shamir",
+        "fri"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "triton_vm::verify": [
+          "<2.0.0, >=0.41.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": [
+        "<0.41.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0156",
+      "package": "triton-vm",
+      "title": "Triton VM Soundness Vulnerability due to Missing Constraint",
+      "description": "The instruction `sponge_absorb_mem` Triton VM fails to verify that hashed values come from the claimed memory location. Malicious provers can substitute arbitrary data instead of actual memory contents.\n\nAny application using instruction `sponge_absorb_mem` to hash memory data can be given a proof for a forged hash that doesn't correspond to the actual memory. This breaks the security of memory-based commitments.\n\nThe flaw was corrected in commits `17c7ba0a` and `ef9d9e72` by including the appropriate constraints.",
+      "date": "2021-06-11",
+      "aliases": [
+        "GHSA-vjf8-9fx6-mv6x"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "proof-system",
+        "unsound"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "triton_vm::verify": [
+          "<4.0.0, >=0.42.0-alpha.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=4.0.0"
+      ],
+      "unaffected": [
+        "<0.42.0-alpha.4"
+      ]
+    }
+  }
+]

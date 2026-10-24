@@ -21,9 +21,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/matrix-org/vodozemac/security/advisories/GHSA-j8cm-g7r6-hfpq",
+      "url": "https://github.com/matrix-org/vodozemac/commit/734b6c6948d4b2bdee3dd8b4efa591d93a61d272",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -54,9 +55,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/matrix-org/vodozemac/security/advisories/GHSA-c3hm-hxwf-g5c6",
+      "url": "https://github.com/matrix-org/vodozemac/commit/297548cad4016ce448c4b5007c54db7ee39489d9",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

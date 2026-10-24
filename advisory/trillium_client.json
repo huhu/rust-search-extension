@@ -22,9 +22,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/trillium-rs/trillium/security/advisories/GHSA-9f9p-cp3c-72jf",
+      "url": "https://github.com/trillium-rs/trillium/commit/16a42b3f8378a3fa4e61ece3e3e37e6a530df51d",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

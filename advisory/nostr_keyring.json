@@ -1,0 +1,32 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0241",
+      "package": "nostr-keyring",
+      "title": "`nostr-keyring` is unmaintained",
+      "description": "The `nostr-keyring` crate is no longer actively maintained.",
+      "date": "2026-08-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/nostrdevkit/nostr/pull/1414",
+        "https://github.com/nostrdevkit/nostr/issues/1415"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

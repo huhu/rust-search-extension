@@ -1,6 +1,80 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0033",
+      "package": "pingora-core",
+      "title": "HTTP Request Smuggling via Premature Upgrade",
+      "description": "Pingora versions prior to 0.8.0 would immediately forward bytes following a request with an Upgrade header to the backend, without waiting for a 101 Switching Protocols response. This allows an attacker to smuggle requests to the backend and bypass proxy-level security controls.\n\nThis vulnerability primarily affects standalone Pingora deployments where a Pingora proxy is exposed to external traffic. An attacker could exploit this to bypass proxy-level ACL controls and WAF logic, poison caches and upstream connections, or perform cross-user attacks by hijacking sessions.\n\nThis flaw was corrected in commit 824bdeefc61e121cc8861de1b35e8e8f39026ecd by only switching connection modes after receiving a 101 response from the backend. Users should upgrade to Pingora >= 0.8.0.\n\nNote: Cloudflare customers and Cloudflare's CDN infrastructure were not affected by this vulnerability, as ingress proxies in the CDN stack maintain proper HTTP parsing boundaries and do not prematurely switch to upgraded connection forwarding mode.",
+      "date": "2026-03-04",
+      "aliases": [
+        "CVE-2026-2833",
+        "GHSA-xq2h-p299-vjwv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "http",
+        "request-smuggling"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:H/SI:H/SA:N",
+      "informational": null,
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-2833"
+      ],
+      "source": null,
+      "url": "https://blog.cloudflare.com/pingora-oss-smuggling-vulnerabilities/",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0034",
+      "package": "pingora-core",
+      "title": "HTTP Request Smuggling via HTTP/1.0 and Transfer-Encoding Misparsing",
+      "description": "Pingora versions prior to 0.8.0 improperly allowed HTTP/1.0 request bodies to be close-delimited and incorrectly handled multiple Transfer-Encoding values. This allows an attacker to desync Pingora's request framing from backend servers and smuggle requests to the backend.\n\nThis vulnerability primarily affects standalone Pingora deployments in front of certain backends that accept HTTP/1.0 requests. An attacker could exploit this to bypass proxy-level ACL controls and WAF logic, poison caches and upstream connections, or perform cross-user attacks by hijacking sessions.\n\nThis flaw was corrected in commits 7f7166d62fa916b9f11b2eb8f9e3c4999e8b9023, 40c3c1e9a43a86b38adeab8da7a2f6eba68b83ad, and 87e2e2fb37edf9be33e3b1d04726293ae6bf2052 by correctly parsing message length headers per RFC 9112. Users should upgrade to Pingora >= 0.8.0.\n\nNote: Cloudflare customers and Cloudflare's CDN infrastructure were not affected by this vulnerability, as its ingress proxy layers rejected ambiguous framing such as invalid Content-Length values and internally forwarded non-ambiguous message length framing headers.",
+      "date": "2026-03-04",
+      "aliases": [
+        "CVE-2026-2835",
+        "GHSA-hj7x-879w-vrp7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "http",
+        "request-smuggling"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:H/SI:H/SA:N",
+      "informational": null,
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-2835"
+      ],
+      "source": null,
+      "url": "https://blog.cloudflare.com/pingora-oss-smuggling-vulnerabilities/",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2025-0070",
       "package": "pingora-core",
       "title": "Pingora MadeYouReset HTTP/2 vulnerability",
@@ -28,7 +102,8 @@
       "source": null,
       "url": "https://github.com/cloudflare/pingora/security/advisories/GHSA-393w-9x6h-8gc7",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -62,7 +137,8 @@
       "source": null,
       "url": "https://blog.cloudflare.com/resolving-a-request-smuggling-vulnerability-in-pingora/",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

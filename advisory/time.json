@@ -1,6 +1,71 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0009",
+      "package": "time",
+      "title": "Denial of Service via Stack Exhaustion",
+      "description": "## Impact\n\nWhen user-provided input is provided to any type that parses with the RFC 2822 format, a denial of\nservice attack via stack exhaustion is possible. The attack relies on formally deprecated and\nrarely-used features that are part of the RFC 2822 format used in a malicious manner. Ordinary,\nnon-malicious input will never encounter this scenario.\n\n## Patches\n\nA limit to the depth of recursion was added in v0.3.47. From this version, an error will be returned\nrather than exhausting the stack.\n\n## Workarounds\n\nLimiting the length of user input is the simplest way to avoid stack exhaustion, as the amount of\nthe stack consumed would be at most a factor of the length of the input.",
+      "date": "2026-02-05",
+      "aliases": [
+        "CVE-2026-25727",
+        "GHSA-r6v5-fh4h-64xc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "stack",
+        "exhaustion"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:N/PR:L/UI:A/VC:N/VI:N/VA:H/SC:N/SI:N/SA:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/time-rs/time/blob/main/CHANGELOG.md#0347-2026-02-05",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "time::Date::parse": [
+          ">=0.3.6, <0.3.47"
+        ],
+        "time::OffsetDateTime::parse": [
+          ">=0.3.6, <0.3.47"
+        ],
+        "time::PrimitiveDateTime::parse": [
+          ">=0.3.6, <0.3.47"
+        ],
+        "time::Time::parse": [
+          ">=0.3.6, <0.3.47"
+        ],
+        "time::UtcDateTime::parse": [
+          ">=0.3.38, <0.3.47"
+        ],
+        "time::UtcOffset::parse": [
+          ">=0.3.6, <0.3.47"
+        ],
+        "time::parsing::Parsed::parse_item": [
+          ">=0.3.6, <0.3.47"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.47"
+      ],
+      "unaffected": [
+        "<0.3.6"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2020-0071",
       "package": "time",
       "title": "Potential segfault in the time crate",
@@ -25,7 +90,8 @@
       "source": null,
       "url": "https://github.com/time-rs/time/issues/293",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

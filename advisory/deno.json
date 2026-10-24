@@ -22,9 +22,10 @@
         "https://github.com/denoland/deno/commit/31a97803995bd94629528ba841b2418d3ca01860"
       ],
       "source": null,
-      "url": "https://github.com/denoland/deno/security/advisories/GHSA-8vxj-4cph-c596",
+      "url": "https://github.com/denoland/deno/commit/31a97803995bd94629528ba841b2418d3ca01860",
       "withdrawn": null,
-      "license": "CC-BY-4.0"
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

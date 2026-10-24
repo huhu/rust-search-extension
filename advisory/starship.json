@@ -20,9 +20,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/starship/starship/security/advisories/GHSA-vx24-x4mv-vwr5",
+      "url": "https://github.com/starship/starship/commit/cfc58161e0ec595db90af686ad77a73df6d44d74",
       "withdrawn": null,
-      "license": "CC-BY-4.0"
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

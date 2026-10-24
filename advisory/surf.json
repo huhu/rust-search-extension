@@ -1,6 +1,33 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0169",
+      "package": "surf",
+      "title": "surf is unmaintained",
+      "description": "The surf crate is unmaintained, and all versions are affected.\n\nFor alternatives, consider using [reqwest](https://crates.io/crates/reqwest)\nor [ureq](https://crates.io/crates/ureq).\n\nSee [this issue](https://github.com/http-rs/surf/issues/352) for more context.",
+      "date": "2026-06-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/http-rs/surf/issues/352",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2025-0036",
       "package": "surf",
       "title": "surf is unmaintained",
@@ -19,7 +46,8 @@
       "source": null,
       "url": null,
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

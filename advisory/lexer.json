@@ -23,7 +23,8 @@
       "source": null,
       "url": "https://gitlab.com/nathanfaucett/rs-lexer/-/issues/2",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -17,7 +17,8 @@
       "source": null,
       "url": "https://github.com/bbqsrc/registry-rs/commit/41dc296c786e5943d3238535e45e1df60b258050",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

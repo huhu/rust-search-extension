@@ -1,0 +1,58 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0334",
+      "package": "bip322",
+      "title": "BIP-322 address ownership verification bypass for P2WPKH and P2SH-P2WPKH addresses",
+      "description": "Affected versions of `bip322` accepted a BIP-322 proof created with an\nattacker-controlled private key as a valid signature for an unrelated victim\nP2WPKH or P2SH-P2WPKH address, allowing complete authentication bypass in\napplications using `verify_simple`, `verify_simple_encoded`, `verify_full`, or\n`verify_full_encoded` as proof that a user controls a Bitcoin address.\n\nIn `verify_full`, the verifier obtained the public key from the\ncaller-controlled witness and passed it to `verify_full_p2wpkh`, where the\nsupposed public-key mismatch check read the key from the same witness and\ncompared it with itself:\n\n```rust\nlet witness_pub_key = &witness.to_vec()[1];\n\nif &pub_key.to_bytes() != witness_pub_key {\n    return Err(Error::PublicKeyMismatch);\n}\n```\n\nSince `pub_key` was originally parsed from that exact witness element, this\ncomparison was tautological. The code verified that the signature was valid\nfor the public key embedded in the witness, but never verified that this\npublic key hashes to the claimed address, violating BIP-322's requirement\nthat the `message_signature` satisfy the `message_challenge` (the claimed\naddress's scriptPubKey).\n\nAs a result, an attacker could select any victim P2WPKH or P2SH-P2WPKH\naddress, construct the BIP-322 challenge for that address and message, sign\nit with their own unrelated private key, and have the proof accepted. No\nvictim key or victim interaction was required. Application-level nonces do\nnot mitigate this, since the attacker can construct and sign the current\nchallenge message with their own key.\n\nP2TR verification is not affected: the public key is derived from the\naddress's witness program rather than from the caller-controlled witness.\n\nThe flaw was corrected in commit\n[e8accbe](https://github.com/rust-bitcoin/bip322/commit/e8accbe7d39f48f030e44f333b4796e28f6aad80)\nby deriving the expected scriptPubKey from the witness public key\n(`P2WPKH(HASH160(pubkey))`, wrapped in P2SH for the nested case) and\nrequiring it to exactly equal the scriptPubKey of the claimed address before\nsignature verification, failing with `Error::PublicKeyMismatch` otherwise.\nThe fix is included in version\n[0.0.11](https://crates.io/crates/bip322/0.0.11). Affected versions 0.0.6\nthrough 0.0.10 have been yanked from crates.io.\n\nThere is no known workaround that mitigates the vulnerability. Upgrading to\nversion 0.0.11 is the recommended course of action.",
+      "date": "2026-08-14",
+      "aliases": [
+        "GHSA-5chw-87w3-j9cv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "bip322",
+        "bitcoin",
+        "signature-verification"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-bitcoin/bip322/commit/e8accbe7d39f48f030e44f333b4796e28f6aad80",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bip322::verify_full": [
+          ">=0.0.6, <0.0.11"
+        ],
+        "bip322::verify_full_encoded": [
+          ">=0.0.6, <0.0.11"
+        ],
+        "bip322::verify_simple": [
+          ">=0.0.6, <0.0.11"
+        ],
+        "bip322::verify_simple_encoded": [
+          ">=0.0.6, <0.0.11"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.11"
+      ],
+      "unaffected": [
+        "<0.0.6"
+      ]
+    }
+  }
+]

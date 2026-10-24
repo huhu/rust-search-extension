@@ -24,7 +24,8 @@
       "source": null,
       "url": "https://git.sr.ht/~nabijaczleweli/mail-internals.crate/commit/05443c864b204e7f1512caf2d53e8cce4dd340fc",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

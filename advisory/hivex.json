@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0029",
+      "package": "hivex",
+      "title": "Double-free and use-after-free for Hive",
+      "description": "`Drop` implementation for `Hive` did perform free, but so did `Hive::close`, which,\nat the end of the scope performed `Drop`, therefore triggering double-free.\n\nAdditionally, function `Hive::from_handle` was not marked as unsafe, making it,\nin combination with `as_handle` easy to clone and trigger double-free in safe\ncode or triggering UB when using invalid pointer.",
+      "date": "2026-02-26",
+      "aliases": [
+        "GHSA-j8cj-hw74-64jv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "double-free",
+        "use-after-free",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://codeberg.org/1millibyte/toolsnt/issues/18",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "hivex::Hive::close": [
+          "=0.2.0"
+        ],
+        "hivex::Hive::from_handle": [
+          "=0.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

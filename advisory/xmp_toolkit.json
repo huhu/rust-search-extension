@@ -21,7 +21,8 @@
       "source": null,
       "url": "https://github.com/adobe/xmp-toolkit-rs/issues/233",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

@@ -24,7 +24,8 @@
       "source": null,
       "url": "https://github.com/image-rs/image/issues/1357",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -81,7 +82,8 @@
       "source": null,
       "url": "https://github.com/image-rs/image/pull/985",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

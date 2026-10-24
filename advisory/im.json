@@ -1,6 +1,62 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0248",
+      "package": "im",
+      "title": "im is unmaintained",
+      "description": "The im crate is unmaintained; all versions are affected. The GitHub\nrepository was archived by the owner on 2026-05-03.\n\nRecommended alternative:\n\n* [imbl](https://crates.io/crates/imbl) is a maintained fork of this crate",
+      "date": "2026-05-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodil/im-rs",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0126",
+      "package": "im",
+      "title": "Aliasing violation in `OrdSet` insertion",
+      "description": "Inserting into an `im::OrdSet` (for example by collecting an iterator into one) can violate\nRust's aliasing rules: Miri reports a stacked borrows violation in\n`sized_chunks::Chunk::force_copy()`, which is called during insertion, where a shared borrow\nis invalidated by a unique borrow before the read through it completes.\nThis is undefined behavior, reachable from safe code.\n\nNo fixed version is available, as the crate is unmaintained; its GitHub\nrepository was archived by the owner on 2026-05-03.",
+      "date": "2023-02-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodil/im-rs/issues/207",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2020-0096",
       "package": "im",
       "title": "TreeFocus lacks bounds on its Send and Sync traits",
@@ -22,7 +78,8 @@
       "source": null,
       "url": "https://github.com/bodil/im-rs/issues/157",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

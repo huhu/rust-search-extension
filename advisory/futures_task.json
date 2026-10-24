@@ -28,7 +28,8 @@
       "source": null,
       "url": "https://github.com/rust-lang/futures-rs/pull/2206",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -74,7 +75,8 @@
       "source": null,
       "url": "https://github.com/rust-lang/futures-rs/issues/2091",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

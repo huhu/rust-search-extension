@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0127",
+      "package": "accessor",
+      "title": "Integer overflow in `array::ReadWrite::new()` leading to potential memory corruption",
+      "description": "In `array::ReadWrite::new()` (line 83 of `accessor/src/array.rs`),\n`let bytes = mem::size_of::<T>() * len` can overflow `usize` when `len` is\nvery large. In release mode, this silently wraps, potentially making\n`bytes = 0`. The mapper then maps with 0 bytes, and subsequent accesses\n(e.g. `read_volatile_at`) lead to undefined behavior or memory corruption.\n\nNote: `array::ReadWrite::new()` itself is `unsafe`, so direct triggering\nrequires an `unsafe` block. However, the integer overflow violates the\nimplicit safety contract expected by callers and can lead to memory\ncorruption downstream.",
+      "date": "2026-05-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "integer-overflow",
+        "out-of-bounds"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/toku-sa-n/accessor/issues/49",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

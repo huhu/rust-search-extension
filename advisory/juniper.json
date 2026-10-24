@@ -22,9 +22,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/graphql-rust/juniper/security/advisories/GHSA-4rx6-g5vg-5f3j",
+      "url": "https://github.com/graphql-rust/juniper/commit/2b609ee057be950e3454b69fadc431d120e407bb",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -20,9 +20,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/rulex-rs/rulex/security/advisories/GHSA-8v9w-p43c-r885",
+      "url": "https://github.com/rulex-rs/rulex/commit/fac6d58b25c6f9f8c0a6cdc4dec75b37b219f1d6",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -53,9 +54,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/rulex-rs/rulex/security/advisories/GHSA-v78m-2q7v-fjqp",
+      "url": "https://github.com/rulex-rs/rulex/commit/60aa2dc03a22d69c8800fec81f99c96958a11363",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

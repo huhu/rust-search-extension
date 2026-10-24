@@ -26,9 +26,10 @@
         "https://github.com/AsfhtgkDavid/theshit/commit/8e0b565e7876a83b0e1cfbacb8af39dadfdcc500"
       ],
       "source": null,
-      "url": "https://github.com/advisories/GHSA-95qg-89c2-w5hj",
+      "url": "https://github.com/AsfhtgkDavid/theshit/commit/8e0b565e7876a83b0e1cfbacb8af39dadfdcc500",
       "withdrawn": null,
-      "license": "CC-BY-4.0"
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

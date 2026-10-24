@@ -21,9 +21,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/comex/rust-shlex/security/advisories/GHSA-r7qv-8r2h-pg27",
+      "url": "https://github.com/comex/rust-shlex/commit/4a0724b0b62ef715467875b040a890ce75a8a829",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

@@ -1,6 +1,57 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0078",
+      "package": "intaglio",
+      "title": "Symbol confusion after hasher panic in `intaglio` interners",
+      "description": "Affected versions of this crate can leave all `SymbolTable` variants in an\ninternally inconsistent state if a custom `BuildHasher` panics during\n`HashMap::insert` and the caller recovers with `catch_unwind`.\n\nThe `intern` implementations committed a `vec.push(...)` before the matching\n`map.insert(...)` completed. If hashing panicked in that window, later lookups\nand inserts could observe diverging `vec` and `map` lengths.\n\nIn release builds, this can lead to symbol confusion where a newly interned\nstring resolves to previously interned attacker-controlled contents. In debug\nbuilds, the same corruption is detected by follow-up assertions and results in\npanics.\n\nThe flaw was corrected in version 1.13.3 by making the `vec` mutation\ntransactional across unwind boundaries so partially inserted entries are rolled\nback before the panic propagates.",
+      "date": "2026-03-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/artichoke/intaglio/pull/360"
+      ],
+      "source": null,
+      "url": "https://github.com/artichoke/intaglio/issues/359",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "intaglio::SymbolTable::intern": [
+          "<1.13.3"
+        ],
+        "intaglio::bytes::SymbolTable::intern": [
+          "<1.13.3"
+        ],
+        "intaglio::cstr::SymbolTable::intern": [
+          "<1.13.3, >=1.5.0"
+        ],
+        "intaglio::osstr::SymbolTable::intern": [
+          "<1.13.3, >=1.5.0"
+        ],
+        "intaglio::path::SymbolTable::intern": [
+          "<1.13.3, >=1.5.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.13.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2023-0048",
       "package": "intaglio",
       "title": "Unsoundness in `intern` methods on `intaglio` symbol interners",
@@ -23,7 +74,8 @@
       "source": null,
       "url": "https://github.com/artichoke/intaglio/pull/236",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

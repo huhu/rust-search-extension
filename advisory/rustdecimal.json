@@ -13,7 +13,8 @@
       "related": [],
       "collection": "crates",
       "categories": [
-        "code-execution"
+        "code-execution",
+        "malicious"
       ],
       "keywords": [
         "typosquatting"
@@ -24,7 +25,8 @@
       "source": null,
       "url": "https://groups.google.com/g/rustlang-security-announcements/c/5DVtC8pgJLw?pli=1",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": true
     },
     "affected": null,
     "versions": {

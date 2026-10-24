@@ -20,7 +20,8 @@
       "source": null,
       "url": "https://github.com/paritytech/bigint/commit/7e71521a61b009afc94c91135353102658550d42",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

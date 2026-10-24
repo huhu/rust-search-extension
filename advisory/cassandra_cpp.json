@@ -24,9 +24,10 @@
       "informational": "unsound",
       "references": [],
       "source": null,
-      "url": "https://github.com/Metaswitch/cassandra-rs/security/advisories/GHSA-x9xc-63hg-vcfq",
+      "url": "https://github.com/Metaswitch/cassandra-rs/commit/ae054dc8044eac9c2c7ae2b1ab154b53ca7f8df7",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

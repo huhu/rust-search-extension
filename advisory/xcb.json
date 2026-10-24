@@ -24,7 +24,8 @@
       "source": null,
       "url": "https://github.com/rust-x-bindings/rust-xcb/issues/282",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -80,7 +81,8 @@
       "source": null,
       "url": "https://github.com/RustSec/advisory-db/issues/653",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -114,7 +116,8 @@
       "source": null,
       "url": "https://github.com/rust-x-bindings/rust-xcb/issues/93",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -22,9 +22,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/alloy-rs/core/security/advisories/GHSA-pgp9-98jm-wwq2",
+      "url": "https://github.com/alloy-rs/core/commit/7823e9af8c20e9fcfb5360f5eafd891c457ebccf",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

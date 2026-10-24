@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0328",
+      "package": "decompress",
+      "title": "`decompress`: tar-family extractors write archive entries without a path-traversal check (tar-slip)",
+      "description": "The tar-family extractors in `decompress` (`.tar`, `.tar.gz`, `.tar.xz`,\n`.tar.bz2`, `.tar.zst`) build each output path from the **raw archive entry path**\nand write to it with no traversal check, so a malicious archive can write files\n**outside** the destination directory, a \"tar-slip\" / zip-slip path traversal\n(CWE-22 / CWE-23).\n\nIn `src/decompressors/tar_common.rs` (`tar_extract`):\n\n```rust\nlet filepath = entry.path()?;                                    // raw entry path\nlet filepath = filepath.components().skip(opts.strip).collect::<PathBuf>();\n                                     // strips leading components only — keeps `..`\nlet outpath = to.join(filepath);\n// ...\nlet mut outfile = fs::File::create(&outpath)?;                   // writes anywhere\n```\n\n`.components().skip(opts.strip)` removes a fixed number of *leading* path\ncomponents but leaves interior `..` components intact so an entry named \ne.g. `../../../../home/<user>/.bashrc`, or an absolute path, resolves **outside** \n`to`. This affects all platforms.",
+      "date": "2026-09-19",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "zip-slip",
+        "tar-slip",
+        "path-traversal",
+        "directory-traversal",
+        "arbitrary-file-write"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rusty-ferris-club/decompress/issues/21",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "decompress::decompress": [
+          "<=0.6.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

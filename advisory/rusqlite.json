@@ -38,7 +38,8 @@
       "source": null,
       "url": "https://github.com/rusqlite/rusqlite/issues/1048",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -119,7 +120,8 @@
       "source": null,
       "url": "https://github.com/rusqlite/rusqlite/releases/tag/0.23.0",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

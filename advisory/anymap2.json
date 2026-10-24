@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0319",
+      "package": "anymap2",
+      "title": "anymap2 is unmaintained",
+      "description": "The `anymap2` crate is not maintained. `anymap3` is the recommended replacement.",
+      "date": "2026-10-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/issues/3300#issuecomment-5939722190",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

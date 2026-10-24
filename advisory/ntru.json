@@ -24,7 +24,8 @@
       "source": null,
       "url": "https://github.com/FrinkGlobal/ntru-rs/issues/8",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

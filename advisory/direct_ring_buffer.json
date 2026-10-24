@@ -26,7 +26,8 @@
       "source": null,
       "url": "https://github.com/ain1084/direct_ring_buffer/issues/1",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

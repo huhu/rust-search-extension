@@ -1,0 +1,318 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0352",
+      "package": "wasmtime-wasi",
+      "title": "Filesystem sandbox escape when renaming symlinks with trailing slashes",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-m9f7-9w4p-gv38\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-14",
+      "aliases": [
+        "GHSA-m9f7-9w4p-gv38"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:H/VI:H/VA:L/SC:H/SI:H/SA:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14729",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "macos",
+        "freebsd"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=36.0.18, <37.0.0",
+        ">=48.0.6, <49.0.0",
+        ">=49.0.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0323",
+      "package": "wasmtime-wasi",
+      "title": "fd_readdir copies uninitialized struct padding into guest memory",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-96f6-r43r-8c24\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-02",
+      "aliases": [
+        "CVE-2026-115386",
+        "GHSA-96f6-r43r-8c24"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14487",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.17, <37.0.0",
+        ">=48.0.4, <49.0.0",
+        ">=49.0.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0322",
+      "package": "wasmtime-wasi",
+      "title": "Excessive allocated memory on the host when guests don't have stdio",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-gqmc-89g8-p25r\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-02",
+      "aliases": [
+        "CVE-2026-115381",
+        "GHSA-gqmc-89g8-p25r"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14482",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.17, <37.0.0",
+        ">=48.0.4, <49.0.0",
+        ">=49.0.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0324",
+      "package": "wasmtime-wasi",
+      "title": "Guest can panic host through filesystem timestamp before the epoch on wasip3",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-mr2v-56j5-cmfc\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-02",
+      "aliases": [
+        "CVE-2026-115385",
+        "GHSA-mr2v-56j5-cmfc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14486",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=48.0.4, <49.0.0",
+        ">=49.0.2"
+      ],
+      "unaffected": [
+        "<46.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0321",
+      "package": "wasmtime-wasi",
+      "title": "WASI preview 0 implementation of `poll_oneoff` circumvents fuel consumption",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-j366-h8gg-77pm\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-02",
+      "aliases": [
+        "CVE-2026-115380",
+        "GHSA-j366-h8gg-77pm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14481",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.17, <37.0.0",
+        ">=48.0.4, <49.0.0",
+        ">=49.0.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0314",
+      "package": "wasmtime-wasi",
+      "title": "Guest can panic host through filesystem datetime overflow",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-j2g9-4prp-pf6h\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-09-24",
+      "aliases": [
+        "CVE-2026-115387",
+        "GHSA-j2g9-4prp-pf6h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14403",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.16, <37.0.0",
+        ">=48.0.3, <49.0.0",
+        ">=49.0.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0188",
+      "package": "wasmtime-wasi",
+      "title": "WASI hard links and renames bypass wasmtime-wasi's FilePerms for destination",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-4ch3-9j33-3pmj\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-06-24",
+      "aliases": [
+        "GHSA-4ch3-9j33-3pmj",
+        "CVE-2026-58494"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/13725",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=46.0.1",
+        ">=45.0.3, <46.0.0",
+        ">=36.0.12, <37.0.0",
+        ">=24.0.11, <25.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0182",
+      "package": "wasmtime-wasi",
+      "title": "Leak in WASIp1 `fd_renumber` implementation",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-3p27-qvp9-27qf\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-06-15",
+      "aliases": [
+        "CVE-2026-54786",
+        "GHSA-3p27-qvp9-27qf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/13650",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=45.0.2",
+        ">=44.0.3, <45.0.0",
+        ">=36.0.11, <37.0.0",
+        ">=24.0.10, <25.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0149",
+      "package": "wasmtime-wasi",
+      "title": "WASI path_open(TRUNCATE) bypasses `FilePerms::WRITE` host restriction",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-2r75-cxrj-cmph\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-05-21",
+      "aliases": [
+        "CVE-2026-47261",
+        "GHSA-2r75-cxrj-cmph"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/13429",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=24.0.9, <25.0.0",
+        ">=36.0.10, <37.0.0",
+        ">=44.0.2, <45.0.0",
+        ">=45.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

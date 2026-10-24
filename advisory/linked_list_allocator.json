@@ -20,9 +20,10 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/advisories/GHSA-xg8p-34w2-j49j",
+      "url": "https://github.com/rust-osdev/linked-list-allocator/commit/013b0758643943e8df5b17bbb495460ff47e8bbf",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -26,9 +26,10 @@
         "https://github.com/Byron/gitoxide/issues/1534"
       ],
       "source": null,
-      "url": "https://github.com/Byron/gitoxide/security/advisories/GHSA-88g2-r9rw-g55h",
+      "url": "https://github.com/Byron/gitoxide/issues/1534",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

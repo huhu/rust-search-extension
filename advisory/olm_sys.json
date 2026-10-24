@@ -27,7 +27,8 @@
       "source": null,
       "url": "https://gitlab.gnome.org/BrainBlasted/olm-sys/-/issues/12",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

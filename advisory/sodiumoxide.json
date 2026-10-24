@@ -19,7 +19,8 @@
       "source": null,
       "url": "https://github.com/sodiumoxide/sodiumoxide/commit/5bb1dfd2578539b89ffb0cbea25f21f00cfb963e",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -50,7 +51,8 @@
       "source": null,
       "url": "https://github.com/sodiumoxide/sodiumoxide/pull/381",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],
@@ -94,7 +96,8 @@
       "source": null,
       "url": "https://github.com/dnaq/sodiumoxide/issues/154",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

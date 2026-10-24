@@ -17,7 +17,8 @@
       "source": null,
       "url": "https://github.com/mlalic/hpack-rs/issues/8",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -30,7 +31,7 @@
       "id": "RUSTSEC-2023-0085",
       "package": "hpack",
       "title": "HPACK decoder panics on invalid input",
-      "description": "Due to insufficient checking of input data, decoding certain data sequences can\nlead to _Decoder::decode_ panicking rather than returning an error.\n\nExample code that triggers this vulnerability looks like this:\n\n```rust\nuse hpack::Decoder;\n\npub fn main() {\n  let input = &[0x3f];\n  let mut decoder = Decoder::new();\n  let _ = decoder.decode(input);\n}\n```\n\nhpack is unmaintained. A crate with the panics fixed has been published as\n[hpack-patched](https://crates.io/crates/hpack-patched).\n\nAlso consider using [fluke-hpack](https://crates.io/crates/fluke-hpack) or\n[httlib-huffman](https://crates.io/crates/httlib-huffman) as an alternative.",
+      "description": "Due to insufficient checking of input data, decoding certain data sequences can\nlead to _Decoder::decode_ panicking rather than returning an error.\n\nExample code that triggers this vulnerability looks like this:\n\n```rust\nuse hpack::Decoder;\n\npub fn main() {\n  let input = &[0x3f];\n  let mut decoder = Decoder::new();\n  let _ = decoder.decode(input);\n}\n```\n\nhpack is unmaintained. A crate with the panics fixed has been published as\n[hpack-patched](https://crates.io/crates/hpack-patched).\n\nAlso consider using\n[loona-hpack](https://crates.io/crates/loona-hpack) or\n[httlib-huffman](https://crates.io/crates/httlib-huffman) as an alternative.\n\nVersion 0.3.1 of\n[fluke-hpack](https://crates.io/crates/fluke-hpack) still reproduces the panic\ndescribed in this advisory.",
       "date": "2023-09-15",
       "aliases": [
         "GHSA-w7hm-hmxv-pvhf"
@@ -49,7 +50,8 @@
       "source": null,
       "url": "https://github.com/mlalic/hpack-rs/issues/11",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

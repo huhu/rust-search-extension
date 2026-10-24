@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0105",
+      "package": "core2",
+      "title": "core2 is unmaintained, all versions yanked",
+      "description": "The maintainer decided stop maintaining crate and yanked all published versions.\n\nPotential alternatives:\n\n- [`embedded-io`](https://crates.io/crates/embedded-io) solves the same general problem\n- [`no-std-io2`](https://crates.io/crates/no-std-io2) is a maintained fork",
+      "date": "2026-04-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://hachyderm.io/@piecritic/116404790999620656",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

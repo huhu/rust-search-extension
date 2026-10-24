@@ -22,7 +22,8 @@
       "source": null,
       "url": "https://github.com/rust-blockchain/evm/pull/133",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

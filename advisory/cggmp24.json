@@ -24,7 +24,8 @@
       "source": null,
       "url": "https://www.dfns.co/article/cggmp21-vulnerabilities-patched-and-explained",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {
@@ -61,7 +62,8 @@
       "source": null,
       "url": "https://www.dfns.co/article/cggmp21-vulnerabilities-patched-and-explained",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

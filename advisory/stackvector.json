@@ -1,6 +1,39 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2025-0166",
+      "package": "stackvector",
+      "title": "Multiple soundness issues in `stackvector`",
+      "description": "Affected versions of `stackvector` contained multiple soundness issues that could allow safe Rust code to trigger undefined behavior.\n\nOne issue was that `StackVec::length` was exposed as a public field. Safe Rust code could set `length` to a value larger than the backing array capacity. Other safe methods, including `remove`, `pop`, and `truncate`, relied on `length` before performing unsafe pointer operations (`ptr::read`, `ptr::copy`, `offset`/`add`). If `length` was corrupted by safe code, these methods could perform out-of-bounds pointer arithmetic, reads, writes, or copies.\n\nThe upstream maintainer also identified additional soundness issues, including the use of `mem::uninitialized` in `StackVec::from_vec_unchecked`, which was reachable through `from_vec`, and Miri violations related to `MaybeUninit` usage.\n\nVersion `2.0.0` was released to fix the known soundness issues.",
+      "date": "2025-10-23",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/Alexhuszagh/rust-stackvector/pull/6",
+        "https://github.com/Alexhuszagh/rust-stackvector/commit/02b947afdeeb1be95ec0888354aa76afdd9d0357",
+        "https://github.com/Alexhuszagh/rust-stackvector/issues/5"
+      ],
+      "source": null,
+      "url": "https://github.com/Alexhuszagh/rust-stackvector/issues/3",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0048",
       "package": "stackvector",
       "title": "StackVec::extend can write out of bounds when size_hint is incorrect",
@@ -22,7 +55,8 @@
       "source": null,
       "url": "https://github.com/Alexhuszagh/rust-stackvector/issues/2",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": null,
     "versions": {

@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0162",
+      "package": "pqcrypto-traits",
+      "title": "`pqcrypto-traits` is unmaintained: upstream PQClean project being archived",
+      "description": "This crate provides shared trait definitions for the `pqcrypto-*` ecosystem,\nwhich wraps C implementations from\n[PQClean](https://github.com/PQClean/PQClean). The PQClean project is being\narchived in or after July 2026 (see [PQClean/PQClean#604](https://github.com/PQClean/PQClean/issues/604)).\n\nAs a result, this crate and the broader `pqcrypto-*` ecosystem will no longer\nreceive updates. Users should migrate to actively maintained alternatives.",
+      "date": "2026-06-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustpq/pqcrypto/issues/97",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0330",
+      "package": "libcrux-kem",
+      "title": "Hybrid Encapsulation from Seed Panics on Short Seed",
+      "description": "For a hybrid KEM public key of type `PublicKey::WingKemDraft06` or `PublicKey::X25519MlKem768Draft06`, the `PublicKey::encapsulate_derand` function would panic in an indexing operation on a seed input of length shorter than 32 bytes.\n\n# Impact\n\nApplications encapsulating with an attacker controlled seed value could be made to panic. Since the encapsulation seed should be considered a secret of the encapsulating party for the KEM to remain secure, an application should never take the seed value from a potentially attacker controlled source.\n\n# Mitigation\n\nWith release of version `0.0.10` of `libcrux-kem` this bug has been fixed and the serialization functions return `InvalidPrivateKey` and `InvalidPublicKey` errors on invalid input buffer lengths.\n\nWe recommend users upgrade to `libcrux-kem` version `0.0.10`.",
+      "date": "2026-09-28",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/celabshq/libcrux/pull/1595",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_kem::PublicKey::encapsulate_derand": [
+          "<=0.0.9"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.10"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0331",
+      "package": "libcrux-kem",
+      "title": "Panic on Decoding Short Hybrid Keys",
+      "description": "The deserialization functions `X25519MlKem768Draft00PrivateKey::decode` `X25519MlKem768Draft00PublicKey::decode` and `XWingKemDraft06PublicKey::decode` would panic during an indexing operation when provided an input slice that is shorter than the length of the given key type, i.e. shorter than 2400 bytes in the case of the `X25519MlKem768Draft00` private key and shorter than 1184 bytes in the case of the `X25519MlKem768Draft` and `XWingKemDraft06` public keys.\n\n# Impact\n\nApplications decoding attacker provided slices into the above mentioned private and public key types could be made to panic.\n\n# Mitigation\n\nWith release of version `0.0.10` of `libcrux-kem` this bug has been fixed and the serialization functions return `InvalidPrivateKey` and `InvalidPublicKey` errors on invalid input buffer lengths.\n\nWe recommend users upgrade to `libcrux-kem` version `0.0.10`.",
+      "date": "2026-08-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/celabshq/libcrux/pull/1560",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_kem::PrivateKey::decode": [
+          "<=0.0.9"
+        ],
+        "libcrux_kem::PublicKey::decode": [
+          "<=0.0.9"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.10"
+      ],
+      "unaffected": []
+    }
+  }
+]

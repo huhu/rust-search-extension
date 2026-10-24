@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0203",
+      "package": "tree-sitter-perl-next",
+      "title": "`tree-sitter-perl-next` is unmaintained",
+      "description": "The author of `tree-sitter-perl-next` has stated that the crate is unmaintained and will not receive further fixes (see the repo's readme).\n\n## Alternative(s)\n\n- [`ts-parser-perl `](https://crates.io/crates/ts-parser-perl), an actively maintained tree-sitter Perl grammar that tree-sitter-perl-next initially forked.",
+      "date": "2026-07-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PRRPCHT/tree-sitter-perl-next",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

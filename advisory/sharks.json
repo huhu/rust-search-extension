@@ -25,7 +25,8 @@
       "source": null,
       "url": "https://git.distrust.co/public/blahaj/commit/4faab1cd33d455f0ca2ccc7208093fd6c18e0767",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

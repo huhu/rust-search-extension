@@ -27,9 +27,10 @@
         "https://nvd.nist.gov/vuln/detail/CVE-2025-31130"
       ],
       "source": null,
-      "url": "https://github.com/GitoxideLabs/gitoxide/security/advisories/GHSA-2frx-2596-x5r6",
+      "url": "https://github.com/GitoxideLabs/gitoxide/commit/f253f02a6658b3b7612a50d56c71f5ae4da4ca21",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

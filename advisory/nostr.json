@@ -1,0 +1,335 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0227",
+      "package": "nostr",
+      "title": "NIP-44 v2 decryption permits resource exhaustion",
+      "description": "The NIP-44 decryption entry point Base64-decoded the complete attacker-controlled\npayload before determining its version or enforcing any size limit. For v2 payloads,\nthe decoded buffer was then authenticated with HMAC even when it was much larger than\nthe maximum payload supported by the crate's current v2 codec.\n\nA malicious relay or event author could deliver an oversized value to an application\nthat decrypts NIP-44 content. The value caused memory allocation and Base64 and HMAC\nwork proportional to its size before authentication failed; knowledge of the\nconversation key was not required to consume those initial resources. Repeated\npayloads could exhaust memory or CPU and make the receiving application unavailable.\nThe issue does not disclose plaintext or key material and does not bypass message\nauthentication.\n\nDecryption now reads only the encoded version prefix first, derives the bound from\nthe largest payload the current v2 encoder can emit, and rejects oversized encoded\nand decoded payloads before full allocation or HMAC processing. The limit remains in\nthe v2 implementation so a future codec with a different length format can define its\nown bound.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "nostr",
+        "nip44",
+        "decryption"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/89dc1a77eaa774174588c5a38b6324c502948830"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0226",
+      "package": "nostr",
+      "title": "Wallet event parsers accept unauthenticated events",
+      "description": "The NIP-47 response and notification parsers and the NIP-60 wallet event parsers\ndecrypted relay-provided events before verifying their kind, computed event ID,\nsignature, and expected wallet public key. The decryption peer was derived from the\nuntrusted event author, so successful decryption did not prove that the configured\nwallet created the event.\n\nAn attacker can sign an event with their own key and derive the corresponding shared\nsecret with the victim's public key. A malicious relay delivering that event could\ntherefore cause attacker-chosen encrypted content to be parsed as a response,\nnotification, token, spending record, or quote from the configured wallet. This can\ncorrupt wallet state or cause an application to act on forged wallet data. The issue\ndoes not expose the victim's private key or decrypt events authored by the legitimate\nwallet.\n\nThe affected parsers now verify the event kind, ID, signature, and exact configured\nwallet author before attempting decryption or parsing the plaintext.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "nostr",
+        "nip47",
+        "nip60",
+        "wallet"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/2b6d6227cd884c1acb200bffa66a3f402b02a176",
+        "https://github.com/nostrdevkit/nostr/commit/0b78464e39604b0f052862035f47fdabc2a536dd"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0229",
+      "package": "nostr",
+      "title": "NIP-98 authorization parsing permits resource exhaustion",
+      "description": "The NIP-98 HTTP authorization parser Base64-decoded the complete authorization value\nand parsed the resulting JSON event without applying an application-level size limit.\nBoth operations occurred before the event's signature and authorization fields could\nbe validated.\n\nAn unauthenticated remote client could send an oversized `Authorization: Nostr`\nheader to a server using this parser. Each request caused memory allocation and\ndecoding and JSON parsing work proportional to the supplied value, allowing repeated\nrequests to consume server memory and CPU. The impact depends on any lower HTTP header\nlimit already enforced by the hosting server. The issue does not bypass NIP-98\nauthentication or disclose protected data.\n\nThe parser now rejects oversized encoded input before Base64 allocation and rejects\ndecoded authorization events larger than 64 KiB before JSON parsing.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "nostr",
+        "nip98",
+        "authorization"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/fd69825a3aa83c4a99f0d620fafba66c765db96b"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0230",
+      "package": "nostr",
+      "title": "Empty NIP-50 search filters can panic",
+      "description": "The NIP-50 event-matching path searched event content with\n`slice::windows(search.len())`. An empty search string therefore called\n`slice::windows(0)`, which always panics instead of returning a match result.\n\nA remote client able to submit filters to an application using this matcher could\ntrigger the panic with an empty NIP-50 search value. This includes clients querying an\nSDK local relay. Depending on the application's panic configuration and task\nisolation, the crafted filter could terminate request processing, a runtime worker, or\nthe entire process, causing denial of service. No confidentiality or integrity impact\nis known.\n\nEmpty searches are now handled before the substring search, so the matcher returns a\ndefined result without constructing a zero-sized window or panicking.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "nostr",
+        "nip50",
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/29182657bc54ac18564597e4414f08c3e4e9aa0a"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0228",
+      "package": "nostr",
+      "title": "NIP-04 parsing amplifies malformed ciphertext memory use",
+      "description": "The NIP-04 decryption parser split attacker-controlled content on every `?iv=`\nseparator and collected all resulting segments before checking that the message had\nthe expected two parts. It also Base64-decoded the complete IV text before checking\nthat it represented the required 16-byte AES-CBC IV.\n\nA malicious sender could include a large number of separators or an oversized IV in\nan encrypted direct message. Applications that attempted to decrypt the message\nperformed avoidable allocations proportional to the malformed input, with additional\nallocation amplification from the segment vector and Base64 output. This can consume\nmemory and CPU in clients processing messages received through a relay. It does not\nweaken NIP-04 encryption or reveal plaintext or key material.\n\nThe parser now uses a single bounded split, rejects additional separators, and\nvalidates the 24-byte encoded IV length before Base64 decoding. Malformed inputs are\nreturned as errors without allocating for every separator or decoding an arbitrarily\nlarge IV.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "nostr",
+        "nip04",
+        "decryption"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/25e4e9ce66a533d9d7f5071f6c1dae992476cf83"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0225",
+      "package": "nostr",
+      "title": "Debug output exposes NIP-46 and NIP-60 credentials",
+      "description": "Several NIP-46 and NIP-60 types used derived `Debug` implementations even though\ntheir fields contained credentials or decrypted application data. Formatting these\nvalues exposed NIP-46 connection secrets and request parameters, as well as NIP-60\nprivate keys, Cashu bearer proofs, and quote capability identifiers.\n\nApplications commonly include `Debug` output in diagnostic logs, tracing spans, or\nerror reports. Anyone able to read those outputs could recover the disclosed\ncredentials and, depending on the value, impersonate a signer connection or spend\nwallet tokens. The issue does not expose data unless an affected value is formatted\nand the resulting output is made accessible.\n\nThe affected types now use custom `Debug` implementations that preserve variant and\nnon-sensitive structural information while replacing credentials, bearer values,\nand plaintext fields with redaction markers. Serialization and protocol behavior are\nunchanged.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "nostr",
+        "nip46",
+        "nip60",
+        "credentials"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/2bc5fa2c270bb87b397d381909053f12ee734d44",
+        "https://github.com/nostrdevkit/nostr/commit/778af7e4930449dcdd7a070774da7b71b282d171"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0219",
+      "package": "nostr",
+      "title": "Remote Denial of Service via malformed NIP-04 IV",
+      "description": "The `nostr` crate did not validate the length of the initialization vector\ndecoded from the `?iv=` portion of a NIP-04 encrypted message.\n\nThe decoded IV was converted from a byte slice to the 16-byte AES-CBC IV type\nusing a conversion that asserts the slice length. As a result, an IV whose\ndecoded length was not exactly 16 bytes caused a panic before ciphertext\ndecryption. For example, `?iv=AAAA` decodes to a three-byte IV and triggers the\npanic.\n\nApplications that decrypt untrusted NIP-04 content are affected. The issue is\nalso reachable through NIP-47 (Nostr Wallet Connect), where response and\nnotification events from a malicious or compromised wallet service are passed\nto NIP-04 decryption. If the panic is not isolated, a crafted event can terminate\nthe application or disrupt message processing, causing a denial of service.\n\nThe issue does not affect confidentiality or integrity.\n\nThe flaw was corrected by converting the decoded IV to `[u8; 16]` using a\nchecked conversion. Invalid IV lengths now return a `Malformed` error instead of\npanicking.\n\n## Credit\n\nDiscovered and responsibly disclosed by **Muhammed Shekho** ([mhd-shekho.com](https://mhd-shekho.com)).",
+      "date": "2026-07-26",
+      "aliases": [
+        "GHSA-xg7c-246g-6qpv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic",
+        "nip04",
+        "nip47",
+        "nwc"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nostrdevkit/nostr/commit/b24619346f666d08ef7fefe27f033b8bc871697f",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "nostr::nips::nip04::decrypt": [
+          ">=0.1.5"
+        ],
+        "nostr::nips::nip04::decrypt_to_bytes": [
+          ">=0.26.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.44.6, <0.45.0-alpha.1",
+        ">=0.45.0-alpha.6"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0216",
+      "package": "nostr",
+      "title": "Remote Denial of Service via malformed NIP‑44 v2 payload",
+      "description": "The NIP-44 v2 decryption path in the `nostr` crate contains a reachable panic\nwhen processing a short or empty ciphertext. After the HMAC check passes and the\nciphertext is decrypted via ChaCha20, the code reads a 2‑byte unpadded‑length\nprefix via `buffer[0..2]` without first verifying that the decrypted buffer\ncontains at least 2 bytes. A malicious sender who holds the symmetric\nconversation key (e.g., a direct‑message sender) can craft a payload that\nproduces a 0 or 1‑byte decrypted buffer, causing an index‑out‑of‑bounds panic.\nThis can be triggered remotely through any relay that delivers the crafted\nevent to the victim's client, resulting in a denial of service. No key material,\nplaintext, or memory corruption occurs.\n\nThe vulnerability is present in all versions from `0.26.0` up to `0.44.4`\n(inclusive) and in the alpha releases `0.45.0‑alpha.1` through `0.45.0‑alpha.4`.\nVersions `0.44.5` and `0.45.0‑alpha.5` contain the fix.\n\n## Credit\n\nDiscovered and responsibly disclosed by **Muhammed Shekho** ([mhd-shekho.com](https://mhd-shekho.com)).",
+      "date": "2026-07-25",
+      "aliases": [
+        "GHSA-hrqp-8w79-gwgw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "nostr",
+        "nip-44",
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/73bdd677b872641d57a2ebcc5afc23ee0e5f0d2d"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "nostr::nips::nip44::decrypt": [
+          ">=0.26.0, <0.44.5",
+          ">=0.45.0-alpha.1, <0.45.0-alpha.5"
+        ],
+        "nostr::nips::nip44::decrypt_to_bytes": [
+          ">=0.26.0, <0.44.5",
+          ">=0.45.0-alpha.1, <0.45.0-alpha.5"
+        ],
+        "nostr::nips::nip44::v2::decrypt_to_bytes": [
+          ">=0.26.0, <0.44.5",
+          ">=0.45.0-alpha.1, <0.45.0-alpha.5"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.44.5, <0.45.0-alpha.1",
+        ">=0.45.0-alpha.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

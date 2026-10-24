@@ -23,9 +23,10 @@
         "https://github.com/tokio-rs/slab/pull/152"
       ],
       "source": null,
-      "url": "https://github.com/tokio-rs/slab/security/advisories/GHSA-qx2v-8332-m4fv",
+      "url": "https://github.com/tokio-rs/slab/pull/152",
       "withdrawn": null,
-      "license": "CC0-1.0"
+      "license": "CC0-1.0",
+      "expect-deleted": false
     },
     "affected": {
       "arch": [],

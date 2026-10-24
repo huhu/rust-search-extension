@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0061",
+      "package": "tokio-fs",
+      "title": "`tokio-fs` is unmaintained",
+      "description": "The [`tokio-fs`](https://crates.io/crates/tokio-fs) crate is unmaintained.\nIt was part of the Tokio 0.1 ecosystem and has been superseded by the main [`tokio`](https://crates.io/crates/tokio) crate.",
+      "date": "2026-03-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tokio-rs/tokio",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

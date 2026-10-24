@@ -1,0 +1,72 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0300",
+      "package": "skiplist",
+      "title": "Use-after-free in `clear` and `retain` when an element's `Drop` panics",
+      "description": "`SkipList::clear` drops the node chain and only then resets `tail` and `len`.\nThe drop runs each element's `Drop`, and `T` carries no bounds excluding a\npanicking one. If it unwinds, `tail` still points at the freed node while `len`\nstays non-zero.\n\n`back()`, `back_mut()`, `last_key_value()` and `last()` dereference `tail`\nthrough `unsafe`, so reading the container after the unwind is a use-after-free\n(CWE-416). `Drop for SkipList` calls `Box::from_raw` on `self.head`, which\n`clear` already destroyed, so dropping the container is a double free\n(CWE-415).\n\n`retain`, `retain_mut` and `dedup_by` reach the same state through\n`Node::filter_rebuild`, which frees nodes and runs a user predicate before the\ncaller commits `tail` and `len`. There the head links are left partially\nrewired, so traversal can also reach freed nodes.\n\n## Mitigation\n\nUpdate to 1.1.1.",
+      "date": "2026-09-02",
+      "aliases": [
+        "GHSA-x6j6-3ffp-qrfr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "use-after-free",
+        "double-free",
+        "panic-safety"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/JP-Ellis/rust-skiplist/pull/334",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "skiplist::ordered_skip_list::OrderedSkipList::clear": [
+          "<1.1.1"
+        ],
+        "skiplist::ordered_skip_list::OrderedSkipList::dedup_by": [
+          "<1.1.1"
+        ],
+        "skiplist::ordered_skip_list::OrderedSkipList::retain": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_list::SkipList::clear": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_list::SkipList::dedup_by": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_list::SkipList::retain": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_list::SkipList::retain_mut": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_map::SkipMap::clear": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_map::SkipMap::retain": [
+          "<1.1.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.1.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

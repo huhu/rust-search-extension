@@ -1,0 +1,85 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0146",
+      "package": "anchor-lang",
+      "title": "`InterfaceAccount` allows account substitution between unexpected types",
+      "description": "Affected versions of `anchor-lang` allowed `InterfaceAccount` to accept accounts\nwith an unexpected Anchor discriminator. A change to `InterfaceAccount` caused\nchecked deserialization to be bypassed for this account wrapper, so validation\nproved only that the account owner matched one of the accepted interface owners.\nIt did not prove that the account data belonged to the expected account type.\n\nPrograms using `InterfaceAccount` rely on Anchor to enforce both owner and\naccount-type validation before the handler runs. With discriminator checking\ndisabled, an attacker could pass another account type owned by an accepted\nprogram and have it deserialized through the expected interface wrapper. This\ncould bypass account-type assumptions made by the program and lead to incorrect\nauthorization or state handling.\n\nThe issue was fixed in `anchor-lang` 1.0.0-rc.2 by restoring checked\ndeserialization for `InterfaceAccount::try_from`, while keeping explicitly\nunchecked behavior available only through the unchecked API. Users should\nupgrade to `anchor-lang` 1.0.0-rc.2 or later.",
+      "date": "2026-05-08",
+      "aliases": [
+        "GHSA-429q-fhh4-r6hj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "solana",
+        "anchor",
+        "account-validation",
+        "interface-account"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/otter-sec/anchor/pull/3837",
+        "https://github.com/otter-sec/anchor/pull/4139",
+        "https://github.com/otter-sec/anchor/commit/26ef36968a62e28a1f028e7adae4806af30c747d"
+      ],
+      "source": null,
+      "url": "https://github.com/solana-foundation/anchor/pull/3837",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.0-rc.2"
+      ],
+      "unaffected": [
+        "<1.0.0-rc.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0144",
+      "package": "anchor-lang",
+      "title": "`Program<System>` accepts arbitrary executable programs",
+      "description": "Affected versions of `anchor-lang` did not properly validate accounts declared\nas `Program<'info, System>`. The generic `Program<T>` validation path used\n`Pubkey::default()` as a sentinel to decide whether any executable program\nshould be accepted. Since the system program id is also the default pubkey,\n`Program<'info, System>` was treated like the untyped `Program<'info>` case and\naccepted any executable program account.\n\nPrograms commonly rely on `Program<'info, System>` to ensure that CPI calls and\ninstruction builders target the real Solana system program. With the faulty\nvalidation, an attacker could supply another executable program where the system\nprogram was expected, causing downstream logic to make false assumptions about\npayments, account creation, or other system-program CPIs.\n\nThe issue was fixed in `anchor-lang` 1.0.2 by separating the typed\n`Program<T>` validation path from the untyped `Program<()>` path, so\n`Program<'info, System>` now checks the provided account key against the system\nprogram id. Users should upgrade to `anchor-lang` 1.0.2 or later.",
+      "date": "2026-05-07",
+      "aliases": [
+        "CVE-2026-45137",
+        "GHSA-c6rc-8jpp-2fgc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "solana",
+        "anchor",
+        "account-validation",
+        "system-program"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/solana-foundation/anchor/releases/tag/v1.0.2"
+      ],
+      "source": null,
+      "url": "https://github.com/solana-foundation/anchor/commit/3eb1fb0427d4fed0e944b627aef76db651a93aab",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.2"
+      ],
+      "unaffected": [
+        "<1.0.0"
+      ]
+    }
+  }
+]
