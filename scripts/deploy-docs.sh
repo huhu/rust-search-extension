@@ -3,6 +3,32 @@ set -e
 
 export RUST_BACKTRACE=full
 source ./core/deploy-docs.sh
+
+# `now` is the static site Cloudflare Pages publishes. A checkout of that
+# branch still carries gitlinks for `core` and `docs/themes/juice`, but not
+# .gitmodules. Pages then fails the clone immediately:
+#   fatal: No url found for submodule path '...' in .gitmodules
+# and leaves the previous production deploy in place.
+deploy() {
+  echo "Starting deploying..."
+  git config --global url."https://".insteadOf git://
+  git config --global url."https://github.com/".insteadOf git@github.com:
+
+  git checkout "${BRANCH}"
+  git ls-files -s | awk '$1 == "160000" { print $4 }' | while IFS= read -r path; do
+    git rm -rf --cached --ignore-unmatch -- "$path"
+    rm -rf -- "$path"
+  done
+  cp -vr /tmp/public/* .
+  git config user.name "GitHub Actions"
+  git config user.email "github-actions-bot@users.noreply.github.com"
+  git add .
+  git commit -m "Deploy new version docs"
+  git push --force "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "${BRANCH}"
+
+  echo "Deploy complete"
+}
+
 build
 
 # Create dir in advance
