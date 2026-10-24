@@ -16,7 +16,9 @@ jobs:
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml labels -d /tmp/labels.js
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml rustc -d /tmp/rustc.js
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml targets -d /tmp/targets.js
-          git clone --depth 1 https://github.com/jplatte/caniuse.rs.git /tmp/caniuse
+          # GitHub's default branch is `notice` (move README only; no `data/`).
+          # The dataset lives on Codeberg `main` (same tree as the archived GitHub `main`).
+          git clone --depth 1 --branch main https://codeberg.org/jplatte/caniuse.rs.git /tmp/caniuse
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml caniuse -r /tmp/caniuse -d /tmp/caniuse.js
           git clone --depth 1 https://github.com/nrc/rfc-index.git /tmp/rfc-index
           RUST_BACKTRACE=full cargo run --target-dir /tmp --manifest-path=Cargo.toml rfcs -r /tmp/rfc-index -d /tmp/rfcs.js
