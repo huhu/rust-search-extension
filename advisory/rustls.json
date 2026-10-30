@@ -1,0 +1,259 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0346",
+      "package": "rustls",
+      "title": "`Debug` impls for client session values expose TLS secrets",
+      "description": "The `Debug` implementations of `Tls12ClientSessionValue` and\n`Tls13ClientSessionValue` were derived, and so included the TLS 1.2 master\nsecret or TLS 1.3 resumption PSK in their output.\n\nCustom `ClientSessionStore` implementations that format these values with\n`Debug` (for example, when logging) could disclose these secrets to readers of\nthe logs. This conflicts with rustls's\n[key-material redaction policy](https://github.com/rustls/rustls/blob/99f2358cae2954837dbb866faf6727de75489ab9/SECURITY.md#boundary-public-api).\n\nOrdinary connection and built-in session cache `Debug` output is redacted and\nis not affected.",
+      "date": "2026-10-14",
+      "aliases": [
+        "GHSA-c8m5-c952-6cm4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/pull/3299",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.46"
+      ],
+      "unaffected": [
+        "<0.21.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0347",
+      "package": "rustls",
+      "title": "Buffered application data sent to outer server after ECH rejection",
+      "description": "When a server rejects Encrypted Client Hello (ECH), the client completes the\nhandshake using the outer ClientHello and authenticates the server against the\nECH config's `public_name`. At the end of that handshake, rustls encrypted and\nqueued any application data buffered via `ClientConnection::writer()` *before*\nqueueing the `ech_required` alert.\n\nThe application correctly receives\n`Error::PeerIncompatible(ServerRejectedEncryptedClientHello)`, but the next\n`write_tls()` call (needed to send the alert) also sends the buffered\napplication data. Plaintext meant for the inner server therefore goes to the\nclient-facing server named by `public_name`.\n\nThat server is authenticated, so this is not exploitable by an unauthenticated\nparty, but it violates RFC 9849 section 6.1.6, which requires the client to\nabort with `ech_required` \"before sending any application data to the server\".\n\nThis affects only clients that:\n\n- use `EchMode::Enable` (GREASE ECH is not affected),\n- write application data before the handshake completes, and\n- connect to a server that rejects their ECH config (for example, because it is stale).\n\nThe underlying ordering bug is older, but before 0.23.44 the client checked\nthe server certificate against the inner server name rather than `public_name`,\nso certificate verification failed first and no data was sent.",
+      "date": "2026-10-14",
+      "aliases": [
+        "GHSA-vp88-798v-h67f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:L/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/pull/3300",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.46"
+      ],
+      "unaffected": [
+        "<0.23.44"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0348",
+      "package": "rustls",
+      "title": "Brotli certificate decompression can allocate up to 1 GiB before authentication",
+      "description": "The built-in Brotli certificate decompressor (enabled by the non-default\n`brotli` crate feature) bounded the size of the decompressed output, but\naccepted a peer-selected history window. Brotli's large-window extension was\nenabled, so a five-byte header could cause an allocation of 1 GiB. A peer can\nabort a process whose allocator cannot satisfy that request.\n\nNo trusted certificate is required by the attacker. Affected configurations are:\n\n- clients that enable the `brotli` feature and connect to a malicious server, and\n- servers that enable the `brotli` feature and request client certificates.\n\nApplications that do not enable the `brotli` feature are not affected.",
+      "date": "2026-10-14",
+      "aliases": [
+        "GHSA-h2v8-394m-p7vv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/pull/3297",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.46"
+      ],
+      "unaffected": [
+        "<0.23.9"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0349",
+      "package": "rustls",
+      "title": "Unauthenticated ServerHello can downgrade later connections to classical key exchange",
+      "description": "The client recorded the server-selected key exchange group for each server\nname when processing the ServerHello, before the server was authenticated.\nThis record is used to predict which key share to send in future ClientHellos\nto that server name.\n\nA network attacker can answer one connection attempt with a ServerHello\nselecting X25519, and then close the connection. Later ClientHellos for that\nname carry only an X25519 key share, while `supported_groups` still lists\nX25519MLKEM768 first. If the genuine server accepts that share rather than\nsending a HelloRetryRequest for its preferred hybrid group, the handshake\ncompletes with classical-only key exchange and no error. This persists for as\nlong as the entry stays in the client's session store.\n\nThe impact is loss of post-quantum confidentiality for affected connections\n(\"harvest now, decrypt later\"). There is no key compromise and no\nauthentication bypass.\n\nThe following are not affected:\n\n- connections to servers which send a HelloRetryRequest for their preferred group,\n- clients with resumption disabled (as nothing is stored), and\n- other server names.\n\nThis behaviour is discussed in\n[draft-ietf-tls-key-share-prediction](https://www.ietf.org/archive/id/draft-ietf-tls-key-share-prediction-01.html#name-security-considerations),\nso the practical impact depends largely on server policy.",
+      "date": "2026-10-14",
+      "aliases": [
+        "GHSA-w44r-93j7-qv28"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/pull/3355",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.46"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0285",
+      "package": "rustls",
+      "title": "TLS 1.3 handshake messages incorrectly accepted across encryption level boundaries",
+      "description": "Rustls accepted TLS 1.3 handshake messages sent at the wrong encryption level\nwhen they followed a key-changing message in the same record. For example,\na plaintext `EncryptedExtensions` message packed into the same record as the\n`ServerHello` was accepted.\n\nRFC 8446 section 5.1 requires that handshake messages do not span key changes,\nand that implementations terminate the connection with an \"unexpected_message\"\nalert if they do.\n\nThe handshake transcript is still authenticated, so a network-position attacker\ncannot use this to alter or complete a handshake; the practical effect is that\na peer could send handshake messages that should be encrypted in plaintext\nwithout rustls rejecting the connection.\n\nThis is functionally the same bug as Go's\n[GO-2026-4340](https://pkg.go.dev/vuln/GO-2026-4340) (CVE-2025-61730).",
+      "date": "2026-09-14",
+      "aliases": [
+        "GHSA-2mjx-qc3c-rqvc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/pull/3265",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.45"
+      ],
+      "unaffected": [
+        "<0.23.13"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0399",
+      "package": "rustls",
+      "title": "rustls network-reachable panic in `Acceptor::accept`",
+      "description": "A bug introduced in rustls 0.23.13 leads to a panic if the received\nTLS ClientHello is fragmented.  Only servers that use\n`rustls::server::Acceptor::accept()` are affected.\n\nServers that use `tokio-rustls`'s `LazyConfigAcceptor` API are affected.\n\nServers that use `tokio-rustls`'s `TlsAcceptor` API are not affected.\n\nServers that use `rustls-ffi`'s `rustls_acceptor_accept` API are affected.",
+      "date": "2024-11-22",
+      "aliases": [
+        "CVE-2024-11738",
+        "GHSA-qg5g-gv98-5ffh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/issues/2227",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.18"
+      ],
+      "unaffected": [
+        ">=0.23, <0.23.13",
+        "<0.23"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0336",
+      "package": "rustls",
+      "title": "`rustls::ConnectionCommon::complete_io` could fall into an infinite loop based on network input",
+      "description": "If a `close_notify` alert is received during a handshake, `complete_io`\ndoes not terminate.\n\nCallers which do not call `complete_io` are not affected.\n\n`rustls-tokio` and `rustls-ffi` do not call `complete_io`\nand are not affected.\n\n`rustls::Stream` and `rustls::StreamOwned` types use\n`complete_io` and are affected.",
+      "date": "2024-04-19",
+      "aliases": [
+        "CVE-2024-32650",
+        "GHSA-6g7w-8wpp-frhj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/commit/2123576840aa31043a31b0770e6572136fbe0c2d",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rustls::ConnectionCommon::complete_io": [
+          "<=0.23.4",
+          "<=0.22.3",
+          "<=0.21.10",
+          "^0.20"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.23.5",
+        ">=0.22.4, <0.23.0",
+        ">=0.21.11, <0.22.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

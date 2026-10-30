@@ -1,0 +1,147 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0117",
+      "package": "imageproc",
+      "title": "Fragile bounds check when sampling from image",
+      "description": "A bounds check was performed in floating points before a cast to the index\npassed to an unchecked access function. This checked considered `NaN` cases\nimproperly, causing them to succeed the check instead of failing it. The\nfloating point coordinate is under caller control by passing a selected\nprojection matrix.\n\nCarefully controlling the coordinates of an image with no data and one non-zero\ndimension provides an arbitrary read primitive in the first 32-bits of address\nspace with a Bilinear sampling method.\n\nUsing bicubic sampling can result in a read of a few bytes beyond an allocation.\n\nOther out-of-bounds reads may be possible.",
+      "date": "2026-05-01",
+      "aliases": [
+        "GHSA-qg8r-f7x3-25f7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "out-of-bounds read",
+        "memory-safety"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "imageproc::geometric_transformations::warp_into": [
+          ">=0.23.0"
+        ],
+        "imageproc::geometric_transformations::warp_into_with": [
+          ">=0.23.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.23.1, <0.24.0",
+        ">=0.24.1, <0.25.0",
+        ">=0.25.1, <0.26.0",
+        ">=0.26.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0115",
+      "package": "imageproc",
+      "title": "Fragile bounds check when sampling from image",
+      "description": "A read of pixels was coded as modifying coordinates to lie within the image\nbounds. It would calculate a coordinate by adding a constant to an input and\ntaking the minimum of the resulting coordinate and 'dimension - 1'. This would\nnot protect against malicious inputs that could overflow the addition. .\nSubsequently to the tricked bounds check the image could then be sampled at\nmultiple, differently calculated coordinates exceeding the bounds.",
+      "date": "2026-05-01",
+      "aliases": [
+        "GHSA-5qv7-j6w5-fr4m"
+      ],
+      "related": [
+        "https://github.com/image-rs/imageproc/pull/778"
+      ],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "out-of-bounds read",
+        "memory-safety"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "imageproc::binary_descriptors::brief": [
+          ">=0.24.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.24.1, <0.25.0",
+        ">=0.25.1, <0.26.0",
+        ">=0.26.2"
+      ],
+      "unaffected": [
+        "<0.24"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0116",
+      "package": "imageproc",
+      "title": "Improper check of an invariant resulting in incorrect bounds checks",
+      "description": "A bounds verification of a slice storage of a 2-dimensional matrix's\ncoefficients (a kernel) would compare the total size against the product of\nindividual dimensions. This would erroneously cast *after* the multiplication\nand consequently fail to detect possible violations when overflow occurs.\n\nAfterwards, the individual sizes were trusted to properly constrain coordinates\nwithin the matrix to indices valid for the underlying storage. With a crafted\n`Kernel` object, certain combinations of coordinates could then cause an\nout-of-bounds access in an `unsafe` function while fulfilling its documented\npreconditions. The kernel value could be passed to library functions that\ntrusted the preconditions and then performed such reads.",
+      "date": "2026-05-01",
+      "aliases": [
+        "GHSA-w5p8-4jcx-2j6r"
+      ],
+      "related": [
+        "https://github.com/image-rs/imageproc/pull/777"
+      ],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "out-of-bounds read",
+        "memory-safety"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.23.1, <0.24.0",
+        ">=0.24.1, <0.25.0",
+        ">=0.25.1, <0.26.0",
+        ">=0.26.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

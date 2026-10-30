@@ -1,0 +1,129 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0393",
+      "package": "zstd",
+      "title": "Out-of-bounds read when training a dictionary from inconsistent sample sizes",
+      "description": "`ZDICT_trainFromBuffer` is never told the length of the samples buffer.\nBefore 0.4.10, `zstd::dict::from_continuous` (initially `train_dict`) called\nit directly: up to 0.2.1 without checking the sample sizes against the\nbuffer at all, and from 0.3.0 with a sum that wraps around when overflow\nchecks are off, as in release builds. Sizes that do not describe the buffer\nmade the trainer read past its end.\n\nThis requires the sample sizes to come from an untrusted source. From\n0.4.10, training goes through zstd-safe, where the same flaw is covered by\nthe zstd-safe advisory for it, fixed in zstd-safe 8.2.0.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "integer-overflow",
+        "out-of-bounds",
+        "dictionary"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/781ea454191dbf178d09c1daf6fc896d15fbaa2f",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.10"
+      ],
+      "unaffected": [
+        "<0.1.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0391",
+      "package": "zstd",
+      "title": "Data from an abandoned stream leaks into the next stream on a reused context",
+      "description": "The `with_context` constructors of the stream encoders and decoders used the\nborrowed context as it was. When a stream was abandoned on a context, for\nexample an encoder dropped before `finish()` after an error, whatever it\nleft there was carried into the next stream: the input buffered by the\nprevious encoder (up to 128 KiB, or all of it with `zstdmt`) became the\nstart of the next frame, and a decoder returned undelivered output of the\nprevious stream.\n\nAn application reusing one context for data that must stay separate, such\nas different users' requests, could disclose one user's plaintext to\nanother. Whoever supplies the data can cause the abandonment with invalid\ninput.\n\nThe flaw was corrected by resetting the context's session in\n`with_context`.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "information-leak",
+        "context-reuse"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/74ace2dcdca62a2ce0f034895d6079458311e003",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd::stream::raw::Decoder::with_context": [
+          ">=0.13.2, <0.14.3"
+        ],
+        "zstd::stream::raw::Encoder::with_context": [
+          ">=0.13.2, <0.14.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.14.3"
+      ],
+      "unaffected": [
+        "<0.13.2"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0392",
+      "package": "zstd",
+      "title": "Uninitialized memory exposed by `write::Decoder` on a corrupt legacy frame",
+      "description": "From 0.4.22 to 0.7.x, the writer behind `zstd::stream::write::Decoder` set\nits output buffer's length to its full capacity before each decompression\ncall, then to the position the call reported, and only checked for an error\nafterwards. When decompression fails inside a legacy (zstd v0.4 to v0.7)\nframe, the bundled zstd library reports the output as fully written although\nnothing was written, so stale heap memory, up to the buffer size (32 KiB by\ndefault), was passed to the wrapped writer.\n\nLegacy support is enabled by default, and a few bytes of corrupt legacy\nframe are enough. Whether this reaches an attacker depends on where the\napplication sends the decompressed output.\n\nFrom 0.8.0, the writer uses zstd-safe's buffers, and the same flaw there is\ncovered by the zstd-safe advisory for it, fixed in zstd-safe 8.2.0.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "uninitialized-memory",
+        "decompression",
+        "legacy"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/006e1d1ad1eeaf6b5d4c28329e70217adabcec43",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": [
+        "<0.4.22"
+      ]
+    }
+  }
+]

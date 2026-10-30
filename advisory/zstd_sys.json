@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0410",
+      "package": "zstd-sys",
+      "title": "WebAssembly allocator shim corrupts memory on allocation failure",
+      "description": "On wasm32, zstd-sys provides `malloc` and `free` to the C library through a\nshim over Rust's allocator. The shim did not check for allocation failure:\nit wrote its size header to address 0 and returned address 4, which the C\nlibrary used as a valid buffer. `free(NULL)` also read below address 0.\n\nWhenever the instance cannot grow its memory by what a frame asks for, a\nsmall crafted frame (a 9-byte header declaring a 128 MiB window is enough)\nmade decompression write decoded data over the bottom of the module's\nlinear memory, instead of failing. The corruption stays within the wasm\nsandbox.\n\nThe flaw was corrected by returning NULL on allocation failure or size\noverflow, and by making `free(NULL)` a no-op.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "wasm",
+        "allocation"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/165d1625553c236b9700ca794b8a7c51f5d98314",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [
+        "wasm32"
+      ],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=2.1.2"
+      ],
+      "unaffected": [
+        "<2.0.9"
+      ]
+    }
+  }
+]

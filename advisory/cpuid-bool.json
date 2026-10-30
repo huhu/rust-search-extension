@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0064",
+      "package": "cpuid-bool",
+      "title": "`cpuid-bool` has been renamed to `cpufeatures`",
+      "description": "Please use the `cpufeatures`` crate going forward:\n\n<https://github.com/RustCrypto/utils/tree/master/cpufeatures>\n\nThere will be no further releases of `cpuid-bool`.",
+      "date": "2021-05-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/utils/pull/381",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

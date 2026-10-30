@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0202",
+      "package": "cxx",
+      "title": "`let_cxx_string!` uses uninitialized value due to exception safety violations",
+      "description": "In affected versions of this crate, `let_cxx_string!` is not exception safe. After creating the `StackString`, if `match $value` panics, the content of `StackString` is not yet initialized, while the drop implementation of `StackString` unconditionally deinitializes the content, leading to use of uninitialized value.\n\nThe soundness issue was fixed in version `1.0.195` by moving drop logics to separate drop guard after initializing the `StackString`.",
+      "date": "2026-07-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "exception",
+        "unwind"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dtolnay/cxx/issues/1729",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "cxx::let_cxx_string": [
+          "<1.0.195"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.0.195"
+      ],
+      "unaffected": []
+    }
+  }
+]

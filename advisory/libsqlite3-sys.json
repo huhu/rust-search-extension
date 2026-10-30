@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0090",
+      "package": "libsqlite3-sys",
+      "title": "`libsqlite3-sys` via C SQLite CVE-2022-35737",
+      "description": "It was sometimes possible for SQLite versions >= 1.0.12, < 3.39.2 to allow an array-bounds overflow when large string were input into SQLite's `printf` function.\n\nAs `libsqlite3-sys` bundles SQLite, it is susceptible to the vulnerability. `libsqlite3-sys` was updated to bundle the patched version of SQLite [here](https://github.com/rusqlite/rusqlite/releases/tag/sys0.25.1).",
+      "date": "2022-08-03",
+      "aliases": [
+        "CVE-2022-35737"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service",
+        "code-execution"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-35737",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.25.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

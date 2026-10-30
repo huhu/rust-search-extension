@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0151",
+      "package": "jxl-grid",
+      "title": "Out-of-bounds writes due to integer overflow in jxl-grid on 32-bit platforms",
+      "description": "On 32-bit platforms, decoding a crafted image may lead to out-of-bounds writes due to integer overflow in length calculation. This could allow arbitrary code execution.\n\n### Details & PoC\n\nThe test listed below fail under miri with command `cargo +nightly miri test --release -p jxl-grid`\n\nOr you can use Address Sanitizer, which ignores Rust-specific UB like aliasing but still flags out-of-bounds accesses:\n\n`RUSTFLAGS=-Zsanitizer=address cargo +nightly test -Zbuild-std -p jxl-grid --release --target x86_64-unknown-linux-gnu`\n\nThe following tests should be appended to `crates/jxl-grid/src/test/subgrids.rs`:\n\n```rust\nmod miri_ub {\n    use super::*;\n\n    // `AlignedGrid::with_alloc_tracker` computes `width * height` unchecked. In release, overflow\n    // can create a tiny backing buffer for huge logical dimensions.\n    #[test]\n    fn aligned_grid_dimension_product_overflows() {\n        let width = usize::MAX / 2 + 1;\n        let mut grid = AlignedGrid::<u8>::with_alloc_tracker(width, 2, None).unwrap();\n        let mut subgrid = grid.as_subgrid_mut();\n        *subgrid.get_mut(0, 1) = 1;\n        std::hint::black_box(grid);\n    }\n}\n```\n\nThis issue can be reachable through decoding a crafted image in two ways:\n\n1. **Huge actual frame**\n   A frame such as `65536 x 65536` passes the current frame area limit (`2^32 <= 2^40`) but overflows `usize` element count on 32-bit. Rendering then allocates too-small `AlignedGrid`s in modular/VarDCT/filter paths and later writes through mutable subgrids.\n\n2. **Huge canvas plus tiny cropped frame**\n   This is the more practical “small payload, huge logical output” case. A bitstream-controlled frame crop can be tiny, but if the canvas/default requested region is huge, composition can allocate an output grid sized to the canvas/ROI at crates/jxl-render/src/blend.rs. That is bitstream frame cropping, not API crop. With a 32-bit target and a full requested image region whose area overflows, this can happen through ordinary `render_frame()`.",
+      "date": "2026-05-29",
+      "aliases": [
+        "CVE-2026-52834",
+        "GHSA-5pmv-rx8r-wmv5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tirr-c/jxl-oxide/commit/3986dadd3926a95656a642e74a0702d52f5c92e2",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

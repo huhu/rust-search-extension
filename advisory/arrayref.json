@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0260",
+      "package": "arrayref",
+      "title": "`arrayref` 0.3.10 was removed from crates.io due to a malicious dependency",
+      "description": "A new version of the `arrayref` crate was published with a direct dependency\non `proc-macro1`, which would execute a malicious build script.\n\nThis compromised version was published on 2026-08-20 and removed approximately\n86 minutes later. It was downloaded 2,285 times, which constituted less than\n10% of `arrayref` download traffic across all versions, as most users had older\nversions of `arrayref` in their lockfiles.",
+      "date": "2026-08-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://blog.rust-lang.org/2026/08/20/supply-chain-attack-on-arrayref",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<=0.3.9"
+      ]
+    }
+  }
+]

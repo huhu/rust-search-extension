@@ -1,0 +1,77 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0302",
+      "package": "stack-graphs",
+      "title": "`stack-graphs` C API exports are safe `extern \"C\"` functions",
+      "description": "`stack_graphs::c` is a public module. From 0.0.3 through the current crates.io release 0.14.1, its pointer-taking entry points are `pub extern \"C\" fn` rather than `unsafe fn`. Safe Rust can call them.\n\n`sg_stack_graph_free` frees the pointer with `Box::from_raw`. `sg_stack_graph_free(std::ptr::null_mut())` is immediate undefined behavior. The same shape is used by the other `*_free` exports and by getters and mutators that dereference the caller-supplied pointer or pass it to `from_raw_parts` (`sg_stack_graph_nodes`, `sg_stack_graph_add_edges`, and the rest of the pointer-taking functions in `src/c.rs`). Constructors that take no pointer are not part of this issue.\n\nThe upstream repository is archived, so a fix cannot be filed there and no patched release exists. The soundness fix is to make every pointer-taking export `unsafe extern \"C\" fn`, with a safety comment that the pointer is non-null and, for `free`, came from the matching constructor.",
+      "date": "2026-09-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "ffi",
+        "extern-c"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/github/stack-graphs"
+      ],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/issues/3241",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "stack_graphs::c::sg_stack_graph_free": [
+          ">=0.0.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<=0.0.2"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0303",
+      "package": "stack-graphs",
+      "title": "`stack-graphs` is archived and unmaintained",
+      "description": "The upstream repository [github/stack-graphs](https://github.com/github/stack-graphs) has been archived. Issues and pull requests are disabled, so maintainers cannot be reached there.\n\nThe last crates.io release is 0.14.1 (2024-12-13). The repository's last push was 2025-09-09. There is no published successor.",
+      "date": "2026-09-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "archived"
+      ],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/github/stack-graphs"
+      ],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/issues/3241",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

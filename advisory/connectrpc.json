@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0304",
+      "package": "connectrpc",
+      "title": "Finished streaming calls keep reading a stalled request body indefinitely",
+      "description": "Affected versions of `connectrpc` start a background task to read the request body of every client-streaming and bidirectional-streaming call, before the interceptors or the handler run. A call can finish before it has consumed its request: the handler can return without reading all of its request stream, an interceptor can reject the call, or the request timeout can fire. The background task then keeps reading, with no time limit. If the client stops sending part-way through a message, or never sends the rest, the task, the partial message it has buffered (up to `max_message_size`, 4 MiB by default) and the HTTP/2 stream, or the HTTP/1.x connection, are held until the client finishes the stream or closes the connection.\n\n## Impact\n\nA client can use this to exhaust the memory, tasks and file descriptors of a server. With the default limits of the built-in `Server`, one HTTP/2 connection can hold 200 stalled streams, about 800 MiB at the default message size, and the server does not limit the number of connections. A server that authenticates in Tower middleware, before the request reaches the service, is exposed only to callers with a valid credential. A server with no authentication, or one that authenticates in an interceptor, is exposed to any client. This advisory covers client-streaming and bidirectional-streaming calls only.\n\n## Patches\n\nVersions 0.8.2 and 0.9.1 bound the wait. When the handler is gone, the reader frees the partial message and discards the rest of the body for at most 5 seconds and 1 MiB, then drops it, which resets the HTTP/2 stream or closes the HTTP/1.x connection. On `wasm32`, which has no clock, only the 1 MiB limit applies. Versions 0.2.0 to 0.7.0 contain the same reader and are not patched; upgrade to 0.8.2 or later.\n\n## Workarounds\n\nAuthenticate in Tower middleware rather than in an interceptor, so a request without a credential is rejected before any reader starts. Set `Server::with_max_connection_age`, which closes each connection, and every stalled body on it, once its age and the grace period have passed. Lowering `Limits::with_max_message_size` and `Server::with_max_concurrent_streams` reduces what one client can hold but does not release a stalled body.",
+      "date": "2026-09-21",
+      "aliases": [
+        "GHSA-jx5x-3mcr-qp8r"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "http2",
+        "grpc",
+        "streaming",
+        "resource-exhaustion"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/connectrpc/connect-rust/pull/314",
+        "https://github.com/connectrpc/connect-rust/pull/315"
+      ],
+      "source": null,
+      "url": "https://github.com/connectrpc/connect-rust/pull/313",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.2, <0.9.0",
+        ">=0.9.1"
+      ],
+      "unaffected": [
+        "<0.2.0"
+      ]
+    }
+  }
+]

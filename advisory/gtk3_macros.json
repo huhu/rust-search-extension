@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0419",
+      "package": "gtk3-macros",
+      "title": "gtk-rs GTK3 bindings - no longer maintained",
+      "description": "The gtk-rs GTK3 bindings are no longer maintained.\n\nThe maintainers have archived the repository, and added a note to the crate\ndescription and its README.md that the crates are no longer maintained.\n\nPlease take a look at [gtk4-rs](https://github.com/gtk-rs/gtk4-rs) instead.\n```",
+      "date": "2024-03-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "gtk",
+        "gtk-rs",
+        "gnome",
+        "GUI"
+      ],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gtk-rs/gtk3-rs/commit/508a69b63a3c5bf73790e0e59101a955847f30d6",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

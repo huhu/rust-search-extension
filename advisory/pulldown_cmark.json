@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0414",
+      "package": "pulldown-cmark",
+      "title": "Exponential event growth with `ENABLE_WIKILINKS`",
+      "description": "When `Options::ENABLE_WIKILINKS` is enabled, a wikilink with a pipe separator\nand empty display text, such as `[[a|]]`, leaks its child node's sibling chain\ninto the content that follows it. Each such link roughly doubles the number of\nevents the parser yields for the rest of the document, so output grows\nexponentially with input size: 16 repetitions of `[[a|]] ` (112 bytes) yield\n327,676 events, where the fixed parser yields 65. A document of a few kilobytes\nis enough to exhaust memory in a process that collects the events or renders\nthem to HTML.\n\nApplications that parse untrusted Markdown with `ENABLE_WIKILINKS` set,\nincluding through `Options::all()`, are affected. The option is off by default.\nParsing without it is not affected.\n\nThe flaw was fixed in\n[#1102](https://github.com/pulldown-cmark/pulldown-cmark/pull/1102) and\nreleased in 0.13.5.",
+      "date": "2026-10-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "markdown",
+        "wikilinks",
+        "memory-exhaustion"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/pulldown-cmark/pulldown-cmark/pull/1102"
+      ],
+      "source": null,
+      "url": "https://github.com/pulldown-cmark/pulldown-cmark/issues/1179",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.13.5"
+      ],
+      "unaffected": [
+        "<0.13.0"
+      ]
+    }
+  }
+]

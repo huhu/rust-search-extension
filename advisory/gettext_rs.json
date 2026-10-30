@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0244",
+      "package": "gettext-rs",
+      "title": "`setlocale` and `TextDomain::init` are unsound as they access environment with no synchronization",
+      "description": "`setlocale` and `TextDomain::init` are unsound and may allow safe code to exhibit undefined behavior when called in a multi-threaded program.\n\nThe flaw is fixed in 0.8.0 by marking these functions `unsafe` and documenting the conditions under which they can be called safely.",
+      "date": "2026-08-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gettext-rs/gettext-rs/issues/64",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "gettext_rs::TextDomain::init": [
+          "<0.8.0"
+        ],
+        "gettext_rs::setlocale": [
+          "<0.8.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

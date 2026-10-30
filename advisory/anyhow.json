@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0190",
+      "package": "anyhow",
+      "title": "Unsoundness in `Error::downcast_mut()`",
+      "description": "Affected versions of this crate violate borrow rules, resulting in undefined behavior, when the user adds context to an error via `Error::context` and then later calls `Error::downcast_mut` on the returned `Error`.\n\nThe flaw was corrected in commit `6e8c000` by revising how the mutable reference is constructed, avoiding inclusion of a shared reference in the resulting borrow chain.\n\n## Example\n\n```rust\nuse anyhow::Error;\nuse std::fmt;\n\n#[derive(Debug)]\nstruct ErrorContext(&'static str);\n\nimpl fmt::Display for ErrorContext {\n    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\n        fmt::Display::fmt(&self.0, f)\n    }\n}\n\nfn main() {\n    let mut error = Error::msg(\"inner error\").context(ErrorContext(\"old context\"));\n    let context: &mut ErrorContext = error.downcast_mut().unwrap();\n    context.0 = \"new context\";\n    println!(\"{:?}\", error);\n}\n```\n\n## Miri output\n\n```\nerror: Undefined Behavior: trying to retag from <1538> for Unique permission at alloc602[0x38], but that tag only grants SharedReadOnly permission for this location\n   --> src/ptr.rs:170:18\n    |\n170 |         unsafe { &mut *self.ptr.as_ptr() }\n    |                  ^^^^^^^^^^^^^^^^^^^^^^^ this error occurs as part of retag at alloc602[0x38..0x48]\n    |\n    = help: this indicates a potential bug in the program: it performed an invalid operation, but the Stacked Borrows rules it violated are still experimental\n    = help: see https://github.com/rust-lang/unsafe-code-guidelines/blob/master/wip/stacked-borrows.md for further information\nhelp: <1538> was created by a SharedReadOnly retag at offsets [0x38..0x48]\n   --> src/ptr.rs:89:18\n    |\n 89 |             ptr: NonNull::from(ptr),\n    |                  ^^^^^^^^^^^^^^^^^^\n    = note: stack backtrace:\n            0: anyhow::ptr::Mut::<'_, ErrorContext>::deref_mut\n                at src/ptr.rs:170:18: 170:41\n            1: anyhow::error::<impl anyhow::Error>::downcast_mut::<ErrorContext>\n                at src/error.rs:560:18: 560:46\n            2: main\n                at examples/downcast_mut.rs:15:38: 15:58\n```",
+      "date": "2026-06-25",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "unsound",
+        "downcast_mut"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dtolnay/anyhow/issues/451",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "anyhow::Error::downcast_mut": [
+          "<1.0.103"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.0.103"
+      ],
+      "unaffected": []
+    }
+  }
+]

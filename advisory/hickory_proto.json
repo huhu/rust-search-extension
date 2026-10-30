@@ -1,0 +1,129 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0118",
+      "package": "hickory-proto",
+      "title": "NSEC3 closest-encloser proof validation enters unbounded loop on cross-zone responses",
+      "description": "The NSEC3 closest-encloser proof validation in `hickory-proto`'s\n`DnssecDnsHandle` walks from the QNAME up to the SOA owner name, building a\nlist of candidate encloser names. The iterator used assumes the\nQNAME is a descendant of the SOA owner, terminating only when the current\ncandidate equals the SOA name. When the SOA in a response's authority section\nis not an ancestor of the QNAME, the loop stalls at the DNS root and never\nterminates, repeatedly calling `Name::base_name()` and pushing newly allocated\n`Name` and hashed-name entries into the candidate `Vec`.\n\nThe bug is reachable by any caller of `DnssecDnsHandle` — including the\nresolver, recursor, and client — when built with the `dnssec-ring` or\n`dnssec-aws-lc-rs` feature and configured to perform DNSSEC validation. It is\ntriggered while validating a NoData or NXDomain response whose authority\nsection contains an SOA record from a zone other than an ancestor of the\nQNAME, on a code path that requires NSEC3 closest-encloser proof. In practice\nthis can be reached through an insecure CNAME chain that crosses zone\nboundaries into a DNSSEC-signed zone returning NoData, but the minimum\ncondition is just a mismatched SOA owner on a response requiring NSEC3\nvalidation.\n\nA `debug_assert_ne!(name, Name::root())` guards the loop body, so debug builds\nabort with a panic on the first iteration past the root. Release builds\ncompile the assertion out and run the loop unbounded, allocating until the\nprocess exhausts available memory (OOM). A reachable upstream attacker who\ncan return such a response can therefore crash a debug-built validator or\nexhaust memory on a release-built one.\n\nThe affected code was migrated from `hickory-proto` to `hickory-net` as part of\nthe 0.26.0 release. The `hickory-proto` 0.26.x release no longer offers\n`DnssecDnsHandle` and so we recommend all affected users update to `hickory-net`\n0.26.1 when the implementation of that type is required.",
+      "date": "2026-05-01",
+      "aliases": [
+        "GHSA-3v94-mw7p-v465"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "dnssec",
+        "nsec3"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/pull/3597",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<0.25.0-alpha.3",
+        ">=0.26.0-beta.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0119",
+      "package": "hickory-proto",
+      "title": "CPU exhaustion during message encoding due to O(n²) name compression",
+      "description": "During message encoding, `hickory-proto`'s `BinEncoder` stores pointers to\nlabels that are candidates for name compression in a `Vec<(usize, Vec<u8>)>`.\nThe name compression logic then searches for matches with a linear scan.\n\nA malicious message with many records can both introduce many candidate labels,\nand invoke this linear scan many times. This can amplify CPU exhaustion in DoS\nattacks.\n\nThis is similar to\n[CVE-2024-8508](https://www.nlnetlabs.nl/downloads/unbound/CVE-2024-8508.txt).\n\nWe recommend all affected users update to `hickory-proto` 0.26.1 for the fix.",
+      "date": "2026-05-01",
+      "aliases": [
+        "GHSA-q2qq-hmj6-3wpp"
+      ],
+      "related": [
+        "CVE-2024-8508"
+      ],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/pull/3613",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.1"
+      ],
+      "unaffected": [
+        "<0.3.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0006",
+      "package": "hickory-proto",
+      "title": "Hickory DNS failure to verify self-signed RRSIG for DNSKEYs",
+      "description": "Summary\n\nThe DNSSEC validation routines treat entire RRsets of DNSKEY records as trusted once they have established trust in only one of the DNSKEYs. As a result, if a zone includes a DNSKEY with a public key that matches a configured trust anchor, all keys in that zone will be trusted to authenticate other records in the zone. There is a second variant of this vulnerability involving DS records, where an authenticated DS record covering one DNSKEY leads to trust in signatures made by an unrelated DNSKEY in the same zone.\n\nDetails\n\nverify_dnskey_rrset() will return Ok(true) if any record's public key matches a trust anchor. This results in verify_rrset() returning a Secure proof. This ultimately results in successfully verifying a response containing DNSKEY records. verify_default_rrset() looks up DNSKEY records by calling handle.lookup(), which takes the above code path. There's a comment following this that says \"DNSKEYs were already validated by the inner query in the above lookup\", but this is not the case. To fully verify the whole RRset of DNSKEYs, it would be necessary to check self-signatures by the trusted key over the other keys. Later in verify_default_rrset(), verify_rrset_with_dnskey() is called multiple times with different keys and signatures, and if any call succeeds, then its Proof is returned.\n\nSimilarly, verify_dnskey_rrset() returns Ok(false) if any DNSKEY record is covered by a DS record. A comment says \"If all the keys are valid, then we are secure\", but this is only checking that one key is authenticated by a DS in the parent zone's delegation point. This time, after control flow returns to verify_rrset(), it will call verify_default_rrset(). The special handling for DNSKEYs in verify_default_rrset() will then call verify_rrset_with_dnskey() using each KSK DNSKEY record, and if one call succeeds, return its Proof. If there are multiple KSK DNSKEYs in the RRset, then this leads to another authentication break. We need to either pass the authenticated DNSKEYs from the DS covering check to the RRSIG validation, or we need to perform this RRSIG validation of the DNSKEY RRset inside verify_dnskey_rrset() and cut verify_default_rrset() out of DNSKEY RRset validation entirely.",
+      "date": "2025-02-07",
+      "aliases": [
+        "GHSA-v7pc-74h8-xq2h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "dnssec"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/security/advisories/GHSA-37wc-h8xc-5hc4",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "hickory_proto::dnssec::DnssecDnsHandle::send": [
+          ">=0.25.0-alpha.5"
+        ],
+        "hickory_proto::xfer::DnssecDnsHandle::send": [
+          ">=0.24.3",
+          "<0.25.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        "^0.24.3",
+        ">=0.25.0-alpha.5"
+      ],
+      "unaffected": [
+        "<0.8.0"
+      ]
+    }
+  }
+]

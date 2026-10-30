@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0305",
+      "package": "librsvg",
+      "title": "Use-after-free when XML includes have duplicated entities",
+      "description": "Librsvg uses libxml2, a C library, to parse XML.  When librsvg parses\nan SVG document which has a nested Xinclude, an XML entity declaration\nwith a duplicate name as an existing one can cause a use-after-free error.\n\nWhile libxml2 is expanding an internal entity, a recursive XInclude\ncan parse another document that declares an entity with the same\nname. Both parses use the same `XmlState` entity\nmap on the librsvg side. `entity_insert()` replaces the first entry, whose `Drop`\nimplementation calls `xmlFreeNode()`. The outer `xmlCtxtParseEntity()`\nthen keeps using the freed 144-byte `xmlEntity`.\n\nThe included parse should not free an entity that the outer parser is still using.\n\nThe fix is in commit 8a1b0cd319e9af2d1e9cf878081dd77f227a0504, where\nlibrsvg will no longer free xmlEntity pointers that libxml2 is still\nusing.",
+      "date": "2026-09-23",
+      "aliases": [
+        "CVE-2026-96889",
+        "GHSA-cpvr-w4j5-2mpg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "uaf"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.gnome.org/GNOME/librsvg/-/work_items/1241",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.63.2",
+        ">=2.62.4, <2.62.90",
+        ">=2.61.5, <2.61.90",
+        ">=2.60.3, <2.61.0",
+        ">=2.57.5, <2.57.90"
+      ],
+      "unaffected": []
+    }
+  }
+]

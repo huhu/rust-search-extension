@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0250",
+      "package": "im-rc",
+      "title": "im-rc is unmaintained",
+      "description": "The im-rc crate is unmaintained; all versions are affected. The GitHub\nrepository was archived by the owner on 2026-05-03.\n\n[imbl](https://crates.io/crates/imbl) is a maintained fork of the im crate,\nbut we're not aware of maintained alternative to im-rc at this time.",
+      "date": "2026-05-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodil/im-rs",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

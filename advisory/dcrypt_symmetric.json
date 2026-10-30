@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0239",
+      "package": "dcrypt-symmetric",
+      "title": "Streaming AEAD does not authenticate stream structure",
+      "description": "In all published versions of `dcrypt-symmetric` before 2.0.0, version-1 GCM and\nChaCha20-Poly1305 streams used unauthenticated terminator, counter, and length\nfields. Decryptors trusted transmitted counters, allocated from unbounded\nlengths, and discarded plaintext that did not fit a caller's single read\nbuffer. An attacker could obtain successful truncated EOF, omit, replay, or\nreorder frames within a stream, or request an allocation approaching 4 GiB.\n\nVersion 2.0.0 introduces the `DCRSTRM2` format, which authenticates its version,\nalgorithm, random stream identifier, base nonce, strict sequence, bounded\nlengths, final flag, and caller AAD. It enforces authenticated finality and\nphysical EOF, bounds frames to 16 KiB before allocation, retains partial-read\nplaintext, and rejects legacy version-1 input. Existing version-1 ciphertext\ncannot retrospectively prove completeness or ordering and must be migrated only\nthrough an application-specific, explicitly trusted process.",
+      "date": "2026-08-09",
+      "aliases": [
+        "GHSA-8cwp-4826-jg9f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure",
+        "denial-of-service"
+      ],
+      "keywords": [
+        "aead",
+        "reordering",
+        "replay",
+        "streaming",
+        "truncation"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/ioi-foundation/dcrypt/commit/c99cc86f0ee353010cd202cbcd2c310371b0bbb8",
+        "https://github.com/ioi-foundation/dcrypt/releases/tag/v2.0.0"
+      ],
+      "source": null,
+      "url": "https://github.com/ioi-foundation/dcrypt/commit/c99cc86f0ee353010cd202cbcd2c310371b0bbb8",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,273 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0421",
+      "package": "wasmtime-wasi-http",
+      "title": "wasi-http p2: outgoing content-length can be invalid or not match body",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-h4wp-g4x3-7398\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-29",
+      "aliases": [
+        "GHSA-h4wp-g4x3-7398"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/15070",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.20, <37.0.0",
+        ">=48.0.8, <49.0.0",
+        ">=49.0.5, <50.0.0",
+        ">=50.0.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0375",
+      "package": "wasmtime-wasi-http",
+      "title": "`wasi-http` p3: Guests can set incorrect content-length for spliced response bodies",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-9prg-84vf-g5fc\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-19",
+      "aliases": [
+        "GHSA-9prg-84vf-g5fc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14822",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=48.0.7, <49.0.0",
+        ">=49.0.4"
+      ],
+      "unaffected": [
+        "<46.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0377",
+      "package": "wasmtime-wasi-http",
+      "title": "`wasi-http` p3: forwarded trailers aren't checked against `is_forbidden_header` hook",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-jxcf-8qw5-5c33\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-19",
+      "aliases": [
+        "GHSA-jxcf-8qw5-5c33"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14823",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=48.0.7, <49.0.0",
+        ">=49.0.4"
+      ],
+      "unaffected": [
+        "<46.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0376",
+      "package": "wasmtime-wasi-http",
+      "title": "`wasi-http`: Guests can add conflicting content lengths to messages",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-r8xh-cgf7-392j\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-19",
+      "aliases": [
+        "GHSA-r8xh-cgf7-392j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14824",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.19, <37.0.0",
+        ">=48.0.7, <49.0.0",
+        ">=49.0.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0350",
+      "package": "wasmtime-wasi-http",
+      "title": "Guests can send absolute-form HTTP requests to different hosts",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-5qpp-g3j2-8frx\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-14",
+      "aliases": [
+        "GHSA-5qpp-g3j2-8frx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:L/UI:P/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14727",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.18, <37.0.0",
+        ">=48.0.6, <49.0.0",
+        ">=49.0.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0351",
+      "package": "wasmtime-wasi-http",
+      "title": "`wasi-http`: Request with long url before query parameter crashes host",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-w36r-2hch-9xp9\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-14",
+      "aliases": [
+        "GHSA-w36r-2hch-9xp9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14728",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=48.0.6, <49.0.0",
+        ">=49.0.3"
+      ],
+      "unaffected": [
+        "<46.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0320",
+      "package": "wasmtime-wasi-http",
+      "title": "Wasmtime wasi:http implementation panics with a zero timeout supplied",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-w4qr-p94g-mjhv\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-02",
+      "aliases": [
+        "CVE-2026-115382",
+        "GHSA-w4qr-p94g-mjhv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14483",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=48.0.4, <49.0.0",
+        ">=49.0.2"
+      ],
+      "unaffected": [
+        "<46.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0313",
+      "package": "wasmtime-wasi-http",
+      "title": "Outgoing HTTP body write allows guest-driven host memory exhaustion",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-c9gc-w9vx-w86p\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-09-24",
+      "aliases": [
+        "CVE-2026-115388",
+        "GHSA-c9gc-w9vx-w86p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14408",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.16, <37.0.0",
+        ">=48.0.3, <49.0.0",
+        ">=49.0.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

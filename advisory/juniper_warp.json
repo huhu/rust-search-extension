@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0419",
+      "package": "juniper_warp",
+      "title": "Unbounded memory use on large request bodies",
+      "description": "The `make_graphql_filter()` and `make_graphql_filter_sync()` filters of `juniper_warp` read the whole body of a POST request into memory before they parsed the body. The filters had no limit on the size of the body. A client could thus send a large body and exhaust the memory of the server. The request needs no authentication.\n\n`juniper_warp` 0.9.1 reads at most 2 MiB of a request body by default. The filters respond with `413 Payload Too Large` to larger bodies. `make_graphql_filter_with_body_limit()` and `make_graphql_filter_sync_with_body_limit()` set another limit.",
+      "date": "2026-10-29",
+      "aliases": [
+        "GHSA-fj3h-2jc3-973v"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "graphql",
+        "http",
+        "memory"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/graphql-rust/juniper/pull/1406",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

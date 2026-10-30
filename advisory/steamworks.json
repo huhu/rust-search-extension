@@ -1,0 +1,57 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0121",
+      "package": "steamworks",
+      "title": "Denial of service in Steamworks game clients/servers using P2P authentication",
+      "description": "Processing the raw `ValidateAuthTicketResponse_t` callback data panics when the `m_eAuthSessionResponse` field is `k_EAuthSessionResponseAuthTicketNetworkIdentityFailure`. This can lead to denial of service in game clients and servers using the `begin_authentication_session` API to authenticate players if a malicious game client sends an authentication ticket with a network identity that does not match that of the verifier.",
+      "date": "2026-05-05",
+      "aliases": [
+        "GHSA-g588-cjg3-6g78"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Noxime/steamworks-rs/issues/321",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "steamworks::Client::process_callbacks": [
+          "<0.13.1"
+        ],
+        "steamworks::Client::register_callback": [
+          "<0.13.1"
+        ],
+        "steamworks::Server::begin_authentication_session": [
+          "<0.13.1"
+        ],
+        "steamworks::User::begin_authentication_session": [
+          "<0.13.1"
+        ],
+        "steamworks::ValidateAuthTicketResponse::from_raw": [
+          "<0.13.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.13.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

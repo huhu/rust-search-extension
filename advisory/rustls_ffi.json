@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0413",
+      "package": "rustls-ffi",
+      "title": "Use-after-free of caller-owned server name in client connection constructors",
+      "description": "In rustls-ffi 0.12.0 through 0.15.6, `rustls_client_connection_new()` and\n`rustls_client_connection_new_alpn()` retained a reference to the caller's\n`server_name` buffer after returning, rather than copying it. The API\ndocumentation did not require the buffer to outlive the call and as a result\nif the caller freed or reused the buffer, later TLS processing read freed\nmemory.\n\nClients that free or reuse the `server_name` buffer after the constructor\nreturns are affected. This is most likely for language bindings that pass\ntemporary strings. Callers that keep the `server_name` buffer alive for the\nlifetime of the `rustls_client_config` are not affected.\n\nVersions 0.12.0 through 0.15.6 are affected. Version 0.15.7+ changed these APIs\nto copy the input buffer.",
+      "date": "2026-10-26",
+      "aliases": [
+        "GHSA-rc3f-4j82-cmrg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls-ffi/releases/tag/v/0.15.7",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.15.7"
+      ],
+      "unaffected": [
+        "<0.12.0"
+      ]
+    }
+  }
+]

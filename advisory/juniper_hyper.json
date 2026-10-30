@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0415",
+      "package": "juniper_hyper",
+      "title": "Unbounded memory use on large request bodies",
+      "description": "The `graphql()` and `graphql_sync()` functions of `juniper_hyper` read the whole body of a POST request into memory before they parsed the body. The functions had no limit on the size of the body. A client could thus send a large body and exhaust the memory of the server. The request needs no authentication.\n\n`juniper_hyper` 0.10.1 reads at most 2 MiB of a request body by default. The functions respond with `413 Payload Too Large` to larger bodies. A `juniper_hyper::BodyLimit` in the extensions of a request changes the limit for the request.",
+      "date": "2026-10-28",
+      "aliases": [
+        "GHSA-pfrg-qg4f-grmv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "graphql",
+        "http",
+        "memory"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/graphql-rust/juniper/pull/1405",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

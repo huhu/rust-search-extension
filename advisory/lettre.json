@@ -1,0 +1,153 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0141",
+      "package": "lettre",
+      "title": "TLS hostname verification disabled when using Boring TLS backend",
+      "description": "An inverted-boolean bug in lettre's `boring-tls` integration silently\ndisables TLS hostname verification for callers using the default (strict)\nconfiguration. An on-path attacker presenting any chain-valid certificate\nfor any domain can intercept SMTP submission, including PLAIN/LOGIN\ncredentials and message contents, against any lettre user built with the\n`boring-tls` feature. Other TLS backends (`native-tls`, `rustls`) are\nunaffected.\n\nThe bug was introduced in v0.10.1 and persists through v0.11.21 (latest).",
+      "date": "2026-05-14",
+      "aliases": [
+        "CVE-2026-46428",
+        "GHSA-4pj9-g833-qx53"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "tls",
+        "smtp",
+        "mitm"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:N/SC:L/SI:L/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lettre/lettre/commit/f5efffc88360dbdbfcef80f465e42d5bce68ca35",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.22"
+      ],
+      "unaffected": [
+        "<0.10.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0069",
+      "package": "lettre",
+      "title": "SMTP command injection in body",
+      "description": "Affected versions of lettre allowed SMTP command injection through an attacker's controlled message body. The module for escaping lines starting with a period wouldn't catch a period that was placed after a double CRLF sequence, allowing the attacker to end the current message and write arbitrary SMTP commands after it.\n\nThe flaw is fixed by correctly handling consecutive CRLF sequences.",
+      "date": "2021-05-22",
+      "aliases": [
+        "GHSA-qc36-q22q-cjw3",
+        "CVE-2021-38189"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "email",
+        "smtp"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lettre/lettre/pull/627/commits/93458d01fed0ec81c0e7b4e98e6f35961356fae2",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "lettre::smtp::SmtpTransport::send": [
+          "<0.10.0-alpha.1"
+        ],
+        "lettre::transport::smtp::SmtpTransport::send": [
+          ">=0.10.0-alpha.1, <0.10.0-rc.3"
+        ],
+        "lettre::transport::smtp::SmtpTransport::send_raw": [
+          ">=0.10.0-alpha.1, <0.10.0-rc.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.0-rc.3",
+        "<0.10.0-alpha.1, >=0.9.6"
+      ],
+      "unaffected": [
+        "<0.7.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0069",
+      "package": "lettre",
+      "title": "Argument injection in sendmail transport",
+      "description": "Affected versions of lettre allowed argument injection\nto the sendmail command. It was possible, using forged `to` addresses,\nto pass arbitrary arguments to the sendmail executable.\n\nDepending on the implementation (original sendmail, postfix, exim, etc.)\nit could be possible in some cases to write email data into arbitrary files (using sendmail's\nlogging features).\n \nThe flaw is corrected by modifying the executed command to stop parsing arguments\nbefore passing the destination addresses.\n\nNOTE: This vulnerability only affects the `sendmail` transport. Others, including `smtp`, are not\naffected.\n\nThis vulnerability was reported by vin01.",
+      "date": "2020-11-11",
+      "aliases": [
+        "CVE-2020-28247",
+        "GHSA-vc2p-r46x-m3vx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "file-disclosure"
+      ],
+      "keywords": [
+        "email",
+        "sendmail"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lettre/lettre/pull/508/commits/bbe7cc5381c5380b54fb8bbb4f77a3725917ff0b",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "lettre::sendmail::SendmailTransport::send": [
+          "<0.10.0-alpha.1"
+        ],
+        "lettre::transport::sendmail::SendmailTransport::send": [
+          ">=0.10.0-alpha.1, <=0.10.0-alpha.3"
+        ],
+        "lettre::transport::sendmail::SendmailTransport::send_raw": [
+          ">=0.10.0-alpha.1, <=0.10.0-alpha.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.0-alpha.4",
+        "<0.10.0-alpha.1, >=0.9.5",
+        "<0.9.0, >=0.8.4",
+        "<0.8.0, >=0.7.1"
+      ],
+      "unaffected": [
+        "<0.7.0"
+      ]
+    }
+  }
+]

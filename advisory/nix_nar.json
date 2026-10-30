@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0425",
+      "package": "nix-nar",
+      "title": "`nix-nar`: `Decoder::unpack` writes archive entries outside the destination directory (path traversal)",
+      "description": "`Decoder::unpack` does not safely contain the paths it extracts, so a malicious NAR\narchive can create files **outside** the destination directory — a path traversal\n(CWE-22).\n\nIn `src/dec.rs` (`Decoder::unpack`):\n\n- A symlink entry's target is written without checking where it points\n  (`src/dec.rs:153`), so the archive can create a symlink that escapes the\n  destination directory.\n- The out-of-destination containment check compares path **strings** only and does\n  not account for symlinks created earlier in the same unpack\n  (`src/dec.rs:176-181`), before reaching the write sinks\n  (`std::fs::create_dir` at `src/dec.rs:201` and `OpenOptions::open` at\n  `src/dec.rs:218`).\n- The parser also accepts entry names containing `/` (`src/parser.rs:138-147`).\n\nCombined, a malicious archive can include a symlink `a` pointing at an external\ndirectory and then an entry named `a/b`, causing `b` to be written to\n`<external>/b`, outside the destination. This can create new files anywhere the\nprocess can write (it cannot overwrite existing files), which is escalatable to code\nexecution by planting files in attacker-chosen locations.",
+      "date": "2026-10-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "path-traversal",
+        "directory-traversal",
+        "symlink",
+        "arbitrary-file-write",
+        "nar"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://codeberg.org/scvalex/nix-nar-rs/issues/3",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "nix_nar::Decoder::unpack": [
+          "<0.6.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

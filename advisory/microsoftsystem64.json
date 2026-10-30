@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0102",
+      "package": "microsoftsystem64",
+      "title": "`microsoftsystem64` was removed from crates.io for malicious code",
+      "description": "`microsoftsystem64` installs a hardcoded SSH authorized_keys entry (persistence/backdoor) and scans for sensitive files (.env, credential-like JSON names, keyword-matching docs), reads their contents, base64-encodes where needed, and exfiltrates everything to a remote server via HTTP. It also packages and uploads Telegram Desktop tdata, indicating targeted credential/session/data harvesting.\n\nThe malicious crate had 9 versions published on 2026-04-09 that had a total of 6346 downloads. There were no crates depending on this crate on crates.io.\n\nThanks to [Socket.dev](https://socket.dev/) and [sitsh](https://sit.sh/) for detecting and reporting this to the crates.io team!",
+      "date": "2026-04-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

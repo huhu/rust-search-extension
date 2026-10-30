@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0249",
+      "package": "smartstring",
+      "title": "smartstring is unmaintained",
+      "description": "The smartstring crate is unmaintained; all versions are affected. The\nGitHub repository was archived by the owner on 2026-05-03.\n\nRecommended alternatives:\n\n* [compact_str](https://crates.io/crates/compact_str)\n* [smol_str](https://crates.io/crates/smol_str)",
+      "date": "2026-05-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodil/smartstring",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

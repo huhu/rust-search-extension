@@ -1,0 +1,93 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0062",
+      "package": "futures-util",
+      "title": "Improper `Sync` implementation on `FuturesUnordered` in futures-utils can cause data corruption",
+      "description": "Affected versions of the crate had an unsound `Sync` implementation on the `FuturesUnordered` structure, which used a `Cell` for\ninterior mutability without any code to handle synchronized access to the underlying task list's length and head safely.\n\nThis could of lead to data corruption since two threads modifying the list at once could see incorrect values due to the lack\nof access synchronization.\n\nThe issue was fixed by adding access synchronization code around insertion of tasks into the list.",
+      "date": "2020-01-24",
+      "aliases": [
+        "CVE-2020-35908"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency",
+        "memory-corruption",
+        "memory-management"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/futures-rs/issues/2050",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "futures_util::stream::FuturesUnordered": [
+          ">=0.3.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.2"
+      ],
+      "unaffected": [
+        "<0.3.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0059",
+      "package": "futures-util",
+      "title": "MutexGuard::map can cause a data race in safe code",
+      "description": "Affected versions of the crate had a Send/Sync implementation for MappedMutexGuard that only considered variance on T, while MappedMutexGuard dereferenced to U.\n\nThis could of led to data races in safe Rust code when a closure used in MutexGuard::map() returns U that is unrelated to T.\n\nThe issue was fixed by fixing `Send` and `Sync` implementations, and by adding a `PhantomData<&'a mut U>` marker to the `MappedMutexGuard` type to tell the compiler that the guard is over\nU too.",
+      "date": "2020-10-22",
+      "aliases": [
+        "CVE-2020-35905"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [
+        "concurrency",
+        "memory-corruption",
+        "memory-management"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/futures-rs/issues/2239",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "futures_util::lock::MutexGuard::map": [
+          ">=0.3.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.7"
+      ],
+      "unaffected": [
+        "<0.3.2"
+      ]
+    }
+  }
+]

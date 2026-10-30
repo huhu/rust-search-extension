@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0162",
+      "package": "vku",
+      "title": "`VMABuffer::set_data` may allow out-of-bounds writes from safe code",
+      "description": "`VMABuffer::set_data` was a publicly accessible safe function. It accepted an arbitrary `offset` and a data slice, then used the offset in unsafe pointer arithmetic before copying the slice into a mapped allocation.\n\nAffected versions did not check that the requested write range fit within the allocation before calling `ptr.add(offset)` and `copy_from_nonoverlapping`. Safe Rust code could therefore trigger an out-of-bounds write by passing an offset outside the mapped allocation.\n\nThis makes the safe API unsound, since callers can trigger undefined behavior without using `unsafe`.\n\nVersion `0.4.0` added a bounds check before performing the pointer arithmetic and copy.",
+      "date": "2025-04-23",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/ArrowMaxGithub/vku/commit/ce02c19ec35e5ee84c00ec5005be9d6d44599b5f"
+      ],
+      "source": null,
+      "url": "https://github.com/ArrowMaxGithub/vku/issues/5",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "vku::VMABuffer::set_data": [
+          "<=0.3.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

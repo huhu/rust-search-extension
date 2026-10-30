@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0128",
+      "package": "emap",
+      "title": "Double-free and use-after-free in `Keys::next()`",
+      "description": "`Keys::next()` uses `ptr::read` to move out the `Option<V>` by value, which\ndrops the contained `V` when `V` is non-Copy (e.g. `String`). This leaves a\ndangling value in the map's storage slot. Subsequent `get()` operations on\nthat key return a dangling reference to already-freed memory.\n\nThis can be triggered through safe public APIs — `Map::keys()`,\n`Keys::next()`, and `Map::get()` — with no `unsafe` required from the\ncaller. Under Miri, accessing the freed slot produces \"Undefined Behavior:\npointer not dereferenceable: alloc has been freed, so this pointer is\ndangling\".",
+      "date": "2026-05-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "double-free",
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/yegor256/emap/issues/168",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

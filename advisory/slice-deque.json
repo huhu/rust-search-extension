@@ -1,0 +1,125 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0002",
+      "package": "slice-deque",
+      "title": "Bug in SliceDeque::move_head_unchecked corrupts its memory",
+      "description": "Affected versions of this crate entered a corrupted state if\n`mem::size_of::<T>() % allocation_granularity() != 0` and a specific allocation\npattern was used: sufficiently shifting the deque elements over the mirrored\npage boundary.\n\nThis allows an attacker that controls controls both element insertion and\nremoval to corrupt the deque, such that reading elements from it would read\nbytes corresponding to other elements in the deque. (e.g. a read of T could read\nsome bytes from one value and some bytes from an adjacent one, resulting in a T\nwhose value representation is not meaningful). This is undefined behavior.\n \nThe flaw was corrected by using a pair of pointers to track the head and tail of\nthe deque instead of a pair of indices. This pair of pointers are represented\nusing a Rust slice.",
+      "date": "2019-05-07",
+      "aliases": [
+        "CVE-2019-15543"
+      ],
+      "related": [
+        "RUSTSEC-2018-0008"
+      ],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption",
+        "rce"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gnzlbg/slice_deque/issues/57",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0047",
+      "package": "slice-deque",
+      "title": "SliceDeque::drain_filter can double drop an element if the predicate panics",
+      "description": "Affected versions of the crate incremented the current index of the drain filter\niterator *before* calling the predicate function `self.pred`.\n\nIf the predicate function panics, it is possible for the last element in the\niterator to be dropped twice.",
+      "date": "2021-02-19",
+      "aliases": [
+        "CVE-2021-29938"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gnzlbg/slice_deque/issues/90",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0008",
+      "package": "slice-deque",
+      "title": "Bug in SliceDeque::move_head_unchecked allows read of corrupted memory",
+      "description": "Affected versions of this crate did not properly update the\nhead and tail of the deque when inserting and removing elements from the front\nif, before insertion or removal, the tail of the deque was in the mirrored\nmemory region, and if, after insertion or removal, the head of the deque is\nexactly at the beginning of the mirrored memory region.\n\nAn attacker that controls both element insertion and removal into the deque\ncould put it in a corrupted state. Once the deque enters such an state, its head\nand tail are corrupted, but in bounds of the allocated memory. This can result\nin partial reads and writes, reads of uninitialized memory, reads of memory\ncontaining previously dropped objects, etc. An attacker could exploit this to\nalter program execution.\n\nThe flaw was corrected by properly updating the head and tail of the deque in\nthis case.",
+      "date": "2018-12-05",
+      "aliases": [
+        "CVE-2018-20995"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption",
+        "rce"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gnzlbg/slice_deque/issues/57",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.16"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0158",
+      "package": "slice-deque",
+      "title": "slice-deque is unmaintained",
+      "description": "The author of the `slice-deque` crate is unresponsive and is not receiving security patches.\n\nMaintained alternatives:\n\n- [`slice-ring-buffer`](https://crates.io/crates/slice-ring-buffer)",
+      "date": "2020-02-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/gnzlbg/slice_deque/issues/94",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

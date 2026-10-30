@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0263",
+      "package": "tinymember",
+      "title": "`tinymember` was removed from crates.io due to affiliation with malicious code",
+      "description": "While `tinymember` did not directly contain malicious code, it was owned by the\nsame user as `arone` and `aronenao`, which contained suspicious build scripts.\n\nThis crate had 2 versions published on 2026-08-18 that had a total of 27 downloads.\nThere were no crates depending on this crate on crates.io. The crate was removed\nfrom crates.io and the user account was locked.",
+      "date": "2026-08-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://blog.rust-lang.org/2026/08/20/supply-chain-attack-on-arrayref",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0294",
+      "package": "iceoryx2-bb-container",
+      "title": "Unsoundness in UTF-8 'String' trait",
+      "description": "The String API in iceoryx2-bb-container exposes its contents as mutable bytes through safe APIs, while String::as_str() converts those bytes into a Rust string slice without validating UTF-8. \nAn application can therefore create an invalid &str and trigger undefined behavior using entirely safe Rust.\n\nThe API methods `as_mut_bytes` and `deref_mut` where removed from the String API and their implementations (PolymorphicString, RelocatableString, and StaticString ) without replacement.\nLink to Pull-Request: https://github.com/eclipse-iceoryx/iceoryx2/pull/1956",
+      "date": "2026-09-18",
+      "aliases": [
+        "GHSA-8mq4-3mwq-qvg6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "unsound"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/eclipse-iceoryx/iceoryx2/pull/1956",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "iceoryx2_bb_container::string::String::as_mut_bytes": [
+          "<0.10.0"
+        ],
+        "iceoryx2_bb_container::string::String::deref_mut": [
+          "<0.10.0"
+        ],
+        "iceoryx2_bb_container::string::polymorphic_string::PolymorphicString::as_mut_bytes": [
+          "<0.10.0"
+        ],
+        "iceoryx2_bb_container::string::polymorphic_string::PolymorphicString::deref_mut": [
+          "<0.10.0"
+        ],
+        "iceoryx2_bb_container::string::relocatable_string::RelocatableString::as_mut_bytes": [
+          "<0.10.0"
+        ],
+        "iceoryx2_bb_container::string::relocatable_string::RelocatableString::deref_mut": [
+          "<0.10.0"
+        ],
+        "iceoryx2_bb_container::string::static_string::StaticString::as_mut_bytes": [
+          "<0.10.0"
+        ],
+        "iceoryx2_bb_container::string::static_string::StaticString::deref_mut": [
+          "<0.10.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        "^0.10.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

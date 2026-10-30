@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0106",
+      "package": "hickory-recursor",
+      "title": "Record cache accepts AUTHORITY section NS from sibling zone via parent-pool zone-context elevation",
+      "description": "The Hickory DNS project's experimental `hickory-recursor` crate's record cache\n(`DnsLru`) stores records from DNS responses keyed by each record's own (name,\ntype), not by the query that triggered the response. `cache_response()` in\n`crates/recursor/src/lib.rs` chains `ANSWER`, `AUTHORITY`, and `ADDITIONAL`\nsections into one record iterator before insertion. The bailiwick filter it\napplies uses the zone context of the NS pool that serviced the lookup, not the\nzone being queried.\n\nThis creates a cross-zone poisoning path. When Hickory builds the NS pool for\n`attacker.poc.` it uses the parent `poc.` `NS` pool (`ns.zone() = \"poc.\"`). If\nthe `poc.` nameserver under the attacker's control includes in its response's\n`AUTHORITY` section a record for a sibling zone like `victim.poc. NS\nns.evil.poc.`, the bailiwick check `is_subzone(\"poc.\", \"victim.poc.\")` passes\n(`victim.poc.` is a subdomain of `poc.`). The record is stored under\n`(victim.poc., NS)` in the shared cache.\n\nSubsequently, any client querying a name in `victim.poc`. causes Hickory to\nbuild its NS pool from the poisoned cache entry, routing queries to the\nattacker's nameserver (`ns.evil.poc.`) rather than to the legitimate nameserver\nfor `victim.poc.`. The legitimate `NS` for that zone receives zero queries.\n\nThis issue is fixed in `hickory-resolver` 0.26.0 with the `recursor` feature\nthrough an architectural change to response-level caching: responses are stored\nkeyed by the originating query `(name, type)`. A response to `(attacker.poc.\nNS)` is stored only under that key and cannot affect the `(victim.poc., NS)`\ncache entry.\n\nWe believe this issue has been present in all published versions of the\nexperimental `hickory-recursor` crate, which has now been folded into the\n`hickory-resolver` crate under the non-default `recursor` feature flag. The\n`hickory-recursor` crate will not receive any updates going forward and all\nusers should migrate to `hickory-resolver` with the `recursor` feature.",
+      "date": "2026-04-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "dns",
+        "cache-poisoning"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/security/advisories/GHSA-83hf-93m4-rgwq",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

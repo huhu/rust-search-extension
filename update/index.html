@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Update | Rust Search Extension - The ultimate search extension for Rust </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+        /* Primary theme color */
+        --primary-color: #F9BB2D;
+        /* Primary theme text color */
+        --primary-text-color: #121212;
+        /* Primary theme link color */
+        --primary-link-color: #dd4814;
+        /* Secondary color: the background body color*/
+        --secondary-color: #fcfaf6;
+        --secondary-text-color: #303030;
+        --toc-highlight-text-color: #d46e13;
+        /* Font used for headers (h1 & h2) */
+        --header-font-family: "Fira Sans", sans-serif;
+        /* Font used for text */
+        --text-font-family: "Fira Sans", sans-serif;
+    }
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7JXVGPGFS"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-Z7JXVGPGFS');
+</script>
+    
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="/juice.css">
+    
+<link rel="stylesheet" href="/index.css">
+<link rel="stylesheet" href="/carbon.css">
+
+</head>
+
+<body>
+    
+<header class="box-shadow">
+    
+
+<a href="/">
+    <div class="logo">
+        <img src="/logo.png" alt="logo">
+        Rust Search Extension
+    </div>
+</a>
+
+<nav>
+    
+    
+    
+    
+    
+    
+    <a class="nav-item subtitle-text" href="/testimonial/">Testimonial</a>
+    
+    
+    
+    
+    <a class="nav-item subtitle-text" href="/faq/">FAQ</a>
+    
+    
+    
+    
+    <a class="nav-item subtitle-text" href="/changelog/">Changelog</a>
+    
+    
+    
+    
+    
+    
+        
+        <a class="nav-item subtitle-text" href="https://geddle.com">Geddle</a>
+        
+        <a class="nav-item subtitle-text" href="https://query.rs">Query.rs</a>
+        
+        <a class="nav-item subtitle-text" href="https://github.com/huhu/rust-search-extension">Github</a>
+        
+    
+</nav>
+
+</header>
+
+
+    <main>
+        
+        
+        
+        
+
+        <div class="content text">
+            
+<div class="heading-text">Update: sync the latest search index to local</div>
+<br>
+<div class="update-progress">The search index is being updated, please wait for a second...</div>
+<ul class="index-list">
+</ul>
+
+<blockquote>
+    <h1>Notice</h1>
+    <p>
+        If you encounter an auto-opening of this page when you launch your browser,
+        this is because you have turned on the auto-update configuration in the <span><b>settings page</b></span>.
+    </p>
+
+    <p>
+        This auto-update is not intended for an extension version update, it's for the offline search index instead.
+        This is mandatory and only necessary for the local index updating.
+    </p>
+
+    <p>You can enable/disable the auto-update in the extension's <span><b>settings page</b></span>.</p>
+</blockquote>
+<div>
+
+</div>
+
+
+        </div>
+
+        
+<div class="sidebar">
+    <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEBIL27E&placement=extensionsh" id="_carbonads_js"></script>
+</div>
+
+    </main>
+
+    
+<iframe id="footer" src="https://huhu.io/extension-footer.html"
+        style="display:block;width:100%;border:none;"></iframe>
+<script>
+    window.onmessage = e => {
+        e.data.hasOwnProperty("frameHeight") && (document.getElementById("footer").style.height = `${e.data.frameHeight}px`)
+    }
+</script>
+<script src="/js/update-index.js" type="module"></script>
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>

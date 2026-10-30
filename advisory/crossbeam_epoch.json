@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0204",
+      "package": "crossbeam-epoch",
+      "title": "Invalid pointer dereference in `fmt::Pointer` impl for `Atomic` and `Shared` when the underlying pointer is invalid",
+      "description": "Affected versions of `fmt::Display` dereference the underlying pointer. This causes a invalid pointer dereference e.g., when a pointer created with `Atomic::null` or `Shared::null`. `fmt::Debug` impls and pre-0.9 `fmt::Display` impls, which do not dereference pointers, are not affected by this issue.",
+      "date": "2026-07-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "NULL-pointer-dereference"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/crossbeam-rs/crossbeam/pull/1276",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.20"
+      ],
+      "unaffected": [
+        "<0.9.0"
+      ]
+    }
+  }
+]

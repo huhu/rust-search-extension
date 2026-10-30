@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0173",
+      "package": "pam-bindings",
+      "title": "`PamHandle::get_user` can cause an authentication bypass",
+      "description": "In affected versions, `PamHandle::get_user` can return `Err(PAM_SUCCESS)` after it gets the username successfully.\nPAM modules that return this \"error\" code from `sm_authenticate` or `sm_acct_mgmt` early-return a success code to PAM without doing any further verification.\nThis means a user could log in when they shouldn't be able to (e.g., if the module is `sufficient`).\n\nThe `pam_try!` macro of this crate early-returns the code in this exact way:\n\n```rust\nfn sm_authenticate(pamh: &mut PamHandle, args: Vec<&CStr>, flags: PamFlag) -> PamResultCode {\n    let user = pam_try!(pamh.get_user(None)); // Can return PAM_SUCCESS here.\n    // If it does, the module does not get to this line.\n}\n```\n\nThe root cause is an [incorrect FFI declaration][ffi-decl] for [`pam_get_user(3)`][pam-get-user].\nThis C function writes a pointer to the username through its `user` argument (of type `const char **user`).\nThis crate's binding declared this argument as a shared reference (`&*mut c_char`).\nWriting through a shared reference is [undefined behavior][ub-immutable].\n\nThus, the compiler can assume that the local pointer, whose address is passed as `user`, is still null after the call.\nAfter the call, the affected code [returns `Ok`][null-check] only if the return code is `PAM_SUCCESS` *and* this pointer is not null.\nOtherwise, it returns the return code as an error.\nIf the compiler assumes that the pointer is null, `get_user` returns an error even when the return code is `PAM_SUCCESS`.\nRelease builds have been [observed to do this][observed-irl].\nDebug builds usually work correctly, so tests in debug mode can miss the problem.\n\nVersion 0.1.2 changes the declaration to `&mut *const c_char`.\nThe fix is in commit [401c961](https://github.com/lvkv/pam-rs/commit/401c961800c4dde356464b6a7d455af844a3954a).\n\nIf a module cannot upgrade, do not return the error code from `get_user`.\nReturn a failure code instead, for example `pam_try!(pamh.get_user(None), PamResultCode::PAM_AUTH_ERR)`.\nThis makes the module deny access instead of allowing it, but the undefined behavior remains.\n\n[pam-get-user]: https://github.com/linux-pam/linux-pam/blob/28fce1fd55b003fec90f34e5bc785e9439b216f2/libpam/include/security/pam_modules.h#L30-L31\n[ffi-decl]: https://github.com/lvkv/pam-rs/blob/3d9318b5b812d9142595928deec23e5843a60995/pam/src/module.rs#L49-L53\n[ub-immutable]: https://doc.rust-lang.org/reference/behavior-considered-undefined.html#r-undefined.immutable\n[null-check]: https://github.com/lvkv/pam-rs/blob/3d9318b5b812d9142595928deec23e5843a60995/pam/src/module.rs#L196-L202\n[observed-irl]: https://github.com/lvkv/pam-rs/issues/16#issuecomment-3693665220",
+      "date": "2025-06-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "pam",
+        "authentication",
+        "ffi",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lvkv/pam-rs/issues/16",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

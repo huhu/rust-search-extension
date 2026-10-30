@@ -1,0 +1,161 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0369",
+      "package": "zip",
+      "title": "ZipStreamReader::extract() and ZipArchive::extract() apply Unix permissions through symlinks without confining the target",
+      "description": "`ZipStreamReader::extract()` applies Unix permissions through extracted symlinks without validating the symlink target stays within the destination\n\nFor further details see: https://github.com/zip-rs/zip2/security/advisories/GHSA-4684-h2q9-2vcp",
+      "date": "2026-10-10",
+      "aliases": [
+        "GHSA-4684-h2q9-2vcp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "privilege-escalation",
+        "symlink",
+        "permissions"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=9.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0368",
+      "package": "zip",
+      "title": "zip: `ZipArchive::extract` creates symbolic links whose attacker-controlled targets are outside the destination directory",
+      "description": "In `zip` 9.0.0-pre2, `ZipArchive::extract` creates a symbolic link from an archive entry after validating only the output entry path. The link target bytes are passed directly to the platform symlink API, so a malicious archive can create an entry inside the destination that resolves to an attacker-chosen path outside it. This behavior was verified on macOS and Linux. On either platform, a subsequent application read or write through that extracted entry accesses the external target with the extracting process's permissions.\n\nFor further details see: https://github.com/zip-rs/zip2/security/advisories/GHSA-4v9h-p7m9-rh26",
+      "date": "2026-10-09",
+      "aliases": [
+        "GHSA-4v9h-p7m9-rh26"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "privilege-escalation",
+        "symlink"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=9.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0367",
+      "package": "zip",
+      "title": " Insecure Preservation of SUID/SGID Bits during ZIP Extraction Leading to Potential Privilege Escalation",
+      "description": "The `zip` crate preserves privileged Unix permission bits (SUID, SGID, and sticky bits) from ZIP `external_attributes` during extraction, instead of masking them to safe permission bits. If a privileged process (for example, `root` in an installer, CI/CD pipeline, or container build) extracts an attacker-controlled ZIP archive using `ZipArchive::extract()` or the stream extraction API, files can be created as setuid-root or setgid. This behavior allows the creation of SUID/SGID files during extraction, which can lead to local privilege escalation depending on the execution environment.\n\nFor further details see: https://github.com/zip-rs/zip2/security/advisories/GHSA-vv5m-jxxh-4627",
+      "date": "2026-10-09",
+      "aliases": [
+        "GHSA-vv5m-jxxh-4627"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "privilege-escalation",
+        "suid",
+        "sgid"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=9.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0168",
+      "package": "zip",
+      "title": "Incorrect path canonicalization during Archive Extraction Leading to Arbitrary File Write",
+      "description": "In the archive extraction routine of affected versions of the zip crate, symbolic links earlier in the archive are allowed to be used for later files in the archive without validation of the final canonicalized path, allowing maliciously crafted archives to overwrite arbitrary files in the file system when extracted.\n\nFor more details, see the GitHub-hosted security advisory: <https://github.com/zip-rs/zip2/security/advisories/GHSA-94vh-gphv-8pm8>",
+      "date": "2025-03-16",
+      "aliases": [
+        "CVE-2025-29787",
+        "GHSA-94vh-gphv-8pm8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "file-overwrite",
+        "symlink",
+        "path-traversal"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:N/PR:L/UI:N/VC:L/VI:H/VA:N/SC:H/SI:H/SA:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/zip-rs/zip2/commit/a2e062f37066c3b12860a32eb1cb44856cfb7afe",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zip::read::ZipArchive::extract": [
+          "<2.3.0, >=1.3.0"
+        ],
+        "zip::unstable::stream::ZipStreamReader::extract": [
+          "<2.3.0, >=1.3.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.0"
+      ],
+      "unaffected": [
+        "<1.3.0"
+      ]
+    }
+  }
+]

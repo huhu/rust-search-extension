@@ -1,0 +1,597 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0403",
+      "package": "zstd-safe",
+      "title": "Uninitialized memory exposed when streaming decompression of a legacy frame fails",
+      "description": "When decompression fails inside a legacy (zstd v0.4 to v0.7) frame, the\nbundled zstd library reports the output buffer as fully written although\nnothing was written. `DCtx::decompress_stream` committed that position even\non error, and for a `Vec<u8>` destination this extended the vector's length\nover uninitialized memory.\n\nLegacy support is enabled by default. A 5- or 6-byte corrupt legacy frame is\nenough: through `zstd::stream::write::Decoder`, up to 32 KiB of stale heap\nmemory is then passed to the wrapped writer on the next `write()` or\n`flush()`, or when an `auto_flush()`/`on_flush()` decoder is dropped. Whether\nthis reaches an attacker depends on where the application sends the\ndecompressed output. `zstd::stream::read::Decoder`, `zstd::decode_all` and\nthe bulk API are not affected.\n\nBefore zstd-safe 4.0.0, output buffers could only be initialized slices.\nThe zstd crate's own writer had the same flaw from 0.4.22 to 0.7.x, which is\ncovered by a separate advisory.\n\nThe flaw was corrected by only committing the buffer positions of a\nsuccessful call.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "uninitialized-memory",
+        "decompression",
+        "legacy"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/006e1d1ad1eeaf6b5d4c28329e70217adabcec43",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::DCtx::decompress_stream": [
+          ">=4.0.0, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<4.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0395",
+      "package": "zstd-safe",
+      "title": "Use-after-free with `CParameter::StableInBuffer`",
+      "description": "With `CParameter::StableInBuffer(true)` (`experimental` feature), the C\nlibrary keeps a pointer to the input of one streaming call and reads from it\nin later calls, including `flush_stream` and `end_stream`, which take no\ninput. An `InBuffer` only borrows its slice for one call, so safe code could\nfree it in between, and freed memory was compressed into the frame. The C\nlibrary behaves this way since zstd 1.5.4, whether bundled or linked from the\nsystem.\n\nThe flaw was corrected by refusing to enable the parameter.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "use-after-free",
+        "experimental"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/53a8a290d8cfb52ff5b29fb6e04a40b5a174cc65",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::CCtx::set_parameter": [
+          ">=4.1.0, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<4.1.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0399",
+      "package": "zstd-safe",
+      "title": "Use-after-free through `init_using_cdict` and `init_using_ddict`",
+      "description": "`CCtx::init_using_cdict` and `DCtx::init_using_ddict` (`experimental`\nfeature, deprecated) took the dictionary as `&CDict<'b>` and `&DDict<'b>`\nwith only `'b: 'a`, so the dictionary itself could be dropped while the\ncontext still pointed at it. The same mistake in other constructors was\nfixed earlier (<https://github.com/gyscos/zstd-rs/issues/365>).\n\nThe flaw was corrected by taking `&'a CDict<'b>` and `&'a DDict<'b>`.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "lifetime",
+        "dictionary"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/e00e7928e3e98953fc43418af6d73f6aae2378fb",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::CCtx::init_using_cdict": [
+          ">=3.0.0, <8.2.0"
+        ],
+        "zstd_safe::DCtx::init_using_ddict": [
+          ">=3.0.0, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<3.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0401",
+      "package": "zstd-safe",
+      "title": "Out-of-bounds read in `train_from_buffer` when sample sizes overflow",
+      "description": "`ZDICT_trainFromBuffer` is never told the length of the samples buffer, so\n`train_from_buffer` checked that the sample sizes add up to it. With\noverflow checks off, as in release builds, that sum wrapped around: sizes\ntotalling 2^64 plus the buffer length passed the check, and the trainer read\npast the end of the buffer. `zstd::dict::from_continuous` relies on this\ncheck from zstd 0.4.10; older versions of zstd had their own, covered by a\nseparate advisory.\n\nThis requires the sample sizes to come from an untrusted source. The flaw\nwas corrected by summing the sizes with overflow checks.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "integer-overflow",
+        "out-of-bounds",
+        "dictionary"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/781ea454191dbf178d09c1daf6fc896d15fbaa2f",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::train_from_buffer": [
+          "<8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0397",
+      "package": "zstd-safe",
+      "title": "`OutBuffer::around_pos` exposes uninitialized memory",
+      "description": "`OutBuffer::around_pos` accepted a position past the initialized length of a\n`Vec<u8>`. The next streaming call then marked everything before the\nposition as initialized, so safe code could read stale heap memory between\nthe vector's previous length and that position.\n\nThe flaw was corrected by zero-filling that gap.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "uninitialized-memory"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/5827de2459b8ac430e87e860f00c7f3c13023833",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::OutBuffer::around_pos": [
+          ">=4.0.0, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<4.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0400",
+      "package": "zstd-safe",
+      "title": "Use-after-free of a dictionary after a one-shot call on a context with an open stream",
+      "description": "The one-shot `DCtx` and `CCtx` methods assumed the C library resets the\ncontext, but it leaves an open stream as it is. When a stream was left\nunfinished on a context, a one-shot call such as `decompress_using_dict`\ncould leave the context pointing at the dictionary borrowed for that call,\nand the next streaming call resumed the stream against it after it was\nfreed: decompressed output then contained freed heap memory. On the\ncompression side, the stream resumed against the one-shot call's buffers.\n\nThis requires an application to use one context for both streaming and\none-shot calls without a reset in between. The flaw was corrected by\nresetting the session after one-shot calls whenever a stream may be open.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "use-after-free",
+        "dictionary"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/d34502a0ed07f80ab2aa4c65059578e0466f2467",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::DCtx::decompress": [
+          ">=3.0.1, <8.2.0"
+        ],
+        "zstd_safe::DCtx::decompress_using_ddict": [
+          ">=3.0.1, <8.2.0"
+        ],
+        "zstd_safe::DCtx::decompress_using_dict": [
+          ">=3.0.1, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<3.0.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0398",
+      "package": "zstd-safe",
+      "title": "`Seekable::decompress` sets a `Vec` length beyond its capacity for offsets past the end",
+      "description": "`ZSTD_seekable_decompress` shortens the requested length to the end of the\ndata without checking that the offset is before it. For an offset past the\nend, it returns a wrapped-around length without writing anything, and\n`Seekable::decompress` passed that length to `Vec::set_len`.\n\nWith the `seekable` feature, whoever supplies the archive, or chooses the\noffset, can leave the caller's `Vec<u8>` with a length far beyond its\ncapacity. Reading it then discloses neighbouring heap memory, and appending\nto it corrupts memory. Offsets near `u64::MAX` can also hang the call.\n\nThe flaw was corrected by clamping requests to the end of the data, and by\nchecking every count reported by the C library against the buffer capacity.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "seekable",
+        "out-of-bounds"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/80506be743fae2ed0c2fe8b21c374c6a2eab0be7",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::seekable::AdvancedSeekable::decompress": [
+          ">=7.2.2, <8.2.0"
+        ],
+        "zstd_safe::seekable::Seekable::decompress": [
+          ">=7.2.2, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<7.2.2"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0405",
+      "package": "zstd-safe",
+      "title": "Out-of-bounds read with an out-of-range `InBuffer::pos`",
+      "description": "`InBuffer`'s fields are public, so safe code can set `pos` past the end of\n`src`. The position was passed to the C library unchecked, and\n`ZSTD_seekable_compressStream`, unlike the other streaming functions, does\nnot validate it: it read past the end of the input slice, by up to the\nframe size, and compressed that memory into the output.\n\nThe flaw was corrected by checking the position before every call into the\nC library.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "seekable",
+        "out-of-bounds"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/20d397c0d68d8b4300c5493875ebfa10e355fcdd",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::seekable::SeekableCStream::compress_stream": [
+          ">=7.2.2, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<7.2.2"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0402",
+      "package": "zstd-safe",
+      "title": "Heap buffer overflow in `CCtx::try_clone` on a multithreaded context",
+      "description": "`CCtx::try_clone` (`experimental` feature, deprecated) copies tables sized\nfrom the context's applied parameters. Starting a multithreaded frame\n(`zstdmt` feature) replaces those parameters with the workers' without\nresizing the context's own tables, so after an abandoned single-threaded\nframe, the copy wrote up to 512 KiB past a heap allocation, or read past\none. This became reachable with the bundled zstd 1.5.6.\n\nThe flaw was corrected by refusing `try_clone` (and the unsafe\n`compress_block`) once `NbWorkers` was set on the context.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "buffer-overflow",
+        "experimental",
+        "zstdmt"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/682b8b2967cf4aba5cfe2d940d1e381a3e23211a",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::CCtx::try_clone": [
+          ">=4.1.4, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<4.1.4"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0396",
+      "package": "zstd-safe",
+      "title": "`Seekable` reads a NULL or out-of-bounds seek table",
+      "description": "`Seekable` did not record whether it was initialized. On a fresh `Seekable`,\nor one whose `init_buff()` failed, `decompress`, `offset_to_frame_index` and\n`frame_decompressed_size` made the C library read a NULL seek table. After a\nfailed re-initialization, `decompress` returned data from the refused buffer\nusing the previous seek table.\n\nSeparately, `frame_decompressed_size(num_frames())`, on `Seekable` and\n`SeekTable`, read one entry past the end of the seek table.\n\nThe flaw was corrected by refusing to use a `Seekable` until an\ninitialization succeeded, and by checking the frame index.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "seekable",
+        "null-pointer"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/a9626069d6f2e90b782b8f627f57a361cfe8ef85",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::seekable::SeekTable::frame_decompressed_size": [
+          ">=7.2.2, <8.2.0"
+        ],
+        "zstd_safe::seekable::Seekable::decompress": [
+          ">=7.2.2, <8.2.0"
+        ],
+        "zstd_safe::seekable::Seekable::decompress_frame": [
+          ">=7.2.2, <8.2.0"
+        ],
+        "zstd_safe::seekable::Seekable::frame_decompressed_size": [
+          ">=7.2.2, <8.2.0"
+        ],
+        "zstd_safe::seekable::Seekable::offset_to_frame_index": [
+          ">=7.2.2, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<7.2.2"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0406",
+      "package": "zstd-safe",
+      "title": "Use-after-free when changing a multithreaded context with an unfinished frame",
+      "description": "When a multithreaded frame (`zstdmt` feature, `CParameter::NbWorkers`) is\nleft unfinished, its jobs may still be running on the worker threads: the C\nlibrary only waits for them when the next frame starts, or when the context\nis freed. A session reset makes the context accept changes again in the\nmeantime, so:\n\n- unloading the dictionary (`load_dictionary`, `ref_cdict`, `ref_prefix`,\n  `disable_dictionary`, `init*`, or `reset` with parameters) freed the\n  dictionary a worker was still compressing against;\n- changing `NbWorkers` made the next frame resize the job table before\n  waiting for the old jobs.\n\nThe flaw was corrected by refusing these calls while a multithreaded frame\nis unfinished. The new `CCtx::wait_for_workers()` waits for the workers\nfirst.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "zstdmt",
+        "dictionary"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/e224018a2389915d68ed17f30109bebad36e9734",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::CCtx::disable_dictionary": [
+          "<8.2.0"
+        ],
+        "zstd_safe::CCtx::init": [
+          "<8.2.0"
+        ],
+        "zstd_safe::CCtx::load_dictionary": [
+          "<8.2.0"
+        ],
+        "zstd_safe::CCtx::ref_cdict": [
+          "<8.2.0"
+        ],
+        "zstd_safe::CCtx::ref_prefix": [
+          "<8.2.0"
+        ],
+        "zstd_safe::CCtx::reset": [
+          "<8.2.0"
+        ],
+        "zstd_safe::CCtx::set_parameter": [
+          "<8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0404",
+      "package": "zstd-safe",
+      "title": "Double free in `DCtx::try_clone`",
+      "description": "`DCtx::try_clone` (`experimental` feature, deprecated) is a plain copy of the\nC context. A context owning a dictionary (from `load_dictionary`,\n`ref_prefix` or `init_using_dict`) or a dictionary table (`ref_ddict` with\n`RefMultipleDDicts`) ended up with both copies freeing it. A context cloned\nmid-frame resumed on uninitialized stream state. The clone also silently lost\nthe `WindowLogMax` limit.\n\nThe flaw was corrected by refusing to clone such contexts, and by carrying\nover the parameters the copy leaves out.",
+      "date": "2026-10-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "double-free",
+        "experimental"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/gyscos/zstd-rs/pull/384"
+      ],
+      "source": null,
+      "url": "https://github.com/gyscos/zstd-rs/commit/cee6529b553ec600a8e152aaca15a91598820ecf",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "zstd_safe::DCtx::try_clone": [
+          ">=4.1.4, <8.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=8.2.0"
+      ],
+      "unaffected": [
+        "<4.1.4"
+      ]
+    }
+  }
+]

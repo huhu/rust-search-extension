@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0120",
+      "package": "hickory-net",
+      "title": "NSEC3 closest-encloser proof validation enters unbounded loop on cross-zone responses",
+      "description": "The NSEC3 closest-encloser proof validation in `hickory-net`'s\n`DnssecDnsHandle` walks from the QNAME up to the SOA owner name, building a\nlist of candidate encloser names. The iterator used assumes the\nQNAME is a descendant of the SOA owner, terminating only when the current\ncandidate equals the SOA name. When the SOA in a response's authority section\nis not an ancestor of the QNAME, the loop stalls at the DNS root and never\nterminates, repeatedly calling `Name::base_name()` and pushing newly allocated\n`Name` and hashed-name entries into the candidate `Vec`.\n\nThe bug is reachable by any caller of `DnssecDnsHandle` — including the\nresolver, recursor, and client — when built with the `dnssec-ring` or\n`dnssec-aws-lc-rs` feature and configured to perform DNSSEC validation. It is\ntriggered while validating a NoData or NXDomain response whose authority\nsection contains an SOA record from a zone other than an ancestor of the\nQNAME, on a code path that requires NSEC3 closest-encloser proof. In practice\nthis can be reached through an insecure CNAME chain that crosses zone\nboundaries into a DNSSEC-signed zone returning NoData, but the minimum\ncondition is just a mismatched SOA owner on a response requiring NSEC3\nvalidation.\n\nA `debug_assert_ne!(name, Name::root())` guards the loop body, so debug builds\nabort with a panic on the first iteration past the root. Release builds\ncompile the assertion out and run the loop unbounded, allocating until the\nprocess exhausts available memory (OOM). A reachable upstream attacker who\ncan return such a response can therefore crash a debug-built validator or\nexhaust memory on a release-built one.\n\nWe recommend all affected users update to `hickory-net` 0.26.1 for the fix.",
+      "date": "2026-05-01",
+      "aliases": [
+        "GHSA-3v94-mw7p-v465"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "dnssec",
+        "nsec3"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/pull/3597",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

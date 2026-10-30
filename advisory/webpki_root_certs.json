@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0383",
+      "package": "webpki-root-certs",
+      "title": "Bundled root certificates allow trust in distrusted emSign intermediates",
+      "description": "Affected versions include `emSign ECC Root CA - G3`, which can allow certificate\npaths through distrusted emSign intermediates.\n\nAffected versions may accept certificate paths containing distrusted emSign\nintermediate public keys. The private keys corresponding to these intermediates\nare now well known.\n\nVersion 1.0.10+ removes this root.\n\nVersion 0.26.11 is a compatibility wrapper that re-exports\n`parent::TLS_SERVER_ROOT_CERTS` from its `webpki-root-certs` 1.x dependency; it\ncontains no separate root certificate list. Its resolved 1.x dependency must be\nupdated to 1.0.10 or later.",
+      "date": "2026-10-19",
+      "aliases": [
+        "CVE-2026-111943"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "certificate",
+        "distrust",
+        "x509"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://emudhra.we-have-a-problem.com/",
+        "https://bugzilla.mozilla.org/show_bug.cgi?id=2083449"
+      ],
+      "source": null,
+      "url": "https://github.com/rustls/webpki-roots/pull/133",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.10"
+      ],
+      "unaffected": [
+        "=0.26.11"
+      ]
+    }
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0172",
+      "package": "zip-extract",
+      "title": "`zip-extract` is unmaintained; use the `zip >= 2.4.0` crate instead",
+      "description": "The [`zip-extract`](https://crates.io/crates/zip-extract) crate has been\nexplicitly deprecated by its author on [Jul 16, 2025](https://github.com/MCOfficer/zip-extract/commit/2950ec98d33b6e752b4f0976d67d89feb6f4acde), and the repository\nwas archived on [Sep 8, 2025](https://github.com/MCOfficer/zip-extract).\n\nThe author added deprecation notices [README](https://github.com/MCOfficer/zip-extract/commit/2950ec98d33b6e752b4f0976d67d89feb6f4acde#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R1-R8)\nstating that the functionality is now available directly in the [`zip`](https://crates.io/crates/zip) crate\nvia [`ZipArchive::extract`](https://docs.rs/zip/8.6.0/zip/read/struct.ZipArchive.html#method.extract)\n(available since zip 0.6.0) and\n[`ZipArchive::extract_unwrapped_root_dir`](https://docs.rs/zip/8.6.0/zip/read/struct.ZipArchive.html#method.extract_unwrapped_root_dir)\n(available since zip 2.4.0).\n\nIf you are using [`zip-extract`](https://crates.io/crates/zip-extract), switch to the\n[`zip >= 2.4.0`](https://crates.io/crates/zip) crate and use the methods above instead.",
+      "date": "2025-07-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/MCOfficer/zip-extract/commit/2950ec98d33b6e752b4f0976d67d89feb6f4acde",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

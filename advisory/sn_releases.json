@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0427",
+      "package": "sn-releases",
+      "title": "`sn-releases`: `extract_release_archive` writes archive entries without a path-traversal check (zip-slip)",
+      "description": "`SafeReleaseRepoActions::extract_release_archive` builds each output path from the **raw archive entry name** and writes to it with no traversal check, so a malicious release archive can create directories and write files **outside** the destination directory, a \"zip-slip\" / path traversal (CWE-22 / CWE-23).\n\nIn `src/lib.rs` (`extract_release_archive`, zip branch):\n\n```rust\nlet mut file = archive.by_index(i)?;\nlet out_path = dest_dir_path.join(file.name());   // file.name() is the raw entry name\nif file.name().ends_with('/') {\n    std::fs::create_dir_all(&out_path)?;          // no `..` check\n} else {\n    let mut outfile = std::fs::File::create(&out_path)?;   // writes outside dest\n    std::io::copy(&mut file, &mut outfile)?;\n}\n```\n\nThe crate is unmaintained (latest release 0.3.1, 2024-10-22) and no fixed version is available.",
+      "date": "2026-10-29",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "zip-slip",
+        "path-traversal",
+        "directory-traversal",
+        "arbitrary-file-write"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maidsafe/sn-releases",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "sn_releases::SafeReleaseRepoActions::extract_release_archive": [
+          "<=0.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

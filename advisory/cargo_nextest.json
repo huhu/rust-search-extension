@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0412",
+      "package": "cargo-nextest",
+      "title": "Arbitrary code execution when rerunning tests from a portable recording",
+      "description": "## Summary\n\nNextest versions between 0.9.125 and 0.9.149 (inclusive) allow the `cargo nextest run --rerun` (or `-R`) command with a malicious [portable recording](https://nexte.st/docs/features/record-replay-rerun/portable-recordings/) to run arbitrary code during the build. The result is arbitrary code execution with the privileges of the user running `cargo nextest`.\n\nThis vulnerability requires that the experimental [run recording](https://nexte.st/docs/features/record-replay-rerun/) functionality is enabled. An attacker can plausibly trick a victim into enabling this feature.\n\n## Details\n\nNextest's portable recordings contain [build scope arguments](https://nexte.st/docs/design/architecture/recording-runs/#build-scope-arguments). These arguments are deserialized verbatim from portable recordings, and are [not validated](https://github.com/nextest-rs/nextest/blob/70ba2393a05f29c54b72b4badb9635a86f162eb1/nextest-runner/src/record/format.rs#L421-L426). As a result, it is possible to construct an archive with a custom `--config` argument that causes Cargo to execute arbitrary code.\n\nNextest 0.9.150 records the build scope as structured data, and passes each value to Cargo joined to its flag (for example, `--package=<value>`), so a recording can no longer add other Cargo options.\n\n## Impact\n\nA malicious portable recording leads to arbitrary code execution as the user who runs `cargo nextest run --rerun`, during the build phase, before any test runs.\n\n- The injected configuration takes effect during `cargo build`, so the payload is run even on a warm build cache, and even when no tests are ultimately executed. Inspecting the recorded tests (with e.g. `cargo nextest replay`) before running them does not help, since the code has already run by the time the tests would start.\n- Arbitrary code execution happens as the invoking user, without a prompt or trust warning. The only signal is a `rerun: inheriting build scope…` line. On CI, this includes access to whatever secrets are accessible to the job, including repository tokens and deployment credentials.\n- A malicious payload can invoke the real compiler afterwards, so the build and tests complete normally. The recording is otherwise a valid, ordinary recording.\n- The full Cargo `--config` surface is exposed. This includes `build.rustc-wrapper`, `build.rustc`, `target.*.linker`, `target.*.runner`, `env.*`, and `patch.*` and `source.*.replace-with` (redirecting dependencies to an attacker-controlled repository or registry).\n- The delivery mechanism matches the feature's intended use, since portable recordings are designed to be shared across machines. For example, an attacker could pose as a user asking a maintainer for help triaging their flaky test report. Because `--rerun` also accepts process substitution, `cargo nextest run --rerun <(curl …)` would fetch the recording directly from a URL.\n\nExploitation requires convincing the victim to run `cargo nextest run --rerun` against an attacker-supplied portable recording. The rerun feature is experimental and must be enabled, via e.g. `NEXTEST_EXPERIMENTAL_RECORD=1`.\n\n## Remediations\n\n- Upgrade cargo-nextest to version 0.9.150 or above.\n- In your repositories, set the [minimum required version](https://nexte.st/docs/configuration/minimum-versions/) to 0.9.150. In `.config/nextest.toml`:\n  ```toml\n  nextest-version = \"0.9.150\"\n  ```\n  This way, anyone who interacts with your repository will be notified to upgrade their version of nextest.\n- If you are using an affected version, do not enable the experimental run recording feature.\n\n## Credit\n\nReported by [inanna-malick](https://github.com/inanna-malick).",
+      "date": "2026-10-26",
+      "aliases": [
+        "GHSA-vc25-qg58-w57c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "argument-injection",
+        "cargo-config",
+        "rerun"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/nextest-rs/nextest/commit/59ef7afc7887caea50aabed289756820e08f366a",
+        "https://nexte.st/changelog/#0.9.150"
+      ],
+      "source": null,
+      "url": "https://github.com/nextest-rs/nextest/commit/456818b35d906551b2273e635c9b343704caaeaf",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.150"
+      ],
+      "unaffected": [
+        "<0.9.125"
+      ]
+    }
+  }
+]

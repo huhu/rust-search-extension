@@ -1,0 +1,28 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0014",
+      "package": "humantime",
+      "title": "humantime is unmaintained",
+      "description": "Latest `humantime` crates.io release is four years old and GitHub repository has\nnot seen commits in four years. Question about maintenance status has not gotten\nany reaction from maintainer: https://github.com/tailhook/humantime/issues/31\n\n## Possible alternatives\n\n * [jiff](https://crates.io/crates/jiff) provides same kind of functionality",
+      "date": "2025-03-08",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tailhook/humantime/issues/31",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

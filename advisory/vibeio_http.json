@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0181",
+      "package": "vibeio-http",
+      "title": "DoS vulnerability in HTTP/1.x chunked encoding parser triggered by maliciously crafted chunk lengths",
+      "description": "When using the affected versions of the `vibeio-http` crate, an attacker could craft a malicious HTTP/1.x request with a large chunk length (between `usize::MAX - 1` and `usize::MAX` inclusive) and send it, causing the server to crash (integer overflow panic in debug builds, split_to out of bounds panic in release builds).\n\nThis was fixed in `vibeio-http` 0.3.2 by erroring on the chunk length if it exceeds `usize::MAX - 2` (using `checked_add()` instead of `+` operator), preventing integer overflow.",
+      "date": "2026-06-06",
+      "aliases": [
+        "GHSA-fx4f-mhw4-qm7j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "http",
+        "DoS"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ferronweb/vibeio-http/blob/main/CHANGELOG.md#vibeio-http-032",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

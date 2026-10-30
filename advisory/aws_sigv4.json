@@ -1,0 +1,61 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0125",
+      "package": "aws-sigv4",
+      "title": "Logs AWS credentials when TRACE-level logging is enabled",
+      "description": "aws-sigv4 is a rust library for low level request signing in the aws cloud platform.\n\nThe `aws_sigv4::SigningParams` struct had a derived `Debug` implementation.\nWhen debug-formatted, it would include a user's AWS access key, AWS secret key,\nand security token in plaintext. When TRACE-level logging is enabled for an SDK,\n`SigningParams` is printed, thereby revealing those credentials to anyone\nwith access to logs.\n\nAll users of the AWS SDK for Rust who enabled TRACE-level logging,\neither globally (e.g. `RUST_LOG=trace`), or for the `aws-sigv4`\ncrate specifically are affected.\n\nThis issue has been addressed in a set of new releases.\n\nUsers are advised to upgrade.\n\nUsers unable to upgrade should disable TRACE-level logging for AWS Rust SDK crates.",
+      "date": "2023-04-19",
+      "aliases": [
+        "CVE-2023-30610",
+        "GHSA-mjv9-vp6w-3rc9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "information",
+        "leak",
+        "aws",
+        "logs"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/smithy-lang/smithy-rs/pull/2562",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.55.1",
+        "^0.54.2",
+        "^0.53.2",
+        "^0.52.1",
+        "^0.51.1",
+        "^0.50.1",
+        "^0.49.1",
+        "^0.48.1",
+        "^0.47.1",
+        "^0.46.1",
+        "^0.15.1",
+        "^0.14.1",
+        "^0.13.1",
+        "^0.12.1",
+        "^0.11.1",
+        "^0.10.2",
+        "^0.9.1",
+        "^0.8.1",
+        "^0.7.1",
+        "^0.6.1",
+        "^0.5.3",
+        "^0.3.1",
+        "^0.2.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0110",
+      "package": "bare-metal",
+      "title": "bare-metal is deprecated",
+      "description": "The `bare-metal` crate has been deprecated and archived.\n\nFor `Mutex` and `CriticalSection`, see the [`critical-section`](https://crates.io/crates/critical-section) crate instead.",
+      "date": "2026-04-23",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/bare-metal/pull/49",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]
