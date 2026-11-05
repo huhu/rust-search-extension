@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0080",
+      "package": "scaly",
+      "title": "Multiple soundness issues in `scaly` safe APIs",
+      "description": "Affected versions contain multiple safe APIs that can trigger undefined\nbehavior:\n\n- `Array<T>::index` can perform an out-of-bounds read.\n- `String::get_length` can perform an out-of-bounds read.\n- `String::append_character` can perform an invalid write.\n- `String::to_c_string` can perform an out-of-bounds write.\n\nThese issues were reproduced against `scaly` 0.0.37 under Miri. And the crate is unmaintained.",
+      "date": "2026-01-19",
+      "aliases": [
+        "GHSA-2c6h-4899-wjxr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/issues/2594",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0151",
+      "package": "sha-rst",
+      "title": "`sha-rst` was removed from crates.io for malicious code",
+      "description": "This crate was used as a dependency by `finch_cli_rust` and `finch-rst` and\ncontained a malware payload to exfiltrate credentials.\n\nThe malicious crate had 1 version published on 2025-12-08 and had been\ndownloaded 22 times. Other than the other crates above that were part of the\nattack, no other crates depedended on this crate.\n\nThanks to Matthias Zepper of [NGI Sweden](https://ngisweden.scilifelab.se/) for\nreporting this to the crates.io team!",
+      "date": "2025-12-09",
+      "aliases": [
+        "GHSA-vgr2-r5hm-f6gf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

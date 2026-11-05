@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0439",
+      "package": "azure_security_keyvault_keys",
+      "title": "Rejected authentication challenges can poison the Key Vault scope cache",
+      "description": "Affected versions of `KeyVaultAuthorizer::on_challenge` cache the authentication\nscope from a `WWW-Authenticate` response before verifying that the challenge\nresource matches the requested endpoint. When verification rejects the challenge,\nthe scope remains cached. A subsequent request through the same client uses that\nscope to authorize the request without repeating challenge resource verification.\n\nFor `azure_security_keyvault_keys`, the affected versions are `0.10.0` through\n`1.0.0`, inclusive. Versions before `0.10.0` do not use this challenge-scope cache\nand are unaffected by this issue. The published `1.1.0-beta.1` already includes\nthe fix.\n\n## Impact\n\nAn application that sends requests to an attacker-controlled endpoint and reuses\nthe same client after a rejected challenge can disclose a bearer token and request\nbody to that endpoint, if its credential can obtain a token for the supplied scope.\nThe first request's validation error therefore does not prevent disclosure on a\nlater request. Changing the request origin between requests is not required.\n\n## Fix\n\nUpdate to `1.0.1` on the stable release line or `1.1.0-beta.1` on the preview\nrelease line.\n\nThe fix caches the scope only after challenge resource verification succeeds\nwhen verification is enabled. Rejected challenges no longer populate the cache.\nThe existing option to disable challenge resource verification is unchanged;\nthis fix does not add exact-origin binding.",
+      "date": "2026-08-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "keyvault",
+        "authentication",
+        "challenge",
+        "cache"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/Azure/azure-sdk-for-rust/pull/5125",
+        "https://github.com/Azure/azure-sdk-for-rust/pull/5410"
+      ],
+      "source": null,
+      "url": "https://github.com/Azure/azure-sdk-for-rust/pull/5121",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.1"
+      ],
+      "unaffected": [
+        "<0.10.0"
+      ]
+    }
+  }
+]

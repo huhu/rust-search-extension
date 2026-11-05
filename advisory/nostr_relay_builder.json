@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0237",
+      "package": "nostr-relay-builder",
+      "title": "`nostr-relay-builder` is unmaintained",
+      "description": "The `nostr-relay-builder` crate is no longer actively maintained as a standalone crate.\n\nIts functionality has been incorporated into [`nostr-sdk`](https://crates.io/crates/nostr-sdk) starting with version `0.45.0`.\n\nUsers should migrate to [`nostr-sdk`](https://crates.io/crates/nostr-sdk).",
+      "date": "2026-08-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/nostrdevkit/nostr/issues/1415"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

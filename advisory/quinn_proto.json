@@ -1,0 +1,375 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0340",
+      "package": "quinn-proto",
+      "title": "Peer minimum ACK delay can panic quinn-proto when ACK_FREQUENCY transmission is enabled",
+      "description": "When sending ACK_FREQUENCY frames is enabled through\n`TransportConfig::ack_frequency_config(Some(..))`, the peer's transport parameters could cause\n`AckFrequencyState::candidate_max_ack_delay` to call `Duration::clamp` with a minimum greater\nthan its maximum, which panics.\n\nFor example, a peer advertising a `min_ack_delay` of 100,000 microseconds and a `max_ack_delay`\nof 100 milliseconds passes transport parameter validation. At a 5 ms RTT, the lower bound of the\nclamp becomes 100 ms while the upper bound is 25 ms, violating the precondition of `clamp` and\npanicking while driving the connection. Both automatically derived and explicitly configured\nmaximum ACK delays use this calculation.\n\nSending ACK_FREQUENCY frames is disabled by default, so only endpoints that opt in are affected.\n\nThe flaw was corrected in 0.11.18 by computing the delay with explicit minimum and maximum bounds\ninstead of `clamp`.\n\nThanks to [@zerox80](https://github.com/zerox80) for reporting this issue.",
+      "date": "2026-09-14",
+      "aliases": [
+        "GHSA-3g6h-r5qx-f6hq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2868",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.18"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0343",
+      "package": "quinn-proto",
+      "title": "Outgoing datagram buffer accounting can panic the sender in quinn-proto",
+      "description": "The limit on memory used to buffer outgoing datagrams, introduced in 0.11.17, subtracted an\nevicted datagram's size from the buffered byte counter twice when `Datagrams::send` was called\nwith `drop = true` (as `Connection::send_datagram` in the `quinn` crate does) while the buffer was\nfull. Under sustained eviction the counter drifts below its true value: debug builds panic with an\ninteger underflow, while release builds wrap the counter, drain the whole queue, and then panic on\na desynchronization check in a later `send` call. In `quinn`, this panic occurs while the\nconnection lock is held, poisoning it and causing a double panic (and thus an abort) when the\nconnection is dropped.\n\nThis can be triggered without a malicious peer, by an application that sends a burst of datagrams\nand then idles. It can also be triggered by a peer that keeps the connection alive with PING frames\nwhile withholding acknowledgements, so that the sender's congestion window stays closed and the\noutgoing queue never drains. Applications that use `send_datagram_wait` are not affected.\n\nOnly 0.11.17 is affected; the flaw was corrected in 0.11.18 by removing the redundant subtraction.\n\nThanks to [@alexpyattaev](https://github.com/alexpyattaev) for reporting and\n[@vcarus](https://github.com/vcarus) for fixing this issue.",
+      "date": "2026-09-14",
+      "aliases": [
+        "GHSA-ppcp-v39w-8jq2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2806",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.18"
+      ],
+      "unaffected": [
+        "<0.11.17"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0338",
+      "package": "quinn-proto",
+      "title": "Remote peer can panic quinn-proto with zero-length STREAM frames during unordered reads",
+      "description": "When a stream is read in unordered mode (for example through `RecvStream::read(false)` in\nquinn-proto or `read_unordered` in `quinn`), quinn-proto proactively deduplicates received data\nby recording received ranges in a `RangeSet` through its `replace` method. When an incoming\nSTREAM frame carried an empty payload, the `Drop` implementation of the iterator returned by\n`replace` inserted an empty range into the set, violating the invariant that stored ranges are\nnon-empty. Subsequent frames overlapping that region then caused a panic while processing the\nstream.\n\nA remote peer can trigger this with five small STREAM frames (two of them zero-length) once the\napplication has put the stream in unordered-read mode. The default ordered read path is not\naffected.\n\nThe flaw was corrected in 0.11.18 by ignoring empty ranges in `RangeSet::replace`.\n\nThanks to Otto Hermann ([@ojhermann](https://github.com/ojhermann)) for reporting this issue.",
+      "date": "2026-09-14",
+      "aliases": [
+        "GHSA-465w-v9q3-7j98"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2868",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.18"
+      ],
+      "unaffected": [
+        "<0.7.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0341",
+      "package": "quinn-proto",
+      "title": "Stream reassembly memory-exhaustion guard in quinn-proto can be bypassed",
+      "description": "The fix for RUSTSEC-2026-0185 in 0.11.15 added a cap on the number of chunks buffered by the\n`Assembler` that reassembles out-of-order stream data. However, the cap was only checked inside\nthe branch that triggers defragmentation, which only runs when the estimated over-allocation\nexceeds a threshold proportional to the amount of buffered data. Frames handled entirely by the\nunordered-read deduplication loop returned before the check ran at all.\n\nA peer sending one small gapped STREAM frame per packet (for example, 6-byte frames separated by\n1-byte gaps) keeps the per-chunk overhead below the defragmentation threshold, so the cap is never\nevaluated and the chunk count grows until stream-level flow control stops the peer. With the default\n`TransportConfig` (100 concurrent unidirectional streams and a 1.25 MB stream receive window), a\nremote, unauthenticated peer can pin roughly 3 GB of receiver memory using about 125 MB of accounted\nstream data. The memory is not reclaimed until the affected streams or the connection are closed.\n\nThe flaw was corrected in 0.11.17 by checking the chunk count after every insert (including in the\nunordered deduplication loop) and compacting the buffer once it passes a watermark above the cap.\nA stream is rejected once compaction can no longer bring the chunk count back under the cap.\n\nVersions before 0.11.15 are affected by the original, broader issue described in RUSTSEC-2026-0185.\n\nThanks to Otto Hermann ([@ojhermann](https://github.com/ojhermann)) for reporting and fixing\nthis issue.",
+      "date": "2026-08-17",
+      "aliases": [
+        "GHSA-qfwj-vfxf-92j2"
+      ],
+      "related": [
+        "RUSTSEC-2026-0185"
+      ],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "oom"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2790",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.17"
+      ],
+      "unaffected": [
+        "<0.11.15"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0339",
+      "package": "quinn-proto",
+      "title": "Unbounded growth of pending connection ID retirements in quinn-proto",
+      "description": "When processing a NEW_CONNECTION_ID frame, quinn-proto queues a RETIRE_CONNECTION_ID frame for\neach connection ID that the peer asked it to retire. The normal path bounds this queue and closes\nthe connection with a CONNECTION_ID_LIMIT_ERROR if the bound would be exceeded. However, the path\nhandling a connection ID that had already been retired pushed onto the queue without applying\nthe limit and without deduplicating.\n\nA peer that has completed the handshake can first send a NEW_CONNECTION_ID frame with a large\n`retire_prior_to` value to advance the receiver's connection ID window, and then repeatedly send\nNEW_CONNECTION_ID frames with sequence numbers below that window. Each such frame adds another\nentry to the queue. The queue is only drained by sending RETIRE_CONNECTION_ID frames, which are\nsubject to congestion control, so a peer that withholds acknowledgements can stall the drain while\ncontinuing to flood, growing the victim's memory use without bound.\n\nThe flaw was corrected in 0.11.17 by applying the same limit on the already-retired path.\n\nThanks to [@scadastrangelove](https://github.com/scadastrangelove) for reporting this issue.",
+      "date": "2026-08-17",
+      "aliases": [
+        "GHSA-hmxj-32vh-65vr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "oom"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2790",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.17"
+      ],
+      "unaffected": [
+        "<0.6.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0342",
+      "package": "quinn-proto",
+      "title": "Zero-length DATAGRAM frames bypass the receive buffer limit in quinn-proto",
+      "description": "quinn-proto bounds its queue of received datagrams by charging each queued frame's payload length\nagainst `TransportConfig::datagram_receive_buffer_size`, evicting the oldest datagrams when the\nlimit is exceeded. A DATAGRAM frame with an empty payload was charged zero bytes, so it never\ntriggered eviction and was appended to the queue, which has no other bound.\n\nDATAGRAM frames are not subject to flow control. A peer that has completed the handshake can\ntherefore send a stream of empty DATAGRAM frames and grow the receiver's heap without limit until\nthe process is killed. An application that reads incoming datagrams but does so more slowly than\nthe peer sends them is still affected. Receiving datagrams is enabled by default, so all endpoints\nthat do not explicitly set `datagram_receive_buffer_size(None)` are affected.\n\nThe send path had the same accounting flaw: an application could enqueue an unbounded number of\nempty outgoing datagrams without ever receiving `SendDatagramError::Blocked`.\n\nThe flaw was corrected in 0.11.17 by accounting for the fixed per-datagram overhead in both\ndirections, so that every queued datagram consumes buffer space.\n\nThanks to [@alexpyattaev](https://github.com/alexpyattaev) for reporting this issue.",
+      "date": "2026-08-17",
+      "aliases": [
+        "GHSA-2hv7-gw8g-gpq5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "oom"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2790",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.17"
+      ],
+      "unaffected": [
+        "<0.5.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0185",
+      "package": "quinn-proto",
+      "title": " Remote memory exhaustion in quinn-proto from unbounded out-of-order stream reassembly",
+      "description": "The `Assembler` component that assembles unordered stream fragments into consecutive chunks of the\nstream incurs some overhead for non-contiguous fragments. Readers that read from a RecvStream in\norder (through an `AsyncRead` impl for example) will be sensitive to peers that send fragments\nwhile leaving out early parts of the stream, and in particular, fragments with many gaps (because\nthese cannot be defragmented). In such a scenario, the receiving connection suffers from high\nbuffer overhead, enabling memory exhaustion.",
+      "date": "2026-06-22",
+      "aliases": [
+        "CVE-2026-25800",
+        "GHSA-4w2j-m93h-cj5j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "oom"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2694",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.15"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0037",
+      "package": "quinn-proto",
+      "title": "Denial of service in Quinn endpoints",
+      "description": "Receiving QUIC transport parameters containing invalid values could lead to a panic.\n\nUnfortunately the maintainers did not properly assess usage of `unwrap()` calls in the\ntransport parameters parsing code, and we did not have sufficient fuzzing coverage to find this\nissue. We have since added a fuzzing target to cover this code path.",
+      "date": "2026-03-09",
+      "aliases": [
+        "CVE-2026-31812",
+        "GHSA-6xvm-j4wr-6v98"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2559",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.14"
+      ],
+      "unaffected": [
+        "<0.5.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0373",
+      "package": "quinn-proto",
+      "title": "`Endpoint::retry()` calls can lead to panicking",
+      "description": "In 0.11.0, we overhauled the server-side `Endpoint` implementation to enable\nmore careful handling of incoming connection attempts. However, some of the\ncode paths that cleaned up state after connection attempts were processed\nconfused the initial destination connection ID with the destination connection\nID of a substantial package. This resulted in the internal `Endpoint` state\nbecoming inconsistent, which could then lead to a panic.\n\nhttps://github.com/quinn-rs/quinn/commit/e01609ccd8738bd438d86fa7185a0f85598cb58f\n\nThanks to [@finbear](https://github.com/finnbear) for reporting and investingating,\nand to [@BiagoFesta](https://github.com/BiagoFesta) for coordinating.",
+      "date": "2024-09-02",
+      "aliases": [
+        "GHSA-vr26-jcq5-fjj8",
+        "CVE-2024-45311"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.7"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0063",
+      "package": "quinn-proto",
+      "title": "Denial of service in Quinn servers",
+      "description": "Receiving QUIC frames containing a frame with unknown frame type could lead to a panic.\nUnfortunately this is issue was not found by our fuzzing infrastructure.\n\nThanks to the QUIC Tester research group for reporting this issue.",
+      "date": "2023-09-21",
+      "aliases": [
+        "CVE-2023-42805",
+        "GHSA-q8wc-j5m9-27w3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/1667",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.9.5",
+        ">=0.10.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

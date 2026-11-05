@@ -1,0 +1,62 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0333",
+      "package": "noyalib",
+      "title": "Resource budgets not enforced on the typed deserialization path",
+      "description": "`ParserConfig::max_events`, `max_nodes`, `max_total_scalar_bytes`,\n`max_merge_keys`, `alias_anchor_ratio` and the alias jump factor were\nenforced only by the two `Value` loaders. A typed target with a\ndefault-shaped configuration is served by the streaming deserializer,\nwhich never read those fields, so tightening any of them had no effect\non `from_str::<T>` for a struct target. The default document-length,\ndepth and alias-count caps were enforced on every path, so no input was\nunbounded; the gap affects callers who tightened the other budgets for\nhostile input.\n\nVersion 0.0.53 charges every budget on the streaming path as well and\nadds cross-path parity tests.\n\nUsers who cannot upgrade can deserialize into `noyalib::Value` first and\nconvert with `from_value`, or rely on `max_document_length` and\n`max_depth`, which were always applied on every path.",
+      "date": "2026-10-06",
+      "aliases": [
+        "GHSA-4xcc-23fx-w2wj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "yaml",
+        "resource-exhaustion",
+        "budget"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sebastienrousseau/noyalib/pull/470",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "noyalib::from_reader": [
+          "<0.0.53"
+        ],
+        "noyalib::from_reader_with_config": [
+          "<0.0.53"
+        ],
+        "noyalib::from_slice": [
+          "<0.0.53"
+        ],
+        "noyalib::from_slice_with_config": [
+          "<0.0.53"
+        ],
+        "noyalib::from_str": [
+          "<0.0.53"
+        ],
+        "noyalib::from_str_with_config": [
+          "<0.0.53"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.53"
+      ],
+      "unaffected": []
+    }
+  }
+]

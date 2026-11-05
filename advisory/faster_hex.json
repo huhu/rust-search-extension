@@ -1,0 +1,52 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0306",
+      "package": "faster-hex",
+      "title": "`hex_decode_unchecked` AVX2 path reads past `src`",
+      "description": "`faster_hex::hex_decode_unchecked` is a safe function. On x86 and x86_64, when AVX2 is enabled, `hex_decode_avx2` keeps decoding while `dst.len() >= 32` and then loads 32 bytes from `src` and 32 bytes from `src[32..]`. Nothing in that loop requires `src` to contain 64 bytes.\n\nA safe caller can pass a short `src` and a `dst` of at least 32 bytes. The AVX2 load then reads outside `src`.\n\nThe function has had this shape since 0.3.0. 0.10.0 is the last release with the unbounded AVX2 read. The maintainer agreed to this advisory and shipped the backport in 0.10.1 (pull request 74): the AVX2 loop now requires `src.len() >= 64` before those loads. 1.0.0 rewrites `hex_decode_unchecked` so the decoded length is `min(src.len() / 2, dst.len())`. Both are covered by `>= 0.10.1`. Other architectures take the scalar fallback and are outside this advisory.",
+      "date": "2026-09-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "buffer-overflow",
+        "avx2"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/nervosnetwork/faster-hex/pull/72",
+        "https://github.com/nervosnetwork/faster-hex/pull/74"
+      ],
+      "source": null,
+      "url": "https://github.com/nervosnetwork/faster-hex/issues/73",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [
+        "x86",
+        "x86_64"
+      ],
+      "os": [],
+      "functions": {
+        "faster_hex::hex_decode_unchecked": [
+          ">=0.3.0, <0.10.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.1"
+      ],
+      "unaffected": [
+        "<0.3.0"
+      ]
+    }
+  }
+]

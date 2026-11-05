@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0242",
+      "package": "dcrypt-api",
+      "title": "Safe ErrorRegistry APIs can cause undefined behavior",
+      "description": "All published versions of `dcrypt-api` before 2.0.0 exposed safe\n`ErrorRegistry` operations that could trigger undefined behavior when the\ndefault `std` feature was enabled.\n\nStored `Box<E>` values were erased to raw pointers and later deallocated as\n`Box<()>`. The `get_error<E>` operation also performed an unchecked cast to a\ncaller-selected type. Finally, concurrent replacement or clearing could free a\nvalue while another thread cloned it. Ordinary safe Rust could therefore cause\nmismatched deallocation, type confusion, and use-after-free. Crates that\nre-exported this API are affected transitively.\n\nVersion 2.0.0 replaces the raw pointers with owned `Box<dyn Any + Send>` values\nbehind a mutex, performs checked downcasts, and uses a mutation generation so\nconcurrent stores and clears win safely. There is no reliable workaround while\ncalling the affected registry API. Upgrade to 2.0.0 or later and avoid\nprocess-global error state where possible.",
+      "date": "2026-08-09",
+      "aliases": [
+        "GHSA-7hc7-h3f2-r4j6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "safe-code",
+        "type-confusion",
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/ioi-foundation/dcrypt/commit/c99cc86f0ee353010cd202cbcd2c310371b0bbb8",
+        "https://github.com/ioi-foundation/dcrypt/releases/tag/v2.0.0"
+      ],
+      "source": null,
+      "url": "https://github.com/ioi-foundation/dcrypt/commit/c99cc86f0ee353010cd202cbcd2c310371b0bbb8",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

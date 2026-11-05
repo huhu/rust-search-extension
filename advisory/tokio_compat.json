@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0062",
+      "package": "tokio-compat",
+      "title": "`tokio-compat` is unmaintained",
+      "description": "The [`tokio-compat`](https://crates.io/crates/tokio-compat) crate is unmaintained.\nIt was part of the transition from Tokio 0.1 to 0.2.",
+      "date": "2026-03-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tokio-rs/tokio-compat",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

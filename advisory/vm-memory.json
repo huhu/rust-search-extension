@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0157",
+      "package": "vm-memory",
+      "title": "Improper Synchronization and Race Condition in vm-memory",
+      "description": "rust-vmm vm-memory before 0.1.1 and 0.2.x before 0.2.1 allows attackers to cause a denial of service (loss of IP networking) because read_obj and write_obj do not properly access memory. This affects aarch64 (with musl or glibc) and x86_64 (with musl).",
+      "date": "2020-06-02",
+      "aliases": [
+        "CVE-2020-13759",
+        "GHSA-mm4m-qg48-f7wc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-13759",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.1",
+        "^0.1.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

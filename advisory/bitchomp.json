@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0131",
+      "package": "bitchomp",
+      "title": "Double-free in `Chomp::inner()`",
+      "description": "`Chomp::inner()` uses `std::ptr::read_unaligned` to move out the value from a\nraw pointer. If the original value is an owned type (e.g. `Box`), calling\n`inner()` moves out the ownership, but the original variable will still be\ndropped at the end of its scope. This causes the same heap memory to be freed\ntwice, resulting in a double-free and undefined behavior.\n\nThis can be triggered through safe public APIs — `Chomp::new()` and\n`Chomp::inner()` — with no `unsafe` required from the caller.",
+      "date": "2026-05-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/KingPEPSALT/bitchomp/issues/5",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

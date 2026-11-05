@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0156",
+      "package": "tree-sitter-pkl",
+      "title": "`tree-sitter-pkl` was removed from crates.io for malicious code",
+      "description": "`tree-sitter-pkl` was part of a campaign that attempted to exfiltrate\nenvironmental data from the host.\n\nThe malicious crate had 1 version published in March 2025, and had no evidence\nof actual usage. This crate had no dependencies on crates.io.",
+      "date": "2025-03-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

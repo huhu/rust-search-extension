@@ -1,0 +1,74 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0344",
+      "package": "ruzstd",
+      "title": "Decompression bomb in `ruzstd`: a tiny input can exhaust memory (OOM)",
+      "description": "A crafted `.zst` input under 128 KB can force `ruzstd` to allocate several gigabytes at once, crashing the process with an out-of-memory condition. Since `ruzstd` is a decoder for untrusted input, a single small file is enough to take down anything decoding it.\n\nThe compressed size of a block was capped at 128 KB, but a compressed block's **decompressed** size was never checked against `Block_Maximum_Size = min(Window_Size, 128 KiB)` (RFC 8878). In `execute_sequences` the output was built with no running bound and no flush between blocks, so one block could expand to gigabytes — bypassing both the configured window-size limit and the block-by-block streaming that would otherwise release memory. (A related `u32` counter overflow on such a block caused an additional panic.)\n\nThis is a denial of service only; memory access stays in bounds (no corruption, no RCE).\n\n`ruzstd` is also built as a dependency of the Rust standard library via `rustc-dep-of-std`; in the toolchain it is used only to load zstd-compressed debug symbols, so the toolchain-side impact is limited.\n\n**Fixed in 0.9.1** (commit `d3907c9`), which enforces the per-block output bound. Upgrade to `ruzstd >= 0.9.1`.",
+      "date": "2026-10-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "zstd",
+        "decompression-bomb",
+        "oom"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/KillingSpark/zstd-rs/commit/d3907c960ca4a1aa44cc38340137c5679dd98f5a",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0400",
+      "package": "ruzstd",
+      "title": "`ruzstd` uninit and out-of-bounds memory reads",
+      "description": "Affected versions of `ruzstd` miscalculate the length of the allocated\nand init section of its internal `RingBuffer`, leading to uninitialized\nor out-of-bounds reads in `copy_bytes_overshooting` of up to 15 bytes.\n\nThis may result in up to 15 bytes of memory contents being written\ninto the decoded data when decompressing a crafted archive.\nThis may occur multiple times per archive.",
+      "date": "2024-11-28",
+      "aliases": [
+        "GHSA-x3f4-45xf-rjm7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/KillingSpark/zstd-rs/pull/76"
+      ],
+      "source": null,
+      "url": "https://github.com/KillingSpark/zstd-rs/issues/75",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.3"
+      ],
+      "unaffected": [
+        "<0.7.0"
+      ]
+    }
+  }
+]

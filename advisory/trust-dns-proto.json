@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0007",
+      "package": "trust-dns-proto",
+      "title": "Stack overflow when parsing malicious DNS packet",
+      "description": "There's a stack overflow leading to a crash when Trust-DNS's parses a\nmalicious DNS packet.\n\nAffected versions of this crate did not properly handle parsing of DNS message\ncompression (RFC1035 section 4.1.4). The parser could be tricked into infinite\nloop when a compression offset pointed back to the same domain name to be\nparsed.\n\nThis allows an attacker to craft a malicious DNS packet which when consumed\nwith Trust-DNS could cause stack overflow and crash the affected software.\n\nThe flaw was corrected by trust-dns-proto 0.4.3 and upcoming 0.5.0 release.",
+      "date": "2018-10-09",
+      "aliases": [
+        "CVE-2018-20994"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "stack-overflow",
+        "crash"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0030",
+      "package": "time_calibrator",
+      "title": "`time_calibrator` was removed from crates.io due to malicious code",
+      "description": "It was reported `time_calibrator` contained malicious code, that would try to\nupload `.env` files to a server.\n\nThe malicious crate had only 1 version published at 2026-02-28 and no evidence\nof actual usage. The crate was removed from crates.io and the user account was\nlocked. There were no crates depending on this crate on crates.io.\n\nThanks to Gabriel Silva for finding and reporting this to the Rust security response\nworking group, and thanks to Emily Albini for co-ordinating with the crates.io and\ninfra-admin teams.",
+      "date": "2026-03-03",
+      "aliases": [
+        "GHSA-77xj-rrh3-wx3v"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

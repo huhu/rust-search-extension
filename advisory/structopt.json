@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0104",
+      "package": "structopt",
+      "title": "`structopt` is in maintenance mode",
+      "description": "`structopt` has been in maintenance mode, with no new development planned, since at least February of 2022.\n\nThe status of `structopt` is discussed in a [pinned issue](https://github.com/TeXitoi/structopt/issues/525).\n\n## Recommended alternative\n\nThe `structopt` derive wrapper was incorporated into `clap` v3. There is [a migration guide][clap-migration] for switching from `structopt` to `clap`.\n\n[clap-migration]: https://github.com/clap-rs/clap/blob/v4.6.0/CHANGELOG.md#migrating-1",
+      "date": "2022-02-08",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/TeXitoi/structopt/issues/525"
+      ],
+      "source": null,
+      "url": "https://github.com/TeXitoi/structopt#maintenance",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0280",
+      "package": "greentic-setup-dev",
+      "title": "`greentic-setup-dev` 1.3.34027618345 was removed from crates.io due to containing malicious code",
+      "description": "A new version of the `greentic-setup-dev` crate was published with a variant of\nthe PolinRider malware included that would fire when a project depending on\n`greentic-setup-dev` was opened in Visual Studio Code.\n\nOne malicious version was published on 2026-09-06, approximately 27 hours\nbefore removal. This crate has no dependencies on crates.io. We have no\nevidence that this crate version was downloaded by any actual users, but\nGreentic users should check their systems nonetheless.\n\nThanks to the Research Team at Nextron Systems GmbH for the report.",
+      "date": "2026-09-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<1.3.34027618345",
+        ">1.3.34027618345"
+      ]
+    }
+  }
+]

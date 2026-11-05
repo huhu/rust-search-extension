@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0039",
+      "package": "chrono_anchor",
+      "title": "`chrono_anchor` was removed from crates.io due to malicious code",
+      "description": "The `chrono_anchor` crate attempted to exfiltrate `.env` files to a server that\nwas in turn impersonating the legitimate `timeapi.io` service.\n\nThe malicious crate had 1 version published on 2026-03-04 approximately 6 days\nbefore removal and had no evidence of actual downloads. There were no crates\ndepending on this crate on crates.io.\n\nThanks to [Socket][socket] for reporting this crate. They have published\n[a blog post][blog] about this recent campaign, and we advise users of\n`timeapi.io` to exercise caution when using crates to interact with that\nservice.\n\n[socket]: https://socket.dev\n[blog]: https://socket.dev/blog/5-malicious-rust-crates-posed-as-time-utilities-to-exfiltrate-env-files",
+      "date": "2026-03-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

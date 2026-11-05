@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0164",
+      "package": "i_triangle",
+      "title": "`DTriangle` accessors may read out of bounds in affected versions",
+      "description": "In affected versions, `DTriangle::neighbor_by_order` and `DTriangle::vertex_by_order` were public safe functions that accepted an\narbitrary `order` value. These functions used `order` to access fixed-size internal arrays with `get_unchecked`, without checking whether `order` was within bounds. Calling these methods with an out-of-bounds `order` could cause an out-of-bounds read from safe Rust code. This made the old APIs unsound, since safe callers could trigger undefined behavior without using `unsafe`.\n\nThe issue was fixed in version `0.29.0` as part of a broader rewrite that replaced the old triangle implementation with `IntTriangle` and removed the affected accessor methods.",
+      "date": "2025-04-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/iShape-Rust/iTriangle/commit/13e0e9f4d5333e3a815191e5f6f402641997f91b"
+      ],
+      "source": null,
+      "url": "https://github.com/iShape-Rust/iTriangle/issues/4",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "i_triangle::delaunay::triangle::DTriangle::neighbor_by_order": [
+          ">=0.24.0",
+          "<0.29.0"
+        ],
+        "i_triangle::delaunay::triangle::DTriangle::vertex_by_order": [
+          ">=0.24.0",
+          "<0.29.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.29.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

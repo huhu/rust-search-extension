@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0154",
+      "package": "russh",
+      "title": "Unbounded 32-bit allocation",
+      "description": "Both the SSH agent server and client accepted peer-controlled frame lengths\nwithout enforcing a maximum frame size. This could cause large memory\nallocations while parsing a maliciously crafted agent frame.\n\nA malicious peer could advertise an oversized frame length, causing the client\nor server to attempt a large memory allocation before validating the frame,\npotentially leading to memory exhaustion or process termination.\n\nThis is fixed by enforcing a maximum agent frame size of 256 KiB and\nrejecting oversized frames before buffer allocation.",
+      "date": "2026-05-15",
+      "aliases": [
+        "CVE-2026-46673",
+        "GHSA-g9f8-wqj9-fjw5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/Eugeny/russh/commit/a2d48a71fe93d18cbd666c8d53d0882f5ce110c4"
+      ],
+      "source": null,
+      "url": "https://github.com/Eugeny/russh/commit/a2d48a71fe93d18cbd666c8d53d0882f5ce110c4",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.60.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

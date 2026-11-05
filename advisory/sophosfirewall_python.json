@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0159",
+      "package": "sophosfirewall-python",
+      "title": "`sophosfirewall-python` was removed from crates.io for malicious code",
+      "description": "`sophosfirewall-python` was part of a campaign that attempted to exfiltrate\nenvironmental data from the host.\n\nThe malicious crate had 6 versions published in February 2025, and had no\nevidence of actual usage. This crate had no dependencies on crates.io.",
+      "date": "2025-02-15",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

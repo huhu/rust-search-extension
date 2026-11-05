@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0099",
+      "package": "envlogger",
+      "title": "`envlogger` was removed from crates.io for malicious code",
+      "description": "This crate was part of a typosquatting malware cluster published by the malicious user `amaperf` and contained a malware payload in build.rs to exfiltrate host information to the attacker.\n\nThis advisory is to retrospectively document this attempted attack. The version information and download records of the malicious crate are no longer available. The related malicious crates have been yanked, and the malicious account has been banned.\n\nThanks to [Veracode](https://www.veracode.com/) (formerly phylum)for\nreporting this to the crates.io team!",
+      "date": "2023-08-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://www.veracode.com/blog/rust-malware-staged-on-crates-io/"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

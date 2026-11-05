@@ -1,0 +1,155 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0068",
+      "package": "tar",
+      "title": "tar-rs incorrectly ignores PAX size headers if header size is nonzero",
+      "description": "Versions 0.4.44 and below of tar-rs have conditional logic that skips the PAX\nsize header in cases where the base header size is nonzero.\n\nAs part of [CVE-2025-62518][astral-cve], the [astral-tokio-tar]\nproject was changed to correctly honor PAX size headers in the case where it\nwas different from the base header. This is almost the inverse of the\nastral-tokio-tar issue.\n\nAny discrepancy in how tar parsers honor file size can be used to create\narchives that appear differently when unpacked by different archivers. In this\ncase, the tar-rs (Rust tar) crate is an outlier in checking for the header size\n— other tar parsers (including e.g. Go [`archive/tar`][go-tar]) unconditionally\nuse the PAX size override. This can affect anything that uses the tar crate to\nparse archives and expects to have a consistent view with other parsers.\n\nThis issue has been fixed in version 0.4.45.\n\n[astral-cve]: https://www.cve.org/CVERecord?id=CVE-2025-62518\n[astral-tokio-tar]: https://github.com/astral-sh/tokio-tar\n[go-tar]: https://pkg.go.dev/archive/tar",
+      "date": "2026-03-19",
+      "aliases": [
+        "CVE-2026-33055",
+        "GHSA-gchp-q4r4-x4ff"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "tar"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:A/VC:L/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.45"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0067",
+      "package": "tar",
+      "title": "`unpack_in` can chmod arbitrary directories by following symlinks",
+      "description": "In versions 0.4.44 and below of tar-rs, when unpacking a tar archive, the tar\ncrate's `unpack_dir` function uses [`fs::metadata()`][fs-metadata] to check\nwhether a path that already exists is a directory. Because `fs::metadata()`\nfollows symbolic links, a crafted tarball containing a symlink entry followed\nby a directory entry with the same name causes the crate to treat the symlink\ntarget as a valid existing directory — and subsequently apply chmod to it. This\nallows an attacker to modify the permissions of arbitrary directories outside\nthe extraction root.\n\nThis issue has been fixed in version 0.4.45.\n\n[fs-metadata]: https://doc.rust-lang.org/std/fs/fn.metadata.html",
+      "date": "2026-03-19",
+      "aliases": [
+        "CVE-2026-33056",
+        "GHSA-j4xf-2g29-59ph"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "tar"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tar::Entry::unpack": [
+          "<0.4.45"
+        ],
+        "tar::Entry::unpack_in": [
+          "<0.4.45"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.45"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0080",
+      "package": "tar",
+      "title": "Links in archive can create arbitrary directories",
+      "description": "When unpacking a tarball that contains a symlink the `tar` crate may create\ndirectories outside of the directory it's supposed to unpack into.\n\nThe function errors when it's trying to create a file, but the folders are\nalready created at this point.\n\n```rust\nuse std::{io, io::Result};\nuse tar::{Archive, Builder, EntryType, Header};\n\nfn main() -> Result<()> {\n    let mut buf = Vec::new();\n\n    {\n        let mut builder = Builder::new(&mut buf);\n\n        // symlink: parent -> ..\n        let mut header = Header::new_gnu();\n        header.set_path(\"symlink\")?;\n        header.set_link_name(\"..\")?;\n        header.set_entry_type(EntryType::Symlink);\n        header.set_size(0);\n        header.set_cksum();\n        builder.append(&header, io::empty())?;\n\n        // file: symlink/exploit/foo/bar\n        let mut header = Header::new_gnu();\n        header.set_path(\"symlink/exploit/foo/bar\")?;\n        header.set_size(0);\n        header.set_cksum();\n        builder.append(&header, io::empty())?;\n\n        builder.finish()?;\n    };\n\n    Archive::new(&*buf).unpack(\"demo\")\n}\n```\n\nThis has been fixed in https://github.com/alexcrichton/tar-rs/pull/259 and is\npublished as `tar` 0.4.36. Thanks to Martin Michaelis ([@mgjm](https://github.com/mgjm)) for\ndiscovering and reporting this, and Nikhil Benesch ([@benesch](https://github.com/benesch)) for\nthe fix!",
+      "date": "2021-07-19",
+      "aliases": [
+        "CVE-2021-38511",
+        "GHSA-62jx-8vmh-4mcw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/alexcrichton/tar-rs/issues/238",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tar::Archive::unpack": [
+          "<0.4.36"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.36"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0002",
+      "package": "tar",
+      "title": "Links in archives can overwrite any existing file",
+      "description": "When unpacking a tarball with the `unpack_in`-family of functions it's intended\nthat only files within the specified directory are able to be written. Tarballs\nwith hard links or symlinks, however, can be used to overwrite any file on the\nfilesystem.\n\nTarballs can contain multiple entries for the same file. A tarball which first\ncontains an entry for a hard link or symlink pointing to any file on the\nfilesystem will have the link created, and then afterwards if the same file is\nlisted in the tarball the hard link will be rewritten and any file can be\nrewritten on the filesystem.\n\nThis has been fixed in https://github.com/alexcrichton/tar-rs/pull/156 and is\npublished as `tar` 0.4.16. Thanks to Max Justicz for discovering this and\nemailing about the issue!",
+      "date": "2018-06-29",
+      "aliases": [
+        "CVE-2018-20990",
+        "GHSA-2367-c296-3mp2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "file-overwrite"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/alexcrichton/tar-rs/pull/156",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.16"
+      ],
+      "unaffected": []
+    }
+  }
+]

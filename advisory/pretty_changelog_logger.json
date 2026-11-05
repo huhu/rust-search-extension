@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0100",
+      "package": "pretty-changelog-logger",
+      "title": "`pretty-changelog-logger` was removed from crates.io for malicious code",
+      "description": "`pretty-changelog-logger` contains a build script (build.rs) that acts as a loader/dropper for malicious payloads.\n\nThe malicious crate had 3 versions published on 2026-04-08 that had a total of 2239 downloads. There were no crates depending on this crate on crates.io.\n\nThanks to [Socket.dev](https://socket.dev/) for detecting and reporting this to the crates.io team!",
+      "date": "2026-04-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

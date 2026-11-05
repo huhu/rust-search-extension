@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0240",
+      "package": "dcrypt-sign",
+      "title": "Ed25519 identity public keys permit universal signature forgery",
+      "description": "All published versions of `dcrypt-sign` before 2.0.0 accepted the Edwards\nidentity as an Ed25519 public key. A signature with `R = B` and `S = 1` then\nverified for every message because the challenge term multiplied the identity.\nThe implementation also admitted other noncanonical or small-order inputs.\nConsumers that accepted externally supplied dcrypt Ed25519 keys may therefore\nhave accepted forged authorizations.\n\nVersion 2.0.0 replaces the custom arithmetic with `ed25519-dalek`, uses strict\nverification, and rejects noncanonical, small-order, and non-torsion-free public\nkeys and `R` values, as well as noncanonical `S >= L`. No wrapper around the\naffected verifier is recommended as a complete workaround. Upgrade to 2.0.0 or\nlater, audit registered keys and trust stores, and review historical actions\nauthorized with externally supplied keys.",
+      "date": "2026-08-09",
+      "aliases": [
+        "GHSA-7j32-2mpw-c784"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "ed25519",
+        "identity-key",
+        "signature-forgery"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/ioi-foundation/dcrypt/commit/c99cc86f0ee353010cd202cbcd2c310371b0bbb8",
+        "https://github.com/ioi-foundation/dcrypt/releases/tag/v2.0.0"
+      ],
+      "source": null,
+      "url": "https://github.com/ioi-foundation/dcrypt/commit/c99cc86f0ee353010cd202cbcd2c310371b0bbb8",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

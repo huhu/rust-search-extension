@@ -1,0 +1,78 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0201",
+      "package": "fulgur",
+      "title": "Non-painting replaced elements amplify to thousands of blank PDF pages (denial of service)",
+      "description": "`fulgur` converts untrusted HTML/CSS into PDF, commonly on a server that\nprocesses input supplied by many tenants. In versions prior to 0.26.0, a\nchildless box that resolves to a pathologically tall height was amplified into\nthousands of blank PDF pages, even when it produces no visible output.\n\nThe childless-collapse defense that would normally collapse such a box was gated\nby a tag-only \"replaced content\" check, so any non-painting replaced element\nbypassed it, including an unresolved `src` (the common offline-first case), a\n`visibility:hidden` image, an undecodable image format, and an empty `<svg>`. A\ntrailing-sibling variant of the same gap was also open.\n\nA few bytes of HTML therefore amplified into roughly `MAX_PAGES` (10,000) blank\npages; the renderer allocates and runs a per-page loop over them, producing CPU\nand memory exhaustion. An attacker able to submit HTML to a fulgur-based\nconversion service can trigger this with a trivially small payload, denying\nservice to the host and any co-tenants.\n\nFixed in 0.26.0: the tag-only gate was removed so that any pathologically tall\nchildless box collapses regardless of whether it is a replaced element, closing\nthe missing-`src`, `visibility:hidden`, undecodable-format, and empty-`<svg>`\nvectors along with the trailing-sibling variant.\n\nVersions prior to 0.19.0 additionally lacked any page-count cap, allowing an\nunbounded (rather than 10,000-page) variant of this amplification; that earlier\nvariant is tracked separately as GHSA-j5cx-ph8g-95v3.\n\n## Attack Vector rationale\n\n`fulgur` performs no network I/O of its own; it renders HTML/CSS handed to it by\nthe embedding application. This advisory scores the crate independent of any\nspecific adopting program, so per the CVSS v3.1 User Guide §3.7 the Attack\nVector is assessed as Network for the reasonable worst-case deployment — a\nnetwork-facing service that renders untrusted HTML without user interaction. A\nconcrete system that receives the HTML in one component and passes it to fulgur\nin a separate component may assess a lower environmental Attack Vector (Local,\nper §3.10).",
+      "date": "2026-07-05",
+      "aliases": [
+        "CVE-2026-68537",
+        "GHSA-4rf6-qx84-q9fv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dos",
+        "pagination",
+        "pdf"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/fulgur-rs/fulgur/pull/575",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0200",
+      "package": "fulgur",
+      "title": "Unbounded page slicing from attacker-controlled CSS height causes denial of service",
+      "description": "`fulgur` converts untrusted HTML/CSS into PDF, commonly on a server that\nprocesses input supplied by many tenants. In versions prior to 0.19.0, a\nbody-direct child whose CSS-resolved height greatly exceeds the page height was\nsliced into one fragment per page with no upper bound.\n\nThe height is taken directly from attacker-controlled HTML/CSS (`height`, `vh`\nunits), so a few bytes such as `<div style=\"height:99999999px\"></div>` forced on\nthe order of 125,000 page fragments. The pagination code then allocates\n`vec![Vec::new(); page_count]` and runs a per-page render loop, resulting in CPU\nand memory exhaustion. A non-finite height (one that resolves to `+inf`)\nadditionally made the slicing loop's `remaining -= last_slice_h` decrement never\nterminate, causing an infinite loop.\n\nAn attacker able to submit HTML/CSS to a fulgur-based conversion service can\ntrigger this with a trivially small payload, denying service to the host and any\nco-tenants.\n\nFixed in 0.19.0: a `MAX_PAGES` cap bounds the slice loop — halting it even for a\n`+inf` height — and non-finite layout heights are sanitized so they can no\nlonger drive the loop.\n\n## Attack Vector rationale\n\n`fulgur` performs no network I/O of its own; it renders HTML/CSS handed to it by\nthe embedding application. This advisory scores the crate independent of any\nspecific adopting program, so per the CVSS v3.1 User Guide §3.7 the Attack\nVector is assessed as Network for the reasonable worst-case deployment — a\nnetwork-facing service that renders untrusted HTML without user interaction. A\nconcrete system that receives the HTML in one component and passes it to fulgur\nin a separate component may assess a lower environmental Attack Vector (Local,\nper §3.10).",
+      "date": "2026-07-05",
+      "aliases": [
+        "CVE-2026-68523",
+        "GHSA-j5cx-ph8g-95v3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dos",
+        "pagination",
+        "pdf"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/fulgur-rs/fulgur/pull/501",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.19.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

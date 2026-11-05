@@ -1,0 +1,51 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0435",
+      "package": "thrift",
+      "title": "Unbounded memory allocation in `thrift` binary protocol `read_bytes`",
+      "description": "Affected versions of the `thrift` crate size a buffer directly from an attacker-controlled 4-byte length read off the wire, before reading any payload and with no upper bound, allowing a hostile peer to force a large eager allocation or an immediate abort (denial of service, CWE-400 / CWE-789). This is the Rust implementation's instance of the CVE-2020-13949 pattern, published by the Apache Thrift PMC as CVE-2026-43868.\n\n## Details\n\nIn `TBinaryInputProtocol::read_bytes` (`src/protocol/binary.rs`), the length is read as a `i32` from the transport and cast straight to `usize` to size a zeroing buffer **before** any payload is read:\n\n```rust\nfn read_bytes(&mut self) -> crate::Result<Vec<u8>> {\n    let num_bytes = self.transport.read_i32::<BigEndian>()? as usize; // length from the wire\n    let mut buf = vec![0u8; num_bytes];                               // unbounded eager allocation\n    self.transport.read_exact(&mut buf).map(|_| buf).map_err(From::from)\n}\n```\n\nThere is no check that `num_bytes` is non-negative or that it fits within the data actually available:\n\n- A length of `0x7FFFFFFF` forces a ~2 GiB allocation; `0x20000000` forces 512 MiB; and so on, from only a 4-byte input.\n- A negative length casts to a huge `usize` (up to `usize::MAX`), causing an immediate allocation failure / abort.\n\n`read_string` routes through `read_bytes`, so string fields are affected the same way. The sink is reachable from any peer sending binary-protocol data, so this is an unauthenticated, network-reachable denial of service.\n\n## The fix\n\nFrom `thrift` 0.23.0 onward, `read_bytes` goes through `read_binary_len`, which rejects negative sizes and enforces `TConfiguration::max_string_size` (default 100 MiB), alongside default message, frame, and recursion limits.\n\nA separate, related gap on the non-strict message-name path was published as CVE-2026-58389 and fixed in 0.24.0; this advisory covers the `read_bytes` unbounded allocation (CVE-2026-43868), fixed in 0.23.0.",
+      "date": "2026-11-02",
+      "aliases": [
+        "CVE-2026-43868"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "parsing",
+        "denial-of-service",
+        "allocation",
+        "thrift"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://lists.apache.org/thread/zj76dtwnbbs1m7z3focf4wd51pqpsmn9",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "thrift::protocol::binary::TBinaryInputProtocol::read_bytes": [
+          "<0.23.0"
+        ],
+        "thrift::protocol::binary::TBinaryInputProtocol::read_string": [
+          "<0.23.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.23.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

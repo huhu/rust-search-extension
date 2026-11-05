@@ -1,0 +1,37 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0252",
+      "package": "orx-split-vec",
+      "title": "Panic-safety unsoundness in `SplitVec::extend_from_slice` (uninitialized read)",
+      "description": "`SplitVec::extend_from_slice` increments the logical length `self.len` before cloning the incoming elements into the reserved slots. If an element's `Clone` panics mid-fill, unwinding leaves `self.len` counting slots that were never initialized. A later safe read (`get`, indexing, `iter`) then reads one of those uninitialized slots.\n\nThis is reachable from safe Rust — a read of uninitialized memory (CWE-908). It is not a double-free: `SplitVec` has no manual `Drop` and its elements live in a standard `Vec`, so the defect is a read, not a free.\n\n## Impact\n\nA safe read after the panic returns a value built from uninitialized bytes. For a heap-owning element type such as `String`, the resulting value has garbage length/pointer fields.\n\nConfirmed under Miri. AddressSanitizer stays silent for this class, since the uninitialized bytes are consumed as a non-dereferenced field rather than an invalid load or free.\n\n## Fix\n\nFixed in `orx-split-vec` 4.0.0, which no longer commits the length before the elements are cloned.",
+      "date": "2026-08-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "panic-safety",
+        "memory-safety",
+        "uninitialized-read"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/orxfun/orx-split-vec/issues/95",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

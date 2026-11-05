@@ -1,0 +1,211 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0409",
+      "package": "skiplist",
+      "title": "Use-after-free from a comparator that answers inconsistently",
+      "description": "`OrderedSkipList`, `SkipSet` and `SkipMap` can free a node that is still\nlinked when a `Comparator` or `Ord` implementation gives different answers for\nthe same pair of values during one mutating call. A later call reads the freed\nmemory (CWE-416). A safe `impl Ord` with the default comparator is enough to\nreach it.\n\nThe mutating traversals record a precursor at each level: the last node whose\nlink points at a node comparing not-`Less` than the target. The splice code\nassumes every recorded precursor's link points at or past the final position.\nIf a later comparison reports one of those nodes as `Less`, the walk steps\npast it and the assumption breaks. Removals such as `take_first`, `take` and\n`remove` then rewire the wrong link and free the target while its real\npredecessor still points at it. `insert` builds crossed links and wrong skip\ndistances from the same precursors.\n\nA comparator that is a pure function of its two arguments cannot trigger\nthis, even if it is not transitive. The trigger is a stateful or\nnon-deterministic implementation, for example one that reads a counter, a\ncache, a clock or a random source.\n\nThe flaw was corrected in 1.3.0. The mutating traversals track the link target\nof the lowest recorded precursor and panic with \"comparator does not implement\na total order\" when a `Less` answer contradicts an earlier one. Every splice\nsite also checks its precursors before the first write. Each detected\ncontradiction panics before any link, value or length changes, so the\ncollection stays valid and safe to drop.",
+      "date": "2026-10-24",
+      "aliases": [
+        "GHSA-cc53-p78w-23w9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "comparator",
+        "ord"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/JP-Ellis/rust-skiplist/pull/407"
+      ],
+      "source": null,
+      "url": "https://github.com/JP-Ellis/rust-skiplist/issues/401",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.3.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0408",
+      "package": "skiplist",
+      "title": "Aliasing violations in splice, mutable iteration and cursors",
+      "description": "Four code paths create a pointer whose permission is later revoked, then\nwrite through it. Miri reports each as undefined behaviour under both the\nTree Borrows and Stacked Borrows aliasing models (CWE-758). All four are\nreachable from safe code with standard `Ord` types.\n\n1. **Splice back-pointer.** `split_off`, `split_off_index` and `append` stored\n   the first spliced node's `prev` pointer from a reference to the head, then\n   wrote through that same reference, invalidating the stored pointer. A later\n   `pop_first` or `pop_front` writes through it. This affects all four\n   collections.\n2. **`SkipMap::range_mut` back pointer.** With an `Included` or `Excluded`\n   upper bound, the back pointer came from a shared reference. `next_back`\n   hands out `&mut V` through it, and writing to that value is undefined\n   behaviour.\n3. **`IterMut::next_back` reads a yielded node.** In `SkipList` and `SkipMap`,\n   `next_back` read the predecessor node even after the front end had yielded\n   it as `&mut`. The read freezes the caller's reference, and the caller's\n   next write through it is undefined behaviour. This affects `iter_mut`,\n   `values_mut` and `range_mut` used from both ends.\n4. **Cursor list pointer.** `lower_bound_mut` and `upper_bound_mut` on\n   `OrderedSkipList` and `SkipSet` (`cursor` feature) took the cursor's list\n   pointer, then searched through `&self`. A comparator with interior-mutable\n   state, such as a `Cell` call counter, wrote to the list's memory through\n   that shared borrow and invalidated the cursor's pointer. The comparator can\n   be a fully consistent order. `SkipMap` cursors are not affected.\n\nNo miscompilation has been observed in an optimised build. A future compiler\nmay still optimise on the violated aliasing assumptions.\n\nThe flaws were corrected in 1.3.0. Each fix derives the pointer used for\nmutation from the collection's long-lived allocation pointers, and each has a\nMiri regression test.",
+      "date": "2026-10-24",
+      "aliases": [
+        "GHSA-924w-mwc9-86m8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "aliasing",
+        "stacked-borrows",
+        "tree-borrows",
+        "miri"
+      ],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:P/PR:N/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/JP-Ellis/rust-skiplist/pull/407",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "skiplist::ordered_skip_list::OrderedSkipList::append": [
+          "<1.3.0"
+        ],
+        "skiplist::ordered_skip_list::OrderedSkipList::lower_bound_mut": [
+          ">=1.2.0, <1.3.0"
+        ],
+        "skiplist::ordered_skip_list::OrderedSkipList::split_off": [
+          "<1.3.0"
+        ],
+        "skiplist::ordered_skip_list::OrderedSkipList::split_off_index": [
+          "<1.3.0"
+        ],
+        "skiplist::ordered_skip_list::OrderedSkipList::upper_bound_mut": [
+          ">=1.2.0, <1.3.0"
+        ],
+        "skiplist::skip_list::SkipList::append": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_list::SkipList::iter_mut": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_list::SkipList::range_mut": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_list::SkipList::split_off": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_map::SkipMap::append": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_map::SkipMap::iter_mut": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_map::SkipMap::range_mut": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_map::SkipMap::split_off": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_map::SkipMap::values_mut": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_set::SkipSet::append": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_set::SkipSet::lower_bound_mut": [
+          ">=1.2.0, <1.3.0"
+        ],
+        "skiplist::skip_set::SkipSet::split_off": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_set::SkipSet::split_off_index": [
+          "<1.3.0"
+        ],
+        "skiplist::skip_set::SkipSet::upper_bound_mut": [
+          ">=1.2.0, <1.3.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.3.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0300",
+      "package": "skiplist",
+      "title": "Use-after-free in `clear` and `retain` when an element's `Drop` panics",
+      "description": "`SkipList::clear` drops the node chain and only then resets `tail` and `len`.\nThe drop runs each element's `Drop`, and `T` carries no bounds excluding a\npanicking one. If it unwinds, `tail` still points at the freed node while `len`\nstays non-zero.\n\n`back()`, `back_mut()`, `last_key_value()` and `last()` dereference `tail`\nthrough `unsafe`, so reading the container after the unwind is a use-after-free\n(CWE-416). `Drop for SkipList` calls `Box::from_raw` on `self.head`, which\n`clear` already destroyed, so dropping the container is a double free\n(CWE-415).\n\n`retain`, `retain_mut` and `dedup_by` reach the same state through\n`Node::filter_rebuild`, which frees nodes and runs a user predicate before the\ncaller commits `tail` and `len`. There the head links are left partially\nrewired, so traversal can also reach freed nodes.\n\n## Mitigation\n\nUpdate to 1.1.1.",
+      "date": "2026-09-02",
+      "aliases": [
+        "GHSA-x6j6-3ffp-qrfr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "use-after-free",
+        "double-free",
+        "panic-safety"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/JP-Ellis/rust-skiplist/pull/334",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "skiplist::ordered_skip_list::OrderedSkipList::clear": [
+          "<1.1.1"
+        ],
+        "skiplist::ordered_skip_list::OrderedSkipList::dedup_by": [
+          "<1.1.1"
+        ],
+        "skiplist::ordered_skip_list::OrderedSkipList::retain": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_list::SkipList::clear": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_list::SkipList::dedup_by": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_list::SkipList::retain": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_list::SkipList::retain_mut": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_map::SkipMap::clear": [
+          "<1.1.1"
+        ],
+        "skiplist::skip_map::SkipMap::retain": [
+          "<1.1.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.1.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

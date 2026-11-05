@@ -1,0 +1,74 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0299",
+      "package": "owned-alloc",
+      "title": "`owned-alloc` is unmaintained",
+      "description": "The `owned-alloc` crate has had no release since 2018, and the maintainer has\nnot responded to the upstream issue or to direct contact.",
+      "date": "2026-09-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0291",
+      "package": "owned-alloc",
+      "title": "Double free in `OwnedAlloc::drop_in_place` when the contained value's `Drop` panics",
+      "description": "`OwnedAlloc::drop_in_place` destroys the contained value by hand, then commits\nthe ownership transfer with `mem::forget(self)` — which lives inside `into_raw`\nand so runs only after the destruction. `T::drop` is user code and may panic. If\nit does, the forget is skipped and the still-live `OwnedAlloc` unwinds, whose\ndestructor drops the same `T` a second time and then deallocates. For a `T` that\nowns an allocation, the same block is freed twice — a double free (CWE-415).\nThat destructor also reads the already-destroyed value through\n`Layout::for_value` before deallocating, a use-after-free (CWE-416).\n\n`MaybeUninitAlloc::drop_in_place` delegates to the same function, so both public\nentry points are affected. Storing a value whose `Drop` can panic and calling\neither is enough — no `unsafe` on the caller's side.\n\n## Fix\n\nNo fixed release is available. The crate has had no release since 2018 and the\nmaintainer has not responded to the report, nor to the one on `lockfree`, which\nis published from the same account. `forget_inner` leaks the value instead of\ndestroying it, which is safe.",
+      "date": "2026-09-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "panic-safety",
+        "memory-safety",
+        "use-after-free",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.com/bzim/owned-alloc/-/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "owned_alloc::MaybeUninitAlloc::drop_in_place": [
+          "<=0.2.0"
+        ],
+        "owned_alloc::OwnedAlloc::drop_in_place": [
+          "<=0.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

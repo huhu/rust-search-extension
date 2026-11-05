@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0158",
+      "package": "jfrog_quotes",
+      "title": "`jfrog_quotes` was removed from crates.io for malicious code",
+      "description": "`jfrog_quotes` was part of a campaign that attempted to exfiltrate\nenvironmental data from the host.\n\nThe malicious crate had 1 version published in January 2025, and had no\nevidence of actual usage. This crate had no dependencies on crates.io.",
+      "date": "2025-01-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

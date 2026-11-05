@@ -1,0 +1,78 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0336",
+      "package": "mykey",
+      "title": "MIKEY message MAC is never verified on receive, so forged messages are accepted",
+      "description": "`mykey` implements MIKEY (RFC 3830) for SRTP key exchange. No receive path\nverified the MIKEY message authentication code.\n\n`crypto::verify_mac` existed and was correct, but it was called only from unit\ntests — neither `MikeyMessage::from_bytes` nor `MikeyMessage::complete_psk`\ninvoked it.\n\n`new_psk_init` computed an HMAC-SHA-1-160 over the serialized message and\nappended it, so the tag was present on the wire and looked like integrity\nprotection. It was decorative: a receiver accepted any message regardless of\nwhether the MAC was correct, wrong, or absent.\n\n## Consequences\n\n- An attacker able to inject or modify MIKEY messages in transit faced no\n  integrity check. Modified RAND, SSRC or security-policy payloads were accepted\n  silently. Note that this does not require a man-in-the-middle position: since\n  nothing was checked, a wholly forged PSK-Init was accepted.\n- Pre-shared key mode therefore provided no mutual authentication, despite the\n  documentation claiming that it did. Possession of the pre-shared key was never\n  actually proven by either party.\n- Replayed init messages were not rejected.\n\nThe practical severity was bounded by GHSA-fwjg-cm92-j3hj (cleartext TGK), which\nalready let a passive observer recover the key material outright without needing\nto forge anything.\n\n## The fix\n\n`complete_psk` now verifies the message MAC **before** any decryption, so a\nmessage that fails authentication yields no key material at all. A `MacAlg::Null`\npayload, an absent MAC and a truncated MAC are each refused rather than treated\nas \"no check required\".\n\nThe authentication key is now derived from the pre-shared key per RFC 3830 §4.1.4\nrather than from the TGK — a prerequisite, since verifying against a TGK-derived\nkey would have been circular while the TGK travelled in the message itself.\nOptional §6.9 verification messages were also added, giving the exchange genuine\nmutual authentication.\n\nReplay protection is still absent: a captured PSK-Init can be replayed and will\nbe accepted, because the optional COUNTER timestamp is emitted rather than a\nmandatory NTP type and no record of seen timestamps or RAND values is kept. That\ngap is tracked at <https://github.com/waxspin/mykey/issues/24> and is not covered\nby this advisory.\n\n## Workarounds\n\nTreat parsed MIKEY messages as unauthenticated input: do not rely on pre-shared\nkey mode for peer authentication or message integrity, and carry it over a\ntransport that provides both.",
+      "date": "2026-10-09",
+      "aliases": [
+        "GHSA-xq78-wvcv-hqvj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "mikey",
+        "srtp",
+        "rfc3830",
+        "authentication-bypass"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/waxspin/mykey/pull/25",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0335",
+      "package": "mykey",
+      "title": "Pre-shared key mode transmits the TGK in cleartext, exposing the SRTP master key",
+      "description": "`mykey` implements MIKEY (RFC 3830) for SRTP key exchange. Pre-shared key mode\ntransmitted the TEK Generation Key (TGK) in the clear.\n\n`MikeyMessage::new_psk_init` built its KEMAC payload with `EncAlg::Null` and\nplaced the TGK in `enc_data` verbatim. Anyone able to read a PSK-Init message\ntherefore recovers the TGK — and so the SRTP master key — **without knowing the\npre-shared key**.\n\nThe transmitted value was never even used by the receiver: `complete_psk`\nre-derived the TGK from the pre-shared key and ignored `enc_data` entirely. The\nfield was write-only; it provided nothing and disclosed everything.\n\nA second consequence: the message authentication key was derived from the TGK\nrather than from the pre-shared key, so an attacker who read the TGK off the wire\ncould also forge a valid message MAC. Integrity was lost along with\nconfidentiality. That aspect is tracked separately as GHSA-xq78-wvcv-hqvj.\n\n## Exploitability\n\nA MIKEY message is normally distributed as an SDP `a=key-mgmt:mikey` attribute,\nwhich in AES67 and SMPTE ST 2110 deployments is typically announced over SAP\nmulticast. A passive listener on the media network recovers the session key with\nno active attack and no credentials.\n\nRFC 3830 §4.2.3 permits NULL encryption only where \"the underlying protocols can\nguarantee security\", and warns to use it with caution. An SDP file or a SAP\nannouncement is not such a channel.\n\n## The fix\n\nPre-shared key mode now follows RFC 3830 §3.1 as key *transport*: the initiator\ngenerates a random TGK, frames it as a Key data sub-payload (§6.13), and encrypts\nit with AES-CM (§4.2.3) under an encryption key and 112-bit salt derived from the\npre-shared key (§4.1.4). The message MAC is keyed from the pre-shared key and\nverified before anything is decrypted.\n\nThis changes the wire format, so both ends of an exchange must be upgraded\ntogether. The incompatibility is silent: an old peer and a new peer complete the\nexchange without error and then derive different SRTP keys.\n\n## Workarounds\n\nUse ephemeral Diffie-Hellman mode instead of pre-shared key mode, or carry the\nPSK-Init only over a channel that is already confidential and authenticated end\nto end.",
+      "date": "2026-10-09",
+      "aliases": [
+        "GHSA-fwjg-cm92-j3hj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "mikey",
+        "srtp",
+        "rfc3830",
+        "key-disclosure"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/waxspin/mykey/pull/25",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

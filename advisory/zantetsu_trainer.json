@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0083",
+      "package": "zantetsu-trainer",
+      "title": "zantetsu-trainer is unmaintained",
+      "description": "The `zantetsu-trainer` crate is no longer maintained. The ML training\ninfrastructure it contained was removed as part of the zantetsu 0.2 release,\nwhich replaced the neural parser with a pure heuristic engine.\n\nA tombstone version (0.2.0) has been published and 0.1.4 has been yanked.\nThere is no replacement for `zantetsu-trainer`.\n\n## Migration\n\nIf you were using `zantetsu-trainer` as part of a zantetsu-based filename\nparsing pipeline, switch to [`zantetsu 0.2`](https://crates.io/crates/zantetsu),\nwhich requires no training step.",
+      "date": "2026-04-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/enrell/psyche/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

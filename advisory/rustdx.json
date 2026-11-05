@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0123",
+      "package": "rustdx",
+      "title": "Out-of-bounds read in `bytes_helper` public safe functions",
+      "description": "The `bytes_helper` module contains multiple public functions\n(`into_arr4()`, `into_arr2()`, `u8_from_le_bytes()`) that use\n`slice.get_unchecked(pos..pos + N)` without verifying that\n`pos + N <= slice.len()`. These are public safe API functions, allowing any\ncaller to trigger undefined behavior by passing invalid positions.\n\nFor example, calling `into_arr4(&data, 10)` where `data` is a 3-byte slice\ncauses an out-of-bounds access since position 10 exceeds the slice length.",
+      "date": "2026-05-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "out-of-bounds",
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/zjp-CN/rustdx/issues/38",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

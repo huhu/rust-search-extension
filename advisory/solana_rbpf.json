@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0191",
+      "package": "solana_rbpf",
+      "title": "`EbpfVm::invoke_function` performs out-of-bounds pointer arithmetic",
+      "description": "Affected versions of `solana_rbpf` expose the safe method\n`EbpfVm::invoke_function`. This method computes an obfuscated VM pointer by\ncasting `self` to `*mut u64` and applying a randomized offset derived from\n`get_runtime_environment_key()`.\n\nThe resulting pointer arithmetic is performed with `ptr::offset`, which\nrequires the computed pointer to remain within the same allocation. In practice,\nthe randomized offset can move the pointer far outside the allocation\ncontaining the `EbpfVm`, causing undefined behavior before the supplied builtin\nfunction is invoked.\n\n## Unmaintained\n\nThe upstream `solana_rbpf` repository is archived, and no patched version of\nthis crate is currently available.\n\nUsers should migrate to the maintained [`solana-sbpf`](https://crates.io/crates/solana-sbpf)\ncrate. The issue has been fixed there in\n[`anza-xyz/sbpf#151`](https://github.com/anza-xyz/sbpf/pull/151).",
+      "date": "2026-05-28",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "soundness",
+        "pointer-arithmetic",
+        "out-of-bounds"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/anza-xyz/sbpf/pull/151",
+        "https://crates.io/crates/solana-sbpf"
+      ],
+      "source": null,
+      "url": "https://github.com/solana-labs/rbpf",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "solana_rbpf::vm::EbpfVm::invoke_function": [
+          ">=0.8.0, <=0.8.5"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<0.8.0"
+      ]
+    }
+  }
+]

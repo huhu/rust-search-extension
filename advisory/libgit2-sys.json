@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0003",
+      "package": "libgit2-sys",
+      "title": "git2 does not verify SSH keys by default",
+      "description": "The git2 and libgit2-sys crates are Rust wrappers around the\n[libgit2]() C library. It was discovered that libgit2 1.5.0\nand below did not verify SSH host keys when establishing an SSH connection,\nexposing users of the library to Man-In-the-Middle attacks.\n\nThe libgit2 team assigned [CVE-2023-22742][libgit2-advisory] to this\nvulnerability. The following versions of the libgit2-sys Rust crate have been\nreleased:\n\n* libgit2-sys 0.14.2, updating the underlying libgit2 C library to version 1.5.1.\n* libgit2-sys 0.13.5, updating the underlying libgit2 C library to version 1.4.5.\n\nA new git2 crate version has also been released, 0.16.1. This version only\nbumps its libgit2-sys dependency to ensure no vulnerable libgit2-sys versions\nare used, but contains no code changes: if you update the libgit2-sys version\nthere is no need to also update the git2 crate version.\n\n[You can learn more about this vulnerability in libgit2's advisory][libgit2-advisory]\n\n[libgit2]: https://libgit2.org/\n[libgit2-advisory]: https://github.com/libgit2/libgit2/security/advisories/GHSA-8643-3wh5-rmjq",
+      "date": "2023-01-20",
+      "aliases": [
+        "CVE-2023-22742",
+        "GHSA-m4ch-rfv5-x5g3",
+        "GHSA-8643-3wh5-rmjq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "ssh",
+        "mitm",
+        "git"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/git2-rs/security/advisories/GHSA-m4ch-rfv5-x5g3",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.13.5, <0.14.0",
+        ">=0.14.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

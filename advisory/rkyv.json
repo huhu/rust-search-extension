@@ -1,0 +1,248 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0235",
+      "package": "rkyv",
+      "title": "Insufficient archive validation can cause out-of-bounds reads in archives containing Rc/Arc",
+      "description": "Shared pointer validation keyed already-validated pointees by their address and\ntype, but did not include pointer metadata. For unsized pointees, an archive\ncould therefore contain multiple `Rc`, `Arc`, or weak pointers that shared a\ndata address but used different metadata, such as different slice lengths.\n\nOnce the first pointer had been validated, later pointers to the same address\nskipped pointee validation. The safe checked `rkyv::access` API could\nconsequently return a slice with a forged length, allowing safe indexing to\nread out of bounds. The same validation bypass was reachable through checked\ndeserialization with `rkyv::from_bytes`.\n\nVersion 0.8.17 includes pointer metadata in shared pointer validation and\nrejects conflicting metadata. The 0.7 series is also affected but is no\nlonger supported by upstream. Users who process untrusted archives should upgrade\nto 0.8.17 or later.",
+      "date": "2026-05-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "out-of-bounds-read",
+        "validation",
+        "shared-pointer"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/rkyv/rkyv/commit/3c9d07fbff5949261bef38d00ab160b129bd9d3a"
+      ],
+      "source": null,
+      "url": "https://github.com/rkyv/rkyv/issues/670",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.17"
+      ],
+      "unaffected": [
+        "<0.7.0-pre.2"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0233",
+      "package": "rkyv",
+      "title": "Crafted archives can cause a use-after-free during deserialization",
+      "description": "Insufficient archive range validation could allow a crafted archive to reach\n`ArchivedString::deserialize` with an invalid pointer. A reported reproducer\nused `rkyv::from_bytes` to deserialize a struct containing strings, a vector,\na box, and an optional hash map. AddressSanitizer detected a heap use-after-free\nduring string deserialization.\n\nThe flaw could be triggered through the safe checked deserialization API when\nprocessing malicious archive bytes. Version 0.8.17 rejects the malformed\narchive during validation. Users who process untrusted archives should upgrade\nto 0.8.17 or later.",
+      "date": "2026-05-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "validation",
+        "deserialization"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/rkyv/rkyv/commit/3c9d07fbff5949261bef38d00ab160b129bd9d3a",
+        "https://github.com/rkyv/rkyv/commit/107772907c4e839fa67900385f0d4814e7d15e42"
+      ],
+      "source": null,
+      "url": "https://github.com/rkyv/rkyv/issues/666",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.17"
+      ],
+      "unaffected": [
+        "<0.8.0-rc.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0234",
+      "package": "rkyv",
+      "title": "Insufficient archive validation can cause out-of-bounds reads in archives containing hash tables",
+      "description": "The archive validator could accept certain malformed relative pointers and\ninvalid `ArchivedHashTable` states. In particular, the hash table verifier did\nnot ensure that the number of occupied buckets matched the table's declared\nlength.\n\nA crafted archive could pass the checks performed by the safe `rkyv::access`\nand `rkyv::from_bytes` APIs and then cause an out-of-bounds read in later\nvalidation, lookup, or deserialization. Depending on the input, this could\nperform scalar or SIMD reads outside the archive buffer or crash the process.\n\nVersion 0.8.17 strengthens archive range validation and rejects hash tables\nwhose number of occupied buckets does not match their declared length. Users\nwho process untrusted archives should upgrade to 0.8.17 or later.",
+      "date": "2026-05-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure",
+        "denial-of-service"
+      ],
+      "keywords": [
+        "out-of-bounds-read",
+        "validation",
+        "hashmap"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/rkyv/rkyv/issues/664",
+        "https://github.com/rkyv/rkyv/issues/665",
+        "https://github.com/rkyv/rkyv/issues/669",
+        "https://github.com/rkyv/rkyv/commit/3c9d07fbff5949261bef38d00ab160b129bd9d3a",
+        "https://github.com/rkyv/rkyv/commit/57086e1c7f417d0360c7045905db3b3d8e30f866"
+      ],
+      "source": null,
+      "url": "https://github.com/rkyv/rkyv/issues/663",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.17"
+      ],
+      "unaffected": [
+        "<0.8.0-rc.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0122",
+      "package": "rkyv",
+      "title": "Potential use-after-free due to lack of panic safety in `InlineVec::clear` and `SerVec::clear`",
+      "description": "`InlineVec::clear()` and `SerVec::clear()` in `rkyv` were not panic-safe.\nBoth functions iterate over their elements and call `drop_in_place` on each,\nupdating `self.len` only *after* the loop. If an element's `Drop` implementation\npanics during the loop, `self.len` is left at its original value.\n\nA subsequent invocation of `clear()` on the same container then re-visits the\nalready-freed elements:\n\n- `InlineVec::clear()` is called again from `InlineVec`'s own `Drop`\n  implementation when the value is later dropped.\n- `SerVec::clear()` is called again by `SerVec::with_capacity()` after the\n  user closure returns.\n\n## Impact\n- **CWE-415 (Double Free):** heap corruption when the element type is one that\n  owns memory, such as `Box<T>` or `Vec<T>`\n- **CWE-416 (Use-After-Free):** memory corruption when an element is accessed\n  following a caught panic\n\nBoth types of undefined behavior can be invoked in safe Rust, but only if\nunwinding panics are enabled and `std::panic::catch_unwind` is used.",
+      "date": "2026-04-23",
+      "aliases": [
+        "GHSA-vfvv-c25p-m7mm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "panic-safety",
+        "memory-safety",
+        "use-after-free",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rkyv/rkyv/commit/5828cf5c27b664eb4432c4a93d4769e12e5e42fb",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.16"
+      ],
+      "unaffected": [
+        "<0.8.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0001",
+      "package": "rkyv",
+      "title": "Potential Undefined Behaviors in `Arc<T>`/`Rc<T>` impls of `from_value` on OOM",
+      "description": "The `SharedPointer::alloc` implementation for `sync::Arc<T>` and `rc::Rc<T>` in `rkyv/src/impls/alloc/rc/atomic.rs` (and `rc.rs`) does not check if the allocator returns a null pointer on OOM (Out of Memory).\n\nThis null pointer can flow through to `SharedPointer::from_value`, which calls `Box::from_raw(ptr)` with the null pointer. This triggers undefined behavior when utilizing safe deserialization APIs (such as `rkyv::from_bytes` or `rkyv::deserialize_using`) if an OOM condition occurs during the allocation of the shared pointer.\n\nThe issue is reachable through safe code and violates Rust's safety guarantees.",
+      "date": "2026-01-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "oom",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rkyv/rkyv/issues/644",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.46, <0.8.0",
+        ">=0.8.13"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0054",
+      "package": "rkyv",
+      "title": "Archives may contain uninitialized memory",
+      "description": "`rkyv` is a serialization framework that writes struct-compatible memory to be stored or\ntransmitted. During serialization, struct padding bytes and unused enum bytes may not be\ninitialized. These bytes may be written to disk or sent over unsecured channels.",
+      "date": "2021-04-28",
+      "aliases": [
+        "CVE-2021-31919",
+        "GHSA-w5cr-frph-hw7f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "uninitialized",
+        "memory",
+        "information",
+        "leak"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/djkoloski/rkyv/issues/113",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rkyv::Archive::resolve": [
+          "<0.6.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0310",
+      "package": "domain",
+      "title": "Various panics, soundness and resource exhaustion issues",
+      "description": "Version 0.12.3 fixes a large number of panics, soundness issues, and\nCPU and memory exhaustion issues in all parts of the crate.\n\nThe following is a summary of the issues per affected components.\nFor details, please see the [release\nnotes](https://github.com/NLnetLabs/domain/releases/tag/v0.12.3).\n\n## Base\n\n* Limited the number of compression pointers that are followed when parsing\n  a compressed name to 255 to avoid following really long chains.\n* Limited the length of CNAME chains followed by `Message::canonical_name`\n  to 20. This also fixed an integer overflow in this method when ANCOUNT\n  was`u16::MAX`.\n* Changed `QuestionSection::answer` to skip over all remaining questions\n  without parsing the QNAMEs to avoid being slowed down by malicious\n  names.\n* Added length checks when scanning and parsing variable length record\n  data types. This fixes issues with the message builder, which assumes that\n  record data is never too large for placing in a message.\n\n## Stub Resolver\n\n* Fixed possible panics in the resolver’s `FoundHosts::qname` and\n  `FoundHosts::canonical_name`.\n* Fixed various issues in SRV processing.\n\n## Zonefile parsing\n\n* Fixed soundness issues when reading UTF-8 and an integer overflow when\n  reading unsigned integers.\n* Fixed a panic when reading empty TXT records.\n\n## Client and server transports, DNSSEC signer and validator\n\nFixed various panics that could be triggered by malicious incoming DNS\nmessages.\n\n## Zonetree\n\nFixed various panics and a memory exhaustion issue when updating the zone.\n\n## Acknowledgements\n\nWe would like to thank Qifan Zhang, Palo Alto Networks,\nAntoni (Tony) Jagodka ([@DrVelvetFog](https://github.com/DrVelvetFog)),\nand [@SebastiaanYN](https://github.com/SebastiaanYN) for\nreporting issues fixed in this release.",
+      "date": "2026-09-25",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/NLnetLabs/domain/releases/tag/v0.12.3",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.12.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

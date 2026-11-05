@@ -1,0 +1,56 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0178",
+      "package": "tokio-postgres",
+      "title": "Panic on a `DataRow` with fewer fields than columns allows denial of service",
+      "description": "A malicious or compromised server can send a row containing fewer fields than\nits row description declares columns. Reading one of the missing columns then\npanics with an out-of-bounds index, aborting the calling task. This affects even\nthe otherwise non-panicking `try_get`, and both `Row` and `SimpleQueryRow`.\n\nApplications that connect only to a trusted database are not exposed; the risk\napplies to clients that may connect to untrusted or user-supplied servers, or\nwhose connection can be intercepted by a man-in-the-middle.",
+      "date": "2026-06-12",
+      "aliases": [
+        "GHSA-3gjw-f78c-vvpw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "datarow"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-postgres/rust-postgres/commit/7a00ffa9ad4d951ec0a4564b52f1780fa9d353c1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tokio_postgres::Row::get": [
+          "<0.7.18"
+        ],
+        "tokio_postgres::Row::try_get": [
+          "<0.7.18"
+        ],
+        "tokio_postgres::SimpleQueryRow::get": [
+          "<0.7.18"
+        ],
+        "tokio_postgres::SimpleQueryRow::try_get": [
+          "<0.7.18"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.7.18"
+      ],
+      "unaffected": [
+        "<0.4.0"
+      ]
+    }
+  }
+]

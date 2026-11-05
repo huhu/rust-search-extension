@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0329",
+      "package": "libcrux-hmac-drbg",
+      "title": "Auto-Reseeding HMAC-DRBG could panic for some output lengths",
+      "description": "The automatically reseeding implementations of HMAC-DRBG would panic if called with a desired non-zero output length cleanly divisible by `65_536`, the maximum number of output bytes that can be generated before reseeding has to happen.\n\n# Impact\n\nAn application relying on `libcrux-hmac-drgb` to provide randomness of byte length a non-zero integer multiple of `65_536` in a single call to `fill_bytes` would panic.\n\nAny calls with output buffer lengths not cleanly divisible by `65_536` are not affected.\n\n# Mitigation\n\nWith release the release of version `0.0.2` of `libcrux-hmac-drbg` this bug has been fixed and reseeding DRBG implementations can be used with arbitrary output lengths.\n\nWe recommend users upgrade to `libcrux-hmac-drbg` version `0.0.2`.",
+      "date": "2026-08-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/celabshq/libcrux/pull/1558",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_hmac_drbg::HmacDrbgRng::fill_bytes": [
+          "<=0.0.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

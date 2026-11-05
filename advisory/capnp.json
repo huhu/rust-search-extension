@@ -1,0 +1,88 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0143",
+      "package": "capnp",
+      "title": "Unsound APIs of public `constant::Reader` and `StructSchema`",
+      "description": "The safe API functions `constant::Reader::get` and `StructSchema::new` rely on `PointerReader::get_root_unchecked`, which can cause undefined behavior (UB) by constructing arbitrary words or schemas.\n\n## `Reader::get`\n\n```rust\npub fn get(&self) -> Result<<T as Owned>::Reader<'static>> {\n    // ...\n    // UNSAFE: access `words` without validation\n}\n```\n\n## `StructSchema::new`\n\n```rust\npub fn new(builder: RawBrandedStructSchema) -> StructSchema {\n    // ...\n    // UNSAFE: access encoded nodes without validation\n}\n```\n\nThis vulnerability allows safe Rust code to trigger UB, which violates Rust's safety guarantees.\n\nThe issue is resolved in version `0.24.0` by making constructor functions unsafe and mark the fields of struct as visible only in the crate.",
+      "date": "2025-12-24",
+      "aliases": [
+        "GHSA-5w5r-mf82-595p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "unsoundness",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/capnproto/capnproto-rust/issues/605",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "capnp::constant::Reader::get": [
+          "<0.24.0"
+        ],
+        "capnp::schema::StructSchema::new": [
+          "<0.24.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.24.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0068",
+      "package": "capnp",
+      "title": "out-of-bounds read possible when setting list-of-pointers",
+      "description": "If a message consumer expects data\nof type \"list of pointers\",\nand if the consumer performs certain specific actions on such data,\nthen a message producer can cause the consumer to read out-of-bounds memory.\nThis could trigger a process crash in the consumer,\nor in some cases could allow exfiltration of private in-memory data.\n\nThe C++ Cap'n Proto library is also affected by this bug.\nSee the [advisory](https://github.com/capnproto/capnproto/tree/master/security-advisories/2022-11-30-0-pointer-list-bounds.md)\non the main Cap'n Proto repo for a succinct description of\nthe exact circumstances in which the problem can arise.",
+      "date": "2022-11-30",
+      "aliases": [
+        "CVE-2022-46149",
+        "GHSA-qqff-4vw4-f6hx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://dwrensha.github.io/capnproto-rust/2022/11/30/out_of_bounds_memory_access_bug.html",
+        "https://github.com/capnproto/capnproto/security/advisories/GHSA-qqff-4vw4-f6hx"
+      ],
+      "source": null,
+      "url": "https://github.com/capnproto/capnproto/tree/master/security-advisories/2022-11-30-0-pointer-list-bounds.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.15.2",
+        "^0.14.11",
+        "^0.13.7"
+      ],
+      "unaffected": []
+    }
+  }
+]

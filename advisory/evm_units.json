@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0147",
+      "package": "evm-units",
+      "title": "`evm-units` was removed from crates.io for malicious code",
+      "description": "It appeared to be attempting to steal cryptocurrency.",
+      "date": "2025-12-03",
+      "aliases": [
+        "GHSA-6662-54xr-8423"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://socket.dev/blog/malicious-rust-crate-evm-units-serves-cross-platform-payloads"
+      ],
+      "source": null,
+      "url": "https://blog.rust-lang.org/2025/12/03/crates.io-malicious-crates-evm-units-and-uniswap-utils/",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

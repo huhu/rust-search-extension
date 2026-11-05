@@ -1,0 +1,114 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0289",
+      "package": "pqc_kyber",
+      "title": "pqc_kyber is unmaintained",
+      "description": "The crate has had no releases since 0.7.1 (2023-08-23), and the upstream\nrepository shows no maintainer activity. Open pull requests, including a fix for\na chosen-ciphertext key-recovery flaw in the AVX2 backend\n(Argyle-Software/kyber#121), have gone unanswered.\n\nRecommended alternatives:\n\n- [aws-lc-rs](https://crates.io/crates/aws-lc-rs)\n- [graviola](https://crates.io/crates/graviola)",
+      "date": "2026-09-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "kyber",
+        "ml-kem",
+        "post-quantum"
+      ],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Argyle-Software/kyber/pull/121",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0290",
+      "package": "pqc_kyber",
+      "title": "pqc_kyber: AVX2 backend skips Fujisaki-Okamoto implicit rejection, enabling chosen-ciphertext key recovery",
+      "description": "## Summary\n\nWhen `pqc_kyber` is built with the opt-in `avx2` feature on x86_64, its\nconstant-time conditional-move routine `cmov` is a no-op: it never performs the\ncopy. That `cmov` is exactly the step that applies the Fujisaki-Okamoto (FO)\nimplicit rejection during decapsulation. With it disabled, decapsulating an\n*invalid* ciphertext no longer returns a key-independent pseudorandom value;\nit returns a value that depends on the decrypted plaintext of the\nattacker-chosen ciphertext. This restores the chosen-ciphertext decryption\noracle that the FO transform exists to remove, and yields full recovery of the\nstatic secret key.\n\nThe attack requires no timing measurement, no side channel, and no faults; only\nthe ability to submit ciphertexts to a decapsulation operation under a reused\nkey pair and observe the resulting shared secret. See the linked pull request\nfor the root cause, the reachable call path, and reproduction details.\n\n## Affected configuration\n\nReachable only in builds with `features = [\"avx2\"]` on an x86_64 target. The\ndefault (reference) backend and all non-x86_64 targets are unaffected.\n\n## Impact\n\nComplete IND-CCA break. The plaintext-checking oracle drives a standard\nchosen-ciphertext key-recovery attack and extracts the entire static secret\nkey. Any protocol reusing a Kyber key pair across decapsulations (static or\nlong-term KEM keys, KEMTLS, HPKE recipients, pinned keys) is exposed;\nephemeral-only key shares are not. The defect was verified end to end on\nML-KEM-768: the full secret key was recovered in 4,272 decapsulation queries.\n\n## Maintenance status\n\nThe crate is unmaintained (last release 0.7.1, August 2023); no patched version\nexists or is expected.\n\n## Mitigation\n\n- If remaining on this crate, do not enable the `avx2` feature; the default\n  reference backend performs implicit rejection correctly.\n- Do not reuse a Kyber key pair across decapsulations.\n\n## Credit\n\nReported by 007bsd.",
+      "date": "2026-08-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "kyber",
+        "ml-kem",
+        "key-recovery",
+        "fujisaki-okamoto",
+        "ind-cca",
+        "avx2"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Argyle-Software/kyber/pull/121",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0079",
+      "package": "pqc_kyber",
+      "title": "KyberSlash: division timings depending on secrets",
+      "description": "Various Kyber software libraries in various environments leak secret information into timing, specifically because\n\n * these libraries include a line of code that divides a secret numerator by a public denominator,\n * the number of CPU cycles for division in various environments varies depending on the inputs to the division, and\n * this variation appears within the range of numerators used in these libraries.\n\nThe KyberSlash pages track which Kyber [libraries](https://kyberslash.cr.yp.to/libraries.html) have this issue, and include a [FAQ](https://kyberslash.cr.yp.to/faq.html) about the issue.\n\n## Author\n\nThe KyberSlash pages were written by Daniel J. Bernstein. The FAQ originally said \"I\", but some people seemed to have trouble finding this authorship statement, so the FAQ now says \"Bernstein\" instead.\n\n## URL\n\nThe permanent link for the KyberSlash pages is [https://kyberslash.cr.yp.to](https://kyberslash.cr.yp.to).\n\n## Mitigation status in `pqc_kyber` crate\n\nThe issue has not been resolved in the upstream `pqc_kyber` crate.\n\nA third-party fork that mitigates this attack vector has been published as [`safe_pqc_kyber`](https://crates.io/crates/safe_pqc_kyber).\n\n## Alternatives\n\nThe [`ml-kem`](https://crates.io/crates/ml-kem) crate is a maintained\nalternative pure Rust implementation of ML-KEM / Kyber.",
+      "date": "2023-12-01",
+      "aliases": [
+        "GHSA-x5j2-g63m-f8g4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "timing-attack"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://kyberslash.cr.yp.to/faq.html",
+        "https://kyberslash.cr.yp.to/libraries.html",
+        "https://github.com/bwesterb/argyle-kyber/commit/b5c6ad13f4eece80e59c6ebeafd787ba1519f5f6"
+      ],
+      "source": null,
+      "url": "https://github.com/Argyle-Software/kyber/issues/108",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

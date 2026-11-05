@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0071",
+      "package": "grep-cli",
+      "title": "`grep-cli` may run arbitrary executables on Windows",
+      "description": "On Windows in versions of `grep-cli` prior to `0.1.6`, it's possible for some\nof the routines to execute arbitrary executables. In particular, a quirk of\nthe Windows process execution API is that it will automatically consider the\ncurrent directory before other directories when resolving relative binary\nnames. Therefore, if you use `grep-cli` to read decompressed files in an\nuntrusted directory with that directory as the CWD, a malicious actor to could\nput, e.g., a `gz.exe` binary in that directory and `grep-cli` will use the\nmalicious actor's version of `gz.exe` instead of the system's.\n\nThis is also technically possible on Unix as well, but only if the `PATH`\nvariable contains `.`. Conventionally, they do not.\n\nA `DecompressionReader` has been fixed to automatically resolve binary names\nusing `PATH`, instead of relying on the Windows API to do it.\n\nIf you use `grep-cli`'s `CommandReader` with a `std::process::Command` value\non Windows, then it is recommended to either construct the `Command` with an\nabsolute binary name, or use `grep-cli`'s new\n[`resolve_binary`](https://docs.rs/grep-cli/0.1.6/grep_cli/fn.resolve_binary.html)\nhelper function.\n\nTo be clear, `grep-cli 0.1.6` mitigates this issue in two ways:\n\n* A `DecompressionReader` will resolve decompression programs to absolute\npaths automatically using the `PATH` environment variable, instead of relying\non Windows APIs to do it (which would result in the undesirable behavior of\nchecking the CWD for a program first).\n* A new function, `resolve_binary`, was added to help users of this crate\nmitigate this behavior when they need to create their own\n`std::process::Command`. For example,\n[ripgrep uses `grep_cli::resolve_binary`](https://github.com/BurntSushi/ripgrep/blob/7ce66f73cf7e76e9f2557922ac8e650eb02cf4ed/crates/core/search.rs#L119-L122)\non the argument given to its `--pre` flag.\n\nWhile the first mitigation fixes this issue for sensible values of `PATH`\nwhen doing decompression search, the second mitigation is imperfect. The more\nfundamental issue is that `std::process::Command` is itself vulnerable to this.",
+      "date": "2021-06-12",
+      "aliases": [
+        "CVE-2021-3013"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "windows",
+        "ripgrep",
+        "PATH",
+        "arbitrary",
+        "binary"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/BurntSushi/ripgrep/issues/1773",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {
+        "grep_cli::DecompressionReader::new": [
+          "<0.1.6"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

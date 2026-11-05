@@ -1,0 +1,141 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0243",
+      "package": "nostr-relay-pool",
+      "title": "`nostr-relay-pool` is unmaintained",
+      "description": "The `nostr-relay-pool` crate is no longer actively maintained as a standalone crate.\n\nIts functionality has been incorporated into [`nostr-sdk`](https://crates.io/crates/nostr-sdk) starting with version `0.45.0`.\n\nUsers should migrate to [`nostr-sdk`](https://crates.io/crates/nostr-sdk).",
+      "date": "2026-08-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/nostrdevkit/nostr/issues/1415"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0232",
+      "package": "nostr-relay-pool",
+      "title": "Processing of unverified relay events",
+      "description": "The processed events received from a relay through admission-policy and database\npaths before verifying that the serialized fields matched the claimed event ID and\nsignature. In particular, a database result for the claimed ID could cause\nverification to be skipped. The verification cache also keyed successful checks by a\n64-bit hash instead of the complete event ID.\n\nA malicious relay could send an event whose claimed ID referred to a known database\nentry while its content, tags, author, or signature differed from that ID. The forged\nevent could then reach policy callbacks or other SDK processing as if it were\nauthentic. A cache-key collision provided a second path for an unverified event to be\ntreated as previously verified. This undermines event integrity but does not reveal\nprivate keys or enable the attacker to produce a valid signature for the altered\nevent.\n\nThe SDK now verifies each event before policy evaluation, database lookup, or\npropagation decisions, and the verification cache stores the complete `EventId` so a\ntruncated hash collision cannot stand in for successful verification.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "nostr",
+        "event",
+        "signature"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/4b67f9b45909d2e35f34c30c084c0ab66e599a9f"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0224",
+      "package": "nostr-relay-pool",
+      "title": "Verification cache poisoning allows forged Nostr events to bypass signature validation",
+      "description": "The `nostr-relay-pool` crate cached the result of event signature verification\nbefore the check was actually performed. Because the entry was inserted\nunconditionally, a first delivery whose signature failed was still recorded\nin the cache. A subsequent delivery of the same event (identical ID,\nbut with a forged signature) would then hit the cache, causing signature\nverification to be skipped entirely. The forged event was passed on to\n`NostrDatabase::save_event()` as if it had been validated.\n\nApplications that connect to untrusted or compromised Nostr relays and persist\nreceived events are vulnerable. An attacker can inject arbitrary events\nwithout a valid signature into the application's trusted database, enabling\nimpersonation of any public key or corruption of application state derived from\nstored events.\n\nThe issue does not compromise confidentiality or availability. It solely\nundermines the integrity of stored event data.\n\nThe fix, released in version 0.44.2, moves the cache insertion to occur only\nafter a successful signature verification, so that failed attempts never create\na cache entry.\n\n## Credit\n\nDiscovered and reported by [Ali Al-Sorehi](https://github.com/aykoooo)",
+      "date": "2026-08-01",
+      "aliases": [
+        "GHSA-f96q-5f6p-v7cj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "cache-poisoning",
+        "signature-verification"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nostrdevkit/nostr/commit/02a88bd5688de058bfba8aa9fb4612441a384eff",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0231",
+      "package": "nostr-relay-pool",
+      "title": "Relay authentication challenges can exhaust memory",
+      "description": "The SDK forwarded every NIP-42 `AUTH` challenge received from a relay through an\nunbounded command queue. Challenge handling can wait for an asynchronous signer or\nuser interaction, so receiving challenges was substantially faster than completing\nthe corresponding authentication work.\n\nA malicious relay could continuously send new challenges without authenticating or\ndelivering valid events. Every value remained queued, causing memory use and pending\nsigner operations to grow without a fixed limit until the client became unavailable.\nThe issue does not allow the relay to forge a signature or learn the client's private\nkey.\n\nThe SDK now coalesces pending challenges through a latest-value channel. NIP-42 makes\nan earlier challenge invalid when the relay sends a new one, so replacing pending\nwork preserves the only challenge that can still be answered while keeping memory\nuse bounded.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "nostr",
+        "authentication",
+        "relay"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/6eb8766caa25f03803f178861be054f3bca718d7"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

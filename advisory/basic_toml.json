@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0374",
+      "package": "basic-toml",
+      "title": "`basic-toml` is unmaintained",
+      "description": "The last release was on March 3, 2025, the day after the repository was archived and marked as unmaintained.\n\n## Possible alternatives\n\n- [toml](https://crates.io/crates/toml)",
+      "date": "2026-09-26",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/dtolnay/basic-toml/commit/dd2ea1df197f255a402b8990cb852ade3e37ea34",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

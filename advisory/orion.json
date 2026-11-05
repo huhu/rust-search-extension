@@ -1,0 +1,120 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0428",
+      "package": "orion",
+      "title": "BLAKE2b produces wrong tag when using `reset()` with a different-length key",
+      "description": "## Summary\n\n`hazardous::mac::blake2b::Blake2b::reset()` does not correctly reset the state when a key is supplied that has a different length than the one used upon initialization with `hazardous::mac::blake2b::Blake2b::new()`, because it errorneously uses a cached length. \n\n## Impact\n\nInitialization `hazardous::mac::blake2b::Blake2b` with a key of some length `N`, followed by a reset with a key of length `!= N` will produce an incorrect BLAKE2b tag, causing `hazardous::mac::blake2b::Blake2b::verify()` to fail. This means under honest protocol conditions, parties could experience failing tag verifications.\n\n## Resolution\n\nUpgrade to `v0.17.16` or `v0.18.1`.",
+      "date": "2026-10-30",
+      "aliases": [
+        "GHSA-xcc6-f2jq-43x6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/orion-rs/orion/pull/690",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "orion::hazardous::mac::blake2b::Blake2b::reset": [
+          "<0.17.16",
+          "<0.18.1",
+          ">=0.12.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        "^0.17.16",
+        ">=0.18.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0426",
+      "package": "orion",
+      "title": "LLVM introduces timing-vulnerable optimizations into ML-KEM and ML-DSA operations intended to be constant-time",
+      "description": "## Summary\n\nOn targets that do not have a conditional move/select operations, LLVM compiles the internal `conditional_sub_u32()` function, into one that will contain a conditional jump on secret-dependent data, which could leak information about encapsulation and signing keys.\n\n`conditional_sub_u32()` is used throughout the field arithmetic of both ML-KEM and ML-DSA.\n\n## Impact\n\nThe variable-time jumps have been observed for ML-KEM and ML-DSA on:\n- `i586-unknown-linux-gnu`\n- `s390x-unknown-linux-gnu`\n\nAdditionally, ML-DSA sees the vulnerable LLVM optimization on `x86_64-unknown-linux-gnu`, for `hazardous::dsa::mldsa44` and `hazardous::dsa::mldsa87`.\n\nThe leakage this LLVM optimization introduces could enable recovery of cryptographic secrets. The practicality of exploiting the leakage depends on the compiler, target CPU used and how \"close\" to the process using the vulnerable functions the attacker is.\n\n## Resolution\n\nUpgrade to `v0.17.16` or `v0.18.1`. `conditional_sub_u32()` has been re-written to take conditional-move/jump ops availability into account.",
+      "date": "2026-10-30",
+      "aliases": [
+        "GHSA-r7wm-4vf2-h44w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/orion-rs/orion/pull/689",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [
+        "s390x",
+        "x86",
+        "x86_64"
+      ],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        "^0.17.16",
+        ">=0.18.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0012",
+      "package": "orion",
+      "title": "Flaw in streaming state reset() functions can create incorrect results.",
+      "description": "Affected versions of this crate did not properly reset a streaming state.\n\nResetting a streaming state, without finalising it first, creates incorrect results.\n \nThe flaw was corrected by not first checking if the state had already been reset, when calling reset().",
+      "date": "2018-12-20",
+      "aliases": [
+        "CVE-2018-20999",
+        "GHSA-gffv-5hr2-f9gj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/brycx/orion/issues/46",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

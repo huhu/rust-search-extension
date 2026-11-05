@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0072",
+      "package": "hpke-rs-rust-crypto",
+      "title": "Missing Check for All-Zero X25519 Shared Secret",
+      "description": "Computing an X25519 shared secret with\n`x25519_dalek::StaticSecret::diffie_hellman` does not include the\ncheck that the key exchange was contributory, i.e. does not ensure on\nits own that the resulting shared secret is non-zero.\n\n## Impact\nRFC 9180 mandates that implementations of HPKE must check for all zero\nDiffie-Hellman shared secrets and abort if so.\n\nApplications using hpke-rs with the RustCryto provider would not\nperform this check allowing for non-contributive Diffie-Hellman shared\nsecrets. Applications using hpke-rs with the libcrux provider are not\naffected.\n\n## Mitigation\nStarting with version `0.6.0`, an error will be returned when\nthe computed Diffie-Hellman shared secret is all-zero.",
+      "date": "2026-02-04",
+      "aliases": [
+        "GHSA-g433-pq76-6cmf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/hpke-rs/pull/124",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "hpke_rs_rust_crypto::HpkeRustCrypto::dh": [
+          "<=0.5.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

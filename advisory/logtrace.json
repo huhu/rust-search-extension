@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0081",
+      "package": "logtrace",
+      "title": "`logtrace` was removed from crates.io for malicious code",
+      "description": "`logtrace` appeared to be downloading a RAT.\n\nThe malicious crate had 2 versions published on 2026-04-01 that had a total of 30 downloads. There\nwere no crates depending on this crate on crates.io.\n\nThanks to [Socket.dev](https://socket.dev/) for detecting and reporting this to the crates.io team!",
+      "date": "2026-04-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

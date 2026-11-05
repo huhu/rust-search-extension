@@ -1,0 +1,321 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0176",
+      "package": "pyo3",
+      "title": "Out-of-bounds read in `nth` / `nth_back` for `PyList` and `PyTuple` iterators",
+      "description": "PyO3 0.24.0 added optimized implementations of `Iterator::nth` and\n`DoubleEndedIterator::nth_back` for the `BoundListIterator` and\n`BoundTupleIterator` types. These implementations computed the target index\nusing unchecked `usize` addition (`index + n`) before bounds-checking against\nthe sequence length, then read the element via `get_item_unchecked`.\n\nIn `nth` methods, a sufficiently large `n` (combined with a non-zero internal\nindex) could cause the addition to overflow and wrap around, producing a small\n\"target index\" that passed the bounds check and enabling reads at the front\nof the `list` or `tuple` of elements previously yielded by the iterator.\n\nIn `nth_back` methods, a sufficiently large `n` could cause underflow in a\nsimilar fashion, however would instead allow reads of arbitrary memory past\nthe end of the `list` or `tuple` storage.\n\nPyO3 0.29.0 has corrected these methods to use checked arithmetic at the\npositions which could be at risk of overflow.",
+      "date": "2026-06-11",
+      "aliases": [
+        "GHSA-36hh-v3qg-5jq4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "out-of-bounds-read",
+        "integer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/6086",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pyo3::types::list::BoundListIterator::nth": [
+          ">=0.24.0, <0.29.0"
+        ],
+        "pyo3::types::list::BoundListIterator::nth_back": [
+          ">=0.24.0, <0.29.0"
+        ],
+        "pyo3::types::tuple::BoundTupleIterator::nth": [
+          ">=0.24.0, <0.29.0"
+        ],
+        "pyo3::types::tuple::BoundTupleIterator::nth_back": [
+          ">=0.24.0, <0.29.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.29.0"
+      ],
+      "unaffected": [
+        "<0.24.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0177",
+      "package": "pyo3",
+      "title": "Missing `Sync` bound on `PyCFunction::new_closure` closures",
+      "description": "`PyCFunction::new_closure` (and the temporary `new_closure_bound` complement in\nthe 0.21–0.22 series) required the supplied closure to be `Send + 'static` but\nnot `Sync`. The resulting `PyCFunction` is a Python callable that can be\ninvoked from any Python thread, which means the closure may be called\nconcurrently from multiple threads, and needs a `Sync` bound to prevent\npossible data races.\n\nThe problem exists under all Python versions but is particularly vulnerable under\nthe newer free-threaded Python variant, which do not have serial execution\nimposed by the Global Interpreter Lock. Under releases protected by the GIL,\nthe ability to \"detach\" from the Python interpreter temporarily inside the closure\n(e.g. by `Python::detach`) makes it possible for interleaved and/or concurrent\nexecution of various portions of the closure.\n\nPyO3 0.29.0 added a `Sync` bound to close this thread-safety bug.",
+      "date": "2026-06-11",
+      "aliases": [
+        "GHSA-chgr-c6px-7xpp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [
+        "thread-safety",
+        "unsound"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/6096",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pyo3::types::PyCFunction::new_closure": [
+          ">=0.15.0, <0.29.0"
+        ],
+        "pyo3::types::PyCFunction::new_closure_bound": [
+          ">=0.21.0, <0.23.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.29.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0013",
+      "package": "pyo3",
+      "title": "Type confusion when accessing data from sublasses of subclasses of native types with `abi3` feature targeting Python 3.12 and up",
+      "description": "PyO3 0.28.1 added support for `#[pyclass(extends=PyList)] struct NativeSub` (and other native types) when targeting Python 3.12 and up with the `abi3` feature.\n\nIt was discovered that subclasses of such classes would use the type of the subclass when attempting to access to data of `NativeSub` contained within Python objects, amounting to memory corruption.\n\nPyO3 0.28.2 fixed the issue by using the type of (e.g.) `NativeSub` correctly.",
+      "date": "2026-02-18",
+      "aliases": [
+        "GHSA-47qc-857f-7w7f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/5807#issuecomment-3913251784",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.28.2"
+      ],
+      "unaffected": [
+        "<0.28.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0020",
+      "package": "pyo3",
+      "title": "Risk of buffer overflow in `PyString::from_object`",
+      "description": "`PyString::from_object` took `&str` arguments and forwarded them directly to the Python C API without checking for terminating nul bytes. This could lead the Python interpreter to read beyond the end of the `&str` data and potentially leak contents of the out-of-bounds read (by raising a Python exception containing a copy of the data including the overflow).\n\nIn PyO3 0.24.1 this function will now allocate a `CString` to guarantee a terminating nul bytes. PyO3 0.25 will likely offer an alternative API which takes `&CStr` arguments.",
+      "date": "2025-04-01",
+      "aliases": [
+        "GHSA-pph8-gcv7-4qj5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/issues/5005",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pyo3::types::PyString::from_object": [
+          "<0.24.1"
+        ],
+        "pyo3::types::PyString::from_object_bound": [
+          "<0.24.1",
+          ">=0.21.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.24.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0409",
+      "package": "pyo3",
+      "title": "Build corruption when using `PYO3_CONFIG_FILE` environment variable",
+      "description": "In PyO3 0.23.0 the `PYO3_CONFIG_FILE` environment variable used to configure builds regressed such that changing the environment variable would no longer trigger PyO3 to reconfigure and recompile. In combination with workflows using tools such as `maturin` to build for multiple versions in a single build, this leads to Python wheels being compiled against the wrong Python API version.\n\nAll users who distribute artefacts for multiple Python versions are encouraged to update and rebuild with PyO3 0.23.3. Affected wheels produced from PyO3 0.23.0 through 0.23.2 are highly unstable and will crash the Python interpreter in unpredictable ways.",
+      "date": "2024-12-04",
+      "aliases": [
+        "GHSA-vxcf-c7mx-pg53"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-corruption",
+        "ffi",
+        "corrupted-build"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/issues/4757",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.3"
+      ],
+      "unaffected": [
+        "<0.23.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0378",
+      "package": "pyo3",
+      "title": "Risk of use-after-free in `borrowed` reads from Python weak references",
+      "description": "The family of functions to read \"borrowed\" values from Python weak references\nwere fundamentally unsound, because the weak reference does itself not have\nownership of the value. At any point the last strong reference could\nbe cleared and the borrowed value would become dangling.\n\nIn PyO3 0.22.4 these functions have all been deprecated and patched to leak a\nstrong reference as a mitigation. PyO3 0.23 will remove these functions entirely.",
+      "date": "2024-10-12",
+      "aliases": [
+        "CVE-2024-9979",
+        "GHSA-6jgw-rgmm-7cv6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/4590",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pyo3::types::PyWeakrefMethods::get_object_borrowed": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed_as": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed_as_exact": [
+          "<0.22.4, >=0.22.0"
+        ],
+        "pyo3::types::PyWeakrefMethods::upgrade_borrowed_as_unchecked": [
+          "<0.22.4, >=0.22.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.22.4"
+      ],
+      "unaffected": [
+        "<0.22.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0074",
+      "package": "pyo3",
+      "title": "Reference counting error in `From<Py<T>>`",
+      "description": "A bug in `From<Py<T>>` would lead to an extra reference count decrement, often\nleading to use-after-free issues.",
+      "date": "2020-11-28",
+      "aliases": [
+        "CVE-2020-35917",
+        "GHSA-2vx6-fcw6-hpr6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/1297",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.12.4"
+      ],
+      "unaffected": [
+        "<0.12.0"
+      ]
+    }
+  }
+]

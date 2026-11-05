@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0031",
+      "package": "time_calibrators",
+      "title": "`time_calibrators` was removed from crates.io due to malicious code",
+      "description": "The `time_calibrators` crate attempted to exfiltrate `.env` files to a server\nthat was in turn impersonating the legitimate `timeapi.io` service.\n\nThe malicious crate had 1 version published on 2026-03-03 approximately 3 hours\nbefore removal and had no evidence of actual downloads. There were no crates\ndepending on this crate on crates.io.\n\nThanks to cybergeek for finding and reporting this to the Rust security\nresponse working group, and thanks to Emily Albini for co-ordinating with the\ncrates.io team.",
+      "date": "2026-03-03",
+      "aliases": [
+        "GHSA-wf45-3gpw-vrqv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

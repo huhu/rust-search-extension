@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0275",
+      "package": "azure_core",
+      "title": "Legacy `azure_core` writes the `authorization` header value to logs",
+      "description": "Applications built on the legacy Azure SDK for Rust (`azure_core` 0.21.0 and\nearlier) write the value of the outgoing `authorization` header to their logs\nwhenever debug-level logging is enabled, and in every affected version also at\ntrace level. The leaked values are live credentials — Microsoft Entra\nID bearer tokens, Azure Storage SharedKey signatures, and SAS tokens — and\nanyone with read access to the logs can replay them until they expire\n(CWE-532).\n\nVersions 0.22.0 and later, which are the rewritten and currently supported\nSDK, do not contain the affected code.\n\n## Affected versions\n\nEvery published legacy version except 0.2.0 writes the `authorization` header\nvalue to logs: 0.1.1 (2022-01-25), and 0.2.1 through 0.21.0 (2024-10-15).\n\n## Mitigation\n\n- Upgrade to `azure_core` 1.0.0 or newer.\n- If you are unable to upgrade, raise the log level above debug for the\n  impacted crates or submit a feature request for missing crates built on `azure_core` 1.0.0 or newer.\n- Treat logs produced by an affected build as credential-bearing: rotate any\n  long-lived secret that authenticated a request while debug logging was on.\n\n## Coordination\n\nThe finding was reported to the Microsoft Security Response Center\n(VULN-211331), which determined that it does not meet the Microsoft Security\nServicing Criteria definition of a security vulnerability.\n\nIt was then disclosed publicly as [Azure/azure-sdk-for-rust#5074][issue] on\n2026-08-15, asking the maintainers to confirm the behavior so that an advisory\ncould be filed for the legacy crates. A maintainer replied on 2026-08-26 and\nclosed the issue as not planned: the `legacy` branch is unsupported, there are\nno plans to update it, and users should move to crates built on `azure_core`\n1.0.0 or newer.\n\n[pr]: https://github.com/Azure/azure-sdk-for-rust/pull/1699\n[issue]: https://github.com/Azure/azure-sdk-for-rust/issues/5074",
+      "date": "2026-08-15",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "information-leak",
+        "logs",
+        "credentials",
+        "authorization-header",
+        "azure"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:N/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/Azure/azure-sdk-for-rust/pull/1699",
+        "https://github.com/Azure/azure-sdk-for-rust/commit/7a0e20c1e002ce06da0f3ec8795ef1529862ea97"
+      ],
+      "source": null,
+      "url": "https://github.com/Azure/azure-sdk-for-rust/issues/5074",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.22.0"
+      ],
+      "unaffected": [
+        "=0.2.0"
+      ]
+    }
+  }
+]

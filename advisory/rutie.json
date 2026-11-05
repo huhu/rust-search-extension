@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0448",
+      "package": "rutie",
+      "title": "`parse_arguments` reads a caller-supplied pointer as a slice",
+      "description": "`parse_arguments` is safe. It takes `arguments: *const AnyObject` and `argc`, and calls `slice::from_raw_parts(arguments, argc as usize)`.\n\nIt does not check that `arguments` is non-null and aligned, or that `argc` elements are initialized. Safe Rust can pass a null pointer or a length past the allocation. The maintainer confirmed this on 2026-10-03, including a debug abort on Rust 1.78+ when Ruby calls an arity -1 method (`to_s` via `format`, `puts`, or `Array#join`) with a NULL `argv` and `argc` of 0.",
+      "date": "2024-11-25",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "from-raw-parts"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/danielpclark/rutie/issues/190",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.3, <0.11.0",
+        ">=0.11.3, <0.12.0",
+        ">=0.12.1, <0.13.0",
+        ">=0.13.1, <0.14.0",
+        ">=0.14.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

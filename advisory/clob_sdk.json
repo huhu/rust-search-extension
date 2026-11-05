@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0017",
+      "package": "clob-sdk",
+      "title": "`clob-sdk` was removed from crates.io for malicious code",
+      "description": "This is part of an ongoing campaign to attempt to typosquat crates in the\n[`polymarket-client-sdk`](https://crates.io/crates/polymarket-client-sdk)\necosystem to exfiltrate user credentials.\n\nThe malicious crate had 1 version published on 2026-02-20 approximately 4 hours\nbefore removal and had no evidence of actual downloads. There were no crates\ndepending on this crate on crates.io.\n\nThe crates.io team advises anyone developing with Polymarket to review\ndependencies carefully. We are investigating ways to mitigate this attacker who\nappears to be very motivated to steal Polymarket credentials.",
+      "date": "2026-02-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0430",
+      "package": "rio-vt",
+      "title": "Path traversal in `rio-vt` Kitty graphics protocol handler allows out-of-bounds file delete (and read)",
+      "description": "The Kitty graphics protocol handler in `rio-vt` builds a filesystem path from an attacker-controlled APC escape sequence and, for the temp-file medium, only checks that the path *contains the substring* `\"tty-graphics-protocol\"` before it opens, reads, and `remove_file`s it. There is no `..` rejection and no canonicalization, so a path containing the marker substring plus `..` escapes the terminal's temp directory (path traversal, CWE-22/CWE-23).\n\nBecause a terminal renders whatever arrives on the PTY (ssh output, a `cat`'d file, CI logs), untrusted output can delete a file outside the temp area and cause its bytes to be read back in.\n\n## Details\n\nThe sink is `create_graphic_data()` in `src/ansi/kitty_graphics_protocol.rs`, in the `TransmissionMedium::TempFile` branch, reachable through the public API `rio_vt::ansi::kitty_graphics_protocol::parse`. The path is the base64 APC payload of an `a=t,t=t` command, and the guard is:\n\n```rust\nlet path = Path::new(path_str);\nif !path.is_file() { return Err(GraphicError::FileNotFound); }       // literal path, resolves `..`\n// reject /proc/ /sys/ /dev/ (lowercased substring)\nif cmd.medium == TransmissionMedium::TempFile\n    && !path_str.contains(\"tty-graphics-protocol\") {                 // SUBSTRING, not a component\n    return Err(GraphicError::InvalidData);\n}\n// ...\nlet mut file = File::open(path)...;          // reads file bytes\nif cmd.medium == TransmissionMedium::TempFile {\n    let _ = std::fs::remove_file(path);      // deletes the file\n}\n```\n\nThis affects any terminal emulator or application built on `rio-vt` (e.g. the Rio terminal) that renders attacker-influenced output: an out-of-bounds file is deleted, and its contents are read into the process.\n\n## The fix\n\nFixed in `rio-vt` 0.5.29 (Rio 0.5.29) by [PR #1998](https://github.com/raphamorim/rio/pull/1998). For the temp-file medium the parent directory is resolved with `canonicalize` before any check, the resolved entry must lie inside a temp directory (`temp_dir()`, `/tmp` or `/dev/shm`) and contain the marker, and the delete goes through `unlinkat` on a handle to the validated directory, so neither `..` nor a swapped symlink can redirect it. Path checks for the file medium also run on the file actually opened.",
+      "date": "2026-11-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "path-traversal",
+        "kitty-graphics-protocol",
+        "file-disclosure",
+        "terminal"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/raphamorim/rio/pull/1998"
+      ],
+      "source": null,
+      "url": "https://github.com/raphamorim/rio/security/advisories/GHSA-m926-9wrf-jr8w",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rio_vt::ansi::kitty_graphics_protocol::parse": [
+          "<=0.5.28"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.5.29"
+      ],
+      "unaffected": []
+    }
+  }
+]
