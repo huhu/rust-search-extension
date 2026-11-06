@@ -1,6 +1,103 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0455",
+      "package": "actix-http",
+      "title": "Large-window Brotli bodies bypass decompression memory limits",
+      "description": "With the `compress-brotli` feature enabled, the decoder accepts the non-standard\nlarge-window Brotli format. A crafted stream can cause its internal buffer to\ngrow to about 1 GiB before the decoded output reaches the configured size limit.\nAn 850-byte request can cause this allocation, and concurrent requests can\nexhaust process or host memory.\n\nActix Web enables Brotli support by default. Applications that read request\nbodies through `Bytes`, `String`, `Json`, or `Form` can be affected even when\nextractor size limits are configured. The allocation occurs before the handler\nruns, so authentication performed in the handler does not prevent it.\n\nUpgrade to actix-http 3.20.3 or later. As a workaround, reject requests with\n`Content-Encoding: br` at a reverse proxy or in middleware before body\nextraction, or disable the `compress-brotli` feature throughout the dependency\ngraph.",
+      "date": "2026-11-06",
+      "aliases": [
+        "GHSA-7p9w-p5qm-5gc5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-web/commit/61c6a15c1c0e505a5cd6842610a5f1faea432a83",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.20.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0448",
+      "package": "actix-http",
+      "title": "Unbounded decompression can exhaust memory and CPU resources",
+      "description": "The `encoding::Decoder` stream can expand compressed input into a large output\nbuffer before a caller can enforce its body size limit. An attacker who controls\na compressed request or response can cause excessive memory allocation and CPU\nuse, resulting in denial of service.\n\nThis affects applications that decode untrusted gzip, deflate, Brotli, or Zstandard\nbodies with the corresponding compression feature enabled.\n\nUpgrade to actix-http 3.20.1 or later and configure `Decoder::limit()` when using\nthe decoder directly. Actix Web users must also upgrade to actix-web 4.18.2 or\nlater so that extractors pass their limits to the decoder.",
+      "date": "2026-11-06",
+      "aliases": [
+        "GHSA-qph8-7859-gq2f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-web/commit/41b54d23ea04f66758c15de7e4ab18325cd25280",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.20.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0446",
+      "package": "actix-http",
+      "title": "Request smuggling through malformed chunked request trailers",
+      "description": "The HTTP/1 chunked decoder accepts a bare line feed after the final chunk as\nthe start of a trailer instead of rejecting the malformed request.\n\nWhen an upstream proxy reuses a connection and either pipelines the requests or\ndoes not take steps to validate the chunked stream, the decoder can consume the\nnext request's headers as trailer data. It can then parse that request's body as\na new request. An attacker can use this difference in request parsing to bypass\naccess controls enforced by a proxy or web application firewall.\n\nUpgrade to actix-http 3.20.2 or later.",
+      "date": "2026-11-06",
+      "aliases": [
+        "GHSA-2q7f-mf9f-5qhr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-web/commit/feed12e9ec59b39abe90590bf48ae6399ed45b56",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.20.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0081",
       "package": "actix-http",
       "title": "Potential request smuggling capabilities due to lack of input validation",

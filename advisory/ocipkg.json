@@ -1,0 +1,76 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0449",
+      "package": "ocipkg",
+      "title": "`ocipkg` is unmaintained",
+      "description": "The author of `ocipkg` has archived the repository and declared the crate no longer maintained.\n[Version 0.4.1](https://crates.io/crates/ocipkg/0.4.1) is stated to be the final release.\n\"No further updates, including security fixes, are planned.\"\n\n## Alternatives\n\n- For interacting with OCI registries, the maintainer suggests the ORAS project's\n  [`oci-client`](https://github.com/oras-project/rust-oci-client).\n- For ocipkg-specific functionality (local package management, or build-time library fetching and\n  linking), the maintainer suggests forking the repository from\n  [0.4.1](https://github.com/termoshtt/ocipkg/tree/0.4.1) and maintaining it for your use case, as\n  `oci-client` is not a drop-in replacement for those features.",
+      "date": "2026-11-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/termoshtt/ocipkg#maintenance-status",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0450",
+      "package": "ocipkg",
+      "title": "`ocipkg`: unpacking an OCI archive can write and delete files outside the local image store (path traversal)",
+      "description": "When `ocipkg` unpacks an OCI archive, the destination directory is derived from the\nimage name, which `ocipkg` reads from the archive's **own** `index.json`\n(`org.opencontainers.image.ref.name`). That name is attacker-controlled, and\n`ImageName::parse` accepts a hostname of `..`, so the computed destination escapes the\nlocal image store. A \"zip-slip\"-style path traversal (CWE-22 / CWE-23). This is esclatable to code execution.\n\nIn `Artifact::unpack` (`src/image/artifact.rs`), the destination is\n`image_dir(name) = data_dir().join(name.as_path())` (`src/local/mod.rs:31`), where the\nname comes from `get_name_from_index` (`src/image/layout.rs:114-124`):\n\n```rust\nlet image_name = self.base.get_name()?;   // from the archive's index.json ref.name\nlet dest = image_dir(&image_name)?;        // data_dir().join(name.as_path()); hostname \"..\" escapes\nif dest.exists() {\n    if overwrite {\n        fs::remove_dir_all(&dest)?;        // deletes a directory OUTSIDE the store\n    }\n}\nfs::create_dir_all(&dest)?;\n// ... each tar layer is then unpacked under `dest` (also outside the store)\n```\n\n## The fix\n\nFixed in `ocipkg` 0.4.1 by [PR #223](https://github.com/termoshtt/ocipkg/pull/223). The leading\nreference component is validated against the `org.opencontainers.image.ref.name` grammar from OCI\nImage Specification 1.1.1 on parse and deserialization, and `local::image_dir` revalidates the name\nand rejects any non-normal path component (e.g. `..`) before any filesystem mutation, so a crafted\narchive can no longer escape the local image store.",
+      "date": "2026-10-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "path-traversal",
+        "directory-traversal",
+        "oci",
+        "arbitrary-file-write",
+        "arbitrary-delete"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/termoshtt/ocipkg/pull/223"
+      ],
+      "source": null,
+      "url": "https://github.com/termoshtt/ocipkg/issues/222",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ocipkg::image::load": [
+          "<=0.4.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.1"
+      ],
+      "unaffected": []
+    }
+  }
+]
