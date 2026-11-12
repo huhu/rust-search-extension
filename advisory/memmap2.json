@@ -1,0 +1,63 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0186",
+      "package": "memmap2",
+      "title": "Unchecked pointer offset in crate `memmap2`",
+      "description": "Affected versionf of `memmap2` did not perform enough validation on the `offset` and `len` parameters of\n`Mmap::[unchecked_]advise_range()`,\n`MmapMut::[unchecked_]advise_ranage()`\nand `MmapMut::flush[_async]_range()`.\n\nThis can cause undefined behavior due to invalid values being passed to [`pointer::offset()`] and [`pointer::add()`]\nwhen passing an out-of-bounds range to any of the affected functions.\n\nThe flaw was corrected in commit [`cee7cf0`] and released in version `0.9.11`.\n\nThe invalid pointer is not dereferenced,\nbut it is passed to the `madvise` and `msync` syscalls and their Windows equivalents.\n\n[`pointer::offset()`]: https://doc.rust-lang.org/stable/std/primitive.pointer.html#method.offset-1\n[`pointer::add()`]: https://doc.rust-lang.org/stable/std/primitive.pointer.html#method.add-1\n[`cee7cf0`] https://github.com/RazrFalcon/memmap2-rs/pull/170/changes/cee7cf03a9ee095982a3c37b7aac8e3f68f1a00c",
+      "date": "2026-06-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "pointer-arithmetic",
+        "out-of-bounds"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/RazrFalcon/memmap2-rs/pull/170"
+      ],
+      "source": null,
+      "url": "https://github.com/RazrFalcon/memmap2-rs/issues/169",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "memmap2::Mmap::advise_range": [
+          ">=0.5.9",
+          "<0.9.11"
+        ],
+        "memmap2::Mmap::unchecked_advise_range": [
+          ">=0.8.0",
+          "<0.9.11"
+        ],
+        "memmap2::MmapMut::advise_range": [
+          ">=0.5.9",
+          "<0.9.11"
+        ],
+        "memmap2::MmapMut::flush_async_range": [
+          "<0.9.11"
+        ],
+        "memmap2::MmapMut::flush_range": [
+          "<0.9.11"
+        ],
+        "memmap2::MmapMut::unchecked_advise_range": [
+          ">=0.8.0",
+          "<0.9.11"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.11"
+      ],
+      "unaffected": []
+    }
+  }
+]

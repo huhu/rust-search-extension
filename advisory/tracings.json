@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0027",
+      "package": "tracings",
+      "title": "`tracings` was removed from crates.io for malicious code",
+      "description": "This is part of an ongoing campaign to attempt to typosquat crates in an\nattempt to exfiltrate Polymarket credentials.\n\nThe malicious crate had 1 version published on 2026-02-26 approximately 9 hours\nbefore removal and had no evidence of actual usage. The only crate depending on\nthis crate was the `tracing_checks` crate, which was also part of this campaign\nand has received a separate advisory.\n\nThanks to Marko Ćupić for finding and reporting this to the Rust security\nresponse working group, and to Emily Albini for co-ordinating with the\ncrates.io team.\n\nThe crates.io team advises anyone developing with Polymarket to review\ndependencies carefully. We are investigating ways to mitigate this attacker who\nappears to be very motivated to steal Polymarket credentials.",
+      "date": "2026-02-26",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

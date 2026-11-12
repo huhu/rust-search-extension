@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0013",
+      "package": "fake-static",
+      "title": "fake-static allows converting any reference into a `'static` reference",
+      "description": "fake-static allows converting a reference with any lifetime into\na reference with `'static` lifetime without the `unsafe` keyword.\n\nInternally, this crate does not use unsafe code, it instead\nexploits a soundness bug in rustc:\n\nhttps://github.com/rust-lang/rust/issues/25860",
+      "date": "2020-04-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

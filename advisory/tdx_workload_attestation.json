@@ -1,0 +1,102 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0480",
+      "package": "tdx_workload_attestation",
+      "title": "Panic on a GCP launch endorsement without TDX measurements",
+      "description": "`GcpTdxHost::verify_launch_endorsement()`, available with the `host-gcp-tdx`\nfeature, read `uefi_golden.tdx.measurements[0]` without checking that the\ngolden measurement contains a TDX measurement. If a launch endorsement's\ngolden measurement had no TDX measurements, the call panicked with an index\nout of bounds instead of returning an error.\n\nThe panic is reached only after the endorsement's signing certificate and\nsignature have been verified. Triggering it therefore requires a correctly\nsigned endorsement that lacks TDX measurements.\n\nIntel describes the issue as improper input validation and classifies it as\ndenial of service, with a CVSS 4.0 base score of 5.7, in INTEL-SA-01520.\n\nThe flaw was corrected in\n[#87](https://github.com/IntelLabs/tdx-workload-attestation/pull/87), released\nin 0.2.0. The function now returns `Error::ParseError` when the TDX\nmeasurement structure is missing or empty.\n\nReported by [Borys Tsyrulnikov](https://borystsyrulnikov.dev).",
+      "date": "2026-11-10",
+      "aliases": [
+        "CVE-2026-40693",
+        "GHSA-gwf2-8595-qw97"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "tdx",
+        "attestation",
+        "gcp",
+        "panic"
+      ],
+      "cvss": "CVSS:4.0/AV:L/AC:H/AT:P/PR:L/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/IntelLabs/tdx-workload-attestation/pull/87",
+        "https://github.com/IntelLabs/tdx-workload-attestation/releases/tag/v0.2.0"
+      ],
+      "source": null,
+      "url": "https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01520.html",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tdx_workload_attestation::gcp::GcpTdxHost::verify_launch_endorsement": [
+          "<0.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0481",
+      "package": "tdx_workload_attestation",
+      "title": "`verify_x509_cert` does not check the certificate validity period",
+      "description": "`tdx_workload_attestation::verification::x509::verify_x509_cert()`, available\nwith the `host-verification` feature, checked that `issuer_cert` issued `cert`\nand verified the certificate signature. It did not check the certificate's\nvalidity period, so it accepted expired and not-yet-valid certificates.\n\nWith the `host-gcp-tdx` feature, this function validates the GCP launch\nendorsement signing certificate against the GCE confidential-computing TCB\nroot certificate. A signing certificate outside its validity period was\ntherefore still accepted during launch endorsement verification.\n\nIntel describes the issue as improper certificate validation and classifies\nit as escalation of privilege, with a CVSS 4.0 base score of 5.9, in\nINTEL-SA-01520.\n\nThe flaw was corrected in\n[#86](https://github.com/IntelLabs/tdx-workload-attestation/pull/86), released\nin 0.2.0. The function now returns `Ok(false)` when the current time is\noutside the certificate's `notBefore`/`notAfter` range.\n\nReported by [Borys Tsyrulnikov](https://borystsyrulnikov.dev).",
+      "date": "2026-11-10",
+      "aliases": [
+        "CVE-2026-42067",
+        "GHSA-w4mf-755j-wjwc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "tdx",
+        "attestation",
+        "x509",
+        "certificate"
+      ],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:P/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/IntelLabs/tdx-workload-attestation/pull/86",
+        "https://github.com/IntelLabs/tdx-workload-attestation/releases/tag/v0.2.0"
+      ],
+      "source": null,
+      "url": "https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01520.html",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tdx_workload_attestation::verification::x509::verify_x509_cert": [
+          "<0.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

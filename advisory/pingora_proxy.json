@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0390",
+      "package": "pingora-proxy",
+      "title": "Pingora forwards client-nominated Connection headers to HTTP/1 upstreams, allowing ACL bypass in specific chained deployments",
+      "description": "Pingora versions prior to 0.9.0 passed the downstream request through `upstream_request_filter` and wrote it to HTTP/1 upstreams without removing the client's Connection header, other hop-by-hop headers, or the headers Connection nominated, although RFC 9110 Section 7.6.1 requires intermediaries to remove them. The HTTP/2 upstream path already removed Connection and related HTTP/1-specific headers. A client could therefore nominate a header that the application adds in `upstream_request_filter` (for example, `Connection: keep-alive, X-Forwarded-For`). A downstream HTTP/1 intermediary that honors Connection would then strip the Pingora-added header before it reached the origin.\n\nThis specifically affects chained deployments where an HTTP/1 intermediary between Pingora and the origin processes Connection nominations (for example, Go's `net/http/httputil.ReverseProxy`) and the origin trusts headers added by that intermediary (for example, X-Forwarded-For for IP-based authorization). A remote, unauthenticated attacker can have those headers removed, potentially bypassing authorization. This is the same class of issue as CVE-2022-31813 in Apache HTTP Server.\n\nThis flaw was corrected in commits 28c18e6b6b04dd0bd937234e5950049e6d74cded and ca23f1668eca8e78be7ba62ef0edbd458b40eeee. By default, Pingora now removes hop-by-hop and Connection-nominated headers from upstream requests, and rejects requests whose Connection header nominates Host, X-Forwarded-For, X-Forwarded-Host, X-Forwarded-Proto, or a pseudo-header. This is controlled by `PeerOptions::http_upstream_request_policy`; `HttpUpstreamRequestPolicy::preserve()` restores the old passthrough behavior and should not be used if the origin relies on headers added by Pingora. Users should upgrade to Pingora >= 0.9.0.\n\nNote: Cloudflare CDN customers were unaffected, as no such chained deployment as described above exists with internal Pingora services, and Connection headers are sanitized before arriving at Pingora gateways.",
+      "date": "2026-10-20",
+      "aliases": [
+        "CVE-2026-105299",
+        "GHSA-vx4q-2c55-cvmg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "http",
+        "hop-by-hop",
+        "connection-header"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:N/SC:H/SI:H/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/cloudflare/pingora/commit/ca23f1668eca8e78be7ba62ef0edbd458b40eeee"
+      ],
+      "source": null,
+      "url": "https://github.com/cloudflare/pingora/commit/28c18e6b6b04dd0bd937234e5950049e6d74cded",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

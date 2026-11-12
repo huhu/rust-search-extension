@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0199",
+      "package": "bcrypt",
+      "title": "Panic in `bcrypt::verify` on non-ASCII hash input",
+      "description": "`bcrypt::verify(password, hash)` and `HashParts::from_str(hash)` panic in\n`str::slice_error_fail` when given a 60-byte `&str` containing a multi-byte\nUTF-8 character at certain byte positions.\n\n## Impact\n\nAny Rust code that calls `bcrypt::verify` (or `HashParts::from_str`) with an\nattacker-controlled hash string will panic. The `bcrypt` crate is\n`#![forbid(unsafe_code)]`, so this is limited to a denial-of-service and\ncannot lead to memory corruption.\n\nRealistic attack contexts include:\n\n- Rust authentication services reading hashes from a database that was\n  previously compromised via, e.g., SQL injection. The attacker can then\n  crash the service on every login attempt against the tampered account.\n- CLI tools accepting hashes from stdin or command-line arguments.\n- Password managers or vault services loading hashes from untrusted\n  configuration sources.\n\n## Root cause\n\n`split_hash` performed five `&str` slicing operations on the input hash:\n`&hash[1..3]`, `&hash[4..6]`, `&hash[7..]`, `&salt_and_hash[..22]`, and\n`&salt_and_hash[22..]`. None of these were char-boundary-checked. Any input\nwhere a multi-byte UTF-8 character spanned one of those byte positions\ncaused a panic.\n\nThis is a regression of the fix originally shipped in 2021 for issue #62\n(commit `0833509`). The regression was introduced in the parser rewrite in\nPR #95 (commit `e9a8394`, released as 0.19.0).\n\nThe pre-existing regression test `does_no_error_on_char_boundary_splitting`\nwas not removed, but was silently rendered ineffective by the new\n`bytes[0] != b'$'` guard, which rejected its input earlier and prevented\nit from reaching the buggy slices — leaving CI green through the regression.\n\n## Fix\n\n`split_hash` now rejects any hash string containing non-ASCII bytes up\nfront. A valid bcrypt hash is always exactly 60 ASCII bytes, so this\ncloses the entire class of byte-boundary panics rather than guarding each\nslice individually.\n\nThe fix was merged in PR #103 and released as `bcrypt 0.19.2` on 2026-06-20.\n\n## Downstream impact\n\n`pyca/bcrypt` (which depended on `bcrypt 0.19.1`) is **not** affected. Its\nPython-side wrapper performs its own byte-level salt parsing before\ninvoking `bcrypt::hash_with_salt`, and never reaches the buggy code path\nin `split_hash` or `verify`.",
+      "date": "2026-06-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic",
+        "utf-8",
+        "denial-of-service"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [
+        "https://github.com/Keats/rust-bcrypt/issues/62",
+        "https://github.com/Keats/rust-bcrypt/pull/95",
+        "https://github.com/Keats/rust-bcrypt/commit/f5f1ee2862c1198a85afe3c2f8cd80835162b7e9"
+      ],
+      "source": null,
+      "url": "https://github.com/Keats/rust-bcrypt/pull/103",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.19.2"
+      ],
+      "unaffected": [
+        "<0.19.0"
+      ]
+    }
+  }
+]

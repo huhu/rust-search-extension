@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0138",
+      "package": "diesel-async",
+      "title": "Unsound access to padding bytes while serializing date/time values using the Mysql backend",
+      "description": "Diesel-async uses the mysql-async crate for interacting with Mysql compatible databases. This library already provides access to deserialized data for date/time releated types. Diesel-async then translated these deserialized data back to their serialized binary representation to hook into diesels desearialization framework.\n\nWhile serializing these data/time values again Diesel-async relied on a cast between the `MysqlTime` `#[repr(C)]` struct (defined by Diesel) and a byte array. As this cast exposes padding bytes contained in this struct, this is undefined behaviour.\n\nThis vulnerability affects any user deserializing date/time values using the Mysql backend and diesel-async.\n\nThis affects any usage of the following functions with a `AsyncMysqlConnection` provided by diesel-async:\n\n* `diesel::serialize::FromSql<Timestamp, Mysql>`\n* `diesel::serialize::FromSql<Time, Mysql>`\n* `diesel::serialize::FromSql<Date, Mysql>`\n* `diesel::serialize::FromSql<DateTime, Mysql>`\n\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to Diesel-async version 0.9.0 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel-async now just calls a safe serialization method provided by Diesel 2.3.9 and newer",
+      "date": "2026-04-30",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel_async/security/advisories/GHSA-ff9q-rm55-q7qr",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0011",
+      "package": "polymarket-client-sdks",
+      "title": "`polymarket-client-sdks` was removed from crates.io for malicious code",
+      "description": "It appeared to be typosquatting existing crate\n[`polymarket-client-sdk`](https://crates.io/crates/polymarket-client-sdk) (`sdks` vs `sdk`)\nand attempting to steal credentials from local files.\n\nThe malicious crate had 1 version published on 2026-02-09 and had been downloaded only 33 times.\nThere were no crates depending on this crate on crates.io.\n\nThanks to Roland Peelen for finding and reporting this to the crates.io team!",
+      "date": "2026-02-13",
+      "aliases": [
+        "GHSA-p5vf-5754-x7p3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

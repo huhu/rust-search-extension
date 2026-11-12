@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0301",
+      "package": "stack_collections",
+      "title": "Double free in `StackVec::retain` when a predicate or element `Drop` panics",
+      "description": "## Summary\n\n`StackVec::retain` committed its new length to `self.len` only after\nits internal loop completed. If the retain predicate or a removed\nelement's `Drop` implementation panicked before the loop finished,\nunwinding proceeded with `self.len` still equal to the original,\npre-retain length, leaving either a duplicated or already-destroyed\nelement inside `0..len`. `StackVec`'s own `Drop` then revisited that\nslot, causing a double-drop (and for heap-owning types, a double-free).\n\n## Impact\n\nAffects `StackVec<T, CAP>::retain` for `T: Drop` types where the\npredicate or the removed element's destructor can panic, on builds\nwith unwinding enabled (`panic = \"unwind\"`). `no_std`/`panic = \"abort\"`\nbuilds cannot trigger this, since unwinding never occurs.\n\n## Patch\n\nFixed in 0.3.3 using an unwind-safe backshift guard, matching the\napproach `alloc::vec::Vec::retain` uses.",
+      "date": "2026-09-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "double-free",
+        "unwind-safety"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/OverwrittenCode/stack_collections/pull/4",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.3"
+      ],
+      "unaffected": [
+        "<0.3.0"
+      ]
+    }
+  }
+]

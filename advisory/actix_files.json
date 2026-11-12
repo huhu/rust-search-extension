@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0443",
+      "package": "actix-files",
+      "title": "Hidden file disclosure through Windows short names",
+      "description": "On Windows volumes with 8.3 short names, `actix_files::Files` can serve hidden\nfiles through their short-name aliases. The default path check rejects segments\nthat start with a dot, but an alias such as `ENV~1` or `GIT~1` passes this check.\n\nA remote client can read files such as `.env` or `.git/config` in the served\ndirectory even when `use_hidden_files()` is not enabled. This can expose secrets\nor source code.\n\nUpgrade to actix-files 0.7.4 or later. As a workaround, remove sensitive files\nand directories from the served directory.",
+      "date": "2026-11-06",
+      "aliases": [
+        "GHSA-8hcm-m7r7-frwc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-web/commit/f2c83122d244e4ba38514ee3fe1fd42a110dc3f0",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.7.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

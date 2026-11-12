@@ -1,0 +1,81 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0075",
+      "package": "libcrux-ed25519",
+      "title": "All-Zero Key Generation on Catastrophic RNG Failure",
+      "description": "The libcrux-ed25519 key generation samples Ed25519 secret keys from a\nprovided CSPRNG in a loop for up to 100 attempts until a non-zero key\nis found.  If a non-zero key could not be sampled within 100 attempts\nthe key generation function would silently continue with an all-zero buffer as\nthe secret key.\n\n## Impact\nThis bug only occurs in the event of a catastrophic failure of the\nCSPRNG, but would allow anyone to forge signatures under the resulting\nstatic signing key.\n\n## Mitigation\nInstead of silently continuing with an all-zero signing key, starting\nfrom version `0.0.7` key generation will error in the case of 100\nfailed attempts at sampling a valid key.",
+      "date": "2026-03-04",
+      "aliases": [
+        "GHSA-434v-x5qv-pmh6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1349",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_ed25519::generate_key_pair": [
+          "<=0.0.6"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0026",
+      "package": "libcrux-ed25519",
+      "title": "Unnecessary clamping of seed reduces seed entropy to 251 bits",
+      "description": "The latest releases of the libcrux-ed25519 crate contains the\nfollowing bug-fix:\n\n[#1320](https://github.com/cryspen/libcrux/pull/1320): Remove\nduplicated clamping step during key generation\n\nThe issue fixed in\n[#1320](https://github.com/cryspen/libcrux/pull/1320) was first\nreported by Nadim Kobeissi.",
+      "date": "2026-02-05",
+      "aliases": [
+        "CVE-2026-76234",
+        "GHSA-435g-fcv3-8j26"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1320",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_ed25519::generate_key_pair": [
+          "<=0.0.5"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

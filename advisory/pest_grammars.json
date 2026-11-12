@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0366",
+      "package": "pest_grammars",
+      "title": "Stack overflow when parsing deeply nested input in pest_grammars",
+      "description": "## Impact\n\nIn affected versions, parsing deeply nested input with `pest_grammars::json::JsonParser` can exhaust the native stack and abort the hosting process. Applications that accept attacker-controlled JSON without suitable resource limits may therefore be vulnerable to denial of service.\n\nThe reported reproduction demonstrates this behavior with deeply nested JSON arrays. The nesting required to trigger an overflow depends on the platform, available stack space, and build configuration; there is no portable safe nesting threshold.\n\n## Patches\n\nUpgrade to `pest_grammars` 2.9.3 or later.\n\nVersion 2.9.3 requires the updated `pest` runtime and includes regression tests for deeply nested JSON with the optional call budget disabled. Supported std builds automatically check available native stack headroom at parser checkpoints and return a handled stack limit reached error when insufficient space is detected. This protection operates independently of `pest::set_call_limit()`. See the [2.9.3 dependencies](https://github.com/pest-parser/pest/blob/v2.9.3/grammars/Cargo.toml#L16-L18) and [deep-nesting regression tests](https://github.com/pest-parser/pest/blob/v2.9.3/grammars/src/lib.rs#L94-L215).\n\nThese checks are best-effort. They do not provide universal stack-overflow protection, apply when stack bounds cannot be determined, or provide native-stack protection in no_std builds.\n\n## Workarounds and defense in depth\n\nApplications unable to upgrade should reject excessive nesting before invoking the affected parser or configure a suitably conservative `pest::set_call_limit()` budget. A call budget is not a portable stack-depth guarantee.\n\nEven after upgrading, applications parsing untrusted input should enforce workload-appropriate input, work, memory, and concurrency limits. Stack checks and call budgets do not enforce elapsed-time deadlines. Where a hard deadline or cancellation is required, use supervised parsing as described in the [security policy: Parsing Untrusted Input](https://github.com/pest-parser/pest/security/policy#parsing-untrusted-input).",
+      "date": "2026-10-16",
+      "aliases": [
+        "GHSA-7632-4q2x-hvjw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "pest_grammars",
+        "pest",
+        "stack",
+        "overflow"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/pest-parser/pest/pull/1212",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pest_grammars::json::JsonParser::parse": [
+          "<2.9.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.9.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

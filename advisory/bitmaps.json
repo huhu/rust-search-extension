@@ -1,0 +1,60 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0247",
+      "package": "bitmaps",
+      "title": "bitmaps is unmaintained",
+      "description": "The bitmaps crate is unmaintained; all versions are affected. The GitHub\nrepository was archived by the owner on 2026-05-03.\n\nRecommended alternatives:\n\n* [fixedbitset](https://crates.io/crates/fixedbitset)\n* [bitvec](https://crates.io/crates/bitvec)",
+      "date": "2026-05-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodil/bitmaps",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0167",
+      "package": "bitmaps",
+      "title": "`Bitmap::try_from(&[u8])` can create invalid values",
+      "description": "The `TryFrom<&[u8]>` implementation for `Bitmap<SIZE>` copies the input bytes\ninto an uninitialized backing store and calls `assume_init()` without\nvalidating that the bytes form a valid value of the backing store type. For\n`SIZE = 1` the backing store is a `bool`, so any input byte other than `0x00`\nor `0x01` produces an invalid value, which is immediate undefined behavior.\n\nThe `AsMut<[u8]>` implementation has the same problem, as it allows safe code\nto write invalid bit patterns into the backing store through the returned slice.\n\nNo fixed version is available, as the crate is unmaintained; its GitHub\nrepository was archived by the owner on 2026-05-03.",
+      "date": "2025-12-25",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bodil/bitmaps/issues/35",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<3.2.0"
+      ]
+    }
+  }
+]

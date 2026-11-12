@@ -1,0 +1,106 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0485",
+      "package": "tdx-guest",
+      "title": "`enter_l2_vcpu` passes the wrong RCX operand to `TDG.VP.ENTER`",
+      "description": "`tdx_guest::tdcall::enter_l2_vcpu()` invokes the `TDG.VP.ENTER` TDCALL. RCX\nmust carry the L2 VM index in bits 53:52 and the invalidation control value\n(`InvdTranslations`, 0 to 3) in bits 1:0. The function computed that value as\n`(l2_vm_idx << 52) | (invd_translations as u64)`, but then passed the raw\n`l2_vm_idx` in RCX instead.\n\nAs a result, the TDX module received an operand that differs from the\ncaller's request. The VM index field was 0, and the low bits of the index\nwere interpreted as the invalidation control value. For example, VM 1 with\n`InvdTlb` (2) should produce `0x0010_0000_0000_0002`, but produced `0x1`.\n\nIntel describes the issue as an incorrect calculation and classifies it as\nescalation of privilege, with a CVSS 4.0 base score of 4.6, in\nINTEL-SA-01462.\n\nThe flaw was corrected in commit\n[`311d33b`](https://github.com/intel/confidential-computing.tdx.tdx-guest/commit/311d33b18a5bef5dc67c9b0c86587dd00c77027e),\nreleased in 0.3.1, which passes the computed RCX value.\n\nReported by [Borys Tsyrulnikov](https://borystsyrulnikov.dev).",
+      "date": "2026-08-11",
+      "aliases": [
+        "CVE-2026-20763",
+        "GHSA-wgvc-hf5h-m5h7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "tdx",
+        "tdcall",
+        "l2-vm",
+        "confidential-computing"
+      ],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:H/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/intel/confidential-computing.tdx.tdx-guest/commit/311d33b18a5bef5dc67c9b0c86587dd00c77027e",
+        "https://borystsyrulnikov.dev/posts/tdx-guest-l2-vm-bugs/"
+      ],
+      "source": null,
+      "url": "https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01462.html",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tdx_guest::tdcall::enter_l2_vcpu": [
+          ">=0.1.8, <0.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": [
+        "<0.1.8"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0484",
+      "package": "tdx-guest",
+      "title": "Inverted bitmap validation in `invalidate_l2_cached_ept`",
+      "description": "`tdx_guest::tdcall::invalidate_l2_cached_ept()` takes a bitmap that selects the\nL2 VMs whose cached EPT translations should be invalidated. Bits 1 through 3\nselect L2 VMs 1 through 3, and all other bits are reserved. The input check\nwas inverted:\n\n    if l2_vm_idx_bitmap & !0b1110 == 0 {\n        return Err(TdCallError::TdxOperandInvalid);\n    }\n\n`l2_vm_idx_bitmap & !0b1110` isolates the bits that are not allowed. A result\nof zero means the bitmap is valid, and the function returned an error in that\ncase. Every valid bitmap, such as `0b0010` or `0b1110`, was therefore rejected\nwith `TdxOperandInvalid`. Bitmaps with reserved bits set, such as `0b0001` or\n`0b1_0000`, were forwarded to the TDX module.\n\nIntel describes the issue as an incorrect comparison and classifies it as\nescalation of privilege, with a CVSS 4.0 base score of 4.6, in\nINTEL-SA-01462.\n\nThe flaw was corrected in commit\n[`311d33b`](https://github.com/intel/confidential-computing.tdx.tdx-guest/commit/311d33b18a5bef5dc67c9b0c86587dd00c77027e),\nreleased in 0.3.1. The function now rejects an empty bitmap and any bit\noutside `0b1110`.\n\nReported by [Borys Tsyrulnikov](https://borystsyrulnikov.dev).",
+      "date": "2026-08-11",
+      "aliases": [
+        "CVE-2026-20765",
+        "GHSA-56j3-r4r2-x3x6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "tdx",
+        "tdcall",
+        "ept",
+        "l2-vm"
+      ],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:H/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/intel/confidential-computing.tdx.tdx-guest/commit/311d33b18a5bef5dc67c9b0c86587dd00c77027e",
+        "https://borystsyrulnikov.dev/posts/tdx-guest-l2-vm-bugs/"
+      ],
+      "source": null,
+      "url": "https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01462.html",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tdx_guest::tdcall::invalidate_l2_cached_ept": [
+          ">=0.1.8, <0.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": [
+        "<0.1.8"
+      ]
+    }
+  }
+]

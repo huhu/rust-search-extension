@@ -1,0 +1,85 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0482",
+      "package": "cap-primitives",
+      "title": "Paths or symlinks ending in a slash escape the sandbox",
+      "description": "cap-primitives resolves a path inside a sandboxed directory one component at a time and opens the last component with `O_NOFOLLOW`, so that a symlink there cannot lead out of the directory. When the path ended in `/`, the resolver added the slash back to the last component before opening it. With a trailing slash the operating system no longer treats that component as the last one, so `O_NOFOLLOW` does not apply, the symlink is followed, and the resulting file descriptor was returned without further checks.\n\nA symlink inside the sandbox that points outside it, such as `escape -> ../outside` or a link to `/`, can therefore be opened as `escape/`. If the symlink's own target ends in `/`, the caller's path does not need a trailing slash at all, so removing trailing slashes from untrusted input is not a workaround. The maintainers' advisory reports reads and writes outside the sandbox through `open`, `open_dir`, `read_dir` and `canonicalize`, and directory creation, removal and renames outside it through `create_dir`, `remove_dir` and `rename`.\n\nThis resolver is used on Windows and macOS, on FreeBSD when `O_RESOLVE_BENEATH` is not available, and on Linux when `openat2` is not available (kernels before 5.6, or a seccomp policy that rejects it). cap-std and other crates built on cap-primitives are affected through it. Wasmtime's WASI filesystem support was affected as well; that is covered by RUSTSEC-2026-0269.\n\nThe fix stops re-adding the trailing slash and is in 3.4.6 and 4.0.3.",
+      "date": "2026-08-20",
+      "aliases": [
+        "GHSA-hp8f-xmx4-4qrg"
+      ],
+      "related": [
+        "RUSTSEC-2026-0269"
+      ],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "sandbox",
+        "symlink",
+        "path-traversal"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/cap-std/pull/419",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.4.6, <4.0.0",
+        ">=4.0.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0445",
+      "package": "cap-primitives",
+      "title": "cap-primitives doesn't fully sandbox all the Windows device filenames",
+      "description": "## Impact\n\ncap-primitives's filesystem sandbox implementation on Windows blocks\naccess to special device filenames such as \"COM1\", \"COM2\",\n\"LPT0\", \"LPT1\", and so on, however it did not block access\nto the special device filenames which use superscript digits,\nsuch as \"COM¹\", \"COM²\", \"LPT⁰\", \"LPT¹\", and so on. Untrusted\nfilesystem paths could bypass the sandbox and access devices\nthrough those special device filenames with superscript\ndigits, and through them provide access peripheral devices\nconnected to the computer, or network resources mapped to\nthose devices. This can include modems, printers, network\nprinters, and any other device connected to a serial or\nparallel port, including emulated USB serial ports.\n\n## Patches\n\nThe bug is fixed in #371, which is published in\ncap-primitives 3.4.1, cap-std 3.4.1, and cap-async-std 3.4.1.\n\n## Workarounds\n\nThere are no known workarounds for this issue.\nAffected Windows users are recommended to upgrade.",
+      "date": "2024-11-05",
+      "aliases": [
+        "CVE-2024-51756",
+        "GHSA-hxf5-99xg-86hw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "path traversal"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/bytecodealliance/cap-std/pull/371",
+        "https://nvd.nist.gov/vuln/detail/CVE-2024-51756"
+      ],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/cap-std/pull/371",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=3.4.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

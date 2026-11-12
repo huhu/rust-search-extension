@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0067",
+      "package": "quic-p2p",
+      "title": "crate has been renamed to `qp2p`",
+      "description": "This crate has been renamed from `quic-p2p` to `qp2p`.\n\nThe new repository location is:\n\n<https://github.com/maidsafe/qp2p>",
+      "date": "2020-11-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maidsafe/qp2p/pull/141",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

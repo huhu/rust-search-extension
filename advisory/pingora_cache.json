@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0035",
+      "package": "pingora-cache",
+      "title": "Cache poisoning via insecure-by-default cache key",
+      "description": "Pingora versions prior to 0.8.0 generated cache keys using only the URI path, excluding critical factors such as the host header. This allows an attacker to poison the cache and serve cross-origin responses to users.\n\nThis vulnerability affects users of Pingora's alpha proxy caching feature who relied on the default CacheKey implementation. An attacker could exploit this for cross-tenant data leakage in multi-tenant deployments, or serve malicious content to legitimate users by poisoning shared cache entries.\n\nThis flaw was corrected in commit 257b59ada28ed6cac039f67d0b71f414efa0ab6e by removing the insecure default cache key implementation. Users must now explicitly implement their own callback that includes appropriate factors such as Host header and origin server HTTP scheme. We strongly recommend that users upgrade to Pingora >= 0.8.0.\n\nNote: Cloudflare customers and Cloudflare's CDN infrastructure were not affected by this vulnerability, as Cloudflare's default cache key implementation uses multiple factors to prevent cache key poisoning and never made use of the previously provided default.",
+      "date": "2026-03-04",
+      "aliases": [
+        "CVE-2026-2836",
+        "GHSA-f93w-pcj3-rggc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "http",
+        "cache-poisoning"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:H/VA:N/SC:H/SI:H/SA:N",
+      "informational": null,
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-2836"
+      ],
+      "source": null,
+      "url": "https://blog.cloudflare.com/pingora-oss-smuggling-vulnerabilities/",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

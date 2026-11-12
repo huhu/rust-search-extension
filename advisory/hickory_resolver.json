@@ -1,0 +1,162 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0513",
+      "package": "hickory-resolver",
+      "title": "Unbounded retries on truncated responses in the name server pool",
+      "description": "When an upstream answer had the TC (truncated) bit set, the resolver's name server pool disabled UDP and sent the query again. It did this for every truncated answer, including answers that already came over TCP, and it kept no count of retries.\n\nA name server that sets TC on every answer, which anyone running an authoritative server the resolver queries can do, kept each lookup re-sending queries over the same connection until the request deadline (5 seconds by default) ran out. This uses up resolver resources and sends many queries per lookup.\n\nFrom 0.26.2 a truncated answer received after UDP has already been disabled ends the lookup with `NetError::Truncated` instead of retrying again.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123604",
+        "GHSA-6w6g-hm98-mhgm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "truncation",
+        "retry"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/f9a7bc5d188e5b680b09aea91009d2fbf3fec58a",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": [
+        "<0.26.0-beta.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0516",
+      "package": "hickory-resolver",
+      "title": "Recursor kept querying cyclic glueless sibling delegations",
+      "description": "Two zones can each delegate to name servers named only inside the other zone, with no glue records (the cyclic sibling case in RFC 9471 section 2.3). Such delegations can never be resolved, but the recursor did not stop when it came back to a zone it was already resolving. It kept sending queries until the per-request limits ran out, and zero TTLs on the referral NS records made this worse.\n\nSomeone who controls two such zones can make a recursor send many upstream queries for each client query.\n\nThis affects the recursive resolver, which is in hickory-resolver behind the opt-in `recursor` feature from 0.26.0-beta.1. Earlier releases shipped it as the separate hickory-recursor crate.\n\nFrom 0.26.2 each client request tracks the zones on its resolution stack and refuses to enter a zone that is already on it.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123586",
+        "GHSA-cx5j-p54p-q756"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "recursor",
+        "amplification"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/308dcfd5cd9bfaa50c956427380160505e5de532",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": [
+        "<0.26.0-beta.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0515",
+      "package": "hickory-resolver",
+      "title": "Recursor followed every glueless name server in a referral, with no per-query budget",
+      "description": "When a referral listed name servers outside the delegated zone and gave no glue addresses, the recursor looked up A and AAAA records for every listed name server, recursing into each one. Only the chain-depth limits applied. There was no cap on how many name servers it chased per referral or on the total upstream work per client query.\n\nSomeone who controls a zone can return referrals that list many glueless name servers in a victim's domain, and nest them, so that each client query makes the recursor send a large number of queries to the victim's servers (the NXNSAttack pattern). The same can exhaust the recursor's own resources.\n\nThis affects the recursive resolver, which is in hickory-resolver behind the opt-in `recursor` feature from 0.26.0-beta.1. Earlier releases shipped it as the separate hickory-recursor crate.\n\nFrom 0.26.2 the recursor follows at most 5 glueless name servers per delegation and sends at most 200 upstream queries per client request.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123606",
+        "GHSA-6h5c-jjg5-wj59"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "recursor",
+        "nxnsattack",
+        "amplification"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/hickory-dns/hickory-dns/commit/47cd005b8f3d190134bbb943d2328ef8a83ade8c"
+      ],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/74062f3a3ef6904b64717dd025945702b2cf4133",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": [
+        "<0.26.0-beta.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0514",
+      "package": "hickory-resolver",
+      "title": "`Resolver::lookup` and `lookup_ip` returned records that failed DNSSEC validation",
+      "description": "With DNSSEC validation enabled, `Resolver::lookup()` and `Resolver::lookup_ip()` returned `Ok` with the records even when validation found the response bogus. The result was only visible in each record's proof status, which callers had to inspect themselves.\n\nApplications that enable validation and treat a successful lookup as validated data would therefore accept forged or tampered answers from anyone who can answer or modify their DNS traffic.\n\nFrom 0.26.2 a lookup whose records are bogus fails with a \"DNSSEC validation failed\" error (`DnsError::DnssecBogus`), the error is not retried, and the hickory-server forwarder answers SERVFAIL for it.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-93657",
+        "GHSA-5j98-2g5x-46v6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "dns",
+        "dnssec"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/30720f4fb22e5556ecbf26d2c8274ea4a9fdd238",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

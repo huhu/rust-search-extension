@@ -1,0 +1,71 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0041",
+      "package": "lz4_flex",
+      "title": "Decompressing invalid data can leak information from uninitialized memory or reused output buffer",
+      "description": "Decompressing invalid LZ4 data with the block API can leak data from uninitialized memory,\nor leak content from previous decompression operations when reusing an output buffer.\n\nThe LZ4 block format defines a \"match copy operation\" which duplicates previously written\ndata or data from a user-supplied dict. The position of that data is defined by an _offset_.\n`lz4_flex` did not properly validate _offset_ values, causing it to copy data from outside\nthe initialized portion of the output buffer.\n\nTwo scenarios are affected:\n\n- Decompressing with the `unsafe` implementation (`safe-decode` feature flag disabled, which\n  is the default): can leak content of uninitialized memory as part of the decompressed result.\n- Decompressing into a reused, user-supplied output buffer (also affects `safe-decode`): can\n  leak the previous contents of the output buffer as part of the decompressed result.\n\nOnly the block-based APIs are affected. All frame APIs are unaffected.\n\nThe flaw was corrected in versions 0.11.6 and 0.12.1 by properly validating offset values\nduring decompression.\n\nIf upgrading is not possible, the issue can be mitigated by zeroing the output buffer before\neach call to the affected functions and enabling the `safe-decode` feature flag.",
+      "date": "2026-03-17",
+      "aliases": [
+        "CVE-2026-32829",
+        "GHSA-vvp9-7p8x-rfvv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "lz4",
+        "decompression",
+        "information-disclosure",
+        "uninitialized-memory"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "lz4_flex::block::decompress": [
+          "<=0.11.5",
+          "=0.12.0"
+        ],
+        "lz4_flex::block::decompress_into": [
+          "<=0.11.5",
+          "=0.12.0"
+        ],
+        "lz4_flex::block::decompress_into_with_dict": [
+          "<=0.11.5",
+          "=0.12.0"
+        ],
+        "lz4_flex::block::decompress_size_prepended": [
+          "<=0.11.5",
+          "=0.12.0"
+        ],
+        "lz4_flex::block::decompress_size_prepended_with_dict": [
+          "<=0.11.5",
+          "=0.12.0"
+        ],
+        "lz4_flex::block::decompress_with_dict": [
+          "<=0.11.5",
+          "=0.12.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.11.6, <0.12.0",
+        ">=0.12.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

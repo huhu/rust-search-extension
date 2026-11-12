@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0432",
+      "package": "codeq",
+      "title": "`codeq`: decoding untrusted input can allocate memory from an unchecked length prefix (denial of service)",
+      "description": "`codeq` is a serialization library whose `Decode` trait reads length-prefixed values. For `String` and `Vec<u8>`, the length-prefixed `Decode` implementations read a 4-byte big-endian length and allocate a buffer of that size **before** reading the payload. Because the declared length is taken straight from the input with no upper bound and no cross-check against the bytes actually available, a tiny input can force an allocation of up to ~4 GiB. Code that decodes untrusted data through `codeq` can therefore be made to spike memory use and be OOM-killed (CWE-400, uncontrolled resource consumption).\n\nThe affected path, in `src/codec/impls/string_impl.rs`:\n\n```rust\nimpl Decode for String {\n    fn decode<R: io::Read>(mut r: R) -> Result<Self, io::Error> {\n        let len = r.read_u32::<BigEndian>()? as usize;\n        let mut buf = vec![0; len];   // allocates `len` bytes up front\n        r.read_exact(&mut buf)?; \n        String::from_utf8(buf).map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))\n    }\n}\n```\n\nAny code that decodes attacker-controlled bytes through `codeq` can be forcedcto allocate up to ~4 GiB per `decode` call from a 4-byte length prefix. On a service decoding untrusted input this is a cheap denial of service (crash / OOM-kill). The practical severity depends on how the embedding wires `codeq` to untrusted bytes.\n\n## Remediation\n\nFixed in `0.6.3`, which grows the decode buffers as payload bytes actually arrive instead of pre-allocating the full declared length (commit `9f15313`, \"fix: codec: grow decode buffers as payload bytes arrive\"). Upgrade to `codeq >= 0.6.3`.",
+      "date": "2026-10-31",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "denial-of-service",
+        "allocation",
+        "untrusted-input",
+        "oom"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/drmingdrmer/codeq/issues/4",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

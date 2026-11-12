@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0214",
+      "package": "gumdrop",
+      "title": "gumdrop is unmaintained",
+      "description": "The gumdrop crate is unmaintained, and all versions are affected.\n\nRecommended alternatives:\n\n- [clap](https://crates.io/crates/clap) is the most popular by far\n- [bpaf](https://crates.io/crates/bpaf) is a more lightweight alternative",
+      "date": "2026-07-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/murarth/gumdrop/issues/63",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

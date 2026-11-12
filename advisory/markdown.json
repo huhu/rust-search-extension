@@ -1,0 +1,30 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0044",
+      "package": "markdown",
+      "title": "`markdown` (1.0.0 and higher) is maintained",
+      "description": "A new `markdown` crate has been brought over by a new maintainer replacing the old crate.\n\nAs of time of writing only pre-releases seem to be available for the 1.0.0 version of the crate.\n\nThe crate GitHub repository is now [wooorm/markdown-rs](https://github.com/wooorm/markdown-rs)\n\n# `markdown` (0.3.0 and lower) was unmaintained\n\nThe old [`markdown`](https://crates.io/crates/markdown) crate was no longer actively maintained.\n\nThe crate GitHub repository was [johannhof/markdown.rs](https://github.com/johannhof/markdown.rs)",
+      "date": "2022-01-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/johannhof/markdown.rs/issues/48",
+      "withdrawn": null,
+      "license": "CC0-1.0"
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.0-alpha.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0215",
+      "package": "smallstr",
+      "title": "smallstr is unmaintained",
+      "description": "The smallstr crate is unmaintained, and all versions are affected.\n\nRecommended alternatives:\n\n- [compact_str](https://crates.io/crates/compact_str) is the most popular by far\n- [smol_str](https://crates.io/crates/smol_str) focuses on immutable strings",
+      "date": "2026-07-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

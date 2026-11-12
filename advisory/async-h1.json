@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0093",
+      "package": "async-h1",
+      "title": "Async-h1 request smuggling possible with long unread bodies",
+      "description": "This vulnerability affects any webserver that uses async-h1 behind a reverse proxy, including all such Tide applications.\n\nIf the server does not read the body of a request which is longer than some buffer length, async-h1 will attempt to read a subsequent request from the body content starting at that offset into the body.\n\nOne way to exploit this vulnerability would be for an adversary to craft a request such that the body contains a request that would not be noticed by a reverse proxy, allowing it to forge forwarded/x-forwarded headers. If an application trusted the authenticity of these headers, it could be misled by the smuggled request.\n\nAnother potential concern with this vulnerability is that if a reverse proxy is sending multiple http clients' requests along the same keep-alive connection, it would be possible for the smuggled request to specify a long content and capture another user's request in its body. This content could be captured in a post request to an endpoint that allows the content to be subsequently retrieved by the adversary.\n\nThe flaw was corrected in commit [7df79f](https://github.com/http-rs/async-h1/commit/7df79f1d5d99fc0f492b315eebc7f0d301a85212) by ensuring that the request body is always consumed from the tcp stream before attempting to read subsequent keep-alive request headers from it.",
+      "date": "2020-12-17",
+      "aliases": [
+        "CVE-2020-26281",
+        "CVE-2020-36202",
+        "GHSA-4vr9-8cjf-vf9c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "smuggling",
+        "http",
+        "reverse proxy",
+        "request smuggling"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/http-rs/async-h1/releases/tag/v2.3.0",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "async_h1::server::accept": [
+          "<2.3.0"
+        ],
+        "async_h1::server::decode": [
+          "<2.3.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

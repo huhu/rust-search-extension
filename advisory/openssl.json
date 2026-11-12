@@ -1,0 +1,820 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0477",
+      "package": "openssl",
+      "title": "Buffer overflow with AES key wrap with padding in `cipher_update_inplace`",
+      "description": "`CipherCtxRef::cipher_update_inplace` had the same sizing error that 0.10.79 fixed in `cipher_update` (GHSA-xv59-967r-8726); that fix missed this method. It required room for `inlen + block_size` bytes, but with the AES key-wrap-with-padding ciphers OpenSSL writes up to 7 more bytes when `inlen` is not a multiple of 8, past the end of `data`.\n\nOnly users of the AES key-wrap-with-padding ciphers are affected. `cipher_update_inplace` was added in 0.10.50, and 0.10.80 applies the corrected size check to it.",
+      "date": "2026-05-16",
+      "aliases": [
+        "CVE-2026-45784",
+        "GHSA-phqj-4mhp-q6mq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "aes",
+        "key-wrap",
+        "cipher",
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2638",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::cipher_ctx::CipherCtxRef::cipher_update_inplace": [
+          ">=0.10.50, <0.10.80"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.80"
+      ],
+      "unaffected": [
+        "<0.10.50"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0476",
+      "package": "openssl",
+      "title": "Buffer overflow with AES key wrap with padding in `cipher_update`",
+      "description": "`CipherCtxRef::cipher_update`, `CipherCtxRef::cipher_update_vec` and `symm::Crypter::update` require (or allocate) `input.len() + block_size` bytes of output. With the AES key-wrap-with-padding ciphers (`EVP_aes_128_wrap_pad`, `EVP_aes_192_wrap_pad`, `EVP_aes_256_wrap_pad`), OpenSSL pads the input to a multiple of 8 bytes and adds an 8-byte block, so when the input length is not a multiple of 8 it writes up to 7 bytes past the end of the caller's buffer or `Vec`. If an attacker can influence the plaintext length, this is heap corruption they can partly control.\n\nOnly users of the AES key-wrap-with-padding ciphers are affected. 0.10.79 sizes the output for these ciphers as the input length rounded up to a multiple of 8, plus 8.",
+      "date": "2026-05-04",
+      "aliases": [
+        "CVE-2026-44662",
+        "GHSA-xv59-967r-8726"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "aes",
+        "key-wrap",
+        "cipher",
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2630",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::cipher_ctx::CipherCtxRef::cipher_update": [
+          ">=0.10.0, <0.10.79"
+        ],
+        "openssl::cipher_ctx::CipherCtxRef::cipher_update_vec": [
+          ">=0.10.0, <0.10.79"
+        ],
+        "openssl::symm::Crypter::update": [
+          ">=0.10.0, <0.10.79"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.79"
+      ],
+      "unaffected": [
+        "<0.10.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0474",
+      "package": "openssl",
+      "title": "`X509Ref::ocsp_responders` can produce a `&str` that is not valid UTF-8",
+      "description": "`X509Ref::ocsp_responders` returns the OCSP responder URLs from a certificate's Authority Information Access extension as `OpensslString` values, which dereference to `str` without validating the bytes. OpenSSL does not require these IA5String values to be ASCII, so for a certificate with non-UTF-8 bytes in an OCSP access location, safe code ends up holding a `&str` that is not valid UTF-8, which is undefined behavior. Certificates often come from untrusted peers.\n\n`ocsp_responders` was added in 0.9.7. 0.10.79 checks each URL and returns an error if it is not valid UTF-8.",
+      "date": "2026-05-04",
+      "aliases": [
+        "CVE-2026-42327",
+        "GHSA-xp3w-r5p5-63rr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "x509",
+        "ocsp",
+        "utf-8",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2631",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::X509Ref::ocsp_responders": [
+          ">=0.9.7, <0.10.79"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.79"
+      ],
+      "unaffected": [
+        "<0.9.7"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0473",
+      "package": "openssl",
+      "title": "Buffer overflow in `Deriver::derive` and `PkeyCtxRef::derive` with OpenSSL 1.1.x",
+      "description": "`Deriver::derive` and `PkeyCtxRef::derive` pass the length of the caller's buffer to `EVP_PKEY_derive` and rely on OpenSSL to write no more than that. With OpenSSL 1.1.x, the X25519, X448 and HKDF-extract implementations ignore the length they are given and always write the whole result, so a buffer shorter than the shared secret or derived key is overrun. The overflow is reachable from safe code.\n\nOpenSSL 3.x checks the length itself and is not affected. From 0.10.78, when built against OpenSSL 1.1.x or LibreSSL, both functions derive into a temporary buffer of the required size whenever the caller's buffer is too short, and copy only what fits.",
+      "date": "2026-04-19",
+      "aliases": [
+        "CVE-2026-41676",
+        "GHSA-pqf5-4pqq-29f5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "derive",
+        "x25519",
+        "x448",
+        "hkdf",
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2606",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::derive::Deriver::derive": [
+          ">=0.9.27, <0.10.78"
+        ],
+        "openssl::pkey_ctx::PkeyCtxRef::derive": [
+          ">=0.9.27, <0.10.78"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.78"
+      ],
+      "unaffected": [
+        "<0.9.27"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0478",
+      "package": "openssl",
+      "title": "Unchecked callback lengths in PSK and cookie callbacks",
+      "description": "The callbacks installed with `SslContextBuilder::set_psk_client_callback` (and its deprecated alias `set_psk_callback`), `set_psk_server_callback`, `set_cookie_generate_cb` and `set_stateless_cookie_generate_cb` each fill a `&mut [u8]` buffer and return how many bytes they wrote. The FFI trampolines handed that returned length straight to OpenSSL without checking it against the size of the buffer.\n\nA callback that returns a length larger than its buffer makes OpenSSL read past the end of the buffer. For the cookie callbacks the cookie is sent to the peer, so adjacent memory can be disclosed over the network.\n\n0.10.78 compares the returned length with the buffer size and treats a larger value as a callback failure.",
+      "date": "2026-04-19",
+      "aliases": [
+        "CVE-2026-41898",
+        "GHSA-hppc-g8h3-xhp3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "ssl",
+        "psk",
+        "dtls",
+        "cookie",
+        "out-of-bounds-read"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2607",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::ssl::SslContextBuilder::set_cookie_generate_cb": [
+          ">=0.9.24, <0.10.78"
+        ],
+        "openssl::ssl::SslContextBuilder::set_psk_callback": [
+          ">=0.9.24, <0.10.78"
+        ],
+        "openssl::ssl::SslContextBuilder::set_psk_client_callback": [
+          ">=0.9.24, <0.10.78"
+        ],
+        "openssl::ssl::SslContextBuilder::set_psk_server_callback": [
+          ">=0.9.24, <0.10.78"
+        ],
+        "openssl::ssl::SslContextBuilder::set_stateless_cookie_generate_cb": [
+          ">=0.9.24, <0.10.78"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.78"
+      ],
+      "unaffected": [
+        "<0.9.24"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0479",
+      "package": "openssl",
+      "title": "Out-of-bounds read when a PEM password callback returns an oversized length",
+      "description": "The `*_from_pem_callback` functions, such as `EcKey::private_key_from_pem_callback`, pass the length returned by the user's password callback to OpenSSL without checking it against the size of the buffer the callback was given. If the callback reports more bytes than the buffer holds, some OpenSSL versions read past the end of the buffer while deriving the decryption key. OpenSSL 3.x is not affected.\n\n0.10.78 treats a returned length larger than the buffer as a failed callback.",
+      "date": "2026-04-19",
+      "aliases": [
+        "CVE-2026-41677",
+        "GHSA-xmgf-hq76-4vx2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "pem",
+        "password",
+        "callback",
+        "out-of-bounds-read"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2605",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.78"
+      ],
+      "unaffected": [
+        "<0.9.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0463",
+      "package": "openssl",
+      "title": "Out-of-bounds write in `aes::unwrap_key`",
+      "description": "`openssl::aes::unwrap_key` guarded the size of its output buffer with an inverted assertion, `out.len() + 8 <= in_.len()`. Instead of rejecting an `out` buffer too small for the unwrapped key, it rejected buffers larger than needed and accepted buffers that were too small.\n\nWhen `out` is shorter than `in_.len() - 8` bytes, the underlying `AES_unwrap_key` call writes past the end of `out`. This out-of-bounds write is reachable from a safe function; applications that let untrusted input influence the input or output buffer sizes are exposed.\n\nThe function was added in 0.10.24. 0.10.78 corrects the assertion, so an output buffer that is too small now causes a panic before anything is written.",
+      "date": "2026-04-19",
+      "aliases": [
+        "CVE-2026-41678",
+        "GHSA-8c75-8mhr-p7r9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "aes",
+        "key-wrap",
+        "out-of-bounds-write"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2604",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::aes::unwrap_key": [
+          ">=0.10.24, <0.10.78"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.78"
+      ],
+      "unaffected": [
+        "<0.10.24"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0475",
+      "package": "openssl",
+      "title": "Buffer overflow in `MdCtxRef::digest_final`",
+      "description": "`MdCtxRef::digest_final` passed the caller's output slice to OpenSSL's `EVP_DigestFinal` without checking its length. `EVP_DigestFinal` always writes the full digest (`EVP_MD_CTX_size` bytes), so an output slice shorter than the digest is overrun. With a stack buffer this usually corrupts the stack. The overflow is reachable from safe code.\n\n`MdCtxRef` was added in 0.10.39. 0.10.78 checks the slice length first and returns an error when the slice is too short for the digest.",
+      "date": "2026-04-19",
+      "aliases": [
+        "CVE-2026-41681",
+        "GHSA-ghm9-cr32-g9qj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "digest",
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2608",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::md_ctx::MdCtxRef::digest_final": [
+          ">=0.10.39, <0.10.78"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.78"
+      ],
+      "unaffected": [
+        "<0.10.39"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0022",
+      "package": "openssl",
+      "title": "Use-After-Free in `Md::fetch` and `Cipher::fetch`",
+      "description": "When a `Some(...)` value was passed to the `properties` argument of either of these functions, a use-after-free would result.\n\nIn practice this would nearly always result in OpenSSL treating the properties as an empty string (due to `CString::drop`'s behavior).\n\nThe maintainers thank [quitbug](https://github.com/quitbug/) for reporting this vulnerability to us.",
+      "date": "2025-04-04",
+      "aliases": [
+        "GHSA-4fcv-w3qc-ppgg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/2390",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::cipher::Cipher::fetch": [
+          ">=0.10.39, <0.10.72"
+        ],
+        "openssl::md::Md::fetch": [
+          ">=0.10.39, <0.10.72"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.72"
+      ],
+      "unaffected": [
+        "<0.10.39"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0004",
+      "package": "openssl",
+      "title": "ssl::select_next_proto use after free",
+      "description": "In `openssl` versions before `0.10.70`, `ssl::select_next_proto` can return a slice pointing into the `server` argument's buffer but with a lifetime bound to the `client` argument. In situations where the `server` buffer's lifetime is shorter than the `client` buffer's, this can cause a use after free. This could cause the server to crash or to return arbitrary memory contents to the client.\n\n`openssl` 0.10.70 fixes the signature of `ssl::select_next_proto` to properly constrain the output buffer's lifetime to that of both input buffers.\n\nIn standard usage of `ssl::select_next_proto` in the callback passed to `SslContextBuilder::set_alpn_select_callback`, code is only affected if the `server` buffer is constructed *within* the callback. For example:\n\nNot vulnerable - the server buffer has a `'static` lifetime:\n```rust\nbuilder.set_alpn_select_callback(|_, client_protos| {\n    ssl::select_next_proto(b\"\\x02h2\", client_protos).ok_or_else(AlpnError::NOACK)\n});\n```\n\nNot vulnerable - the server buffer outlives the handshake:\n```rust\nlet server_protos = b\"\\x02h2\".to_vec();\nbuilder.set_alpn_select_callback(|_, client_protos| {\n    ssl::select_next_proto(&server_protos, client_protos).ok_or_else(AlpnError::NOACK)\n});\n```\n\nVulnerable - the server buffer is freed when the callback returns:\n```rust\nbuilder.set_alpn_select_callback(|_, client_protos| {\n    let server_protos = b\"\\x02h2\".to_vec();\n    ssl::select_next_proto(&server_protos, client_protos).ok_or_else(AlpnError::NOACK)\n});\n```",
+      "date": "2025-02-02",
+      "aliases": [
+        "CVE-2025-24898",
+        "GHSA-rpmj-rpgj-qmpm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "ssl",
+        "tls",
+        "alpn"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/sfackler/rust-openssl/pull/2360"
+      ],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/2360",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::ssl::select_next_proto": [
+          ">=0.10.0, <0.10.70"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.70"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0357",
+      "package": "openssl",
+      "title": "`MemBio::get_buf` has undefined behavior with empty buffers",
+      "description": "Previously, `MemBio::get_buf` called `slice::from_raw_parts` with a null-pointer, which violates the functions invariants, leading to undefined behavior. In debug builds this would produce an assertion failure. This is now fixed.",
+      "date": "2024-07-21",
+      "aliases": [
+        "GHSA-q445-7m23-qrmw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/2266",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::bio::MemBio::get_buf": [
+          "<0.10.66, >=0.8.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.66"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0072",
+      "package": "openssl",
+      "title": "`openssl` `X509StoreRef::objects` is unsound",
+      "description": "This function returned a shared reference into an OpenSSL datastructure but did not account for interior mutability. OpenSSL may modify the data behind this reference, meaning accesses can race and the reference is unsound.\n\nUse of this function should be replaced with `X509StoreRef::all_certificates`.",
+      "date": "2023-11-23",
+      "aliases": [
+        "GHSA-xphf-cx8h-7q9g"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/issues/2096",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::store::X509StoreRef::objects": [
+          "<0.10.60, >=0.10.29"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.60"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0044",
+      "package": "openssl",
+      "title": "`openssl` `X509VerifyParamRef::set_host` buffer over-read",
+      "description": "When this function was passed an empty string, `openssl` would attempt to call `strlen` on it, reading arbitrary memory until it reached a NUL byte.",
+      "date": "2023-06-20",
+      "aliases": [
+        "CVE-2023-53159",
+        "GHSA-xcf7-rvmh-g6q4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/issues/1965",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::verify::X509VerifyParamRef::set_host": [
+          "<0.10.55, >=0.10.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.55"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0024",
+      "package": "openssl",
+      "title": "`openssl` `X509Extension::new` and `X509Extension::new_nid` null pointer dereference",
+      "description": "These functions would crash when the context argument was None with certain extension types.\n\nThanks to David Benjamin (Google) for reporting this issue.",
+      "date": "2023-03-24",
+      "aliases": [
+        "GHSA-6hcf-g6gr-hhcr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/1854",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::X509Extension::new": [
+          "<0.10.48, >=0.9.7"
+        ],
+        "openssl::x509::X509Extension::new_nid": [
+          "<0.10.48, >=0.9.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.48"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0023",
+      "package": "openssl",
+      "title": "`openssl` `SubjectAlternativeName` and `ExtendedKeyUsage::other` allow arbitrary file read",
+      "description": "`SubjectAlternativeName` and `ExtendedKeyUsage` arguments were parsed using the OpenSSL\nfunction `X509V3_EXT_nconf`. This function parses all input using an OpenSSL mini-language\nwhich can perform arbitrary file reads.\n\nThanks to David Benjamin (Google) for reporting this issue.",
+      "date": "2023-03-24",
+      "aliases": [
+        "GHSA-9qwg-crg9-m2vc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/1854",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::extension::ExtendedKeyUsage::other": [
+          "<0.10.48, >=0.9.7"
+        ],
+        "openssl::x509::extension::SubjectAlternativeName::new": [
+          "<0.10.48, >=0.9.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.48"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0022",
+      "package": "openssl",
+      "title": "`openssl` `X509NameBuilder::build` returned object is not thread safe",
+      "description": "OpenSSL has a `modified` bit that it can set on on `X509_NAME` objects. If this\nbit is set then the object is not thread-safe even when it appears the code is\nnot modifying the value.\n\nThanks to David Benjamin (Google) for reporting this issue.",
+      "date": "2023-03-24",
+      "aliases": [
+        "GHSA-3gxf-9r58-2ghg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/1854",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::X509NameBuilder::build": [
+          "<0.10.48, >=0.9.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.48"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0010",
+      "package": "openssl",
+      "title": "Use after free in CMS Signing",
+      "description": "Affected versions of the OpenSSL crate used structures after they'd been freed.",
+      "date": "2018-06-01",
+      "aliases": [
+        "CVE-2018-20997",
+        "GHSA-xjxc-vfw2-cg96"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "memory-corruption"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/pull/942",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.9"
+      ],
+      "unaffected": [
+        "<0.10.8"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2016-0001",
+      "package": "openssl",
+      "title": "SSL/TLS MitM vulnerability due to insecure defaults",
+      "description": "All versions of rust-openssl prior to 0.9.0 contained numerous insecure defaults\nincluding off-by-default certificate verification and no API to perform hostname\nverification.\n\nUnless configured correctly by a developer, these defaults could allow an attacker\nto perform man-in-the-middle attacks.\n\nThe problem was addressed in newer versions by enabling certificate verification\nby default and exposing APIs to perform hostname verification. Use the\n`SslConnector` and `SslAcceptor` types to take advantage of these new features\n(as opposed to the lower-level `SslContext` type).",
+      "date": "2016-11-05",
+      "aliases": [
+        "CVE-2016-10931",
+        "GHSA-34p9-f4q3-c4r7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "ssl",
+        "mitm"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sfackler/rust-openssl/releases/tag/v0.9.0",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

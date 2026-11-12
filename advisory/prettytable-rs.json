@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0074",
+      "package": "prettytable-rs",
+      "title": "Force cast a &Vec<T> to &[T]",
+      "description": "In function `Table::as_ref`, a reference of vector is force cast to slice. There are multiple problems here:\n1. To guarantee the size is correct, we have to first do `Vec::shrink_to_fit`. The function requires a mutable reference, so we have to force cast from immutable to mutable, which is UB.\n2. Even if (1) is sound, `&Vec<T>` and `&[T]` still might not have the same layout. Treating them equally may lead to UB.",
+      "date": "2022-12-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "tab",
+        "table",
+        "format",
+        "pretty",
+        "print"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/phsym/prettytable-rs/issues/145",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

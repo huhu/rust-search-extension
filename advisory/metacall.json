@@ -1,0 +1,98 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0156",
+      "package": "metacall",
+      "title": "Bad-free in `MetaCallException::new`",
+      "description": "`exception_struct` is a local stack variable, but the code passes its address to the C language as `&mut exception_struct as *mut _ as *mut c_void`. Then, the returned `MetaCallException` value is stored here:\n```rust\nOk(Self {\n    exception_struct: Arc::new(exception_struct),\n    value: exception_ptr,\n    leak: false,\n})\n```\nBecause leak is false, the destructor will run later. But the original exception pointer points to Rust stack memory.\n\n## Trigger\n\n```rust\n#[test]\nfn exception_bad_free_safe_api() {\n    let original = metacall::MetaCallException::new(\n        \"test\",\n        \"test\",\n        \"test\",\n        1,\n    );\n\n    drop(original); // AddressSanitizer: bad-free\n}\n```\n\n## Impact\n\nEvery time the `MetaCallException` is created, when it is dropped, it leads to a bad-free. This can be triggered through the safe public API `MetaCallException::new()`, with no `unsafe` required from the caller.",
+      "date": "2026-06-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "bad-free"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/metacall/core/issues/809",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0157",
+      "package": "metacall",
+      "title": "Several memory corruption issues via safe APIs",
+      "description": "Several soundness violations exist in the Rust bindings for `MetaCall`, indicatively:\n\n**`MetaCallException::Clone`**: `Clone` is dangerous because it creates a second Rust object that still points to the same foreign `MetaCall` value, but does not actually own or keep that value alive. `value` is shallow copied and `leak=true` does not guarantee safety; `Clone` does not free the `MetaCall` value, but it still stores the same raw pointer. If the original is dropped, the `Clone` can retain a dangling pointer.\n\n**`MetaCallException::new_raw`**: is a safe function that accepts arbitrary raw pointer and dereferences C memory. This function is only correct if the caller gives it a valid, owned `MetaCall` value that must be destroyed by this wrapper. The method should be internal and not exposed to the public API or be declared as unsafe and be correctly documented.\n\nSame issues exist in `MetaCallThrowable::Clone`, `MetaCallThrowable::new_raw`, `MetaCallClass::Clone`, `MetaCallClass::new_raw`, `MetaCallFuture::Clone`, `MetaCallFuture::new_raw`, `MetaCallPointer::Clone`, `MetaCallPointer::new_raw`, `MetaCallFunction::Clone`, `MetaCallFunction::new_raw`, `MetaCallObject::Clone`, and `MetaCallObject::new_raw`. \n\nAll issues can be triggered through safe public APIs.",
+      "date": "2026-06-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/metacall/core/issues/809",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0139",
+      "package": "metacall",
+      "title": "Null-pointer dereference and double-free via safe APIs",
+      "description": "Two soundness violations exist in the Rust bindings for MetaCall:\n\n**Null-pointer dereference:** `MetaCallFuture::new_raw()` accepts a raw\npointer without validation. The `Debug` impl calls `Box::from_raw(self.data)`\non it. Passing a null pointer causes the `Debug` impl to construct a\n`NonNull` from null, producing undefined behavior.\n\n**Double-free:** `MetaCallPointer::clone()` shares the same `rust_value` raw\npointer between the clone and the original. Calling `get_value_untyped()` on\nboth clones calls `Box::from_raw` on the same pointer twice, resulting in a\ndouble-free.\n\nBoth issues can be triggered through safe public APIs —\n`MetaCallFuture::new_raw()`, `MetaCallPointer::new()`, `clone()`, and\n`get_value_untyped()` — with no `unsafe` required from the caller.",
+      "date": "2026-05-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "double-free",
+        "null-pointer",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/metacall/core/issues/618",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

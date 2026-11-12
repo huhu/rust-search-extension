@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0452",
+      "package": "surrealkv",
+      "title": "Out-of-bounds read when decoding internal keys shorter than 16 bytes",
+      "description": "`InternalKeyRef::from_encoded` is a safe constructor whose only length check is `debug_assert!(encoded.len() >= 16)`, which is compiled out in release builds. Its accessors perform unchecked length arithmetic on the slice: `user_key()` slices `&encoded[..len - 16]`, `trailer()`/`seq_num()` pass `len - 16` and `timestamp()` passes `len - 8` to `read_u64_be`, which computes `buffer.as_ptr().add(offset)` and performs an 8-byte load. For a short slice the subtraction underflows `usize`, the pointer wraps below the allocation and eight bytes before the buffer are read (undefined behavior; confirmed with AddressSanitizer as a `heap-buffer-overflow`). In debug builds the same call panics instead.\n\nThe same invariant is missing at the on-disk decode boundary: `BlockIterator::seek_next_entry` rebuilds the current key from block bytes with upper-bound checks only, and `BlockIterator::key()` wraps it in `InternalKeyRef`, which `surrealdb`'s `kv-surrealkv` backend then reads through `key_ref.timestamp()`. A crafted or corrupted SSTable therefore reaches the same unchecked subtraction without any `unsafe` at the call site.\n\n`1.2.0` rejects internal keys shorter than their 8-byte trailer before any accessor computes an offset and makes the accessors bounds-checked (fix in commit `ac642f9`, `surrealdb` 4.0.0 ships `surrealkv` 1.2.0).",
+      "date": "2026-11-03",
+      "aliases": [
+        "GHSA-9fm9-c4h4-8g93"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "out-of-bounds-read",
+        "sstable",
+        "undefined-behavior"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:L",
+      "informational": null,
+      "references": [
+        "https://github.com/surrealdb/surrealkv/pull/497"
+      ],
+      "source": null,
+      "url": "https://github.com/surrealdb/surrealkv/commit/ac642f945d63c9c9f7ad35f480995fd516f83fb6",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

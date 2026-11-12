@@ -1,0 +1,275 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0495",
+      "package": "russh",
+      "title": "Agent server signs with confirm-constrained keys without calling `Agent::confirm`",
+      "description": "A key added to an SSH agent with the confirm constraint (what `ssh-add -c` sends) must not be used to sign until the user approves each use. russh's agent server (`russh::keys::agent::server`) accepted the constraint, but when a sign request arrived for such a key it used a fixed `true` in place of the result of `Agent::confirm`, so the application's confirmation step never ran. This started in 0.50.0-beta.12; 0.50.0-beta.8 to beta.11 still called `confirm`, and earlier russh releases have no agent server.\n\nAny process that can reach the agent, including a remote host when the agent is forwarded, can then sign with the protected key without the user's approval, for example to log in elsewhere as the user. The private key itself is not disclosed. Agents whose `Agent::confirm` keeps the default, which always returns `true`, behave the same before and after the fix.\n\nFrom 0.65.0 the agent server calls `Agent::confirm` for confirm-constrained keys and refuses to sign when it returns `false`. Implementations that left `confirm` unimplemented (for example as `todo!()`) will now reach that code.",
+      "date": "2026-10-30",
+      "aliases": [
+        "CVE-2026-116794",
+        "GHSA-vp5q-ff62-jwqv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "ssh-agent",
+        "confirm",
+        "constraint",
+        "authorization"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Eugeny/russh/commit/62db6e7defd6d244159da962ccccb029e785ce0f",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.65.0"
+      ],
+      "unaffected": [
+        "<0.50.0-beta.12"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0492",
+      "package": "russh",
+      "title": "Client `Handler` callbacks run for channels the client never opened",
+      "description": "On the client side, russh passed channel messages from the server (data, extended data, EOF, close, success, failure, open failure and the exit-status, exit-signal and xon-xoff requests) to the application's `client::Handler` callbacks without checking that the channel number belonged to a channel the client had opened and the server had confirmed. The server side already performed this check.\n\nA malicious or compromised SSH server can therefore send these messages for any channel number, including the next number the client will allocate (they are assigned in order) or one it has already closed. An application that tracks per-channel state can be made to record a false exit status, see a channel close before its real output arrives, or panic when it looks up a channel it does not know.\n\nFrom 0.63.1 the client ignores channel messages for channels that are not established and confirmed, and handles an open failure only for a channel it is actually opening.",
+      "date": "2026-09-30",
+      "aliases": [
+        "CVE-2026-102823",
+        "GHSA-47hw-gvq5-r2gm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "ssh",
+        "client",
+        "channel",
+        "handler"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Eugeny/russh/commit/3430fd26ecafc0dc3705210f5f39a9119fa22774",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.63.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0494",
+      "package": "russh",
+      "title": "SSH message fields allocated before their size is checked",
+      "description": "Many of russh's client and server message handlers decoded length-prefixed strings, byte fields and name-lists from the peer into owned `String`, `Vec` or name-list values first and only checked their size and meaning afterwards. This includes the algorithm name-lists in `SSH_MSG_KEXINIT`, which a server parses during the initial key exchange, before any authentication.\n\nA peer can fill these fields with oversized or highly fragmented values, for example a name-list of hundreds of thousands of one-letter algorithm names, and make russh allocate far more memory than the packet itself takes. With many concurrent connections this can exhaust the memory of a server process.\n\nFrom 0.61.0, name-lists are rejected before they are split into separate strings when they are longer than 16 KiB or hold more than 1,024 entries, and the key exchange decodes its algorithm lists through this bounded decoder.",
+      "date": "2026-06-11",
+      "aliases": [
+        "CVE-2026-48110",
+        "GHSA-4r3c-5hpg-58qr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "ssh",
+        "kexinit",
+        "name-list",
+        "allocation",
+        "pre-auth"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Eugeny/russh/commit/72b250aa2dacb3bb1b13a84499c09bd9fc836158",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.61.0"
+      ],
+      "unaffected": [
+        "<0.34.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0493",
+      "package": "russh",
+      "title": "No limit on the size of a decompressed SSH packet",
+      "description": "With `zlib` or `zlib@openssh.com` compression negotiated, the packet length that russh checks applies to the compressed payload only. The decompressor kept growing its output buffer until the whole payload was inflated, with no limit of its own, so a packet that is small on the wire could expand to hundreds of megabytes before it was parsed.\n\nThe default server configuration offers both zlib methods, and a client that lists compression first can select it during the initial key exchange. That client can then send such a packet after `NEWKEYS` but before authenticating, so a russh server with default settings can be made to use large amounts of memory by an unauthenticated peer. A malicious server can do the same to a client that negotiated compression.\n\nFrom 0.61.1, decompressed output is capped at the same maximum as an uncompressed packet (256 KiB plus a few bytes of header room), and larger packets are rejected with `Error::PacketSize`.",
+      "date": "2026-05-29",
+      "aliases": [
+        "CVE-2026-46702",
+        "GHSA-wwx6-x28x-8259"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "ssh",
+        "zlib",
+        "compression",
+        "decompression-bomb"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Eugeny/russh/commit/2692a6f66edafaf63f463c412b45d8490f7ad06e",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.61.1"
+      ],
+      "unaffected": [
+        "<0.34.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0154",
+      "package": "russh",
+      "title": "Unbounded 32-bit allocation",
+      "description": "Both the SSH agent server and client accepted peer-controlled frame lengths\nwithout enforcing a maximum frame size. This could cause large memory\nallocations while parsing a maliciously crafted agent frame.\n\nA malicious peer could advertise an oversized frame length, causing the client\nor server to attempt a large memory allocation before validating the frame,\npotentially leading to memory exhaustion or process termination.\n\nThis is fixed by enforcing a maximum agent frame size of 256 KiB and\nrejecting oversized frames before buffer allocation.",
+      "date": "2026-05-15",
+      "aliases": [
+        "CVE-2026-46673",
+        "GHSA-g9f8-wqj9-fjw5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/Eugeny/russh/commit/a2d48a71fe93d18cbd666c8d53d0882f5ce110c4"
+      ],
+      "source": null,
+      "url": "https://github.com/Eugeny/russh/commit/a2d48a71fe93d18cbd666c8d53d0882f5ce110c4",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.60.3"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0496",
+      "package": "russh",
+      "title": "Pre-authentication allocation from the keyboard-interactive response count",
+      "description": "A server that answers a keyboard-interactive authentication request with prompts (`Auth::Partial`, as a TOTP or other second-factor login does) then parses the client's `SSH_MSG_USERAUTH_INFO_RESPONSE`. russh read the number of responses from that message and reserved a vector of that many entries before reading any of them. A client that has not authenticated can send a very large count in a packet that carries no responses at all, and the server tries to allocate several gigabytes and may be killed for running out of memory.\n\nServers whose handler keeps the default behaviour, which rejects keyboard-interactive authentication, are not affected. From 0.60.1 the count is limited by how many responses the remaining packet data could actually hold.",
+      "date": "2026-04-24",
+      "aliases": [
+        "CVE-2026-42189",
+        "GHSA-f5v4-2wr6-hqmg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "ssh",
+        "keyboard-interactive",
+        "allocation",
+        "pre-auth"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Eugeny/russh/commit/6c3c80a9b6d60763d6227d60fa8310e57172a4d1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.60.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0450",
+      "package": "russh",
+      "title": "Memory exhaustion from an unchecked SSH packet length",
+      "description": "When reading a packet, russh took the 4-byte packet length sent by the peer and sized its receive buffer from it without any upper bound. The length is fully controlled by the other side of the connection and is read before authentication, so an unauthenticated client can claim packets of up to about 4 GiB and make a server allocate that much memory per connection. A few such connections are enough to run the process out of memory.\n\nFrom 0.44.1, lengths above 256 KiB are rejected with `Error::PacketSize` before the buffer is sized.",
+      "date": "2024-08-14",
+      "aliases": [
+        "CVE-2024-43410",
+        "GHSA-vgvv-x7xg-6cqg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "ssh",
+        "packet-length",
+        "allocation",
+        "oom"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Eugeny/russh/commit/f660ea3f64b86d11d19e33076012069f02431e55",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

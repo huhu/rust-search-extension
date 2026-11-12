@@ -1,0 +1,164 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0462",
+      "package": "rmcp",
+      "title": "Unbounded response body buffering in Streamable HTTP clients",
+      "description": "Before 3.9.0, the built-in Streamable HTTP clients in rmcp read non-streaming\nHTTP response bodies into memory with no size limit. Both the reqwest client\n(`transport-streamable-http-client-reqwest`) and the Unix socket client\n(`transport-streamable-http-client-unix-socket`) were affected:\n\n- `application/json` responses to POST requests were read in full before\n  parsing.\n- Non-2xx responses were read in full for error reporting.\n\nA malicious or compromised MCP server can answer with a body that never ends,\nfor example a chunked `application/json` response that streams whitespace. The\nclient buffers it until the process runs out of memory. This works during\n`initialize`, before any authentication. On desktop or agent hosts, this\nterminates the whole host application.\n\nServer-sent event streams are not affected. Each event is already capped by\n`max_sse_event_size`, and events are not accumulated.\n\nThe flaw was corrected in 3.9.0. Successful JSON bodies are limited to 16 MiB\nand non-success bodies to 64 KiB. Bytes are counted while streaming, after\ndecompression. An oversized `Content-Length` is rejected before the body is\nread, and an oversized body is rejected with\n`StreamableHttpError::ResponseBodyTooLarge` instead of being truncated.\n\nIf you cannot upgrade, use a custom `StreamableHttpClient` that enforces a\nresponse body limit, or connect only to trusted MCP servers.",
+      "date": "2026-11-05",
+      "aliases": [
+        "GHSA-c9f9-cp8h-jcj5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "mcp",
+        "http",
+        "memory-exhaustion"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/modelcontextprotocol/rust-sdk/commit/3e0156c1eaf1573a1b878e2a8998d2fa2d0b1439",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.9.0"
+      ],
+      "unaffected": [
+        "<0.2.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0457",
+      "package": "rmcp",
+      "title": "OAuth client SSRF filter checks host strings, not resolved addresses",
+      "description": "From 2.0.0 until 3.7.0, the rmcp OAuth client decided whether it may fetch an\nauthorization server's metadata URL by inspecting only the host string. It\nrejected literal loopback, private and link-local IP addresses and known cloud\nmetadata hostnames, but it did not resolve other hostnames. A hostname that\nresolves to an internal address passed the check.\n\nA malicious MCP server can return protected-resource metadata that names an\nauthorization server whose hostname resolves to an internal address. The client\nthen sends GET requests to that address during discovery.\n\nThe same release fixes two related bypasses:\n\n- Bracketed IPv6 literals such as `http://[::1]:6379/` were not recognized as\n  internal, because the check kept the brackets from the URL host.\n- `token_endpoint` and `registration_endpoint` from authorization server\n  metadata were not checked at all, and token requests follow redirects. A\n  malicious authorization server could make the client send POST requests to\n  an internal address.\n\nThe impact is client-side SSRF. Responses are not returned to the attacker\ndirectly. Unauthenticated internal HTTP services are reachable. Cloud metadata\nendpoints that require headers or IMDSv2 are largely unaffected.\n\nThe flaw was corrected in 3.7.0. `AuthorizationManager::new` now builds its HTTP\nclient with a DNS resolver that applies the address policy to every resolved\naddress, and checks every IP-literal URL and followed redirect against the same\npolicy. Loopback and private addresses are allowed only when the MCP server's\nown URL names one of that class. Deployments that reach their authorization\nserver through a hostname that resolves to a private address should use\n`AuthorizationManager::new_allowing_private_addresses`.\n\nClients supplied through `new_with_oauth_http_client` are not covered by the\nresolved-address checks. Such clients must enforce their own outbound address\npolicy.",
+      "date": "2026-10-22",
+      "aliases": [
+        "GHSA-5p52-q7pq-9fq2"
+      ],
+      "related": [
+        "GHSA-c9xm-49cp-xcr9"
+      ],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "ssrf",
+        "oauth",
+        "mcp"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/modelcontextprotocol/rust-sdk/commit/ac808abcb40d3c90c743a097cd97c7dfc8f71b5d",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.7.0"
+      ],
+      "unaffected": [
+        "<2.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0461",
+      "package": "rmcp",
+      "title": "Unbounded tool schema cache in Streamable HTTP server transport",
+      "description": "From 3.0.0 until 3.6.0, `StreamableHttpService` cached the result of\n`ServerHandler::get_tool` in a process-wide map keyed by the tool name of\nincoming `tools/call` requests. The map had no size limit and no eviction, and\nit also cached unknown tool names.\n\nAn entry was added while the request headers were validated, before the request\ncould be rejected, so requests answered with HTTP 400 still grew the map. A\nclient that can reach the endpoint can send `tools/call` requests with distinct\ntool names, each up to the default 4 MiB body limit, until the server runs out\nof memory. rmcp does not authenticate requests itself, so servers without an\nauthentication layer in front of the endpoint are exposed to unauthenticated\nclients.\n\nOnly servers that use the Streamable HTTP server transport and receive requests\nat protocol version `2026-07-28` or later are affected.\n\nThe flaw was corrected in 3.6.0 by removing the cache. The transport now calls\n`ServerHandler::get_tool` on each request.\n\nIf you cannot upgrade, put authentication in front of the endpoint, or reject\n`tools/call` requests for unknown tool names before they reach\n`StreamableHttpService`.",
+      "date": "2026-10-20",
+      "aliases": [
+        "GHSA-4432-vg92-fqh6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "mcp",
+        "http",
+        "memory-exhaustion"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/modelcontextprotocol/rust-sdk/pull/1349",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.6.0"
+      ],
+      "unaffected": [
+        "<3.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0189",
+      "package": "rmcp",
+      "title": "DNS rebinding vulnerability in rmcp Streamable HTTP server transport",
+      "description": "Prior to version 1.4.0, the `rmcp` crate's Streamable HTTP server transport did\nnot validate the incoming `Host` header.\n\nThis allowed a malicious public website, via a DNS rebinding attack, to send\nrequests to an MCP server running on the victim's loopback or private-network\ninterface.\n\nAn attacker who convinced a victim to visit a malicious page could enumerate and\ninvoke tools exposed by a locally running rmcp-based MCP server, read resources\nand prompts, and trigger side effects limited by the tools exposed by that\nserver.\n\nNon-HTTP transports such as stdio and child-process transports are not affected.\n\n## Patches\n\nThe issue was fixed in `rmcp` 1.4.0 by adding default loopback-only host\nallowlist validation for the Streamable HTTP server transport. Incoming HTTP\nrequests now validate the `Host` header and return HTTP 403 when the host is not\nallowed.\n\nUsers should upgrade to `rmcp >= 1.4.0`.\n\n## Workarounds\n\nIf upgrading is not possible, place the MCP server behind a reverse proxy\nconfigured to reject requests whose `Host` header is not one of the expected\nhostnames. Do not bind the MCP server to `0.0.0.0` without such validation.",
+      "date": "2026-04-29",
+      "aliases": [
+        "CVE-2026-42559",
+        "GHSA-89vp-x53w-74fx",
+        "GHSA-fvh2-gm75-j4j7"
+      ],
+      "related": [
+        "GHSA-fvh2-gm75-j4j7",
+        "RUSTSEC-2026-0140"
+      ],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "dns-rebinding",
+        "mcp",
+        "http"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/modelcontextprotocol/rust-sdk/pull/764",
+        "https://github.com/modelcontextprotocol/rust-sdk/issues/815",
+        "https://github.com/modelcontextprotocol/rust-sdk/issues/822",
+        "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#security-warning"
+      ],
+      "source": null,
+      "url": "https://github.com/modelcontextprotocol/rust-sdk/issues/815",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0444",
+      "package": "astral-tl",
+      "title": "`astral-tl` is unmaintained",
+      "description": "Astral deprecated `astral-tl` on October 5, 2026.\nAll versions of the crate are unmaintained.\n\nFor HTML parsing, Astral recommends [`astral-html`] as a replacement.\n\n[`astral-html`]: https://crates.io/crates/astral-html",
+      "date": "2026-10-05",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/astral-sh/astral-tl/pull/31",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

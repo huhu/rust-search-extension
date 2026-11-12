@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0277",
+      "package": "apimock-server",
+      "title": "Path traversal in apimock-server's file-serving fallback",
+      "description": "The file-serving fallback joined a request-derived path onto the\nconfigured response directory and checked only that the result existed,\nnever that it stayed inside that directory. A request containing a raw\n`..` segment could read any file readable by the process, returned with\nHTTP 200.\n\nRead-only: no write, no code execution.\n\nExposure depends on the bind address. The default is `127.0.0.1`;\ndeployments binding `0.0.0.0` or a LAN address are reachable from the\nnetwork. Most HTTP clients normalise `..` away before sending, so\nreaching it requires a client that does not.\n\nAll published versions before 5.19.1 are affected. Fixed in 5.19.1 by\ncanonicalising each resolved path and rejecting anything outside its\nbase directory.\n\n**This advisory also covers `apimock` 5.x**, which depends on\n`apimock-server`. `apimock` 4.x predates the crate split and carries its\nown advisory for the same issue, fixed in 4.8.1.",
+      "date": "2026-08-26",
+      "aliases": [
+        "GHSA-72g6-wgrg-vhm7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "path-traversal",
+        "http",
+        "file-serving"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/apimokka/apimock-rs/commit/ff0dd152ecfccb3bf00e15cc92bd4d57e485c854",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=5.19.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

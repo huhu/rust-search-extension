@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0140",
+      "package": "dynoxide-rs",
+      "title": "DNS rebinding and cross-origin CSRF in dynoxide's MCP HTTP transport",
+      "description": "dynoxide's MCP HTTP transport was vulnerable to DNS rebinding via its transitive `rmcp` dependency, plus a related cross-origin CSRF gap.\n\nA malicious web page could make the user's browser send requests to a local `dynoxide mcp --http` or `dynoxide serve --mcp` server with a non-loopback `Host` header, which the server would then process. The Host check alone did not close a related cross-origin CSRF vector: a page could `fetch` the loopback endpoint with `mode: 'no-cors'`, and the Host header would match while the Origin header went unchecked.\n\nAffected MCP write tools include `put_item`, `update_item`, `delete_item`, `create_table`, and `batch_write_item`.\n\nThe stdio transport (`dynoxide mcp` without `--http`) is not affected.\n\n## Patches\n\ndynoxide 0.9.13 closes both vectors:\n\n- Upgrades `rmcp` from 1.1.1 to 1.6.0 (which ships a default Host-header allowlist).\n- Sets explicit `allowed_hosts` and `allowed_origins` on `StreamableHttpServerConfig`.",
+      "date": "2026-05-12",
+      "aliases": [
+        "CVE-2026-42559",
+        "GHSA-89vp-x53w-74fx",
+        "GHSA-fvh2-gm75-j4j7"
+      ],
+      "related": [
+        "GHSA-89vp-x53w-74fx"
+      ],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "dns-rebinding",
+        "csrf",
+        "mcp"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/nubo-db/dynoxide/releases/tag/v0.9.13"
+      ],
+      "source": null,
+      "url": "https://github.com/nubo-db/dynoxide/commit/10292083fd16fe7116e9089ffa189f4f4f071e0f",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.13"
+      ],
+      "unaffected": [
+        "<0.9.3"
+      ]
+    }
+  }
+]

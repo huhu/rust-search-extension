@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0483",
+      "package": "lwd-uri-util",
+      "title": "`lwd-uri-util` was removed from crates.io for malicious code",
+      "description": "The `lwd-uri-util` crate exfiltrated SSH keys, AWS credentials, and other\nenvironmental metadata and secrets when any crate using it was built.\n\nThe malicious crate had 8 versions published on 2026-11-09 approximately 12\nhours before removal and had no evidence of actual usage. This crate had no\ndependencies on crates.io.\n\nThanks to [Bitbison](https://bitbison.io/) for the report.",
+      "date": "2026-11-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

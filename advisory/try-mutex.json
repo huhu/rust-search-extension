@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0087",
+      "package": "try-mutex",
+      "title": "TryMutex<T> allows sending non-Send type across threads",
+      "description": "Affected versions of this crate unconditionally implemented Sync trait for `TryMutex<T>` type.\n\nThis allows users to put non-Send `T` type in `TryMutex` and send it to another thread, which can cause a data race.\n\nThe flaw was corrected in the 0.3.0 release by adding `T: Send` bound for the Sync trait implementation.",
+      "date": "2020-11-17",
+      "aliases": [
+        "CVE-2020-35924"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mpdn/try-mutex/issues/2",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

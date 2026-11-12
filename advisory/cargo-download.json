@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0133",
+      "package": "cargo-download",
+      "title": "cargo-download is unmaintained",
+      "description": "The cargo download subcommand (via cargo-download crate) is broken and maintainer has disappeared from GitHub and hasn't had any commits for a year. \n\nUsing this downloader will result to corrupted crates.\n\nMaintainer has not responded to maintenance takeover.\n\nJust use wget / curl directly.",
+      "date": "2021-12-25",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Xion/cargo-download",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

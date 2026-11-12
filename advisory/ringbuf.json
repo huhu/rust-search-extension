@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0293",
+      "package": "ringbuf",
+      "title": "Double free / use-after-free in `Consumer::skip` and `Consumer::clear` when an element's `Drop` panics",
+      "description": "`Consumer::skip()` and `Consumer::clear()` are not panic-safe. They drop the\nconsumed elements in place and only afterwards call `advance_read_index()` to move\nthe ring buffer's read index past them. If an element's `Drop` panics mid-loop,\n`advance_read_index()` is never reached, so the read index still points at the\nalready-dropped elements. When the ring buffer is later dropped, its destructor\nre-visits those slots and drops the same elements a second time — a double free\n(CWE-415) / use-after-free (CWE-416) reachable from safe Rust, confirmed under\nAddressSanitizer.\n\n`Consumer::clear()` delegates to `Consumer::skip(self.len())`, so both share the\nsame root cause and the same fix.\n\n## Mitigation\n\nUpdate to 0.5.2 or later (fixed in agerasev/ringbuf#60).",
+      "date": "2026-09-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free",
+        "use-after-free",
+        "panic-safety"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/agerasev/ringbuf/pull/60",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ringbuf::traits::consumer::Consumer::clear": [
+          "<0.5.2"
+        ],
+        "ringbuf::traits::consumer::Consumer::skip": [
+          "<0.5.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.5.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

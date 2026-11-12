@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2016-0007",
+      "package": "jwt",
+      "title": "jwt appears to be unmaintained",
+      "description": "The `jwt` crate appears to be unmaintained.\n\nAlternatives:\n\n- [jsonwebtoken](https://crates.io/crates/jsonwebtoken/)\n- [jwt-simple](https://crates.io/crates/jwt-simple)",
+      "date": "2016-10-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mikkyang/rust-jwt/issues/106",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

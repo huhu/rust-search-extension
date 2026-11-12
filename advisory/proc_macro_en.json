@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0264",
+      "package": "proc-macro-en",
+      "title": "`proc-macro-en` was removed from crates.io due to malicious code",
+      "description": "We identified that `proc-macro-en` contained the same build script as\n`proc-macro1` and it was part of the same supply chain attack.\n\nThis crate had one single version published at 2026-08-20. The crate was\nremoved from crates.io and related user account was locked.\n\nThis crate was used as part of a malware campaign targeted at users of\n`arrayref`, which was downloaded 2,285 times before being removed; see\n[the `arrayref` advisory][arrayref-advisory] for more detail.\n\n[arrayref-advisory]: https://rustsec.org/advisories/RUSTSEC-2026-0260.html",
+      "date": "2026-08-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://blog.rust-lang.org/2026/08/20/supply-chain-attack-on-arrayref",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0418",
+      "package": "libz-sys",
+      "title": "libz-sys build script leaks environment variables in the build directory",
+      "description": "The build script of `libz-sys` version <= 1.1.30 prints the full environment\nof the build, including any secrets it contains, to its stdout when compiled\nwith `cc@1.6.0` or later on a Unix host. This affects any build that depends on\n`libz-sys`. Cargo saves build script stdout under `target/`, so the values end\nup in anything that stores or shares the `target/` directory, such as CI caches.\n\nThis is similar to the [Miri issue](https://blog.rust-lang.org/2026/09/21/github-actions-leaking-secrets-when-miri-output-is-cached/).\n\n## Details\n\nTo decide whether to link against a system zlib, the `libz-sys` build script\ncompiles a small test program with a compiler command from `cc` and logs it\nwith:\n\n```rust\nprintln!(\"running {:?}\", cmd);\n```\n\nOn Unix, `Debug` impl for `std::process::Command` prints every environment\nvariable explicitly set on the command. Before `cc@1.6.0`, its\n`Tool::to_command()` set only a few compiler-specific variables. Starting with\n`cc@1.6.0` (released 2026-10-03), `Tool::to_command()` clears the environment\nand sets every variable explicitly.\n\nCargo parses build script stdout for `cargo:` directives, and stores the full\noutput in the build directory. It also prints it with `-vv`.\n\nThe probe runs for a default `libz-sys` build, including when pkg-config finds\nzlib, unless one of these applies:\n\n* the target is Windows, Android, Haiku or OpenHarmony\n* static linking is requested via the `static` feature or `LIBZ_SYS_STATIC=1`\n* the `zlib-ng` features are enabled without `stock-zlib`\n\n## Mitigations\n\nFixed in `libz-sys@1.1.31`, which no longer logs the probe command.\n\nIf you cannot upgrade, here are some workarounds:\n\n* Build with `LIBZ_SYS_STATIC=1` or the `static` feature, which skips the probe.\n* Pin `cc` to a release before 1.6.0 (`cargo update cc --precise <version>`).\n\nNote that upgrading `libz-sys` does not remove values already written. If an\naffected build already ran with secrets in its environment, clear CI caches and\nstored artifacts containing its\n[target/build directory](https://doc.rust-lang.org/nightly/cargo/reference/build-cache.html#build-cache),\nand consider rotating those secrets.",
+      "date": "2026-10-28",
+      "aliases": [
+        "GHSA-8p3x-q3q3-q3v5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "build-script",
+        "environment",
+        "secrets"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/libz-sys/pull/280",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.1.31"
+      ],
+      "unaffected": [
+        "<1.0.21"
+      ]
+    }
+  }
+]

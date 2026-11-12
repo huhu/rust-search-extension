@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0168",
+      "package": "pqcrypto-hqc",
+      "title": "`pqcrypto-hqc` is unmaintained: upstream PQClean project being archived",
+      "description": "This crate provides Rust bindings to the HQC key encapsulation mechanism\nvia C implementations from\n[PQClean](https://github.com/PQClean/PQClean). The PQClean project is being\narchived in or after July 2026 (see [PQClean/PQClean#604](https://github.com/PQClean/PQClean/issues/604)),\nafter which no further security patches or bug fixes will be applied to the\nupstream implementations.\n\nAs a result, this crate will no longer receive updates. Users should migrate\nto actively maintained alternatives.",
+      "date": "2026-06-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustpq/pqcrypto/issues/97",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

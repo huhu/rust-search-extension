@@ -1,0 +1,47 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0502",
+      "package": "sqlcipher-src",
+      "title": "`sqlcipher-src` via C SQLite CVE-2026-119375",
+      "description": "SQLite versions before 3.54.0 can return uninitialized page-cache memory when a process opens a database file together with a sibling write-ahead-log (`-wal`) file whose page size differs from the database's. A crafted pair of files can make ordinary queries return stale bytes from the process's memory. The attack vector is local and needs the victim to open the files.\n\n`sqlcipher-src` ships the SQLCipher amalgamation (SQLCipher is built on SQLite and contains the same `sqlite3WalReadFrame` code) for `-sys` crates to compile, so a build that uses it is susceptible to the vulnerability. The releases `419.0.3` to `419.0.6` bundle SQLCipher `4.19.0` on SQLite `3.53.4` and are affected. `sqlcipher-src` was updated in `420.0.0` (SQLCipher `4.20.0` on SQLite `3.54.1`), which contains the fix. The releases `0.1.0` and `0.1.1` contain no SQLCipher source. `libsqlite3-sys` `0.39.0` and `0.39.1` depend on `sqlcipher-src =419.0.6` for their `bundled-sqlcipher` feature.\n\nOnly a process that opens a database file, with its `-wal`, that a less trusted party could have written is exposed.",
+      "date": "2026-10-30",
+      "aliases": [
+        "CVE-2026-119375",
+        "GHSA-72w2-rjgg-q729"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "sqlite",
+        "sqlcipher",
+        "wal",
+        "uninitialized-memory",
+        "information-disclosure"
+      ],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:P/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/sqlite/sqlite/commit/e5bf119821f25be1d7f10ef0a2edbe175289166e",
+        "https://sqlite.org/releaselog/3_54_0.html"
+      ],
+      "source": null,
+      "url": "https://sqlite.org/bugs/info/2026-08-17T15:54:41Z",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=420.0.0"
+      ],
+      "unaffected": [
+        "<419.0.3"
+      ]
+    }
+  }
+]

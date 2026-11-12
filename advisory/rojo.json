@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0279",
+      "package": "rojo",
+      "title": "Rojo development server vulnerable to DNS rebinding, allowing unauthenticated read/write access and local program execution",
+      "description": "Rojo's `rojo serve` command starts an unauthenticated HTTP API on localhost\n(default port 34872) with no `Host` or `Origin` header validation. While\ndirect cross-origin `fetch()` requests from a malicious website are blocked by\nthe browser's default CORS policy, an attacker can use DNS rebinding to bypass\nthis restriction entirely.\n \nThe serve API is a two-way sync protocol. Once a DNS rebind is established, a\nmalicious webpage visited by a developer running `rojo serve` can, without any\nfurther user interaction:\n \n- **Read the full project source:** `GET /api/rojo` returns the session ID,\n  root instance ID, and project name. `GET /api/read/{id}` enumerates the\n  complete instance tree including all script contents, exposing proprietary\n  game logic, configuration, and any secrets embedded in source files.\n- **Write to project files on disk:** `POST /api/write` pushes changes back\n  through Rojo's sync pipeline, allowing an attacker to inject arbitrary Lua\n  into the developer's project. If the developer then publishes their game,\n  the injected code executes on every player's client — a supply chain attack\n  vector.\n- **Launch local programs:** `POST /api/open/{id}` calls the OS-level\n  `opener::open()` function, which invokes the platform's default handler\n  (`open` on macOS, `xdg-open` on Linux, `start` on Windows) for the target\n  file.\nExploitation requires only that `rojo serve` is running (the standard Roblox\ndevelopment workflow) and that the developer visits an attacker-controlled\nwebpage in any browser on the same machine. The port is a fixed well-known\ndefault (34872), there is no authentication, and no user interaction is needed\nbeyond the initial page visit.\n \nThe flaw was corrected in [#1270](https://github.com/rojo-rbx/rojo/pull/1270),\nwhich adds `Host`/`Origin` header validation to reject cross-origin requests,\ngates `/api/open` to loopback clients regardless of validated origin, and emits\na warning when the server binds to a non-loopback address\n\nReported by [Aiden Mohan](https://github.com/AidenMohan).",
+      "date": "2026-06-02",
+      "aliases": [
+        "CVE-2026-97875"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "file-disclosure"
+      ],
+      "keywords": [
+        "dns-rebinding",
+        "cross-origin",
+        "localhost",
+        "code-injection"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/rojo-rbx/rojo/commit/ac6941f05483b0875fda52c7664cd42033db7fa2"
+      ],
+      "source": null,
+      "url": "https://github.com/rojo-rbx/rojo/pull/1270",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=7.7.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

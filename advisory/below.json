@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0149",
+      "package": "below",
+      "title": "World Writable Directory in /var/log/below Allows Local Privilege Escalation",
+      "description": "Below is a tool for recording and displaying system data like\nhardware utilization and cgroup information on Linux.\n\n## Symlink Attack in `/var/log/below/error_root.log`\n\nBelow's systemd service runs with full `root` privileges. It attempts to\ncreate a world-writable directory in `/var/log/below`. Even if the\ndirectory already exists, the Rust code ensures [1] that it receives\nmode 0777 permissions:\n\n```\n    if perm.mode() & 0o777 != 0o777 {\n        perm.set_mode(0o777);\n        match dir.set_permissions(perm) {\n            Ok(()) => {}\n            Err(e) => {\n                bail!(\n                    \"Failed to set permissions on {}: {}\",\n                    path.to_string_lossy(),\n                    e\n                );\n            }\n        }\n    }\n```\n\nThis logic leads to different outcomes depending on the packaging on Linux\ndistributions:\n\n- in openSUSE Tumbleweed the directory was packaged with 01755\n  permissions (below.spec [2] line 73), thus causing the\n  `set_permissions()` call to run, resulting in a directory with mode\n  0777 during runtime.\n- in Gentoo Linux the directory is created with mode 01755 resulting in\n  the same outcome as on openSUSE Tumbleweed (below.ebuild [3]).  Where\n  the 01755 mode is exactly coming from is not fully clear, maybe the\n  `cargo` build process assigns these permissions during installation.\n- in Fedora Linux the directory is packaged with 01777 permissions, thus\n  the `set_permissions()` code will not run, because the `if` condition\n  masks out the sticky bit. The directory stays at mode 01777\n  (rust-below.spec [4]).\n- the Arch Linux AUR package [5] (maybe wrongly) does not pre-create\n  the log directory. Thus the `set_permissions()` code will run and\n  create the directory with mode 0777.\n\nBelow creates a log file in `/var/log/below/error_root.log` and assigns\nmode 0666 to it. This (somewhat confusingly) happens via a `log_dir`\nvariable [6], which has been changed to point to the `error_root.log`\nfile. The 0666 permission assignment to the logfile happens in\n`logging::setup()` [7], also accompanied by a somewhat strange comment\nin the code.\n\nA local unprivileged attacker can stage a symlink attack in this\nlocation and cause an arbitrary file in the system to obtain 0666\npermissions, likely leading to a full local root exploit, if done right,\ne.g. by pointing the symlink to `/etc/shadow`. Even if the file already\nexists it can be removed and replaced by a symlink, because of the\nworld-writable directory permissions. The attack is thus not limited to\nscenarios in which the file has not yet been created by Below.\n\n## Further Issues\n\nEven on Fedora Linux, where `/var/log/below` has \"safe\" 01777\npermissions, there is a time window during which problems can arise. As\nlong as `below.service` has not been started, another local user can\npre-create `/var/log/below/error_root.log` and e.g. place a FIFO special\nfile there. This will pose a local DoS against the below service, since\nit will fail to open the path and thus fail to start.\n\nIf `/var/log/below` were to be deleted for any reason, then Below would\nstill recreate it using the bad 0777 mode permissions, which can also\nhappen on distributions that initially package `/var/log/below` using\npermissions that do not trigger the `set_permissions()` call in Below's\ncode.\n\n[1]: https://github.com/facebookincubator/below/blob/v0.8.1/below/src/main.rs#L379\n[2]: https://build.opensuse.org/projects/openSUSE:Factory/packages/below/files/below.spec?expand=1&rev=5e78e7f743f87bea8648eeee673c649b\n[3]: https://github.com/gentoo/gentoo/blob/master/sys-process/below/below-0.8.1-r1.ebuild#L344\n[4]: https://src.fedoraproject.org/rpms/rust-below/blob/6ae58353b5d12e58462425c20a2aedfbae2e769a/f/rust-below.spec#_108\n[5]: https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=below#n34\n[6]: https://github.com/facebookincubator/below/blob/v0.8.1/below/src/main.rs#L552\n[7]: https://github.com/facebookincubator/below/blob/v0.8.1/below/src/open_source/logging.rs#L68",
+      "date": "2025-03-12",
+      "aliases": [
+        "CVE-2025-27591",
+        "GHSA-9mc5-7qhg-fp3w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openwall.com/lists/oss-security/2025/03/12/1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.9.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

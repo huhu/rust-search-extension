@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0165",
+      "package": "i_tree",
+      "title": "i_tree allowed out-of-bounds access through safe public node accessors",
+      "description": "Affected versions of `i_tree` exposed safe public `Tree::node` and `Tree::mut_node` methods in the public `tree` module. These methods accepted an arbitrary `u32` index and passed it directly to `Vec::get_unchecked` / `get_unchecked_mut` on the internal node buffer, without validating that the index was in bounds.\n\nBecause these methods were safe and public, a caller could pass an out-of-bounds index without writing any `unsafe` code, producing an out-of-bounds shared or mutable reference and triggering undefined behavior.\n\nStarting with `0.10.0` the crate was restructured and these accessors are no longer reachable from outside the crate.",
+      "date": "2025-07-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/iShape-Rust/iTree/commit/a948b891cf159233bfed5b16bf185268fd9e1985",
+        "https://github.com/iShape-Rust/iTree/compare/0.9.0...0.10.0"
+      ],
+      "source": null,
+      "url": "https://github.com/iShape-Rust/iTree/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "i_tree::tree::Tree::mut_node": [
+          "<0.10.0"
+        ],
+        "i_tree::tree::Tree::node": [
+          "<0.10.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

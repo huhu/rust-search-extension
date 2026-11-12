@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0454",
+      "package": "surrealdb-core",
+      "title": "Data race and double free via unsound `Send`/`Sync` in `reblessive`",
+      "description": "`dbs::Executor` drives every SurrealQL statement through `reblessive::tree::TreeStack`. In `reblessive 0.4.3` the runtime types unconditionally assert `Send`/`Sync` (`unsafe impl Send/Sync for Stack`, `TreeStack` and `Runner`), while the public entry points accept any future without a `Send` bound and store it type-erased in a bump allocator.\n\nTwo safe-code consequences follow. First, `Runner::step_async`/`finish_async` return driver futures tied to the stack borrow rather than to `&mut self`, so a driver future can be duplicated; because `Stack` is `Sync` those futures are `Send`, and polling two copies on different threads runs `drive_top_task` concurrently — racy `Cell`/`UnsafeCell` access, double `pop_task()`/`pop_dealloc()` (double drop / double free) and a non-atomic `Option::take`. Second, `TreeStack: Send` lets safe code move a driver whose type-erased future captures `!Send` state (`Rc`, `RefCell`) to another thread while the creating thread keeps an alias of that state.\n\nNo `unsafe` is needed at the call site. `surrealdb-core`'s own query futures are `Send` only because of the unsound `unsafe impl Send for TreeStack`, while the captured `&mut tree::Stk` is deliberately `!Send`.\n\nThe unsound dependency was removed in 4.0.0 and the parser now uses plain recursion (commit `75407c4bcc`).",
+      "date": "2026-11-03",
+      "aliases": [
+        "GHSA-m9qr-4rcq-3jhc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety",
+        "memory-corruption"
+      ],
+      "keywords": [
+        "data-race",
+        "double-free",
+        "send-sync"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/surrealdb/surrealdb/commit/75407c4bccc6d6679d7d6e7a18af0065afdded7d",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

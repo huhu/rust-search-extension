@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0309",
+      "package": "bun_collections",
+      "title": "`SinglyLinkedList::remove` dereferences a null link",
+      "description": "In versions before 0.2.1, `SinglyLinkedList::remove` is safe and walks the intrusive list with an unchecked dereference. On an empty list, or when `node` is not in the list, `(*current_elm).next` reads a null pointer. That is undefined behavior. The list head is a raw `*mut Node<T>`, and safe code can construct the empty list.\n\nThe maintainer fixed this in 0.2.1 by rejecting those two cases with an unconditional `assert!` before the pointer is followed, matching the upstream Zig `unwrap` on the same paths. 0.2.0 was yanked. Versions 0.1.0 through 0.1.13 are still published and still contain the unchecked walk.",
+      "date": "2026-09-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "null-pointer"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/putao520/bao/issues/46",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bun_collections::pool::SinglyLinkedList::remove": [
+          "<0.2.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

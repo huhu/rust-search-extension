@@ -1,0 +1,185 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0510",
+      "package": "vodozemac",
+      "title": "Panic when decoding malformed Ed25519 keys from Base64",
+      "description": "In version 0.11.1 and earlier of vodozemac, Ed25519PublicKey::from_base64() and\nEd25519SecretKey::from_base64() panic on malformed input instead of returning an\nerror, if the input decodes to 31 or 33 bytes instead of the expected 32 bytes.\nAn attacker who can supply a key to an application using vodozemac can crash it.\n\n## Impact\n\nEd25519 public keys are routinely received from other Matrix users and servers,\nso a malicious party can publish a crafted key that crashes clients parsing it.\n\nThe impact is limited to denial of service; no key disclosure or signature\nforgery is possible.",
+      "date": "2026-11-11",
+      "aliases": [
+        "GHSA-pqp6-f7wc-6498"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/vodozemac/pull/453",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "vodozemac::Ed25519PublicKey::from_base64": [
+          "<0.11.2"
+        ],
+        "vodozemac::Ed25519SecretKey::from_base64": [
+          "<0.11.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.11.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0451",
+      "package": "vodozemac",
+      "title": "Degraded secret zeroization capabilities",
+      "description": "In version 0.11.1 and earlier of vodozemac, the Olm root key ratchet did not\nzeroize its HKDF output after use. Each ratchet step left a copy of the new root\nkey and chain key in freed heap memory.\n\n## Impact\n\nAn attacker who can read the process's memory, for example through a separate\nmemory-disclosure bug, a core dump, or swapped-out pages, may recover root keys\nand chain keys from earlier ratchet steps. A leaked chain key allows decrypting\nthe messages in that chain, weakening Olm's forward secrecy for affected\nsessions.",
+      "date": "2026-11-06",
+      "aliases": [
+        "GHSA-v27v-f96q-qhjq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/vodozemac/pull/446",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0445",
+      "package": "vodozemac",
+      "title": "Degraded secret zeroization capabilities",
+      "description": "Versions 0.11.0 and 0.11.1 of vodozemac have degraded secret zeroization\ncapabilities, due to changes in third-party cryptographic dependencies\n(chacha-20poly1305, sha2, hmac), which moved secret zeroization capabilities\nbehind a feature flag while vodozemac disabled the default feature set.\n\n## Impact\n\nThe degraded zeroization capabilities could result in the production of more\nmemory copies of encryption secrets and secrets could linger in memory longer\nthan necessary. This marginally increases the risk of sensitive data exposure.",
+      "date": "2026-11-06",
+      "aliases": [
+        "GHSA-mxcm-mrw6-c446"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/vodozemac/pull/448",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.2"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0354",
+      "package": "vodozemac",
+      "title": " Usage of non-constant time base64 decoder could lead to leakage of secret key material",
+      "description": "Versions before 0.7.0 of vodozemac use a non-constant time base64 implementation\nfor importing key material for Megolm group sessions and `PkDecryption` Ed25519\nsecret keys. This flaw might allow an attacker to infer some information about\nthe secret key material through a side-channel attack.\n\n## Impact\n\nThe use of a non-constant time base64 implementation might allow an attacker to\nobserve timing variations in the encoding and decoding operations of the secret\nkey material. This could potentially provide insights into the underlying secret\nkey material.\n\nThe impact of this vulnerability is considered low because exploiting the\nattacker is required to have access to high precision timing measurements, as\nwell as repeated access to the base64 encoding or decoding processes.\nAdditionally, the estimated leakage amount is bounded and low according to the\nreferenced paper[[1]].\n\n[1]: https://arxiv.org/abs/2108.04600",
+      "date": "2024-07-17",
+      "aliases": [
+        "CVE-2024-40640",
+        "GHSA-j8cm-g7r6-hfpq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure",
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/vodozemac/commit/734b6c6948d4b2bdee3dd8b4efa591d93a61d272",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.7.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2024-0342",
+      "package": "vodozemac",
+      "title": "Degraded secret zeroization capabilities",
+      "description": "Versions 0.5.0 and 0.5.1 of vodozemac have degraded secret zeroization capabilities,\ndue to changes in third-party cryptographic dependencies (the Dalek crates),\nwhich moved secret zeroization capabilities behind a feature flag while\nvodozemac disabled the default feature set.\n\n## Impact\n\nThe degraded zeroization capabilities could result in the production of more\nmemory copies of encryption secrets and secrets could linger in memory longer\nthan necessary. This marginally increases the risk of sensitive data exposure.\n\nOverall, we consider the impact of this issue to be low. Although cryptographic\nbest practices recommend the clearing of sensitive information from memory once\nit's no longer needed, the inherent limitations of Rust regarding absolute\nzeroization reduce the practical severity of this lapse.",
+      "date": "2024-05-02",
+      "aliases": [
+        "CVE-2024-34063",
+        "GHSA-c3hm-hxwf-g5c6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/vodozemac/commit/297548cad4016ce448c4b5007c54db7ee39489d9",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": [
+        "<0.5.0"
+      ]
+    }
+  }
+]

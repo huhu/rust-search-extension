@@ -1,0 +1,342 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0501",
+      "package": "bsv-rs",
+      "title": "Shamir backup recovery accepts a share at x = 0, so a supplied share can substitute the recovered private key",
+      "description": "`KeyShares::from_backup_format` (the Shamir backup share reader, public since\n0.2.0, the crate's first release) accepted a share whose x coordinate is 0,\nand `KeyShares::recover_private_key` interpolates the shares at x = 0 to\nrecover the key. At an x of 0 the interpolation answers that share's y value\nalone, so an attacker who supplies one share in that form — with the share's\nintegrity tag ground to match the honest set's — chooses the recovered key\noutright. The non-canonical zero x = p works the same way, and a repeated x\npast the threshold window also passed.\n\nAn application that recovers a Shamir backup from shares it did not produce —\na custodian's medium, a share pasted by hand, a set restored from another\nwriter — could be handed the attacker's key as the recovered one. A set the\ncrate's own writer produces never carries such a share; the door is the\nreader.\n\n0.8.7 refuses such a set before interpolating (the 0.9 line's next prerelease\ncarries the same refusal). Where upgrading is not possible, before recovering\nsplit each share on `.` into four fields, base58-decode the x field, and\nrefuse the set if it decodes to zero (the one-character field `1`, or a value\nat or above the field prime) or if two shares carry the same x.",
+      "date": "2026-11-12",
+      "aliases": [
+        "GHSA-cwxv-4866-5gq2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "bitcoin",
+        "shamir",
+        "backup",
+        "secret-sharing",
+        "key-recovery"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/Calhooon/bsv-rs/issues/854"
+      ],
+      "source": null,
+      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.7/CHANGELOG.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bsv_rs::primitives::bsv::shamir::KeyShares::from_backup_format": [
+          ">=0.2.0, <0.8.7",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::primitives::bsv::shamir::KeyShares::recover_private_key": [
+          ">=0.2.0, <0.8.7",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.7, <0.9.0-beta.1",
+        ">0.9.0-beta.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0497",
+      "package": "bsv-rs",
+      "title": "Transaction::from_json holds an input txid that is not 64 hex digits and writes the input as spending the zero txid",
+      "description": "`Transaction::from_json`, for a document with no `hex` member, held each\ninput's `txid` member as given. An input `txid` that is not 64 hex digits\n(`\"zz\"`, `\"\"`, 63 or 65 digits, characters that are not hex digits) answered\n`Ok`: `source_txid` and `to_json` gave the text back, while `to_binary` wrote\nthe input as spending the txid of 32 zero bytes and `id()` hashed those bytes.\nDocuments naming different texts were one transaction, spending an outpoint\nnone of them named.\n\nAn application that reads a peer's transaction document with `from_json` and\nrelies both on the text of its inputs and on its bytes or `id()` is affected;\none that reads only documents it produced is not.\n\n0.8.6 refuses such a txid (`Invalid txid of input N: expected 64 hex digits`).\nWhere upgrading is not possible, require each input's `txid` to be 64 ASCII hex\ndigits before calling `from_json`.",
+      "date": "2026-11-11",
+      "aliases": [
+        "GHSA-84xq-3662-pvx5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "bitcoin",
+        "transaction",
+        "txid",
+        "json",
+        "parsing",
+        "input-validation"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/Calhooon/bsv-rs/issues/845",
+        "https://github.com/Calhooon/bsv-rs/pull/856"
+      ],
+      "source": null,
+      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.6/CHANGELOG.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bsv_rs::transaction::Transaction::from_json": [
+          "<0.8.6",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.6, <0.9.0-beta.1",
+        ">0.9.0-beta.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0499",
+      "package": "bsv-rs",
+      "title": "Signature::from_der reads a signature with bytes after it, a wrong sequence length or an unneeded zero as the signature",
+      "description": "`Signature::from_der` read a DER-encoded ECDSA signature leniently. It read as\nthe signature: the signature followed by other bytes; a sequence length\nshorter than its contents, or longer with bytes after them (a length byte with\nits high bit set among them); and an R or S preceded by a zero byte it did not\nneed. It read a lone-zero R or S as zero.\n\n`messages::verify`, `compat::bsm::verify_message_der`,\n`auth::Certificate::verify`, `auth::VerifiableCertificate::verify`,\n`wallet::ProtoWallet::verify_signature` and\n`kvstore::KVStoreInterpreter::verify_signature` read through it, and each\nverified such a form of a valid signature. Given one signature a key holder\nmade, anyone could produce other byte strings that verify as that signature\nover the same data. No form verifies over other data: an application that acts\non the verdict alone is not affected; one that compares, hashes or stores a\nsignature's bytes is.\n\n0.8.6 refuses each form as `Error::InvalidSignature`. A signature's bytes are\nstill not unique after the patch: the same signature with S replaced by n - S\nverifies, so an application that keys on the bytes also requires\n`Signature::is_low_s()`.",
+      "date": "2026-11-11",
+      "aliases": [
+        "GHSA-9c8r-76f3-m426"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "bitcoin",
+        "ecdsa",
+        "der",
+        "signature",
+        "malleability",
+        "parsing"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/Calhooon/bsv-rs/issues/842",
+        "https://github.com/Calhooon/bsv-rs/pull/846"
+      ],
+      "source": null,
+      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.6/CHANGELOG.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bsv_rs::auth::Certificate::verify": [
+          "<0.8.6",
+          "=0.9.0-beta.1"
+        ],
+        "bsv_rs::auth::VerifiableCertificate::verify": [
+          "<0.8.6",
+          "=0.9.0-beta.1"
+        ],
+        "bsv_rs::auth::utils::validate_certificate_encoding": [
+          "<0.8.6",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::compat::bsm::verify_message_der": [
+          "<0.8.6",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::kvstore::KVStoreInterpreter::verify_signature": [
+          "<0.8.6",
+          ">=0.9.0-beta.1, <=0.9.0-beta.2"
+        ],
+        "bsv_rs::messages::verify": [
+          "<0.8.6",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::primitives::bsv::TransactionSignature::from_checksig_format": [
+          "<0.8.6",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::primitives::ec::Signature::from_der": [
+          "<0.8.6",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::wallet::ProtoWallet::verify_signature": [
+          "<0.8.6",
+          ">=0.9.0-beta.1, <=0.9.0-beta.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.6, <0.9.0-beta.1",
+        ">0.9.0-beta.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0498",
+      "package": "bsv-rs",
+      "title": "Transaction readers accept trailing bytes, so a parsed transaction can carry another transaction id",
+      "description": "`Transaction::from_binary` and `Transaction::from_hex` read one transaction\nfrom the front of their input, did not check that the input ended there, and\nkept the whole input as the transaction's cached serialization: `to_binary`,\n`to_hex` and `id()` then answered for bytes that are not the transaction's.\n`Transaction::from_json`, given a `hex` field, reads it through `from_hex` and\nanswers the same. `from_ef`, `from_hex_ef` and `parse_script_offsets` also\nread a prefix.\n\nAn application that takes bytes or hex from outside, parses them with these\nreaders and then uses `id()` or the serialization could be given one\ntransaction under another identity: the same parsed fields, a different id.\nAn application that passes them only bytes it produced or has already checked\nis not affected.\n\n0.8.5 refuses a byte after the transaction; `Transaction::from_reader` reads\nfrom the front of a longer buffer. Where upgrading is not possible, parse with\n`Transaction::from_binary`, call `tx.invalidate_caches()` (public from 0.3.16)\nand require `tx.to_binary() == bytes`.",
+      "date": "2026-11-10",
+      "aliases": [
+        "GHSA-j8hr-pjhm-6h27"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "bitcoin",
+        "transaction",
+        "txid",
+        "parsing",
+        "trailing-data"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/Calhooon/bsv-rs/issues/840"
+      ],
+      "source": null,
+      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.5/CHANGELOG.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bsv_rs::transaction::Transaction::from_binary": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::from_ef": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::from_hex": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::from_hex_ef": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::from_json": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::parse_script_offsets": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.5, <0.9.0-beta.1",
+        ">0.9.0-beta.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0500",
+      "package": "bsv-rs",
+      "title": "BEEF validation answers valid for a raw entry that is not a transaction",
+      "description": "`Beef::merge_raw_tx` and `BeefTx::from_raw_tx` accept raw bytes without a\n`Result`. For bytes that are not exactly one transaction (a transaction\nfollowed by bytes, a cut transaction, bytes that are no transaction at all),\n`Beef::sort_txs`, `verify_structure`, `verify_valid` and `is_valid` could\nanswer valid, even with no BUMP and no parent in the BEEF, and, where the entry\ncarried a BUMP index, treat the hash of those bytes as a proven transaction id;\nan entry that names it as a parent was answered valid too.\n\nThe wire readers (`Beef::from_binary`, `verify_stream`,\n`Transaction::from_beef`, `from_atomic_beef`) parse every entry and are not\naffected. Reaching this needs an application that passes bytes it did not\nparse to `merge_raw_tx` or `BeefTx::from_raw_tx` and then relies on the verdict\nor on the transaction the BEEF hands back.\n\n0.8.5 refuses such an entry at all four verdict doors, with or without a BUMP\nindex, and every entry that names it as a parent. Where upgrading is not\npossible, do not rely on `is_valid` or `verify_valid` alone for such an entry:\ncheck that the bytes are exactly one transaction before merging them.",
+      "date": "2026-11-10",
+      "aliases": [
+        "GHSA-j8hr-pjhm-6h27"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "bitcoin",
+        "beef",
+        "spv",
+        "verification"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/Calhooon/bsv-rs/pull/852"
+      ],
+      "source": null,
+      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.5/CHANGELOG.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bsv_rs::transaction::Beef::find_atomic_transaction": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Beef::find_transaction_for_signing": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Beef::is_valid": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Beef::merge_raw_tx": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Beef::sort_txs": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Beef::verify_structure": [
+          ">=0.4.2, <0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Beef::verify_valid": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::BeefTx::from_raw_tx": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.5, <0.9.0-beta.1",
+        ">0.9.0-beta.7"
+      ],
+      "unaffected": []
+    }
+  }
+]

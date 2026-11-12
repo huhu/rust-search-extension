@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0101",
+      "package": "safe-agent-rs",
+      "title": "`safe-agent-rs` was removed from crates.io for being affiliated with malicious code",
+      "description": "While `safe-agent-rs` did not directly contain malicious code, it was owned by the same user as\n`pretty-changelog-logger` and `microsoftsystem64`. `safe-agent-rs` also appeared to be imitating a\ndifferent websocket library. We decided to remove it out of an abundance of caution.\n\nThis crate had 2 versions published on 2026-03-24 that had a total of 4138 downloads. There were no crates depending on this crate on crates.io.",
+      "date": "2026-04-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

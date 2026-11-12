@@ -1,0 +1,135 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0271",
+      "package": "suppaftp",
+      "title": "FTP command injection via CRLF in control channel arguments",
+      "description": "Affected versions of `suppaftp` wrote command arguments (user name, password, paths, `SITE` arguments and custom commands) to the FTP control channel without validation. An argument containing a carriage return (`\\r`) or a line feed (`\\n`) terminated the intended command line and let a second, attacker-chosen command be sent to the server within the same authenticated session.\n\nAn application that passes untrusted input as credentials, paths or command strings to methods such as `login`, `cwd`, `mkdir`, `rmdir`, `rm`, `rename`, `retr`, `put_file`, `site` or `custom_command` can therefore be made to execute arbitrary FTP commands with the application's privileges, for example deleting files or redirecting a data connection with an injected `PORT`.\n\nAll three clients are affected: sync, tokio and smol, with or without TLS.\n\nThe flaw was corrected in version 10.0.2 (commit [194bdd1](https://github.com/veeso/suppaftp/commit/194bdd1979b16c4848d1fad6897dfa524b688d88)): every command line is validated before it is written to the wire and rejected with `FtpError::ConnectionError` (`std::io::ErrorKind::InvalidInput`) if it contains CR or LF anywhere but in the trailing terminator. As a consequence, `custom_command` no longer accepts several commands joined by CRLF in a single call.\n\nUsers who cannot upgrade should reject or strip `\\r` and `\\n` from any untrusted string before passing it to the client.",
+      "date": "2026-08-18",
+      "aliases": [
+        "GHSA-8mhj-xm4h-m5m6"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "ftp",
+        "ftps",
+        "crlf",
+        "command-injection"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/veeso/suppaftp/pull/172",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "suppaftp::ImplFtpStream::custom_command": [
+          "<10.0.2"
+        ],
+        "suppaftp::ImplFtpStream::cwd": [
+          "<10.0.2"
+        ],
+        "suppaftp::ImplFtpStream::login": [
+          "<10.0.2"
+        ],
+        "suppaftp::ImplFtpStream::mkdir": [
+          "<10.0.2"
+        ],
+        "suppaftp::ImplFtpStream::put_file": [
+          "<10.0.2"
+        ],
+        "suppaftp::ImplFtpStream::rename": [
+          "<10.0.2"
+        ],
+        "suppaftp::ImplFtpStream::retr": [
+          "<10.0.2"
+        ],
+        "suppaftp::ImplFtpStream::rm": [
+          "<10.0.2"
+        ],
+        "suppaftp::ImplFtpStream::rmdir": [
+          "<10.0.2"
+        ],
+        "suppaftp::ImplFtpStream::site": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::custom_command": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::cwd": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::login": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::mkdir": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::put_file": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::rename": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::retr": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::rm": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::rmdir": [
+          "<10.0.2"
+        ],
+        "suppaftp::smol::ImplAsyncFtpStream::site": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::custom_command": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::cwd": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::login": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::mkdir": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::put_file": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::rename": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::retr": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::rm": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::rmdir": [
+          "<10.0.2"
+        ],
+        "suppaftp::tokio::ImplAsyncFtpStream::site": [
+          "<10.0.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=10.0.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

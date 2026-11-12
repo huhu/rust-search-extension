@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0238",
+      "package": "dcrypt-algorithms",
+      "title": "Low-level GCM ignores the operation nonce",
+      "description": "In all published versions of `dcrypt-algorithms` before 2.0.0, the low-level\n`Gcm` builder required an operation nonce but derived `J0` from the nonce\ncaptured by the original `Gcm` constructor. Multiple operations could therefore\nsilently reuse a nonce even when callers supplied distinct values, compromising\nconfidentiality and authenticity under an affected key.\n\nVersion 2.0.0 makes `Gcm` key-only and passes the operation nonce through IV\nderivation, encryption, and decryption. It also corrects non-96-bit IV\nprocessing, rejects tags shorter than 96 bits, and enforces counter limits.\nApplications must upgrade, identify affected keys, rotate them, and re-encrypt\naffected data; updating the implementation cannot restore security after nonce\nreuse.",
+      "date": "2026-08-09",
+      "aliases": [
+        "GHSA-h9f2-fgp8-vc4h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "aes-gcm",
+        "nonce-reuse"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/ioi-foundation/dcrypt/commit/c99cc86f0ee353010cd202cbcd2c310371b0bbb8",
+        "https://github.com/ioi-foundation/dcrypt/releases/tag/v2.0.0"
+      ],
+      "source": null,
+      "url": "https://github.com/ioi-foundation/dcrypt/commit/c99cc86f0ee353010cd202cbcd2c310371b0bbb8",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

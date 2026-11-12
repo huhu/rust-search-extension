@@ -1,0 +1,42 @@
+{
+  "Project": [
+    "rust",
+    "rustup",
+    "rfcs",
+    "cargo",
+    "crates.io",
+    "docs.rs",
+    "rust-clippy",
+    "rustfmt",
+    "mdBook",
+    "rustlings",
+    "crater",
+    "chalk",
+    "miri",
+    "rust-bindgen"
+  ],
+  "Crate": [
+    "futures-rs",
+    "log",
+    "regex",
+    "getopts",
+    "hashbrown",
+    "backtrace-rs",
+    "libc",
+    "stacker",
+    "rustc-hash",
+    "ena",
+    "pin-utils"
+  ],
+  "Book": [
+    "book",
+    "rust-by-example",
+    "edition-guide",
+    "async-book",
+    "api-guidelines",
+    "rustc-dev-guide",
+    "reference",
+    "nomicon",
+    "unsafe-code-guidelines"
+  ]
+}
