@@ -76,23 +76,23 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0076",
+      "id": "RUSTSEC-2026-0077",
       "package": "libcrux-ml-dsa",
-      "title": "Panic in Signature Hint Decoding During Verification",
-      "description": "During ML-DSA verification the serialized hint values are decoded as\nspecified in algorithm 22 `HintBitUnpack` of [FIPS 204, subsection\n7.1](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf#%5B%7B%22num%22%3A120%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22FitH%22%7D%2C657%5D). The\nalgorithm requires that the cumulative hint counters per row of the\nhint vector are strictly increasing and below a maximum value which\ndepends on the choice of ML-DSA parameter set (line 4).\n\nIn libcrux-ml-dsa, hint decoding did not check the boundedness of the\ncumulative hint counter of the last row of the hint vector.\n\n## Impact\nA manipulated invalid hint can cause an out-of-bounds memory access\nsince the hint decoding logic may attempt to read outside the bounds\nof the serialized signature, causing a runtime panic.\n\n## Mitigation\nStarting from version `0.0.8`, hint decoding will check the cumulative\nhint counter of the last row as well.",
+      "title": "Incorrect Check of Signer Response Norm During Verification",
+      "description": "The ML-DSA verification algorithm as specified in [FIPS 204,\nsubsection\n6.3](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf#subsection.6.3)\nrequires verifiers to check that the infinity norm of the deserialized\nsigner response $z$ does not exceed $\\gamma_1 - \\beta$ (line 13 of\nAlgorithm 8).\nThe same check is required to be performed during signature generation.\n\nlibcrux-ml-dsa did not perform this check correctly during signature\nverification, accepting signatures with signer response norm above the\nallowed maximum value.  The check is correctly performed during\nsigning.\n\n## Impact\nApplications using libcrux-ml-dsa for signature verification would\nhave accepted signatures that would be rejected by a conforming\nimplementation.\n\n## Mitigation\nStarting from version `0.0.8`, signature verification uses the correct\nvalue for $\\gamma_1$ in the signer response norm check.",
       "date": "2026-03-04",
       "aliases": [
-        "GHSA-xrf2-5r3p-5wgj"
+        "GHSA-cp57-fq8g-qh6v"
       ],
       "related": [],
       "collection": "crates",
       "categories": [],
       "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "cvss": null,
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/cryspen/libcrux/pull/1348",
+      "url": "https://github.com/cryspen/libcrux/pull/1347",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -121,23 +121,23 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0077",
+      "id": "RUSTSEC-2026-0076",
       "package": "libcrux-ml-dsa",
-      "title": "Incorrect Check of Signer Response Norm During Verification",
-      "description": "The ML-DSA verification algorithm as specified in [FIPS 204,\nsubsection\n6.3](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf#subsection.6.3)\nrequires verifiers to check that the infinity norm of the deserialized\nsigner response $z$ does not exceed $\\gamma_1 - \\beta$ (line 13 of\nAlgorithm 8).\nThe same check is required to be performed during signature generation.\n\nlibcrux-ml-dsa did not perform this check correctly during signature\nverification, accepting signatures with signer response norm above the\nallowed maximum value.  The check is correctly performed during\nsigning.\n\n## Impact\nApplications using libcrux-ml-dsa for signature verification would\nhave accepted signatures that would be rejected by a conforming\nimplementation.\n\n## Mitigation\nStarting from version `0.0.8`, signature verification uses the correct\nvalue for $\\gamma_1$ in the signer response norm check.",
+      "title": "Panic in Signature Hint Decoding During Verification",
+      "description": "During ML-DSA verification the serialized hint values are decoded as\nspecified in algorithm 22 `HintBitUnpack` of [FIPS 204, subsection\n7.1](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf#%5B%7B%22num%22%3A120%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22FitH%22%7D%2C657%5D). The\nalgorithm requires that the cumulative hint counters per row of the\nhint vector are strictly increasing and below a maximum value which\ndepends on the choice of ML-DSA parameter set (line 4).\n\nIn libcrux-ml-dsa, hint decoding did not check the boundedness of the\ncumulative hint counter of the last row of the hint vector.\n\n## Impact\nA manipulated invalid hint can cause an out-of-bounds memory access\nsince the hint decoding logic may attempt to read outside the bounds\nof the serialized signature, causing a runtime panic.\n\n## Mitigation\nStarting from version `0.0.8`, hint decoding will check the cumulative\nhint counter of the last row as well.",
       "date": "2026-03-04",
       "aliases": [
-        "GHSA-cp57-fq8g-qh6v"
+        "GHSA-xrf2-5r3p-5wgj"
       ],
       "related": [],
       "collection": "crates",
       "categories": [],
       "keywords": [],
-      "cvss": null,
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/cryspen/libcrux/pull/1347",
+      "url": "https://github.com/cryspen/libcrux/pull/1348",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false

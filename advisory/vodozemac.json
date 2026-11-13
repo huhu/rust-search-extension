@@ -45,39 +45,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0451",
-      "package": "vodozemac",
-      "title": "Degraded secret zeroization capabilities",
-      "description": "In version 0.11.1 and earlier of vodozemac, the Olm root key ratchet did not\nzeroize its HKDF output after use. Each ratchet step left a copy of the new root\nkey and chain key in freed heap memory.\n\n## Impact\n\nAn attacker who can read the process's memory, for example through a separate\nmemory-disclosure bug, a core dump, or swapped-out pages, may recover root keys\nand chain keys from earlier ratchet steps. A leaked chain key allows decrypting\nthe messages in that chain, weakening Olm's forward secrecy for affected\nsessions.",
-      "date": "2026-11-06",
-      "aliases": [
-        "GHSA-v27v-f96q-qhjq"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "memory-exposure"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/matrix-org/vodozemac/pull/446",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.11.2"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0445",
       "package": "vodozemac",
       "title": "Degraded secret zeroization capabilities",
@@ -109,6 +76,39 @@
       "unaffected": [
         "<0.11.0"
       ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0451",
+      "package": "vodozemac",
+      "title": "Degraded secret zeroization capabilities",
+      "description": "In version 0.11.1 and earlier of vodozemac, the Olm root key ratchet did not\nzeroize its HKDF output after use. Each ratchet step left a copy of the new root\nkey and chain key in freed heap memory.\n\n## Impact\n\nAn attacker who can read the process's memory, for example through a separate\nmemory-disclosure bug, a core dump, or swapped-out pages, may recover root keys\nand chain keys from earlier ratchet steps. A leaked chain key allows decrypting\nthe messages in that chain, weakening Olm's forward secrecy for affected\nsessions.",
+      "date": "2026-11-06",
+      "aliases": [
+        "GHSA-v27v-f96q-qhjq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/matrix-org/vodozemac/pull/446",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.2"
+      ],
+      "unaffected": []
     }
   },
   {

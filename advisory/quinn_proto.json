@@ -1,6 +1,90 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0524",
+      "package": "quinn-proto",
+      "title": "Long Retry token can panic or exhaust memory in a QUIC client",
+      "description": "A client kept the token from a Retry packet without any length limit and put it into the header of every Initial packet it sent afterwards. Initial datagrams are 1200 bytes. When the token and connection IDs left no room for the minimum payload, `PacketBuilder::new` computed a minimum packet size larger than the maximum, which only a debug assertion checked. On the next `poll_transmit`, debug builds panic, and release builds try to allocate more than 10 GiB in one call. With longer tokens the allocation fails and the process aborts.\n\nA matching Retry packet can be built from the client's first Initial alone. The attacker can therefore be the server being contacted, or anyone who sees that Initial and can answer before the server does. Every application that makes outgoing connections with `quinn-proto` is affected, including all `quinn` clients. Servers do not process Retry packets.\n\nThe fix closes the connection with `PROTOCOL_VIOLATION` when an Initial token leaves too little room for frames. That covers Retry tokens and cached address-validation tokens, since both come from the peer. It also reserves room for CONNECTION_CLOSE after large Initial headers. Both changes are in 0.11.19.",
+      "date": "2026-09-30",
+      "aliases": [
+        "GHSA-wppq-2f6r-wfvm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "quic",
+        "panic",
+        "oom"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/quinn-rs/quinn/commit/d45b5136ed1d5b2b04ff6456443c0662acf1d0d3",
+        "https://github.com/quinn-rs/quinn/commit/74c33ff75281d7751488e410e21e4f030782b655",
+        "https://github.com/quinn-rs/quinn/commit/a6e78d1c8bf28630f1e92fbcc38f60e0a134b01a"
+      ],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/commit/3bba467893ceff64d6cda0b3a2c51a1429e10372",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.19"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0523",
+      "package": "quinn-proto",
+      "title": "MAX_STREAM_DATA frame can open streams beyond the stream limit",
+      "description": "When a MAX_STREAM_DATA frame named a peer-initiated bidirectional stream that was not open yet, `received_max_stream_data` treated the stream, and every lower-numbered stream, as opened without checking the stream ID against the limit advertised to the peer. RFC 9000 section 4.6 requires closing the connection with `STREAM_LIMIT_ERROR` in this case, and the STREAM and RESET_STREAM handlers already did so.\n\nAfter the handshake, a peer can send one small MAX_STREAM_DATA frame naming a very large stream index, and `accept` then yields every stream up to that index. In `quinn`, a loop that keeps calling `accept_bi` can be handed more than 2^40 streams. Depending on the runtime, the endpoint runs out of memory, stops accepting new connections, or keeps busy indefinitely, even after the peer has gone away. Clients and servers that accept peer-initiated bidirectional streams are affected. Unidirectional streams are not.\n\nThe fix validates the stream ID in `received_max_stream_data` and adds a defensive check where streams are opened implicitly. It is in 0.11.19.",
+      "date": "2026-09-30",
+      "aliases": [
+        "GHSA-53rm-773f-4q8c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "quic",
+        "stream-limit",
+        "oom"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/quinn-rs/quinn/commit/73114d8289d42bd536c790fa00a9beed05a4e5fa"
+      ],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/commit/3eb7465d9e11d7a245e99cde1a4eb872ec26d264",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.19"
+      ],
+      "unaffected": [
+        "<0.11.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0340",
       "package": "quinn-proto",
       "title": "Peer minimum ACK delay can panic quinn-proto when ACK_FREQUENCY transmission is enabled",
@@ -33,43 +117,6 @@
       ],
       "unaffected": [
         "<0.11.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0338",
-      "package": "quinn-proto",
-      "title": "Remote peer can panic quinn-proto with zero-length STREAM frames during unordered reads",
-      "description": "When a stream is read in unordered mode (for example through `RecvStream::read(false)` in\nquinn-proto or `read_unordered` in `quinn`), quinn-proto proactively deduplicates received data\nby recording received ranges in a `RangeSet` through its `replace` method. When an incoming\nSTREAM frame carried an empty payload, the `Drop` implementation of the iterator returned by\n`replace` inserted an empty range into the set, violating the invariant that stored ranges are\nnon-empty. Subsequent frames overlapping that region then caused a panic while processing the\nstream.\n\nA remote peer can trigger this with five small STREAM frames (two of them zero-length) once the\napplication has put the stream in unordered-read mode. The default ordered read path is not\naffected.\n\nThe flaw was corrected in 0.11.18 by ignoring empty ranges in `RangeSet::replace`.\n\nThanks to Otto Hermann ([@ojhermann](https://github.com/ojhermann)) for reporting this issue.",
-      "date": "2026-09-14",
-      "aliases": [
-        "GHSA-465w-v9q3-7j98"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "panic"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/quinn-rs/quinn/pull/2868",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.11.18"
-      ],
-      "unaffected": [
-        "<0.7.0"
       ]
     }
   },
@@ -112,13 +159,13 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0342",
+      "id": "RUSTSEC-2026-0338",
       "package": "quinn-proto",
-      "title": "Zero-length DATAGRAM frames bypass the receive buffer limit in quinn-proto",
-      "description": "quinn-proto bounds its queue of received datagrams by charging each queued frame's payload length\nagainst `TransportConfig::datagram_receive_buffer_size`, evicting the oldest datagrams when the\nlimit is exceeded. A DATAGRAM frame with an empty payload was charged zero bytes, so it never\ntriggered eviction and was appended to the queue, which has no other bound.\n\nDATAGRAM frames are not subject to flow control. A peer that has completed the handshake can\ntherefore send a stream of empty DATAGRAM frames and grow the receiver's heap without limit until\nthe process is killed. An application that reads incoming datagrams but does so more slowly than\nthe peer sends them is still affected. Receiving datagrams is enabled by default, so all endpoints\nthat do not explicitly set `datagram_receive_buffer_size(None)` are affected.\n\nThe send path had the same accounting flaw: an application could enqueue an unbounded number of\nempty outgoing datagrams without ever receiving `SendDatagramError::Blocked`.\n\nThe flaw was corrected in 0.11.17 by accounting for the fixed per-datagram overhead in both\ndirections, so that every queued datagram consumes buffer space.\n\nThanks to [@alexpyattaev](https://github.com/alexpyattaev) for reporting this issue.",
-      "date": "2026-08-17",
+      "title": "Remote peer can panic quinn-proto with zero-length STREAM frames during unordered reads",
+      "description": "When a stream is read in unordered mode (for example through `RecvStream::read(false)` in\nquinn-proto or `read_unordered` in `quinn`), quinn-proto proactively deduplicates received data\nby recording received ranges in a `RangeSet` through its `replace` method. When an incoming\nSTREAM frame carried an empty payload, the `Drop` implementation of the iterator returned by\n`replace` inserted an empty range into the set, violating the invariant that stored ranges are\nnon-empty. Subsequent frames overlapping that region then caused a panic while processing the\nstream.\n\nA remote peer can trigger this with five small STREAM frames (two of them zero-length) once the\napplication has put the stream in unordered-read mode. The default ordered read path is not\naffected.\n\nThe flaw was corrected in 0.11.18 by ignoring empty ranges in `RangeSet::replace`.\n\nThanks to Otto Hermann ([@ojhermann](https://github.com/ojhermann)) for reporting this issue.",
+      "date": "2026-09-14",
       "aliases": [
-        "GHSA-2hv7-gw8g-gpq5"
+        "GHSA-465w-v9q3-7j98"
       ],
       "related": [],
       "collection": "crates",
@@ -126,13 +173,13 @@
         "denial-of-service"
       ],
       "keywords": [
-        "oom"
+        "panic"
       ],
       "cvss": null,
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/quinn-rs/quinn/pull/2790",
+      "url": "https://github.com/quinn-rs/quinn/pull/2868",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -140,10 +187,10 @@
     "affected": null,
     "versions": {
       "patched": [
-        ">=0.11.17"
+        ">=0.11.18"
       ],
       "unaffected": [
-        "<0.5.0"
+        "<0.7.0"
       ]
     }
   },
@@ -220,6 +267,43 @@
       ],
       "unaffected": [
         "<0.6.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0342",
+      "package": "quinn-proto",
+      "title": "Zero-length DATAGRAM frames bypass the receive buffer limit in quinn-proto",
+      "description": "quinn-proto bounds its queue of received datagrams by charging each queued frame's payload length\nagainst `TransportConfig::datagram_receive_buffer_size`, evicting the oldest datagrams when the\nlimit is exceeded. A DATAGRAM frame with an empty payload was charged zero bytes, so it never\ntriggered eviction and was appended to the queue, which has no other bound.\n\nDATAGRAM frames are not subject to flow control. A peer that has completed the handshake can\ntherefore send a stream of empty DATAGRAM frames and grow the receiver's heap without limit until\nthe process is killed. An application that reads incoming datagrams but does so more slowly than\nthe peer sends them is still affected. Receiving datagrams is enabled by default, so all endpoints\nthat do not explicitly set `datagram_receive_buffer_size(None)` are affected.\n\nThe send path had the same accounting flaw: an application could enqueue an unbounded number of\nempty outgoing datagrams without ever receiving `SendDatagramError::Blocked`.\n\nThe flaw was corrected in 0.11.17 by accounting for the fixed per-datagram overhead in both\ndirections, so that every queued datagram consumes buffer space.\n\nThanks to [@alexpyattaev](https://github.com/alexpyattaev) for reporting this issue.",
+      "date": "2026-08-17",
+      "aliases": [
+        "GHSA-2hv7-gw8g-gpq5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "oom"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2790",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.17"
+      ],
+      "unaffected": [
+        "<0.5.0"
       ]
     }
   },

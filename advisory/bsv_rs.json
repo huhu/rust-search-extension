@@ -1,6 +1,55 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0529",
+      "package": "bsv-rs",
+      "title": "KVStoreInterpreter::verify_signature_legacy answers true for every token and every key",
+      "description": "`KVStoreInterpreter::verify_signature_legacy(&PushDrop, &PublicKey)`, public\nand deprecated since 0.2.0 (the crate's first release), read neither argument\nand answered `true`. A KVStore token signed by nobody, a signed token checked\nagainst a key other than its controller's, and a PushDrop with no fields each\npassed. Its documentation said it delegated to the `KVStoreFields`-based\nverifier; it did not.\n\nAn application that checks, with this function, a KVStore token it did not\nwrite (an overlay lookup's answer, or a transaction output a peer hands it) and\nacts on `true` accepts a value no controller signed, attributed to whatever\ncontroller the token names. No caller in the crate itself uses the function.\nThis was run on 0.2.0, 0.5.0, 0.8.0, 0.8.7, 0.8.8, 0.9.0-beta.1 and\n0.9.0-beta.7 as crates.io serves them, and the source of all 63 published\nversions carries the same constant body (the yanked 0.3.21 included).\n\n0.8.9 answers `true` only for a token whose controller field is the\ngiven key and whose last field is that key's signature over the others (the\n0.9 line's next prerelease carries the same fix). There is no workaround:\nupgrade to 0.8.9, or, on the 0.9 line, to its next prerelease.",
+      "date": "2026-11-13",
+      "aliases": [
+        "GHSA-mj2m-jxgv-r446"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "bitcoin",
+        "kvstore",
+        "signature",
+        "verification",
+        "pushdrop"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.9/CHANGELOG.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bsv_rs::kvstore::KVStoreInterpreter::verify_signature_legacy": [
+          ">=0.2.0, <0.8.9",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.9, <0.9.0-beta.1",
+        ">0.9.0-beta.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0501",
       "package": "bsv-rs",
       "title": "Shamir backup recovery accepts a share at x = 0, so a supplied share can substitute the recovered private key",
@@ -192,77 +241,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0498",
-      "package": "bsv-rs",
-      "title": "Transaction readers accept trailing bytes, so a parsed transaction can carry another transaction id",
-      "description": "`Transaction::from_binary` and `Transaction::from_hex` read one transaction\nfrom the front of their input, did not check that the input ended there, and\nkept the whole input as the transaction's cached serialization: `to_binary`,\n`to_hex` and `id()` then answered for bytes that are not the transaction's.\n`Transaction::from_json`, given a `hex` field, reads it through `from_hex` and\nanswers the same. `from_ef`, `from_hex_ef` and `parse_script_offsets` also\nread a prefix.\n\nAn application that takes bytes or hex from outside, parses them with these\nreaders and then uses `id()` or the serialization could be given one\ntransaction under another identity: the same parsed fields, a different id.\nAn application that passes them only bytes it produced or has already checked\nis not affected.\n\n0.8.5 refuses a byte after the transaction; `Transaction::from_reader` reads\nfrom the front of a longer buffer. Where upgrading is not possible, parse with\n`Transaction::from_binary`, call `tx.invalidate_caches()` (public from 0.3.16)\nand require `tx.to_binary() == bytes`.",
-      "date": "2026-11-10",
-      "aliases": [
-        "GHSA-j8hr-pjhm-6h27"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [
-        "bitcoin",
-        "transaction",
-        "txid",
-        "parsing",
-        "trailing-data"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-      "informational": null,
-      "references": [
-        "https://github.com/Calhooon/bsv-rs/issues/840"
-      ],
-      "source": null,
-      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.5/CHANGELOG.md",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": {
-      "arch": [],
-      "os": [],
-      "functions": {
-        "bsv_rs::transaction::Transaction::from_binary": [
-          "<0.8.5",
-          ">=0.9.0-beta.1, <=0.9.0-beta.7"
-        ],
-        "bsv_rs::transaction::Transaction::from_ef": [
-          "<0.8.5",
-          ">=0.9.0-beta.1, <=0.9.0-beta.7"
-        ],
-        "bsv_rs::transaction::Transaction::from_hex": [
-          "<0.8.5",
-          ">=0.9.0-beta.1, <=0.9.0-beta.7"
-        ],
-        "bsv_rs::transaction::Transaction::from_hex_ef": [
-          "<0.8.5",
-          ">=0.9.0-beta.1, <=0.9.0-beta.7"
-        ],
-        "bsv_rs::transaction::Transaction::from_json": [
-          "<0.8.5",
-          ">=0.9.0-beta.1, <=0.9.0-beta.7"
-        ],
-        "bsv_rs::transaction::Transaction::parse_script_offsets": [
-          "<0.8.5",
-          ">=0.9.0-beta.1, <=0.9.0-beta.7"
-        ]
-      }
-    },
-    "versions": {
-      "patched": [
-        ">=0.8.5, <0.9.0-beta.1",
-        ">0.9.0-beta.7"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0500",
       "package": "bsv-rs",
       "title": "BEEF validation answers valid for a raw entry that is not a transaction",
@@ -326,6 +304,77 @@
           ">=0.9.0-beta.1, <=0.9.0-beta.7"
         ],
         "bsv_rs::transaction::BeefTx::from_raw_tx": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.5, <0.9.0-beta.1",
+        ">0.9.0-beta.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0498",
+      "package": "bsv-rs",
+      "title": "Transaction readers accept trailing bytes, so a parsed transaction can carry another transaction id",
+      "description": "`Transaction::from_binary` and `Transaction::from_hex` read one transaction\nfrom the front of their input, did not check that the input ended there, and\nkept the whole input as the transaction's cached serialization: `to_binary`,\n`to_hex` and `id()` then answered for bytes that are not the transaction's.\n`Transaction::from_json`, given a `hex` field, reads it through `from_hex` and\nanswers the same. `from_ef`, `from_hex_ef` and `parse_script_offsets` also\nread a prefix.\n\nAn application that takes bytes or hex from outside, parses them with these\nreaders and then uses `id()` or the serialization could be given one\ntransaction under another identity: the same parsed fields, a different id.\nAn application that passes them only bytes it produced or has already checked\nis not affected.\n\n0.8.5 refuses a byte after the transaction; `Transaction::from_reader` reads\nfrom the front of a longer buffer. Where upgrading is not possible, parse with\n`Transaction::from_binary`, call `tx.invalidate_caches()` (public from 0.3.16)\nand require `tx.to_binary() == bytes`.",
+      "date": "2026-11-10",
+      "aliases": [
+        "GHSA-j8hr-pjhm-6h27"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "bitcoin",
+        "transaction",
+        "txid",
+        "parsing",
+        "trailing-data"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/Calhooon/bsv-rs/issues/840"
+      ],
+      "source": null,
+      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.5/CHANGELOG.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bsv_rs::transaction::Transaction::from_binary": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::from_ef": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::from_hex": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::from_hex_ef": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::from_json": [
+          "<0.8.5",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
+        ],
+        "bsv_rs::transaction::Transaction::parse_script_offsets": [
           "<0.8.5",
           ">=0.9.0-beta.1, <=0.9.0-beta.7"
         ]

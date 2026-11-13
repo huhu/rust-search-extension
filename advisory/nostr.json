@@ -1,43 +1,6 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0227",
-      "package": "nostr",
-      "title": "NIP-44 v2 decryption permits resource exhaustion",
-      "description": "The NIP-44 decryption entry point Base64-decoded the complete attacker-controlled\npayload before determining its version or enforcing any size limit. For v2 payloads,\nthe decoded buffer was then authenticated with HMAC even when it was much larger than\nthe maximum payload supported by the crate's current v2 codec.\n\nA malicious relay or event author could deliver an oversized value to an application\nthat decrypts NIP-44 content. The value caused memory allocation and Base64 and HMAC\nwork proportional to its size before authentication failed; knowledge of the\nconversation key was not required to consume those initial resources. Repeated\npayloads could exhaust memory or CPU and make the receiving application unavailable.\nThe issue does not disclose plaintext or key material and does not bypass message\nauthentication.\n\nDecryption now reads only the encoded version prefix first, derives the bound from\nthe largest payload the current v2 encoder can emit, and rejects oversized encoded\nand decoded payloads before full allocation or HMAC processing. The limit remains in\nthe v2 implementation so a future codec with a different length format can define its\nown bound.",
-      "date": "2026-08-01",
-      "aliases": [],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "nostr",
-        "nip44",
-        "decryption"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "informational": null,
-      "references": [
-        "https://github.com/nostrdevkit/nostr/commit/89dc1a77eaa774174588c5a38b6324c502948830"
-      ],
-      "source": null,
-      "url": null,
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.44.7"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0230",
       "package": "nostr",
       "title": "Empty NIP-50 search filters can panic",
@@ -75,10 +38,10 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0228",
+      "id": "RUSTSEC-2026-0227",
       "package": "nostr",
-      "title": "NIP-04 parsing amplifies malformed ciphertext memory use",
-      "description": "The NIP-04 decryption parser split attacker-controlled content on every `?iv=`\nseparator and collected all resulting segments before checking that the message had\nthe expected two parts. It also Base64-decoded the complete IV text before checking\nthat it represented the required 16-byte AES-CBC IV.\n\nA malicious sender could include a large number of separators or an oversized IV in\nan encrypted direct message. Applications that attempted to decrypt the message\nperformed avoidable allocations proportional to the malformed input, with additional\nallocation amplification from the segment vector and Base64 output. This can consume\nmemory and CPU in clients processing messages received through a relay. It does not\nweaken NIP-04 encryption or reveal plaintext or key material.\n\nThe parser now uses a single bounded split, rejects additional separators, and\nvalidates the 24-byte encoded IV length before Base64 decoding. Malformed inputs are\nreturned as errors without allocating for every separator or decoding an arbitrarily\nlarge IV.",
+      "title": "NIP-44 v2 decryption permits resource exhaustion",
+      "description": "The NIP-44 decryption entry point Base64-decoded the complete attacker-controlled\npayload before determining its version or enforcing any size limit. For v2 payloads,\nthe decoded buffer was then authenticated with HMAC even when it was much larger than\nthe maximum payload supported by the crate's current v2 codec.\n\nA malicious relay or event author could deliver an oversized value to an application\nthat decrypts NIP-44 content. The value caused memory allocation and Base64 and HMAC\nwork proportional to its size before authentication failed; knowledge of the\nconversation key was not required to consume those initial resources. Repeated\npayloads could exhaust memory or CPU and make the receiving application unavailable.\nThe issue does not disclose plaintext or key material and does not bypass message\nauthentication.\n\nDecryption now reads only the encoded version prefix first, derives the bound from\nthe largest payload the current v2 encoder can emit, and rejects oversized encoded\nand decoded payloads before full allocation or HMAC processing. The limit remains in\nthe v2 implementation so a future codec with a different length format can define its\nown bound.",
       "date": "2026-08-01",
       "aliases": [],
       "related": [],
@@ -88,13 +51,13 @@
       ],
       "keywords": [
         "nostr",
-        "nip04",
+        "nip44",
         "decryption"
       ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L",
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
       "informational": null,
       "references": [
-        "https://github.com/nostrdevkit/nostr/commit/25e4e9ce66a533d9d7f5071f6c1dae992476cf83"
+        "https://github.com/nostrdevkit/nostr/commit/89dc1a77eaa774174588c5a38b6324c502948830"
       ],
       "source": null,
       "url": null,
@@ -151,6 +114,80 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0229",
+      "package": "nostr",
+      "title": "NIP-98 authorization parsing permits resource exhaustion",
+      "description": "The NIP-98 HTTP authorization parser Base64-decoded the complete authorization value\nand parsed the resulting JSON event without applying an application-level size limit.\nBoth operations occurred before the event's signature and authorization fields could\nbe validated.\n\nAn unauthenticated remote client could send an oversized `Authorization: Nostr`\nheader to a server using this parser. Each request caused memory allocation and\ndecoding and JSON parsing work proportional to the supplied value, allowing repeated\nrequests to consume server memory and CPU. The impact depends on any lower HTTP header\nlimit already enforced by the hosting server. The issue does not bypass NIP-98\nauthentication or disclose protected data.\n\nThe parser now rejects oversized encoded input before Base64 allocation and rejects\ndecoded authorization events larger than 64 KiB before JSON parsing.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "nostr",
+        "nip98",
+        "authorization"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/fd69825a3aa83c4a99f0d620fafba66c765db96b"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0228",
+      "package": "nostr",
+      "title": "NIP-04 parsing amplifies malformed ciphertext memory use",
+      "description": "The NIP-04 decryption parser split attacker-controlled content on every `?iv=`\nseparator and collected all resulting segments before checking that the message had\nthe expected two parts. It also Base64-decoded the complete IV text before checking\nthat it represented the required 16-byte AES-CBC IV.\n\nA malicious sender could include a large number of separators or an oversized IV in\nan encrypted direct message. Applications that attempted to decrypt the message\nperformed avoidable allocations proportional to the malformed input, with additional\nallocation amplification from the segment vector and Base64 output. This can consume\nmemory and CPU in clients processing messages received through a relay. It does not\nweaken NIP-04 encryption or reveal plaintext or key material.\n\nThe parser now uses a single bounded split, rejects additional separators, and\nvalidates the 24-byte encoded IV length before Base64 decoding. Malformed inputs are\nreturned as errors without allocating for every separator or decoding an arbitrarily\nlarge IV.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "nostr",
+        "nip04",
+        "decryption"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/25e4e9ce66a533d9d7f5071f6c1dae992476cf83"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0225",
       "package": "nostr",
       "title": "Debug output exposes NIP-46 and NIP-60 credentials",
@@ -173,43 +210,6 @@
       "references": [
         "https://github.com/nostrdevkit/nostr/commit/2bc5fa2c270bb87b397d381909053f12ee734d44",
         "https://github.com/nostrdevkit/nostr/commit/778af7e4930449dcdd7a070774da7b71b282d171"
-      ],
-      "source": null,
-      "url": null,
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.44.7"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0229",
-      "package": "nostr",
-      "title": "NIP-98 authorization parsing permits resource exhaustion",
-      "description": "The NIP-98 HTTP authorization parser Base64-decoded the complete authorization value\nand parsed the resulting JSON event without applying an application-level size limit.\nBoth operations occurred before the event's signature and authorization fields could\nbe validated.\n\nAn unauthenticated remote client could send an oversized `Authorization: Nostr`\nheader to a server using this parser. Each request caused memory allocation and\ndecoding and JSON parsing work proportional to the supplied value, allowing repeated\nrequests to consume server memory and CPU. The impact depends on any lower HTTP header\nlimit already enforced by the hosting server. The issue does not bypass NIP-98\nauthentication or disclose protected data.\n\nThe parser now rejects oversized encoded input before Base64 allocation and rejects\ndecoded authorization events larger than 64 KiB before JSON parsing.",
-      "date": "2026-08-01",
-      "aliases": [],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "nostr",
-        "nip98",
-        "authorization"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "informational": null,
-      "references": [
-        "https://github.com/nostrdevkit/nostr/commit/fd69825a3aa83c4a99f0d620fafba66c765db96b"
       ],
       "source": null,
       "url": null,

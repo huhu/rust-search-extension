@@ -37,6 +37,41 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2023-0007",
+      "package": "openssl-src",
+      "title": "Timing Oracle in RSA Decryption",
+      "description": "A timing based side channel exists in the OpenSSL RSA Decryption implementation\nwhich could be sufficient to recover a plaintext across a network in a\nBleichenbacher style attack. To achieve a successful decryption an attacker\nwould have to be able to send a very large number of trial messages for\ndecryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5,\nRSA-OEAP and RSASVE.\n\nFor example, in a TLS connection, RSA is commonly used by a client to send an\nencrypted pre-master secret to the server. An attacker that had observed a\ngenuine connection between a client and a server could use this flaw to send\ntrial messages to the server and record the time taken to process them. After a\nsufficiently large number of messages the attacker could recover the pre-master\nsecret used for the original connection and thus be able to decrypt the\napplication data sent over that connection.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2022-4304",
+        "GHSA-p52g-cm5j-mjv4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.25, <300.0",
+        ">=300.0.12"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2023-0013",
       "package": "openssl-src",
       "title": "`NULL` dereference during PKCS7 data verification",
@@ -73,19 +108,91 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2023-0007",
+      "id": "RUSTSEC-2023-0010",
       "package": "openssl-src",
-      "title": "Timing Oracle in RSA Decryption",
-      "description": "A timing based side channel exists in the OpenSSL RSA Decryption implementation\nwhich could be sufficient to recover a plaintext across a network in a\nBleichenbacher style attack. To achieve a successful decryption an attacker\nwould have to be able to send a very large number of trial messages for\ndecryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5,\nRSA-OEAP and RSASVE.\n\nFor example, in a TLS connection, RSA is commonly used by a client to send an\nencrypted pre-master secret to the server. An attacker that had observed a\ngenuine connection between a client and a server could use this flaw to send\ntrial messages to the server and record the time taken to process them. After a\nsufficiently large number of messages the attacker could recover the pre-master\nsecret used for the original connection and thus be able to decrypt the\napplication data sent over that connection.",
+      "title": "Double free after calling `PEM_read_bio_ex`",
+      "description": "The function `PEM_read_bio_ex()` reads a PEM file from a BIO and parses and\ndecodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data.\nIf the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are\npopulated with pointers to buffers containing the relevant decoded data. The\ncaller is responsible for freeing those buffers. It is possible to construct a\nPEM file that results in 0 bytes of payload data. In this case `PEM_read_bio_ex()`\nwill return a failure code but will populate the header argument with a pointer\nto a buffer that has already been freed. If the caller also frees this buffer\nthen a double free will occur. This will most likely lead to a crash. This\ncould be exploited by an attacker who has the ability to supply malicious PEM\nfiles for parsing to achieve a denial of service attack.\n\nThe functions `PEM_read_bio()` and `PEM_read()` are simple wrappers around\n`PEM_read_bio_ex()` and therefore these functions are also directly affected.\n\nThese functions are also called indirectly by a number of other OpenSSL\nfunctions including `PEM_X509_INFO_read_bio_ex()` and\n`SSL_CTX_use_serverinfo_file()` which are also vulnerable. Some OpenSSL internal\nuses of these functions are not vulnerable because the caller does not free the\nheader argument if `PEM_read_bio_ex()` returns a failure code. These locations\ninclude the `PEM_read_bio_TYPE()` functions as well as the decoders introduced in\nOpenSSL 3.0.",
       "date": "2023-02-07",
       "aliases": [
-        "CVE-2022-4304",
-        "GHSA-p52g-cm5j-mjv4"
+        "CVE-2022-4450",
+        "GHSA-v5w6-wcm8-jm4q"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "crypto-failure"
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.25, <300.0",
+        ">=300.0.12"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0008",
+      "package": "openssl-src",
+      "title": "X.509 Name Constraints Read Buffer Overflow",
+      "description": "A read buffer overrun can be triggered in X.509 certificate verification,\nspecifically in name constraint checking. Note that this occurs\nafter certificate chain signature verification and requires either a\nCA to have signed the malicious certificate or for the application to\ncontinue certificate verification despite failure to construct a path\nto a trusted issuer.\n\nThe read buffer overrun might result in a crash which could lead to\na denial of service attack. In theory it could also result in the disclosure\nof private memory contents (such as private keys, or sensitive plaintext)\nalthough we are not aware of any working exploit leading to memory\ncontents disclosure as of the time of release of this advisory.\n\nIn a TLS client, this can be triggered by connecting to a malicious\nserver. In a TLS server, this can be triggered if the server requests\nclient authentication and a malicious client connects.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2022-4203",
+        "GHSA-w67w-mw4j-8qrv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service",
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=300.0.12"
+      ],
+      "unaffected": [
+        "<300.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0009",
+      "package": "openssl-src",
+      "title": "Use-after-free following `BIO_new_NDEF`",
+      "description": "The public API function `BIO_new_NDEF` is a helper function used for streaming\nASN.1 data via a `BIO`. It is primarily used internally to OpenSSL to support the\nSMIME, CMS and PKCS7 streaming capabilities, but may also be called directly by\nend user applications.\n\nThe function receives a `BIO` from the caller, prepends a new `BIO_f_asn1` filter\n`BIO` onto the front of it to form a `BIO` chain, and then returns the new head of\nthe `BIO` chain to the caller. Under certain conditions, for example if a CMS\nrecipient public key is invalid, the new filter `BIO` is freed and the function\nreturns a `NULL` result indicating a failure. However, in this case, the `BIO` chain\nis not properly cleaned up and the `BIO` passed by the caller still retains\ninternal pointers to the previously freed filter `BIO`. If the caller then goes on\nto call `BIO_pop()` on the `BIO` then a use-after-free will occur. This will most\nlikely result in a crash.\n\nThis scenario occurs directly in the internal function `B64_write_ASN1()` which\nmay cause `BIO_new_NDEF()` to be called and will subsequently call `BIO_pop()` on\nthe `BIO`. This internal function is in turn called by the public API functions\n`PEM_write_bio_ASN1_stream`, `PEM_write_bio_CMS_stream`, `PEM_write_bio_PKCS7_stream`,\n`SMIME_write_ASN1`, `SMIME_write_CMS` and `SMIME_write_PKCS7`.\n\nOther public API functions that may be impacted by this include\n`i2d_ASN1_bio_stream`, `BIO_new_CMS`, `BIO_new_PKCS7`, `i2d_CMS_bio_stream` and\n`i2d_PKCS7_bio_stream`.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2023-0215",
+        "GHSA-r7jw-wp68-3xch"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
       ],
       "keywords": [],
       "cvss": null,
@@ -180,126 +287,20 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2023-0010",
+      "id": "RUSTSEC-2022-0064",
       "package": "openssl-src",
-      "title": "Double free after calling `PEM_read_bio_ex`",
-      "description": "The function `PEM_read_bio_ex()` reads a PEM file from a BIO and parses and\ndecodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data.\nIf the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are\npopulated with pointers to buffers containing the relevant decoded data. The\ncaller is responsible for freeing those buffers. It is possible to construct a\nPEM file that results in 0 bytes of payload data. In this case `PEM_read_bio_ex()`\nwill return a failure code but will populate the header argument with a pointer\nto a buffer that has already been freed. If the caller also frees this buffer\nthen a double free will occur. This will most likely lead to a crash. This\ncould be exploited by an attacker who has the ability to supply malicious PEM\nfiles for parsing to achieve a denial of service attack.\n\nThe functions `PEM_read_bio()` and `PEM_read()` are simple wrappers around\n`PEM_read_bio_ex()` and therefore these functions are also directly affected.\n\nThese functions are also called indirectly by a number of other OpenSSL\nfunctions including `PEM_X509_INFO_read_bio_ex()` and\n`SSL_CTX_use_serverinfo_file()` which are also vulnerable. Some OpenSSL internal\nuses of these functions are not vulnerable because the caller does not free the\nheader argument if `PEM_read_bio_ex()` returns a failure code. These locations\ninclude the `PEM_read_bio_TYPE()` functions as well as the decoders introduced in\nOpenSSL 3.0.",
-      "date": "2023-02-07",
+      "title": "X.509 Email Address 4-byte Buffer Overflow",
+      "description": "A buffer overrun can be triggered in X.509 certificate verification,\nspecifically in name constraint checking. Note that this occurs\nafter certificate chain signature verification and requires either a\nCA to have signed the malicious certificate or for the application to\ncontinue certificate verification despite failure to construct a path\nto a trusted issuer. An attacker can craft a malicious email address\nto overflow four attacker-controlled bytes on the stack. This buffer\noverflow could result in a crash (causing a denial of service) or\npotentially remote code execution.\n\nMany platforms implement stack overflow protections which would mitigate\nagainst the risk of remote code execution. The risk may be further\nmitigated based on stack layout for any given platform/compiler.\n\nPre-announcements of CVE-2022-3602 described this issue as CRITICAL.\nFurther analysis based on some of the mitigating factors described above\nhave led this to be downgraded to HIGH. Users are still encouraged to\nupgrade to a new version as soon as possible.\n\nIn a TLS client, this can be triggered by connecting to a malicious\nserver. In a TLS server, this can be triggered if the server requests\nclient authentication and a malicious client connects.",
+      "date": "2022-11-01",
       "aliases": [
-        "CVE-2022-4450",
-        "GHSA-v5w6-wcm8-jm4q"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.25, <300.0",
-        ">=300.0.12"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0009",
-      "package": "openssl-src",
-      "title": "Use-after-free following `BIO_new_NDEF`",
-      "description": "The public API function `BIO_new_NDEF` is a helper function used for streaming\nASN.1 data via a `BIO`. It is primarily used internally to OpenSSL to support the\nSMIME, CMS and PKCS7 streaming capabilities, but may also be called directly by\nend user applications.\n\nThe function receives a `BIO` from the caller, prepends a new `BIO_f_asn1` filter\n`BIO` onto the front of it to form a `BIO` chain, and then returns the new head of\nthe `BIO` chain to the caller. Under certain conditions, for example if a CMS\nrecipient public key is invalid, the new filter `BIO` is freed and the function\nreturns a `NULL` result indicating a failure. However, in this case, the `BIO` chain\nis not properly cleaned up and the `BIO` passed by the caller still retains\ninternal pointers to the previously freed filter `BIO`. If the caller then goes on\nto call `BIO_pop()` on the `BIO` then a use-after-free will occur. This will most\nlikely result in a crash.\n\nThis scenario occurs directly in the internal function `B64_write_ASN1()` which\nmay cause `BIO_new_NDEF()` to be called and will subsequently call `BIO_pop()` on\nthe `BIO`. This internal function is in turn called by the public API functions\n`PEM_write_bio_ASN1_stream`, `PEM_write_bio_CMS_stream`, `PEM_write_bio_PKCS7_stream`,\n`SMIME_write_ASN1`, `SMIME_write_CMS` and `SMIME_write_PKCS7`.\n\nOther public API functions that may be impacted by this include\n`i2d_ASN1_bio_stream`, `BIO_new_CMS`, `BIO_new_PKCS7`, `i2d_CMS_bio_stream` and\n`i2d_PKCS7_bio_stream`.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2023-0215",
-        "GHSA-r7jw-wp68-3xch"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.25, <300.0",
-        ">=300.0.12"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0008",
-      "package": "openssl-src",
-      "title": "X.509 Name Constraints Read Buffer Overflow",
-      "description": "A read buffer overrun can be triggered in X.509 certificate verification,\nspecifically in name constraint checking. Note that this occurs\nafter certificate chain signature verification and requires either a\nCA to have signed the malicious certificate or for the application to\ncontinue certificate verification despite failure to construct a path\nto a trusted issuer.\n\nThe read buffer overrun might result in a crash which could lead to\na denial of service attack. In theory it could also result in the disclosure\nof private memory contents (such as private keys, or sensitive plaintext)\nalthough we are not aware of any working exploit leading to memory\ncontents disclosure as of the time of release of this advisory.\n\nIn a TLS client, this can be triggered by connecting to a malicious\nserver. In a TLS server, this can be triggered if the server requests\nclient authentication and a malicious client connects.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2022-4203",
-        "GHSA-w67w-mw4j-8qrv"
+        "CVE-2022-3602",
+        "GHSA-8rwr-x37p-mx23"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
         "denial-of-service",
-        "memory-exposure"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=300.0.12"
-      ],
-      "unaffected": [
-        "<300.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2022-0065",
-      "package": "openssl-src",
-      "title": "X.509 Email Address Variable Length Buffer Overflow",
-      "description": "A buffer overrun can be triggered in X.509 certificate verification,\nspecifically in name constraint checking. Note that this occurs after\ncertificate chain signature verification and requires either a CA to\nhave signed a malicious certificate or for an application to continue\ncertificate verification despite failure to construct a path to a trusted\nissuer. An attacker can craft a malicious email address in a certificate\nto overflow an arbitrary number of bytes containing the `.` character\n(decimal 46) on the stack. This buffer overflow could result in a crash\n(causing a denial of service).\n\nIn a TLS client, this can be triggered by connecting to a malicious\nserver. In a TLS server, this can be triggered if the server requests\nclient authentication and a malicious client connects.",
-      "date": "2022-11-01",
-      "aliases": [
-        "CVE-2022-3786",
-        "GHSA-h8jm-2x53-xhp5"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
+        "code-execution"
       ],
       "keywords": [],
       "cvss": null,
@@ -323,20 +324,19 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0064",
+      "id": "RUSTSEC-2022-0065",
       "package": "openssl-src",
-      "title": "X.509 Email Address 4-byte Buffer Overflow",
-      "description": "A buffer overrun can be triggered in X.509 certificate verification,\nspecifically in name constraint checking. Note that this occurs\nafter certificate chain signature verification and requires either a\nCA to have signed the malicious certificate or for the application to\ncontinue certificate verification despite failure to construct a path\nto a trusted issuer. An attacker can craft a malicious email address\nto overflow four attacker-controlled bytes on the stack. This buffer\noverflow could result in a crash (causing a denial of service) or\npotentially remote code execution.\n\nMany platforms implement stack overflow protections which would mitigate\nagainst the risk of remote code execution. The risk may be further\nmitigated based on stack layout for any given platform/compiler.\n\nPre-announcements of CVE-2022-3602 described this issue as CRITICAL.\nFurther analysis based on some of the mitigating factors described above\nhave led this to be downgraded to HIGH. Users are still encouraged to\nupgrade to a new version as soon as possible.\n\nIn a TLS client, this can be triggered by connecting to a malicious\nserver. In a TLS server, this can be triggered if the server requests\nclient authentication and a malicious client connects.",
+      "title": "X.509 Email Address Variable Length Buffer Overflow",
+      "description": "A buffer overrun can be triggered in X.509 certificate verification,\nspecifically in name constraint checking. Note that this occurs after\ncertificate chain signature verification and requires either a CA to\nhave signed a malicious certificate or for an application to continue\ncertificate verification despite failure to construct a path to a trusted\nissuer. An attacker can craft a malicious email address in a certificate\nto overflow an arbitrary number of bytes containing the `.` character\n(decimal 46) on the stack. This buffer overflow could result in a crash\n(causing a denial of service).\n\nIn a TLS client, this can be triggered by connecting to a malicious\nserver. In a TLS server, this can be triggered if the server requests\nclient authentication and a malicious client connects.",
       "date": "2022-11-01",
       "aliases": [
-        "CVE-2022-3602",
-        "GHSA-8rwr-x37p-mx23"
+        "CVE-2022-3786",
+        "GHSA-h8jm-2x53-xhp5"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "denial-of-service",
-        "code-execution"
+        "denial-of-service"
       ],
       "keywords": [],
       "cvss": null,
@@ -396,41 +396,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0032",
-      "package": "openssl-src",
-      "title": "AES OCB fails to encrypt some bytes",
-      "description": "AES OCB mode for 32-bit x86 platforms using the AES-NI assembly optimised\nimplementation will not encrypt the entirety of the data under some\ncircumstances.  This could reveal sixteen bytes of data that was\npreexisting in the memory that wasn't written.  In the special case of\n\"in place\" encryption, sixteen bytes of the plaintext would be revealed.\n\nSince OpenSSL does not support OCB based cipher suites for TLS and DTLS,\nthey are both unaffected.",
-      "date": "2022-07-05",
-      "aliases": [
-        "CVE-2022-2097",
-        "GHSA-3wx7-46ch-7rq2"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20220705.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.22, <300.0",
-        ">=300.0.9"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2022-0033",
       "package": "openssl-src",
       "title": "Heap memory corruption with RSA private key operation",
@@ -467,14 +432,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0027",
+      "id": "RUSTSEC-2022-0032",
       "package": "openssl-src",
-      "title": "`OCSP_basic_verify` may incorrectly verify the response signing certificate",
-      "description": "The function `OCSP_basic_verify` verifies the signer certificate on an OCSP\nresponse. In the case where the (non-default) flag OCSP_NOCHECKS is used then\nthe response will be positive (meaning a successful verification) even in the\ncase where the response signing certificate fails to verify.\n\nIt is anticipated that most users of `OCSP_basic_verify` will not use the\nOCSP_NOCHECKS flag. In this case the `OCSP_basic_verify` function will return\na negative value (indicating a fatal error) in the case of a certificate\nverification failure. The normal expected return value in this case would be 0.",
-      "date": "2022-05-03",
+      "title": "AES OCB fails to encrypt some bytes",
+      "description": "AES OCB mode for 32-bit x86 platforms using the AES-NI assembly optimised\nimplementation will not encrypt the entirety of the data under some\ncircumstances.  This could reveal sixteen bytes of data that was\npreexisting in the memory that wasn't written.  In the special case of\n\"in place\" encryption, sixteen bytes of the plaintext would be revealed.\n\nSince OpenSSL does not support OCB based cipher suites for TLS and DTLS,\nthey are both unaffected.",
+      "date": "2022-07-05",
       "aliases": [
-        "CVE-2022-1343",
-        "GHSA-mfm6-r9g2-q4r7"
+        "CVE-2022-2097",
+        "GHSA-3wx7-46ch-7rq2"
       ],
       "related": [],
       "collection": "crates",
@@ -482,7 +447,42 @@
         "crypto-failure"
       ],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20220705.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.22, <300.0",
+        ">=300.0.9"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0025",
+      "package": "openssl-src",
+      "title": "Resource leakage when decoding certificates and keys",
+      "description": "The `OPENSSL_LH_flush()` function, which empties a hash table, contains\na bug that breaks reuse of the memory occupied by the removed hash\ntable entries.\n\nThis function is used when decoding certificates or keys. If a long lived\nprocess periodically decodes certificates or keys its memory usage will\nexpand without bounds and the process might be terminated by the operating\nsystem causing a denial of service. Also traversing the empty hash table\nentries will take increasingly more time.\n\nTypically such long lived processes might be TLS clients or TLS servers\nconfigured to accept client certificate authentication.",
+      "date": "2022-05-03",
+      "aliases": [
+        "CVE-2022-1473",
+        "GHSA-g323-fr93-4j3c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
       "informational": null,
       "references": [],
       "source": null,
@@ -539,22 +539,22 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0025",
+      "id": "RUSTSEC-2022-0027",
       "package": "openssl-src",
-      "title": "Resource leakage when decoding certificates and keys",
-      "description": "The `OPENSSL_LH_flush()` function, which empties a hash table, contains\na bug that breaks reuse of the memory occupied by the removed hash\ntable entries.\n\nThis function is used when decoding certificates or keys. If a long lived\nprocess periodically decodes certificates or keys its memory usage will\nexpand without bounds and the process might be terminated by the operating\nsystem causing a denial of service. Also traversing the empty hash table\nentries will take increasingly more time.\n\nTypically such long lived processes might be TLS clients or TLS servers\nconfigured to accept client certificate authentication.",
+      "title": "`OCSP_basic_verify` may incorrectly verify the response signing certificate",
+      "description": "The function `OCSP_basic_verify` verifies the signer certificate on an OCSP\nresponse. In the case where the (non-default) flag OCSP_NOCHECKS is used then\nthe response will be positive (meaning a successful verification) even in the\ncase where the response signing certificate fails to verify.\n\nIt is anticipated that most users of `OCSP_basic_verify` will not use the\nOCSP_NOCHECKS flag. In this case the `OCSP_basic_verify` function will return\na negative value (indicating a fatal error) in the case of a certificate\nverification failure. The normal expected return value in this case would be 0.",
       "date": "2022-05-03",
       "aliases": [
-        "CVE-2022-1473",
-        "GHSA-g323-fr93-4j3c"
+        "CVE-2022-1343",
+        "GHSA-mfm6-r9g2-q4r7"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "denial-of-service"
+        "crypto-failure"
       ],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
       "informational": null,
       "references": [],
       "source": null,
@@ -749,6 +749,42 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2021-0056",
+      "package": "openssl-src",
+      "title": "CA certificate check bypass with X509_V_FLAG_X509_STRICT",
+      "description": "The X509_V_FLAG_X509_STRICT flag enables additional security checks of the\ncertificates present in a certificate chain. It is not set by default.\n\nStarting from OpenSSL version 1.1.1h a check to disallow certificates in\nthe chain that have explicitly encoded elliptic curve parameters was added\nas an additional strict check.\n\nAn error in the implementation of this check meant that the result of a\nprevious check to confirm that certificates in the chain are valid CA\ncertificates was overwritten. This effectively bypasses the check\nthat non-CA certificates must not be able to issue other certificates.\n\nIf a \"purpose\" has been configured then there is a subsequent opportunity\nfor checks that the certificate is a valid CA.  All of the named \"purpose\"\nvalues implemented in libcrypto perform this check.  Therefore, where\na purpose is set the certificate chain will still be rejected even when the\nstrict flag has been used. A purpose is set by default in libssl client and\nserver certificate verification routines, but it can be overridden or\nremoved by an application.\n\nIn order to be affected, an application must explicitly set the\nX509_V_FLAG_X509_STRICT verification flag and either not set a purpose\nfor the certificate verification or, in the case of TLS client or server\napplications, override the default purpose.",
+      "date": "2021-05-01",
+      "aliases": [
+        "CVE-2021-3450",
+        "GHSA-8hfj-xrj2-pm22"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20210325.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.15"
+      ],
+      "unaffected": [
+        "<111.11"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0057",
       "package": "openssl-src",
       "title": "Integer overflow in CipherUpdate",
@@ -813,42 +849,6 @@
         ">=111.15"
       ],
       "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2021-0056",
-      "package": "openssl-src",
-      "title": "CA certificate check bypass with X509_V_FLAG_X509_STRICT",
-      "description": "The X509_V_FLAG_X509_STRICT flag enables additional security checks of the\ncertificates present in a certificate chain. It is not set by default.\n\nStarting from OpenSSL version 1.1.1h a check to disallow certificates in\nthe chain that have explicitly encoded elliptic curve parameters was added\nas an additional strict check.\n\nAn error in the implementation of this check meant that the result of a\nprevious check to confirm that certificates in the chain are valid CA\ncertificates was overwritten. This effectively bypasses the check\nthat non-CA certificates must not be able to issue other certificates.\n\nIf a \"purpose\" has been configured then there is a subsequent opportunity\nfor checks that the certificate is a valid CA.  All of the named \"purpose\"\nvalues implemented in libcrypto perform this check.  Therefore, where\na purpose is set the certificate chain will still be rejected even when the\nstrict flag has been used. A purpose is set by default in libssl client and\nserver certificate verification routines, but it can be overridden or\nremoved by an application.\n\nIn order to be affected, an application must explicitly set the\nX509_V_FLAG_X509_STRICT verification flag and either not set a purpose\nfor the certificate verification or, in the case of TLS client or server\napplications, override the default purpose.",
-      "date": "2021-05-01",
-      "aliases": [
-        "CVE-2021-3450",
-        "GHSA-8hfj-xrj2-pm22"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20210325.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.15"
-      ],
-      "unaffected": [
-        "<111.11"
-      ]
     }
   },
   {

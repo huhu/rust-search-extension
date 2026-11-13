@@ -1,0 +1,159 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0534",
+      "package": "libp2p-gossipsub",
+      "title": "Unbounded backoff state from PRUNE messages for unknown topics",
+      "description": "A PRUNE control message names topics and asks for a backoff on each. The handler recorded a backoff for every named topic, including topics the local node had never joined. A peer can send PRUNEs naming many new short topic IDs with a long backoff. Each pair is kept until the backoff expires, up to an hour, even after the peer disconnects, so a stream of PRUNEs, possibly from many peer IDs, can use up the node's memory. Peer scoring does not penalise these messages.\n\nThe fix ignores PRUNE entries for topics that are not in the node's mesh. It is in 0.50.1, and was backported to the main branch in libp2p/rust-libp2p#6707.",
+      "date": "2026-10-19",
+      "aliases": [
+        "GHSA-vrx6-jcp8-vm7m"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "libp2p",
+        "gossipsub",
+        "memory-exhaustion"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/libp2p/rust-libp2p/pull/6707"
+      ],
+      "source": null,
+      "url": "https://github.com/libp2p/rust-libp2p/commit/9c647828abea0dfc0b4e827dff1e176ec8b44752",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.50.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0536",
+      "package": "libp2p-gossipsub",
+      "title": "Unbounded memory growth from GRAFT messages for unsubscribed topics",
+      "description": "When a GRAFT control message arrived, every topic it named was added to that peer's set of topics, on the assumption that a peer grafting us must be subscribed. Nothing checked that the peer had subscribed, and subscription filters only apply to SUBSCRIBE messages. A peer can keep sending GRAFTs with new short topic IDs over one connection, and the set grows until the peer unsubscribes or disconnects. Memory grows without bound and the node can be killed for running out of memory.\n\nThe fix no longer records topics from GRAFT messages and drops a GRAFT for a topic the peer has not subscribed to. It also makes `MaxCountSubscriptionFilter` the default subscription filter. It is in 0.49.5, and was backported to the 0.50 line before 0.50.0.",
+      "date": "2026-09-05",
+      "aliases": [
+        "CVE-2026-95859",
+        "GHSA-g3g5-x568-qvqx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "libp2p",
+        "gossipsub",
+        "memory-exhaustion"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/libp2p/rust-libp2p/pull/6608"
+      ],
+      "source": null,
+      "url": "https://github.com/libp2p/rust-libp2p/commit/51ed5f00e1b0620ded3444ecadf18477052148ea",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.49.5"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0537",
+      "package": "libp2p-gossipsub",
+      "title": "Remote panic in the heartbeat from a large PRUNE backoff",
+      "description": "The 0.49.3 fix stopped an overflow when a PRUNE backoff is first stored, but a backoff just small enough to be stored could still overflow later. On each heartbeat, expired backoffs were found with `backoff_time + slack > now`, which panics when the stored time is close to the largest `Instant`. A peer that sends one PRUNE with such a backoff crashes the node a heartbeat or so later, and can repeat it after every restart.\n\nThe fix caps a remote PRUNE backoff at one hour, uses `checked_add` for the heartbeat comparison, and replaces other unchecked time arithmetic in the behaviour, peer scoring and time cache with checked or saturating operations. It is in 0.49.4.",
+      "date": "2026-03-27",
+      "aliases": [
+        "CVE-2026-34219",
+        "GHSA-xqmp-fxgv-xvq5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "libp2p",
+        "gossipsub",
+        "panic",
+        "overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/libp2p/rust-libp2p/commit/55e4a64630f66d55fec5955c8f9905413c5d0859",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.49.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0535",
+      "package": "libp2p-gossipsub",
+      "title": "Remote panic from an oversized PRUNE backoff",
+      "description": "When a peer sent a PRUNE control message, the backoff it asked for was turned into an expiry time with `Instant::now() + Duration::from_secs(backoff)`. That addition panics on overflow, so a peer that sends a PRUNE with a very large backoff, such as `u64::MAX`, crashes the node. No authentication is needed beyond an ordinary libp2p connection with the gossipsub protocol, and the attacker can repeat it after every restart.\n\nThe fix uses `Instant::checked_add` in `BackoffStorage::update_backoff` and ignores a backoff that would overflow. It is in 0.49.3.",
+      "date": "2026-03-18",
+      "aliases": [
+        "CVE-2026-33040",
+        "GHSA-gc42-3jg7-rxr2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "libp2p",
+        "gossipsub",
+        "panic",
+        "overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/libp2p/rust-libp2p/commit/84153a559bdbcb92a48413dd2a31035800cb882d",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.49.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

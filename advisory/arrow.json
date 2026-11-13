@@ -1,41 +1,6 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0117",
-      "package": "arrow",
-      "title": "`DecimalArray` does not perform bound checks on accessing values and offsets",
-      "description": "`DecimalArray` performs insufficient bounds checks,\nwhich allows out-of-bounds reads in safe code\nif the length of the backing buffer is not a multiple of 16.",
-      "date": "2021-09-14",
-      "aliases": [
-        "GHSA-h588-76vg-prgj"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "memory-exposure"
-      ],
-      "keywords": [
-        "buffer-overflow"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/apache/arrow-rs/issues/775",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=6.4.0"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2021-0118",
       "package": "arrow",
       "title": "`FixedSizeBinaryArray` does not perform bound checks on accessing values and offsets",
@@ -95,6 +60,41 @@
       ],
       "source": null,
       "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=6.4.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0117",
+      "package": "arrow",
+      "title": "`DecimalArray` does not perform bound checks on accessing values and offsets",
+      "description": "`DecimalArray` performs insufficient bounds checks,\nwhich allows out-of-bounds reads in safe code\nif the length of the backing buffer is not a multiple of 16.",
+      "date": "2021-09-14",
+      "aliases": [
+        "GHSA-h588-76vg-prgj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/apache/arrow-rs/issues/775",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false

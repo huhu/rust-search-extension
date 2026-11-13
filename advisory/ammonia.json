@@ -1,6 +1,44 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0533",
+      "package": "ammonia",
+      "title": "Incorrect handling of embedded SVG and MathML leads to mutation XSS",
+      "description": "The MathML text integration points (`mi`, `mo`, `mn`, `ms`, `mtext`) and SVG `foreignObject` can be made to contain a tag in the other one's namespace (a MathML integration point with a child in the SVG namespace, or vice versa) without the root tag that switches out of the HTML namespace. If the attacker can construct input that parses differently in as HTML than as foreign XML, they can inject arbitrary JavaScript code into the user's browser.\n\nFor example:\n\n- The user writes `<math><mi><svg><gadget></svg></mi></math>`.\n- The application enables `math`, `mi`, and the gadget, but not `svg`.\n- Ammonia filters the input to `<math><mi><gadget></mi></math>`.\n- Because svg is now gone, the gadget switches from being parsed as SVG to being parsed as HTML.\n- The gadget is written in such a way that it exploits the parsing differences between HTML and MathML.\n\nAs far as we know, the gadget can only be written using a tag that is parsed as raw text in HTML. These [elements] are:\n\n- title\n- textarea\n- xmp\n- iframe\n- noembed\n- noframes\n- plaintext\n- noscript\n- style\n- script\n\nApplications that do not explicitly allow any of these tags should not be affected, since none are allowed by default.\n\n[elements]: https://github.com/servo/html5ever/blob/a027c2835472d518893c906dc29c42200af3c960/html5ever/src/tree_builder/rules.rs\n\n---\n\nThis vulnerability was reported by Roger Meyer.",
+      "date": "2026-11-12",
+      "aliases": [
+        "GHSA-934p-vp7m-gx3c"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "html",
+        "xss"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-ammonia/ammonia/pull/269",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.2.5",
+        ">=4.1.9, <4.2.0",
+        ">=3.3.5, <4.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0373",
       "package": "ammonia",
       "title": "Missing case-insensitive matching for CSS url function",

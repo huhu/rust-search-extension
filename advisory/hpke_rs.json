@@ -1,6 +1,45 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0069",
+      "package": "hpke-rs",
+      "title": "Incorrect Length Encoding on KDF Export",
+      "description": "Passing values `length > 65535` to `Context::export` produces output\nthat disagrees with the RFC 9180 label encoding. In particular the\nlength value is cast to `u16` truncating any value exceeding\n65535.\n\n## Impact\nApplications that use hpke-rs to export very large secrets would\nexperience interoperability issues with other applications that use a\ncorrect implementation to export very large secrets.\n\n## Mitigation\nStarting with version `0.6.0`, an error will be returned when\nattempting to call `Context::export` with an output length > 65535.",
+      "date": "2026-02-11",
+      "aliases": [
+        "GHSA-g433-pq76-6cmf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/hpke-rs/pull/128",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "hpke_rs::Context::export": [
+          "<=0.5.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0070",
       "package": "hpke-rs",
       "title": "Panic When Opening or Sealing on Export-Only Context",
@@ -30,45 +69,6 @@
           "<=0.5.0"
         ],
         "hpke_rs::Context::seal": [
-          "<=0.5.0"
-        ]
-      }
-    },
-    "versions": {
-      "patched": [
-        ">=0.6.0"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0069",
-      "package": "hpke-rs",
-      "title": "Incorrect Length Encoding on KDF Export",
-      "description": "Passing values `length > 65535` to `Context::export` produces output\nthat disagrees with the RFC 9180 label encoding. In particular the\nlength value is cast to `u16` truncating any value exceeding\n65535.\n\n## Impact\nApplications that use hpke-rs to export very large secrets would\nexperience interoperability issues with other applications that use a\ncorrect implementation to export very large secrets.\n\n## Mitigation\nStarting with version `0.6.0`, an error will be returned when\nattempting to call `Context::export` with an output length > 65535.",
-      "date": "2026-02-11",
-      "aliases": [
-        "GHSA-g433-pq76-6cmf"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/cryspen/hpke-rs/pull/128",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": {
-      "arch": [],
-      "os": [],
-      "functions": {
-        "hpke_rs::Context::export": [
           "<=0.5.0"
         ]
       }

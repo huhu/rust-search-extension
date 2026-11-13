@@ -50,6 +50,53 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0474",
+      "package": "openssl",
+      "title": "`X509Ref::ocsp_responders` can produce a `&str` that is not valid UTF-8",
+      "description": "`X509Ref::ocsp_responders` returns the OCSP responder URLs from a certificate's Authority Information Access extension as `OpensslString` values, which dereference to `str` without validating the bytes. OpenSSL does not require these IA5String values to be ASCII, so for a certificate with non-UTF-8 bytes in an OCSP access location, safe code ends up holding a `&str` that is not valid UTF-8, which is undefined behavior. Certificates often come from untrusted peers.\n\n`ocsp_responders` was added in 0.9.7. 0.10.79 checks each URL and returns an error if it is not valid UTF-8.",
+      "date": "2026-05-04",
+      "aliases": [
+        "CVE-2026-42327",
+        "GHSA-xp3w-r5p5-63rr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "x509",
+        "ocsp",
+        "utf-8",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2631",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::x509::X509Ref::ocsp_responders": [
+          ">=0.9.7, <0.10.79"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.79"
+      ],
+      "unaffected": [
+        "<0.9.7"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0476",
       "package": "openssl",
       "title": "Buffer overflow with AES key wrap with padding in `cipher_update`",
@@ -100,106 +147,6 @@
       ],
       "unaffected": [
         "<0.10.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0474",
-      "package": "openssl",
-      "title": "`X509Ref::ocsp_responders` can produce a `&str` that is not valid UTF-8",
-      "description": "`X509Ref::ocsp_responders` returns the OCSP responder URLs from a certificate's Authority Information Access extension as `OpensslString` values, which dereference to `str` without validating the bytes. OpenSSL does not require these IA5String values to be ASCII, so for a certificate with non-UTF-8 bytes in an OCSP access location, safe code ends up holding a `&str` that is not valid UTF-8, which is undefined behavior. Certificates often come from untrusted peers.\n\n`ocsp_responders` was added in 0.9.7. 0.10.79 checks each URL and returns an error if it is not valid UTF-8.",
-      "date": "2026-05-04",
-      "aliases": [
-        "CVE-2026-42327",
-        "GHSA-xp3w-r5p5-63rr"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [
-        "x509",
-        "ocsp",
-        "utf-8",
-        "undefined-behavior"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/rust-openssl/rust-openssl/pull/2631",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": {
-      "arch": [],
-      "os": [],
-      "functions": {
-        "openssl::x509::X509Ref::ocsp_responders": [
-          ">=0.9.7, <0.10.79"
-        ]
-      }
-    },
-    "versions": {
-      "patched": [
-        ">=0.10.79"
-      ],
-      "unaffected": [
-        "<0.9.7"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0473",
-      "package": "openssl",
-      "title": "Buffer overflow in `Deriver::derive` and `PkeyCtxRef::derive` with OpenSSL 1.1.x",
-      "description": "`Deriver::derive` and `PkeyCtxRef::derive` pass the length of the caller's buffer to `EVP_PKEY_derive` and rely on OpenSSL to write no more than that. With OpenSSL 1.1.x, the X25519, X448 and HKDF-extract implementations ignore the length they are given and always write the whole result, so a buffer shorter than the shared secret or derived key is overrun. The overflow is reachable from safe code.\n\nOpenSSL 3.x checks the length itself and is not affected. From 0.10.78, when built against OpenSSL 1.1.x or LibreSSL, both functions derive into a temporary buffer of the required size whenever the caller's buffer is too short, and copy only what fits.",
-      "date": "2026-04-19",
-      "aliases": [
-        "CVE-2026-41676",
-        "GHSA-pqf5-4pqq-29f5"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "memory-corruption"
-      ],
-      "keywords": [
-        "derive",
-        "x25519",
-        "x448",
-        "hkdf",
-        "buffer-overflow"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/rust-openssl/rust-openssl/pull/2606",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": {
-      "arch": [],
-      "os": [],
-      "functions": {
-        "openssl::derive::Deriver::derive": [
-          ">=0.9.27, <0.10.78"
-        ],
-        "openssl::pkey_ctx::PkeyCtxRef::derive": [
-          ">=0.9.27, <0.10.78"
-        ]
-      }
-    },
-    "versions": {
-      "patched": [
-        ">=0.10.78"
-      ],
-      "unaffected": [
-        "<0.9.27"
       ]
     }
   },
@@ -267,47 +214,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0479",
-      "package": "openssl",
-      "title": "Out-of-bounds read when a PEM password callback returns an oversized length",
-      "description": "The `*_from_pem_callback` functions, such as `EcKey::private_key_from_pem_callback`, pass the length returned by the user's password callback to OpenSSL without checking it against the size of the buffer the callback was given. If the callback reports more bytes than the buffer holds, some OpenSSL versions read past the end of the buffer while deriving the decryption key. OpenSSL 3.x is not affected.\n\n0.10.78 treats a returned length larger than the buffer as a failed callback.",
-      "date": "2026-04-19",
-      "aliases": [
-        "CVE-2026-41677",
-        "GHSA-xmgf-hq76-4vx2"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "memory-exposure"
-      ],
-      "keywords": [
-        "pem",
-        "password",
-        "callback",
-        "out-of-bounds-read"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/rust-openssl/rust-openssl/pull/2605",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.10.78"
-      ],
-      "unaffected": [
-        "<0.9.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0463",
       "package": "openssl",
       "title": "Out-of-bounds write in `aes::unwrap_key`",
@@ -356,6 +262,47 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0479",
+      "package": "openssl",
+      "title": "Out-of-bounds read when a PEM password callback returns an oversized length",
+      "description": "The `*_from_pem_callback` functions, such as `EcKey::private_key_from_pem_callback`, pass the length returned by the user's password callback to OpenSSL without checking it against the size of the buffer the callback was given. If the callback reports more bytes than the buffer holds, some OpenSSL versions read past the end of the buffer while deriving the decryption key. OpenSSL 3.x is not affected.\n\n0.10.78 treats a returned length larger than the buffer as a failed callback.",
+      "date": "2026-04-19",
+      "aliases": [
+        "CVE-2026-41677",
+        "GHSA-xmgf-hq76-4vx2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "pem",
+        "password",
+        "callback",
+        "out-of-bounds-read"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2605",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.78"
+      ],
+      "unaffected": [
+        "<0.9.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0475",
       "package": "openssl",
       "title": "Buffer overflow in `MdCtxRef::digest_final`",
@@ -398,6 +345,59 @@
       ],
       "unaffected": [
         "<0.10.39"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0473",
+      "package": "openssl",
+      "title": "Buffer overflow in `Deriver::derive` and `PkeyCtxRef::derive` with OpenSSL 1.1.x",
+      "description": "`Deriver::derive` and `PkeyCtxRef::derive` pass the length of the caller's buffer to `EVP_PKEY_derive` and rely on OpenSSL to write no more than that. With OpenSSL 1.1.x, the X25519, X448 and HKDF-extract implementations ignore the length they are given and always write the whole result, so a buffer shorter than the shared secret or derived key is overrun. The overflow is reachable from safe code.\n\nOpenSSL 3.x checks the length itself and is not affected. From 0.10.78, when built against OpenSSL 1.1.x or LibreSSL, both functions derive into a temporary buffer of the required size whenever the caller's buffer is too short, and copy only what fits.",
+      "date": "2026-04-19",
+      "aliases": [
+        "CVE-2026-41676",
+        "GHSA-pqf5-4pqq-29f5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "derive",
+        "x25519",
+        "x448",
+        "hkdf",
+        "buffer-overflow"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-openssl/rust-openssl/pull/2606",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "openssl::derive::Deriver::derive": [
+          ">=0.9.27, <0.10.78"
+        ],
+        "openssl::pkey_ctx::PkeyCtxRef::derive": [
+          ">=0.9.27, <0.10.78"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.78"
+      ],
+      "unaffected": [
+        "<0.9.27"
       ]
     }
   },

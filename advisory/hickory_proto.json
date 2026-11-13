@@ -1,6 +1,125 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0490",
+      "package": "hickory-proto",
+      "title": "Zone file lexer panics on a token of 4096 or more characters",
+      "description": "The zone file lexer read each token in a loop capped at 4,096 iterations, with an `assert!` on the loop counter as a safety bound. A single token long enough to reach that bound, for example a very long name or character string in a zone file, triggered the assertion and the parser panicked instead of returning the token or an error.\n\nCode that parses zone files from an untrusted source can be made to panic, which is a denial of service.\n\nThe fix removes the iteration bound, so the lexer ends only when it reaches the end of a token or an error. It is in 0.26.2.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123574",
+        "GHSA-4rph-pmrw-mwpw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "zone-file",
+        "lexer",
+        "panic"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/0494e15c88fba612f9ecb4f013eb3b221822c867",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": [
+        "<0.24.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0504",
+      "package": "hickory-proto",
+      "title": "Inverted NSEC3 comparison in DNSSEC validation (hickory-proto 0.25)",
+      "description": "In hickory-proto 0.25.0 through 0.26.0-alpha.1, DNSSEC validation handled the last NSEC3 record of a zone's hash chain with its two comparisons reversed. That record was treated as covering almost every hash it does not cover, so an attacker who can answer or modify DNS responses could replay it, with its RRSIG, to forge proofs that existing names have no records.\n\nFrom 0.26.0-beta.1 the DNSSEC validation code lives in the hickory-net crate, where this was fixed in hickory-net 0.26.2. No hickory-proto release contains a fix. Users of DNSSEC validation in hickory-proto 0.25 (directly or through hickory-resolver or hickory-recursor 0.25) should move to the 0.26.2 or later releases, which validate through hickory-net.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123601",
+        "GHSA-588m-chg6-8jqj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "dns",
+        "dnssec",
+        "nsec3"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/87ee4f81aa9689d81847770d3a74e13982c9bcdc",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<0.25.0",
+        ">=0.26.0-beta.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0531",
+      "package": "hickory-proto",
+      "title": "Child-side NSEC or NSEC3 record accepted as proof that a delegation has no DS record (hickory-proto)",
+      "description": "Up to 0.26.0-alpha.1, hickory-proto's DNSSEC validation accepted an NSEC or NSEC3 record from the child side of a zone cut, which has the SOA bit set, as proof that the parent has no DS record for the delegation (RFC 4035 section 5.2, RFC 6840 section 4.4). Someone who can answer or modify DNS responses could make a secure delegation look insecure and then forge records in the child zone.\n\nFrom 0.26.0-beta.1 the DNSSEC validation code lives in the hickory-net crate, where this was fixed in hickory-net 0.26.2. No hickory-proto release contains a fix. Users of DNSSEC validation in older hickory-proto releases (directly or through hickory-resolver or hickory-recursor) should move to the 0.26.2 or later releases, which validate through hickory-net.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123591",
+        "GHSA-7php-9j59-g3ch"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "dns",
+        "dnssec",
+        "nsec",
+        "nsec3"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/ec98851f4d175d97b61701bc539523ff63ddbb00",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">=0.26.0-beta.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0505",
       "package": "hickory-proto",
       "title": "NSEC3 owner names not checked against the zone in DNSSEC validation (hickory-proto)",
@@ -39,14 +158,95 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0512",
+      "id": "RUSTSEC-2026-0491",
       "package": "hickory-proto",
-      "title": "DNSSEC validation accepted an unrelated signed RRset as the answer (hickory-proto)",
-      "description": "Up to 0.26.0-alpha.1, hickory-proto's DNSSEC validation treated a response with a non-empty answer section as a positive answer if its records validated, without checking that any of them matched the queried name and type. Someone who can answer or modify DNS responses could return a genuine signed RRset for another name or type and have it accepted as a validated answer.\n\nFrom 0.26.0-beta.1 the DNSSEC validation code lives in the hickory-net crate, where this was fixed in hickory-net 0.26.2. No hickory-proto release contains a fix. Users of DNSSEC validation in older hickory-proto releases (directly or through hickory-resolver or hickory-recursor) should move to the 0.26.2 or later releases, which validate through hickory-net.",
+      "title": "Memory amplification from record counts in the DNS message header",
+      "description": "When a DNS message is decoded, the vectors for the question, answer, authority and additional sections were created with `Vec::with_capacity` set to the counts in the message header. Those counts come from the sender and are not checked against the size of the message, so a single small packet that claims 65,535 records makes the decoder reserve memory for that many records (about 18 MB, according to the upstream advisory) before it reads any record and fails.\n\nAny code that decodes untrusted DNS messages is exposed. That includes servers, and clients and resolvers that receive spoofed responses. Repeated packets can drive memory use up and cause a denial of service.\n\nThe fix caps the initial capacity at 8 entries and lets the vectors grow as records are actually decoded. It is in 0.26.2.",
       "date": "2026-09-03",
       "aliases": [
-        "CVE-2026-123581",
-        "GHSA-929p-gjf6-5hqj"
+        "CVE-2026-123570",
+        "GHSA-67wc-6jq8-ghrc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "memory",
+        "allocation"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/280c0e5c4e3002d73ba0762835ef82272d1d33a6",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": [
+        "<0.18.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0489",
+      "package": "hickory-proto",
+      "title": "Panic when an SVCB or HTTPS parameter value is a single quote character",
+      "description": "When an SVCB or HTTPS record is parsed from its text (zone file) form, surrounding double quotes are removed from each service parameter value by checking that the value starts and ends with `\"` and slicing off the first and last character. A value that is a single `\"` (for example `alpn=\"`) passes that check, and the slice `[1..0]` panics.\n\nCode that parses zone files or record text from an untrusted source can be made to panic, which is a denial of service. Records decoded from the DNS wire format are not parsed this way.\n\nThe fix rejects a lone quote character with a parse error before the slice. It is in 0.26.2.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123573",
+        "GHSA-wgfr-mphw-j5g4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "zone-file",
+        "svcb",
+        "panic"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/c663b60a4b4b98deb45d16ccbf10ce2f76cd88a9",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": [
+        "<0.20.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0530",
+      "package": "hickory-proto",
+      "title": "Parent-side NSEC at a zone cut accepted as proof of nonexistence (hickory-proto)",
+      "description": "Up to 0.26.0-alpha.1, hickory-proto's DNSSEC validation accepted the NSEC record that a parent zone signs at a delegation as proof that names below the zone cut, or other types at the cut, do not exist. Such a record only proves that no DS record exists there (RFC 6840 section 4.1). Someone who can answer or modify DNS responses could replay the parent's genuine signed records to get a denial for an existing name in the child zone accepted as secure.\n\nFrom 0.26.0-beta.1 the DNSSEC validation code lives in the hickory-net crate, where this was fixed in hickory-net 0.26.2. No hickory-proto release contains a fix. Users of DNSSEC validation in older hickory-proto releases (directly or through hickory-resolver or hickory-recursor) should move to the 0.26.2 or later releases, which validate through hickory-net.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123596",
+        "GHSA-3r6v-f3jh-vvqm"
       ],
       "related": [],
       "collection": "crates",
@@ -55,13 +255,91 @@
       ],
       "keywords": [
         "dns",
-        "dnssec"
+        "dnssec",
+        "nsec"
       ],
-      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "cvss": null,
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/77ec9c5d2e9481a0753bbaf1be3cd5175d300cff",
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/2e3c829ea45000b1c409a64a03bd422618372471",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        ">=0.26.0-beta.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0532",
+      "package": "hickory-proto",
+      "title": "Parent-side NSEC3 at a zone cut accepted as proof of nonexistence (hickory-proto 0.25)",
+      "description": "In hickory-proto 0.25.0 through 0.26.0-alpha.1, NSEC3 validation picked the closest encloser by hashed owner name alone and accepted the NSEC3 record that a parent zone signs at a delegation as proof that names at or below the zone cut do not exist. Such a record only proves that no DS record exists there (RFC 6840 section 4.1, RFC 5155 section 8.3). Someone who can answer or modify DNS responses could replay the parent's genuine signed records to get a denial for an existing name in the child zone accepted as secure.\n\nFrom 0.26.0-beta.1 the DNSSEC validation code lives in the hickory-net crate, where this was fixed in hickory-net 0.26.2. No hickory-proto release contains a fix. Users of DNSSEC validation in hickory-proto 0.25 (directly or through hickory-resolver or hickory-recursor 0.25) should move to the 0.26.2 or later releases, which validate through hickory-net.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123595",
+        "GHSA-624w-vvww-xvpw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "dns",
+        "dnssec",
+        "nsec3"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/889801333d7f18d59a4468100e8cd1859e083d43",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": [
+        "<0.25.0",
+        ">=0.26.0-beta.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0511",
+      "package": "hickory-proto",
+      "title": "NXDOMAIN accepted for a proven empty non-terminal (hickory-proto)",
+      "description": "Up to 0.26.0-alpha.1, hickory-proto's NSEC validation accepted an NXDOMAIN response as secure even when the covering NSEC record's next domain name was below the queried name, which proves the name exists as an empty non-terminal. Because the response code is not signed, someone who can modify DNS responses could turn a genuine signed NODATA response into an accepted NXDOMAIN.\n\nFrom 0.26.0-beta.1 the DNSSEC validation code lives in the hickory-net crate, where this was fixed in hickory-net 0.26.2. No hickory-proto release contains a fix. Users of DNSSEC validation in older hickory-proto releases (directly or through hickory-resolver or hickory-recursor) should move to the 0.26.2 or later releases, which validate through hickory-net.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123594",
+        "GHSA-86vr-jm6c-7cpg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "dns",
+        "dnssec",
+        "nsec"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/bfbe7ede4021965526f065be9b415945ce575e29",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -158,14 +436,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0504",
+      "id": "RUSTSEC-2026-0512",
       "package": "hickory-proto",
-      "title": "Inverted NSEC3 comparison in DNSSEC validation (hickory-proto 0.25)",
-      "description": "In hickory-proto 0.25.0 through 0.26.0-alpha.1, DNSSEC validation handled the last NSEC3 record of a zone's hash chain with its two comparisons reversed. That record was treated as covering almost every hash it does not cover, so an attacker who can answer or modify DNS responses could replay it, with its RRSIG, to forge proofs that existing names have no records.\n\nFrom 0.26.0-beta.1 the DNSSEC validation code lives in the hickory-net crate, where this was fixed in hickory-net 0.26.2. No hickory-proto release contains a fix. Users of DNSSEC validation in hickory-proto 0.25 (directly or through hickory-resolver or hickory-recursor 0.25) should move to the 0.26.2 or later releases, which validate through hickory-net.",
+      "title": "DNSSEC validation accepted an unrelated signed RRset as the answer (hickory-proto)",
+      "description": "Up to 0.26.0-alpha.1, hickory-proto's DNSSEC validation treated a response with a non-empty answer section as a positive answer if its records validated, without checking that any of them matched the queried name and type. Someone who can answer or modify DNS responses could return a genuine signed RRset for another name or type and have it accepted as a validated answer.\n\nFrom 0.26.0-beta.1 the DNSSEC validation code lives in the hickory-net crate, where this was fixed in hickory-net 0.26.2. No hickory-proto release contains a fix. Users of DNSSEC validation in older hickory-proto releases (directly or through hickory-resolver or hickory-recursor) should move to the 0.26.2 or later releases, which validate through hickory-net.",
       "date": "2026-09-03",
       "aliases": [
-        "CVE-2026-123601",
-        "GHSA-588m-chg6-8jqj"
+        "CVE-2026-123581",
+        "GHSA-929p-gjf6-5hqj"
       ],
       "related": [],
       "collection": "crates",
@@ -174,94 +452,13 @@
       ],
       "keywords": [
         "dns",
-        "dnssec",
-        "nsec3"
+        "dnssec"
       ],
-      "cvss": null,
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/87ee4f81aa9689d81847770d3a74e13982c9bcdc",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [],
-      "unaffected": [
-        "<0.25.0",
-        ">=0.26.0-beta.1"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0490",
-      "package": "hickory-proto",
-      "title": "Zone file lexer panics on a token of 4096 or more characters",
-      "description": "The zone file lexer read each token in a loop capped at 4,096 iterations, with an `assert!` on the loop counter as a safety bound. A single token long enough to reach that bound, for example a very long name or character string in a zone file, triggered the assertion and the parser panicked instead of returning the token or an error.\n\nCode that parses zone files from an untrusted source can be made to panic, which is a denial of service.\n\nThe fix removes the iteration bound, so the lexer ends only when it reaches the end of a token or an error. It is in 0.26.2.",
-      "date": "2026-09-03",
-      "aliases": [
-        "CVE-2026-123574",
-        "GHSA-4rph-pmrw-mwpw"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "dns",
-        "zone-file",
-        "lexer",
-        "panic"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/0494e15c88fba612f9ecb4f013eb3b221822c867",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.26.2"
-      ],
-      "unaffected": [
-        "<0.24.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0511",
-      "package": "hickory-proto",
-      "title": "NXDOMAIN accepted for a proven empty non-terminal (hickory-proto)",
-      "description": "Up to 0.26.0-alpha.1, hickory-proto's NSEC validation accepted an NXDOMAIN response as secure even when the covering NSEC record's next domain name was below the queried name, which proves the name exists as an empty non-terminal. Because the response code is not signed, someone who can modify DNS responses could turn a genuine signed NODATA response into an accepted NXDOMAIN.\n\nFrom 0.26.0-beta.1 the DNSSEC validation code lives in the hickory-net crate, where this was fixed in hickory-net 0.26.2. No hickory-proto release contains a fix. Users of DNSSEC validation in older hickory-proto releases (directly or through hickory-resolver or hickory-recursor) should move to the 0.26.2 or later releases, which validate through hickory-net.",
-      "date": "2026-09-03",
-      "aliases": [
-        "CVE-2026-123594",
-        "GHSA-86vr-jm6c-7cpg"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "privilege-escalation"
-      ],
-      "keywords": [
-        "dns",
-        "dnssec",
-        "nsec"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/bfbe7ede4021965526f065be9b415945ce575e29",
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/77ec9c5d2e9481a0753bbaf1be3cd5175d300cff",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -271,87 +468,6 @@
       "patched": [],
       "unaffected": [
         ">=0.26.0-beta.1"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0489",
-      "package": "hickory-proto",
-      "title": "Panic when an SVCB or HTTPS parameter value is a single quote character",
-      "description": "When an SVCB or HTTPS record is parsed from its text (zone file) form, surrounding double quotes are removed from each service parameter value by checking that the value starts and ends with `\"` and slicing off the first and last character. A value that is a single `\"` (for example `alpn=\"`) passes that check, and the slice `[1..0]` panics.\n\nCode that parses zone files or record text from an untrusted source can be made to panic, which is a denial of service. Records decoded from the DNS wire format are not parsed this way.\n\nThe fix rejects a lone quote character with a parse error before the slice. It is in 0.26.2.",
-      "date": "2026-09-03",
-      "aliases": [
-        "CVE-2026-123573",
-        "GHSA-wgfr-mphw-j5g4"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "dns",
-        "zone-file",
-        "svcb",
-        "panic"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/c663b60a4b4b98deb45d16ccbf10ce2f76cd88a9",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.26.2"
-      ],
-      "unaffected": [
-        "<0.20.1"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0491",
-      "package": "hickory-proto",
-      "title": "Memory amplification from record counts in the DNS message header",
-      "description": "When a DNS message is decoded, the vectors for the question, answer, authority and additional sections were created with `Vec::with_capacity` set to the counts in the message header. Those counts come from the sender and are not checked against the size of the message, so a single small packet that claims 65,535 records makes the decoder reserve memory for that many records (about 18 MB, according to the upstream advisory) before it reads any record and fails.\n\nAny code that decodes untrusted DNS messages is exposed. That includes servers, and clients and resolvers that receive spoofed responses. Repeated packets can drive memory use up and cause a denial of service.\n\nThe fix caps the initial capacity at 8 entries and lets the vectors grow as records are actually decoded. It is in 0.26.2.",
-      "date": "2026-09-03",
-      "aliases": [
-        "CVE-2026-123570",
-        "GHSA-67wc-6jq8-ghrc"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "dns",
-        "memory",
-        "allocation"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/280c0e5c4e3002d73ba0762835ef82272d1d33a6",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.26.2"
-      ],
-      "unaffected": [
-        "<0.18.0"
       ]
     }
   },

@@ -32,39 +32,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0455",
-      "package": "actix-http",
-      "title": "Large-window Brotli bodies bypass decompression memory limits",
-      "description": "With the `compress-brotli` feature enabled, the decoder accepts the non-standard\nlarge-window Brotli format. A crafted stream can cause its internal buffer to\ngrow to about 1 GiB before the decoded output reaches the configured size limit.\nAn 850-byte request can cause this allocation, and concurrent requests can\nexhaust process or host memory.\n\nActix Web enables Brotli support by default. Applications that read request\nbodies through `Bytes`, `String`, `Json`, or `Form` can be affected even when\nextractor size limits are configured. The allocation occurs before the handler\nruns, so authentication performed in the handler does not prevent it.\n\nUpgrade to actix-http 3.20.3 or later. As a workaround, reject requests with\n`Content-Encoding: br` at a reverse proxy or in middleware before body\nextraction, or disable the `compress-brotli` feature throughout the dependency\ngraph.",
-      "date": "2026-11-06",
-      "aliases": [
-        "GHSA-7p9w-p5qm-5gc5"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/actix/actix-web/commit/61c6a15c1c0e505a5cd6842610a5f1faea432a83",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=3.20.3"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0448",
       "package": "actix-http",
       "title": "Unbounded decompression can exhaust memory and CPU resources",
@@ -92,6 +59,39 @@
     "versions": {
       "patched": [
         ">=3.20.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0455",
+      "package": "actix-http",
+      "title": "Large-window Brotli bodies bypass decompression memory limits",
+      "description": "With the `compress-brotli` feature enabled, the decoder accepts the non-standard\nlarge-window Brotli format. A crafted stream can cause its internal buffer to\ngrow to about 1 GiB before the decoded output reaches the configured size limit.\nAn 850-byte request can cause this allocation, and concurrent requests can\nexhaust process or host memory.\n\nActix Web enables Brotli support by default. Applications that read request\nbodies through `Bytes`, `String`, `Json`, or `Form` can be affected even when\nextractor size limits are configured. The allocation occurs before the handler\nruns, so authentication performed in the handler does not prevent it.\n\nUpgrade to actix-http 3.20.3 or later. As a workaround, reject requests with\n`Content-Encoding: br` at a reverse proxy or in middleware before body\nextraction, or disable the `compress-brotli` feature throughout the dependency\ngraph.",
+      "date": "2026-11-06",
+      "aliases": [
+        "GHSA-7p9w-p5qm-5gc5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-web/commit/61c6a15c1c0e505a5cd6842610a5f1faea432a83",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.20.3"
       ],
       "unaffected": []
     }

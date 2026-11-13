@@ -1,6 +1,44 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0519",
+      "package": "hickory-net",
+      "title": "NXDOMAIN accepted for an empty non-terminal that the NSEC record proves exists",
+      "description": "When an NSEC record's next domain name is below the queried name, the queried name exists as an empty non-terminal (RFC 8020 section 3.1). The NSEC validator did not check for this case and accepted an NXDOMAIN response backed by such a record as secure.\n\nThe response code is not covered by any signature. An attacker who can modify DNS responses can take a genuine signed NODATA response for an empty non-terminal, change its response code to NXDOMAIN, and have the validator accept that an existing name does not exist.\n\nThis affects DNSSEC validation through `DnssecDnsHandle` when built with `dnssec-ring` or `dnssec-aws-lc-rs`.\n\nThe fix rejects NXDOMAIN as bogus, and validates NODATA as secure, when the covering NSEC record's next domain name is below the queried name and is not the zone apex. It is in 0.26.2.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123594",
+        "GHSA-86vr-jm6c-7cpg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "dns",
+        "dnssec",
+        "nsec"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/bfbe7ede4021965526f065be9b415945ce575e29",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0508",
       "package": "hickory-net",
       "title": "NSEC wraparound detection trusted an unvalidated SOA record",
@@ -41,30 +79,31 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0517",
+      "id": "RUSTSEC-2026-0540",
       "package": "hickory-net",
-      "title": "Spoofed malformed UDP datagrams abort DNS lookups",
-      "description": "While waiting for a reply on a UDP connection, the client parsed every datagram that arrived from the name server's address and port before checking its message ID. If parsing failed, the attempt ended with an error instead of dropping the datagram and waiting for the real reply. The receive loop also gave up after three datagrams.\n\nAn off-path attacker who can guess the client's source port, but not the transaction ID, can send one malformed datagram with a spoofed source address and make the pending lookup fail.\n\nThe fix reads the message ID from the first two bytes before parsing, ignores short datagrams and datagrams with the wrong ID, keeps listening until the outer timeout, and only then parses the response. It is in 0.26.2.",
+      "title": "Child-side NSEC or NSEC3 record accepted as proof that a delegation has no DS record",
+      "description": "To show that a delegation is insecure, a validator needs proof that the parent zone has no DS record for it. That proof must come from the parent side of the zone cut: RFC 4035 section 5.2, RFC 5155 section 8.9 and RFC 6840 section 4.4 require the matching NSEC or NSEC3 record not to have the SOA bit set, since a record with SOA comes from the child zone's apex.\n\nDNSSEC validation did not check this. An attacker who can answer or modify DNS responses can answer a DS query with the child zone's own signed NSEC or NSEC3 record for its apex, which does not list DS, and have the validator accept that the delegation is insecure. Records in the child zone can then be forged without any signature.\n\nThis affects DNSSEC validation through `DnssecDnsHandle` when built with `dnssec-ring` or `dnssec-aws-lc-rs`.\n\nThe fix treats a NODATA proof for a DS query as bogus when the directly matching NSEC or NSEC3 record has SOA in its type bitmap. It is in 0.26.2.",
       "date": "2026-09-03",
       "aliases": [
-        "CVE-2026-123584",
-        "GHSA-v44v-c8m4-gc43"
+        "CVE-2026-123591",
+        "GHSA-7php-9j59-g3ch"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "denial-of-service"
+        "privilege-escalation"
       ],
       "keywords": [
         "dns",
-        "udp",
-        "spoofing"
+        "dnssec",
+        "nsec",
+        "nsec3"
       ],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/07ff35c1b33c1df27e398cee463e424cef951a82",
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/ec98851f4d175d97b61701bc539523ff63ddbb00",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -74,21 +113,57 @@
       "patched": [
         ">=0.26.2"
       ],
-      "unaffected": [
-        "<0.26.0"
-      ]
+      "unaffected": []
     }
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0519",
+      "id": "RUSTSEC-2026-0541",
       "package": "hickory-net",
-      "title": "NXDOMAIN accepted for an empty non-terminal that the NSEC record proves exists",
-      "description": "When an NSEC record's next domain name is below the queried name, the queried name exists as an empty non-terminal (RFC 8020 section 3.1). The NSEC validator did not check for this case and accepted an NXDOMAIN response backed by such a record as secure.\n\nThe response code is not covered by any signature. An attacker who can modify DNS responses can take a genuine signed NODATA response for an empty non-terminal, change its response code to NXDOMAIN, and have the validator accept that an existing name does not exist.\n\nThis affects DNSSEC validation through `DnssecDnsHandle` when built with `dnssec-ring` or `dnssec-aws-lc-rs`.\n\nThe fix rejects NXDOMAIN as bogus, and validates NODATA as secure, when the covering NSEC record's next domain name is below the queried name and is not the zone apex. It is in 0.26.2.",
+      "title": "Parent-side NSEC3 at a zone cut accepted as proof of nonexistence at and below the cut",
+      "description": "At a delegation, the parent zone signs an NSEC3 record for the child's name whose type bitmap has NS but not SOA (or has DNAME). RFC 6840 section 4.1 and RFC 5155 section 8.3 say such a record only proves that no DS record exists at that name.\n\nNSEC3 validation picked the closest encloser by matching the hashed owner name alone, without looking at the type bitmap, so it accepted such a record as the closest encloser for names below the cut. For NODATA responses, it accepted a direct match on such a record as proof that any type other than the queried one and CNAME was absent, not only DS. An attacker who can answer or modify DNS responses can replay the parent's genuine signed records to get an NXDOMAIN for a name below the cut, or a NODATA for a non-DS type at the cut, accepted as secure. A recursor caches that denial for the negative TTL.\n\nThis affects DNSSEC validation through `DnssecDnsHandle` when built with `dnssec-ring` or `dnssec-aws-lc-rs`.\n\nThe fix adds `NSEC3::is_ancestor_delegation()` in hickory-proto. Validation no longer accepts such a record as a closest encloser, and treats a direct match on it as bogus unless the query is for DS. It is in 0.26.2.",
       "date": "2026-09-03",
       "aliases": [
-        "CVE-2026-123594",
-        "GHSA-86vr-jm6c-7cpg"
+        "CVE-2026-123595",
+        "GHSA-624w-vvww-xvpw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "dns",
+        "dnssec",
+        "nsec3"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/889801333d7f18d59a4468100e8cd1859e083d43",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0539",
+      "package": "hickory-net",
+      "title": "Parent-side NSEC at a zone cut accepted as proof of nonexistence below the cut",
+      "description": "At a delegation, the parent zone signs an NSEC record for the child's name whose type bitmap has NS but not SOA (or has DNAME). RFC 6840 section 4.1 says such a record only proves that no DS record exists at that name. It says nothing about names below the cut or about other types at the cut, because those belong to the child zone.\n\nDNSSEC validation did not make this distinction. It used such a record as a covering NSEC for names below the cut, and as a direct match proving that other types did not exist at the cut. An attacker who can answer or modify DNS responses can replay the parent's genuine signed records to get an NXDOMAIN or NODATA response for an existing name in the child zone accepted as secure. A recursor caches that denial for the negative TTL.\n\nThis affects DNSSEC validation through `DnssecDnsHandle` when built with `dnssec-ring` or `dnssec-aws-lc-rs`.\n\nThe fix adds `NSEC::is_ancestor_delegation()` in hickory-proto. Validation no longer uses such a record to cover a name below its owner, and treats a direct match on it as bogus unless the query is for DS. It is in 0.26.2.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123596",
+        "GHSA-3r6v-f3jh-vvqm"
       ],
       "related": [],
       "collection": "crates",
@@ -104,7 +179,7 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/bfbe7ede4021965526f065be9b415945ce575e29",
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/2e3c829ea45000b1c409a64a03bd422618372471",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -159,14 +234,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0520",
+      "id": "RUSTSEC-2026-0509",
       "package": "hickory-net",
-      "title": "DNSSEC validation accepted a validly signed but unrelated RRset as the answer",
-      "description": "When a response had a non-empty answer section, DNSSEC validation treated it as a positive answer as long as the records in it validated. It did not check that any of those records had the queried name and either the queried type or type CNAME.\n\nAn attacker who can answer or modify DNS responses can therefore return a genuine, signed RRset for some other name or type, and have it accepted as a validated answer to the query instead of being handled as a response with no matching data.\n\nThis affects DNSSEC validation through `DnssecDnsHandle` when built with `dnssec-ring` or `dnssec-aws-lc-rs`.\n\nThe fix requires at least one answer record that matches the query name and is either of the queried type or a CNAME, both for positive responses and when NSEC records are checked. It is in 0.26.2.",
+      "title": "NSEC3 records from another zone were accepted in proofs of nonexistence",
+      "description": "When DNSSEC validation used NSEC3 records to prove that a name or record type does not exist, it compared only the hashed first label of each NSEC3 owner name with the hash of the name being checked. The rest of the owner name, which says which zone the record belongs to, was not checked.\n\nSomeone who controls any DNSSEC-signed zone can publish a signed NSEC3 record whose first label is the hash of a name in another zone. An attacker who can answer or modify DNS responses can then use it to make the validator accept that the name in the other zone does not exist.\n\nThis affects DNSSEC validation through `DnssecDnsHandle` when built with `dnssec-ring` or `dnssec-aws-lc-rs`.\n\nThe fix requires a matching NSEC3 record to belong to a zone that contains the checked name, and ignores NSEC3 records whose owner is not directly below the RRSIG signer name. It is in 0.26.2.",
       "date": "2026-09-03",
       "aliases": [
-        "CVE-2026-123581",
-        "GHSA-929p-gjf6-5hqj"
+        "CVE-2026-123580",
+        "GHSA-p2jv-r3m3-7wf4"
       ],
       "related": [],
       "collection": "crates",
@@ -175,13 +250,16 @@
       ],
       "keywords": [
         "dns",
-        "dnssec"
+        "dnssec",
+        "nsec3"
       ],
-      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
       "informational": null,
-      "references": [],
+      "references": [
+        "https://github.com/hickory-dns/hickory-dns/commit/d2ee774a789193010f109d3d463adf72c4c261ab"
+      ],
       "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/77ec9c5d2e9481a0753bbaf1be3cd5175d300cff",
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/10840b8432feb08d369f82e2bb6ce99ae23d7afa",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -272,14 +350,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0509",
+      "id": "RUSTSEC-2026-0520",
       "package": "hickory-net",
-      "title": "NSEC3 records from another zone were accepted in proofs of nonexistence",
-      "description": "When DNSSEC validation used NSEC3 records to prove that a name or record type does not exist, it compared only the hashed first label of each NSEC3 owner name with the hash of the name being checked. The rest of the owner name, which says which zone the record belongs to, was not checked.\n\nSomeone who controls any DNSSEC-signed zone can publish a signed NSEC3 record whose first label is the hash of a name in another zone. An attacker who can answer or modify DNS responses can then use it to make the validator accept that the name in the other zone does not exist.\n\nThis affects DNSSEC validation through `DnssecDnsHandle` when built with `dnssec-ring` or `dnssec-aws-lc-rs`.\n\nThe fix requires a matching NSEC3 record to belong to a zone that contains the checked name, and ignores NSEC3 records whose owner is not directly below the RRSIG signer name. It is in 0.26.2.",
+      "title": "DNSSEC validation accepted a validly signed but unrelated RRset as the answer",
+      "description": "When a response had a non-empty answer section, DNSSEC validation treated it as a positive answer as long as the records in it validated. It did not check that any of those records had the queried name and either the queried type or type CNAME.\n\nAn attacker who can answer or modify DNS responses can therefore return a genuine, signed RRset for some other name or type, and have it accepted as a validated answer to the query instead of being handled as a response with no matching data.\n\nThis affects DNSSEC validation through `DnssecDnsHandle` when built with `dnssec-ring` or `dnssec-aws-lc-rs`.\n\nThe fix requires at least one answer record that matches the query name and is either of the queried type or a CNAME, both for positive responses and when NSEC records are checked. It is in 0.26.2.",
       "date": "2026-09-03",
       "aliases": [
-        "CVE-2026-123580",
-        "GHSA-p2jv-r3m3-7wf4"
+        "CVE-2026-123581",
+        "GHSA-929p-gjf6-5hqj"
       ],
       "related": [],
       "collection": "crates",
@@ -288,16 +366,13 @@
       ],
       "keywords": [
         "dns",
-        "dnssec",
-        "nsec3"
+        "dnssec"
       ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
       "informational": null,
-      "references": [
-        "https://github.com/hickory-dns/hickory-dns/commit/d2ee774a789193010f109d3d463adf72c4c261ab"
-      ],
+      "references": [],
       "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/10840b8432feb08d369f82e2bb6ce99ae23d7afa",
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/77ec9c5d2e9481a0753bbaf1be3cd5175d300cff",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -308,6 +383,46 @@
         ">=0.26.2"
       ],
       "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0517",
+      "package": "hickory-net",
+      "title": "Spoofed malformed UDP datagrams abort DNS lookups",
+      "description": "While waiting for a reply on a UDP connection, the client parsed every datagram that arrived from the name server's address and port before checking its message ID. If parsing failed, the attempt ended with an error instead of dropping the datagram and waiting for the real reply. The receive loop also gave up after three datagrams.\n\nAn off-path attacker who can guess the client's source port, but not the transaction ID, can send one malformed datagram with a spoofed source address and make the pending lookup fail.\n\nThe fix reads the message ID from the first two bytes before parsing, ignores short datagrams and datagrams with the wrong ID, keeps listening until the outer timeout, and only then parses the response. It is in 0.26.2.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123584",
+        "GHSA-v44v-c8m4-gc43"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "udp",
+        "spoofing"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/07ff35c1b33c1df27e398cee463e424cef951a82",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": [
+        "<0.26.0"
+      ]
     }
   },
   {

@@ -1,6 +1,45 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0409",
+      "package": "skiplist",
+      "title": "Use-after-free from a comparator that answers inconsistently",
+      "description": "`OrderedSkipList`, `SkipSet` and `SkipMap` can free a node that is still\nlinked when a `Comparator` or `Ord` implementation gives different answers for\nthe same pair of values during one mutating call. A later call reads the freed\nmemory (CWE-416). A safe `impl Ord` with the default comparator is enough to\nreach it.\n\nThe mutating traversals record a precursor at each level: the last node whose\nlink points at a node comparing not-`Less` than the target. The splice code\nassumes every recorded precursor's link points at or past the final position.\nIf a later comparison reports one of those nodes as `Less`, the walk steps\npast it and the assumption breaks. Removals such as `take_first`, `take` and\n`remove` then rewire the wrong link and free the target while its real\npredecessor still points at it. `insert` builds crossed links and wrong skip\ndistances from the same precursors.\n\nA comparator that is a pure function of its two arguments cannot trigger\nthis, even if it is not transitive. The trigger is a stateful or\nnon-deterministic implementation, for example one that reads a counter, a\ncache, a clock or a random source.\n\nThe flaw was corrected in 1.3.0. The mutating traversals track the link target\nof the lowest recorded precursor and panic with \"comparator does not implement\na total order\" when a `Less` answer contradicts an earlier one. Every splice\nsite also checks its precursors before the first write. Each detected\ncontradiction panics before any link, value or length changes, so the\ncollection stays valid and safe to drop.",
+      "date": "2026-10-24",
+      "aliases": [
+        "GHSA-cc53-p78w-23w9"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "comparator",
+        "ord"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/JP-Ellis/rust-skiplist/pull/407"
+      ],
+      "source": null,
+      "url": "https://github.com/JP-Ellis/rust-skiplist/issues/401",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.3.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0408",
       "package": "skiplist",
       "title": "Aliasing violations in splice, mutable iteration and cursors",
@@ -92,45 +131,6 @@
         ]
       }
     },
-    "versions": {
-      "patched": [
-        ">=1.3.0"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0409",
-      "package": "skiplist",
-      "title": "Use-after-free from a comparator that answers inconsistently",
-      "description": "`OrderedSkipList`, `SkipSet` and `SkipMap` can free a node that is still\nlinked when a `Comparator` or `Ord` implementation gives different answers for\nthe same pair of values during one mutating call. A later call reads the freed\nmemory (CWE-416). A safe `impl Ord` with the default comparator is enough to\nreach it.\n\nThe mutating traversals record a precursor at each level: the last node whose\nlink points at a node comparing not-`Less` than the target. The splice code\nassumes every recorded precursor's link points at or past the final position.\nIf a later comparison reports one of those nodes as `Less`, the walk steps\npast it and the assumption breaks. Removals such as `take_first`, `take` and\n`remove` then rewire the wrong link and free the target while its real\npredecessor still points at it. `insert` builds crossed links and wrong skip\ndistances from the same precursors.\n\nA comparator that is a pure function of its two arguments cannot trigger\nthis, even if it is not transitive. The trigger is a stateful or\nnon-deterministic implementation, for example one that reads a counter, a\ncache, a clock or a random source.\n\nThe flaw was corrected in 1.3.0. The mutating traversals track the link target\nof the lowest recorded precursor and panic with \"comparator does not implement\na total order\" when a `Less` answer contradicts an earlier one. Every splice\nsite also checks its precursors before the first write. Each detected\ncontradiction panics before any link, value or length changes, so the\ncollection stays valid and safe to drop.",
-      "date": "2026-10-24",
-      "aliases": [
-        "GHSA-cc53-p78w-23w9"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "memory-corruption"
-      ],
-      "keywords": [
-        "use-after-free",
-        "comparator",
-        "ord"
-      ],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
-      "informational": null,
-      "references": [
-        "https://github.com/JP-Ellis/rust-skiplist/pull/407"
-      ],
-      "source": null,
-      "url": "https://github.com/JP-Ellis/rust-skiplist/issues/401",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
     "versions": {
       "patched": [
         ">=1.3.0"

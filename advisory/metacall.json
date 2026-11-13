@@ -1,37 +1,6 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0156",
-      "package": "metacall",
-      "title": "Bad-free in `MetaCallException::new`",
-      "description": "`exception_struct` is a local stack variable, but the code passes its address to the C language as `&mut exception_struct as *mut _ as *mut c_void`. Then, the returned `MetaCallException` value is stored here:\n```rust\nOk(Self {\n    exception_struct: Arc::new(exception_struct),\n    value: exception_ptr,\n    leak: false,\n})\n```\nBecause leak is false, the destructor will run later. But the original exception pointer points to Rust stack memory.\n\n## Trigger\n\n```rust\n#[test]\nfn exception_bad_free_safe_api() {\n    let original = metacall::MetaCallException::new(\n        \"test\",\n        \"test\",\n        \"test\",\n        1,\n    );\n\n    drop(original); // AddressSanitizer: bad-free\n}\n```\n\n## Impact\n\nEvery time the `MetaCallException` is created, when it is dropped, it leads to a bad-free. This can be triggered through the safe public API `MetaCallException::new()`, with no `unsafe` required from the caller.",
-      "date": "2026-06-01",
-      "aliases": [],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "memory-corruption"
-      ],
-      "keywords": [
-        "bad-free"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/metacall/core/issues/809",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0157",
       "package": "metacall",
       "title": "Several memory corruption issues via safe APIs",
@@ -49,6 +18,37 @@
       ],
       "cvss": null,
       "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/metacall/core/issues/809",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0156",
+      "package": "metacall",
+      "title": "Bad-free in `MetaCallException::new`",
+      "description": "`exception_struct` is a local stack variable, but the code passes its address to the C language as `&mut exception_struct as *mut _ as *mut c_void`. Then, the returned `MetaCallException` value is stored here:\n```rust\nOk(Self {\n    exception_struct: Arc::new(exception_struct),\n    value: exception_ptr,\n    leak: false,\n})\n```\nBecause leak is false, the destructor will run later. But the original exception pointer points to Rust stack memory.\n\n## Trigger\n\n```rust\n#[test]\nfn exception_bad_free_safe_api() {\n    let original = metacall::MetaCallException::new(\n        \"test\",\n        \"test\",\n        \"test\",\n        1,\n    );\n\n    drop(original); // AddressSanitizer: bad-free\n}\n```\n\n## Impact\n\nEvery time the `MetaCallException` is created, when it is dropped, it leads to a bad-free. This can be triggered through the safe public API `MetaCallException::new()`, with no `unsafe` required from the caller.",
+      "date": "2026-06-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "bad-free"
+      ],
+      "cvss": null,
+      "informational": null,
       "references": [],
       "source": null,
       "url": "https://github.com/metacall/core/issues/809",

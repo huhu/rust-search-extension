@@ -1,53 +1,6 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0177",
-      "package": "pyo3",
-      "title": "Missing `Sync` bound on `PyCFunction::new_closure` closures",
-      "description": "`PyCFunction::new_closure` (and the temporary `new_closure_bound` complement in\nthe 0.21–0.22 series) required the supplied closure to be `Send + 'static` but\nnot `Sync`. The resulting `PyCFunction` is a Python callable that can be\ninvoked from any Python thread, which means the closure may be called\nconcurrently from multiple threads, and needs a `Sync` bound to prevent\npossible data races.\n\nThe problem exists under all Python versions but is particularly vulnerable under\nthe newer free-threaded Python variant, which do not have serial execution\nimposed by the Global Interpreter Lock. Under releases protected by the GIL,\nthe ability to \"detach\" from the Python interpreter temporarily inside the closure\n(e.g. by `Python::detach`) makes it possible for interleaved and/or concurrent\nexecution of various portions of the closure.\n\nPyO3 0.29.0 added a `Sync` bound to close this thread-safety bug.",
-      "date": "2026-06-11",
-      "aliases": [
-        "GHSA-chgr-c6px-7xpp"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "thread-safety"
-      ],
-      "keywords": [
-        "thread-safety",
-        "unsound"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/PyO3/pyo3/pull/6096",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": {
-      "arch": [],
-      "os": [],
-      "functions": {
-        "pyo3::types::PyCFunction::new_closure": [
-          ">=0.15.0, <0.29.0"
-        ],
-        "pyo3::types::PyCFunction::new_closure_bound": [
-          ">=0.21.0, <0.23.0"
-        ]
-      }
-    },
-    "versions": {
-      "patched": [
-        ">=0.29.0"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0176",
       "package": "pyo3",
       "title": "Out-of-bounds read in `nth` / `nth_back` for `PyList` and `PyTuple` iterators",
@@ -99,6 +52,53 @@
       "unaffected": [
         "<0.24.0"
       ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0177",
+      "package": "pyo3",
+      "title": "Missing `Sync` bound on `PyCFunction::new_closure` closures",
+      "description": "`PyCFunction::new_closure` (and the temporary `new_closure_bound` complement in\nthe 0.21–0.22 series) required the supplied closure to be `Send + 'static` but\nnot `Sync`. The resulting `PyCFunction` is a Python callable that can be\ninvoked from any Python thread, which means the closure may be called\nconcurrently from multiple threads, and needs a `Sync` bound to prevent\npossible data races.\n\nThe problem exists under all Python versions but is particularly vulnerable under\nthe newer free-threaded Python variant, which do not have serial execution\nimposed by the Global Interpreter Lock. Under releases protected by the GIL,\nthe ability to \"detach\" from the Python interpreter temporarily inside the closure\n(e.g. by `Python::detach`) makes it possible for interleaved and/or concurrent\nexecution of various portions of the closure.\n\nPyO3 0.29.0 added a `Sync` bound to close this thread-safety bug.",
+      "date": "2026-06-11",
+      "aliases": [
+        "GHSA-chgr-c6px-7xpp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [
+        "thread-safety",
+        "unsound"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/PyO3/pyo3/pull/6096",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pyo3::types::PyCFunction::new_closure": [
+          ">=0.15.0, <0.29.0"
+        ],
+        "pyo3::types::PyCFunction::new_closure_bound": [
+          ">=0.21.0, <0.23.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.29.0"
+      ],
+      "unaffected": []
     }
   },
   {

@@ -76,40 +76,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0321",
-      "package": "wasmtime-wasi",
-      "title": "WASI preview 0 implementation of `poll_oneoff` circumvents fuel consumption",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-j366-h8gg-77pm\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-10-02",
-      "aliases": [
-        "CVE-2026-115380",
-        "GHSA-j366-h8gg-77pm"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14481",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=36.0.17, <37.0.0",
-        ">=48.0.4, <49.0.0",
-        ">=49.0.2"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0324",
       "package": "wasmtime-wasi",
       "title": "Guest can panic host through filesystem timestamp before the epoch on wasip3",
@@ -145,40 +111,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0322",
-      "package": "wasmtime-wasi",
-      "title": "Excessive allocated memory on the host when guests don't have stdio",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-gqmc-89g8-p25r\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-10-02",
-      "aliases": [
-        "CVE-2026-115381",
-        "GHSA-gqmc-89g8-p25r"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14482",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=36.0.17, <37.0.0",
-        ">=48.0.4, <49.0.0",
-        ">=49.0.2"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0323",
       "package": "wasmtime-wasi",
       "title": "fd_readdir copies uninitialized struct padding into guest memory",
@@ -197,6 +129,74 @@
       "references": [],
       "source": null,
       "url": "https://github.com/bytecodealliance/wasmtime/pull/14487",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.17, <37.0.0",
+        ">=48.0.4, <49.0.0",
+        ">=49.0.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0321",
+      "package": "wasmtime-wasi",
+      "title": "WASI preview 0 implementation of `poll_oneoff` circumvents fuel consumption",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-j366-h8gg-77pm\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-02",
+      "aliases": [
+        "CVE-2026-115380",
+        "GHSA-j366-h8gg-77pm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14481",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.17, <37.0.0",
+        ">=48.0.4, <49.0.0",
+        ">=49.0.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0322",
+      "package": "wasmtime-wasi",
+      "title": "Excessive allocated memory on the host when guests don't have stdio",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-gqmc-89g8-p25r\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-02",
+      "aliases": [
+        "CVE-2026-115381",
+        "GHSA-gqmc-89g8-p25r"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14482",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false

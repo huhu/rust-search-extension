@@ -1,6 +1,40 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0424",
+      "package": "wasmtime",
+      "title": "Unchecked memory usage in transferring borrowed resources between components",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-6fr9-xmw9-5352\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-29",
+      "aliases": [
+        "GHSA-6fr9-xmw9-5352"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/15075",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.20, <37.0.0",
+        ">=48.0.8, <49.0.0",
+        ">=49.0.5, <50.0.0",
+        ">=50.0.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0422",
       "package": "wasmtime",
       "title": "Typed functions with `i31` or `nullref` arguments may panic due to insufficient type-check",
@@ -36,40 +70,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0424",
-      "package": "wasmtime",
-      "title": "Unchecked memory usage in transferring borrowed resources between components",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-6fr9-xmw9-5352\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-10-29",
-      "aliases": [
-        "GHSA-6fr9-xmw9-5352"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/15075",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=36.0.20, <37.0.0",
-        ">=48.0.8, <49.0.0",
-        ">=49.0.5, <50.0.0",
-        ">=50.0.1"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0423",
       "package": "wasmtime",
       "title": "Cross-engine type confusion with host-created struct-types-with-supertypes",
@@ -101,40 +101,6 @@
       "unaffected": [
         "<47.0.0"
       ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0379",
-      "package": "wasmtime",
-      "title": "Cranelift backend on aarch64 can jump to incorrect target on large Wasm `br_table` instruction",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-mghf-wjfp-p5xm\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-10-19",
-      "aliases": [
-        "CVE-2026-115893",
-        "GHSA-mghf-wjfp-p5xm"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14826",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=36.0.19, <37.0.0",
-        ">=48.0.7, <49.0.0",
-        ">=49.0.4"
-      ],
-      "unaffected": []
     }
   },
   {
@@ -207,13 +173,47 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0354",
+      "id": "RUSTSEC-2026-0379",
       "package": "wasmtime",
-      "title": "Host panic when component `call_async` is cancelled under some conditions",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-3r89-v5mq-j5xf\nFor more information see the GitHub-hosted security advisory.",
+      "title": "Cranelift backend on aarch64 can jump to incorrect target on large Wasm `br_table` instruction",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-mghf-wjfp-p5xm\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-19",
+      "aliases": [
+        "CVE-2026-115893",
+        "GHSA-mghf-wjfp-p5xm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14826",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.19, <37.0.0",
+        ">=48.0.7, <49.0.0",
+        ">=49.0.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0358",
+      "package": "wasmtime",
+      "title": "Yielding in a component start function can lead to a host panic",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-5hhx-4wrr-3j9g\nFor more information see the GitHub-hosted security advisory.",
       "date": "2026-10-14",
       "aliases": [
-        "GHSA-3r89-v5mq-j5xf"
+        "GHSA-5hhx-4wrr-3j9g"
       ],
       "related": [],
       "collection": "crates",
@@ -223,7 +223,7 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14741",
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14620",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -241,23 +241,23 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0361",
+      "id": "RUSTSEC-2026-0363",
       "package": "wasmtime",
-      "title": "Panic when pending calls are run after a trap",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-hmwq-g22x-qjw5\nFor more information see the GitHub-hosted security advisory.",
+      "title": "Component-model handle tables are capped only per instance and charged to no limit",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-q554-3cjc-rx7p\nFor more information see the GitHub-hosted security advisory.",
       "date": "2026-10-14",
       "aliases": [
-        "GHSA-hmwq-g22x-qjw5"
+        "GHSA-q554-3cjc-rx7p"
       ],
       "related": [],
       "collection": "crates",
       "categories": [],
       "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14736",
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14732",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -265,23 +265,22 @@
     "affected": null,
     "versions": {
       "patched": [
+        ">=36.0.18, <37.0.0",
         ">=48.0.6, <49.0.0",
         ">=49.0.3"
       ],
-      "unaffected": [
-        "<46.0.0"
-      ]
+      "unaffected": []
     }
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0359",
+      "id": "RUSTSEC-2026-0356",
       "package": "wasmtime",
-      "title": "Stack overflow dropping a long chain of recursive types",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-wjc8-633q-pwxr\nFor more information see the GitHub-hosted security advisory.",
+      "title": "Panic on erroneous call-to-host from guest realloc call",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-7v24-42x9-pxf7\nFor more information see the GitHub-hosted security advisory.",
       "date": "2026-10-14",
       "aliases": [
-        "GHSA-wjc8-633q-pwxr"
+        "GHSA-7v24-42x9-pxf7"
       ],
       "related": [],
       "collection": "crates",
@@ -291,7 +290,7 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14735",
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14739",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -303,40 +302,7 @@
         ">=49.0.3"
       ],
       "unaffected": [
-        "<42.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0360",
-      "package": "wasmtime",
-      "title": "Overlapping string transcode in a fused adapter can panic",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-54p9-vhhq-8f7q\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-10-14",
-      "aliases": [
-        "GHSA-54p9-vhhq-8f7q"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14730",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=49.0.3"
-      ],
-      "unaffected": [
-        "<49.0.0"
+        "<46.0.0"
       ]
     }
   },
@@ -410,23 +376,23 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0364",
+      "id": "RUSTSEC-2026-0361",
       "package": "wasmtime",
-      "title": "Exception tags can cause host data structures to be unaligned",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-p79w-pv2r-29qp\nFor more information see the GitHub-hosted security advisory.",
+      "title": "Panic when pending calls are run after a trap",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-hmwq-g22x-qjw5\nFor more information see the GitHub-hosted security advisory.",
       "date": "2026-10-14",
       "aliases": [
-        "GHSA-p79w-pv2r-29qp"
+        "GHSA-hmwq-g22x-qjw5"
       ],
       "related": [],
       "collection": "crates",
       "categories": [],
       "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:L/UI:P/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14731",
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14736",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -438,29 +404,29 @@
         ">=49.0.3"
       ],
       "unaffected": [
-        "<47.0.0"
+        "<46.0.0"
       ]
     }
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0363",
+      "id": "RUSTSEC-2026-0360",
       "package": "wasmtime",
-      "title": "Component-model handle tables are capped only per instance and charged to no limit",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-q554-3cjc-rx7p\nFor more information see the GitHub-hosted security advisory.",
+      "title": "Overlapping string transcode in a fused adapter can panic",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-54p9-vhhq-8f7q\nFor more information see the GitHub-hosted security advisory.",
       "date": "2026-10-14",
       "aliases": [
-        "GHSA-q554-3cjc-rx7p"
+        "GHSA-54p9-vhhq-8f7q"
       ],
       "related": [],
       "collection": "crates",
       "categories": [],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14732",
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14730",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -468,11 +434,45 @@
     "affected": null,
     "versions": {
       "patched": [
-        ">=36.0.18, <37.0.0",
+        ">=49.0.3"
+      ],
+      "unaffected": [
+        "<49.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0354",
+      "package": "wasmtime",
+      "title": "Host panic when component `call_async` is cancelled under some conditions",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-3r89-v5mq-j5xf\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-14",
+      "aliases": [
+        "GHSA-3r89-v5mq-j5xf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14741",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
         ">=48.0.6, <49.0.0",
         ">=49.0.3"
       ],
-      "unaffected": []
+      "unaffected": [
+        "<46.0.0"
+      ]
     }
   },
   {
@@ -511,47 +511,13 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0358",
+      "id": "RUSTSEC-2026-0359",
       "package": "wasmtime",
-      "title": "Yielding in a component start function can lead to a host panic",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-5hhx-4wrr-3j9g\nFor more information see the GitHub-hosted security advisory.",
+      "title": "Stack overflow dropping a long chain of recursive types",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-wjc8-633q-pwxr\nFor more information see the GitHub-hosted security advisory.",
       "date": "2026-10-14",
       "aliases": [
-        "GHSA-5hhx-4wrr-3j9g"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14620",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=48.0.6, <49.0.0",
-        ">=49.0.3"
-      ],
-      "unaffected": [
-        "<46.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0356",
-      "package": "wasmtime",
-      "title": "Panic on erroneous call-to-host from guest realloc call",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-7v24-42x9-pxf7\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-10-14",
-      "aliases": [
-        "GHSA-7v24-42x9-pxf7"
+        "GHSA-wjc8-633q-pwxr"
       ],
       "related": [],
       "collection": "crates",
@@ -561,7 +527,7 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14739",
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14735",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -573,7 +539,7 @@
         ">=49.0.3"
       ],
       "unaffected": [
-        "<46.0.0"
+        "<42.0.0"
       ]
     }
   },
@@ -613,6 +579,40 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0364",
+      "package": "wasmtime",
+      "title": "Exception tags can cause host data structures to be unaligned",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-p79w-pv2r-29qp\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-14",
+      "aliases": [
+        "GHSA-p79w-pv2r-29qp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:L/UI:P/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14731",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=48.0.6, <49.0.0",
+        ">=49.0.3"
+      ],
+      "unaffected": [
+        "<47.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0326",
       "package": "wasmtime",
       "title": "Rooting for GC values live across `try_call` may be missing, causing GC heap corruption",
@@ -631,41 +631,6 @@
       "references": [],
       "source": null,
       "url": "https://github.com/bytecodealliance/wasmtime/pull/14478",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=48.0.4, <49.0.0",
-        ">=49.0.2"
-      ],
-      "unaffected": [
-        "<47.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0325",
-      "package": "wasmtime",
-      "title": "Mis-typed WebAssembly tag imports can lead to GC heap corruption",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-cfhf-m2cr-62wj\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-10-02",
-      "aliases": [
-        "CVE-2026-115383",
-        "GHSA-cfhf-m2cr-62wj"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14471",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -713,6 +678,41 @@
       ],
       "unaffected": [
         "<39.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0325",
+      "package": "wasmtime",
+      "title": "Mis-typed WebAssembly tag imports can lead to GC heap corruption",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-cfhf-m2cr-62wj\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-02",
+      "aliases": [
+        "CVE-2026-115383",
+        "GHSA-cfhf-m2cr-62wj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14471",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=48.0.4, <49.0.0",
+        ">=49.0.2"
+      ],
+      "unaffected": [
+        "<47.0.0"
       ]
     }
   },
@@ -963,24 +963,161 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0092",
+      "id": "RUSTSEC-2026-0095",
       "package": "wasmtime",
-      "title": "Panic when transcoding misaligned component model UTF-16 strings",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-jxhv-7h78-9775\nFor more information see the GitHub-hosted security advisory.",
+      "title": "Wasmtime with Winch compiler backend may allow a sandbox-escaping memory access",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-xx5w-cvp6-jv83\nFor more information see the GitHub-hosted security advisory.",
       "date": "2026-04-09",
       "aliases": [
-        "CVE-2026-34942",
-        "GHSA-jxhv-7h78-9775"
+        "CVE-2026-34987",
+        "GHSA-xx5w-cvp6-jv83"
       ],
       "related": [],
       "collection": "crates",
       "categories": [],
       "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:L",
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/13012",
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/13014",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.7, <37.0.0",
+        ">=42.0.2, <43.0.0",
+        ">=43.0.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0094",
+      "package": "wasmtime",
+      "title": "Improperly masked return value from `table.grow` with Winch compiler backend",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-f984-pcp8-v2p7\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-04-09",
+      "aliases": [
+        "CVE-2026-35186",
+        "GHSA-f984-pcp8-v2p7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:L/UI:N/VC:L/VI:L/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/13014",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=36.0.7, <37.0.0",
+        ">=42.0.2, <43.0.0",
+        ">=43.0.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0090",
+      "package": "wasmtime",
+      "title": "Use-after-free bug after cloning `wasmtime::Linker`",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-hfr4-7c6c-48w2\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-04-09",
+      "aliases": [
+        "CVE-2026-34983",
+        "GHSA-hfr4-7c6c-48w2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:P/AC:H/AT:P/PR:H/UI:A/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/issues/12069",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=43.0.1"
+      ],
+      "unaffected": [
+        "<43.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0087",
+      "package": "wasmtime",
+      "title": "Wasmtime segfault or unused out-of-sandbox load with `f64x2.splat` operator on Cranelift x86-64",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-qqfj-4vcm-26hv\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-04-09",
+      "aliases": [
+        "CVE-2026-34944",
+        "GHSA-qqfj-4vcm-26hv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:A/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/13011",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=24.0.7, <25.0.0",
+        ">=36.0.7, <37.0.0",
+        ">=42.0.2, <43.0.0",
+        ">=43.0.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0093",
+      "package": "wasmtime",
+      "title": "Heap OOB read in component model UTF-16 to latin1+utf16 string transcoding",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-hx6p-xpx3-jvvv\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-04-09",
+      "aliases": [
+        "CVE-2026-34941",
+        "GHSA-hx6p-xpx3-jvvv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/13016",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -1067,108 +1204,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0095",
-      "package": "wasmtime",
-      "title": "Wasmtime with Winch compiler backend may allow a sandbox-escaping memory access",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-xx5w-cvp6-jv83\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-04-09",
-      "aliases": [
-        "CVE-2026-34987",
-        "GHSA-xx5w-cvp6-jv83"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/13014",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=36.0.7, <37.0.0",
-        ">=42.0.2, <43.0.0",
-        ">=43.0.1"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0090",
-      "package": "wasmtime",
-      "title": "Use-after-free bug after cloning `wasmtime::Linker`",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-hfr4-7c6c-48w2\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-04-09",
-      "aliases": [
-        "CVE-2026-34983",
-        "GHSA-hfr4-7c6c-48w2"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:P/AC:H/AT:P/PR:H/UI:A/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/issues/12069",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=43.0.1"
-      ],
-      "unaffected": [
-        "<43.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0089",
-      "package": "wasmtime",
-      "title": "Host panic when Winch compiler executes `table.fill`",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-q49f-xg75-m9xw\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-04-09",
-      "aliases": [
-        "CVE-2026-34946",
-        "GHSA-q49f-xg75-m9xw"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/13010",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=36.0.7, <37.0.0",
-        ">=42.0.2, <43.0.0",
-        ">=43.0.1"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0086",
       "package": "wasmtime",
       "title": "Host data leakage with 64-bit tables and Winch",
@@ -1203,24 +1238,24 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0093",
+      "id": "RUSTSEC-2026-0092",
       "package": "wasmtime",
-      "title": "Heap OOB read in component model UTF-16 to latin1+utf16 string transcoding",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-hx6p-xpx3-jvvv\nFor more information see the GitHub-hosted security advisory.",
+      "title": "Panic when transcoding misaligned component model UTF-16 strings",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-jxhv-7h78-9775\nFor more information see the GitHub-hosted security advisory.",
       "date": "2026-04-09",
       "aliases": [
-        "CVE-2026-34941",
-        "GHSA-hx6p-xpx3-jvvv"
+        "CVE-2026-34942",
+        "GHSA-jxhv-7h78-9775"
       ],
       "related": [],
       "collection": "crates",
       "categories": [],
       "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:L",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/13016",
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/13012",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -1229,6 +1264,40 @@
     "versions": {
       "patched": [
         ">=24.0.7, <25.0.0",
+        ">=36.0.7, <37.0.0",
+        ">=42.0.2, <43.0.0",
+        ">=43.0.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0089",
+      "package": "wasmtime",
+      "title": "Host panic when Winch compiler executes `table.fill`",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-q49f-xg75-m9xw\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-04-09",
+      "aliases": [
+        "CVE-2026-34946",
+        "GHSA-q49f-xg75-m9xw"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/13010",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
         ">=36.0.7, <37.0.0",
         ">=42.0.2, <43.0.0",
         ">=43.0.1"
@@ -1307,75 +1376,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0087",
-      "package": "wasmtime",
-      "title": "Wasmtime segfault or unused out-of-sandbox load with `f64x2.splat` operator on Cranelift x86-64",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-qqfj-4vcm-26hv\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-04-09",
-      "aliases": [
-        "CVE-2026-34944",
-        "GHSA-qqfj-4vcm-26hv"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:A/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/13011",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=24.0.7, <25.0.0",
-        ">=36.0.7, <37.0.0",
-        ">=42.0.2, <43.0.0",
-        ">=43.0.1"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0094",
-      "package": "wasmtime",
-      "title": "Improperly masked return value from `table.grow` with Winch compiler backend",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-f984-pcp8-v2p7\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-04-09",
-      "aliases": [
-        "CVE-2026-35186",
-        "GHSA-f984-pcp8-v2p7"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:L/UI:N/VC:L/VI:L/VA:H/SC:N/SI:N/SA:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/13014",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=36.0.7, <37.0.0",
-        ">=42.0.2, <43.0.0",
-        ">=43.0.1"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0020",
       "package": "wasmtime",
       "title": "Guest-controlled resource exhaustion in WASI implementations",
@@ -1394,41 +1394,6 @@
       "references": [],
       "source": null,
       "url": "https://github.com/bytecodealliance/wasmtime/issues/11552",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=24.0.6, <25.0.0",
-        ">=36.0.6, <37.0.0",
-        ">=40.0.4, <41.0.0",
-        ">=41.0.4"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0021",
-      "package": "wasmtime",
-      "title": "Panic adding excessive fields to a `wasi:http/types.fields` instance",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-243v-98vx-264h\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-02-24",
-      "aliases": [
-        "CVE-2026-27572",
-        "GHSA-243v-98vx-264h"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:H",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/commit/301dc7162cca51def19131019af1187f45901c0a",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -1477,6 +1442,41 @@
       "unaffected": [
         "<39.0.0"
       ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0021",
+      "package": "wasmtime",
+      "title": "Panic adding excessive fields to a `wasi:http/types.fields` instance",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-243v-98vx-264h\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-02-24",
+      "aliases": [
+        "CVE-2026-27572",
+        "GHSA-243v-98vx-264h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:P/VC:N/VI:N/VA:H/SC:N/SI:N/SA:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/commit/301dc7162cca51def19131019af1187f45901c0a",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=24.0.6, <25.0.0",
+        ">=36.0.6, <37.0.0",
+        ">=40.0.4, <41.0.0",
+        ">=41.0.4"
+      ],
+      "unaffected": []
     }
   },
   {
@@ -2036,39 +2036,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0098",
-      "package": "wasmtime",
-      "title": "Data leakage between instances in the pooling allocator",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-wh6w-3828-g9qf.\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2022-11-05",
-      "aliases": [
-        "CVE-2022-39393",
-        "GHSA-wh6w-3828-g9qf"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/commit/2614f2e9d2d36805ead8a8da0fa0c6e0d9e428a0",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=1.0.2, <2.0.0",
-        ">=2.0.2"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2022-0102",
       "package": "wasmtime",
       "title": "Out of bounds read/write with zero-memory-pages configuration",
@@ -2087,6 +2054,39 @@
       "references": [],
       "source": null,
       "url": "https://github.com/bytecodealliance/wasmtime/commit/e60c3742904ccbb3e26da201c9221c38a4981d72",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=1.0.2, <2.0.0",
+        ">=2.0.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0098",
+      "package": "wasmtime",
+      "title": "Data leakage between instances in the pooling allocator",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-wh6w-3828-g9qf.\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2022-11-05",
+      "aliases": [
+        "CVE-2022-39393",
+        "GHSA-wh6w-3828-g9qf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/commit/2614f2e9d2d36805ead8a8da0fa0c6e0d9e428a0",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false

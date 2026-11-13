@@ -81,14 +81,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0099",
+      "id": "RUSTSEC-2026-0098",
       "package": "rustls-webpki",
-      "title": "Name constraints were accepted for certificates asserting a wildcard name",
-      "description": "Permitted subtree name constraints for DNS names were accepted for certificates asserting a wildcard name.\n\nThis was incorrect because, given a name constraint of `accept.example.com`, `*.example.com` could feasibly allow a name of `reject.example.com` which is outside the constraint.\nThis is very similar to [CVE-2025-61727](https://go.dev/issue/76442).\n\nSince name constraints are restrictions on otherwise properly-issued certificates, this bug is reachable only after signature verification and requires misissuance to exploit.\n\nThis vulnerability is identified as [GHSA-xgp8-3hg3-c2mh](https://github.com/rustls/webpki/security/advisories/GHSA-xgp8-3hg3-c2mh). Thank you to [@1seal](https://github.com/1seal) for the report.",
+      "title": "Name constraints for URI names were incorrectly accepted",
+      "description": "Name constraints for URI names were ignored and therefore accepted.\n\nNote this library does not provide an API for asserting URI names, and URI name constraints are otherwise not implemented.  URI name constraints are now rejected unconditionally.\n\nSince name constraints are restrictions on otherwise properly-issued certificates, this bug is reachable only after signature verification and requires misissuance to exploit.\n\nThis vulnerability is identified as [GHSA-965h-392x-2mh5](https://github.com/rustls/webpki/security/advisories/GHSA-965h-392x-2mh5). Thank you to [@1seal](https://github.com/1seal) for the report.",
       "date": "2026-04-14",
       "aliases": [
-        "CVE-2026-93601",
-        "GHSA-xgp8-3hg3-c2mh"
+        "CVE-2026-93600",
+        "GHSA-965h-392x-2mh5"
       ],
       "related": [],
       "collection": "crates",
@@ -117,14 +117,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0098",
+      "id": "RUSTSEC-2026-0099",
       "package": "rustls-webpki",
-      "title": "Name constraints for URI names were incorrectly accepted",
-      "description": "Name constraints for URI names were ignored and therefore accepted.\n\nNote this library does not provide an API for asserting URI names, and URI name constraints are otherwise not implemented.  URI name constraints are now rejected unconditionally.\n\nSince name constraints are restrictions on otherwise properly-issued certificates, this bug is reachable only after signature verification and requires misissuance to exploit.\n\nThis vulnerability is identified as [GHSA-965h-392x-2mh5](https://github.com/rustls/webpki/security/advisories/GHSA-965h-392x-2mh5). Thank you to [@1seal](https://github.com/1seal) for the report.",
+      "title": "Name constraints were accepted for certificates asserting a wildcard name",
+      "description": "Permitted subtree name constraints for DNS names were accepted for certificates asserting a wildcard name.\n\nThis was incorrect because, given a name constraint of `accept.example.com`, `*.example.com` could feasibly allow a name of `reject.example.com` which is outside the constraint.\nThis is very similar to [CVE-2025-61727](https://go.dev/issue/76442).\n\nSince name constraints are restrictions on otherwise properly-issued certificates, this bug is reachable only after signature verification and requires misissuance to exploit.\n\nThis vulnerability is identified as [GHSA-xgp8-3hg3-c2mh](https://github.com/rustls/webpki/security/advisories/GHSA-xgp8-3hg3-c2mh). Thank you to [@1seal](https://github.com/1seal) for the report.",
       "date": "2026-04-14",
       "aliases": [
-        "CVE-2026-93600",
-        "GHSA-965h-392x-2mh5"
+        "CVE-2026-93601",
+        "GHSA-xgp8-3hg3-c2mh"
       ],
       "related": [],
       "collection": "crates",
