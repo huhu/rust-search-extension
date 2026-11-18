@@ -1,6 +1,6 @@
 const TARGET = location.pathname.includes("/nightly/") ? "nightly" : "stable";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     // Ignore all non-rust doc pages.
     if (!isRustDoc()) return;
 
@@ -14,34 +14,17 @@ document.addEventListener("DOMContentLoaded", () => {
         linkSourcePageUrls();
     } else {
         // Docs page
-        let version = localStorage.getItem(`rust-search-extension:${TARGET}`);
-        let now = new Date();
-        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-        if (version && today <= Date.parse(version)) {
-            // Check version between localStorage and today to ensure update search index once a day.
-            return;
-        }
-        injectScripts("script/lib.js", "script/add-search-index.js");
-    }
-});
+        const key = `rust-search-extension:${TARGET}`;
+        const version = getRustdocVar("rustdoc-version") || new Date().toDateString();
+        if (localStorage.getItem(key) === version) return;
 
-window.addEventListener("message", function (event) {
-    if (event.source === window &&
-        event.data &&
-        event.data.direction === "rust-search-extension:std") {
-        let searchIndex = event.data.message.searchIndex;
-        let descShards = event.data.message.descShards;
-        if (TARGET === 'stable') {
-            rse.IndexSetter.setStdStableIndex(searchIndex);
-            rse.IndexSetter.setDescShards("std-stable", descShards);
-        } else {
-            rse.IndexSetter.setStdNightlyIndex(searchIndex);
-            rse.IndexSetter.setDescShards("std-nightly", descShards);
+        try {
+            const { searchIndex, descShards } = await importRustdocIndex();
+            await rse.IndexSetter.setStdDocIndex(TARGET, searchIndex, descShards);
+            localStorage.setItem(key, version);
+        } catch (error) {
+            console.error("Could not update the Rustdoc search index:", error);
         }
-        let now = new Date();
-        let version = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-        localStorage.setItem(`rust-search-extension:${TARGET}`, version);
-        console.log(version);
     }
 });
 

@@ -1,133 +1,76 @@
 (async function () {
-    async function loadDesc(descShard) {
-        if (descShard.promise === null) {
-            descShard.promise = new Promise((resolve, reject) => {
-                descShard.resolve = resolve;
-                const ds = descShard;
-                const fname = `${ds.crate}-desc-${ds.shard}-`;
-                const url = resourcePath(`search.desc/${descShard.crate}/${fname}`, ".js",);
-                loadScript({ url, errorCallback: reject })
-            }
-            )
-        }
-        const list = await descShard.promise;
-        return list;
+    const direction = "rust-search-extension:rustdoc-index";
+
+    function resourcePath(basename) {
+        const rootPath = getRustdocVar("root-path");
+        const suffix = getRustdocVar("resource-suffix");
+        return rootPath === null || suffix === null ? null : `${rootPath}${basename}${suffix}.js`;
     }
-    async function loadDescShard(...crates) {
-        if (!window.searchState.descShards) return null;
 
-        // Use [[crateName, shards]] array to construct a map.
-        let crateDescsShard = [];
-        for (let crate of crates) {
-            let shards = {};
-            for (let descShard of window.searchState.descShards.get(crate) || []) {
-                shards[descShard.shard] = await loadDesc(descShard);
-            }
-
-            crateDescsShard.push([crate, shards]);
+    function loadDesc(shard) {
+        if (shard.promise === null) {
+            shard.promise = new Promise((resolve, reject) => {
+                shard.resolve = resolve;
+                const url = resourcePath(`search.desc/${shard.crate}/${shard.crate}-desc-${shard.shard}-`);
+                loadRustdocScript(url).catch(reject);
+            });
         }
-
-        console.log('load desc shard:', crateDescsShard);
-        return crateDescsShard;
-    }
-    async function sendSearchIndex() {
-        // The original searchIndex loaded from search-index.js
-        const originalSearchIndex = structuredClone(window.searchIndex);
-        loadScript({
-            url: getVar("static-root-path") + getVar("search-js"),
-            loadCallback: async () => {
-                // // After the search.js loaded, init the search
-                // window.initSearch(window.searchIndex);
-
-                if (location.hostname === "docs.rs") { // docs.rs pages
-                    // Parse crate info from location pathname.
-                    let [crateName, crateVersion, libName] = location.pathname.slice(1).split("/");
-                    // Since this PR (https://github.com/rust-lang/docs.rs/pull/1527) merged, 
-                    // the latest version path has changed:
-                    // from https://docs.rs/tokio/1.14.0/tokio/ to https://docs.rs/tokio/latest/tokio/
-                    //
-                    // If we parse the crate version from url is 'latest',
-                    // we should reparse it from the DOM to get the correct value.
-                    if (crateVersion === 'latest') {
-                        crateVersion = parseCrateVersionFromDOM();
-                    }
-
-                    // [rustdoc] Use Map instead of Object for source files and search index #118910
-                    // https://github.com/rust-lang/rust/pull/118910;
-                    window.postMessage({
-                        direction: "rust-search-extension:docs.rs",
-                        message: {
-                            libName,
-                            crateName,
-                            crateVersion,
-                            crateTitle: parseCrateTitleFromDOM(),
-                            searchIndex: Array.from(originalSearchIndex),
-                            descShards: await loadDescShard(libName),
-                        },
-                    }, "*");
-                } else { // stable/nightly pages
-                    const STD_CRATES = ['std', 'test', 'proc_macro', 'core', 'alloc'];
-                    window.postMessage({
-                        direction: `rust-search-extension:std`,
-                        message: {
-                            searchIndex: Array.from(originalSearchIndex),
-                            descShards: await loadDescShard(...STD_CRATES),
-                        },
-                    }, "*");
-                }
-                console.log("Send search index success.");
-                // Disable librustdoc search.js onpageshow event
-                window.onpageshow = function () { };
-            }
+        return shard.promise.catch(error => {
+            shard.promise = null;
+            shard.resolve = null;
+            throw error;
         });
     }
 
-    // Before rust 1.52.0, we can get the search index from window directly.
-    if (window.searchIndex) {
-        await sendSearchIndex();
-    } else {
-        // Due to the new search-index.js on-demand load mode after PR #82310 has been merged.
-        // We need to trigger a manual search-index.js load here.
-        console.log("No search index found, start loading...")
-        // Since rust 1.58, we can get the searchIndexJs from window.searchIndexJs.
-        let searchIndexJs = window.searchIndexJS;
+    async function loadDescShards(crates) {
+        const descShards = window.searchState?.descShards;
+        if (!descShards) return null;
 
-        // For the older version, we still need to get it from the DOM.
-        if (!searchIndexJs) {
-            // This PR https://github.com/rust-lang/rust/pull/98124 use another way to load search-index:
-            // by concatenating the paths to get a full search-index.js file, see resourcePath() function.
-            // 
-            // Fallback to legacy "data-search-index-js" or "data-search-js", which are a temporary stage 
-            // in librustdoc. Some crate could depends on this librustdoc. such as https://docs.rs/futures/0.3.14
-            searchIndexJs = resourcePath("search-index", ".js") || getVar('search-index-js') || getVar('search-js');
-        }
-
-
-        if (searchIndexJs) {
-            // Load search-index.js first, clone the search index for backup.
-            // because after the initSearch() called, the search index will be modified.
-            loadScript({ url: searchIndexJs, loadCallback: sendSearchIndex });
-        } else {
-            console.error("Sorry, no search index found.");
-        }
+        return Promise.all(crates.map(async crate => {
+            const shards = await Promise.all((descShards.get(crate) || []).map(async shard =>
+                [shard.shard, await loadDesc(shard)]));
+            return [crate, Object.fromEntries(shards)];
+        }));
     }
 
-    // ======== Following function mirrored to librustdoc main.js ========
-
-    // Get rustdoc variable from DOM.
-    function getVar(name) {
-        // https://github.com/rust-lang/rust/pull/113094 has change the way to get meta variable.
-        const el = document.querySelector("head > meta[name='rustdoc-vars']") || document.getElementById("rustdoc-vars");
-        return el ? el.attributes["data-" + name]?.value : null;
-    }
-
-    function resourcePath(basename, extension) {
-        let rootPath = getVar("root-path");
-        let resrouceSuffix = getVar("resource-suffix")
-        if (rootPath && resrouceSuffix) {
-            return rootPath + basename + resrouceSuffix + extension;
-        } else {
-            return null;
+    try {
+        const previousIndex = window.searchIndex;
+        let original;
+        if (!previousIndex || window.initSearch) {
+            const url = window.searchIndexJS || resourcePath("search-index") ||
+                getRustdocVar("search-index-js") || getRustdocVar("search-js");
+            if (url) {
+                // Capture the original rows before Rustdoc converts their paths in place.
+                const initSearch = window.initSearch;
+                window.initSearch = undefined;
+                try {
+                    await loadRustdocScript(url);
+                    original = structuredClone(window.searchIndex);
+                } finally {
+                    window.initSearch = initSearch;
+                    if (previousIndex) window.searchIndex = previousIndex;
+                }
+            }
         }
+        original ??= structuredClone(previousIndex);
+        const searchIndex = original instanceof Map ? Array.from(original) : Object.entries(original || {});
+        if (searchIndex.length === 0) throw new Error("Empty Rustdoc search index");
+
+        if (!window.initSearch) {
+            const searchScript = getRustdocVar("search-js");
+            if (searchScript) {
+                await loadRustdocScript((getRustdocVar("static-root-path") ?? "") + searchScript);
+            }
+        } else if (!previousIndex) {
+            window.initSearch(window.searchIndex);
+        }
+
+        const crates = location.hostname === "docs.rs" ?
+            [getRustdocVar("current-crate") || location.pathname.split("/")[3]] :
+            ["std", "test", "proc_macro", "core", "alloc"];
+        const descShards = await loadDescShards(crates);
+        window.postMessage({ direction, message: { searchIndex, descShards } }, location.origin);
+    } catch (error) {
+        window.postMessage({ direction, error: error.message }, location.origin);
     }
 })();

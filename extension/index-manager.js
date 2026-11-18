@@ -11,6 +11,7 @@ import stdDescShards from "./index/desc-shards/std.js";
 import { mapping, crateIndex } from "./index/crates.js";
 import storage from "./core/storage.js";
 import IndexSetter from "./index-setter.js";
+import { isStringdexIndex, readStoredIndex } from "./search/docs/rustdoc/index.js";
 
 // Query all storage by this method:
 // chrome.storage.local.get(null, function(result) {
@@ -20,17 +21,17 @@ import IndexSetter from "./index-setter.js";
 export default class IndexManager extends IndexSetter {
     static async getStdStableIndex() {
         let index = await storage.getItem('index-std-stable');
-        if (index?.length > 0) {
-            return new Map(index);
+        if (isStringdexIndex(index) || index?.length > 0) {
+            return readStoredIndex(index);
         } else {
-            return searchIndex;
+            return structuredClone(searchIndex);
         }
     }
 
     static async getStdNightlyIndex() {
         let index = await storage.getItem('index-std-nightly');
-        if (index?.length > 0) {
-            return new Map(index);
+        if (isStringdexIndex(index) || index?.length > 0) {
+            return readStoredIndex(index);
         } else {
             // Structure clone search index is required
             return structuredClone(searchIndex);

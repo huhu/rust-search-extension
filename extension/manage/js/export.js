@@ -27,7 +27,8 @@ import settings from "../../settings.js";
             let catalog = await CrateDocManager.getCrates();
             let list = Object.create(null)
             for (const name of Object.keys(catalog)) {
-                list[`@${name}`] = await CrateDocManager.getCrateSearchIndex(name);
+                const index = await CrateDocManager.getCrateSearchIndex(name);
+                list[`@${name}`] = index instanceof Map ? Array.from(index) : index;
             }
             data["crates"] = {
                 catalog,

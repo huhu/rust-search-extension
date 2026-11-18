@@ -133,12 +133,12 @@ async function start(omnibox) {
                 }
                 case "index-std-stable": {
                     // Update search index after docs updated
-                    stdSearcher.setSearchIndex(new Map(newValue));
+                    stdSearcher.setSearchIndex(await IndexManager.getStdStableIndex());
                     break;
                 }
                 case "index-std-nightly": {
                     // Update search index after docs updated
-                    nightlySearcher.setSearchIndex(new Map(newValue));
+                    nightlySearcher.setSearchIndex(await IndexManager.getStdNightlyIndex());
                     break;
                 }
                 case "index-book": {
@@ -189,20 +189,21 @@ async function start(omnibox) {
                 }
                 default: {
                     // crate update from docs.rs.
-                    if (key.startsWith('@')) {
+                    if (key === "crates") {
+                        crateDocSearcher.invalidateCachedSearch();
+                    } else if (key.startsWith('@')) {
                         if (!oldValue && newValue) {
                             console.log(`Crate ${key} has been added.`);
                         } else if (oldValue && !newValue) {
                             console.log(`Crate ${key} has been deleted.`);
                         }
                         crateDocSearcher.invalidateCachedSearch();
-                        crateDocSearcher.initAllCrateSearcher();
                     } else if (key === "desc-shards-std-stable") {
                         stdDescShards.addCrateDescShards("std-stable");
                     } else if (key === "desc-shards-std-nightly") {
                         nightlyDescShards.addCrateDescShards("std-nightly");
                     } else if (key.startsWith("desc-shards-")) {
-                        // ignore, will be updated in crateDocSearcher.initAllCrateSearcher()
+                        crateDocSearcher.invalidateCachedSearch();
                     }
                     break;
                 }
