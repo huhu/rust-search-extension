@@ -1,6 +1,26 @@
 import storage from "./core/storage.js";
+import Compat from "./core/compat.js";
+
+export function saveDocIndex(items) {
+    if (!Compat.isRunningInWebExtension()) {
+        return Promise.all(Object.entries(items).map(([key, value]) => storage.setItem(key, value)));
+    }
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.set(items, () => {
+            const error = chrome.runtime.lastError;
+            if (error) reject(new Error(error.message));
+            else resolve();
+        });
+    });
+}
 
 export default class IndexSetter {
+    static setStdDocIndex(target, index, descShards) {
+        const items = { [`index-std-${target}`]: index };
+        if (descShards) items[`desc-shards-std-${target}`] = descShards;
+        return saveDocIndex(items);
+    }
+
     static setStdStableIndex(index) {
         storage.setItem('index-std-stable', index);
     }

@@ -10,25 +10,14 @@ function isRustDoc() {
 //
 // If we parse the crate version from url is 'latest',
 // we should reparse it from the DOM to get the correct value.
-function parseCrateVersionFromDOM() {
-    let versionText = document.querySelector('form .crate-name>.title').textContent;
-    if (versionText) {
-        // The form of versionText is {crateName}-{version}, separated by hypen, e.g. 'tokio-1.7.0',
-        // However, the crate name could contains hypen too, such as 'tracing-subscriber-0.3.9'.
-        let lastHypenIndex = versionText.lastIndexOf('-');
-        return versionText.substring(lastHypenIndex + 1);
-    } else {
-        return null;
-    }
+function parseCrateVersionFromDOM(crate) {
+    const title = document.querySelector("form .crate-name>.title")?.textContent?.trim();
+    return title?.startsWith(`${crate}-`) ? title.slice(crate.length + 1) : null;
 }
 
 function parseCrateTitleFromDOM() {
     let el = document.querySelector('form a.crate-name');
-    if (el) {
-        return el.getAttribute("title").substring(0, 100);
-    } else {
-        return null;
-    }
+    return el?.getAttribute("title")?.slice(0, 100) ?? null;
 }
 
 function parseCargoFeatures(content) {
@@ -83,4 +72,55 @@ function injectScripts(...paths) {
         console.log(`Loading script: ${path}`);
         loadScript({ url: chrome.runtime.getURL(path) });
     });
+}
+
+function getRustdocVar(name) {
+    const vars = document.querySelector("head > meta[name='rustdoc-vars']") ||
+        document.getElementById("rustdoc-vars");
+    return vars?.getAttribute(`data-${name}`) ?? null;
+}
+
+function loadRustdocScript(url) {
+    return new Promise((resolve, reject) => {
+        loadScript({
+            url,
+            loadCallback: resolve,
+            errorCallback: () => reject(new Error(`Could not load ${url}`)),
+        });
+    });
+}
+
+async function importRustdocIndex() {
+    if (getRustdocVar("stringdex-js")) {
+        const rootPath = getRustdocVar("root-path") ?? "";
+        const suffix = getRustdocVar("resource-suffix") ?? "";
+        const url = new URL(`${rootPath}search.index/root${suffix}.js`, document.baseURI);
+        if (url.origin !== location.origin) throw new Error("Rustdoc index is on a different origin");
+        return { searchIndex: await rse.loadRustdocSearchIndex(url) };
+    }
+
+    await loadRustdocScript(chrome.runtime.getURL("script/lib.js"));
+    let listener;
+    let timeout;
+    try {
+        const result = new Promise((resolve, reject) => {
+            listener = event => {
+                if (event.source !== window || event.origin !== location.origin ||
+                    event.data?.direction !== "rust-search-extension:rustdoc-index") return;
+                const { message, error } = event.data;
+                if (error) reject(new Error(error));
+                else resolve(message);
+            };
+            window.addEventListener("message", listener);
+            timeout = setTimeout(() => reject(new Error("Rustdoc index import timed out")), 30_000);
+        });
+        const [, index] = await Promise.all([
+            loadRustdocScript(chrome.runtime.getURL("script/add-search-index.js")),
+            result,
+        ]);
+        return index;
+    } finally {
+        clearTimeout(timeout);
+        window.removeEventListener("message", listener);
+    }
 }

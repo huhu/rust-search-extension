@@ -2,100 +2,108 @@ import DocSearch from "./base.js";
 import CrateDocManager from "../../crate-manager.js";
 import settings from "../../settings.js";
 import DescShardManager from "./desc-shard.js";
+import { isStringdexIndex } from "./rustdoc/index.js";
 
-// Search all crate's docs, including `@` sigil and `~` sigil,.
+const ALL_CRATES_ROOT = "https://docs.rs/~/*/";
+
+// Search saved crate docs with the `@` and `~` sigils.
 export default class CrateDocSearch {
     constructor() {
         this.cachedCrateSearcher = null;
-        this.allCrateSearcher = null;
+        this.allCrateSearchers = null;
     }
 
-    async initAllCrateSearcher() {
-        let searchIndex = new Map();
-        let descShards = new DescShardManager();
+    async loadAllCrateSearchers() {
+        const legacyIndex = new Map();
+        const descShards = new DescShardManager();
+        const searchers = [];
         for (const libName of Object.keys(await CrateDocManager.getCrates())) {
-            let crateSearchIndex = await CrateDocManager.getCrateSearchIndex(libName);
-            if (crateSearchIndex) {
-                // merge search index into single map
-                searchIndex = new Map([...searchIndex, ...crateSearchIndex]);
+            const index = await CrateDocManager.getCrateSearchIndex(libName);
+            if (isStringdexIndex(index)) {
+                searchers.push(new DocSearch(libName, index, ALL_CRATES_ROOT, null, libName));
+            } else if (index) {
+                for (const [name, crateIndex] of index) {
+                    legacyIndex.set(name, crateIndex);
+                }
+                await descShards.addCrateDescShards(libName);
             }
-            descShards.addCrateDescShards(libName);
         }
-        this.allCrateSearcher = new DocSearch("~", searchIndex, "https://docs.rs/~/*/", descShards);
+        if (legacyIndex.size > 0) {
+            searchers.unshift(new DocSearch("~", legacyIndex, ALL_CRATES_ROOT, descShards));
+        }
+        return searchers;
     }
 
-    // Search specific crate docs by prefix `@` sigil.
-    // If that crate not been indexed, fallback to the list of all indexed crates.
     async search(query) {
-        let [crateName, keyword] = CrateDocSearch.parseCrateDocsSearchKeyword(query);
+        const [crateName, keyword] = CrateDocSearch.parseCrateDocsSearchKeyword(query);
+        const entry = await CrateDocManager.getCrateEntry(crateName);
+        if (!entry) return this.listCrates(crateName, keyword);
 
-        let searcher = null;
-        if (this.cachedCrateSearcher?.name === crateName) {
-            searcher = this.cachedCrateSearcher;
-            searcher.version = await settings.keepCratesUpToDate ? "latest" : searcher.version;
+        const [libName, crate] = entry;
+        const version = await settings.keepCratesUpToDate ? "latest" : crate.version;
+        const root = `https://docs.rs/${crate.crateName || libName}/${version}/`;
+        let searcher = this.cachedCrateSearcher;
+        if (searcher?.name === libName) {
+            searcher.setRootPath(root);
         } else {
-            let crate = await CrateDocManager.getCrateByName(crateName);
-            if (crate) {
-                let searchIndex = await CrateDocManager.getCrateSearchIndex(crateName);
-                const crateVersion = await settings.keepCratesUpToDate ? "latest" : crate.version;
-                searcher = new DocSearch(
-                    crateName,
-                    searchIndex,
-                    `https://docs.rs/${crateName}/${crateVersion}/`,
-                    await DescShardManager.create(crateName),
-                );
-
-                this.cachedCrateSearcher = searcher;
-            } else {
-                let crates = await CrateDocManager.getCrates();
-                let list = Object.entries(crates).map(([libName, crate]) => {
-                    crate["name"] = crate.crateName || libName;
-                    return crate;
-                });
-
-                list = list.filter(item => !crateName || item.name.toLowerCase().indexOf(crateName) > -1)
-                    .sort((a, b) => a.name.localeCompare(b.name));
-                if (list.length > 0) {
-                    list.unshift({
-                        content: crateName, // Non-empty value is required for content, so maybe give it a crate name.
-                        description: `Following ${list.length} crate(s) were indexed by you, select one to search their docs exclusively.`
-                    });
-                } else {
-                    list.unshift({
-                        content: `https://docs.rs/${crateName}/latest/?search=${encodeURIComponent(keyword)}`,
-                        description: `Crate <match>${crateName}</match> has not been indexed, search ${keyword ? `<match>${keyword}</match>` : 'keyword'} on <dim>${`https://docs.rs/${crateName}`}</dim> directly`,
-                    });
-                }
-                return list;
-            }
+            const index = await CrateDocManager.getCrateSearchIndex(libName);
+            const descShards = isStringdexIndex(index) ? null : await DescShardManager.create(libName);
+            searcher = new DocSearch(libName, index || new Map(), root, descShards, libName);
+            this.cachedCrateSearcher = searcher;
         }
 
-        let results = await searcher.search(keyword);
-        // Push result footer.
+        const results = await searcher.search(keyword);
         results.push({
             content: await searcher.getSearchUrl(keyword),
-            description: `Search ${keyword ? `<match>${keyword}</match>` : 'keyword'} on <dim>${`https://docs.rs/${crateName}`}</dim> directly`,
+            description: `Search ${keyword ? `<match>${keyword}</match>` : "keyword"} on <dim>${`https://docs.rs/${crateName}`}</dim> directly`,
         });
         return results;
     }
 
-    // Search all saved crates docs collectively.
-    async searchAll(query) {
-        if (!this.allCrateSearcher) {
-            await this.initAllCrateSearcher();
+    async listCrates(crateName, keyword) {
+        const crates = await CrateDocManager.getCrates();
+        const list = Object.entries(crates)
+            .map(([name, crate]) => ({ ...crate, name: crate.crateName || name }))
+            .filter(item => !crateName || item.name.toLowerCase().includes(crateName))
+            .sort((a, b) => a.name.localeCompare(b.name));
+        if (list.length > 0) {
+            list.unshift({
+                content: crateName, // An omnibox result requires non-empty content.
+                description: `Following ${list.length} crate(s) were indexed by you, select one to search their docs exclusively.`,
+            });
+        } else {
+            list.unshift({
+                content: `https://docs.rs/${crateName}/latest/?search=${encodeURIComponent(keyword)}`,
+                description: `Crate <match>${crateName}</match> has not been indexed, search ${keyword ? `<match>${keyword}</match>` : "keyword"} on <dim>${`https://docs.rs/${crateName}`}</dim> directly`,
+            });
         }
-        let keyword = query.replaceAll("~", "").trim();
-        return await this.allCrateSearcher.search(keyword);
+        return list;
     }
 
-    // Invalidate cached search. This is needed if we update crate's search index.
+    async searchAll(query) {
+        const keyword = query.replaceAll("~", "").trim();
+        if (!keyword) return [];
+
+        this.allCrateSearchers ??= this.loadAllCrateSearchers();
+        const searchers = await this.allCrateSearchers;
+        const results = await Promise.all(searchers.map(searcher => searcher.search(keyword)));
+        if (results.length <= 1) return results.flat();
+
+        // Keep the best result from each index near the top of the combined list.
+        const name = keyword.split("::").at(-1).toLowerCase();
+        return results.flatMap(list => list.map((item, rank) => ({ item, rank })))
+            .sort((a, b) => Number(b.item.name.toLowerCase() === name) -
+                Number(a.item.name.toLowerCase() === name) || a.rank - b.rank)
+            .map(({ item }) => item);
+    }
+
     invalidateCachedSearch() {
         this.cachedCrateSearcher = null;
+        this.allCrateSearchers = null;
     }
 
     static parseCrateDocsSearchKeyword(query) {
-        query = query.replaceAll("@", "").trim();
-        let [crateName, ...keyword] = query.split(/\s/i);
-        return [crateName, keyword.filter(k => k).join('')];
+        const [crateName, ...keyword] = query.slice(1).trim().split(/\s+/);
+        return [crateName, keyword.join(" ")];
     }
 }

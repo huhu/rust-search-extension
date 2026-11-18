@@ -3,10 +3,12 @@ import storage from "./extension/core/storage.js";
 import settings from "./extension/settings.js";
 import IndexSetter from "./extension/index-setter.js";
 import CrateDocManager from "./extension/crate-manager.js";
+import { loadRustdocSearchIndex } from "./extension/search/docs/rustdoc/index.js";
 
 export {
     storage,
     settings,
     IndexSetter,
     CrateDocManager,
+    loadRustdocSearchIndex,
 }

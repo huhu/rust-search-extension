@@ -3,10 +3,11 @@
 // 2. https://docs.rs/md-5/0.10.5/md5/
 // 
 // Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
-let pathname = location.pathname.replace("/crate", "");
+let pathname = location.pathname.startsWith("/crate/") ? location.pathname.slice(6) : location.pathname;
 let [crateName, crateVersion, libName] = pathname.slice(1).split("/");
 // A crate version which added to the extension.
 let installedVersion = undefined;
+let importingIndex = false;
 
 const DOC_HEADERS_SELECTOR = ".top-doc div.docblock>h1[id], .top-doc div.docblock>h2[id], .top-doc div.docblock>h3[id]";
 
@@ -89,11 +90,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     // If we parse the crate version from url is 'latest',
     // we should reparse it from the DOM to get the correct value.
     if (crateVersion === 'latest') {
-        crateVersion = parseCrateVersionFromDOM();
+        crateVersion = parseCrateVersionFromDOM(crateName);
     }
 
     // Exclude /crate/** pages
-    if (menus.children.length >= 3 && !location.pathname.includes("/crate/")) {
+    if (menus.children.length >= 3 && isRustDoc() && libName && !location.pathname.startsWith("/crate/")) {
         // Query installed crates from chrome.storage API
         let crates = await rse.storage.getItem("crates") || {};
         let installedCrate = crates[crateName];
@@ -150,9 +151,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         rseButton.parentElement.insertAdjacentElement("beforebegin", advisoryMenu);
     }
 
-    if (getState(installedVersion) === "outdated" && await rse.settings.keepCratesUpToDate) {
+    if (document.querySelector(".add-to-extension") &&
+        getState(installedVersion) === "outdated" && await rse.settings.keepCratesUpToDate) {
         // Auto update outdated crates if the user has enabled the setting.
-        injectScripts("script/lib.js", "script/add-search-index.js");
+        await addCrateIndex();
     }
 });
 
@@ -273,17 +275,14 @@ function insertAddToExtensionElement(state) {
     let li = document.createElement("li");
     li.classList.add("pure-menu-item", "pure-menu-has-children", "pure-menu-allow-hover");
     li.onclick = async () => {
+        if (importingIndex) return;
         // Toggle search index added state
         if (state === "latest") {
             // Use the libName to remove the installed crate.
             await rse.CrateDocManager.removeCrate(libName);
             insertAddToExtensionElement(getState(undefined));
         } else {
-            let svgIcon = document.querySelector(".add-to-extension .fa-svg");
-            if (svgIcon) {
-                svgIcon.className = "fa fa-solid fa-svg fa-spinner";
-            }
-            injectScripts("script/lib.js", "script/add-search-index.js");
+            await addCrateIndex();
         }
     };
     let content, iconColor, iconClass;
@@ -302,9 +301,9 @@ function insertAddToExtensionElement(state) {
         iconClass = "fa-circle-arrow-up";
     } else if (state === "error") {
         // The error case: the user fail to install the crate.
-        content = `<p>Oops! Some error happened. You can try again. <br><br>Or check the console and file an issue to report the error.</p>`;
+        content = "<p>Could not load the documentation search index. Click to retry.</p>";
         iconColor = "#e62f07";
-        iconClass = "fa-error";
+        iconClass = "fa-exclamation-circle";
     } else {
         // The default case: need-to-install.
         content = `<p>Add this crate to Rust Search Extension then you can search it in the address bar.</p>`;
@@ -312,9 +311,9 @@ function insertAddToExtensionElement(state) {
         iconClass = "fa-plus-circle";
     }
     li.innerHTML = `<div class="add-to-extension"
-                         aria-label="Add to Rust Search Extension">
+                         aria-label="${state === "error" ? "Retry Rust Search Extension indexing" : "Add to Rust Search Extension"}">
                          <span style="color:${iconColor};height:13px;width:13px;display:inline-block;vertical-align:middle;" class="fa fa-solid fa-svg ${iconClass}"></span>
-                         <span class="title"> to Rust Search Extension</span>
+                         <span class="title">${state === "error" ? " Retry adding to Rust Search Extension" : " to Rust Search Extension"}</span>
                     </div>
                     <div class="pure-menu-children" role="menu">
                         <div class="add-to-extension-content" onclick="event.stopPropagation()">
@@ -353,13 +352,28 @@ async function getAdvisories() {
     }
 }
 
-window.addEventListener("message", async function (event) {
-    if (event.source === window &&
-        event.data &&
-        event.data.direction === "rust-search-extension:docs.rs") {
-        let message = event.data.message;
-        await rse.CrateDocManager.addCrate(message);
-        insertAddToExtensionElement(getState(message.crateVersion));
-        console.log("Congrats! This crate has been installed successfully!");
+async function addCrateIndex() {
+    if (importingIndex) return;
+
+    importingIndex = true;
+    const icon = document.querySelector(".add-to-extension .fa-svg");
+    if (icon) icon.className = "fa fa-solid fa-svg fa-spinner";
+
+    try {
+        if (!crateVersion) throw new Error("Could not determine the crate version");
+        const index = await importRustdocIndex();
+        await rse.CrateDocManager.addCrate({
+            ...index,
+            libName,
+            crateName,
+            crateVersion,
+            crateTitle: parseCrateTitleFromDOM(),
+        });
+        insertAddToExtensionElement(getState(crateVersion));
+    } catch (error) {
+        console.error("Could not add the Rustdoc search index:", error);
+        insertAddToExtensionElement("error");
+    } finally {
+        importingIndex = false;
     }
-});
+}

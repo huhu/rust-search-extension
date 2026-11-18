@@ -1,41 +1,32 @@
 import storage from "./core/storage.js";
-import IndexSetter from "./index-setter.js";
+import { saveDocIndex } from "./index-setter.js";
+import { readStoredIndex } from "./search/docs/rustdoc/index.js";
 
 export default class CrateDocManager {
     static async getCrates() {
         return await storage.getItem("crates") || {};
     }
 
-    // The `name` cloud be crateName or libName.
+    static async getCrateEntry(name) {
+        const crates = await CrateDocManager.getCrates();
+        return Object.hasOwn(crates, name) ? [name, crates[name]] :
+            Object.entries(crates).find(([, crate]) => crate.crateName === name);
+    }
+
+    // The name can be the crate name or the Rust library name.
     static async getCrateByName(name) {
-        let crates = await CrateDocManager.getCrates();
-        if (crates[name]) {
-            return crates[name];
-        } else {
-            let crate = Object.entries(crates).find(([_, { crateName }]) => crateName == name);
-            if (crate) {
-                return crate[1];
-            } else {
-                return null;
-            }
-        }
+        const entry = await CrateDocManager.getCrateEntry(name);
+        return entry?.[1] ?? null;
     }
 
     // The `name` cloud be crateName or libName.
     static async getCrateSearchIndex(name) {
         let searchIndex = await storage.getItem(`@${name}`);
         if (searchIndex) {
-            return new Map(searchIndex);
-        } else {
-            let crates = await CrateDocManager.getCrates();
-            let crate = Object.entries(crates).find(([_, { crateName }]) => crateName == name);
-            if (crate) {
-                let libName = crate[0];
-                return new Map(await storage.getItem(`@${libName}`));
-            } else {
-                return null;
-            }
+            return readStoredIndex(searchIndex);
         }
+        const entry = await CrateDocManager.getCrateEntry(name);
+        return entry ? readStoredIndex(await storage.getItem(`@${entry[0]}`)) : null;
     }
 
     // Some corner cases the crateName different to libName:
@@ -44,17 +35,21 @@ export default class CrateDocManager {
     // 
     // Here is the rule: https://docs.rs/{crateName}/{crateVersion}/{libName}
     static async addCrate({ libName, crateVersion, crateTitle, searchIndex, crateName, descShards }) {
-        await storage.setItem(`@${libName}`, searchIndex);
-        let doc = crateTitle;
-        let crates = await CrateDocManager.getCrates();
-        if (libName in crates) {
-            // Don't override the time if the crate exists
-            crates[libName] = { version: crateVersion, doc, time: crates[libName].time, crateName };
-        } else {
-            crates[libName] = { version: crateVersion, doc, time: Date.now(), crateName };
-        }
-        await storage.setItem("crates", crates);
-        IndexSetter.setDescShards(libName, descShards);
+        const crates = await CrateDocManager.getCrates();
+        const items = {
+            [`@${libName}`]: searchIndex,
+            crates: {
+                ...crates,
+                [libName]: {
+                    version: crateVersion,
+                    doc: crateTitle,
+                    time: crates[libName]?.time ?? Date.now(),
+                    crateName,
+                },
+            },
+        };
+        if (descShards) items[`desc-shards-${libName}`] = descShards;
+        await saveDocIndex(items);
     }
 
     static async removeCrate(name) {
