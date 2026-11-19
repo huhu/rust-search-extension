@@ -1,0 +1,121 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0208",
+      "package": "libcrux-sha3",
+      "title": "Potential Panic in AVX2 SHAKE-256",
+      "description": "The AVX2-optimized implementation of SHAKE-256 intended for use in\nML-KEM and ML-DSA would panic if the length of the output buffers was\ngreater than 32 and not a multiple of 8, due to an out-of-bounds\nindexing operation.\n\n## Impact\nThis bug impacts users on AVX2 platforms that use the\n`libcrux_sha3::avx2::x4::shake256` API outside of ML-KEM or ML-DSA\nwith output buffers of length `> 32` and not divisible by `8`. It does\nnot impact the use in ML-KEM or ML-DSA because there output buffer\nlengths are always divisible by `8`.\n\n## Mitigation\nStarting from version `0.0.10`, the AVX2-optimized SHAKE-256 will no\nlonger panic on output buffer lengths `> 32` that are not divisible by\n`8`.",
+      "date": "2026-05-21",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/celabshq/libcrux/pull/1456",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_sha3::avx2::x4::shake256": [
+          "<=0.0.9"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.10"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0207",
+      "package": "libcrux-sha3",
+      "title": "Incorrect Output of Incremental Portable SHAKE API on Multiple Squeeze Calls",
+      "description": "The incremental squeeze functions in the portable SHAKE XOF API, when\nattempting to squeeze an output using multiple calls to `squeeze`,\nrather than squeezing the full output at once, could output incorrect\nvalues. Internally, output blocks that were not completely squeezed\nwere not buffered for the next call to `squeeze`, which would\nconsequently drop bytes of the correct squeeze output if the preceding\ncall requested an output of length in bytes not cleanly divisible by\n`RATE` (168 for SHAKE128, 136 for SHAKE256).\n\n## Impact\nThis bug impacts users that rely on this XOF API to squeeze output in\nmultiple calls where any of the calls request an output length that is\nnot divisible by `RATE`. It does not impact the use of libcrux-sha3 in\nlibcrux-ml-kem or libcrux-ml-dsa.\n\n## Mitigation\nStarting from version `0.0.10` the squeeze functions correctly output\nall squeezed bytes independent of the number of `squeeze` calls and\nthe output lengths requested in each call.",
+      "date": "2026-04-22",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/celabshq/libcrux/pull/1389",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_sha3::portable::incremental::Shake128Xof::squeeze": [
+          "<=0.0.9"
+        ],
+        "libcrux_sha3::portable::incremental::Shake256Xof::squeeze": [
+          "<=0.0.9"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.10"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0074",
+      "package": "libcrux-sha3",
+      "title": "Incorrect Output of Incremental Portable SHAKE API",
+      "description": "The incremental squeeze functions in the portable SHAKE XOF API, when\n attempting to squeeze more than `RATE` (168 for SHAKE128, 136 for\n SHAKE256) bytes, performed an additional permutation of the state\n before producing the first output block, thus discarding the first\n block of `RATE` bytes of valid XOF output.\n\n## Impact\nThis bug impacts users that rely on this XOF API to squeeze more than\n`RATE` bytes. It does not impact the use of libcrux-sha3 in\nlibcrux-ml-kem or libcrux-ml-dsa.\n\n## Mitigation\nStarting from version `0.0.8` the squeeze functions correctly output\nall blocks including the first block.",
+      "date": "2026-03-04",
+      "aliases": [
+        "GHSA-q29p-9pfr-j652"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1352",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_sha3::portable::incremental::Shake128Xof::squeeze": [
+          "<=0.0.7"
+        ],
+        "libcrux_sha3::portable::incremental::Shake256Xof::squeeze": [
+          "<=0.0.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.8"
+      ],
+      "unaffected": []
+    }
+  }
+]

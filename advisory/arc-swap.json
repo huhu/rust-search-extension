@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0091",
+      "package": "arc-swap",
+      "title": "Dangling reference in `access::Map` with Constant",
+      "description": "Using the `arc_swap::access::Map` with the `Constant` test helper (or with\nuser-provided implementation of the `Access` trait) could sometimes lead to the\nmap returning dangling references.\n\nReplaced by implementation without `unsafe`, at the cost of added `Clone` bound\non the closure and small penalty on performance.",
+      "date": "2020-12-10",
+      "aliases": [
+        "CVE-2020-35711"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "dangling reference"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/vorner/arc-swap/issues/45",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "arc_swap::access::MapGuard::deref": [
+          "<1.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.8, <1.0.0-0",
+        ">=1.1.0"
+      ],
+      "unaffected": [
+        "<0.4.2"
+      ]
+    }
+  }
+]

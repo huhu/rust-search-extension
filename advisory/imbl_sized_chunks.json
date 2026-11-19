@@ -1,0 +1,58 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0292",
+      "package": "imbl-sized-chunks",
+      "title": "Double free / use-after-free in `Chunk` and `InlineArray` removal methods when an element's `Drop` panics",
+      "description": "`Chunk::{clear, drop_left, drop_right}` and `InlineArray::{clear, truncate}` drop the removed elements before updating the metadata that records which slots hold live values — the `left`/`right` index pair for `Chunk`, the length field for `InlineArray`. If an element's `Drop` panics during the drop, that update is never reached, so the collection still treats the already-dropped elements as live. When the collection is later dropped (its destructor walks the range described by the stale metadata), or a subsequent operation touches the same slots, those elements are dropped a second time — a double free (CWE-415) / use-after-free (CWE-416) reachable from safe Rust.\n\nThe stale field is `left` and `right` for `Chunk::clear`, `left` for `drop_left`, `right` for `drop_right`, and the length field for both `InlineArray` methods.\n\n## Mitigation\n\nUpgrade to `imbl-sized-chunks` 0.2.0 or later, which commits the metadata before dropping any element (fixed in jneem/imbl-sized-chunks#14, released in 0.2.0).",
+      "date": "2026-09-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free",
+        "use-after-free",
+        "panic-safety"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/jneem/imbl-sized-chunks/pull/14",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "imbl_sized_chunks::inline_array::InlineArray::clear": [
+          "<0.2.0"
+        ],
+        "imbl_sized_chunks::inline_array::InlineArray::truncate": [
+          "<0.2.0"
+        ],
+        "imbl_sized_chunks::sized_chunk::Chunk::clear": [
+          "<0.2.0"
+        ],
+        "imbl_sized_chunks::sized_chunk::Chunk::drop_left": [
+          "<0.2.0"
+        ],
+        "imbl_sized_chunks::sized_chunk::Chunk::drop_right": [
+          "<0.2.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

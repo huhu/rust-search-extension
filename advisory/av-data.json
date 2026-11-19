@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0007",
+      "package": "av-data",
+      "title": "`Frame::copy_from_raw_parts` can lead to segfault without `unsafe`",
+      "description": "`fn Frame::copy_from_raw_parts()` is a safe API that can take a\nraw pointer and dereference it. It is possible to read arbitrary memory address\nwith an arbitrarily fed pointer. This allows the safe API to access & read\narbitrary address in memory. Feeding an invalid memory address pointer to\nthe API may also cause the program to segfault.\n\nThe flaw was corrected in https://github.com/rust-av/rust-av/pull/137,\nby removing the API `fn Frame::copy_from_raw_parts()`.",
+      "date": "2021-01-07",
+      "aliases": [
+        "CVE-2021-25904"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure",
+        "privilege-escalation"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-av/rust-av/issues/136",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

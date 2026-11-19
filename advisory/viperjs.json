@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0236",
+      "package": "viperjs",
+      "title": "A `BigInt` division panics, and two neighbouring operations answer wrongly in silence",
+      "description": "`viperjs` is a JavaScript engine intended to run untrusted script inside a host application, so\nscript text is data rather than a trusted caller and a panic reachable from script is a denial of\nservice in the embedder's process.\n\nA divisor whose magnitude lands exactly on the engine's internal limb ceiling reaches an\nout-of-bounds index. On every released version up to and including 0.2.1:\n\n```js\nconst d = (1n << 33554399n) * 2n;\n1n / d;   // panic: index out of bounds\n```\n\nTwo further operations on the same value returned wrong results without raising anything, which\nis the more dangerous half for an embedder that acts on the answer:\n\n```js\nd % 7n;      // 0n  — the true remainder is 1n\nString(d);   // \"0\"\n```\n\n## Cause\n\nThe left-shift helper reserved one limb for the bits a shift may push past the top of the\nmagnitude, measured *that* width against the size ceiling, and then trimmed the reserved limb away\nagain — so a magnitude landing exactly on the ceiling was refused on account of room it does not\nkeep. The division treated that refusal as unreachable and discarded it with `unwrap_or_default`,\nleaving an empty divisor magnitude; the subsequent `divisor[n - 1]` is then an index of\n`usize::MAX`.\n\nThe crate is `#![forbid(unsafe_code)]`, so this is a panic and not memory unsafety.\n\n## Remediation\n\nUpgrade to 0.2.2, in which all three behaviours are fixed: both divisions now produce correct\nresults, and `String()` of a magnitude beyond what the engine can divide raises a `RangeError`\nrather than producing `\"0\"` — ECMA-262 §6.1.4 requires an implementation that imposes a limit to\nthrow rather than answer something else.\n\nThere is no workaround short of upgrading; the values are reachable from any script the embedder\nevaluates.\n\nReported by [@Zniece](https://github.com/Zniece).",
+      "date": "2026-08-06",
+      "aliases": [
+        "GHSA-6976-qm5m-7mcj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic",
+        "bigint",
+        "untrusted-input"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/MerlijnW70/viperjs/releases/tag/v0.2.2"
+      ],
+      "source": null,
+      "url": "https://github.com/MerlijnW70/viperjs/commit/92988456c44fe7744c13cba1d891f127b8437f95",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.2"
+      ],
+      "unaffected": []
+    }
+  }
+]

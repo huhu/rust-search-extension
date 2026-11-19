@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0038",
+      "package": "rssn",
+      "title": "RustSec Advisory",
+      "description": "## Impact\n\n**Vulnerability Type**: \nImproper Control of Generation of Code ('Code Injection') (CWE-94) / Improper Check for Unusual or Exceptional Conditions (CWE-754) / Improper Input Validation (CWE-20) / Use of Low-Level Functionality (CWE-695) / Improper Privilege Management (CWE-269) / External Control of System or Configuration Setting (CWE-15).\n\n**Technical Details**:\nThe vulnerability exists in the JIT (Just-In-Time) compilation engine, which is fully exposed via the CFFI (Foreign Function Interface). Due to Improper Input Validation and External Control of Code Generation, an attacker can supply malicious parameters or instruction sequences through the CFFI layer. Since the library often operates with elevated privileges or within high-performance computing contexts, this allows for Arbitrary Code Execution (ACE) at the privilege level of the host process.\n\n## Who is Impacted?\n\n * Developers using the library as a dynamic linked library (.so, .dll, .dylib) in multi-language environments (e.g., Python, Node.js, C++).\n * Cloud Service Providers running the library in multi-tenant environments or automated model-training pipelines.\n * Users processing untrusted or third-party datasets/models that may trigger malicious JIT instruction generation.\nPatches\n * Affected versions: < 0.2.8\n * Patched version: 0.2.9\n\n## Workarounds\n\nIf you cannot upgrade immediately, please consider the following mitigations:\n * Strict Sandboxing: Run the library within a restricted sandbox (e.g., WebAssembly, Docker with non-root user, or seccomp profiles) to limit system call access.\n * Principle of Least Privilege: Ensure the process calling the library does not have administrative or root privileges.\n * Input Filtering: If possible, implement an application-level validation layer to sanitize any data passed to the CFFI interfaces.\n * Disable JIT (if applicable): If your workload allows, use the interpreter-only mode (if provided by the library) to bypass the JIT engine entirely.\n\n## References\n\n[Apich Organization Security Team Homepage](https://security.apich.org/)",
+      "date": "2026-03-08",
+      "aliases": [
+        "CVE-2026-30960",
+        "GHSA-9c4h-pwmf-m6fj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution",
+        "memory-corruption",
+        "memory-exposure",
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "jit",
+        "ace"
+      ],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Apich-Organization/rssn/commit/dea11c594f39db503e84a51f1e3c2a93f8baa8eb",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.9"
+      ],
+      "unaffected": [
+        "<0.1.20"
+      ]
+    }
+  }
+]

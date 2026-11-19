@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0307",
+      "package": "uncbv",
+      "title": "`uncbv`: archive extraction is vulnerable to path traversal (zip-slip)",
+      "description": "### Summary\n\n`uncbv extract` writes each archive entry to `output_dir.join(entry_filename)` using the filename stored in the archive with no check for `..` components or absolute paths. A malicious `.cbv` / `.cbz` archive whose entry name contains `../` (or an absolute path) can therefore cause files to be written outside the output directory chosen by the user. This is a \"zip-slip\" / directory-traversal arbitrary file write (CWE-22).",
+      "date": "2026-09-23",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "code-execution"
+      ],
+      "keywords": [
+        "zip-slip",
+        "path-traversal",
+        "directory-traversal",
+        "arbitrary-file-write",
+        "cbv"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/antoyo/uncbv",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

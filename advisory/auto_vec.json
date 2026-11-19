@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0133",
+      "package": "auto_vec",
+      "title": "Invalid pointer arithmetic in `iter()` and `iter_mut()`",
+      "description": "The `iter()` and `iter_mut()` APIs compute\n`current = (&children[0] as *const *const RawAutoChild).sub(1)`, which\nperforms pointer subtraction going before the start of the allocation. This\nis undefined behavior per Rust's pointer arithmetic rules.\n\nThis can be triggered through safe public APIs — `iter()` and `iter_mut()`\n— with no `unsafe` required from the caller.",
+      "date": "2026-05-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "out-of-bounds",
+        "pointer-arithmetic"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lluvz/AutoVec/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

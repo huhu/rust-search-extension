@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0170",
+      "package": "hugepage-rs",
+      "title": "`hugepage_rs::dealloc` may allow invalid memory deallocation from safe code",
+      "description": "`hugepage_rs::dealloc` was a publicly accessible safe function. It accepted an arbitrary raw pointer and `Layout`, then forwarded them to the hugepage allocator's `GlobalAlloc::dealloc` implementation.\n\n`GlobalAlloc::dealloc` requires callers to ensure that the pointer denotes a block of memory currently allocated by the allocator and that the layout is the same layout used for the allocation. The safe wrapper neither verified these requirements nor marked them as\nunsafe preconditions for callers.\n\nAffected versions therefore allowed safe Rust code to call `dealloc` with an invalid pointer, a pointer not allocated by the hugepage allocator, or an incorrect layout, which could cause undefined behavior.\n\nThe upstream repository fixed this in version `0.1.1` by marking `dealloc` as unsafe and documenting the caller's safety requirements.",
+      "date": "2025-04-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/cppcoffee/hugepage-rs/pull/6",
+        "https://github.com/cppcoffee/hugepage-rs/commit/2b30bdf227f39b1c9ed7af16ea0cc3957f88da18"
+      ],
+      "source": null,
+      "url": "https://github.com/cppcoffee/hugepage-rs/issues/5",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "hugepage_rs::dealloc": [
+          "<=0.1.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0107",
+      "package": "mysten-metrics",
+      "title": "`mysten-metrics` was removed from crates.io for malicious code",
+      "description": "`mysten-metrics` included a build script that attempted to exfiltrate data from\nthe build machine.\n\nThe malicious crate had 1 version published on 2026-04-20 and had no evidence\nof actual usage. This crate had no dependencies on crates.io.",
+      "date": "2026-04-22",
+      "aliases": [
+        "GHSA-g38r-8gmr-ghrf"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

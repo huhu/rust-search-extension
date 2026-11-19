@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0464",
+      "package": "webhook_commands",
+      "title": "`webhook_commands` was removed from crates.io for malicious code",
+      "description": "`webhook_commands` attempted to send telemetry from the execution environment\nto an arbitrary URL.\n\nThe malicious crate had 1 version published on 2026-02-13, approximately 9\nmonths before removal, and had no evidence of actual usage. This crate had no\ndependencies on crates.io.\n\nThanks to [Bitbison](https://bitbison.io/) for the report.",
+      "date": "2026-11-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

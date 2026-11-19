@@ -1,0 +1,440 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0581",
+      "package": "heapless",
+      "title": "`Deque::make_contiguous` could lead to broken invariants",
+      "description": "In some branches, `Deque::make_contiguous` set the `back` value to either `0` or `N` when it shouldn't, leading to broken invariants and out-of-bounds writes.\n\nReported by [DRMacIver](https://github.com/DRMacIver) and [https://github.com/MJUCOM](https://github.com/MJUCOM).",
+      "date": "2026-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "out-of-bounds"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/rust-embedded/heapless/issues/676"
+      ],
+      "source": null,
+      "url": "https://github.com/rust-embedded/heapless/issues/694",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::deque::Deque::make_contiguous": [
+          "<0.9.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0575",
+      "package": "heapless",
+      "title": "`Spsc::peek` used `Relaxed` ordering where it should have use `Acquire`",
+      "description": "This could lead to UB through a race condition.\n\nReported by [Jacob Finkelman](https://github.com/Eh2406).",
+      "date": "2026-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "thread-safety"
+      ],
+      "keywords": [
+        "race-condition"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/heapless/pull/703",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::spsc::Spsc::peek": [
+          "<0.9.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0577",
+      "package": "heapless",
+      "title": "Panicking `Drop` implementation could lead to UB",
+      "description": "Multiple functions dropped generic parameters but didn't properly handle the unwinding case, leading to broken invariants.\n\nReported by [tooson9010-spec](https://github.com/tooson9010-spec) and [Evian-Zhang](https://github.com/Evian-Zhang).",
+      "date": "2026-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "panic-safety"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/rust-embedded/heapless/issues/688"
+      ],
+      "source": null,
+      "url": "https://github.com/rust-embedded/heapless/issues/659",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::deque::Deque::clear": [
+          "<0.9.3"
+        ],
+        "heapless::history_buf::HistoryBuf::clear": [
+          "<0.9.3"
+        ],
+        "heapless::history_buf::HistoryBuf::write": [
+          "<0.9.4"
+        ],
+        "heapless::index_map::IndexMap::clear": [
+          "<0.9.3"
+        ],
+        "heapless::index_map::IndexMap::retain": [
+          "<0.9.4"
+        ],
+        "heapless::index_map::IndexMap::truncate": [
+          "<0.9.4"
+        ],
+        "heapless::vec::IntoIter::drop": [
+          "<0.9.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0582",
+      "package": "heapless",
+      "title": "On maps of `u16::MAX` elements, `IndexMap::insert` could lead to a broken invariant",
+      "description": "Note that this required filling up the map and having the last item inserted to hash to `u16::MAX`. It is therefore very unlikely to be reachable in a real-world scenario.\n\nReported by [8rsrf7](https://github.com/8rsrf7).",
+      "date": "2026-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/heapless/issues/672",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::index_map::IndexMap::insert": [
+          "<0.9.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0574",
+      "package": "heapless",
+      "title": "`FindMutView::pop` after mutating the value would lead to a use after free",
+      "description": "Reported by [Jacob Finkelman](https://github.com/Eh2406).",
+      "date": "2026-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/heapless/pull/710",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::sorted_linked_list::FindMutView::pop": [
+          "<0.9.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0578",
+      "package": "heapless",
+      "title": "`SortedLinkedList::zeroize` lead to an inconsistent state",
+      "description": "The `Zeroize` implementation of `SortedLinkedList` did not properly re-initialize the linked list, leading to broken invariants and memorry corruption.\n\nReported by [Jacob Finkelman](https://github.com/Eh2406).",
+      "date": "2026-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/heapless/pull/709",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::sorted_linked_list::SortedLinkedList::zeroize": [
+          "<0.9.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0576",
+      "package": "heapless",
+      "title": "`IndexMap::truncate` could lead to an inconsistent state",
+      "description": "`IndexMap::truncate` was not rebuilding indices when it should, leading to an inconsistent state and memory corruption.\n\nReported by [Jacob Finkelman](https://github.com/Eh2406).",
+      "date": "2026-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/heapless/issues/674",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::index_map::IndexMap::truncate": [
+          "<0.9.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0579",
+      "package": "heapless",
+      "title": "The `Deque` implementation from `TryFrom` was wrong when the `Deque` ended up full",
+      "description": "If the array passed to `Deque::try_from` was as long as the capacity of the `Deque`, it would lead to a invalid state.",
+      "date": "2026-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "out-of-bounds"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/heapless/pull/702",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::Deque::try_from": [
+          ">=0.9.2, <0.9.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0580",
+      "package": "heapless",
+      "title": "The treiber stack implementation in heapless had a race condition",
+      "description": "In the affected versions, it was possible for two threads or execution contexts running concurrently to race, causing one to read out of a pointer that had been invalidated by another execution context.\n\nReported by [Jacob Finkelman](https://github.com/Eh2406).",
+      "date": "2026-11-18",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "thread-safety"
+      ],
+      "keywords": [
+        "race-condition"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-embedded/heapless/pull/704",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::arc_pool": [
+          "<0.9.4"
+        ],
+        "heapless::box_pool": [
+          "<0.9.4"
+        ],
+        "heapless::object_pool": [
+          "<0.9.4"
+        ],
+        "heapless::pool": [
+          "<0.8.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.9.4"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0145",
+      "package": "heapless",
+      "title": "Use-after-free when cloning a partially consumed `Vec` iterator",
+      "description": "The `IntoIter` `Clone` implementation clones the whole underlying `Vec`.\nIf the iterator is partially consumed the consumed items will be copied, thus creating a use-after-free access.\n\nA proof of concept is available in the original bug report.",
+      "date": "2020-11-02",
+      "aliases": [
+        "CVE-2020-36464",
+        "GHSA-qgwf-r2jj-2ccv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "use-after-free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/japaric/heapless/issues/181",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "heapless::vec::IntoIter::clone": [
+          "<=0.6"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

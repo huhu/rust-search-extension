@@ -1,0 +1,74 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0447",
+      "package": "actix-web",
+      "title": "Compressed request bodies can exhaust memory before extractor limits apply",
+      "description": "Body extractors do not pass their size limits to the decompression layer.\nA small compressed request can therefore cause a large allocation before the\nextractor rejects the decoded body. A remote attacker can use this to exhaust\nmemory or CPU resources and cause denial of service.\n\nThis affects applications that read compressed request bodies with the\ncorresponding compression feature enabled.\n\nUpgrade to actix-web 4.18.2 or later with actix-http 3.20.1 or later.\nAs a workaround, reject compressed request bodies at a reverse proxy or in\nmiddleware before body extraction.",
+      "date": "2026-11-06",
+      "aliases": [
+        "GHSA-qph8-7859-gq2f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-web/commit/0d0be61bd757027bfcecbc53df1b7a600f21ecd0",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.18.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2018-0019",
+      "package": "actix-web",
+      "title": "Multiple memory safety issues",
+      "description": "Affected versions contain multiple memory safety issues, such as:\n\n - Unsoundly coercing immutable references to mutable references\n - Unsoundly extending lifetimes of strings\n - Adding the `Send` marker trait to objects that cannot be safely sent between threads\n\nThis may result in a variety of memory corruption scenarios, most likely use-after-free.\n \nA significant refactoring effort has been conducted to resolve these issues.",
+      "date": "2018-06-08",
+      "aliases": [
+        "CVE-2018-25024",
+        "CVE-2018-25025",
+        "CVE-2018-25026",
+        "GHSA-7x36-h62w-vw65",
+        "GHSA-9qj6-4rfq-vm84",
+        "GHSA-fgfm-hqjw-3265",
+        "GHSA-w65j-g6c7-g3m4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/actix/actix-web/issues/289",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">0.7.19"
+      ],
+      "unaffected": []
+    }
+  }
+]

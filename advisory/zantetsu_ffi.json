@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0082",
+      "package": "zantetsu-ffi",
+      "title": "zantetsu-ffi is unmaintained",
+      "description": "The `zantetsu-ffi` crate is no longer maintained. The Node.js, Python, and C\nFFI bindings it provided were removed as part of the zantetsu 0.2 release,\nwhich refocused the project on its core Rust library.\n\nA tombstone version (0.2.0) has been published and 0.1.4 has been yanked.\nThere is no replacement for `zantetsu-ffi`.\n\n## Migration\n\nIf you were using `zantetsu-ffi` for anime filename parsing, no direct\nequivalent is available. If your project is Rust-based, switch to\n[`zantetsu 0.2`](https://crates.io/crates/zantetsu).",
+      "date": "2026-04-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/enrell/psyche/issues/1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

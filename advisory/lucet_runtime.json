@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0155",
+      "package": "lucet-runtime",
+      "title": "Use After Free in lucet-runtime",
+      "description": "There is a bug in the main branch of Lucet's lucet-runtime\nthat allows a use-after-free in an Instance object that could\nresult in memory corruption, data race, or other related\nissues. This bug was introduced early in the development\nof Lucet and is present in all releases. As a result of\nthis bug, and dependent on the memory backing for the\nInstance objects, it is possible to trigger a\nuse-after-free when the Instance is dropped.\n\n## Patches\n\nUsers should upgrade to the main branch of the Lucet\nrepository. Lucet does not provide versioned releases on\ncrates.io.\n\n## Workarounds\n\nThere is no way to remediate this vulnerability without\nupgrading.\n\n## Description\n\nLucet uses a \"pool\" allocator for new WebAssembly\ninstances that are created. This pool allocator manages\neverything from the linear memory of the wasm instance,\nthe runtime stack for async switching, as well as the\nmemory behind the Instance itself. Instances are referred\nto via an InstanceHandle type which will, on drop,\nrelease the memory backing the Instance back to the pool.\n\nWhen an Instance is dropped, the fields of the Instance\nare destructed top-to-bottom, however when the alloc:\nAlloc field is destructed, the memory backing the\nInstance is released back to the pool before the\ndestructors of the remaining fields are run. If another\nthread allocates the same memory from the pool while\nthese destructors are still running, a race condition\noccurs that can lead to use-after-free errors.\n\nThe bug was corrected by changing how the InstanceHandle\ndestructor operates to ensure that the memory backing an\nInstance is only returned to the pool once the Instance\nhas been completely destroyed.",
+      "date": "2021-11-30",
+      "aliases": [
+        "CVE-2021-43790",
+        "GHSA-hf79-8hjp-rrvq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "use after free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/lucet/commit/7c7757c772fb709c61b1442bcc1e1fbee97bf4a8",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

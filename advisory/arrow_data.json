@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0442",
+      "package": "arrow-data",
+      "title": "Apache Arrow Rust: Improper validation of RunEndEncoded arrays allows out of bounds reads",
+      "description": "Improper validation of RunEndEncoded arrays via `ArrayData::validate_values` can\nallow reading data beyond the bounds of the child values array when reading the\nlast value via APIs such as `TypedRunArray::value`.\n\nPatched versions now properly validate the contents of RunEndEncoded arrays to prevent\nallowing reading out of bounds of the specified array data.\n\nCredit to Adam Korczynski of Ada Logics for reporting this and Anthropic for finding\nthis.",
+      "date": "2026-11-02",
+      "aliases": [
+        "CVE-2026-111959",
+        "GHSA-gqmm-qrjq-4c7h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "out-of-bounds-read",
+        "validation"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://www.openwall.com/lists/oss-security/2026/11/02/2"
+      ],
+      "source": null,
+      "url": "https://github.com/apache/arrow-rs/issues/11587",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=60.1.0",
+        ">=59.3.2, <60.0.0",
+        ">=58.4.1, <59.0.0",
+        ">=57.3.2, <58.0.0"
+      ],
+      "unaffected": [
+        "<33.0.0"
+      ]
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0024",
+      "package": "double-checked-cell",
+      "title": "double-checked-cell is unmaintained",
+      "description": "The author recommends switching to\n[`once_cell`](https://crates.io/crates/once_cell), which offers a superset\nof the functionality.",
+      "date": "2022-05-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/niklasf/double-checked-cell/commit/9cf94d75316ef441033ce4c80def7c1a8c7643fe",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

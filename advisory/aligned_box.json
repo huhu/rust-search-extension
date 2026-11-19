@@ -1,0 +1,46 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0282",
+      "package": "aligned_box",
+      "title": "Double free in `AlignedBox<[T]>::realloc_with_default` when an element's `Drop` panics",
+      "description": "Shrinking an `AlignedBox<[T]>` takes ownership of the buffer out of\n`self.container` with `ManuallyDrop::take`, destroys the elements past the new\nlength, and only then commits the new `Box` back into `self.container`.\n`ManuallyDrop::take` moves ownership but not the bits, so until that commit\n`self.container` still points at the original buffer.\n\n`T::drop` runs inside the destruction loop and is user code — `T` carries no\nbound that would exclude a panicking `Drop`. If it unwinds, the commit is\nskipped and `self.container` is left pointing at the buffer whose tail has\nalready been destroyed. `AlignedBox`'s own destructor then reconstructs a `Box`\nfrom that pointer, drops every element again and deallocates — a double free\n(CWE-415) / use-after-free (CWE-416) reachable from safe Rust.\n\nGrowing the slice destroys nothing and is unaffected, as is\n`realloc_with_value`, which requires `T: Copy` and therefore a `Drop` that\ncannot run.\n\n## Mitigation\n\nUpdate to 0.3.1.",
+      "date": "2026-09-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free",
+        "use-after-free",
+        "panic-safety"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/michaellass/aligned_box/pull/6",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "aligned_box::AlignedBox::realloc_with_default": [
+          "<0.3.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

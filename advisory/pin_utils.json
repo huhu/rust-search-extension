@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0441",
+      "package": "pin-utils",
+      "title": "`pin-utils` is unmaintained",
+      "description": "The [upstream repository] was archived on October 1, 2026, after the\nrelease of version 0.1.1.\n\nFor local pinning, replace `pin_mut!` with [`core::pin::pin!`], available\nsince Rust 1.68. For pin projection, replace `unsafe_pinned!` and\n`unsafe_unpinned!` with [`pin-project`] or [`pin-project-lite`].\n\n[upstream repository]: https://github.com/rust-lang/pin-utils\n[`core::pin::pin!`]: https://doc.rust-lang.org/core/pin/macro.pin.html\n[`pin-project`]: https://crates.io/crates/pin-project\n[`pin-project-lite`]: https://crates.io/crates/pin-project-lite",
+      "date": "2026-10-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/rustsec/advisory-db/issues/3314"
+      ],
+      "source": null,
+      "url": "https://github.com/rust-lang/team/pull/2787",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

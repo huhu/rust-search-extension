@@ -1,0 +1,76 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0436",
+      "package": "calamine",
+      "title": "Panic and unbounded allocation (OOM) in the CFB/OLE2 parser on malformed input",
+      "description": "The Compound File Binary (OLE2) parser (`src/cfb.rs`), used when reading `.xls` and `.xlsb`\nworkbooks and when extracting VBA projects from `.xlsx`, can panic or allocate without bound\non crafted input. Both are reachable through the public reader API (`open_workbook`,\n`Xls::new`, `Xlsb::new`) on an attacker-supplied file. Impact is denial of service only — no\nmemory unsafety (safe Rust turns the out-of-bounds read into a bounds-checked panic).\n\n1. **Reachable panic (out-of-bounds slice index).** The directory stream is iterated with\n   `.chunks(128)`, but `Directory::from_slice` reads fixed offsets (`buf[..64]`,\n   `buf[116..120]`, `buf[120..128]`) without checking the chunk length. A directory stream\n   whose length is not a multiple of 128 yields a short final chunk, causing a panic\n   (`range end index 64 out of range for slice of length N`). `SectorSize::Small` 64-byte\n   mini sectors are a second trigger.\n\n2. **Unbounded allocation / OOM.** The DIFAT loader grows the `difat` vector without bounding\n   the number of iterations; a crafted self-referential DIFAT chain drives a multi-gigabyte\n   allocation from a tiny file (a 512-byte file attempts an allocation of several gigabytes).\n\nA consumer that parses untrusted or user-supplied spreadsheets can be crashed (thread panic,\nor process abort under `panic=abort`) or driven out of memory by a small crafted file.\n\nFixed in calamine 0.38.0 (commit [b8ec4f0](https://github.com/tafia/calamine/commit/b8ec4f0)); the maintainer confirmed the fix in https://github.com/tafia/calamine/pull/762.",
+      "date": "2026-10-28",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dos",
+        "panic",
+        "oom",
+        "cfb",
+        "ole2",
+        "xls",
+        "xlsb"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tafia/calamine/pull/762",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.38.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0015",
+      "package": "calamine",
+      "title": "`Sectors::get` accesses unclaimed/uninitialized memory",
+      "description": "Affected versions of this crate arbitrarily calls `Vec::set_len` to increase length of a vector without claiming more memory for the vector. Affected versions of this crate\nalso calls user-provided `Read` on the uninitialized memory of the vector that was\nextended with `Vec::set_len`.\n\nThis can overwrite active entities in adjacent heap memory and seems to be a major security issue. Also, calling user-provided `Read` on uninitialized memory is defined as UB in Rust.",
+      "date": "2021-01-06",
+      "aliases": [
+        "CVE-2021-26951",
+        "GHSA-ppqp-78xx-3r38"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/tafia/calamine/issues/199",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.17.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

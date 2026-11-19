@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0259",
+      "package": "arone",
+      "title": "`arone` was removed from crates.io due to malicious code",
+      "description": "We identified that `arone` contained malicious code executed through a build\nscript.\n\nThis crate had 7 versions, with the most recent one being published at\n2026-08-18. The crate was removed from crates.io on 2026-08-20 and the user\naccount was locked.\n\nThis crate was used as part of a malware campaign targeted at users of\n`arrayref`, which was downloaded 2,285 times before being removed; see\n[the `arrayref` advisory][arrayref-advisory] for more detail.\n\n[arrayref-advisory]: https://rustsec.org/advisories/RUSTSEC-2026-0260.html",
+      "date": "2026-08-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://blog.rust-lang.org/2026/08/20/supply-chain-attack-on-arrayref",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,93 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0179",
+      "package": "postgres-protocol",
+      "title": "Unbounded SCRAM iteration count allows a malicious server to cause CPU-exhaustion denial of service",
+      "description": "A malicious, compromised, or man-in-the-middle server can supply an arbitrarily\nlarge SCRAM-SHA-256 PBKDF2 iteration count during authentication. The client\nruns it inline with no upper bound, pinning a `tokio` worker thread for minutes\nper connection, possibly stalling the whole async runtime.\n\nApplications that connect only to a trusted database are not exposed; the risk\napplies to clients that may connect to untrusted or user-supplied servers, or\nwhose connection can be intercepted by a man-in-the-middle.",
+      "date": "2026-06-12",
+      "aliases": [
+        "GHSA-5x78-73v4-xg6w"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "scram",
+        "pbkdf2"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/pgjdbc/pgjdbc/security/advisories/GHSA-98qh-xjc8-98pq"
+      ],
+      "source": null,
+      "url": "https://github.com/rust-postgres/rust-postgres/commit/d40097a36a85068ea50a3afbf0ce154ba439e7f0",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "postgres_protocol::authentication::sasl::ScramSha256::update": [
+          "<0.6.12"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.12"
+      ],
+      "unaffected": [
+        "<0.3.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0180",
+      "package": "postgres-protocol",
+      "title": "Panic decoding a malformed `hstore` value allows denial of service",
+      "description": "A malicious or compromised server can return a binary `hstore` value with an\ninvalid internal length field, causing the client to panic while decoding it.\n\nApplications that connect only to a trusted database are not exposed; the risk\napplies to clients that may connect to untrusted or user-supplied servers, or\nwhose connection can be intercepted by a man-in-the-middle.",
+      "date": "2026-06-12",
+      "aliases": [
+        "GHSA-rgqc-3x5p-6gwg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "hstore"
+      ],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-postgres/rust-postgres/commit/a7cf84b5c46431cbca9d8ff50508c23f446efa7d",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "postgres_protocol::types::hstore_from_sql": [
+          "<0.6.12"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.12"
+      ],
+      "unaffected": []
+    }
+  }
+]

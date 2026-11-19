@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0114",
+      "package": "tiny-server",
+      "title": "`tiny-server` was removed from crates.io for malicious code",
+      "description": "This crate was part of a typosquatting malware cluster published by the\nmalicious user `http-tiny` and contained a malware payload in `build.rs` to\nexfiltrate host information to the attacker.\n\nThis advisory is to retrospectively document this attempted attack. The version\ninformation and download records of the malicious crate are no longer\navailable. The related malicious crates have been yanked, and the malicious\naccount has been banned.\n\nThanks to Louis Lang at [Phylum] (now [Veracode]) for reporting this malware\ncampaign.\n\n[Phylum]: https://phylum.io/\n[Veracode]: https://www.veracode.com/",
+      "date": "2023-11-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

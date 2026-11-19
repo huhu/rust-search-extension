@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0154",
+      "package": "replit_ruspty",
+      "title": "`replit_ruspty` was removed from crates.io for malicious code",
+      "description": "The OpenSSF Package Analysis project identified 'replit_ruspty' @ 1.0.0 (crates.io) as malicious. Version 2.0.0 was also published with malware.\n\nIt is considered malicious because: The package communicates with a domain associated with malicious activity. The package executes one or more commands associated with malicious behavior.\n\nThis advisory is to retrospectively document this attack. The download records of the malicious crate are no longer available. The related malicious crates have been deleted.",
+      "date": "2025-11-04",
+      "aliases": [
+        "GHSA-943g-w75h-8v9h",
+        "MAL-2025-49350"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/ossf/malicious-packages/blob/main/osv/malicious/crates.io/replit_ruspty/MAL-2025-49350.json"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

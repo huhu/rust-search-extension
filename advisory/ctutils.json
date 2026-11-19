@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0385",
+      "package": "ctutils",
+      "title": "Non-constant-time mask generation and `u128` comparisons",
+      "description": "## Summary\n\nThe `ctutils::Choice` type has mask generation functions for each unsigned\ninteger size (`u8`, `u16`, `u32`, `u64`, `u128`). These are `const fn` and\ntherefore can't reuse the `asm!`-backed mask generation in the `cmov` crate\nthat's otherwise used to ensure constant-time.\n\nIn releases prior to v0.4.4, the generated code from these functions could\ninclude a branch on commonly used platforms. This has been corrected in this\nrelease and now verified on several platforms using BINSEC.\n\nAdditionally, `u128` comparison operations provided via `ctutils::Choice` and\nintended to work in constant-time were generating branches on 32-bit targets.\nThis has been resolved via a special case implementation of these functions\nfor such targets.\n\n## Impact\n\nBranch instructions on secret values can potentially leak such values via\ncovert channels. This can enable attackers to potentially recover such secrets.\n\n## Resolution\n\nThis has been resolved by calling `Choice::to_u8()` when generating the mask,\nwhich in turn uses `black_box` as an optimization barrier. Verification that\nthis resulted in the desired change in the generated assembly across a variety\nof target CPU architectures was performed by BINSEC, which now runs\nautomatically in CI using `cargo checkct`.",
+      "date": "2026-10-23",
+      "aliases": [],
+      "related": [
+        "RUSTSEC-2026-0003"
+      ],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/utils/pull/1569",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

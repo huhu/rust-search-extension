@@ -1,0 +1,60 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0018",
+      "package": "rpc-check",
+      "title": "`rpc-check` was removed from crates.io for malicious code",
+      "description": "This is part of an ongoing campaign to attempt to typosquat crates in the\n[`polymarket-client-sdk`](https://crates.io/crates/polymarket-client-sdk)\necosystem to exfiltrate user credentials.\n\nThe malicious crate had 6 versions published from 2026-02-20 onwards and had no\nevidence of actual usage. There were no crates depending on this crate on\ncrates.io.\n\nThanks to Eren for finding and reporting this to the Rust security response\nworking group, and to Emily Albini for co-ordinating with the crates.io team.\n\nThe crates.io team advises anyone developing with Polymarket to review\ndependencies carefully. We are investigating ways to mitigate this attacker who\nappears to be very motivated to steal Polymarket credentials.",
+      "date": "2026-02-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0014",
+      "package": "rpc-check",
+      "title": "`rpc-check` was removed from crates.io for malicious code",
+      "description": "It was attempting to steal credentials from the `POLYMARKET_PRIVATE_KEY` environment variable.\n\nThe malicious crate had 3 versions published on 2026-02-15 and had been downloaded only 155 times.\nThere were no crates depending on this crate on crates.io.\n\nThanks to Sisong Li for finding and reporting this to the crates.io team!",
+      "date": "2026-02-19",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

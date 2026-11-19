@@ -1,0 +1,167 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0125",
+      "package": "libcrux-ml-dsa",
+      "title": "Signature Verification on AVX2 Platforms Mishandles Edge Case",
+      "description": "The AVX2 implementation of ML-DSA verification incorrectly implemented\nthe `use_hint` function, mishandling an edge case that should lead to\nsignature rejection.\n\n## Impact\nAn attacker could make the ML-DSA verifier accept a crafted invalid\nsignature under a maliciously generated verification key, if the AVX2\nimplementation is used.\n\n## Mitigation\nFrom version `0.0.9` the edge case is handled correctly and invalid\nsignatures are rejected.",
+      "date": "2026-05-05",
+      "aliases": [
+        "GHSA-fhvh-vw7h-9xf3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [
+        "https://github.com/C2SP/wycheproof/pull/234",
+        "https://github.com/tink-crypto/tink-go/pull/48"
+      ],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1398",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [
+        "x86_64"
+      ],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.9"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0126",
+      "package": "libcrux-ml-dsa",
+      "title": "AVX2 Implementation Did Not Fully Reduce Intermediate Values",
+      "description": "The AVX2 implementation of ML-DSA did not fully reduce intermediate\ninputs to the inverse NTT, which leads to a testable difference in\npanic behaviour of internal functions compared to the portable\nimplementation.\n\n## Impact\nWe are not aware of inputs to the public key generation, signing or\nverification APIs that trigger a panic in the AVX2 implementation\nbecause the intermediate values were not fully reduced.\n\n## Mitigation\nFrom version `0.0.9` intermediate values on AVX2 platforms are fully\nreduced in alignment with the portable implementation.",
+      "date": "2026-04-27",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "notice",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1395",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [
+        "x86_64"
+      ],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.9"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0077",
+      "package": "libcrux-ml-dsa",
+      "title": "Incorrect Check of Signer Response Norm During Verification",
+      "description": "The ML-DSA verification algorithm as specified in [FIPS 204,\nsubsection\n6.3](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf#subsection.6.3)\nrequires verifiers to check that the infinity norm of the deserialized\nsigner response $z$ does not exceed $\\gamma_1 - \\beta$ (line 13 of\nAlgorithm 8).\nThe same check is required to be performed during signature generation.\n\nlibcrux-ml-dsa did not perform this check correctly during signature\nverification, accepting signatures with signer response norm above the\nallowed maximum value.  The check is correctly performed during\nsigning.\n\n## Impact\nApplications using libcrux-ml-dsa for signature verification would\nhave accepted signatures that would be rejected by a conforming\nimplementation.\n\n## Mitigation\nStarting from version `0.0.8`, signature verification uses the correct\nvalue for $\\gamma_1$ in the signer response norm check.",
+      "date": "2026-03-04",
+      "aliases": [
+        "GHSA-cp57-fq8g-qh6v"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1347",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_ml_dsa::ml_dsa_44::verify": [
+          "<=0.0.7"
+        ],
+        "libcrux_ml_dsa::ml_dsa_65::verify": [
+          "<=0.0.7"
+        ],
+        "libcrux_ml_dsa::ml_dsa_87::verify": [
+          "<=0.0.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.8"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0076",
+      "package": "libcrux-ml-dsa",
+      "title": "Panic in Signature Hint Decoding During Verification",
+      "description": "During ML-DSA verification the serialized hint values are decoded as\nspecified in algorithm 22 `HintBitUnpack` of [FIPS 204, subsection\n7.1](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf#%5B%7B%22num%22%3A120%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22FitH%22%7D%2C657%5D). The\nalgorithm requires that the cumulative hint counters per row of the\nhint vector are strictly increasing and below a maximum value which\ndepends on the choice of ML-DSA parameter set (line 4).\n\nIn libcrux-ml-dsa, hint decoding did not check the boundedness of the\ncumulative hint counter of the last row of the hint vector.\n\n## Impact\nA manipulated invalid hint can cause an out-of-bounds memory access\nsince the hint decoding logic may attempt to read outside the bounds\nof the serialized signature, causing a runtime panic.\n\n## Mitigation\nStarting from version `0.0.8`, hint decoding will check the cumulative\nhint counter of the last row as well.",
+      "date": "2026-03-04",
+      "aliases": [
+        "GHSA-xrf2-5r3p-5wgj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1348",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_ml_dsa::ml_dsa_44::verify": [
+          "<=0.0.7"
+        ],
+        "libcrux_ml_dsa::ml_dsa_65::verify": [
+          "<=0.0.7"
+        ],
+        "libcrux_ml_dsa::ml_dsa_87::verify": [
+          "<=0.0.7"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.8"
+      ],
+      "unaffected": []
+    }
+  }
+]

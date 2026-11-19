@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0097",
+      "package": "rand",
+      "title": "Rand is unsound with a custom logger using `rand::rng()`",
+      "description": "It has been reported (by [@lopopolo](https://github.com/lopopolo)) that the `rand` library is [unsound](https://rust-lang.github.io/unsafe-code-guidelines/glossary.html#soundness-of-code--of-a-library) (i.e. that safe code using the public API can cause Undefined Behaviour) when all the following conditions are met:\n\n- The `log` and `thread_rng` features are enabled\n- A [custom logger](https://docs.rs/log/latest/log/#implementing-a-logger) is defined\n- The custom logger accesses `rand::rng()` (previously `rand::thread_rng()`) and calls any `TryRng` (previously `RngCore`) methods on `ThreadRng`\n- The `ThreadRng` (attempts to) reseed while called from the custom logger (this happens every 64 kB of generated data)\n- Trace-level logging is enabled or warn-level logging is enabled and the random source (the `getrandom` crate) is unable to provide a new seed\n\n`TryRng` (previously `RngCore`) methods for `ThreadRng` use `unsafe` code to cast `*mut BlockRng<ReseedingCore>` to `&mut BlockRng<ReseedingCore>`. When all the above conditions are met this results in an aliased mutable reference, violating the Stacked Borrows rules. Miri is able to detect this violation in sample code. Since construction of [aliased mutable references is Undefined Behaviour](https://doc.rust-lang.org/stable/nomicon/references.html), the behaviour of optimized builds is hard to predict.",
+      "date": "2026-04-09",
+      "aliases": [
+        "GHSA-cq8v-f236-94qc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-random/rand/pull/1763",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rand::rng": [
+          ">=0.9.0"
+        ],
+        "rand::thread_rng": [
+          "<0.10.0, >=0.7.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.1",
+        "<0.10.0, >=0.9.3",
+        "<0.9.0, >=0.8.6"
+      ],
+      "unaffected": [
+        "<0.7.0"
+      ]
+    }
+  }
+]

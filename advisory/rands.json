@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0155",
+      "package": "rands",
+      "title": "`rands` was removed from crates.io for malicious code",
+      "description": "This crate attempted to typosquat the `rand` crate, and would link in a malware\npayload on macOS and Linux hosts when built.\n\nThis advisory is to retrospectively document this attempted attack. The version\ninformation and download records of the malicious crate are no longer\navailable. The related malicious crates have been yanked, and the malicious\naccount has been banned.",
+      "date": "2025-02-10",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

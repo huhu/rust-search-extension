@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2019-0023",
+      "package": "string-interner",
+      "title": "Cloned interners may read already dropped strings",
+      "description": "Affected versions of this crate did not clone contained strings when an interner is cloned.\nInterners have raw pointers to the contained strings, and they keep pointing the strings which the old interner owns, after the interner is cloned.\nIf a new cloned interner is alive and the old original interner is dead, the new interner has dangling pointers to the old interner's storage, which is already dropped.\n\nThis allows an attacker to read the already freed memory.\nThe dangling pointers are used by the interners to check a string is already interned.\nAn attacker can do brute force attack to get the data pointed by the dangling pointer.\n\nThe flaw was corrected by <https://github.com/Robbepop/string-interner/pull/10>.\nThis patch implements `Clone` manually to the interner type, so that the internal raw pointers always point the strings owned by the same interner.\n\nPR #10 was also backported to the 0.6 release line in\n<https://github.com/Robbepop/string-interner/pull/14> and was released in 0.6.4.",
+      "date": "2019-08-24",
+      "aliases": [
+        "CVE-2019-16882"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "use after free"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Robbepop/string-interner/issues/9",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.6.4",
+        ">=0.7.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

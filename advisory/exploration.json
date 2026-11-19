@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0155",
+      "package": "exploration",
+      "title": "`exploration` was removed from crates.io for malicious code",
+      "description": "A method within the `exploration` crate attempted to download and execute a\npayload from a remote site.\n\nThe malicious crate had 1 version published on 2026-06-02, approximately 1 hour\nbefore removal, and had no evidence of actual usage. This crate had no\ndependencies on crates.io.\n\nThanks to Kirill Boychenko from the [Socket Threat Research\nTeam](https://socket.dev/) for reporting this crate.",
+      "date": "2026-06-02",
+      "aliases": [
+        "GHSA-99j7-fhr2-xfj4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

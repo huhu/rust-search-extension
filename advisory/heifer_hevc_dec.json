@@ -1,0 +1,78 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0456",
+      "package": "heifer-hevc-dec",
+      "title": "Panic on an HEVC tile layout that does not match the active SPS",
+      "description": "An HEVC picture parameter set (PPS) stores explicit tile column widths and row\nheights computed against the sequence parameter set (SPS) active when it was\nparsed. A crafted stream can redefine that SPS afterwards, so that the tile sizes\nadd up to more than the picture. The decoder then indexed past its coding tree\nblock tables: Rust's bounds checks turned this into a panic, or the picture was\ndecoded wrongly. A panic aborts the decoding thread, or the whole process when\nbuilt with `panic = \"abort\"`. The crate forbids `unsafe` code, so there is no\nmemory corruption.\n\nAny application that decodes untrusted HEIC files or HEVC streams with\n`heifer-hevc-dec`, directly or through the `heifer` crate, is affected.\n\nThe flaw was corrected in 0.3.27 (commit\n[`71dfc67`](https://github.com/HarpeLm/Heifer/commit/71dfc67f1e3ae3c4b7e4cf633e83a26c94b06a92)):\na tile layout that does not match the picture size is rejected with\n`Error::Invalid` at decode time.",
+      "date": "2026-11-04",
+      "aliases": [
+        "GHSA-rcff-5x58-7w2p"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "hevc",
+        "h265",
+        "heic",
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/HarpeLm/Heifer/commit/71dfc67f1e3ae3c4b7e4cf633e83a26c94b06a92",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.27"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0460",
+      "package": "heifer-hevc-dec",
+      "title": "Panic on chroma QP offsets enabled with an empty offset list",
+      "description": "An HEVC Range Extensions stream can set `cu_chroma_qp_offset_enabled_flag` in a\nslice while its picture parameter set carries an empty chroma QP offset list.\nThe decoder then read the list at the signalled index, which panicked on the\nout-of-range access. A panic aborts the decoding thread, or the whole process\nwhen built with `panic = \"abort\"`. The crate forbids `unsafe` code, so there is\nno memory corruption.\n\nAny application that decodes untrusted HEIC files or HEVC streams with\n`heifer-hevc-dec`, directly or through the `heifer` crate, is affected.\n\nThe flaw was corrected in 0.3.27 (commit\n[`1a8426e`](https://github.com/HarpeLm/Heifer/commit/1a8426e1b41160fb48d8baf8be858238570a8093)):\nwith an empty list there is no offset to apply, and the offset is zero.",
+      "date": "2026-11-04",
+      "aliases": [
+        "GHSA-rmc9-8qp4-gjhx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "hevc",
+        "h265",
+        "heic",
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/HarpeLm/Heifer/commit/1a8426e1b41160fb48d8baf8be858238570a8093",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.27"
+      ],
+      "unaffected": []
+    }
+  }
+]

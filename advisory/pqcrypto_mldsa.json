@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0166",
+      "package": "pqcrypto-mldsa",
+      "title": "`pqcrypto-mldsa` is unmaintained: upstream PQClean project being archived",
+      "description": "This crate provides Rust bindings to ML-DSA (FIPS 204) via C implementations\nfrom [PQClean](https://github.com/PQClean/PQClean). The PQClean project is\nbeing archived in or after July 2026 (see [PQClean/PQClean#604](https://github.com/PQClean/PQClean/issues/604)),\nafter which no further security patches or bug fixes will be applied to the\nupstream implementations.\n\nAs a result, this crate will no longer receive updates. Users should migrate\nto the [`ml-dsa`](https://crates.io/crates/ml-dsa) crate, which provides a\npure-Rust implementation of ML-DSA (FIPS 204).",
+      "date": "2026-06-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustpq/pqcrypto/issues/97",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,331 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0210",
+      "package": "libcrux-aesgcm",
+      "title": "`libcrux-aesgcm` Renamed to `libcrux-aes`",
+      "description": "Crate `libcrux-aesgcm` was renamed to `libcrux-aes` and will no longer receive new versions under the name `libcrux-aesgcm`, with the final released version under that name being version `0.0.8`. The original functionality is now provided in crate `libcrux-aes`, where development continues at version `0.0.9`.",
+      "date": "2026-07-15",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/celabshq/libcrux/releases/tag/libcrux-aes-v0.0.9",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0211",
+      "package": "libcrux-aesgcm",
+      "title": "Non-constant time Authentication Tag Check in AES-GCM Decryption",
+      "description": "AES-GCM decryption used an implementation for checking the provided\nauthentication tag against the recomputed authentication tag that was\nintended to be constant-time, but resulted in non-constant-time code\ngeneration in certain circumstances.\nNote that `libcrux-aesgcm` does not give guarantees on constant-time\ncode generation and possible mitigations must be considered\non a best-effort basis.\n\n## Impact\nUsers of `libcrux-aesgcm` that expose a decryption oracle to an\nattacker, which allows repeatedly querying for the same ciphertext\nwere at risk from timing side-channel attacks, depending on their\ncompilation environment. In the worst case, this could lead to\nrecovery of the recomputed authentication tag by the attacker, which\nenables ciphertext forgery.\n\n## Mitigation\nStarting from version `0.0.9` (published as `libcrux-aes@v0.0.9`),\nAES-GCM decryption uses a different, best-effort constant-time\nimplementation of the tag check, which has been checked to reliably\nlead to constant time code generation, at the moment.",
+      "date": "2026-07-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/celabshq/libcrux/pull/1528",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_aesgcm::AesGcm128Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::AesGcm256Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::AesGcm128::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::neon::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::neon::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::neon::NeonAesGcm128::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::portable::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::portable::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::portable::PortableAesGcm128::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::x64::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::x64::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::x64::X64AesGcm128::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::AesGcm256::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::neon::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::neon::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::neon::NeonAesGcm256::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::portable::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::portable::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::portable::PortableAesGcm256::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::x64::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::x64::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::x64::X64AesGcm256::decrypt": [
+          "<=0.0.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0209",
+      "package": "libcrux-aesgcm",
+      "title": "AES-GCM did not enforce limits on AAD length",
+      "description": "NIST Special Publication 800-38D specifies that the bit length of the\nAAD shall not exceed `2^64 - 1` bits. The implementation of AES-GCM in\n`libcrux-aesgcm` neither enforced this limit for encryption nor for\ndecryption.\n\n## Impact\nUse of AES-GCM with AAD of length exceeding the prescribed maximum\nlength degrades the authentication security of the GCM tag.\n\n## Mitigation\nStarting from version `0.0.9` (published as `libcrux-aes@v0.0.9`),\nlimits on the length of the AAD input are enforced, so overlong AAD\ninputs result in an error on encryption and decryption.",
+      "date": "2026-06-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/celabshq/libcrux/pull/1474",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_aesgcm::AesGcm128Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::AesGcm128Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::AesGcm256Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::AesGcm256Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::AesGcm128::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::AesGcm128::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::KeyRef::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::neon::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::neon::Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::neon::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::neon::KeyRef::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::neon::NeonAesGcm128::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::neon::NeonAesGcm128::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::portable::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::portable::Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::portable::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::portable::KeyRef::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::portable::PortableAesGcm128::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::portable::PortableAesGcm128::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::x64::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::x64::Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::x64::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::x64::KeyRef::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::x64::X64AesGcm128::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_128::x64::X64AesGcm128::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::AesGcm256::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::AesGcm256::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::KeyRef::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::neon::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::neon::Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::neon::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::neon::KeyRef::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::neon::NeonAesGcm256::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::neon::NeonAesGcm256::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::portable::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::portable::Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::portable::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::portable::KeyRef::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::portable::PortableAesGcm256::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::portable::PortableAesGcm256::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::x64::Key::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::x64::Key::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::x64::KeyRef::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::x64::KeyRef::encrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::x64::X64AesGcm256::decrypt": [
+          "<=0.0.8"
+        ],
+        "libcrux_aesgcm::aes_gcm_256::x64::X64AesGcm256::encrypt": [
+          "<=0.0.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

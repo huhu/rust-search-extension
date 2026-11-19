@@ -1,0 +1,73 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0287",
+      "package": "cosmian_kyber",
+      "title": "cosmian_kyber is unmaintained",
+      "description": "`cosmian_kyber` is a fork of `Argyle-Software/kyber` that has seen no maintainer\nactivity. It inherits the fork parent's broken AVX2 constant-time code, and the\nopen fix pull request (Cosmian/kyber#6) has gone unanswered.\n\nRecommended alternatives:\n\n- [aws-lc-rs](https://crates.io/crates/aws-lc-rs)\n- [graviola](https://crates.io/crates/graviola)",
+      "date": "2026-09-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "kyber",
+        "ml-kem",
+        "post-quantum"
+      ],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Cosmian/kyber/pull/6",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0288",
+      "package": "cosmian_kyber",
+      "title": "cosmian_kyber: AVX2 backend skips Fujisaki-Okamoto implicit rejection, enabling chosen-ciphertext key recovery",
+      "description": "## Summary\n\n`cosmian_kyber` is a fork of `Argyle-Software/kyber` and inherits a broken\nconstant-time conditional-move routine `cmov` in its AVX2 backend. When built\nwith the opt-in `avx2` feature on x86_64, `cmov` is a no-op: it never performs\nthe copy. That `cmov` is the step that applies the Fujisaki-Okamoto (FO) implicit\nrejection during decapsulation. With it disabled, decapsulating an *invalid*\nciphertext no longer returns a key-independent pseudorandom value; it returns a\nvalue that depends on the decrypted plaintext of the attacker-chosen ciphertext.\nThis restores the chosen-ciphertext decryption oracle that the FO transform\nexists to remove, and yields full recovery of the static secret key.\n\nThe attack requires no timing measurement, no side channel, and no faults; only\nthe ability to submit ciphertexts to a decapsulation operation under a reused\nkey pair and observe the resulting shared secret. See the linked pull request\nfor the root cause and the reachable call path.\n\n## Affected configuration\n\nReachable only in builds with `features = [\"avx2\"]` on an x86_64 target. The\ndefault (reference) backend and all non-x86_64 targets are unaffected.\n\n## Impact\n\nComplete IND-CCA break. The plaintext-checking oracle drives a standard\nchosen-ciphertext key-recovery attack and extracts the entire static secret key.\nAny protocol reusing a Kyber key pair across decapsulations is exposed;\nephemeral-only key shares are not. The identical defect in the parent crate was\nverified end to end on ML-KEM-768 (full key recovered in 4,272 decapsulation\nqueries).\n\n## Maintenance status\n\n`cosmian_kyber` is a stale fork (last published 0.1.0, January 2023) of an\nunmaintained upstream, and no fixed release is expected.\n\n## Mitigation\n\n- If remaining on this crate, do not enable the `avx2` feature; the default\n  reference backend performs implicit rejection correctly.\n- Do not reuse a Kyber key pair across decapsulations.\n\n## Credit\n\nReported by 007bsd.",
+      "date": "2026-08-16",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "kyber",
+        "ml-kem",
+        "key-recovery",
+        "fujisaki-okamoto",
+        "ind-cca",
+        "avx2"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Cosmian/kyber/pull/6",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

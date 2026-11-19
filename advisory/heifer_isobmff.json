@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0458",
+      "package": "heifer-isobmff",
+      "title": "Memory exhaustion when parsing a crafted `iloc` box",
+      "description": "`heifer-isobmff` read the item and extent counts of the `iloc` box (item\nlocations) from the file and allocated memory for them before checking that the\nbox was large enough to hold that many entries. Extents that declare no field at\nall take zero bytes each, so a small crafted file could declare an enormous\nnumber of them. A 42 KB file made parsing allocate several gigabytes, which can\nexhaust memory and abort the process.\n\nAny application that parses untrusted HEIF/HEIC files with `heifer-isobmff`,\ndirectly or through the `heifer` crate, is affected: `HeifFile::parse` and every\ndecoding and metadata function built on it.\n\nThe flaw was corrected in 0.3.27 (commit\n[`1a8426e`](https://github.com/HarpeLm/Heifer/commit/1a8426e1b41160fb48d8baf8be858238570a8093)):\nitem and extent counts are bounded by the size of the box, extents that carry no\nfield are rejected, and the total number of extents is capped.",
+      "date": "2026-11-04",
+      "aliases": [
+        "GHSA-3243-948x-x627"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "heif",
+        "heic",
+        "isobmff",
+        "memory-exhaustion"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/HarpeLm/Heifer/commit/1a8426e1b41160fb48d8baf8be858238570a8093",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.27"
+      ],
+      "unaffected": []
+    }
+  }
+]

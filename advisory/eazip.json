@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0503",
+      "package": "eazip",
+      "title": "eazip: symlink-target validation checks the wrong argument, allowing extraction path escapes on Windows",
+      "description": "When extracting archives, `eazip` validates symlink entries before writing\nthem. The validation function `validate_symlink()` (`src/utils/mod.rs`) scans\nfor backslash and NUL bytes, but passes the symlink's *name* where the\nsymlink's *target* was intended:\n\n```rust\nmemchr2(b'\\\\', b'\\0', name.as_bytes()) // should be target.as_bytes()\n```\n\nAs a result, symlink *targets* containing backslash or NUL bytes pass\nvalidation. On Windows, backslash is a path separator, so targets such as\n`..\\..\\..\\Windows\\system32\\evil.exe` also defeat the remaining depth check,\nwhich splits on `/` only. A crafted archive can therefore create symlinks\nthat resolve outside the extraction directory — including UNC targets such as\n`\\\\host\\share\\...` — redirecting writes to arbitrary filesystem locations\nchosen by the attacker.\n\nApplications that extract untrusted archives with `eazip` on Windows targets\nare affected; on Unix targets backslash is not a separator, which limits\nexposure there.\n\nThe vulnerability was introduced in version 0.2.5 and fixed in 0.2.7\n([a1phyr/eazip@0e4caa13](https://github.com/a1phyr/eazip/commit/0e4caa13d59f5ba15aaac332f5534260c3b8fc43)),\nwhich rejects backslash and NUL bytes in the symlink target. It was\nprivately reported to the maintainer on 2026-11-06 and credited in the\n0.2.7 release notes.",
+      "date": "2026-11-07",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "symlink",
+        "zip-slip",
+        "windows",
+        "path-escape",
+        "extraction"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/a1phyr/eazip/releases/tag/v0.2.7",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.7"
+      ],
+      "unaffected": [
+        "<0.2.5"
+      ]
+    }
+  }
+]

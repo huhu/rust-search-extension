@@ -1,0 +1,40 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0105",
+      "package": "git-delta",
+      "title": "Relative Path Traversal in git-delta",
+      "description": "git-delta before 0.8.3 on Windows resolves an executable's pathname as a relative path from the current directory.",
+      "date": "2021-07-12",
+      "aliases": [
+        "CVE-2021-36376",
+        "GHSA-5xg3-j2j6-rcx4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-36376",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

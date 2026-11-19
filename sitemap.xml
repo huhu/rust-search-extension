@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>/</loc>
+    </url>
+    <url>
+        <loc>/changelog/</loc>
+    </url>
+    <url>
+        <loc>/faq/</loc>
+    </url>
+    <url>
+        <loc>/privacy/</loc>
+    </url>
+    <url>
+        <loc>/testimonial/</loc>
+    </url>
+    <url>
+        <loc>/update/</loc>
+    </url>
+</urlset>

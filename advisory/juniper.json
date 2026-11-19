@@ -1,0 +1,113 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0417",
+      "package": "juniper",
+      "title": "Excessive CPU and memory use on crafted GraphQL documents",
+      "description": "Several parts of `juniper` did work that grew faster than the size of the GraphQL document. A small document could thus use seconds of CPU time or gigabytes of memory. The requests need no authentication.\n\n- `OverlappingFieldsCanBeMerged` compared all pairs of fields with the same response name. The rule also reported one error for each pair of conflicting fields.\n- `NoFragmentCycles` and `OverlappingFieldsCanBeMerged` visited a fragment again for each path that spread the fragment. Validation time thus doubled with each fragment that spread the next fragment twice.\n- Execution resolved the fields of a fragment once for each spread of the fragment. A document of 1.2 KB could expand into a billion fields.\n- The parser removed each token from the front of a vector. Parsing time thus grew with the square of the number of tokens.\n\n`juniper` 0.17.2 fixes the issues. The parser rejects documents with more than 15,000 tokens and operations with more than 15,000 fields after the expansion of fragments. The validation rules visit each fragment once. `OverlappingFieldsCanBeMerged` stops after 100,000 field comparisons and reports at most 100 conflicts. `RootNode::limit_tokens()` and `RootNode::limit_fields()` change the limits.",
+      "date": "2026-10-28",
+      "aliases": [
+        "GHSA-36rq-8957-mjrx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "graphql",
+        "validation",
+        "fragments",
+        "complexity"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/graphql-rust/juniper/pull/1405",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.17.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0416",
+      "package": "juniper",
+      "title": "Stack overflow on deeply nested GraphQL documents",
+      "description": "The parser of `juniper` called itself once for each level of nesting in a GraphQL document. The parser had no limit on the nesting depth. Deeply nested selection sets, input values, and list types thus overflowed the stack of the thread that parsed the document. Validation and execution followed fragment spreads in the same recursive way. Long chains of fragment spreads thus overflowed the stack in validation and execution.\n\nA stack overflow aborts the whole process. One request can thus stop a server and drop all other requests in progress. The request needs no authentication.\n\n`juniper` 0.17.2 rejects documents that nest deeper than 64 levels or contain more than 15,000 tokens. `RootNode::limit_depth()` and `RootNode::limit_tokens()` change the limits.",
+      "date": "2026-10-28",
+      "aliases": [
+        "GHSA-34cw-x8g7-rcv5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "graphql",
+        "stack-overflow",
+        "recursion"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/graphql-rust/juniper/pull/1405",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.17.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0038",
+      "package": "juniper",
+      "title": "Denial of service on deeply nested fragment requests",
+      "description": "Deeply nested fragments in a GraphQL request may cause a stack overflow in the server.",
+      "date": "2022-07-28",
+      "aliases": [
+        "GHSA-4rx6-g5vg-5f3j",
+        "CVE-2022-31173"
+      ],
+      "related": [
+        "GHSA-xq3c-8gqm-v648"
+      ],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/graphql-rust/juniper/commit/2b609ee057be950e3454b69fadc431d120e407bb",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.15.10"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0153",
+      "package": "russh-cryptovec",
+      "title": "Unchecked `CryptoVec` allocation and growth handling",
+      "description": "`CryptoVec` used unchecked capacity growth, unchecked length arithmetic, and\nunsafe allocation and locking paths. In affected `russh` releases,\nattacker-controlled input could reach these code paths through buffer resizing\noperations.\n\nTwo affected reachability paths were identified:\n\n* **Current `russh` releases (`0.60.x` before the fix)**\n  Local SSH agent peers could provide attacker-controlled frame lengths that\n  were used to resize internal buffers before validation in:\n\n  * `AgentClient::read_response`\n  * `agent::server::Connection::run`\n\n* **Historical `russh` releases before `0.58.0`**\n  `CryptoVec` was also used for non-secret transport and compression buffers,\n  allowing remote SSH traffic to trigger `CryptoVec` growth through:\n\n  * transport packet reads\n  * zlib decompression output\n\nThese remote paths were removed in `0.58.0` when `CryptoVec` stopped being used\nfor those buffers.\n\nUnder constrained memory conditions, historical `russh` versions prior to\n`0.58.0` can abort the process when remote compressed payload expansion causes\nallocation failure in `CryptoVec`. This was reproduced through the compression\npath and resulted in process termination in the Unix allocation/locking\nimplementation after null pointer allocation failure.\n\nFor current affected releases, oversized local SSH agent frame lengths could\ntrigger untrusted-input-driven buffer growth prior to validation.\n\nNo practical remote code execution, integrity or confidentiality impact has\nbeen demonstrated.\n\nFixed by validating CryptoVec growth operations and rejecting oversized SSH\nagent frame lengths before buffer allocation.",
+      "date": "2026-05-15",
+      "aliases": [
+        "CVE-2026-46673",
+        "GHSA-g9f8-wqj9-fjw5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/Eugeny/russh/commit/a2d48a71fe93d18cbd666c8d53d0882f5ce110c4"
+      ],
+      "source": null,
+      "url": "https://github.com/Eugeny/russh/commit/a2d48a71fe93d18cbd666c8d53d0882f5ce110c4",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.60.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

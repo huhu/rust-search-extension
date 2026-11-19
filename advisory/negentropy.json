@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0365",
+      "package": "negentropy",
+      "title": " Remote DoS through unchecked `IdList` allocation in negentropy",
+      "description": "## Summary\n\nThe `negentropy` crate is vulnerable to denial-of-service through an unchecked, peer-controlled ID count in reconciliation messages.\n\nWith the `std` feature enabled, which is the default configuration, a small malformed message can trigger an enormous memory allocation and terminate the application.\n\n## Details\n\nWhen processing an `IdList` range, the reconciliation parser uses the peer-provided ID count to reserve memory before checking whether the message contains the corresponding IDs:\n\n```rust\nlet mut their_elems: HashSet<Id> =\n    HashSet::with_capacity(num_ids as usize);\n```\n\nAn attacker can declare an arbitrarily large count without supplying any IDs. The allocation occurs before the parser reaches the ID-reading loop, which would otherwise reject the truncated message.\n\nWith Rust's default allocation-error behavior, a failed allocation aborts the process rather than unwinding. Consequently, `catch_unwind` cannot contain the failure.\n\nBoth `reconcile` and `reconcile_with_ids` reach the vulnerable parser.\n\nThe patched versions validate the count against the remaining message length before allocating:\n\n```rust\nif num_ids > (query.len() / ID_SIZE) as u64 {\n    return Err(Error::ParseEndsPrematurely);\n}\n```\n\n## Impact\n\nAn unauthenticated remote attacker can terminate an application that exposes reconciliation to untrusted peers without additional validation.\n\nFor example, a Nostr relay that forwards `NEG-OPEN` or `NEG-MSG` reconciliation payloads to the vulnerable parser can be taken down by a single client message. Clients processing messages from malicious relays are also exposed.\n\nThis specific vulnerability affects builds with the default `std` feature enabled. Builds without `std` use a `BTreeSet` and do not perform the vulnerable preallocation.\n\nA message-size limit alone does not prevent exploitation because the malicious payload can be only a few bytes long.\n\n## Credit\n\nDiscovered and fixed by **Alex Gleason** (<https://github.com/alexgleason>).",
+      "date": "2026-10-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "allocation",
+        "memory-exhaustion",
+        "remote"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/negentropy/commit/40f7290cbc5755a5ba3190279fbc848a97866280",
+        "https://github.com/nostrdevkit/negentropy/commit/894a32c0ab9f3efd750b3cf06caee27b3f9c3f12"
+      ],
+      "source": null,
+      "url": "https://github.com/nostrdevkit/negentropy/pull/14",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.4, <0.5.0",
+        ">=0.5.2"
+      ],
+      "unaffected": [
+        "<0.2.0"
+      ]
+    }
+  }
+]

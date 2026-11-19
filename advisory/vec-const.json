@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0082",
+      "package": "vec-const",
+      "title": "vec-const attempts to construct a Vec from a pointer to a const slice",
+      "description": "Affected versions of this crate claimed to construct a const `Vec` with nonzero length and capacity, but that cannot be done because such a `Vec` requires a pointer from an allocator.\n\nThe implementation was later changed to just construct a `std::borrow::Cow`.",
+      "date": "2021-08-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Eolu/vec-const/issues/1#issuecomment-898908241",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

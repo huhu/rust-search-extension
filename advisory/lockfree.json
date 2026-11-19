@@ -1,0 +1,60 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0284",
+      "package": "lockfree",
+      "title": "Double free in `Map::into_iter` and an uninitialized `Arc` in `SharedIncin::clear`",
+      "description": "Two independent soundness problems, both reachable from safe Rust.\n\n`Map::into_iter` drops `builder` (the caller-supplied hasher `H`) and `incin` by\nhand, then commits the ownership transfer with `mem::forget(self)`. `H::drop` is\nuser code and may panic. If it does, `mem::forget(self)` is skipped and the\nstill-live `Map` unwinds, whose field drop glue destroys `builder` a second\ntime. An empty map is enough — no entries or concurrency required.\n\n`SharedIncin::clear` writes `mem::uninitialized::<Arc<_>>()` into `self.inner`\nbefore taking the real `Arc` out. `Arc` has a validity invariant, so this is\nundefined behaviour at the point of creation, with no panic or concurrency\ninvolved. Between that write and the repairing one, `self.inner` also holds\ngarbage while `self` is still droppable, so an unwind from `incin.clear()` or\n`Arc::new` decrements a refcount through an uninitialized pointer. The\n`make_shared_incin!` macro is instantiated five times, so this covers `queue`,\n`stack`, `map`, `channel::spmc` and `channel::mpmc`.\n\n## Impact\n\n* CWE-415 (Double Free): the same allocation is freed twice.\n* CWE-416 (Use-After-Free): a freed allocation is accessed during a repeated `Drop`.\n* CWE-908 (Use of Uninitialized Resource): an `Arc` is constructed from uninitialized bytes.\n\n## Fix\n\nNo fixed release is available. The crate has had no release since 2018-11-18 and\nthe maintainer has not responded to the report.",
+      "date": "2026-08-26",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "panic-safety",
+        "memory-safety",
+        "use-after-free",
+        "double-free",
+        "uninitialized"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.com/bzim/lockfree/-/issues/7",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "lockfree::channel::mpmc::SharedIncin::clear": [
+          "<=0.5.1"
+        ],
+        "lockfree::channel::spmc::SharedIncin::clear": [
+          "<=0.5.1"
+        ],
+        "lockfree::map::Map::into_iter": [
+          "<=0.5.1"
+        ],
+        "lockfree::map::SharedIncin::clear": [
+          "<=0.5.1"
+        ],
+        "lockfree::queue::SharedIncin::clear": [
+          "<=0.5.1"
+        ],
+        "lockfree::stack::SharedIncin::clear": [
+          "<=0.5.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

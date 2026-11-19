@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0295",
+      "package": "z3",
+      "title": "Memory corruption bug on `ApplyResult` type",
+      "description": "The `ApplyResult` type contains a raw pointer to a C++ memory object and has a derived `Clone` implementation which creates a reference to this object without incrementing the associated reference counter. \n\nAs a result, if an instance of `ApplyResult` is duplicated through `Clone` and both instances are dropped a use-after-free can occur.",
+      "date": "2026-08-12",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/prove-rs/z3.rs/pull/578",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.21.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0058",
+      "package": "stream-cipher",
+      "title": "crate has been renamed to `cipher`",
+      "description": "This crate has been renamed from `stream-cipher` to `cipher`.\n\nThe new repository location is at:\n\n<https://github.com/RustCrypto/traits/tree/master/cipher>",
+      "date": "2020-10-15",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/traits/pull/337",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0012",
+      "package": "keccak",
+      "title": "Unsoundness in opt-in ARMv8 assembly backend for `keccak`",
+      "description": "### Summary\n\nThe `asm!` block enabled by the off-by-default `asm` feature, when enabled on ARMv8 targets, misspecified the operand\ntype for all of its operands, using `in` for pointers and values which were subsequently mutated by operations performed\nwithin the assembly block.\n\n### Impact\n\nIt's unclear what practical impact, if any, this actually had. Incorrect operand types are technically undefined\nbehavior, however changing them had no actual impact on the generated assembly for these targets. The possibility still\nexists that it may lead to potential memory safety or other issues on hypothetical future versions of rustc.\n\n### Mitigation\n\nThe operand types were changed from `in` to `inout`, and the impacted versions of the `keccak` crate were yanked.",
+      "date": "2026-02-12",
+      "aliases": [
+        "GHSA-3288-p39f-rqpv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/sponges/pull/101",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.1.6"
+      ],
+      "unaffected": []
+    }
+  }
+]
