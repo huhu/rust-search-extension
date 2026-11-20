@@ -85,43 +85,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0340",
-      "package": "quinn-proto",
-      "title": "Peer minimum ACK delay can panic quinn-proto when ACK_FREQUENCY transmission is enabled",
-      "description": "When sending ACK_FREQUENCY frames is enabled through\n`TransportConfig::ack_frequency_config(Some(..))`, the peer's transport parameters could cause\n`AckFrequencyState::candidate_max_ack_delay` to call `Duration::clamp` with a minimum greater\nthan its maximum, which panics.\n\nFor example, a peer advertising a `min_ack_delay` of 100,000 microseconds and a `max_ack_delay`\nof 100 milliseconds passes transport parameter validation. At a 5 ms RTT, the lower bound of the\nclamp becomes 100 ms while the upper bound is 25 ms, violating the precondition of `clamp` and\npanicking while driving the connection. Both automatically derived and explicitly configured\nmaximum ACK delays use this calculation.\n\nSending ACK_FREQUENCY frames is disabled by default, so only endpoints that opt in are affected.\n\nThe flaw was corrected in 0.11.18 by computing the delay with explicit minimum and maximum bounds\ninstead of `clamp`.\n\nThanks to [@zerox80](https://github.com/zerox80) for reporting this issue.",
-      "date": "2026-09-14",
-      "aliases": [
-        "GHSA-3g6h-r5qx-f6hq"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "panic"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/quinn-rs/quinn/pull/2868",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.11.18"
-      ],
-      "unaffected": [
-        "<0.11.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0343",
       "package": "quinn-proto",
       "title": "Outgoing datagram buffer accounting can panic the sender in quinn-proto",
@@ -154,6 +117,43 @@
       ],
       "unaffected": [
         "<0.11.17"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0340",
+      "package": "quinn-proto",
+      "title": "Peer minimum ACK delay can panic quinn-proto when ACK_FREQUENCY transmission is enabled",
+      "description": "When sending ACK_FREQUENCY frames is enabled through\n`TransportConfig::ack_frequency_config(Some(..))`, the peer's transport parameters could cause\n`AckFrequencyState::candidate_max_ack_delay` to call `Duration::clamp` with a minimum greater\nthan its maximum, which panics.\n\nFor example, a peer advertising a `min_ack_delay` of 100,000 microseconds and a `max_ack_delay`\nof 100 milliseconds passes transport parameter validation. At a 5 ms RTT, the lower bound of the\nclamp becomes 100 ms while the upper bound is 25 ms, violating the precondition of `clamp` and\npanicking while driving the connection. Both automatically derived and explicitly configured\nmaximum ACK delays use this calculation.\n\nSending ACK_FREQUENCY frames is disabled by default, so only endpoints that opt in are affected.\n\nThe flaw was corrected in 0.11.18 by computing the delay with explicit minimum and maximum bounds\ninstead of `clamp`.\n\nThanks to [@zerox80](https://github.com/zerox80) for reporting this issue.",
+      "date": "2026-09-14",
+      "aliases": [
+        "GHSA-3g6h-r5qx-f6hq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "panic"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2868",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.18"
+      ],
+      "unaffected": [
+        "<0.11.0"
       ]
     }
   },
@@ -196,6 +196,43 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0339",
+      "package": "quinn-proto",
+      "title": "Unbounded growth of pending connection ID retirements in quinn-proto",
+      "description": "When processing a NEW_CONNECTION_ID frame, quinn-proto queues a RETIRE_CONNECTION_ID frame for\neach connection ID that the peer asked it to retire. The normal path bounds this queue and closes\nthe connection with a CONNECTION_ID_LIMIT_ERROR if the bound would be exceeded. However, the path\nhandling a connection ID that had already been retired pushed onto the queue without applying\nthe limit and without deduplicating.\n\nA peer that has completed the handshake can first send a NEW_CONNECTION_ID frame with a large\n`retire_prior_to` value to advance the receiver's connection ID window, and then repeatedly send\nNEW_CONNECTION_ID frames with sequence numbers below that window. Each such frame adds another\nentry to the queue. The queue is only drained by sending RETIRE_CONNECTION_ID frames, which are\nsubject to congestion control, so a peer that withholds acknowledgements can stall the drain while\ncontinuing to flood, growing the victim's memory use without bound.\n\nThe flaw was corrected in 0.11.17 by applying the same limit on the already-retired path.\n\nThanks to [@scadastrangelove](https://github.com/scadastrangelove) for reporting this issue.",
+      "date": "2026-08-17",
+      "aliases": [
+        "GHSA-hmxj-32vh-65vr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "oom"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/pull/2790",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.17"
+      ],
+      "unaffected": [
+        "<0.6.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0341",
       "package": "quinn-proto",
       "title": "Stream reassembly memory-exhaustion guard in quinn-proto can be bypassed",
@@ -230,43 +267,6 @@
       ],
       "unaffected": [
         "<0.11.15"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0339",
-      "package": "quinn-proto",
-      "title": "Unbounded growth of pending connection ID retirements in quinn-proto",
-      "description": "When processing a NEW_CONNECTION_ID frame, quinn-proto queues a RETIRE_CONNECTION_ID frame for\neach connection ID that the peer asked it to retire. The normal path bounds this queue and closes\nthe connection with a CONNECTION_ID_LIMIT_ERROR if the bound would be exceeded. However, the path\nhandling a connection ID that had already been retired pushed onto the queue without applying\nthe limit and without deduplicating.\n\nA peer that has completed the handshake can first send a NEW_CONNECTION_ID frame with a large\n`retire_prior_to` value to advance the receiver's connection ID window, and then repeatedly send\nNEW_CONNECTION_ID frames with sequence numbers below that window. Each such frame adds another\nentry to the queue. The queue is only drained by sending RETIRE_CONNECTION_ID frames, which are\nsubject to congestion control, so a peer that withholds acknowledgements can stall the drain while\ncontinuing to flood, growing the victim's memory use without bound.\n\nThe flaw was corrected in 0.11.17 by applying the same limit on the already-retired path.\n\nThanks to [@scadastrangelove](https://github.com/scadastrangelove) for reporting this issue.",
-      "date": "2026-08-17",
-      "aliases": [
-        "GHSA-hmxj-32vh-65vr"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "oom"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/quinn-rs/quinn/pull/2790",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.11.17"
-      ],
-      "unaffected": [
-        "<0.6.0"
       ]
     }
   },

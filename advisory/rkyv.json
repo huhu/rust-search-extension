@@ -40,6 +40,46 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0233",
+      "package": "rkyv",
+      "title": "Crafted archives can cause a use-after-free during deserialization",
+      "description": "Insufficient archive range validation could allow a crafted archive to reach\n`ArchivedString::deserialize` with an invalid pointer. A reported reproducer\nused `rkyv::from_bytes` to deserialize a struct containing strings, a vector,\na box, and an optional hash map. AddressSanitizer detected a heap use-after-free\nduring string deserialization.\n\nThe flaw could be triggered through the safe checked deserialization API when\nprocessing malicious archive bytes. Version 0.8.17 rejects the malformed\narchive during validation. Users who process untrusted archives should upgrade\nto 0.8.17 or later.",
+      "date": "2026-05-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "validation",
+        "deserialization"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/rkyv/rkyv/commit/3c9d07fbff5949261bef38d00ab160b129bd9d3a",
+        "https://github.com/rkyv/rkyv/commit/107772907c4e839fa67900385f0d4814e7d15e42"
+      ],
+      "source": null,
+      "url": "https://github.com/rkyv/rkyv/issues/666",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.17"
+      ],
+      "unaffected": [
+        "<0.8.0-rc.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0234",
       "package": "rkyv",
       "title": "Insufficient archive validation can cause out-of-bounds reads in archives containing hash tables",
@@ -68,46 +108,6 @@
       ],
       "source": null,
       "url": "https://github.com/rkyv/rkyv/issues/663",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.8.17"
-      ],
-      "unaffected": [
-        "<0.8.0-rc.1"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0233",
-      "package": "rkyv",
-      "title": "Crafted archives can cause a use-after-free during deserialization",
-      "description": "Insufficient archive range validation could allow a crafted archive to reach\n`ArchivedString::deserialize` with an invalid pointer. A reported reproducer\nused `rkyv::from_bytes` to deserialize a struct containing strings, a vector,\na box, and an optional hash map. AddressSanitizer detected a heap use-after-free\nduring string deserialization.\n\nThe flaw could be triggered through the safe checked deserialization API when\nprocessing malicious archive bytes. Version 0.8.17 rejects the malformed\narchive during validation. Users who process untrusted archives should upgrade\nto 0.8.17 or later.",
-      "date": "2026-05-11",
-      "aliases": [],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "memory-corruption"
-      ],
-      "keywords": [
-        "use-after-free",
-        "validation",
-        "deserialization"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [
-        "https://github.com/rkyv/rkyv/commit/3c9d07fbff5949261bef38d00ab160b129bd9d3a",
-        "https://github.com/rkyv/rkyv/commit/107772907c4e839fa67900385f0d4814e7d15e42"
-      ],
-      "source": null,
-      "url": "https://github.com/rkyv/rkyv/issues/666",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false

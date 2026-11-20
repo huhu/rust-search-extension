@@ -105,57 +105,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0497",
-      "package": "bsv-rs",
-      "title": "Transaction::from_json holds an input txid that is not 64 hex digits and writes the input as spending the zero txid",
-      "description": "`Transaction::from_json`, for a document with no `hex` member, held each\ninput's `txid` member as given. An input `txid` that is not 64 hex digits\n(`\"zz\"`, `\"\"`, 63 or 65 digits, characters that are not hex digits) answered\n`Ok`: `source_txid` and `to_json` gave the text back, while `to_binary` wrote\nthe input as spending the txid of 32 zero bytes and `id()` hashed those bytes.\nDocuments naming different texts were one transaction, spending an outpoint\nnone of them named.\n\nAn application that reads a peer's transaction document with `from_json` and\nrelies both on the text of its inputs and on its bytes or `id()` is affected;\none that reads only documents it produced is not.\n\n0.8.6 refuses such a txid (`Invalid txid of input N: expected 64 hex digits`).\nWhere upgrading is not possible, require each input's `txid` to be 64 ASCII hex\ndigits before calling `from_json`.",
-      "date": "2026-11-11",
-      "aliases": [
-        "GHSA-84xq-3662-pvx5"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [
-        "bitcoin",
-        "transaction",
-        "txid",
-        "json",
-        "parsing",
-        "input-validation"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-      "informational": null,
-      "references": [
-        "https://github.com/Calhooon/bsv-rs/issues/845",
-        "https://github.com/Calhooon/bsv-rs/pull/856"
-      ],
-      "source": null,
-      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.6/CHANGELOG.md",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": {
-      "arch": [],
-      "os": [],
-      "functions": {
-        "bsv_rs::transaction::Transaction::from_json": [
-          "<0.8.6",
-          ">=0.9.0-beta.1, <=0.9.0-beta.7"
-        ]
-      }
-    },
-    "versions": {
-      "patched": [
-        ">=0.8.6, <0.9.0-beta.1",
-        ">0.9.0-beta.7"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0499",
       "package": "bsv-rs",
       "title": "Signature::from_der reads a signature with bytes after it, a wrong sequence length or an unneeded zero as the signature",
@@ -228,6 +177,57 @@
         "bsv_rs::wallet::ProtoWallet::verify_signature": [
           "<0.8.6",
           ">=0.9.0-beta.1, <=0.9.0-beta.2"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.8.6, <0.9.0-beta.1",
+        ">0.9.0-beta.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0497",
+      "package": "bsv-rs",
+      "title": "Transaction::from_json holds an input txid that is not 64 hex digits and writes the input as spending the zero txid",
+      "description": "`Transaction::from_json`, for a document with no `hex` member, held each\ninput's `txid` member as given. An input `txid` that is not 64 hex digits\n(`\"zz\"`, `\"\"`, 63 or 65 digits, characters that are not hex digits) answered\n`Ok`: `source_txid` and `to_json` gave the text back, while `to_binary` wrote\nthe input as spending the txid of 32 zero bytes and `id()` hashed those bytes.\nDocuments naming different texts were one transaction, spending an outpoint\nnone of them named.\n\nAn application that reads a peer's transaction document with `from_json` and\nrelies both on the text of its inputs and on its bytes or `id()` is affected;\none that reads only documents it produced is not.\n\n0.8.6 refuses such a txid (`Invalid txid of input N: expected 64 hex digits`).\nWhere upgrading is not possible, require each input's `txid` to be 64 ASCII hex\ndigits before calling `from_json`.",
+      "date": "2026-11-11",
+      "aliases": [
+        "GHSA-84xq-3662-pvx5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "bitcoin",
+        "transaction",
+        "txid",
+        "json",
+        "parsing",
+        "input-validation"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/Calhooon/bsv-rs/issues/845",
+        "https://github.com/Calhooon/bsv-rs/pull/856"
+      ],
+      "source": null,
+      "url": "https://github.com/Calhooon/bsv-rs/blob/v0.8.6/CHANGELOG.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "bsv_rs::transaction::Transaction::from_json": [
+          "<0.8.6",
+          ">=0.9.0-beta.1, <=0.9.0-beta.7"
         ]
       }
     },

@@ -1,6 +1,45 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0195",
+      "package": "quick-xml",
+      "title": "Unbounded namespace-declaration allocation in `NsReader` enables memory-exhaustion denial of service",
+      "description": "`NsReader` resolves namespaces by calling `NamespaceResolver::push` for every\n`Start`/`Empty` event *before* the event is returned to the caller. `push`\niterated all `xmlns` / `xmlns:*` attributes on the start tag and, for each one,\nappended the prefix bytes to an internal buffer and pushed a `NamespaceBinding`\n(32 bytes on 64-bit) to an internal `Vec`, with no upper bound on the number of\ndeclarations.\n\n## Impact\n\nA start tag with `N` namespace declarations drove roughly `3×` the tag's byte\nsize in `NamespaceResolver` heap, allocated *inside* `quick-xml` before the\n`NsReader` consumer ever received the event and could inspect or reject it. A\nconsumer that bounds its *input* size therefore still cannot bound this\nallocation: an `M`-byte start tag yields on the order of `3 × M` bytes of\nresolver heap the caller never sees.\n\nOn untrusted XML this lets a remote, unauthenticated attacker force large heap\nallocations with a single start tag. With several `NsReader`s running\nconcurrently on independent inputs (a common server pattern), the allocations\nstack and can exhaust process memory, causing the operating system to kill the\nprocess (OOM). This was confirmed against a real-world RPKI relying party (NLnet\nLabs Routinator), where concurrent RRDP validation workers parsing a crafted\n`snapshot.xml` exceeded the memory limit and the process was OOM-killed.\n\n## Affected code paths\n\nConsumers using `NsReader` (which always calls `NamespaceResolver::push` before\nyielding `Start`/`Empty`), or calling `NamespaceResolver::push` directly. A plain\n`Reader` that does not perform namespace resolution is not affected.\n\n## Remediation\n\nUpgrade to `quick-xml >= 0.41.0`. `NamespaceResolver::push` now rejects a start\ntag that declares more than `DEFAULT_MAX_DECLARATIONS_PER_ELEMENT` (256)\nnamespace bindings, returning the new `NamespaceError::TooManyDeclarations`\ninstead of allocating without limit. The limit is configurable via\n`NamespaceResolver::set_max_declarations_per_element` (use `usize::MAX` to\nrestore the previous unbounded behavior), and `NsReader::resolver_mut()` is\nprovided to reach it.\n\nThere is no clean workaround for `NsReader` consumers before 0.41.0, as the\nallocation happens inside the reader with no configuration knob to cap it.",
+      "date": "2026-06-29",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "xml",
+        "parser",
+        "dos",
+        "memory",
+        "namespace"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/tafia/quick-xml/commit/7ca25266e94987210daa864889ab15c9332c8a2a"
+      ],
+      "source": null,
+      "url": "https://github.com/tafia/quick-xml/issues/970",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.41.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0194",
       "package": "quick-xml",
       "title": "Quadratic run time when checking a start tag for duplicate attribute names",
@@ -27,45 +66,6 @@
       ],
       "source": null,
       "url": "https://github.com/tafia/quick-xml/issues/969",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.41.0"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0195",
-      "package": "quick-xml",
-      "title": "Unbounded namespace-declaration allocation in `NsReader` enables memory-exhaustion denial of service",
-      "description": "`NsReader` resolves namespaces by calling `NamespaceResolver::push` for every\n`Start`/`Empty` event *before* the event is returned to the caller. `push`\niterated all `xmlns` / `xmlns:*` attributes on the start tag and, for each one,\nappended the prefix bytes to an internal buffer and pushed a `NamespaceBinding`\n(32 bytes on 64-bit) to an internal `Vec`, with no upper bound on the number of\ndeclarations.\n\n## Impact\n\nA start tag with `N` namespace declarations drove roughly `3×` the tag's byte\nsize in `NamespaceResolver` heap, allocated *inside* `quick-xml` before the\n`NsReader` consumer ever received the event and could inspect or reject it. A\nconsumer that bounds its *input* size therefore still cannot bound this\nallocation: an `M`-byte start tag yields on the order of `3 × M` bytes of\nresolver heap the caller never sees.\n\nOn untrusted XML this lets a remote, unauthenticated attacker force large heap\nallocations with a single start tag. With several `NsReader`s running\nconcurrently on independent inputs (a common server pattern), the allocations\nstack and can exhaust process memory, causing the operating system to kill the\nprocess (OOM). This was confirmed against a real-world RPKI relying party (NLnet\nLabs Routinator), where concurrent RRDP validation workers parsing a crafted\n`snapshot.xml` exceeded the memory limit and the process was OOM-killed.\n\n## Affected code paths\n\nConsumers using `NsReader` (which always calls `NamespaceResolver::push` before\nyielding `Start`/`Empty`), or calling `NamespaceResolver::push` directly. A plain\n`Reader` that does not perform namespace resolution is not affected.\n\n## Remediation\n\nUpgrade to `quick-xml >= 0.41.0`. `NamespaceResolver::push` now rejects a start\ntag that declares more than `DEFAULT_MAX_DECLARATIONS_PER_ELEMENT` (256)\nnamespace bindings, returning the new `NamespaceError::TooManyDeclarations`\ninstead of allocating without limit. The limit is configurable via\n`NamespaceResolver::set_max_declarations_per_element` (use `usize::MAX` to\nrestore the previous unbounded behavior), and `NsReader::resolver_mut()` is\nprovided to reach it.\n\nThere is no clean workaround for `NsReader` consumers before 0.41.0, as the\nallocation happens inside the reader with no configuration knob to cap it.",
-      "date": "2026-06-29",
-      "aliases": [],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "xml",
-        "parser",
-        "dos",
-        "memory",
-        "namespace"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "informational": null,
-      "references": [
-        "https://github.com/tafia/quick-xml/commit/7ca25266e94987210daa864889ab15c9332c8a2a"
-      ],
-      "source": null,
-      "url": "https://github.com/tafia/quick-xml/issues/970",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false

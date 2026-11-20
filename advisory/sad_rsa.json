@@ -1,0 +1,61 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0583",
+      "package": "sad-rsa",
+      "title": "Panics during RSA private-key construction, validation, or re-encoding",
+      "description": "`RsaPrivateKey` private-key construction, validation, and serialization can panic across three\nclasses of inputs, as well as when re-encoding certain valid keys:\n\n- `RsaPrivateKey::from_components` and PKCS#1 or PKCS#8 private-key decoding (DER or PEM) can panic\n  during validation when a supplied factor equals 1, because `RsaPrivateKey::validate()` let a\n  factor of 1 reach a later check that panicked.\n- `RsaPrivateKey::from_primes` and `RsaPrivateKey::from_p_q` can panic during construction when a\n  supplied factor is 0, 1, or even.\n- Prime recovery in `RsaPrivateKey::from_components` can panic when the private exponent is 0.\n- For a key, including a valid one, whose first prime occupies more limbs than the second,\n  `crt_coefficient`, `to_pkcs1_der`, `to_pkcs8_der`, and `serde` serialization can panic.\n\nAn application that imports untrusted private keys or factors, or re-encodes such keys, can lose a\nworker, or the whole process when built with `panic = \"abort\"`. Public-key parsing is not affected.\n\nFixed in 0.10.4, which rejects factors below 2, even factors, repeated factors, and a zero private\nexponent during prime recovery, and computes the CRT coefficient and re-encodes valid two-prime\nkeys when the first prime occupies more limbs than the second.\n\nIf you cannot upgrade to 0.10.4, isolate the entire import, construction, CRT calculation, or\nserialization in a separate process and treat an abnormal exit as an operation failure, or use\n`catch_unwind` around the entire operation when panics unwind.",
+      "date": "2026-11-19",
+      "aliases": [
+        "GHSA-3hj7-mch7-c7cc"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "rsa",
+        "panic",
+        "private-key",
+        "pkcs1",
+        "pkcs8"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sadco-io/sad-rsa/releases/tag/v0.10.4",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "sad_rsa::RsaPrivateKey::crt_coefficient": [
+          "<0.10.4"
+        ],
+        "sad_rsa::RsaPrivateKey::from_components": [
+          "<0.10.4"
+        ],
+        "sad_rsa::RsaPrivateKey::from_p_q": [
+          "<0.10.4"
+        ],
+        "sad_rsa::RsaPrivateKey::from_primes": [
+          "<0.10.4"
+        ],
+        "sad_rsa::RsaPrivateKey::validate": [
+          "<0.10.4"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.10.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

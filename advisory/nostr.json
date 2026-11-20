@@ -1,6 +1,45 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0225",
+      "package": "nostr",
+      "title": "Debug output exposes NIP-46 and NIP-60 credentials",
+      "description": "Several NIP-46 and NIP-60 types used derived `Debug` implementations even though\ntheir fields contained credentials or decrypted application data. Formatting these\nvalues exposed NIP-46 connection secrets and request parameters, as well as NIP-60\nprivate keys, Cashu bearer proofs, and quote capability identifiers.\n\nApplications commonly include `Debug` output in diagnostic logs, tracing spans, or\nerror reports. Anyone able to read those outputs could recover the disclosed\ncredentials and, depending on the value, impersonate a signer connection or spend\nwallet tokens. The issue does not expose data unless an affected value is formatted\nand the resulting output is made accessible.\n\nThe affected types now use custom `Debug` implementations that preserve variant and\nnon-sensitive structural information while replacing credentials, bearer values,\nand plaintext fields with redaction markers. Serialization and protocol behavior are\nunchanged.",
+      "date": "2026-08-01",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "nostr",
+        "nip46",
+        "nip60",
+        "credentials"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/nostrdevkit/nostr/commit/2bc5fa2c270bb87b397d381909053f12ee734d44",
+        "https://github.com/nostrdevkit/nostr/commit/778af7e4930449dcdd7a070774da7b71b282d171"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0230",
       "package": "nostr",
       "title": "Empty NIP-50 search filters can panic",
@@ -38,10 +77,10 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0227",
+      "id": "RUSTSEC-2026-0229",
       "package": "nostr",
-      "title": "NIP-44 v2 decryption permits resource exhaustion",
-      "description": "The NIP-44 decryption entry point Base64-decoded the complete attacker-controlled\npayload before determining its version or enforcing any size limit. For v2 payloads,\nthe decoded buffer was then authenticated with HMAC even when it was much larger than\nthe maximum payload supported by the crate's current v2 codec.\n\nA malicious relay or event author could deliver an oversized value to an application\nthat decrypts NIP-44 content. The value caused memory allocation and Base64 and HMAC\nwork proportional to its size before authentication failed; knowledge of the\nconversation key was not required to consume those initial resources. Repeated\npayloads could exhaust memory or CPU and make the receiving application unavailable.\nThe issue does not disclose plaintext or key material and does not bypass message\nauthentication.\n\nDecryption now reads only the encoded version prefix first, derives the bound from\nthe largest payload the current v2 encoder can emit, and rejects oversized encoded\nand decoded payloads before full allocation or HMAC processing. The limit remains in\nthe v2 implementation so a future codec with a different length format can define its\nown bound.",
+      "title": "NIP-98 authorization parsing permits resource exhaustion",
+      "description": "The NIP-98 HTTP authorization parser Base64-decoded the complete authorization value\nand parsed the resulting JSON event without applying an application-level size limit.\nBoth operations occurred before the event's signature and authorization fields could\nbe validated.\n\nAn unauthenticated remote client could send an oversized `Authorization: Nostr`\nheader to a server using this parser. Each request caused memory allocation and\ndecoding and JSON parsing work proportional to the supplied value, allowing repeated\nrequests to consume server memory and CPU. The impact depends on any lower HTTP header\nlimit already enforced by the hosting server. The issue does not bypass NIP-98\nauthentication or disclose protected data.\n\nThe parser now rejects oversized encoded input before Base64 allocation and rejects\ndecoded authorization events larger than 64 KiB before JSON parsing.",
       "date": "2026-08-01",
       "aliases": [],
       "related": [],
@@ -51,13 +90,13 @@
       ],
       "keywords": [
         "nostr",
-        "nip44",
-        "decryption"
+        "nip98",
+        "authorization"
       ],
       "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
       "informational": null,
       "references": [
-        "https://github.com/nostrdevkit/nostr/commit/89dc1a77eaa774174588c5a38b6324c502948830"
+        "https://github.com/nostrdevkit/nostr/commit/fd69825a3aa83c4a99f0d620fafba66c765db96b"
       ],
       "source": null,
       "url": null,
@@ -114,43 +153,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0229",
-      "package": "nostr",
-      "title": "NIP-98 authorization parsing permits resource exhaustion",
-      "description": "The NIP-98 HTTP authorization parser Base64-decoded the complete authorization value\nand parsed the resulting JSON event without applying an application-level size limit.\nBoth operations occurred before the event's signature and authorization fields could\nbe validated.\n\nAn unauthenticated remote client could send an oversized `Authorization: Nostr`\nheader to a server using this parser. Each request caused memory allocation and\ndecoding and JSON parsing work proportional to the supplied value, allowing repeated\nrequests to consume server memory and CPU. The impact depends on any lower HTTP header\nlimit already enforced by the hosting server. The issue does not bypass NIP-98\nauthentication or disclose protected data.\n\nThe parser now rejects oversized encoded input before Base64 allocation and rejects\ndecoded authorization events larger than 64 KiB before JSON parsing.",
-      "date": "2026-08-01",
-      "aliases": [],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "nostr",
-        "nip98",
-        "authorization"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "informational": null,
-      "references": [
-        "https://github.com/nostrdevkit/nostr/commit/fd69825a3aa83c4a99f0d620fafba66c765db96b"
-      ],
-      "source": null,
-      "url": null,
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.44.7"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0228",
       "package": "nostr",
       "title": "NIP-04 parsing amplifies malformed ciphertext memory use",
@@ -188,28 +190,26 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0225",
+      "id": "RUSTSEC-2026-0227",
       "package": "nostr",
-      "title": "Debug output exposes NIP-46 and NIP-60 credentials",
-      "description": "Several NIP-46 and NIP-60 types used derived `Debug` implementations even though\ntheir fields contained credentials or decrypted application data. Formatting these\nvalues exposed NIP-46 connection secrets and request parameters, as well as NIP-60\nprivate keys, Cashu bearer proofs, and quote capability identifiers.\n\nApplications commonly include `Debug` output in diagnostic logs, tracing spans, or\nerror reports. Anyone able to read those outputs could recover the disclosed\ncredentials and, depending on the value, impersonate a signer connection or spend\nwallet tokens. The issue does not expose data unless an affected value is formatted\nand the resulting output is made accessible.\n\nThe affected types now use custom `Debug` implementations that preserve variant and\nnon-sensitive structural information while replacing credentials, bearer values,\nand plaintext fields with redaction markers. Serialization and protocol behavior are\nunchanged.",
+      "title": "NIP-44 v2 decryption permits resource exhaustion",
+      "description": "The NIP-44 decryption entry point Base64-decoded the complete attacker-controlled\npayload before determining its version or enforcing any size limit. For v2 payloads,\nthe decoded buffer was then authenticated with HMAC even when it was much larger than\nthe maximum payload supported by the crate's current v2 codec.\n\nA malicious relay or event author could deliver an oversized value to an application\nthat decrypts NIP-44 content. The value caused memory allocation and Base64 and HMAC\nwork proportional to its size before authentication failed; knowledge of the\nconversation key was not required to consume those initial resources. Repeated\npayloads could exhaust memory or CPU and make the receiving application unavailable.\nThe issue does not disclose plaintext or key material and does not bypass message\nauthentication.\n\nDecryption now reads only the encoded version prefix first, derives the bound from\nthe largest payload the current v2 encoder can emit, and rejects oversized encoded\nand decoded payloads before full allocation or HMAC processing. The limit remains in\nthe v2 implementation so a future codec with a different length format can define its\nown bound.",
       "date": "2026-08-01",
       "aliases": [],
       "related": [],
       "collection": "crates",
       "categories": [
-        "file-disclosure"
+        "denial-of-service"
       ],
       "keywords": [
         "nostr",
-        "nip46",
-        "nip60",
-        "credentials"
+        "nip44",
+        "decryption"
       ],
-      "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
       "informational": null,
       "references": [
-        "https://github.com/nostrdevkit/nostr/commit/2bc5fa2c270bb87b397d381909053f12ee734d44",
-        "https://github.com/nostrdevkit/nostr/commit/778af7e4930449dcdd7a070774da7b71b282d171"
+        "https://github.com/nostrdevkit/nostr/commit/89dc1a77eaa774174588c5a38b6324c502948830"
       ],
       "source": null,
       "url": null,

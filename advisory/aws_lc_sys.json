@@ -80,6 +80,47 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0045",
+      "package": "aws-lc-sys",
+      "title": "Timing Side-Channel in AES-CCM Tag Verification in AWS-LC",
+      "description": "Observable timing discrepancy in AES-CCM decryption in AWS-LC allows an\nunauthenticated user to potentially determine authentication tag validity\nvia timing analysis.\n\nThe impacted implementations are through the EVP CIPHER API:\n`EVP_aes_128_ccm`, `EVP_aes_192_ccm`, and `EVP_aes_256_ccm`.\n\nCustomers of AWS services do not need to take action. `aws-lc-sys` contains\ncode from AWS-LC. Applications using `aws-lc-sys` should upgrade to the most\nrecent release of `aws-lc-sys`.\n\n## Workarounds\n\nIn the special cases of using AES-CCM with (M=4, L=2), (M=8, L=2), or\n(M=16, L=2), applications can workaround this issue by using AES-CCM through\nthe EVP AEAD API using implementations `EVP_aead_aes_128_ccm_bluetooth`,\n`EVP_aead_aes_128_ccm_bluetooth_8`, and `EVP_aead_aes_128_ccm_matter`\nrespectively.\n\nOtherwise, there is no workaround and applications using `aws-lc-sys` should\nupgrade to the most recent release.",
+      "date": "2026-03-02",
+      "aliases": [
+        "CVE-2026-3337",
+        "GHSA-65p9-r9h6-22vj",
+        "GHSA-frmv-5gcm-jwxh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "aes-ccm",
+        "timing",
+        "side-channel"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://aws.amazon.com/security/security-bulletins/2026-005-AWS",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.38.0"
+      ],
+      "unaffected": [
+        "<0.14.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0047",
       "package": "aws-lc-sys",
       "title": "PKCS7_verify Signature Validation Bypass in AWS-LC",
@@ -158,47 +199,6 @@
       ],
       "unaffected": [
         "<0.24.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0045",
-      "package": "aws-lc-sys",
-      "title": "Timing Side-Channel in AES-CCM Tag Verification in AWS-LC",
-      "description": "Observable timing discrepancy in AES-CCM decryption in AWS-LC allows an\nunauthenticated user to potentially determine authentication tag validity\nvia timing analysis.\n\nThe impacted implementations are through the EVP CIPHER API:\n`EVP_aes_128_ccm`, `EVP_aes_192_ccm`, and `EVP_aes_256_ccm`.\n\nCustomers of AWS services do not need to take action. `aws-lc-sys` contains\ncode from AWS-LC. Applications using `aws-lc-sys` should upgrade to the most\nrecent release of `aws-lc-sys`.\n\n## Workarounds\n\nIn the special cases of using AES-CCM with (M=4, L=2), (M=8, L=2), or\n(M=16, L=2), applications can workaround this issue by using AES-CCM through\nthe EVP AEAD API using implementations `EVP_aead_aes_128_ccm_bluetooth`,\n`EVP_aead_aes_128_ccm_bluetooth_8`, and `EVP_aead_aes_128_ccm_matter`\nrespectively.\n\nOtherwise, there is no workaround and applications using `aws-lc-sys` should\nupgrade to the most recent release.",
-      "date": "2026-03-02",
-      "aliases": [
-        "CVE-2026-3337",
-        "GHSA-65p9-r9h6-22vj",
-        "GHSA-frmv-5gcm-jwxh"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [
-        "aes-ccm",
-        "timing",
-        "side-channel"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://aws.amazon.com/security/security-bulletins/2026-005-AWS",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.38.0"
-      ],
-      "unaffected": [
-        "<0.14.0"
       ]
     }
   }

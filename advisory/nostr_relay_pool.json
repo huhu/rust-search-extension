@@ -30,6 +30,42 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0224",
+      "package": "nostr-relay-pool",
+      "title": "Verification cache poisoning allows forged Nostr events to bypass signature validation",
+      "description": "The `nostr-relay-pool` crate cached the result of event signature verification\nbefore the check was actually performed. Because the entry was inserted\nunconditionally, a first delivery whose signature failed was still recorded\nin the cache. A subsequent delivery of the same event (identical ID,\nbut with a forged signature) would then hit the cache, causing signature\nverification to be skipped entirely. The forged event was passed on to\n`NostrDatabase::save_event()` as if it had been validated.\n\nApplications that connect to untrusted or compromised Nostr relays and persist\nreceived events are vulnerable. An attacker can inject arbitrary events\nwithout a valid signature into the application's trusted database, enabling\nimpersonation of any public key or corruption of application state derived from\nstored events.\n\nThe issue does not compromise confidentiality or availability. It solely\nundermines the integrity of stored event data.\n\nThe fix, released in version 0.44.2, moves the cache insertion to occur only\nafter a successful signature verification, so that failed attempts never create\na cache entry.\n\n## Credit\n\nDiscovered and reported by [Ali Al-Sorehi](https://github.com/aykoooo)",
+      "date": "2026-08-01",
+      "aliases": [
+        "GHSA-f96q-5f6p-v7cj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "cache-poisoning",
+        "signature-verification"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nostrdevkit/nostr/commit/02a88bd5688de058bfba8aa9fb4612441a384eff",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.44.2"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0232",
       "package": "nostr-relay-pool",
       "title": "Processing of unverified relay events",
@@ -98,42 +134,6 @@
     "versions": {
       "patched": [
         ">=0.44.3"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0224",
-      "package": "nostr-relay-pool",
-      "title": "Verification cache poisoning allows forged Nostr events to bypass signature validation",
-      "description": "The `nostr-relay-pool` crate cached the result of event signature verification\nbefore the check was actually performed. Because the entry was inserted\nunconditionally, a first delivery whose signature failed was still recorded\nin the cache. A subsequent delivery of the same event (identical ID,\nbut with a forged signature) would then hit the cache, causing signature\nverification to be skipped entirely. The forged event was passed on to\n`NostrDatabase::save_event()` as if it had been validated.\n\nApplications that connect to untrusted or compromised Nostr relays and persist\nreceived events are vulnerable. An attacker can inject arbitrary events\nwithout a valid signature into the application's trusted database, enabling\nimpersonation of any public key or corruption of application state derived from\nstored events.\n\nThe issue does not compromise confidentiality or availability. It solely\nundermines the integrity of stored event data.\n\nThe fix, released in version 0.44.2, moves the cache insertion to occur only\nafter a successful signature verification, so that failed attempts never create\na cache entry.\n\n## Credit\n\nDiscovered and reported by [Ali Al-Sorehi](https://github.com/aykoooo)",
-      "date": "2026-08-01",
-      "aliases": [
-        "GHSA-f96q-5f6p-v7cj"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [
-        "cache-poisoning",
-        "signature-verification"
-      ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/nostrdevkit/nostr/commit/02a88bd5688de058bfba8aa9fb4612441a384eff",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.44.2"
       ],
       "unaffected": []
     }

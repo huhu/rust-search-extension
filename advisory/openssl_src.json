@@ -1,42 +1,6 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2023-0012",
-      "package": "openssl-src",
-      "title": "`NULL` dereference validating DSA public key",
-      "description": "An invalid pointer dereference on read can be triggered when an\napplication tries to check a malformed DSA public key by the\n`EVP_PKEY_public_check()` function. This will most likely lead\nto an application crash. This function can be called on public\nkeys supplied from untrusted sources which could allow an attacker\nto cause a denial of service attack.\n\nThe TLS implementation in OpenSSL does not call this function\nbut applications might call the function if there are additional\nsecurity requirements imposed by standards such as FIPS 140-3.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2023-0217",
-        "GHSA-vxrh-cpg7-8vjr"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=300.0.12"
-      ],
-      "unaffected": [
-        "<300.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2023-0007",
       "package": "openssl-src",
       "title": "Timing Oracle in RSA Decryption",
@@ -50,77 +14,6 @@
       "collection": "crates",
       "categories": [
         "crypto-failure"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.25, <300.0",
-        ">=300.0.12"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0013",
-      "package": "openssl-src",
-      "title": "`NULL` dereference during PKCS7 data verification",
-      "description": "A `NULL` pointer can be dereferenced when signatures are being\nverified on PKCS7 `signed` or `signedAndEnveloped` data. In case the hash\nalgorithm used for the signature is known to the OpenSSL library but\nthe implementation of the hash algorithm is not available the digest\ninitialization will fail. There is a missing check for the return\nvalue from the initialization function which later leads to invalid\nusage of the digest API most likely leading to a crash.\n\nThe unavailability of an algorithm can be caused by using FIPS\nenabled configuration of providers or more commonly by not loading\nthe legacy provider.\n\nPKCS7 data is processed by the SMIME library calls and also by the\ntime stamp (TS) library calls. The TLS implementation in OpenSSL does\nnot call these functions however third party applications would be\naffected if they call these functions to verify signatures on untrusted\ndata.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2023-0401",
-        "GHSA-vrh7-x64v-7vxq"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20230207.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=300.0.12"
-      ],
-      "unaffected": [
-        "<300.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2023-0010",
-      "package": "openssl-src",
-      "title": "Double free after calling `PEM_read_bio_ex`",
-      "description": "The function `PEM_read_bio_ex()` reads a PEM file from a BIO and parses and\ndecodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data.\nIf the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are\npopulated with pointers to buffers containing the relevant decoded data. The\ncaller is responsible for freeing those buffers. It is possible to construct a\nPEM file that results in 0 bytes of payload data. In this case `PEM_read_bio_ex()`\nwill return a failure code but will populate the header argument with a pointer\nto a buffer that has already been freed. If the caller also frees this buffer\nthen a double free will occur. This will most likely lead to a crash. This\ncould be exploited by an attacker who has the ability to supply malicious PEM\nfiles for parsing to achieve a denial of service attack.\n\nThe functions `PEM_read_bio()` and `PEM_read()` are simple wrappers around\n`PEM_read_bio_ex()` and therefore these functions are also directly affected.\n\nThese functions are also called indirectly by a number of other OpenSSL\nfunctions including `PEM_X509_INFO_read_bio_ex()` and\n`SSL_CTX_use_serverinfo_file()` which are also vulnerable. Some OpenSSL internal\nuses of these functions are not vulnerable because the caller does not free the\nheader argument if `PEM_read_bio_ex()` returns a failure code. These locations\ninclude the `PEM_read_bio_TYPE()` functions as well as the decoders introduced in\nOpenSSL 3.0.",
-      "date": "2023-02-07",
-      "aliases": [
-        "CVE-2022-4450",
-        "GHSA-v5w6-wcm8-jm4q"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
       ],
       "keywords": [],
       "cvss": null,
@@ -180,6 +73,42 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2023-0013",
+      "package": "openssl-src",
+      "title": "`NULL` dereference during PKCS7 data verification",
+      "description": "A `NULL` pointer can be dereferenced when signatures are being\nverified on PKCS7 `signed` or `signedAndEnveloped` data. In case the hash\nalgorithm used for the signature is known to the OpenSSL library but\nthe implementation of the hash algorithm is not available the digest\ninitialization will fail. There is a missing check for the return\nvalue from the initialization function which later leads to invalid\nusage of the digest API most likely leading to a crash.\n\nThe unavailability of an algorithm can be caused by using FIPS\nenabled configuration of providers or more commonly by not loading\nthe legacy provider.\n\nPKCS7 data is processed by the SMIME library calls and also by the\ntime stamp (TS) library calls. The TLS implementation in OpenSSL does\nnot call these functions however third party applications would be\naffected if they call these functions to verify signatures on untrusted\ndata.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2023-0401",
+        "GHSA-vrh7-x64v-7vxq"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=300.0.12"
+      ],
+      "unaffected": [
+        "<300.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2023-0009",
       "package": "openssl-src",
       "title": "Use-after-free following `BIO_new_NDEF`",
@@ -211,6 +140,77 @@
         ">=300.0.12"
       ],
       "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0010",
+      "package": "openssl-src",
+      "title": "Double free after calling `PEM_read_bio_ex`",
+      "description": "The function `PEM_read_bio_ex()` reads a PEM file from a BIO and parses and\ndecodes the \"name\" (e.g. \"CERTIFICATE\"), any header data and the payload data.\nIf the function succeeds then the \"name_out\", \"header\" and \"data\" arguments are\npopulated with pointers to buffers containing the relevant decoded data. The\ncaller is responsible for freeing those buffers. It is possible to construct a\nPEM file that results in 0 bytes of payload data. In this case `PEM_read_bio_ex()`\nwill return a failure code but will populate the header argument with a pointer\nto a buffer that has already been freed. If the caller also frees this buffer\nthen a double free will occur. This will most likely lead to a crash. This\ncould be exploited by an attacker who has the ability to supply malicious PEM\nfiles for parsing to achieve a denial of service attack.\n\nThe functions `PEM_read_bio()` and `PEM_read()` are simple wrappers around\n`PEM_read_bio_ex()` and therefore these functions are also directly affected.\n\nThese functions are also called indirectly by a number of other OpenSSL\nfunctions including `PEM_X509_INFO_read_bio_ex()` and\n`SSL_CTX_use_serverinfo_file()` which are also vulnerable. Some OpenSSL internal\nuses of these functions are not vulnerable because the caller does not free the\nheader argument if `PEM_read_bio_ex()` returns a failure code. These locations\ninclude the `PEM_read_bio_TYPE()` functions as well as the decoders introduced in\nOpenSSL 3.0.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2022-4450",
+        "GHSA-v5w6-wcm8-jm4q"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.25, <300.0",
+        ">=300.0.12"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0012",
+      "package": "openssl-src",
+      "title": "`NULL` dereference validating DSA public key",
+      "description": "An invalid pointer dereference on read can be triggered when an\napplication tries to check a malformed DSA public key by the\n`EVP_PKEY_public_check()` function. This will most likely lead\nto an application crash. This function can be called on public\nkeys supplied from untrusted sources which could allow an attacker\nto cause a denial of service attack.\n\nThe TLS implementation in OpenSSL does not call this function\nbut applications might call the function if there are additional\nsecurity requirements imposed by standards such as FIPS 140-3.",
+      "date": "2023-02-07",
+      "aliases": [
+        "CVE-2023-0217",
+        "GHSA-vxrh-cpg7-8vjr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20230207.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=300.0.12"
+      ],
+      "unaffected": [
+        "<300.0.0"
+      ]
     }
   },
   {
@@ -503,14 +503,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0026",
+      "id": "RUSTSEC-2022-0027",
       "package": "openssl-src",
-      "title": "Incorrect MAC key used in the RC4-MD5 ciphersuite",
-      "description": "The OpenSSL 3.0 implementation of the RC4-MD5 ciphersuite incorrectly uses the\nAAD data as the MAC key. This makes the MAC key trivially predictable.\n\nAn attacker could exploit this issue by performing a man-in-the-middle attack to\nmodify data being sent from one endpoint to an OpenSSL 3.0 recipient such that\nthe modified data would still pass the MAC integrity check.\n\nNote that data sent from an OpenSSL 3.0 endpoint to a non-OpenSSL 3.0 endpoint\nwill always be rejected by the recipient and the connection will fail at that\npoint. Many application protocols require data to be sent from the client to the\nserver first. Therefore, in such a case, only an OpenSSL 3.0 server would be\nimpacted when talking to a non-OpenSSL 3.0 client.\n\nIf both endpoints are OpenSSL 3.0 then the attacker could modify data being\nsent in both directions. In this case both clients and servers could be\naffected, regardless of the application protocol.\n\nNote that in the absence of an attacker this bug means that an OpenSSL 3.0\nendpoint communicating with a non-OpenSSL 3.0 endpoint will fail to complete the\nhandshake when using this ciphersuite.\n\nThe confidentiality of data is not impacted by this issue, i.e. an attacker\ncannot decrypt data that has been encrypted using this ciphersuite - they can\nonly modify it.\n\nIn order for this attack to work both endpoints must legitimately negotiate the\nRC4-MD5 ciphersuite. This ciphersuite is not compiled by default in OpenSSL 3.0,\nand is not available within the default provider or the default ciphersuite\nlist. This ciphersuite will never be used if TLSv1.3 has been negotiated. In\norder for an OpenSSL 3.0 endpoint to use this ciphersuite the following must\nhave occurred:\n\n1. OpenSSL must have been compiled with the (non-default) compile time option\n   enable-weak-ssl-ciphers\n2. OpenSSL must have had the legacy provider explicitly loaded (either through\n   application code or via configuration)\n3. The ciphersuite must have been explicitly added to the ciphersuite list\n4. The libssl security level must have been set to 0 (default is 1)\n5. A version of SSL/TLS below TLSv1.3 must have been negotiated\n6. Both endpoints must negotiate the RC4-MD5 ciphersuite in preference to any\n   others that both endpoints have in common",
+      "title": "`OCSP_basic_verify` may incorrectly verify the response signing certificate",
+      "description": "The function `OCSP_basic_verify` verifies the signer certificate on an OCSP\nresponse. In the case where the (non-default) flag OCSP_NOCHECKS is used then\nthe response will be positive (meaning a successful verification) even in the\ncase where the response signing certificate fails to verify.\n\nIt is anticipated that most users of `OCSP_basic_verify` will not use the\nOCSP_NOCHECKS flag. In this case the `OCSP_basic_verify` function will return\na negative value (indicating a fatal error) in the case of a certificate\nverification failure. The normal expected return value in this case would be 0.",
       "date": "2022-05-03",
       "aliases": [
-        "CVE-2022-1434",
-        "GHSA-638m-m8mh-7gw2"
+        "CVE-2022-1343",
+        "GHSA-mfm6-r9g2-q4r7"
       ],
       "related": [],
       "collection": "crates",
@@ -518,7 +518,7 @@
         "crypto-failure"
       ],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
       "informational": null,
       "references": [],
       "source": null,
@@ -539,14 +539,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2022-0027",
+      "id": "RUSTSEC-2022-0026",
       "package": "openssl-src",
-      "title": "`OCSP_basic_verify` may incorrectly verify the response signing certificate",
-      "description": "The function `OCSP_basic_verify` verifies the signer certificate on an OCSP\nresponse. In the case where the (non-default) flag OCSP_NOCHECKS is used then\nthe response will be positive (meaning a successful verification) even in the\ncase where the response signing certificate fails to verify.\n\nIt is anticipated that most users of `OCSP_basic_verify` will not use the\nOCSP_NOCHECKS flag. In this case the `OCSP_basic_verify` function will return\na negative value (indicating a fatal error) in the case of a certificate\nverification failure. The normal expected return value in this case would be 0.",
+      "title": "Incorrect MAC key used in the RC4-MD5 ciphersuite",
+      "description": "The OpenSSL 3.0 implementation of the RC4-MD5 ciphersuite incorrectly uses the\nAAD data as the MAC key. This makes the MAC key trivially predictable.\n\nAn attacker could exploit this issue by performing a man-in-the-middle attack to\nmodify data being sent from one endpoint to an OpenSSL 3.0 recipient such that\nthe modified data would still pass the MAC integrity check.\n\nNote that data sent from an OpenSSL 3.0 endpoint to a non-OpenSSL 3.0 endpoint\nwill always be rejected by the recipient and the connection will fail at that\npoint. Many application protocols require data to be sent from the client to the\nserver first. Therefore, in such a case, only an OpenSSL 3.0 server would be\nimpacted when talking to a non-OpenSSL 3.0 client.\n\nIf both endpoints are OpenSSL 3.0 then the attacker could modify data being\nsent in both directions. In this case both clients and servers could be\naffected, regardless of the application protocol.\n\nNote that in the absence of an attacker this bug means that an OpenSSL 3.0\nendpoint communicating with a non-OpenSSL 3.0 endpoint will fail to complete the\nhandshake when using this ciphersuite.\n\nThe confidentiality of data is not impacted by this issue, i.e. an attacker\ncannot decrypt data that has been encrypted using this ciphersuite - they can\nonly modify it.\n\nIn order for this attack to work both endpoints must legitimately negotiate the\nRC4-MD5 ciphersuite. This ciphersuite is not compiled by default in OpenSSL 3.0,\nand is not available within the default provider or the default ciphersuite\nlist. This ciphersuite will never be used if TLSv1.3 has been negotiated. In\norder for an OpenSSL 3.0 endpoint to use this ciphersuite the following must\nhave occurred:\n\n1. OpenSSL must have been compiled with the (non-default) compile time option\n   enable-weak-ssl-ciphers\n2. OpenSSL must have had the legacy provider explicitly loaded (either through\n   application code or via configuration)\n3. The ciphersuite must have been explicitly added to the ciphersuite list\n4. The libssl security level must have been set to 0 (default is 1)\n5. A version of SSL/TLS below TLSv1.3 must have been negotiated\n6. Both endpoints must negotiate the RC4-MD5 ciphersuite in preference to any\n   others that both endpoints have in common",
       "date": "2022-05-03",
       "aliases": [
-        "CVE-2022-1343",
-        "GHSA-mfm6-r9g2-q4r7"
+        "CVE-2022-1434",
+        "GHSA-638m-m8mh-7gw2"
       ],
       "related": [],
       "collection": "crates",
@@ -554,7 +554,7 @@
         "crypto-failure"
       ],
       "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
       "informational": null,
       "references": [],
       "source": null,
@@ -715,14 +715,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2021-0058",
+      "id": "RUSTSEC-2021-0055",
       "package": "openssl-src",
-      "title": "Null pointer deref in `X509_issuer_and_serial_hash()`",
-      "description": "The OpenSSL public API function `X509_issuer_and_serial_hash()` attempts to\ncreate a unique hash value based on the issuer and serial number data contained\nwithin an X509 certificate. However it fails to correctly handle any errors\nthat may occur while parsing the issuer field (which might occur if the issuer\nfield is maliciously constructed). This may subsequently result in a NULL\npointer deref and a crash leading to a potential denial of service attack.\n\nThe function `X509_issuer_and_serial_hash()` is never directly called by OpenSSL\nitself so applications are only vulnerable if they use this function directly\nand they use it on certificates that may have been obtained from untrusted\nsources.",
+      "title": "NULL pointer deref in signature_algorithms processing",
+      "description": "An OpenSSL TLS server may crash if sent a maliciously crafted renegotiation\nClientHello message from a client. If a TLSv1.2 renegotiation ClientHello omits\nthe signature_algorithms extension (where it was present in the initial\nClientHello), but includes a signature_algorithms_cert extension then a NULL\npointer dereference will result, leading to a crash and a denial of service\nattack.\n\nA server is only vulnerable if it has TLSv1.2 and renegotiation enabled (which\nis the default configuration). OpenSSL TLS clients are not impacted by this\nissue.",
       "date": "2021-05-01",
       "aliases": [
-        "CVE-2021-23841",
-        "GHSA-84rm-qf37-fgc2"
+        "CVE-2021-3449",
+        "GHSA-83mx-573x-5rw9"
       ],
       "related": [],
       "collection": "crates",
@@ -734,7 +734,7 @@
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://www.openssl.org/news/secadv/20210216.txt",
+      "url": "https://www.openssl.org/news/secadv/20210325.txt",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -742,7 +742,7 @@
     "affected": null,
     "versions": {
       "patched": [
-        ">=111.14"
+        ">=111.15"
       ],
       "unaffected": []
     }
@@ -785,6 +785,40 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2021-0058",
+      "package": "openssl-src",
+      "title": "Null pointer deref in `X509_issuer_and_serial_hash()`",
+      "description": "The OpenSSL public API function `X509_issuer_and_serial_hash()` attempts to\ncreate a unique hash value based on the issuer and serial number data contained\nwithin an X509 certificate. However it fails to correctly handle any errors\nthat may occur while parsing the issuer field (which might occur if the issuer\nfield is maliciously constructed). This may subsequently result in a NULL\npointer deref and a crash leading to a potential denial of service attack.\n\nThe function `X509_issuer_and_serial_hash()` is never directly called by OpenSSL\nitself so applications are only vulnerable if they use this function directly\nand they use it on certificates that may have been obtained from untrusted\nsources.",
+      "date": "2021-05-01",
+      "aliases": [
+        "CVE-2021-23841",
+        "GHSA-84rm-qf37-fgc2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://www.openssl.org/news/secadv/20210216.txt",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=111.14"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2021-0057",
       "package": "openssl-src",
       "title": "Integer overflow in CipherUpdate",
@@ -813,40 +847,6 @@
     "versions": {
       "patched": [
         ">=111.14"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2021-0055",
-      "package": "openssl-src",
-      "title": "NULL pointer deref in signature_algorithms processing",
-      "description": "An OpenSSL TLS server may crash if sent a maliciously crafted renegotiation\nClientHello message from a client. If a TLSv1.2 renegotiation ClientHello omits\nthe signature_algorithms extension (where it was present in the initial\nClientHello), but includes a signature_algorithms_cert extension then a NULL\npointer dereference will result, leading to a crash and a denial of service\nattack.\n\nA server is only vulnerable if it has TLSv1.2 and renegotiation enabled (which\nis the default configuration). OpenSSL TLS clients are not impacted by this\nissue.",
-      "date": "2021-05-01",
-      "aliases": [
-        "CVE-2021-3449",
-        "GHSA-83mx-573x-5rw9"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://www.openssl.org/news/secadv/20210325.txt",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=111.15"
       ],
       "unaffected": []
     }

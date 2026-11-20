@@ -1,0 +1,50 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0584",
+      "package": "tokio-rate-limit",
+      "title": "gRPC `IpKeyExtractor` keys on client-supplied forwarding headers",
+      "description": "`tonic_middleware::IpKeyExtractor` is documented as rate limiting gRPC requests by client IP address,\nbut on a standard tonic server it keys on client-supplied `x-forwarded-for` and `x-real-ip`\nheaders. In 0.5.0–0.9.1, the extractor reads those headers directly; in 0.10.0–0.11.0, it first\nchecks for a bare `std::net::SocketAddr` request extension—which `tonic::transport::Server` never\nsupplies, as it provides `TcpConnectInfo` instead—and falls back to the same headers. Direct\nclients can therefore choose their rate-limit key to bypass per-IP rate limits and increase the\nnumber of tracked keys; without forwarding headers, 0.5.0–0.9.1 allow requests without limiting\nthem and 0.10.0–0.11.0 reject them by default unless `.fail_open()` is enabled.\n\nApplications are affected if they use `GrpcRateLimitLayer` with `IpKeyExtractor` (the\n`tonic-support` feature). The HTTP middleware's `IpKeyExtractor` reads `ConnectInfo<SocketAddr>` and\nis not affected.\n\nVersion 0.11.1 fixes `IpKeyExtractor` to honor a server-supplied `SocketAddr` override first and then\nread the TCP peer address from tonic's `TcpConnectInfo` (which `tonic::transport::Server` attaches\nto plaintext connections and connections using its built-in TLS), without ever reading forwarding\nheaders. Deployments behind a trusted proxy can use the new opt-in `ForwardedIpKeyExtractor`, which\nreads a single configured header (`x-forwarded-for` or `x-real-ip`) and is only correct when that\nproxy sets the header as documented.\n\nIf you cannot upgrade to 0.11.1, use a custom key extractor that reads the peer IP from tonic's\nconnection information for the transport in use (including TLS) and rejects requests without a\nverified peer address before invoking the limiter, or restrict backend access to a trusted proxy\nthat strips all incoming `x-forwarded-for` and `x-real-ip` fields and sets one `x-forwarded-for`\nvalue to the verified client IP on every request.",
+      "date": "2026-11-19",
+      "aliases": [
+        "GHSA-r5c9-r265-ccg3"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "rate-limit",
+        "grpc",
+        "tonic",
+        "x-forwarded-for"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/sadco-io/tokio-rate-limit/releases/tag/v0.11.1",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tokio_rate_limit::tonic_middleware::IpKeyExtractor::extract": [
+          ">=0.5.0, <0.11.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.11.1"
+      ],
+      "unaffected": [
+        "<0.5.0"
+      ]
+    }
+  }
+]

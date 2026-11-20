@@ -40,6 +40,108 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0135",
+      "package": "diesel",
+      "title": "Unsound transmute while debug/display printing batch Insert statements in Diesel's SQLite backend",
+      "description": "Diesel allows users to output the generated SQL for any query DSL construct via th `diesel::debug_query` function as `Display` and `Debug` output.\n\nFor the particular implementation used by batch Insert statements in the SQLite backend Diesel relied on an unspecified transmute between types with a `#[repr(rust)]` layout. This is formally undefined behaviour as the compiler is free to change the layout of these types at any time. \n\nThis vulnerability affects users that print out batch insert statements constructed using an array/vector of values without default values using `diesel::debug_query` on the SQLite backend.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to Diesel version 2.3.8 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel now uses a sound cast instead.",
+      "date": "2026-04-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/5042",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::debug_query": [
+          "<2.3.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.8"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0136",
+      "package": "diesel",
+      "title": "Command injection in Diesel's implementation of `COPY FROM`/`COPY TO`",
+      "description": "Diesel allows users to configure various options for PostgreSQL's `COPY FROM` and `COPY TO` statements. These configurations are partially provided as strings or characters. \n\nDiesel did not check if any these user-provided options contain a quote character `'`, which can lead to the injection of additional options in the current `COPY FROM`/`COPY TO` statement. \n\nThis vulnerability affects any user of `COPY FROM`/`COPY TO` that passes user-provided input to any of the affected functions. It can result in modifications of options in the current statement, but it is not possible inject additional statements.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to Diesel version 2.3.8 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel now correctly escapes any quotes contained in the provided arguments.",
+      "date": "2026-04-24",
+      "aliases": [
+        "GHSA-m9p2-fxp5-v3fp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/diesel-rs/diesel/pull/5042",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "diesel::pg::CopyFromQuery::with_default": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyFromQuery::with_delimiter": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyFromQuery::with_escape": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyFromQuery::with_null": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyFromQuery::with_quote": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyToQuery::with_delimiter": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyToQuery::with_escape": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyToQuery::with_null": [
+          "<2.3.8"
+        ],
+        "diesel::pg::CopyToQuery::with_quote": [
+          "<2.3.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.3.8"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0137",
       "package": "diesel",
       "title": "Possible unaligned data access for implementations of `SqliteAggregate`",
@@ -154,108 +256,6 @@
           "<2.3.8"
         ],
         "diesel::sqlite::SqliteValue::read_str": [
-          "<2.3.8"
-        ]
-      }
-    },
-    "versions": {
-      "patched": [
-        ">=2.3.8"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0135",
-      "package": "diesel",
-      "title": "Unsound transmute while debug/display printing batch Insert statements in Diesel's SQLite backend",
-      "description": "Diesel allows users to output the generated SQL for any query DSL construct via th `diesel::debug_query` function as `Display` and `Debug` output.\n\nFor the particular implementation used by batch Insert statements in the SQLite backend Diesel relied on an unspecified transmute between types with a `#[repr(rust)]` layout. This is formally undefined behaviour as the compiler is free to change the layout of these types at any time. \n\nThis vulnerability affects users that print out batch insert statements constructed using an array/vector of values without default values using `diesel::debug_query` on the SQLite backend.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to Diesel version 2.3.8 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel now uses a sound cast instead.",
-      "date": "2026-04-24",
-      "aliases": [],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": null,
-      "informational": "unsound",
-      "references": [],
-      "source": null,
-      "url": "https://github.com/diesel-rs/diesel/pull/5042",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": {
-      "arch": [],
-      "os": [],
-      "functions": {
-        "diesel::debug_query": [
-          "<2.3.8"
-        ]
-      }
-    },
-    "versions": {
-      "patched": [
-        ">=2.3.8"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0136",
-      "package": "diesel",
-      "title": "Command injection in Diesel's implementation of `COPY FROM`/`COPY TO`",
-      "description": "Diesel allows users to configure various options for PostgreSQL's `COPY FROM` and `COPY TO` statements. These configurations are partially provided as strings or characters. \n\nDiesel did not check if any these user-provided options contain a quote character `'`, which can lead to the injection of additional options in the current `COPY FROM`/`COPY TO` statement. \n\nThis vulnerability affects any user of `COPY FROM`/`COPY TO` that passes user-provided input to any of the affected functions. It can result in modifications of options in the current statement, but it is not possible inject additional statements.\n\n## Mitigation\n\nThe preferred mitigation to the outlined problem is to update to Diesel version 2.3.8 or newer, which includes fixes for the problem.\n\n## Resolution\n\nDiesel now correctly escapes any quotes contained in the provided arguments.",
-      "date": "2026-04-24",
-      "aliases": [
-        "GHSA-m9p2-fxp5-v3fp"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "format-injection"
-      ],
-      "keywords": [],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/diesel-rs/diesel/pull/5042",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": {
-      "arch": [],
-      "os": [],
-      "functions": {
-        "diesel::pg::CopyFromQuery::with_default": [
-          "<2.3.8"
-        ],
-        "diesel::pg::CopyFromQuery::with_delimiter": [
-          "<2.3.8"
-        ],
-        "diesel::pg::CopyFromQuery::with_escape": [
-          "<2.3.8"
-        ],
-        "diesel::pg::CopyFromQuery::with_null": [
-          "<2.3.8"
-        ],
-        "diesel::pg::CopyFromQuery::with_quote": [
-          "<2.3.8"
-        ],
-        "diesel::pg::CopyToQuery::with_delimiter": [
-          "<2.3.8"
-        ],
-        "diesel::pg::CopyToQuery::with_escape": [
-          "<2.3.8"
-        ],
-        "diesel::pg::CopyToQuery::with_null": [
-          "<2.3.8"
-        ],
-        "diesel::pg::CopyToQuery::with_quote": [
           "<2.3.8"
         ]
       }

@@ -1,30 +1,30 @@
 [
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0546",
+      "id": "RUSTSEC-2026-0547",
       "package": "zip",
-      "title": "`ZipArchive::extract` can write outside the destination through absolute or chained symlink targets",
-      "description": "Before writing an entry whose path goes through a symlink, `ZipArchive::extract` checks the symlink's target against the destination directory. That check compares the paths as text and does not follow symlinks, and from 7.2.0 it drops the root and prefix of an absolute target before comparing. Symlinks taken from the archive were created without any check of their targets.\n\nA crafted archive can first create a symlink that points outside the destination, then a second symlink whose target looks like a path inside the destination but goes through the first one, and then a file entry under the second symlink. The file is written outside the destination directory, for example over an existing file in the user's home directory, and `extract` still returns `Ok(())`. On Windows, a target on another drive or share whose path otherwise matches the destination passes the check directly (creating symlinks there needs Developer Mode or administrator rights). The attacker has to know or guess the absolute path of the destination directory.\n\nThis affects `ZipArchive::extract` and `ZipArchive::extract_unwrapped_root_dir`.\n\nThe fix resolves symlink targets one component at a time from the canonicalized destination, following symlinks on the way, and refuses to create a symlink, or write through one, that leads outside the destination.",
+      "title": "Legacy Shrink, Reduce and Implode decoders preallocate the declared uncompressed size",
+      "description": "With the `legacy-zip` feature, the decoders for the Shrink, Reduce and Implode compression methods reserved output capacity for the entry's declared uncompressed size before decoding anything. That size comes from the archive, and a ZIP64 entry can declare any 64-bit value, so reading or extracting a crafted entry of a few bytes panics with \"capacity overflow\" or fails a huge allocation.\n\nAn attacker who can supply an archive can stop a process that reads it, for example through `ZipArchive::extract`.\n\nOnly builds with the `legacy-zip` feature are affected; it is not enabled by default.\n\nThe fix caps the preallocation at 1 MiB, and such an entry now returns an error.",
       "date": "2026-10-22",
       "aliases": [
-        "CVE-2026-115908",
-        "GHSA-hjqx-j4rw-g7xv"
+        "CVE-2026-115907",
+        "GHSA-9hj8-73fh-9963"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "privilege-escalation"
+        "denial-of-service"
       ],
       "keywords": [
-        "symlink",
-        "path-traversal",
-        "extraction"
+        "panic",
+        "allocation",
+        "legacy-zip"
       ],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:H",
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/zip-rs/zip2/commit/09c030eab56e8db8fb3c1c33f554407b30bad8fa",
+      "url": "https://github.com/zip-rs/zip2/pull/991",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -35,7 +35,7 @@
         ">=9.0.0"
       ],
       "unaffected": [
-        "<7.2.0"
+        "<5.1.0"
       ]
     }
   },
@@ -120,30 +120,30 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0547",
+      "id": "RUSTSEC-2026-0546",
       "package": "zip",
-      "title": "Legacy Shrink, Reduce and Implode decoders preallocate the declared uncompressed size",
-      "description": "With the `legacy-zip` feature, the decoders for the Shrink, Reduce and Implode compression methods reserved output capacity for the entry's declared uncompressed size before decoding anything. That size comes from the archive, and a ZIP64 entry can declare any 64-bit value, so reading or extracting a crafted entry of a few bytes panics with \"capacity overflow\" or fails a huge allocation.\n\nAn attacker who can supply an archive can stop a process that reads it, for example through `ZipArchive::extract`.\n\nOnly builds with the `legacy-zip` feature are affected; it is not enabled by default.\n\nThe fix caps the preallocation at 1 MiB, and such an entry now returns an error.",
+      "title": "`ZipArchive::extract` can write outside the destination through absolute or chained symlink targets",
+      "description": "Before writing an entry whose path goes through a symlink, `ZipArchive::extract` checks the symlink's target against the destination directory. That check compares the paths as text and does not follow symlinks, and from 7.2.0 it drops the root and prefix of an absolute target before comparing. Symlinks taken from the archive were created without any check of their targets.\n\nA crafted archive can first create a symlink that points outside the destination, then a second symlink whose target looks like a path inside the destination but goes through the first one, and then a file entry under the second symlink. The file is written outside the destination directory, for example over an existing file in the user's home directory, and `extract` still returns `Ok(())`. On Windows, a target on another drive or share whose path otherwise matches the destination passes the check directly (creating symlinks there needs Developer Mode or administrator rights). The attacker has to know or guess the absolute path of the destination directory.\n\nThis affects `ZipArchive::extract` and `ZipArchive::extract_unwrapped_root_dir`.\n\nThe fix resolves symlink targets one component at a time from the canonicalized destination, following symlinks on the way, and refuses to create a symlink, or write through one, that leads outside the destination.",
       "date": "2026-10-22",
       "aliases": [
-        "CVE-2026-115907",
-        "GHSA-9hj8-73fh-9963"
+        "CVE-2026-115908",
+        "GHSA-hjqx-j4rw-g7xv"
       ],
       "related": [],
       "collection": "crates",
       "categories": [
-        "denial-of-service"
+        "privilege-escalation"
       ],
       "keywords": [
-        "panic",
-        "allocation",
-        "legacy-zip"
+        "symlink",
+        "path-traversal",
+        "extraction"
       ],
-      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:H",
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/zip-rs/zip2/pull/991",
+      "url": "https://github.com/zip-rs/zip2/commit/09c030eab56e8db8fb3c1c33f554407b30bad8fa",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false
@@ -154,7 +154,7 @@
         ">=9.0.0"
       ],
       "unaffected": [
-        "<5.1.0"
+        "<7.2.0"
       ]
     }
   },
@@ -235,42 +235,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0368",
-      "package": "zip",
-      "title": "zip: `ZipArchive::extract` creates symbolic links whose attacker-controlled targets are outside the destination directory",
-      "description": "In `zip` 9.0.0-pre2, `ZipArchive::extract` creates a symbolic link from an archive entry after validating only the output entry path. The link target bytes are passed directly to the platform symlink API, so a malicious archive can create an entry inside the destination that resolves to an attacker-chosen path outside it. This behavior was verified on macOS and Linux. On either platform, a subsequent application read or write through that extracted entry accesses the external target with the extracting process's permissions.\n\nFor further details see: https://github.com/zip-rs/zip2/security/advisories/GHSA-4v9h-p7m9-rh26",
-      "date": "2026-10-09",
-      "aliases": [
-        "GHSA-4v9h-p7m9-rh26"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "privilege-escalation"
-      ],
-      "keywords": [
-        "privilege-escalation",
-        "symlink"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": null,
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=9.0.0"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0367",
       "package": "zip",
       "title": " Insecure Preservation of SUID/SGID Bits during ZIP Extraction Leading to Potential Privilege Escalation",
@@ -290,6 +254,42 @@
         "sgid"
       ],
       "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=9.0.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0368",
+      "package": "zip",
+      "title": "zip: `ZipArchive::extract` creates symbolic links whose attacker-controlled targets are outside the destination directory",
+      "description": "In `zip` 9.0.0-pre2, `ZipArchive::extract` creates a symbolic link from an archive entry after validating only the output entry path. The link target bytes are passed directly to the platform symlink API, so a malicious archive can create an entry inside the destination that resolves to an attacker-chosen path outside it. This behavior was verified on macOS and Linux. On either platform, a subsequent application read or write through that extracted entry accesses the external target with the extracting process's permissions.\n\nFor further details see: https://github.com/zip-rs/zip2/security/advisories/GHSA-4v9h-p7m9-rh26",
+      "date": "2026-10-09",
+      "aliases": [
+        "GHSA-4v9h-p7m9-rh26"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "privilege-escalation",
+        "symlink"
+      ],
+      "cvss": null,
       "informational": null,
       "references": [],
       "source": null,

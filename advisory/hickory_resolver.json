@@ -1,6 +1,46 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0516",
+      "package": "hickory-resolver",
+      "title": "Recursor kept querying cyclic glueless sibling delegations",
+      "description": "Two zones can each delegate to name servers named only inside the other zone, with no glue records (the cyclic sibling case in RFC 9471 section 2.3). Such delegations can never be resolved, but the recursor did not stop when it came back to a zone it was already resolving. It kept sending queries until the per-request limits ran out, and zero TTLs on the referral NS records made this worse.\n\nSomeone who controls two such zones can make a recursor send many upstream queries for each client query.\n\nThis affects the recursive resolver, which is in hickory-resolver behind the opt-in `recursor` feature from 0.26.0-beta.1. Earlier releases shipped it as the separate hickory-recursor crate.\n\nFrom 0.26.2 each client request tracks the zones on its resolution stack and refuses to enter a zone that is already on it.",
+      "date": "2026-09-03",
+      "aliases": [
+        "CVE-2026-123586",
+        "GHSA-cx5j-p54p-q756"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dns",
+        "recursor",
+        "amplification"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/308dcfd5cd9bfaa50c956427380160505e5de532",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.26.2"
+      ],
+      "unaffected": [
+        "<0.26.0-beta.1"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0514",
       "package": "hickory-resolver",
       "title": "`Resolver::lookup` and `lookup_ip` returned records that failed DNSSEC validation",
@@ -34,46 +74,6 @@
         ">=0.26.2"
       ],
       "unaffected": []
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0513",
-      "package": "hickory-resolver",
-      "title": "Unbounded retries on truncated responses in the name server pool",
-      "description": "When an upstream answer had the TC (truncated) bit set, the resolver's name server pool disabled UDP and sent the query again. It did this for every truncated answer, including answers that already came over TCP, and it kept no count of retries.\n\nA name server that sets TC on every answer, which anyone running an authoritative server the resolver queries can do, kept each lookup re-sending queries over the same connection until the request deadline (5 seconds by default) ran out. This uses up resolver resources and sends many queries per lookup.\n\nFrom 0.26.2 a truncated answer received after UDP has already been disabled ends the lookup with `NetError::Truncated` instead of retrying again.",
-      "date": "2026-09-03",
-      "aliases": [
-        "CVE-2026-123604",
-        "GHSA-6w6g-hm98-mhgm"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "dns",
-        "truncation",
-        "retry"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/f9a7bc5d188e5b680b09aea91009d2fbf3fec58a",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.26.2"
-      ],
-      "unaffected": [
-        "<0.26.0-beta.1"
-      ]
     }
   },
   {
@@ -121,14 +121,14 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0516",
+      "id": "RUSTSEC-2026-0513",
       "package": "hickory-resolver",
-      "title": "Recursor kept querying cyclic glueless sibling delegations",
-      "description": "Two zones can each delegate to name servers named only inside the other zone, with no glue records (the cyclic sibling case in RFC 9471 section 2.3). Such delegations can never be resolved, but the recursor did not stop when it came back to a zone it was already resolving. It kept sending queries until the per-request limits ran out, and zero TTLs on the referral NS records made this worse.\n\nSomeone who controls two such zones can make a recursor send many upstream queries for each client query.\n\nThis affects the recursive resolver, which is in hickory-resolver behind the opt-in `recursor` feature from 0.26.0-beta.1. Earlier releases shipped it as the separate hickory-recursor crate.\n\nFrom 0.26.2 each client request tracks the zones on its resolution stack and refuses to enter a zone that is already on it.",
+      "title": "Unbounded retries on truncated responses in the name server pool",
+      "description": "When an upstream answer had the TC (truncated) bit set, the resolver's name server pool disabled UDP and sent the query again. It did this for every truncated answer, including answers that already came over TCP, and it kept no count of retries.\n\nA name server that sets TC on every answer, which anyone running an authoritative server the resolver queries can do, kept each lookup re-sending queries over the same connection until the request deadline (5 seconds by default) ran out. This uses up resolver resources and sends many queries per lookup.\n\nFrom 0.26.2 a truncated answer received after UDP has already been disabled ends the lookup with `NetError::Truncated` instead of retrying again.",
       "date": "2026-09-03",
       "aliases": [
-        "CVE-2026-123586",
-        "GHSA-cx5j-p54p-q756"
+        "CVE-2026-123604",
+        "GHSA-6w6g-hm98-mhgm"
       ],
       "related": [],
       "collection": "crates",
@@ -137,14 +137,14 @@
       ],
       "keywords": [
         "dns",
-        "recursor",
-        "amplification"
+        "truncation",
+        "retry"
       ],
       "cvss": null,
       "informational": null,
       "references": [],
       "source": null,
-      "url": "https://github.com/hickory-dns/hickory-dns/commit/308dcfd5cd9bfaa50c956427380160505e5de532",
+      "url": "https://github.com/hickory-dns/hickory-dns/commit/f9a7bc5d188e5b680b09aea91009d2fbf3fec58a",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false

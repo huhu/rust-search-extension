@@ -35,6 +35,40 @@
   },
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0377",
+      "package": "wasmtime-wasi-http",
+      "title": "`wasi-http` p3: forwarded trailers aren't checked against `is_forbidden_header` hook",
+      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-jxcf-8qw5-5c33\nFor more information see the GitHub-hosted security advisory.",
+      "date": "2026-10-19",
+      "aliases": [
+        "GHSA-jxcf-8qw5-5c33"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/wasmtime/pull/14823",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=48.0.7, <49.0.0",
+        ">=49.0.4"
+      ],
+      "unaffected": [
+        "<46.0.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0376",
       "package": "wasmtime-wasi-http",
       "title": "`wasi-http`: Guests can add conflicting content lengths to messages",
@@ -85,40 +119,6 @@
       "references": [],
       "source": null,
       "url": "https://github.com/bytecodealliance/wasmtime/pull/14822",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=48.0.7, <49.0.0",
-        ">=49.0.4"
-      ],
-      "unaffected": [
-        "<46.0.0"
-      ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0377",
-      "package": "wasmtime-wasi-http",
-      "title": "`wasi-http` p3: forwarded trailers aren't checked against `is_forbidden_header` hook",
-      "description": "This is an entry in the RustSec database for the Wasmtime security advisory\nlocated at\nhttps://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-jxcf-8qw5-5c33\nFor more information see the GitHub-hosted security advisory.",
-      "date": "2026-10-19",
-      "aliases": [
-        "GHSA-jxcf-8qw5-5c33"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/bytecodealliance/wasmtime/pull/14823",
       "withdrawn": null,
       "license": "CC0-1.0",
       "expect-deleted": false

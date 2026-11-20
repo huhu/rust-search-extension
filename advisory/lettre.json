@@ -1,6 +1,80 @@
 [
   {
     "advisory": {
+      "id": "RUSTSEC-2026-0561",
+      "package": "lettre",
+      "title": "Missing dot-stuffing after a bare LF or CR allows SMTP command injection",
+      "description": "Someone who controls the content of a message with bare LF or CR line endings\ncan end it early with `\\n.\\n` on a server that takes a bare LF for a line\nending. What follows is read by the server as SMTP commands, which can be used\nto send other messages over the same authenticated connection.\n\nThis affects messages passed to `send_raw`, and message bodies that are sent\nwithout being encoded. The LF line endings of a `String` body are converted to\nCRLF before it is sent.",
+      "date": "2026-11-17",
+      "aliases": [],
+      "related": [
+        "RUSTSEC-2021-0069"
+      ],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "smtp",
+        "smuggling",
+        "injection"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lettre/lettre/commit/3d9a6e6a467c6ce00bd39ada6aa1a00e57540a1d",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.24"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0565",
+      "package": "lettre",
+      "title": "Unbounded buffering of an SMTP reply allows a malicious server to exhaust memory",
+      "description": "A malicious or compromised server can send a reply line that never ends, which\nthe client buffers until memory runs out. A reply made of many short lines also\nkeeps a CPU core busy: for a few seconds per reply since 0.11.22, for as long\nas the server wants before it.\n\nApplications that connect only to a trusted server over implicit TLS are not\nexposed; the risk applies to clients that may connect to untrusted servers, or\nthat use `STARTTLS` or no TLS, where a man-in-the-middle can forge the reply.",
+      "date": "2026-11-17",
+      "aliases": [
+        "GHSA-pmvc-x69f-5p9f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "smtp",
+        "memory",
+        "cpu"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/lettre/lettre/commit/075849fb9f2c956202aaaf2ff73e41f995d02f35",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.11.24"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
       "id": "RUSTSEC-2026-0564",
       "package": "lettre",
       "title": "Panic on a mailbox display name containing CR or LF allows denial of service",
@@ -85,43 +159,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0561",
-      "package": "lettre",
-      "title": "Missing dot-stuffing after a bare LF or CR allows SMTP command injection",
-      "description": "Someone who controls the content of a message with bare LF or CR line endings\ncan end it early with `\\n.\\n` on a server that takes a bare LF for a line\nending. What follows is read by the server as SMTP commands, which can be used\nto send other messages over the same authenticated connection.\n\nThis affects messages passed to `send_raw`, and message bodies that are sent\nwithout being encoded. The LF line endings of a `String` body are converted to\nCRLF before it is sent.",
-      "date": "2026-11-17",
-      "aliases": [],
-      "related": [
-        "RUSTSEC-2021-0069"
-      ],
-      "collection": "crates",
-      "categories": [
-        "format-injection"
-      ],
-      "keywords": [
-        "smtp",
-        "smuggling",
-        "injection"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/lettre/lettre/commit/3d9a6e6a467c6ce00bd39ada6aa1a00e57540a1d",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.11.24"
-      ],
-      "unaffected": []
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0563",
       "package": "lettre",
       "title": "Messages for an address with a quoted local part are sent to a different address",
@@ -157,43 +194,6 @@
       "unaffected": [
         "<0.11.0"
       ]
-    }
-  },
-  {
-    "advisory": {
-      "id": "RUSTSEC-2026-0565",
-      "package": "lettre",
-      "title": "Unbounded buffering of an SMTP reply allows a malicious server to exhaust memory",
-      "description": "A malicious or compromised server can send a reply line that never ends, which\nthe client buffers until memory runs out. A reply made of many short lines also\nkeeps a CPU core busy: for a few seconds per reply since 0.11.22, for as long\nas the server wants before it.\n\nApplications that connect only to a trusted server over implicit TLS are not\nexposed; the risk applies to clients that may connect to untrusted servers, or\nthat use `STARTTLS` or no TLS, where a man-in-the-middle can forge the reply.",
-      "date": "2026-11-17",
-      "aliases": [
-        "GHSA-pmvc-x69f-5p9f"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "denial-of-service"
-      ],
-      "keywords": [
-        "smtp",
-        "memory",
-        "cpu"
-      ],
-      "cvss": null,
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/lettre/lettre/commit/075849fb9f2c956202aaaf2ff73e41f995d02f35",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.11.24"
-      ],
-      "unaffected": []
     }
   },
   {

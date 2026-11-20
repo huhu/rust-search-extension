@@ -71,42 +71,6 @@
   },
   {
     "advisory": {
-      "id": "RUSTSEC-2026-0347",
-      "package": "rustls",
-      "title": "Buffered application data sent to outer server after ECH rejection",
-      "description": "When a server rejects Encrypted Client Hello (ECH), the client completes the\nhandshake using the outer ClientHello and authenticates the server against the\nECH config's `public_name`. At the end of that handshake, rustls encrypted and\nqueued any application data buffered via `ClientConnection::writer()` *before*\nqueueing the `ech_required` alert.\n\nThe application correctly receives\n`Error::PeerIncompatible(ServerRejectedEncryptedClientHello)`, but the next\n`write_tls()` call (needed to send the alert) also sends the buffered\napplication data. Plaintext meant for the inner server therefore goes to the\nclient-facing server named by `public_name`.\n\nThat server is authenticated, so this is not exploitable by an unauthenticated\nparty, but it violates RFC 9849 section 6.1.6, which requires the client to\nabort with `ech_required` \"before sending any application data to the server\".\n\nThis affects only clients that:\n\n- use `EchMode::Enable` (GREASE ECH is not affected),\n- write application data before the handshake completes, and\n- connect to a server that rejects their ECH config (for example, because it is stale).\n\nThe underlying ordering bug is older, but before 0.23.44 the client checked\nthe server certificate against the inner server name rather than `public_name`,\nso certificate verification failed first and no data was sent.",
-      "date": "2026-10-14",
-      "aliases": [
-        "CVE-2026-123612",
-        "GHSA-vp88-798v-h67f"
-      ],
-      "related": [],
-      "collection": "crates",
-      "categories": [
-        "crypto-failure"
-      ],
-      "keywords": [],
-      "cvss": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:L/I:N/A:N",
-      "informational": null,
-      "references": [],
-      "source": null,
-      "url": "https://github.com/rustls/rustls/pull/3300",
-      "withdrawn": null,
-      "license": "CC0-1.0",
-      "expect-deleted": false
-    },
-    "affected": null,
-    "versions": {
-      "patched": [
-        ">=0.23.46"
-      ],
-      "unaffected": [
-        "<0.23.44"
-      ]
-    }
-  },
-  {
-    "advisory": {
       "id": "RUSTSEC-2026-0346",
       "package": "rustls",
       "title": "`Debug` impls for client session values expose TLS secrets",
@@ -138,6 +102,42 @@
       ],
       "unaffected": [
         "<0.21.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0347",
+      "package": "rustls",
+      "title": "Buffered application data sent to outer server after ECH rejection",
+      "description": "When a server rejects Encrypted Client Hello (ECH), the client completes the\nhandshake using the outer ClientHello and authenticates the server against the\nECH config's `public_name`. At the end of that handshake, rustls encrypted and\nqueued any application data buffered via `ClientConnection::writer()` *before*\nqueueing the `ech_required` alert.\n\nThe application correctly receives\n`Error::PeerIncompatible(ServerRejectedEncryptedClientHello)`, but the next\n`write_tls()` call (needed to send the alert) also sends the buffered\napplication data. Plaintext meant for the inner server therefore goes to the\nclient-facing server named by `public_name`.\n\nThat server is authenticated, so this is not exploitable by an unauthenticated\nparty, but it violates RFC 9849 section 6.1.6, which requires the client to\nabort with `ech_required` \"before sending any application data to the server\".\n\nThis affects only clients that:\n\n- use `EchMode::Enable` (GREASE ECH is not affected),\n- write application data before the handshake completes, and\n- connect to a server that rejects their ECH config (for example, because it is stale).\n\nThe underlying ordering bug is older, but before 0.23.44 the client checked\nthe server certificate against the inner server name rather than `public_name`,\nso certificate verification failed first and no data was sent.",
+      "date": "2026-10-14",
+      "aliases": [
+        "CVE-2026-123612",
+        "GHSA-vp88-798v-h67f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:L/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustls/rustls/pull/3300",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.23.46"
+      ],
+      "unaffected": [
+        "<0.23.44"
       ]
     }
   },
