@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0600",
+      "package": "kube-client",
+      "title": "`openssl-tls` trusts OpenSSL's default CA store in addition to the configured cluster CA",
+      "description": "With the `openssl-tls` connector, configuring a cluster CA (`certificate-authority`, `certificate-authority-data`, or the in-cluster `ca.crt`) did not limit which server certificates were trusted. The connector started from OpenSSL's default verify paths and added the configured roots to that store, so a server certificate chaining to any root in OpenSSL's default store passed trust validation. The certificate still had to be valid for the server name the client connects to. client-go and the `rustls-tls` connector trust only the configured CA.\n\nAn attacker on the path between the client and the apiserver who presents such a certificate, for example from a TLS inspection proxy whose root is installed on the machine, could complete the handshake and receive the client's requests, including bearer tokens.\n\nThis advisory covers the `openssl-tls` connector, added in 0.64.0, when a cluster CA is configured. The connector is used by `Client::try_default()`, `Client::try_from(Config)` and `ClientBuilder::try_from(Config)` whenever they select OpenSSL, by the `ConfigExt::openssl_https_connector`, `openssl_https_connector_with_connector` and `openssl_ssl_connector_builder` methods even when `rustls-tls` is also enabled, and since 4.2.0 for TLS to an `https://` proxy.\n\nWhich connector the constructors select depends on the version. Since 0.86.0, `rustls-tls` is the default and takes precedence when both features are enabled. From 0.71.0 to 0.85.x, `openssl-tls` was a default feature of `kube` (and of `kube-client` up to 0.82.2) and took precedence over `rustls-tls`. The `kube` crate re-exports `kube-client`, so the same `kube` versions are affected.\n\nThe flaw was corrected in 5.2.0 and 4.2.1 by installing a certificate store that holds only the configured root certificates. After upgrading, an `https://` proxy or a CA bundle that relied on OpenSSL's default store may need its CA added to the kubeconfig CA bundle. On older versions, switching the client to the `rustls-tls` connector avoids the issue.",
+      "date": "2026-11-24",
+      "aliases": [
+        "GHSA-hm5x-4x3m-4w8m"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "tls",
+        "openssl",
+        "certificate",
+        "kubernetes"
+      ],
+      "cvss": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/kube-rs/kube/pull/2170"
+      ],
+      "source": null,
+      "url": "https://github.com/kube-rs/kube/commit/bc27fdc58380d8ba78347145999193e00fe1b030",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=4.2.1, <5.0.0",
+        ">=5.2.0"
+      ],
+      "unaffected": [
+        "<0.64.0"
+      ]
+    }
+  }
+]

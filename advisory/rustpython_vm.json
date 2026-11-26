@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0394",
+      "package": "rustpython-vm",
+      "title": "Build environment compiled into the library and readable at runtime",
+      "description": "The build script of `rustpython-vm` 0.3.0 through 0.5.0 writes every\nenvironment variable of the build into `$OUT_DIR/env_vars.rs`. The crate\ncompiles that file into `_sysconfigdata`'s `build_time_vars`. That module is\nalways compiled.\n\nA binary built in CI with secrets in the environment carries those secrets\nin clear text. Registry tokens, cloud credentials and API keys are the usual\nones. Anyone with the binary can read them with `strings` or from Python.\n\nVersion 0.6.0 removes the dump and the include. Users of earlier versions\nshould upgrade, rebuild, and ship new binaries. Every secret that was in the\nenvironment of a past build whose output left the build machine should be\ntreated as exposed.\n\nJacob Finkelman first reported the issue in\n[#8802](https://github.com/RustPython/RustPython/issues/8802).\n[Bitbison](https://registry.bitbison.io/cargo/rustpython-vm)'s automated\nsupply chain scanning then detected credential data from the build\nenvironment flowing into artifacts that third-party software ships in the\nwild. The leak was confirmed in the published release binaries of at least four\ndependants but others have been impacted.",
+      "date": "2026-09-23",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "information-disclosure",
+        "build-script",
+        "credentials"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/RustPython/RustPython/issues/8802",
+        "https://github.com/RustPython/RustPython/issues/9236",
+        "https://crates.io/crates/rustpython-vm/0.6.0",
+        "https://registry.bitbison.io/cargo/rustpython-vm"
+      ],
+      "source": null,
+      "url": "https://github.com/RustPython/RustPython/pull/8813",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": [
+        "<0.3.0"
+      ]
+    }
+  }
+]

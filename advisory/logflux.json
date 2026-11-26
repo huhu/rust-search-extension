@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0171",
+      "package": "logflux",
+      "title": "`logflux` was removed from crates.io for malicious code",
+      "description": "The `logflux` crate attempted to download and run a malicious payload on the\nuser's machine.\n\nThe malicious crate had 1 version published on 2026-04-26, approximately 1\nmonth before removal, and had no evidence of actual usage. This crate had no\ndependencies on crates.io.\n\nThanks to Paweł Bis for discovering and reporting this crate!\n\nThis appears to have been part of a campaign targeting people applying for Rust\njobs. Please be careful with take-home assignments, especially if they ask you\nto use specific dependencies.",
+      "date": "2026-06-03",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0274",
+      "package": "rtrb",
+      "title": "Double free / use-after-free in `ReadChunk::commit` when an element's `Drop` panics",
+      "description": "`ReadChunk::commit` and `ReadChunk::commit_all` drop the committed elements\nbefore advancing the consumer head. If an element's `Drop` panics during the\ndrop loop, `head` is never advanced, so the ring buffer still treats those slots\nas holding live elements. When the `RingBuffer` is later dropped (it walks\n`head..tail` and drops each slot), or a subsequent `read_chunk()` / `commit()`\ntouches the same slots, the already-dropped elements are dropped a second time —\na double free (CWE-415) / use-after-free (CWE-416) reachable from safe Rust.\n\n## Mitigation\n\nUpdate to 0.3.5 (0.3.x line) or 0.4.0. Note that 0.4.0 contains a behavior\nchange in `is_abandoned()`, so users on 0.3.x should prefer 0.3.5.",
+      "date": "2026-08-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "memory-safety",
+        "double-free",
+        "use-after-free",
+        "panic-safety"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/mgeier/rtrb/issues/185",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rtrb::chunks::ReadChunk::commit": [
+          "<0.3.5"
+        ],
+        "rtrb::chunks::ReadChunk::commit_all": [
+          "<0.3.5"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        "^0.3.5",
+        ">=0.4.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

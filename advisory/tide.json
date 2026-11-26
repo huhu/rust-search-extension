@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0170",
+      "package": "tide",
+      "title": "tide is unmaintained",
+      "description": "The tide crate is unmaintained, and all versions are affected.\n\nThe closest maintained alternative might be [trillium](https://crates.io/crates/trillium).\n\nSee [this issue](https://github.com/http-rs/tide/issues/922) for more context.",
+      "date": "2026-06-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/http-rs/tide/issues/922",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

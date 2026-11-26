@@ -1,0 +1,48 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0267",
+      "package": "stable-vec",
+      "title": "Panic-safety unsoundness in `BitVecCore::clear` (double-free / use-after-free)",
+      "description": "`BitVecCore::clear` drops every occupied element with `drop_in_place` and only\nafterwards clears the occupancy bits and resets `len`. If an element's `Drop`\npanics, those metadata updates are skipped, so the slot of the already-dropped\nelement stays marked as occupied. `BitVecCore::drop` calls `clear()` again,\nvisits the same slot, and drops the element a second time — a double-free /\nuse-after-free reachable from safe Rust.\n\nReachable via the public `StableVec::clear` and `ExternStableVec::clear`, which\ndelegate to `BitVecCore::clear`.\n\n## Impact\n\n* CWE-415 (Double Free): the same allocation is freed twice.\n* CWE-416 (Use-After-Free): a freed allocation is accessed during a repeated `Drop`.\n\nReachable entirely from safe Rust via `catch_unwind` with element types whose\n`Drop` can panic. Confirmed under AddressSanitizer on 0.4.2.\n\n## Fix\n\nFixed in `stable-vec` 0.4.3 by removing each element via `remove_at`, which\nclears the occupancy bit before taking the value out.\n\nRelease 0.4.3 also fixes several other panic-safety issues found by the\nmaintainer; see [GHSA-mr2v-63pc-gmr4](https://github.com/LukasKalbertodt/stable-vec/security/advisories/GHSA-mr2v-63pc-gmr4)\nand the 0.4.3 changelog for the full list.",
+      "date": "2026-08-24",
+      "aliases": [
+        "GHSA-mr2v-63pc-gmr4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "panic-safety",
+        "memory-safety",
+        "use-after-free",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/LukasKalbertodt/stable-vec/pull/51",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "stable_vec::BitVecCore::clear": [
+          "<0.4.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.4.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

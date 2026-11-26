@@ -1,0 +1,38 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0205",
+      "package": "scc",
+      "title": "`Array::insert` violates exception safety if compare function panics, leading to potential Double-Free",
+      "description": "In affected versions of this crate, `Array::insert` is not exception safe. In the `UPSERT` path, `key` and `value`'s snapshot is written to `self.data_block`, and after the insertion is completed, `key` and `value` are `mem::forget` in order to prevent double free. However, during the insertion, `K::compare` is invoked, which is a user-provided method. If user deliberately call panic in this function, during unwinding, the destructors of `key`, `value`, and `self` will all be called (since the `mem::forget` has not been called yet), leading to Double Free. Similar issues happens in the `!UPSERT` path.\n\nThe soundness issue was fixed in version `3.8.4` by using `ManuallyDrop` instead of `mem::forget`, and separating fallible code from infallible code during a node split - insert = insert_try -> insert_unchecked.",
+      "date": "2026-07-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "exception",
+        "unwind"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://codeberg.org/wvwwvwwv/scalable-concurrent-containers/issues/232",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=3.8.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

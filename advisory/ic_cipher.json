@@ -1,0 +1,42 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0337",
+      "package": "ic-cipher",
+      "title": "Poly1305 panics or computes a wrong tag on attacker-chosen messages of 64 bytes or more",
+      "description": "`Poly1305` in `ic-cipher` absorbs messages of 64 bytes or more four blocks at\na time, summing four products before one reduction. From 0.2.5 to 0.2.19 the\nreduction kept its carries in 32-bit integers, which four summed products can\noverflow when the message's bytes are large.\n\nThis affects `Poly1305` and `ChaCha20Poly1305`, and everything built on them:\nthe TLS and QUIC ChaCha20-Poly1305 suites in `ic-rustls`, HPKE with that\ncipher in `ic-hpke`, and the re-exports in `ic-mac` and `ironcrypto`.\n\nWhat happens depends on how the crate was compiled:\n\n- With overflow checks on (any debug build, or a release profile with\n  `overflow-checks = true`) the multiplication panics, and under\n  `panic = \"abort\"` the process ends. The tag is computed over the ciphertext\n  before it is compared, so this happens before authentication and without\n  the key: anyone who can deliver a ChaCha20-Poly1305 ciphertext to be opened\n  can trigger it.\n- With overflow checks off (Cargo's default for release builds) the\n  arithmetic wraps and the tag is computed wrong on the affected messages.\n\nOrdinary data does not reach the defect. A message of `0xff` bytes does: in\none measurement against 0.2.19, 28 of 500 `ChaCha20Poly1305::open_detached`\ncalls on 1,024 bytes of `0xff` under random keys and nonces panicked in a\ndebug build. ChaCha20-Poly1305 derives a new Poly1305 key for every nonce, so\neach message is a fresh attempt.\n\nAES-GCM and AES-GCM-SIV are not affected, and neither are messages shorter\nthan 64 bytes.\n\nThe flaw was corrected in 0.2.20 by carrying in 64 bits.\n\nIt was found by running Project Wycheproof's ChaCha20-Poly1305 test vectors\nagainst the library.",
+      "date": "2026-10-09",
+      "aliases": [
+        "GHSA-xr22-8pqp-gwfh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service",
+        "crypto-failure"
+      ],
+      "keywords": [
+        "poly1305",
+        "chacha20-poly1305",
+        "integer-overflow"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/nervosys/IronCrypto/commit/a8160a18b5c66288f05dc62f5ea2159c687b9416",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.2.20"
+      ],
+      "unaffected": [
+        "<0.2.5"
+      ]
+    }
+  }
+]

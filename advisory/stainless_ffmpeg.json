@@ -1,0 +1,51 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0169",
+      "package": "stainless_ffmpeg",
+      "title": "`FormatContext` stream accessors can cause undefined behavior from safe code",
+      "description": "Affected versions of `stainless_ffmpeg` exposed several safe public methods on `FormatContext` that accepted a `stream_index` parameter and used it in unsafe pointer operations without checking whether the index was valid. These methods performed pointer arithmetic and dereferenced the resulting stream pointer. Safe callers could pass a negative or out-of-bounds `stream_index`, which could cause out-of-bounds pointer access and undefined behavior from safe Rust code.\n\nThe issue was fixed in version `0.6.0` by marking the affected stream accessor methods as `unsafe` and documenting that callers must ensure `stream_index` is a valid stream index.",
+      "date": "2025-04-24",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/nomalab/stainless-ffmpeg/pull/64",
+        "https://github.com/nomalab/stainless-ffmpeg/commit/a649e8cb4e7c9859279d1dc85051df5e7a4932f7"
+      ],
+      "source": null,
+      "url": "https://github.com/nomalab/stainless-ffmpeg/issues/63",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "stainless_ffmpeg::format_context::FormatContext::get_codec_id": [
+          "<0.6.0"
+        ],
+        "stainless_ffmpeg::format_context::FormatContext::get_stream": [
+          "<0.6.0"
+        ],
+        "stainless_ffmpeg::format_context::FormatContext::get_stream_type": [
+          "<0.6.0"
+        ],
+        "stainless_ffmpeg::format_context::FormatContext::get_stream_type_name": [
+          "<0.6.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

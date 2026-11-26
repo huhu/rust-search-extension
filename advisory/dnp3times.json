@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0032",
+      "package": "dnp3times",
+      "title": "`dnp3times` was removed from crates.io due to malicious code",
+      "description": "The `dnp3times` crate attempted to exfiltrate `.env` files to a server\nthat was in turn impersonating the legitimate `timeapi.io` service. It was\nloosely trying to typosquat the `dnp3time` crate, but otherwise was the same\nattack as the `time_calibrator` and `time_calibrators` malware yesterday.\n\nThe malicious crate had 1 version published on 2026-03-04 approximately 6 hours\nbefore removal and had no evidence of actual downloads. There were no crates\ndepending on this crate on crates.io.",
+      "date": "2026-03-04",
+      "aliases": [
+        "GHSA-xhw7-jhmp-j62j"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

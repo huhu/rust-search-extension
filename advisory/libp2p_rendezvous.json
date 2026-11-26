@@ -1,0 +1,78 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0526",
+      "package": "libp2p-rendezvous",
+      "title": "Rendezvous server accepted unlimited registrations per peer",
+      "description": "The rendezvous server's registration store did not limit how many namespaces a single peer could register, or how many registrations it held in total. Each registration stays until its TTL expires, up to 72 hours, and is not removed when the peer disconnects. An unauthenticated peer can send REGISTER requests for new namespaces in a loop, and many peers together can exhaust the server's memory, cutting off discovery for every client that relies on it.\n\nThe fix adds limits on registrations per peer (32 by default) and in total (10,000 by default), configurable through `Config`, and answers requests over the limit with an `Unavailable` error. It is in 0.17.1.",
+      "date": "2026-04-02",
+      "aliases": [
+        "CVE-2026-35405",
+        "GHSA-cqfx-gf56-8x59"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "libp2p",
+        "rendezvous",
+        "memory-exhaustion"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/libp2p/rust-libp2p/commit/8fde2dc0fae8b433f97c6cdf9ee24f59d51a359c",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.17.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0527",
+      "package": "libp2p-rendezvous",
+      "title": "Rendezvous server stored an unlimited number of DISCOVER cookies",
+      "description": "Each DISCOVER request to a rendezvous server creates a pagination cookie, which the server kept in a map together with the registrations already returned for it. Entries were never evicted or capped, so an unauthenticated peer sending ordinary DISCOVER requests can make the server's memory grow without bound.\n\nThe fix keeps cookies in a fixed-size LRU cache (10,000 entries by default, configurable through `Config`). It is in 0.17.1.",
+      "date": "2026-04-02",
+      "aliases": [
+        "CVE-2026-35457",
+        "GHSA-v5hw-cv9c-rpg7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "libp2p",
+        "rendezvous",
+        "memory-exhaustion"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/libp2p/rust-libp2p/commit/8fde2dc0fae8b433f97c6cdf9ee24f59d51a359c",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.17.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

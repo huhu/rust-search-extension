@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0599",
+      "package": "xmloxide",
+      "title": "Stack overflow from unbounded recursion in DTD content-model parsing",
+      "description": "`xmloxide`'s DTD parser recursed without a depth bound when parsing the\nparenthesised content model of an `<!ELEMENT>` declaration. A small document\nwhose internal DTD subset contains many nested `(` drives unbounded mutual\nrecursion between `DtdParser::parse_content_particle` and\n`DtdParser::parse_content_spec_group`, exhausting the stack and aborting the\nprocess.\n\nThe internal DTD subset is parsed during ordinary document parsing, so this is\nreachable through the default parse entry points (for example\n`Document::parse_str`) on any input that carries a `DOCTYPE`. The existing\n`ParseOptions::max_depth` limit does not prevent it: it bounds element nesting,\nnot DTD content-model nesting. A stack overflow cannot be caught as an error,\nso any process that parses attacker-controlled XML with `xmloxide` can be\ncrashed with a small payload.\n\nFixed in 0.4.4: a parenthesis-nesting depth counter is threaded through the\ncontent-model parser, and nesting deeper than 256 levels is rejected with a\nnormal `ParseError`. Well-formed DTDs are unaffected.\n\nApplications that cannot upgrade should reject or strip the `DOCTYPE` from\nuntrusted input before parsing.",
+      "date": "2026-07-20",
+      "aliases": [
+        "CVE-2026-61727",
+        "GHSA-7jmw-29gc-ffx4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "dtd",
+        "recursion",
+        "stack-overflow",
+        "xml"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/jonwiggins/xmloxide/commit/d606e11ddaf033272d85c5422addd91b79788aba",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

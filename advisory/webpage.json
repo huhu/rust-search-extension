@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0407",
+      "package": "webpage",
+      "title": "SSRF and local file disclosure via unvalidated URLs",
+      "description": "Applications that pass attacker-controlled URLs to `webpage` versions before\n2.1.0 may be vulnerable to server-side request forgery (SSRF) or local file\ndisclosure.\n\n`HTTP::fetch` and `Webpage::from_url` passed URLs to libcurl without\nrestricting the URL scheme or validating the resolved destination IP address.\nRedirects were followed without checking whether the new destination was\ninternal. Depending on how the application uses the response, an attacker\ncould:\n\n- Read local files accessible to the application process using `file://` URLs.\n- Cause requests to internal or link-local services (e.g. cloud metadata\n  endpoints at `http://169.254.169.254`) via direct private-IP URLs or by\n  chaining HTTP redirects through an attacker-controlled server.\n\nStarting in 2.1.0, `HTTP::fetch` and `Webpage::from_url` reject non-HTTP(S)\nURL schemes and destinations that resolve to non-public IP addresses, including\nafter redirects. Applications that intentionally fetch trusted internal\nresources can opt in to the previous behavior with `HTTP::fetch_unrestricted`\nor `Webpage::from_url_unrestricted`.\n\nReported by [Aiden Mohan](https://github.com/AidenMohan).",
+      "date": "2026-10-22",
+      "aliases": [
+        "GHSA-23hp-j76v-pcwj"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [
+        "ssrf",
+        "file-disclosure",
+        "url-validation"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/orottier/webpage-rs/commit/5742fbee437c04170d101e10df3534e87730f36d",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.1.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

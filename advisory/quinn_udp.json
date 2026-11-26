@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0538",
+      "package": "quinn-udp",
+      "title": "Receive loop can spin after a truncated datagram",
+      "description": "Some targets read one datagram per `recvmsg` call instead of using `recvmmsg`: Apple platforms without the `fast-apple-datapath` feature, OpenBSD, NetBSD, Solaris and illumos, and from 0.6 also DragonFly BSD, Redox and GNU/Hurd. On these targets the receive loop set up its `msghdr` only once and looked at the `MSG_TRUNC` flag before checking whether `recvmsg` had failed. After a datagram larger than the receive buffer was dropped, a following `EAGAIN` still saw the old truncation flag. The loop then kept issuing non-blocking receives instead of returning `WouldBlock`.\n\nWhen the receive buffer is smaller than a datagram that arrives, a remote sender can keep the task that drives the socket busy, before any QUIC packet authentication. The loop ends only when a later datagram fits in the buffer. Whether an application is exposed therefore depends on the receive buffer size it uses. Linux, Android, FreeBSD and Windows use other receive paths and are not affected.\n\nThe fix rebuilds the header before every `recvmsg` call and returns receive errors before checking the truncation flag. It is in 0.5.16 and 0.6.3.",
+      "date": "2026-09-30",
+      "aliases": [
+        "GHSA-6pp4-4cxf-xf88"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "udp",
+        "infinite-loop"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/quinn-rs/quinn/commit/6862d3dcc9a9333fc4160481b3e5e5d154d4dd36"
+      ],
+      "source": null,
+      "url": "https://github.com/quinn-rs/quinn/commit/462865a6c33039c26076f7077c7cd7e2f997b9cd",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.5.16, <0.6.0",
+        ">=0.6.3"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0124",
+      "package": "libcrux-chacha20poly1305",
+      "title": "Potential Panic on Overlong Ciphertext Buffer",
+      "description": "An application that passes in a ciphertext buffer of length greater\nthan `ptxt.len() + TAG_LEN` to `libcrux_chacha20poly1305::encrypt` or\n`libcrux_chacha20poly1305::xchacha20_poly1305::encrypt` would\nexperience a panic.\n\n## Impact\nAn application where the length of the ciphertext buffer is under\nattacker control could be made to crash.\n\n## Mitigation\nThe fix makes it so that `libcrux_chacha20poly1305::encrypt` and\n`libcrux_chacha20poly1305::xchacha20_poly1305::encrypt` no longer\npanic in this case, but instead write out the ciphertext and tag into\nthe first `ptxt.len() + TAG_LEN` bytes of the provided buffer.",
+      "date": "2026-03-29",
+      "aliases": [
+        "GHSA-hc3c-63hc-2r9f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cryspen/libcrux/pull/1386",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "libcrux_chacha20poly1305::encrypt": [
+          "<0.0.8"
+        ],
+        "libcrux_chacha20poly1305::xchacha20_poly1305::encrypt": [
+          "<0.0.8"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.0.8"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0063",
+      "package": "safe-nd",
+      "title": "crate has been renamed to `safe-nd`",
+      "description": "This crate has been renamed from `safe-nd` to `sn_data_types`.\n\nThe new repository location is:\n\n<https://github.com/maidsafe/sn_data_types>",
+      "date": "2020-11-02",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/maidsafe/sn_data_types/pull/218",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

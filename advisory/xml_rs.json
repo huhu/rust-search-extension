@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2022-0048",
+      "package": "xml-rs",
+      "title": "xml-rs is Unmaintained",
+      "description": "xml-rs is a XML parser has open issues around parsing including integer\noverflows / panics that may or may not be an issue with untrusted data.\n\nTogether with these open issues with Unmaintained status xml-rs\nmay or may not be suited to parse untrusted data.\n\n## Alternatives\n\n- [quick-xml](https://crates.io/crates/quick-xml)",
+      "date": "2022-01-26",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [
+        "https://github.com/netvl/xml-rs/issues/219",
+        "https://github.com/netvl/xml-rs/issues/210",
+        "https://github.com/netvl/xml-rs/issues/204"
+      ],
+      "source": null,
+      "url": "https://github.com/netvl/xml-rs/issues",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

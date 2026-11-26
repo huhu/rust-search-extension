@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0079",
+      "package": "dyn-future",
+      "title": "`DynFuture` drop can construct a dangling reference",
+      "description": "DynFuture is unsound because its Drop implementation transmutes a trait-object reference into unrelated reference types, which constructs an invalid reference from trait object metadata.\n\nThis issue was reproduced against `dyn-future` 3.0.4 under Miri. And the crate is unmaintained.",
+      "date": "2026-01-21",
+      "aliases": [
+        "GHSA-j3w3-p6mr-3hrh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustsec/advisory-db/issues/2595",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

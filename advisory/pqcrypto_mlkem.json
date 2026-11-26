@@ -1,0 +1,85 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0585",
+      "package": "pqcrypto-mlkem",
+      "title": "ML-KEM does not perform the FIPS 203 input checks",
+      "description": "`pqcrypto-mlkem` wraps PQClean's ML-KEM implementation, which does not perform\nthe input checks required by FIPS 203:\n\n- encapsulation does not perform the encapsulation key modulus check\n  (section 7.2), so encapsulation keys with coefficients that are not reduced\n  modulo q are accepted;\n- decapsulation does not perform the decapsulation key hash check\n  (section 7.3), so a decapsulation key whose stored hash or embedded\n  encapsulation key has been altered is accepted.\n\nWith the Wycheproof ML-KEM vectors, 108 / 112 / 116 invalid encapsulation keys\n(ML-KEM-512 / -768 / -1024) and 2 invalid decapsulation keys per parameter set\nare accepted.\n\nThis does not disclose key material. It is a FIPS 203 non-conformance, and an\naffected implementation can disagree with a conforming one about which keys\nare valid.\n\nThe crate is unmaintained (see RUSTSEC-2026-0161) and no patched version is\nexpected. Migrating to a maintained implementation, such as the\n[`ml-kem`](https://crates.io/crates/ml-kem) crate, is recommended.",
+      "date": "2026-11-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "ml-kem",
+        "fips203",
+        "input-validation"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RatioLabsEU/pqc-field-notes/tree/main/advisories/2026-mlkem-input-validation",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "pqcrypto_mlkem::mlkem1024::decapsulate": [
+          "<=0.1.1"
+        ],
+        "pqcrypto_mlkem::mlkem1024::encapsulate": [
+          "<=0.1.1"
+        ],
+        "pqcrypto_mlkem::mlkem512::decapsulate": [
+          "<=0.1.1"
+        ],
+        "pqcrypto_mlkem::mlkem512::encapsulate": [
+          "<=0.1.1"
+        ],
+        "pqcrypto_mlkem::mlkem768::decapsulate": [
+          "<=0.1.1"
+        ],
+        "pqcrypto_mlkem::mlkem768::encapsulate": [
+          "<=0.1.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0161",
+      "package": "pqcrypto-mlkem",
+      "title": "`pqcrypto-mlkem` is unmaintained: upstream PQClean project being archived",
+      "description": "This crate provides Rust bindings to ML-KEM (FIPS 203) via C implementations\nfrom [PQClean](https://github.com/PQClean/PQClean). The PQClean project is\nbeing archived in or after July 2026 (see [PQClean/PQClean#604](https://github.com/PQClean/PQClean/issues/604)),\nafter which no further security patches or bug fixes will be applied to the\nupstream implementations.\n\nAs a result, this crate will no longer receive updates. Users should migrate\nto the [`ml-kem`](https://crates.io/crates/ml-kem) crate, which provides a\npure-Rust implementation of ML-KEM (FIPS 203).",
+      "date": "2026-06-04",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rustpq/pqcrypto/issues/97",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

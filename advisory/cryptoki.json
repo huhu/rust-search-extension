@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0286",
+      "package": "cryptoki",
+      "title": "Out-of-bounds read when decoding CKA_ALLOWED_MECHANISMS",
+      "description": "`cryptoki` treated the CKA_ALLOWED_MECHANISMS ulValueLen byte count as a\nCK_MECHANISM_TYPE element count. A valid nonempty attribute returned through\nthe safe `Session::get_attributes` API could cause construction of an\nout-of-bounds slice and undefined behavior.\n\nPossible consequences include a process crash or denial of service and\npotential disclosure of adjacent heap words. Upgrade to the fixed patch release\nfor the cryptoki 0.10, 0.11, or 0.12 line.",
+      "date": "2026-09-16",
+      "aliases": [
+        "GHSA-r6vc-97x9-63vv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "pkcs11",
+        "out-of-bounds-read",
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/parallaxsecond/rust-cryptoki/pull/368",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.10.1, <0.11.0",
+        ">=0.11.1, <0.12.0",
+        ">=0.12.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

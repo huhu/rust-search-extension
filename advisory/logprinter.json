@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0084",
+      "package": "logprinter",
+      "title": "`logprinter` was removed from crates.io for malicious code",
+      "description": "The crate downloaded code from an external HTTP endpoint and executed it within its `trace()` fn.",
+      "date": "2026-04-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://socket.dev/supply-chain-attacks/north-korea-s-contagious-interview-campaign"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

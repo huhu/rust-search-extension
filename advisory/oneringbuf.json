@@ -1,0 +1,88 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0152",
+      "package": "oneringbuf",
+      "title": "Use-after-free",
+      "description": "Affected versions of `oneringbuf` exposed the obsolete `IntoRef::into_ref` method through the public `IntoRef` trait. For heap-backed ring buffers, this method returned a `DroppableRef` handle.\n\n`DroppableRef` stored an owning raw pointer created from `Box::into_raw`. Its `Clone` implementation copied this raw pointer without incrementing the internal `alive_iters` counter. Internally, this clone pattern appears to rely on a fixed number of handles being created to match the initial `alive_iters` value. However, exposing `DroppableRef` through the public `IntoRef::TargetRef` associated type allows safe external code to create additional clones beyond that fixed count, breaking the lifetime protocol. `Drop` later dereferenced the pointer and could free the backing allocation with `Box::from_raw`.\n\nSafe code could call `IntoRef::into_ref` to obtain a `DroppableRef` and then clone it. Each clone pointed to the same allocation, but the internal `alive_iters` counter was not increased. As a result, one clone could free the allocation while another clone still existed. Dropping the remaining clone then accessed freed memory, causing a heap-use-after-free.\n\nThe issue was fixed in version 0.8.0 by removing the obsolete `into_ref` method.\n\n## Trigger\n\n```rust\nuse oneringbuf::{IntoRef, LocalHeapRB};\n\nfn main() {\n    let rb = LocalHeapRB::<usize>::from(vec![1, 2, 3]);\n\n    let r = <LocalHeapRB<usize> as IntoRef>::into_ref(rb);\n    let r2 = r.clone();\n    let r3 = r.clone();\n\n    drop(r);\n    drop(r2);\n    drop(r3); // AddressSanitizer: heap-use-after-free\n}\n```",
+      "date": "2026-05-27",
+      "aliases": [
+        "GHSA-q95x-7g78-rccv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "safe-code",
+        "clone",
+        "drop"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/skilvingr/rust-oneringbuf/commit/643a24b30914068416dff9021a069c12c865a316"
+      ],
+      "source": null,
+      "url": "https://github.com/skilvingr/rust-oneringbuf/commit/643a24b30914068416dff9021a069c12c865a316",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0143",
+      "package": "oneringbuf",
+      "title": "Double-free in `vmem` storage reachable from safe Rust",
+      "description": "When the `vmem` feature is enabled, `VmemStorage<T>::new(Box<[UnsafeSyncCell<T>]>)` (and every public constructor that funnels through it — `ConcurrentHeapRB::default(cap)`, `ConcurrentHeapRB::from(Vec<T>)`, `From<Box<[T]>>`, etc.) bit-copies the input buffer into a freshly `mmap`'d region with `ptr::copy_nonoverlapping`, then lets the source `Box<[UnsafeSyncCell<T>]>` drop normally.\n\nBecause `UnsafeSyncCell<T>` has a `Drop` impl that runs `assume_init_drop` on its inner `MaybeUninit<T>`, the source-side `T` values are dropped at the end of `new`, while bitwise duplicates (carrying the same heap pointers for `String`, `Box`, `Vec`, `Arc`, …) remain inside the mmap region. When the ring buffer is later destructed, the destructor's `drop_in_place` over the slice runs `UnsafeSyncCell::drop` a second time on every cell — a deterministic double-free of every heap-owning element. Reachable from 100% safe Rust.\n\n## Trigger\n\n```rust\nlet v: Vec<Vec<u32>> = (0..1024).map(|i| vec![i, i+1, i+2]).collect();\nlet rb: oneringbuf::SharedVmemRB<Vec<u32>> = oneringbuf::SharedVmemRB::from(v);\ndrop(rb);\n// glibc: free(): double free detected in tcache 2 -> abort\n// ASan: AddressSanitizer: attempting double-free\n```\n\nAny `T` with a non-trivial `Drop` reproduces deterministically.\n\n## Fix\n\nFixed in `0.7.1` via upstream PR [skilvingr/rust-oneringbuf#3](https://github.com/skilvingr/rust-oneringbuf/pull/3), which deallocates the source `Box<[UnsafeSyncCell<T>]>` without running per-element `Drop` after the bytes have been copied into the mmap region. Vulnerable versions (`< 0.7.1`) have been yanked from crates.io.",
+      "date": "2026-05-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "double-free",
+        "use-after-free",
+        "vmem",
+        "drop"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/skilvingr/rust-oneringbuf/pull/3"
+      ],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "oneringbuf::VmemStorage::new": [
+          "<0.7.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.7.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

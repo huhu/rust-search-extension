@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0596",
+      "package": "etherparse",
+      "title": "Out-of-bounds read when iterating over IPv6 extension headers of laxly parsed packets",
+      "description": "Iterating over malformed or truncated IPv6 extension headers can cause\nout-of-bounds reads when the packet was parsed using one of the lax parsing\nfunctions (e.g. via `Ipv6ExtensionsSlice::from_slice_lax` or `LaxSlicedPacket`).\n\nLax parsing stops at the first invalid or truncated extension header and returns\nthe headers parsed up to that point. The \"next header\" field of the last returned\nheader can then refer to a header that is not part of the slice.\n`Ipv6ExtensionSliceIter` followed it without checking the remaining length.\n\nA crafted or truncated IPv6 packet can cause a crash or expose memory located\nbehind the packet to the application. Users who do not iterate over the IPv6\nextension headers of laxly parsed packets are not affected.\n\nAs a workaround, do not iterate over the IPv6 extension headers if lax parsing\nreported an error.",
+      "date": "2026-11-23",
+      "aliases": [
+        "GHSA-mmwx-cp2j-wjh2"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure",
+        "denial-of-service"
+      ],
+      "keywords": [
+        "out-of-bounds-read",
+        "ipv6",
+        "parser"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/JulianSchmid/etherparse/pull/169",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "^0.14.4",
+        "^0.15.1",
+        "^0.16.1",
+        "^0.17.1",
+        "^0.18.3",
+        "^0.19.1",
+        "^0.20.4",
+        ">=0.21.1"
+      ],
+      "unaffected": [
+        "<0.14.0"
+      ]
+    }
+  }
+]

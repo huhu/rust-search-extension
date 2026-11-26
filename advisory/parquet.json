@@ -1,0 +1,45 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0595",
+      "package": "parquet",
+      "title": "Apache Arrow Rust: Bloom filters written as plaintext when writing encrypted Parquet",
+      "description": "When writing an encrypted parquet file with a column with bloom filters, the header\nand bitsets of the bloom filter are written in plaintext in the final parquet.\n\nPatched versions now reject writing bloom filters when encryption is enabled, raising\nan error at runtime.\n\nExisting encrypted parquet files written with bloom filters are still vulnerable,\nand it is recommended to rewrite those files with bloom filters disabled if possible.\n\nCredit to Yanzhi Xin (autoCAT6) for finding this.",
+      "date": "2026-11-23",
+      "aliases": [
+        "CVE-2026-125651",
+        "GHSA-8m2j-rv5j-c94f"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "information-disclosure"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://www.openwall.com/lists/oss-security/2026/11/22/5"
+      ],
+      "source": null,
+      "url": "https://github.com/apache/arrow-rs/pull/12165",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=60.2.0",
+        ">=59.3.3, <60.0.0",
+        ">=58.4.2, <59.0.0",
+        ">=57.3.3, <58.0.0"
+      ],
+      "unaffected": [
+        "<55.0.0"
+      ]
+    }
+  }
+]

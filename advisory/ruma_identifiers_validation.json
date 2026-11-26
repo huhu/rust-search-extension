@@ -1,0 +1,82 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0588",
+      "package": "ruma-identifiers-validation",
+      "title": "Validating Matrix Content URIs may panic",
+      "description": "Using `mxc_uri::validate` may panic if the server name part of the URI is larger\nthan 249 bytes. The affected versions assumed that the length of the first part\nof the URI (`mxc://{server_name}`) would fit into a `NonZeroU8`, but the length\nof the server name wasn't validated and the Matrix specification actually allows\nthe server name to have a maximum length of 261 bytes.",
+      "date": "2026-11-19",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ruma/ruma/commit/caf1ac05a9fd347158b60505ef8546a2ff18ae7c",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ruma_identifiers_validation::mxc_uri::validate": [
+          "<0.13.0, >=0.2.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.13.0"
+      ],
+      "unaffected": [
+        "<0.2.3"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0589",
+      "package": "ruma-identifiers-validation",
+      "title": "Validating Matrix key IDs may panic",
+      "description": "Using `key_id::validate` may panic if the `algorithm` part of the key ID is\nlonger than 255 bytes and contains non-ASCII characters. The affected versions\nassumed that the length of the first part containing the encryption or signing\nalgorithm (the part before the colon) would fit into a `NonZeroU8`, but the\nlength of the first part wasn't validated.",
+      "date": "2026-11-19",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/ruma/ruma/commit/b2cb9b43efbe082e4d9292560d4c9f0db5734038",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "ruma_identifiers_validation::key_id::validate": [
+          "<0.14.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.14.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

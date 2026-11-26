@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0109",
+      "package": "sequoia-git",
+      "title": "Broken hard revocation handling",
+      "description": "Before `sq-git` checks if a commit can be authenticated, it first\nlooks for hard revocations.  Because parsing a policy is expensive\nand a project's policy rarely changes, `sq-git` has an\noptimization to only check a policy if it hasn't checked it\nbefore.  It does this by maintaining a set of policies that it had\nalready seen keyed on the policy's hash.  Unfortunately, due to a\nbug the hash was truncated to be 0 bytes and thus only hard\nrevocations in the target commit were considered.  Normally this\nis not a problem as hard revocations are not removed from the\nsigning policy.\n\nAn attacker could nevertheless exploit this flaw as follows.\nConsider Alice and Bob who maintain a project together.  If Bob's\ncertificate is compromised and Bob issues a hard revocation, Alice\ncan add it to the project's signing policy.  An attacker who has\naccess to Bob's key can then create a merge request that strips\nthe hard revocation.  If Alice merges Bob's merge request, then\nthe latest commit will not carry the hard revocation, and `sq-git`\nwill not see the hard revocation when authenticating that commit or\nany following commits.\n\nNote: for this attack to be successful, Alice needs to be tricked\ninto merging the malicious MR.  If Alice is reviewing MRs, then\nshe is likely to notice changes to the signing policy.\n\nReported-by: Hassan Sheet",
+      "date": "2026-04-21",
+      "aliases": [
+        "GHSA-g27r-r6ph-vf5r"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:P/PR:H/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://gitlab.com/sequoia-pgp/sequoia-git/-/commit/f9c9074bd80023456221f09c3c4ff19957ee9c58",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.6.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

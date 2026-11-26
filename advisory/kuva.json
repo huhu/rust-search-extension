@@ -1,0 +1,49 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0345",
+      "package": "kuva",
+      "title": "Untrusted labels can inject SVG attributes, CSS values, and terminal escape sequences",
+      "description": "Affected versions of `kuva` wrote data-derived strings straight into rendered\noutput without escaping them for the target format. Applications that plot\nuntrusted input (column headers, category and group names, series labels)\nwere affected in three places.\n\n**1. SVG attribute injection / stored XSS (CWE-79).** When SVG interactivity\nwas enabled via `Layout::with_interactive`, group and category labels were\nformatted directly into `data-group` and `data-x` attributes through the raw\n`Primitive::GroupStart.extra_attrs` string, which the SVG backend emitted\nverbatim. The backend's escaping helper covered text nodes and `<title>` but\nnot attributes. A label containing a double quote could close the attribute\nand add another, for example an event handler. Opening the resulting SVG in a\nbrowser, or inlining it into an HTML page, executed the injected script.\nReachable from scatter, line, bar, and strip plots, and from legends.\n\n**2. Unvalidated CSS and style attribute values (CWE-74).** `Color::Css`\nwrote arbitrary strings into `fill` and `stroke`, `stroke-dasharray` was\nemitted raw from the public dash-pattern builders, and the SVG root\n`font-family` and `fill` plus the background rectangle `fill` were written\nraw from layout and theme configuration. Applications that forwarded\nuser-supplied style values into the plotting API could have those values\nbreak out of the attribute they were written into.\n\n**3. Terminal escape sequence injection (CWE-150).** `TerminalBackend` stored\nlabel characters unfiltered and emitted each one unconditionally when\nproducing its ANSI string. Control characters in a label, including ESC, OSC\nsequences, and carriage returns, were written straight to the operator's\nterminal. Depending on the emulator this allows forged or misleading output,\nwindow title and clipboard manipulation, and reaching terminal emulator\nvulnerabilities that are triggered by escape sequences.\n\nThe fix routes every data-derived string through format-appropriate\nescaping. A single `escape_attr` helper XML-escapes `&`, `<`, `>`, `\"`, and\n`'`, and is applied at each raw-attribute site: the `extra_attrs`\ninterpolations, the `Color::Css` catch-all, and the SVG backend's\n`stroke-dasharray`, `font-family`, and background `fill` writes.\n`TerminalBackend::set_char` replaces control characters with U+FFFD before\nthey enter the character grid, so one cell stays one column rather than the\ngrid shifting, and the ANSI writer emits the grid unchanged.\n\nPatched in 0.5.0, with backports to 0.4.1 for the 0.4.x line and 0.3.1 for\nusers still on 0.1.5 through 0.3.0. No versions were yanked.\n\nUsers who cannot upgrade should sanitize labels before passing them to\n`kuva`, and avoid interactive SVG output for untrusted data.\n\nNote that `Scene::defs`, `Scene::scripts`, and `Primitive::GroupStart.extra_attrs`\nremain raw escape hatches by design. They are documented as trusted-only and\nare not covered by this advisory; populating them from user data is\nequivalent to executing that data.",
+      "date": "2026-08-07",
+      "aliases": [
+        "GHSA-3c48-9r95-hqhr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "format-injection"
+      ],
+      "keywords": [
+        "svg",
+        "xss",
+        "injection",
+        "ansi",
+        "escaping"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/Psy-Fer/kuva/commit/2219f5931913f79f3b9be47690b8999a3d8b8bfb",
+        "https://github.com/Psy-Fer/kuva/commit/76049ff5133dfb796ba759c2c5e486779d3d30c5",
+        "https://github.com/Psy-Fer/kuva/releases/tag/v0.4.1",
+        "https://github.com/Psy-Fer/kuva/releases/tag/v0.3.1"
+      ],
+      "source": null,
+      "url": "https://github.com/Psy-Fer/kuva/commit/2b53ceb796bbb0e9bb537836ad19faac53a51852",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.1, <0.4.0",
+        ">=0.4.1"
+      ],
+      "unaffected": [
+        "<0.1.5"
+      ]
+    }
+  }
+]

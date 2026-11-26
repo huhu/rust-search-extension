@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0590",
+      "package": "secure-gate",
+      "title": "`Fixed` and `Dynamic` secret wrappers were not zeroized on drop",
+      "description": "In affected versions, the `Fixed<T>` and `Dynamic<T>` wrappers (and the\n`FixedNoClone` / `DynamicNoClone` variants in 0.6.x) did not wipe their contents\nwhen dropped. The types implemented the `zeroize::ZeroizeOnDrop` marker trait,\nwhich has no methods and does nothing by itself, but had no `Drop` implementation.\nThe documentation stated that secrets were zeroized on drop.\n\nA secret held in one of these wrappers stayed in the freed stack or heap memory\nafter the wrapper went out of scope, where it could be read by anything able to\nobserve that memory later, such as a core dump, swap, or a separate memory\ndisclosure bug.\n\nVersions before 0.5.0 are not affected: with the default `zeroize` feature they\nstored the secret in `secrecy::SecretBox` or `zeroize::Zeroizing`, both of which\nwipe on drop.\n\nThe flaw was fixed by making `zeroize` a required dependency, bounding the\nwrappers on `T: Zeroize`, and adding `Drop` implementations that call\n`zeroize()`. The first published release with the fix is 0.8.0-rc.1; the first\nstable release is 0.8.0. All affected versions have been yanked from crates.io.",
+      "date": "2026-03-17",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "zeroize",
+        "drop",
+        "secrets"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Slurp9187/secure-gate/blob/main/SECURITY.md#past-advisory",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.8.0-rc.1"
+      ],
+      "unaffected": [
+        "<0.5.0"
+      ]
+    }
+  }
+]

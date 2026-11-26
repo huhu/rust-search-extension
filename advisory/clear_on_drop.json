@@ -1,0 +1,29 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0283",
+      "package": "clear_on_drop",
+      "title": "clear_on_drop is unmaintained",
+      "description": "This crate is no longer maintained. Use the [zeroize](https://crates.io/crates/zeroize) crate instead.\n\n* Instead of `ClearOnDrop`, use `Zeroizing`\n* Instead of `clear_stack`, use `zeroize_stack`",
+      "date": "2026-09-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/cesarb/clear_on_drop/commit/5916d6260acbad8a34290dba137f39963f13f467",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

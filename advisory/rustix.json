@@ -1,0 +1,61 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0486",
+      "package": "rustix",
+      "title": "xattr functions mark unwritten bytes as initialized when given a zero-length buffer",
+      "description": "The extended-attribute functions in `rustix::fs` (`getxattr`, `lgetxattr`, `fgetxattr`, `listxattr`, `llistxattr` and `flistxattr`) write into a `Buffer` and then mark as many bytes initialized as the system call reported. When the buffer has zero length, the operating system treats the call as a size query: it writes nothing and returns the size of the attribute value or of the name list. rustix still marked that many bytes as initialized.\n\nPassing a `Vec` whose length equals its capacity through `spare_capacity` gives such a zero-length buffer, and rustix then set the vector's length past its capacity over memory that was never written. This is undefined behavior reachable from safe code. With an empty `&mut [MaybeUninit<u8>]` the call panics instead.\n\nFrom 1.1.6 these functions return an empty result for a zero-length buffer, and new `getxattr_query`, `lgetxattr_query`, `fgetxattr_query`, `listxattr_query`, `llistxattr_query` and `flistxattr_query` functions return the size. The 0.38 series did not have the `Buffer` API and is not affected.",
+      "date": "2026-10-27",
+      "aliases": [
+        "GHSA-jh2m-fhpj-3vr7"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "xattr",
+        "uninitialized-memory"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/bytecodealliance/rustix/commit/8e6aaa6713d2bb64b1fdd8c472e3a32a10a76d70",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "rustix::fs::fgetxattr": [
+          ">=1.0.0, <1.1.6"
+        ],
+        "rustix::fs::flistxattr": [
+          ">=1.0.0, <1.1.6"
+        ],
+        "rustix::fs::getxattr": [
+          ">=1.0.0, <1.1.6"
+        ],
+        "rustix::fs::lgetxattr": [
+          ">=1.0.0, <1.1.6"
+        ],
+        "rustix::fs::listxattr": [
+          ">=1.0.0, <1.1.6"
+        ],
+        "rustix::fs::llistxattr": [
+          ">=1.0.0, <1.1.6"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.1.6"
+      ],
+      "unaffected": [
+        "<1.0.0"
+      ]
+    }
+  }
+]

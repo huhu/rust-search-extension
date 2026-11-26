@@ -1,0 +1,50 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0332",
+      "package": "wasapi",
+      "title": "`WaveFormat::parse` reads past the end of a `&WAVEFORMATEX`",
+      "description": "`WaveFormat::parse` is a safe function that takes a `&WAVEFORMATEX`, which is\nonly valid for reads of `size_of::<WAVEFORMATEX>()` (18) bytes. When the header\nhas `wFormatTag == WAVE_FORMAT_EXTENSIBLE` and `cbSize >= 22`, the function\nreinterprets the reference as a `WAVEFORMATEXTENSIBLE` and reads 40 bytes.\nNothing in the signature guarantees that the header sits at the start of a\nlarger buffer, so safe code can trigger an out-of-bounds read:\n\n```rust\nuse wasapi::WaveFormat;\nuse windows::Win32::Media::Audio::WAVEFORMATEX;\nuse windows::Win32::Media::KernelStreaming::WAVE_FORMAT_EXTENSIBLE;\n\nlet header = WAVEFORMATEX {\n    wFormatTag: WAVE_FORMAT_EXTENSIBLE as u16,\n    nChannels: 2,\n    nSamplesPerSec: 48000,\n    nAvgBytesPerSec: 384000,\n    nBlockAlign: 8,\n    wBitsPerSample: 32,\n    cbSize: 22,\n};\n// Reads 22 bytes past the end of `header`.\nlet _ = WaveFormat::parse(&header);\n```\n\nA more likely way to hit this is to copy the header out of a format pointer\nreturned by WASAPI (`let fmt = unsafe { *ptr };`) and pass `&fmt`. The copy\nkeeps `cbSize`, but not the 22 bytes that follow it. The bytes read past the\nend are returned as the channel mask and subformat of the parsed format.\n\nThe flaw was corrected in commit `2562db7`, released in 0.25.0. `parse` is now\nan `unsafe fn` that takes a `*const WAVEFORMATEX`, and the caller must\nguarantee that the pointer is valid for reads of\n`size_of::<WAVEFORMATEX>() + cbSize` bytes. `WaveFormat::parse_from_blob_bytes`\n(available since 0.23.0) is the safe alternative and checks the slice length\nagainst `cbSize`.",
+      "date": "2026-09-08",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [
+        "out-of-bounds read",
+        "memory-safety"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [
+        "https://github.com/HEnquist/wasapi-rs/pull/64"
+      ],
+      "source": null,
+      "url": "https://github.com/HEnquist/wasapi-rs/issues/65",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {
+        "wasapi::WaveFormat::parse": [
+          ">=0.20.0, <0.25.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.25.0"
+      ],
+      "unaffected": [
+        "<0.20.0"
+      ]
+    }
+  }
+]

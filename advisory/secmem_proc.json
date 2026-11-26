@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0591",
+      "package": "secmem-proc",
+      "title": "Ineffective default DACL on Windows",
+      "description": "On Windows, affected versions of this crate do not provide the intended security-enhancement.\nIn particular, any process running under the same user as the hardened process can reset our DACL,\nand thus bypass the protection the DACL should have provided. Usage of the crate however *does not\nactively harm security*.\n\nOn affected version, an explicit owner SID (taken from the process token) was used for the DACL.\nHowever, Windows implicitly grants extra access rights to the well-known \"owner rights\" SID, unless\nit occurs in the DACL, which it did not. This allows any process under the same user to reset the\nDACL of our process, making this defence effectively useless. The new code uses the well-known\n\"owner rights\" SID, preventing the attack.\n\nThe default hardening setup is fixed in version `0.3.9`. Users creating a custom DACL with the API\nfrom the `win_acl` module need to manually update their code to get the security enhancement. They\nare strongly advised to use a well-known \"owner rights\" SID created using the new\n`win_acl::SidRef::well_known` (introduced in version `0.3.9`) in their DACL instead of the owner\nSID returned by `win_acl::TokenUser::sid`.",
+      "date": "2026-10-27",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": "notice",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/niluxv/secmem-proc/issues/13",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "windows"
+      ],
+      "functions": {}
+    },
+    "versions": {
+      "patched": [
+        ">=0.3.9"
+      ],
+      "unaffected": []
+    }
+  }
+]

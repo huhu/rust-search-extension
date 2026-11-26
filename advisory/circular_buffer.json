@@ -1,0 +1,55 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0256",
+      "package": "circular-buffer",
+      "title": "Panic-safety unsoundness in `truncate_back`, `truncate_front`, `clear`, and `extend_from_slice` (use-after-free / double-free)",
+      "description": "Several methods in `circular-buffer` drop elements before updating the buffer's start/end metadata. If an element's `Drop` panics during the drop, the metadata update is skipped, so the buffer still treats the already-dropped elements as live. When the buffer is later dropped (or used after the panic is caught), those elements are visited again — a use-after-free / double-free reachable from safe Rust.\n\n## Impact\n\n- **CWE-415 (Double Free):** the same allocation is freed twice.\n- **CWE-416 (Use-After-Free):** a freed allocation is accessed during a repeated `Drop`.\n\nReachable entirely from safe Rust via `catch_unwind` with element types whose `Drop` can panic.\n\n## Fix\n\nFixed in `circular-buffer` 2.0.1 by adjusting the buffer's start/end metadata before the elements are dropped.",
+      "date": "2026-08-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "panic-safety",
+        "memory-safety",
+        "use-after-free",
+        "double-free"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/andreacorbellini/rust-circular-buffer/blob/master/CHANGELOG.md",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "circular_buffer::CircularBuffer::clear": [
+          "<2.0.1"
+        ],
+        "circular_buffer::CircularBuffer::extend_from_slice": [
+          "<2.0.1"
+        ],
+        "circular_buffer::CircularBuffer::truncate_back": [
+          "<2.0.1"
+        ],
+        "circular_buffer::CircularBuffer::truncate_front": [
+          "<2.0.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=2.0.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0174",
+      "package": "http-types",
+      "title": "`Authorization::value` and `WwwAuthenticate::value` can violate ASCII invariants",
+      "description": "`Authorization::value` uses `HeaderValue::value` with the claim\nthat the internal string is ASCII, but `Authorization::new` and\n`Authorization::set_credentials` accept arbitrary `String` credentials without\nvalidation. As a result, safe code can construct a header value containing\nnon-ASCII UTF-8 while the implementation assumes ASCII.\n\n`WwwAuthenticate::new` and `WwwAuthenticate::set_realm` similarly accepts arbitrary `String` input, so `WwwAuthenticate::value` can also produce a header value that violates the crate’s documented ASCII invariants. \n\nThis issue has not been confirmed as Undefined Behavior, but the unsafe\njustification in `Authorization::value` and `WwwAuthenticate::value` appears incorrect and can produce values outside the expected ASCII-only constraints.\n\nThe http-types crate is unmaintained and the issue is unlikely to be fixed.",
+      "date": "2026-03-11",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "header",
+        "ascii",
+        "invalid utf-8"
+      ],
+      "cvss": null,
+      "informational": "notice",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/http-rs/http-types/issues/534",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0040",
+      "package": "tracing-ethers",
+      "title": "`tracing-ethers` was removed from crates.io due to malicious code",
+      "description": "The `tracing-ethers` crate attempted to exfiltrate ssh keys to an app hosted on `vercel.app`\n\nThe malicious crate had 9 version published on 2026-03-09 approximately 5 days\nbefore removal and had no evidence of actual downloads. There were no crates\ndepending on this crate on crates.io.\n\nThanks to the user `killa` for reporting this malicious crate.",
+      "date": "2026-03-14",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

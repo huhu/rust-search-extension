@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0153",
+      "package": "hexchat",
+      "title": "hexchat crate is unsound and unmaintained",
+      "description": "All versions of this crate have function `deregister_command` which can result in use after free.\nThis is unsound.\n\nIn addition, all versions since 0.3.0 have \"safe\" macros, which are documented as unsafe to use in threads.\n\nIn addition, the `hexchat` crate is no longer actively maintained.  If you rely on this crate, consider switching\nto an alternative.",
+      "date": "2025-11-17",
+      "aliases": [
+        "GHSA-x43w-ph7m-pfjx"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption",
+        "memory-exposure"
+      ],
+      "keywords": [
+        "memory-safety"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/pie-flavor/hexchat-rs/issues/3",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

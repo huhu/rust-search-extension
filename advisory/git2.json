@@ -1,0 +1,99 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0184",
+      "package": "git2",
+      "title": "Potential undefined behavior with Signature from a buffer-created BlameHunk",
+      "description": "When a `Blame` is created via `Blame::blame_buffer()`, and a `BlameHunk` is retrieved, the pointers to the original author, original committer, final author, and final committer may be null if unavailable. The corresponding `BlameHunk` methods then create `Signature`s based on null pointers; attempting to access the data of the `Signature`s leads to dereferencing null pointers.",
+      "date": "2026-05-13",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "git2"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/git2-rs/pull/1254",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.21.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0183",
+      "package": "git2",
+      "title": "Potential undefined behavior when calling Remote::list()",
+      "description": "When calling `Remote::list()` for a remote of a git repository, when that remote does not advertise any references, git2 passes a null pointer to the unsafe function `slice::from_raw_parts()`. Based on the safety section documentation of function, data must be non-null even for slices of length zero. Thus, the use of a null pointer leads to undefined behavior.",
+      "date": "2026-05-12",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "git2"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/git2-rs/pull/1250",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.21.0"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0008",
+      "package": "git2",
+      "title": "Potential undefined behavior when dereferencing Buf struct",
+      "description": "if we dereference the Buf struct right after calling new() or default() on Buf struct, it passes Null Pointer to the unsafe function slice::from_raw_parts. Based on the safety section documentation of function,\ndata must be non-null and aligned even for zero-length slices or slices of ZSTs. Thus, passing Null Pointer will lead to undefined behavior.",
+      "date": "2026-02-02",
+      "aliases": [
+        "GHSA-j39j-6gw9-jw6h"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "undefined-behavior"
+      ],
+      "cvss": null,
+      "informational": "unsound",
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rust-lang/git2-rs/pull/1213",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.20.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

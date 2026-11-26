@@ -1,0 +1,35 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2025-0148",
+      "package": "finch-rust",
+      "title": "`finch-rust` was removed from crates.io for malicious code",
+      "description": "It depended on the `sha-rust` crate, which appeared to be attempting to steal credentials from local files.",
+      "date": "2025-12-05",
+      "aliases": [
+        "GHSA-f8h5-x737-x4xr"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://socket.dev/blog/malicious-crate-mimicking-finch-exfiltrates-credentials"
+      ],
+      "source": null,
+      "url": "https://blog.rust-lang.org/2025/12/05/crates.io-malicious-crates-finch-rust-and-sha-rust/",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

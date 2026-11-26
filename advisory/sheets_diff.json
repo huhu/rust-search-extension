@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0317",
+      "package": "sheets-diff",
+      "title": "A 512-byte workbook can provoke a multi-gigabyte allocation and abort the process",
+      "description": "Affected versions passed caller-supplied bytes to `calamine`'s `Xlsx::new` without first checking\nthat they were a ZIP archive. `Xlsx::new` tests for password protection on its first line, which\nparses the input as an OLE/CFB container, and a sector-count field read from the file's own header\nreaches `Vec::with_capacity` without being checked against the file's actual length. A 512-byte input\ncan therefore request several gigabytes; 9,261,285,372 bytes was measured.\n\n**The oversized allocation is always attempted. Whether it aborts depends on what the allocator can\nsatisfy.** On a large host with overcommit the reservation is granted untouched and the call returns\nan ordinary \"not an xlsx file\" error, which looks like a malformed file being correctly rejected.\nUnder a memory limit the same bytes give `memory allocation of N bytes failed` and the process\naborts, which is not a `Result` a caller can handle. Containers with a memory limit, small hosts and\nCI runners are where this lands, so testing on a development machine can wrongly suggest the crate is\nunaffected.\n\nEvery entry point reaches it, not only `compare_bytes`: the path- and reader-based APIs funnel through\nthe same internal open. Neither `Limits::default()` nor `Limits::hardened()` prevents it, because\n`max_input_bytes` bounds the length of the input while the allocation's size comes from a field\ninside it.\n\nFixed in 3.2.0, which declines input that does not begin with the ZIP magic before the parser sees\nit, removing the path rather than bounding it. Callers who cannot upgrade can apply the same check\nbefore calling this crate.\n\nThe underlying defect is in `calamine`, reported there independently as\n[tafia/calamine#714](https://github.com/tafia/calamine/issues/714) and unfixed at the time of\nwriting. It is reachable from any crate that opens untrusted bytes with `Xlsx::new`.",
+      "date": "2026-09-29",
+      "aliases": [
+        "GHSA-w5x2-6474-pqp4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "xlsx",
+        "DoS",
+        "allocation",
+        "cfb"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/forskscope/sheets-diff-rs/blob/3.2.0/CHANGELOG.md#320---2026-09-29",
+        "https://github.com/tafia/calamine/issues/714"
+      ],
+      "source": null,
+      "url": "https://github.com/forskscope/sheets-diff-rs/commit/fb70d62c88ca906284703c8071e51951c6ab43e2",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.2.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

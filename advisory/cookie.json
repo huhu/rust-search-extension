@@ -1,0 +1,102 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0594",
+      "package": "cookie",
+      "title": "Private cookie nonces can repeat in processes that fork",
+      "description": "## Who is affected\n\nOnly applications that call `fork()` and then add private (encrypted) cookies\non the thread that forked, in more than one of the resulting processes. This\nis an uncommon way to deploy a Rust web application. In particular:\n\n * **Rocket is not affected.**\n * **axum is not affected as normally run.** It is affected only when an\n   application forks worker processes itself and runs each on a\n   current-thread runtime. See \"Rocket and axum\" below.\n * Applications that never fork are not affected. This includes all\n   applications on Windows.\n * Signed cookies (`SignedJar`) are not affected.\n\nThe exact conditions are listed under \"Conditions\" below.\n\n## Description\n\nPrivate cookies are sealed with AES-256-GCM using a random 96-bit nonce.\nAffected versions drew the nonce from `rand`'s thread-local generator,\n`rand::thread_rng()`. That generator hands out bytes from an internal buffer\nand only notices that the process has forked when the buffer is refilled. A\nprocess that forks therefore continues, in both the parent and the child, from\nthe same buffered bytes, and the private cookies sealed first on each side of\nthe fork use the same nonces.\n\n## Impact\n\nReusing a nonce under the same key breaks AES-GCM. From two private cookies\nthat share a nonce, an attacker can:\n\n * recover the XOR of the two plaintexts, and thus either plaintext if the\n   other is known, and\n * recover the GHASH authentication key and forge private cookies, with a\n   name and value of their choosing, that the application accepts as\n   authentic.\n\nThe nonce is the first 12 bytes of a private cookie's (base64-decoded) value,\nso a repeated nonce is visible to anyone who holds two such cookies.\n\nExploitation requires the uncommon deployment described above, and only the\nfirst private cookies added after a fork are affected: at most 21 per process.\nAn attacker must obtain two of them, from two different processes.\n\n## Conditions\n\nAll of the following must hold:\n\n 1. The target is a Unix-like system and the process calls `fork()` without a\n    subsequent `exec()`.\n 2. The thread that calls `fork()` used `rand::thread_rng()` at any point\n    before the fork. Any use counts, including `Key::generate()`, adding a\n    private cookie, or a call made by an unrelated crate.\n 3. After the fork, private cookies are added on that same thread in two or\n    more of the resulting processes: the parent and a child, or several\n    children.\n 4. Those processes use the same `Key`.\n\nWhen they hold, at most the first 21 private cookies added on that thread in\neach process share nonces. After that the generator reseeds and the processes\ndiverge.\n\nThe following are **not** affected:\n\n * Applications that never fork, including all applications on Windows.\n * Processes in which the forking thread did not use `rand::thread_rng()`\n   before the fork.\n * Private cookies added on threads that were created after the fork. This\n   includes servers that fork and then start a multi-threaded async runtime\n   in each child.\n * Signed cookies (`SignedJar`), which do not use a nonce.\n * Versions `0.12.0` through `0.13.3`, and `0.11.2` and earlier, which\n   obtained nonces from the operating system via `ring`.\n\n## Rocket and axum\n\nRocket and axum were tested with `cookie` `0.18.2` by collecting the private\ncookies sent by each server process and comparing their nonces.\n\n**Rocket** (`0.5.4`, `CookieJar::add_private()`) is not affected. Rocket does\nnot fork, and it handles requests on worker threads of a runtime it creates\nwhen launched. No nonce was reused:\n\n * when launched normally, in a single process, or\n * when a parent process used a private cookie and then forked two worker\n   processes that each launched Rocket.\n\n**axum** (`0.8.9`, with `PrivateCookieJar` from `axum-extra` `0.12.6`) is not\naffected as normally run. No nonce was reused:\n\n * when run in a single process on a multi-threaded runtime, or\n * when a parent process used a private cookie and then forked two worker\n   processes that each started a multi-threaded runtime.\n\nAn axum application is affected only if it does all of the following:\n\n 1. forks worker processes itself,\n 2. runs each worker on a current-thread runtime on the thread that forked,\n    so that requests are handled on that thread, and\n 3. used `rand::thread_rng()` on that thread before forking.\n\nIn that configuration, the first private cookies sent by two workers reused\nnonces: 19 when the parent had added one private cookie before forking, and 15\nwhen the parent had only called `Key::generate()`. No nonce was reused when\nthe parent did neither.\n\nOther frameworks and libraries that use this crate's `PrivateJar` were not\ntested. The conditions above apply to them as well.\n\n## Fix\n\nVersion `0.18.3` obtains nonces directly from the operating system's random\nnumber generator, which is not affected by `fork`.\n\n## Workarounds\n\nIf upgrading is not possible, any one of the following prevents the reuse:\n\n * Do not use `rand::thread_rng()`, directly or indirectly, on the forking\n   thread before forking. In particular, create the `Key` with `Key::from()`\n   or `Key::derive_from()` rather than `Key::generate()` before the fork.\n * In each child, immediately after forking, read and discard at least 256\n   bytes from `rand::thread_rng()` before adding any private cookie.\n * Add private cookies only on threads created after the fork.\n\nApplications that ran in an affected configuration should rotate their `Key`.",
+      "date": "2026-11-23",
+      "aliases": [
+        "GHSA-8wcq-xq25-7fhm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "nonce-reuse",
+        "aes-gcm",
+        "fork"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:H/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/rwf2/cookie-rs/commit/98de6032defb10ad5e49d83fa1a9bbed1873cbe4",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [
+        "linux",
+        "macos",
+        "freebsd",
+        "netbsd",
+        "openbsd",
+        "dragonfly",
+        "solaris",
+        "illumos",
+        "android",
+        "ios"
+      ],
+      "functions": {
+        "cookie::PrivateJar::add": [
+          ">=0.11.3, <0.12.0",
+          ">=0.14.0, <0.18.3"
+        ],
+        "cookie::PrivateJar::add_original": [
+          ">=0.11.3, <0.12.0",
+          ">=0.14.0, <0.18.3"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.18.3"
+      ],
+      "unaffected": [
+        "<0.11.3",
+        ">=0.12.0, <0.14.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2017-0005",
+      "package": "cookie",
+      "title": "Large cookie Max-Age values can cause a denial of service",
+      "description": "Affected versions of this crate use the `time` crate and the method\n`Duration::seconds` to parse the `Max-Age` duration cookie setting. This method\nwill panic if the value is greater than 2^64/1000 and less than or equal to\n2^64, which can result in denial of service for a client or server.\n\nThis flaw was corrected by explicitly checking for the `Max-Age` being in this\ninteger range and clamping the value to the maximum duration value.",
+      "date": "2017-05-06",
+      "aliases": [
+        "CVE-2017-18589",
+        "GHSA-vjrq-cg9x-rfjp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "crash"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/alexcrichton/cookie-rs/pull/86",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        "<0.6.0",
+        "^0.6.2",
+        ">=0.7.6"
+      ],
+      "unaffected": []
+    }
+  }
+]

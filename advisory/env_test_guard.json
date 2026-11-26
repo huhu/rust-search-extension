@@ -1,0 +1,31 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0469",
+      "package": "env-test-guard",
+      "title": "`env-test-guard` was removed from crates.io for malicious code",
+      "description": "`env-test-guard` attempted to exfiltrate credentials from the environment to an\narbitrary URL.\n\nThe malicious crate had 2 versions published on 2026-03-24 and 2026-03-25,\napproximately 8 months before removal, and had no evidence of actual usage.\nThis crate had no dependencies on crates.io.\n\nThanks to [Bitbison](https://bitbison.io/) for the report.",
+      "date": "2026-11-09",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "malicious"
+      ],
+      "keywords": [],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": true
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

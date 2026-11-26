@@ -1,0 +1,67 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0311",
+      "package": "latex-rust",
+      "title": "Stack overflow on deeply nested LaTeX input",
+      "description": "The parser and layout engine in affected versions of `latex-rust` recurse once\nper level of nesting with no limit. Deeply nested input, such as `\\frac{1}{…}`,\nbraces, `\\sqrt{…}`, `\\left(`, or superscripts nested hundreds or thousands of\nlevels deep, exhausts the call stack.\n\nA stack overflow in Rust aborts the process. It is not a panic, so it cannot be\ncaught with `catch_unwind`. A program that renders LaTeX from untrusted input\ncan therefore be terminated by a short string. With a release build on an 8 MiB\nstack, 700 nested `\\frac{1}{…}` (about 7 KB of input) abort version 1.0.4, and\n10,000 nested braces (about 20 KB) abort it as well. The threshold is lower on\nsmaller stacks and in debug builds; on a 2 MiB thread in a debug build, about\n35 nested fractions are enough.\n\n```rust\nlet mut src = String::from(\"1\");\nfor _ in 0..700 {\n    src = format!(\"\\\\frac{{1}}{{{src}}}\");\n}\nlet _ = latex_rust::parse(&src); // stack overflow, process aborts\n```\n\nThe fixed versions count nesting depth in the parser and in `layout` and\nrefuse input that nests more than 32 levels. `parse`, `parse_with_colors`, and\nthe `latex_to_*` functions return\n`ParseError::Malformed(\"input nests deeper than 32 levels\")`, and `layout`\nreturns `Error::Unsupported { what: \"tree nests deeper than 32 levels\" }` for a\ntree built by hand. The count is of parser recursion levels, and a braced\nargument costs two, so the limit admits 15 nested `\\frac`, `\\sqrt`, or\n`x^{…}`, and 31 nested groups, `\\left…\\right` pairs, or environments. Input\npast the limit is refused within about 100 KiB of stack in an optimised build.\n\nVersion 1.0.5 fixes this with no API changes and is a drop-in replacement for\n1.0.4; upgrade with `cargo update -p latex-rust`. It also includes the 2.0.0\nrendering fixes, so rendered output differs from 1.0.4. Versions 2.0.0 and\n2.0.1 contain the same fix, with the same limit and messages, together with\nbreaking API changes relative to 1.x, and also let callers change the limit\nwith `ParseOptions` and `layout_with_max_depth`.",
+      "date": "2026-09-27",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "stack-overflow",
+        "recursion",
+        "untrusted-input",
+        "latex"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/jscarr64/LaTeX-Rust/pull/10",
+        "https://github.com/jscarr64/LaTeX-Rust/releases/tag/v1.0.5"
+      ],
+      "source": null,
+      "url": "https://github.com/jscarr64/LaTeX-Rust/issues/6",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "latex_rust::latex_to_png": [
+          "<1.0.5"
+        ],
+        "latex_rust::latex_to_shapes": [
+          "<1.0.5"
+        ],
+        "latex_rust::latex_to_svg": [
+          "<1.0.5"
+        ],
+        "latex_rust::layout": [
+          "<1.0.5"
+        ],
+        "latex_rust::layout_with_numbering": [
+          "<1.0.5"
+        ],
+        "latex_rust::parse": [
+          "<1.0.5"
+        ],
+        "latex_rust::parse_with_colors": [
+          "<1.0.5"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.0.5"
+      ],
+      "unaffected": []
+    }
+  }
+]

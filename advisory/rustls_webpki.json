@@ -1,0 +1,233 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0382",
+      "package": "rustls-webpki",
+      "title": "Certificate verification may accept distrusted intermediates",
+      "description": "Affected versions may accept certificate paths containing distrusted emSign\nintermediate public keys when the configured trust anchors allow such paths.\nThe private keys corresponding to these intermediates are now well known.\n\nVersions 0.103.16 and 0.104.0-alpha.8 reject paths containing these public keys.",
+      "date": "2026-10-20",
+      "aliases": [
+        "CVE-2026-111943"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "certificate",
+        "distrust",
+        "x509"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://emudhra.we-have-a-problem.com/",
+        "https://bugzilla.mozilla.org/show_bug.cgi?id=2083449"
+      ],
+      "source": null,
+      "url": "https://github.com/rustls/webpki/pull/546",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.103.16, <0.104.0-alpha.1",
+        ">=0.104.0-alpha.8"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0104",
+      "package": "rustls-webpki",
+      "title": "Reachable panic in certificate revocation list parsing",
+      "description": "A panic was reachable when parsing certificate revocation lists via [`BorrowedCertRevocationList::from_der`]\nor [`OwnedCertRevocationList::from_der`].  This was the result of mishandling a syntactically valid empty\n`BIT STRING` appearing in the `onlySomeReasons` element of a `IssuingDistributionPoint` CRL extension.\n\nThis panic is reachable prior to a CRL's signature being verified.\n\nApplications that do not use CRLs are not affected.\n\nThank you to [@tynus3](https://github.com/tynus3) for the report.",
+      "date": "2026-04-22",
+      "aliases": [
+        "CVE-2026-93599",
+        "GHSA-82j2-j2ch-gfr8"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "crl",
+        "certificate revocation list",
+        "x509"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.103.13, <0.104.0-alpha.1",
+        ">=0.104.0-alpha.7"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0099",
+      "package": "rustls-webpki",
+      "title": "Name constraints were accepted for certificates asserting a wildcard name",
+      "description": "Permitted subtree name constraints for DNS names were accepted for certificates asserting a wildcard name.\n\nThis was incorrect because, given a name constraint of `accept.example.com`, `*.example.com` could feasibly allow a name of `reject.example.com` which is outside the constraint.\nThis is very similar to [CVE-2025-61727](https://go.dev/issue/76442).\n\nSince name constraints are restrictions on otherwise properly-issued certificates, this bug is reachable only after signature verification and requires misissuance to exploit.\n\nThis vulnerability is identified as [GHSA-xgp8-3hg3-c2mh](https://github.com/rustls/webpki/security/advisories/GHSA-xgp8-3hg3-c2mh). Thank you to [@1seal](https://github.com/1seal) for the report.",
+      "date": "2026-04-14",
+      "aliases": [
+        "CVE-2026-93601",
+        "GHSA-xgp8-3hg3-c2mh"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "name constraints",
+        "x509"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.103.12, <0.104.0-alpha.1",
+        ">=0.104.0-alpha.6"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0098",
+      "package": "rustls-webpki",
+      "title": "Name constraints for URI names were incorrectly accepted",
+      "description": "Name constraints for URI names were ignored and therefore accepted.\n\nNote this library does not provide an API for asserting URI names, and URI name constraints are otherwise not implemented.  URI name constraints are now rejected unconditionally.\n\nSince name constraints are restrictions on otherwise properly-issued certificates, this bug is reachable only after signature verification and requires misissuance to exploit.\n\nThis vulnerability is identified as [GHSA-965h-392x-2mh5](https://github.com/rustls/webpki/security/advisories/GHSA-965h-392x-2mh5). Thank you to [@1seal](https://github.com/1seal) for the report.",
+      "date": "2026-04-14",
+      "aliases": [
+        "CVE-2026-93600",
+        "GHSA-965h-392x-2mh5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [
+        "name constraints",
+        "x509"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.103.12, <0.104.0-alpha.1",
+        ">=0.104.0-alpha.6"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0049",
+      "package": "rustls-webpki",
+      "title": "CRLs not considered authoritative by Distribution Point due to faulty matching logic",
+      "description": "If a certificate had more than one `distributionPoint`, then only the first `distributionPoint` would be considered against each CRL's `IssuingDistributionPoint` `distributionPoint`, and then the certificate's subsequent `distributionPoint`s would be ignored.\n\nThe impact was that correctly provided CRLs would not be consulted to check revocation. With `UnknownStatusPolicy::Deny` (the default) this would lead to incorrect but safe `Error::UnknownRevocationStatus`. With `UnknownStatusPolicy::Allow` this would lead to inappropriate acceptance of revoked certificates.\n\nThis vulnerability is thought to be of limited impact. This is because both the certificate and CRL are signed -- an attacker would need to compromise a trusted issuing authority to trigger this bug.  An attacker with such capabilities could likely bypass revocation checking through other more impactful means (such as publishing a valid, empty CRL.)\n\nMore likely, this bug would be latent in normal use, and an attacker could leverage faulty revocation checking to continue using a revoked credential.\n\nThis vulnerability is identified as [GHSA-pwjx-qhcg-rvj4](https://github.com/rustls/webpki/security/advisories/GHSA-pwjx-qhcg-rvj4). Thank you to [@1seal](https://github.com/1seal) for the report.",
+      "date": "2026-03-20",
+      "aliases": [
+        "CVE-2026-93602",
+        "GHSA-pwjx-qhcg-rvj4"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "privilege-escalation"
+      ],
+      "keywords": [
+        "crl",
+        "x509"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.103.10"
+      ],
+      "unaffected": [
+        "<0.102.0-alpha.0"
+      ]
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2023-0053",
+      "package": "rustls-webpki",
+      "title": "rustls-webpki: CPU denial of service in certificate path building",
+      "description": "When this crate is given a pathological certificate chain to validate, it will\nspend CPU time exponential with the number of candidate certificates at each\nstep of path building.\n\nBoth TLS clients and TLS servers that accept client certificate are affected.\n\nWe now give each path building operation a budget of 100 signature verifications.\n\nThe original `webpki` crate is also affected.\n\nThis was previously reported in the original crate\n<https://github.com/briansmith/webpki/issues/69> and re-reported to us\nrecently by Luke Malinowski.",
+      "date": "2023-08-22",
+      "aliases": [
+        "GHSA-fh2r-99q2-6mmg"
+      ],
+      "related": [
+        "CVE-2018-16875"
+      ],
+      "collection": "crates",
+      "categories": [
+        "denial-of-service"
+      ],
+      "keywords": [
+        "certificate",
+        "path building",
+        "x509"
+      ],
+      "cvss": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.100.2, <0.101.0",
+        ">=0.101.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

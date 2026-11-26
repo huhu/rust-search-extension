@@ -1,0 +1,56 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0217",
+      "package": "tract-nnef",
+      "title": "Integer overflow in tract-nnef NNEF tensor parser leads to out-of-bounds read on model load",
+      "description": "`tract_nnef::tensors::read_tensor` builds a tensor shape from attacker-controlled\n32-bit dimensions and computes both the element count `product(shape)` and the\nbyte allocation `product(shape) * size_of(dt)` with **unchecked `usize`\narithmetic**. In release builds (no `overflow-checks`) both products wrap modulo\n2^64.\n\nA crafted NNEF `.dat` tensor can choose dimensions whose wrapped products\ncollapse to a small value that satisfies the header size-consistency check, while\nthe true element count stays astronomically large. `read_tensor` then returns a\n`Tensor` whose reported `len` (e.g. `2^61 + 7`) far exceeds its backing heap\nallocation (e.g. 56 bytes). The unchecked accessor `as_slice_unchecked`\n(`slice::from_raw_parts(ptr, self.len())`) subsequently yields a slice spanning\n~18 EiB over the small buffer.\n\nThe out-of-bounds read fires automatically during model build (no inference\nrequired), reachable through the default `DatLoader` resource loader via the\npublic `tract_nnef::nnef().model_for_path` / `model_for_read` API when the\nconst-folding `as_uniform` fast-path materializes the over-long constant. The\nalways-on primitive is a bounded adjacent-heap over-read (information\ndisclosure); access further past the mapped region SIGSEGVs (denial of service).\nNo out-of-bounds write or code execution was demonstrated.\n\nAffected: every release line prior to the backported fixes — `< 0.21.16`,\n`0.22.0`–`0.22.1`, and `0.23.0`. The block-quant path had already received an\nanalogous blob-size guard; the dense `DatLoader` path was missed.\n\n## Mitigation\n\nUpgrade to `0.21.16`, `0.22.2`, or `0.23.1`. The fix computes the shape product\nand byte size with `checked_mul` and rejects the tensor on overflow\n(commit [`34c7df2`](https://github.com/sonos/tract/commit/34c7df2c9bd2a36583e09b52f3e6319bf23102e8)).",
+      "date": "2026-06-18",
+      "aliases": [
+        "CVE-2026-55093",
+        "GHSA-x5mv-8wgw-29hg"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-exposure",
+        "denial-of-service"
+      ],
+      "keywords": [
+        "parsing",
+        "nnef",
+        "integer-overflow",
+        "out-of-bounds-read"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:H",
+      "informational": null,
+      "references": [
+        "https://github.com/sonos/tract/commit/34c7df2c9bd2a36583e09b52f3e6319bf23102e8"
+      ],
+      "source": null,
+      "url": "https://github.com/sonos/tract/commit/34c7df2c9bd2a36583e09b52f3e6319bf23102e8",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "tract_nnef::tensors::read_tensor": [
+          "<0.21.16",
+          ">=0.22.0, <0.22.2",
+          ">=0.23.0, <0.23.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.21.16, <0.22.0",
+        ">=0.22.2, <0.23.0",
+        ">=0.23.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

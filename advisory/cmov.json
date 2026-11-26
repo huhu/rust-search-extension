@@ -1,0 +1,36 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0003",
+      "package": "cmov",
+      "title": "Non-constant-time code generation on ARM32 targets",
+      "description": "## Summary\n\nWhile the `cmov` crate has a special backend for `aarch64` which uses special\nCSEL instructions, on 32-bit ARM it uses a portable pure Rust fallback\nimplementation. This implementation uses a combination of bitwise arithmetic\nand `core::hint::black_box` to attempt to coerce constant-time code generation\nout of the optimizer, but the implementation in v0.4.3 and earlier failed to\ndo this on 32-bit ARM targets.\n\n## Impact\n\nBranch instructions inserted by the LLVM optimizer on 32-bit targets can be\nleveraged using various microarchitectural sidechannels like cache timing\nattacks to learn secret information that `cmov` is designed to protect.\n\n## Details\n\nThe following assembly was emitted when using `Cmov::cmovnz`, a function which\nimplements a conditional move when a provided value is non-zero:\n\n```asm\n    bne  .LBB0_2\n    mvns r3, r3\n```\n\nThis includes a branch instruction `bne`: Branch if Not Equal.\n\n## PoC\n\nThe following code reproduces the issue:\n\n```rust\n#![no_std]\nuse cmov::Cmov;\n\n#[inline(never)]\npub fn test_ct_cmov(a: &mut u8, b: u8, c: u8) {\n    a.cmovnz(&b, c);\n}\n```\n\n## Resolution\n\n`cmov` v0.4.4 includes a portable `black_box`-based tactical mitigation for the\nissue which coerced the compiler into producing the expected codegen, and\nadditionally v0.4.5 added an `asm!` reimplementation of the problematic mask\ngeneration function for ARM32 targets which should guarantee that particular\nfunction never contains a branch on such targets.",
+      "date": "2026-01-14",
+      "aliases": [
+        "CVE-2026-23519",
+        "GHSA-2gqc-6j2q-83qp"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:H/SI:N/SA:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/RustCrypto/utils/commit/55977257e7c82a309d5e8abfdd380a774f0f9778",
+      "withdrawn": null,
+      "license": "CC-BY-4.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.4.4"
+      ],
+      "unaffected": []
+    }
+  }
+]

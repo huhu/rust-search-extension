@@ -1,0 +1,39 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0453",
+      "package": "surrealdb",
+      "title": "Use-after-free in KV backends via leaked `affinitypool::spawn_local` future",
+      "description": "The `kv-mem`, `kv-surrealkv` and `kv-rocksdb` backends move non-`'static` borrowed state into affinity-pool closures through `affinitypool::spawn_local`: a `tokio::sync::MutexGuard<Option<TransactionInner>>`, `&Transaction`, `&mut ScanStateKeys/Vals`, `&mut dyn KeyVisitor/ValVisitor`, `RwLockReadGuard`, and a `ReadOptions` holding a raw `rocksdb_snapshot_t*`. In `affinitypool 0.7.0` `spawn_local` is safe and erases the `'pool` lifetime via `async_task::Builder::spawn_unchecked`; the only thing keeping it sound is the `Drop` implementation of the returned future, which blocks until the worker stops using the borrows.\n\nSafe code can leak that future (`mem::forget`, `Box::leak`, `ManuallyDrop`, a reference cycle, or a leaked enclosing future). The borrows then end while the pool worker still uses them, producing a use-after-free on the transaction allocation; AddressSanitizer reports a read of freed mutex data and a write when the worker unlocks the freed `tokio::sync::Mutex` on the pool thread. No `unsafe` is required at the call site, and the affected methods include `count`, `keys`/`keysr`, `scan`/`scanr`, `compact`, shutdown, point reads and writes, and cursor iteration.\n\n3.3.0 upgrades to `affinitypool 0.8.0`, where `spawn_local` is an `unsafe` function and the caller must uphold the leak-freedom invariant (commit `8156ff69`).",
+      "date": "2026-10-19",
+      "aliases": [
+        "GHSA-pm86-cc75-q463"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "use-after-free",
+        "lifetime-erasure",
+        "leak"
+      ],
+      "cvss": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/surrealdb/surrealdb/commit/8156ff691b1861814199e5e3372c81609b68db7f",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=3.3.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

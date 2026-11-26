@@ -1,0 +1,34 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2020-0156",
+      "package": "libsecp256k1-rs",
+      "title": "Observable Discrepancy in libsecp256k1-rs",
+      "description": "A timing vulnerability in the Scalar::check_overflow function in Parity libsecp256k1-rs before 0.3.1 potentially allows an attacker to leak information via a side-channel attack.",
+      "date": "2020-01-22",
+      "aliases": [
+        "CVE-2019-20399",
+        "GHSA-7cqg-8449-rmfv"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2019-20399",
+      "withdrawn": null
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=0.3.1"
+      ],
+      "unaffected": []
+    }
+  }
+]

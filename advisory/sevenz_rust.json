@@ -1,0 +1,58 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0246",
+      "package": "sevenz-rust",
+      "title": "`sevenz-rust` is unmaintained",
+      "description": "The `sevenz-rust` repository has been deleted and the crate is no longer actively maintained. Users should migrate away from the library in favor of a modern up-to-date 7z library such as `sevenz-rust2`.",
+      "date": "2026-08-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [],
+      "keywords": [],
+      "cvss": null,
+      "informational": "unmaintained",
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0245",
+      "package": "sevenz-rust",
+      "title": "Relative/Absolute Path Traversal (CWE-23/CWE-36) in `decompress_impl` that enables an arbitrary file write.",
+      "description": "## Summary\n\nAll versions of `sevenz-rust` fail to validate file paths when extracting in `decompress_impl` (the underlying function used in the exposed decompress api functions). \n\nThis oversight allows a maliciously crafted archive to extract outside the extraction directory, from both relative paths such as `../../../...` or absolute paths like `C:\\\\...` or `/etc/...`, which could lead to file disclosure or remote command execution in combination with other flaws or social engineering.\n\n## Details\n\nThe following line numbers will be referencing the latest version v0.6.1. The specific point of failure is at `de_funcs.rs::101` inside `decompress_impl`.\n``` rust\nseven.for_each_entries(|entry, reader| {\n    let dest_path = dest.join(entry.name());\n    extract_fn(entry, reader, &dest_path)\n})?;\n```\nWhen the function iterates through each entry, it blindly joins the entry name with the output directory before passing the path into `extract_fn`, `default_entry_extract_fn` unless specified otherwise by user. This allows for relative path traversal from simple path concatenation and absolute path traversal due to [std::path::join](https://doc.rust-lang.org/std/path/struct.Path.html#method.join)'s edge case where if the \"[passed] path is absolute, it replaces the current path.\"\n\n`default_entry_extract_fn` also fails to validate if the entry it is given has a safe extraction path before it writes to disk at `de_funcs.rs::135`.  \n\n## Status\n\nThe project has been abandoned and the repository has been deleted, so no upstream fix is expected. Users should migrate away from the library in favor of a modern up-to-date 7z library such as `sevenz-rust2`.",
+      "date": "2026-08-06",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "file-disclosure"
+      ],
+      "keywords": [],
+      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:H/VA:L/SC:H/SI:H/SA:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": null,
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [],
+      "unaffected": []
+    }
+  }
+]

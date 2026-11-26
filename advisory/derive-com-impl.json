@@ -1,0 +1,43 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2021-0083",
+      "package": "derive-com-impl",
+      "title": "QueryInterface should call AddRef before returning pointer",
+      "description": "Affected version of this crate, which is a required dependency in com-impl, \nprovides a faulty implementation of the `IUnknown::QueryInterface` method.\n\n`QueryInterface` implementation must call `IUnknown::AddRef` before returning the pointer,\nas describe in this documentation:\n<https://docs.microsoft.com/en-us/windows/win32/api/unknwn/nf-unknwn-iunknown-queryinterface(refiid_void)>\n\nAs it is not incrementing the refcount as expected, the following calls to `IUnknown::Release` method \nwill cause WMI to drop reference to the interface, and can lead to invalid reference.\n\nThis is documented in <https://docs.microsoft.com/en-us/windows/win32/learnwin32/managing-the-lifetime-of-an-object#reference-counting>\n\nThere is no simple workaround, as you can't know how many time QueryInterface will be called.\nThe only way to quick fix this is to use the macro expanded version of the code and modify \nthe QueryInterface method to add the AddRef call yourself.\n\nThe issue was corrected in commit `9803f31fbd1717d482d848f041044d061fca6da7`.",
+      "date": "2021-01-20",
+      "aliases": [],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "memory-corruption"
+      ],
+      "keywords": [
+        "com",
+        "queryinterface",
+        "addref"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/Connicpu/com-impl/issues/1",
+      "withdrawn": null
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "derive_com_impl::derive_com_impl": [
+          "<=0.1.1"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=0.1.2"
+      ],
+      "unaffected": []
+    }
+  }
+]
