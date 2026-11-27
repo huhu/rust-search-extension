@@ -1,0 +1,173 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0602",
+      "package": "dryoc",
+      "title": "Ed25519 signing key pairs with an inconsistent embedded public key are accepted",
+      "description": "An Ed25519 secret key in `dryoc` is 64 bytes: the 32-byte seed followed by\nthe 32-byte public key. When signing, the public key used in the challenge\nhash `k = H(R || A || M)` is read from bytes 32..64 of the secret key, while\nthe nonce `r`, and therefore `R`, is derived only from the seed and the\nmessage.\n\nIn affected versions, `SigningKeyPair::from_slices` and, when the `serde`\nfeature is enabled, the derived `Deserialize` implementation of\n`SigningKeyPair` store the 64 secret-key bytes as given, without checking\nthat the embedded public key matches the one derived from the seed. The\nseparate `public_key` field of the struct is not used for signing, so only\nthe embedded half is relevant. `SigningKeyPair::from_secret_key` re-derives\nthe key pair from the seed and is not affected.\n\nIf an attacker can replace bytes 32..64 of a stored secret key without being\nable to read the seed, and can obtain signatures over the same message from\nboth the original and the modified key, the two signatures share the same `R`\nand differ in `S`. The private scalar can then be computed as\n`a = (S1 - S2) / (k1 - k2)`, which allows signatures to be forged for\narbitrary messages under the original public key. Examples of such conditions\nare key storage without integrity protection, or an application that\nassembles the 64 secret-key bytes from two separate sources. The upstream\nadvisory rates the issue as low severity.\n\nThis behavior matches libsodium, which also trusts the embedded public key,\nso it is not a compatibility defect; the concern is that the higher-level\nconstructors in `dryoc` did not enforce the consistency that\n`from_secret_key` already provides.\n\n## Fix\n\nVersion 2.0.1 validates imported Ed25519 key pairs in\n`SigningKeyPair::from_slices` and during serde deserialization, rejecting key\nmaterial whose embedded or separate public key does not match the seed. In\naddition, `SigningKeyPair` signing and `Ed25519phSigner` finalization\nre-derive the embedded public key from the seed, since the key pair's fields\nremain publicly mutable.\n\nThe Classic API (`dryoc::classic::crypto_sign`) keeps libsodium-compatible\nsemantics: callers of functions such as `crypto_sign_detached` must supply\nconsistent signing key material.\n\nUsers should upgrade to `dryoc` 2.0.1 or later.",
+      "date": "2026-11-16",
+      "aliases": [
+        "GHSA-vc3q-r4qh-vp64"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "ed25519",
+        "signature",
+        "key-recovery",
+        "keypair-validation",
+        "serde"
+      ],
+      "cvss": null,
+      "informational": null,
+      "references": [
+        "https://github.com/brndnmtthws/dryoc/releases/tag/v2.0.1"
+      ],
+      "source": null,
+      "url": "https://github.com/brndnmtthws/dryoc/pull/230",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=2.0.1"
+      ],
+      "unaffected": []
+    }
+  },
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0603",
+      "package": "dryoc",
+      "title": "X25519 accepts low-order public keys, yielding session keys computable without a private key",
+      "description": "Versions of dryoc before 1.0.0 never reject low-order peer public keys or an\nall-zero shared secret. In addition, versions 0.5.1 through 0.9.x compute\nX25519 with the clamped scalar reduced modulo the prime subgroup order ℓ\n(`Scalar::from_bytes_mod_order(clamp(n))`) instead of the clamped integer\nspecified by RFC 7748; earlier versions use the unreduced clamped scalar.\nlibsodium, with which these functions are documented as compatible, returns an\nerror for all of these inputs.\n\nThis affects `crypto_scalarmult`, `crypto_kx_client_session_keys` /\n`crypto_kx_server_session_keys`, `kx::Session::new_*`, and\n`crypto_box_beforenm` together with the box and precalculation APIs built on\nit, whenever the peer public key is not authenticated or can be chosen by a\nmalicious party.\n\n## Impact\n\n- **Predictable session keys.** For the 14 encodings of low-order Curve25519\n  points, the X25519 output is always the all-zero value in versions up to\n  0.5.0, and one of 5 fixed public values in 0.5.1 through 0.9.x. The\n  key-exchange functions return `Ok`, and anyone who knows the two public keys\n  can recompute the resulting session keys (or `crypto_box_beforenm` key) by\n  trying at most 4 candidates. The confidentiality and integrity of that\n  session are lost, including against passive observers.\n- **Small private-key leak (0.5.1 through 0.9.x).** With a peer key that has an\n  order-8 torsion component, the output reveals 2 bits of the victim's static\n  X25519 scalar to the peer (and, when the peer key is an order-8 low-order\n  point, to any observer who can test the candidate session keys). This does\n  not meaningfully reduce the hardness of recovering the key.\n- **Non-standard output (0.5.1 through 0.9.x).** Peer keys with a torsion\n  component, and points on the quadratic twist, produce outputs that differ\n  from RFC 7748 and libsodium, which breaks interoperability for such keys.\n- `KeyPair::is_valid_public_key` accepts 6 of the 14 low-order encodings, so it\n  cannot be relied on as a guard.\n\nApplications that only use authenticated peer keys generated by dryoc or\nlibsodium are not affected in practice: honest keys lie in the prime-order\nsubgroup, where the reduced and unreduced scalars give the same result.\n\n## Resolution\n\nUpgrade to dryoc 1.0.0 or later. In 1.0.0, X25519 is computed with\n`MontgomeryPoint::mul_clamped` (the unreduced clamped scalar, as in RFC 7748),\nand an all-zero shared secret is rejected, so low-order public keys now return\nan error from the scalarmult, box, key-exchange and precalculation APIs. Note\nthat 1.0.0 is a backward-incompatible release; several of these functions now\nreturn `Result`.\n\nIf upgrading is not yet possible, validate every untrusted peer X25519 public\nkey before passing it to dryoc 0.9.x, for example by rejecting keys that do not\nmap to a torsion-free Edwards point (`MontgomeryPoint::to_edwards(0)` followed\nby `is_torsion_free()` in `curve25519-dalek`; this requires `curve25519-dalek`\n4.x as a direct dependency). A check based only on `is_small_order()` prevents\nthe predictable session keys but not the 2-bit leak or the non-standard output.",
+      "date": "2026-11-16",
+      "aliases": [
+        "GHSA-6xqm-2982-gvrm"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure"
+      ],
+      "keywords": [
+        "x25519",
+        "curve25519",
+        "low-order",
+        "key-exchange",
+        "diffie-hellman"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "informational": null,
+      "references": [
+        "https://github.com/brndnmtthws/dryoc/releases/tag/v1.0.0"
+      ],
+      "source": null,
+      "url": "https://github.com/brndnmtthws/dryoc/pull/139",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": {
+      "arch": [],
+      "os": [],
+      "functions": {
+        "dryoc::classic::crypto_box::crypto_box_beforenm": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_detached": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_detached_inplace": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_easy": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_easy_inplace": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_open_detached": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_open_detached_inplace": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_open_easy": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_open_easy_inplace": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_seal": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_box::crypto_box_seal_open": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_core::crypto_scalarmult": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_kx::crypto_kx_client_session_keys": [
+          "<1.0.0"
+        ],
+        "dryoc::classic::crypto_kx::crypto_kx_server_session_keys": [
+          "<1.0.0"
+        ],
+        "dryoc::dryocbox::DryocBox::decrypt": [
+          "<1.0.0"
+        ],
+        "dryoc::dryocbox::DryocBox::decrypt_to_vec": [
+          "<1.0.0"
+        ],
+        "dryoc::dryocbox::DryocBox::encrypt": [
+          "<1.0.0"
+        ],
+        "dryoc::dryocbox::DryocBox::encrypt_to_vecbox": [
+          "<1.0.0"
+        ],
+        "dryoc::dryocbox::DryocBox::seal": [
+          "<1.0.0"
+        ],
+        "dryoc::dryocbox::DryocBox::seal_to_vecbox": [
+          "<1.0.0"
+        ],
+        "dryoc::dryocbox::DryocBox::unseal": [
+          "<1.0.0"
+        ],
+        "dryoc::dryocbox::DryocBox::unseal_to_vec": [
+          "<1.0.0"
+        ],
+        "dryoc::keypair::KeyPair::precalculate": [
+          "<1.0.0"
+        ],
+        "dryoc::kx::Session::new_client": [
+          "<1.0.0"
+        ],
+        "dryoc::kx::Session::new_client_with_defaults": [
+          "<1.0.0"
+        ],
+        "dryoc::kx::Session::new_server": [
+          "<1.0.0"
+        ],
+        "dryoc::kx::Session::new_server_with_defaults": [
+          "<1.0.0"
+        ],
+        "dryoc::precalc::PrecalcSecretKey::precalculate": [
+          "<1.0.0"
+        ]
+      }
+    },
+    "versions": {
+      "patched": [
+        ">=1.0.0"
+      ],
+      "unaffected": []
+    }
+  }
+]

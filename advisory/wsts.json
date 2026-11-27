@@ -1,0 +1,41 @@
+[
+  {
+    "advisory": {
+      "id": "RUSTSEC-2026-0601",
+      "package": "wsts",
+      "title": "FROST coordinator accepts unvalidated DKG polynomial commitments",
+      "description": "The FROST coordinator (`state_machine::coordinator::frost::Coordinator`) did not\nvalidate the DKG public shares it received. It stored each polynomial commitment\nat receipt without checking it, and computed the aggregate public key from its\nown copy without checking it either. A signer that is a member of the signing\nset could therefore make the coordinator hold a commitment with no valid proof\nof knowledge of its constant term, or with the wrong number of coefficients,\nincluding none.\n\nTwo consequences, both requiring control of a signer in the set. A malformed\ncommitment broadcast to every participant is correctly rejected by honest\nsigners, but the coordinator has already stored it; if the coordinator was\nrestored from saved state with an existing group key and signing continues under\nthat key after the failed re-keying, the next signing round indexes the\nmalformed commitment and the coordinator process panics. A commitment delivered\nonly to the coordinator, on a transport that does not enforce broadcast, lets the\nsigner make the coordinator compute an aggregate public key that no honest\nsigner holds and that the signer controls. No key material is disclosed and no\nsignature is forged.\n\nThe FIRE coordinator (`state_machine::coordinator::fire::Coordinator`) validates\ncommitments and is not affected.\n\nVersion 15.0.1 validates every commitment at receipt and again before the\naggregate key is computed, matching the FIRE coordinator. Users of the FROST\ncoordinator should upgrade. If that is not possible, use the FIRE coordinator,\ntake the group key from the signers' DKG results rather than from the\ncoordinator, and run DKG again before signing after any failed round.\n\nReported by hokvo (Gleb) through GitHub private vulnerability reporting.",
+      "date": "2026-11-26",
+      "aliases": [
+        "GHSA-whwx-jj37-4gg5"
+      ],
+      "related": [],
+      "collection": "crates",
+      "categories": [
+        "crypto-failure",
+        "denial-of-service"
+      ],
+      "keywords": [
+        "frost",
+        "threshold-signature",
+        "dkg",
+        "schnorr"
+      ],
+      "cvss": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:N/I:H/A:H",
+      "informational": null,
+      "references": [],
+      "source": null,
+      "url": "https://github.com/xoloki/wsts/commit/1aa6902f4e8d98460d5a6760a657125670938a48",
+      "withdrawn": null,
+      "license": "CC0-1.0",
+      "expect-deleted": false
+    },
+    "affected": null,
+    "versions": {
+      "patched": [
+        ">=15.0.1"
+      ],
+      "unaffected": []
+    }
+  }
+]
